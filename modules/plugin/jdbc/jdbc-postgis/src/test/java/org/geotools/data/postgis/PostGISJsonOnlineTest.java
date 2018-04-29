@@ -17,7 +17,6 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
@@ -64,8 +63,10 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
 
         if (pgJsonTestSetup.supportJsonB) {
             String jsonbColumnValue = (String) feature.getAttribute("jsonbColumn");
-            // in JSONB, numbers will be printed according to the behavior of the underlying numeric type.
-            // In practice this means that numbers entered with E notation will be printed without it
+            // in JSONB, numbers will be printed according to the behavior of the underlying numeric
+            // type.
+            // In practice this means that numbers entered with E notation will be printed without
+            // it
             assertTrue(jsonbColumnValue.contains("0.001"));
         }
     }

@@ -25,12 +25,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-
 import org.junit.Test;
 
-/**
- * Tests for {@link URLs}.
- */
+/** Tests for {@link URLs}. */
 public class URLsTest {
 
     private void assertURL(String expectedFilePath, String urlString) throws MalformedURLException {
@@ -66,7 +63,8 @@ public class URLsTest {
     public void testFileToUrl() {
         String url = URLs.fileToUrl(new File("file café")).toString();
         assertTrue("Expected '" + url + "' to start with 'file:'", url.startsWith("file:"));
-        assertTrue("Expected '" + url + "' to end with 'file%20caf%C3%A9'",
+        assertTrue(
+                "Expected '" + url + "' to end with 'file%20caf%C3%A9'",
                 url.endsWith("file%20caf%C3%A9"));
     }
 
@@ -116,5 +114,4 @@ public class URLsTest {
         assertEquals("/file café", URLs.urlToFile(new URL("file:/file%20caf%C3%A9")).toString());
         assertEquals("file café", URLs.urlToFile(new URL("file://file%20caf%C3%A9")).toString());
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,61 +17,48 @@
 package org.geotools.resources;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.lang.reflect.Constructor;
-import javax.swing.JTree;
+import java.util.Enumeration;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreeNode;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-
 
 /**
  * Bridges to optional dependencies (especially {@code widget-swing} module).
  *
  * @todo Most methods of this class need to move as a {@code Trees} class in a {@code util} module.
- *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public final class OptionalDependencies {
-    /**
-     * Constructor for {@link org.geotools.gui.swing.tree.NamedTreeNode}.
-     */
+    /** Constructor for {@link org.geotools.gui.swing.tree.NamedTreeNode}. */
     private static Constructor treeNodeConstructor;
 
-    /**
-     * Set to {@code true} if {@link #treeNodeConstructor} can't be obtained.
-     */
+    /** Set to {@code true} if {@link #treeNodeConstructor} can't be obtained. */
     private static boolean noNamedTreeNode = false;
 
-    /**
-     * Interdit la création d'objets de cette classe.
-     */
-    private OptionalDependencies() {
-    }
+    /** Interdit la création d'objets de cette classe. */
+    private OptionalDependencies() {}
 
     /**
      * Creates an initially empty tree node.
      *
-     * @param name   The value to be returned by {@link TreeNode#toString}.
-     * @param object The user object to be returned by the tree node. May
-     *               or may not be the same than {@code name}.
+     * @param name The value to be returned by {@link TreeNode#toString}.
+     * @param object The user object to be returned by the tree node. May or may not be the same
+     *     than {@code name}.
      * @param allowsChildren if children are allowed.
      */
-    public static DefaultMutableTreeNode createTreeNode(final String name,
-                                                        final Object object,
-                                                        final boolean allowsChildren)
-    {
+    public static DefaultMutableTreeNode createTreeNode(
+            final String name, final Object object, final boolean allowsChildren) {
         /*
          * If the "modules/extension/swing-widgets" JAR is in the classpath,  then create an
          * instance of NamedTreeNode (see org.geotools.swing.tree javadoc for an explanation
@@ -85,34 +72,38 @@ public final class OptionalDependencies {
          *
          * Note: No need to sychronize; this is not a big deal if we make the attempt twice.
          */
-        if (!noNamedTreeNode) try {
-            if (treeNodeConstructor == null) {
-                treeNodeConstructor = Class.forName("org.geotools.gui.swing.tree.NamedTreeNode").
-                        getConstructor(new Class[] {String.class, Object.class, Boolean.TYPE});
+        if (!noNamedTreeNode)
+            try {
+                if (treeNodeConstructor == null) {
+                    treeNodeConstructor =
+                            Class.forName("org.geotools.gui.swing.tree.NamedTreeNode")
+                                    .getConstructor(
+                                            new Class[] {String.class, Object.class, Boolean.TYPE});
+                }
+                return (DefaultMutableTreeNode)
+                        treeNodeConstructor.newInstance(
+                                new Object[] {name, object, Boolean.valueOf(allowsChildren)});
+            } catch (Exception e) {
+                /*
+                 * There is a large amount of checked and unchecked exceptions that the above code
+                 * may thrown. We catch all of them because a reasonable fallback exists (creation
+                 * of the default Swing object below).  Note that none of the unchecked exceptions
+                 * (IllegalArgumentException, NullPointerException...) should occurs, except maybe
+                 * SecurityException. Maybe we could let the unchecked exceptions propagate...
+                 */
+                noNamedTreeNode = true;
             }
-            return (DefaultMutableTreeNode) treeNodeConstructor.newInstance(
-                    new Object[] {name, object, Boolean.valueOf(allowsChildren)});
-        } catch (Exception e) {
-            /*
-             * There is a large amount of checked and unchecked exceptions that the above code
-             * may thrown. We catch all of them because a reasonable fallback exists (creation
-             * of the default Swing object below).  Note that none of the unchecked exceptions
-             * (IllegalArgumentException, NullPointerException...) should occurs, except maybe
-             * SecurityException. Maybe we could let the unchecked exceptions propagate...
-             */
-            noNamedTreeNode = true;
-        }
         return new DefaultMutableTreeNode(name, allowsChildren);
     }
 
     /**
-     * Creates a Swing root tree node from a XML root tree node. Together with
-     * {@link #toString(TreeNode)}, this method provides a convenient way to print
-     * the content of a XML document for debugging purpose.
-     * <p>
-     * This method should not be defined here, since this class is about optional dependencies.
-     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put
-     * it here (for now) because it is used in some module that don't want to depend on widgets.
+     * Creates a Swing root tree node from a XML root tree node. Together with {@link
+     * #toString(TreeNode)}, this method provides a convenient way to print the content of a XML
+     * document for debugging purpose.
+     *
+     * <p>This method should not be defined here, since this class is about optional dependencies.
+     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put it
+     * here (for now) because it is used in some module that don't want to depend on widgets.
      */
     public static MutableTreeNode xmlToSwing(final Node node) {
         String label = node.getNodeName();
@@ -123,14 +114,14 @@ public final class OptionalDependencies {
         final DefaultMutableTreeNode root = createTreeNode(label, node, true);
         final NamedNodeMap attributes = node.getAttributes();
         final int length = attributes.getLength();
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             final Node attribute = attributes.item(i);
             if (attribute != null) {
                 label = attribute.getNodeName() + "=\"" + attribute.getNodeValue() + '"';
                 root.add(createTreeNode(label, attribute, false));
             }
         }
-        for (Node child=node.getFirstChild(); child!=null; child=child.getNextSibling()) {
+        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling()) {
             root.add(xmlToSwing(child));
         }
         return root;
@@ -139,18 +130,17 @@ public final class OptionalDependencies {
     /**
      * Returns a copy of the tree starting at the given node.
      *
-     * @param  tree The tree to copy (may be {@code null}).
+     * @param tree The tree to copy (may be {@code null}).
      * @return A mutable copy of the given tree, or {@code null} if the tree was null.
      * @todo Use {@code getUserObject} when we can.
-     *
      * @since 2.5
      */
     public static MutableTreeNode copy(final TreeNode node) {
         if (node == null) {
             return null;
         }
-        final DefaultMutableTreeNode target = new DefaultMutableTreeNode(
-                node.toString(), node.getAllowsChildren());
+        final DefaultMutableTreeNode target =
+                new DefaultMutableTreeNode(node.toString(), node.getAllowsChildren());
         final Enumeration children = node.children();
         if (children != null) {
             while (children.hasMoreElements()) {
@@ -162,22 +152,26 @@ public final class OptionalDependencies {
     }
 
     /**
-     * Construit une chaîne de caractères qui contiendra le
-     * noeud spécifié ainsi que tous les noeuds enfants.
+     * Construit une chaîne de caractères qui contiendra le noeud spécifié ainsi que tous les noeuds
+     * enfants.
      *
-     * @param model  Arborescence à écrire.
-     * @param node   Noeud de l'arborescence à écrire.
+     * @param model Arborescence à écrire.
+     * @param node Noeud de l'arborescence à écrire.
      * @param buffer Buffer dans lequel écrire le noeud.
-     * @param level  Niveau d'indentation (à partir de 0).
-     * @param last   Indique si les niveaux précédents sont en train d'écrire leurs derniers items.
-     * @return       Le tableau {@code last}, qui peut éventuellement avoir été agrandit.
+     * @param level Niveau d'indentation (à partir de 0).
+     * @param last Indique si les niveaux précédents sont en train d'écrire leurs derniers items.
+     * @return Le tableau {@code last}, qui peut éventuellement avoir été agrandit.
      */
-    private static boolean[] format(final TreeModel model, final Object node,
-                                    final Appendable buffer, final int level, boolean[] last,
-                                    final String lineSeparator) throws IOException
-    {
-        for (int i=0; i<level; i++) {
-            if (i != level-1) {
+    private static boolean[] format(
+            final TreeModel model,
+            final Object node,
+            final Appendable buffer,
+            final int level,
+            boolean[] last,
+            final String lineSeparator)
+            throws IOException {
+        for (int i = 0; i < level; i++) {
+            if (i != level - 1) {
                 buffer.append(last[i] ? '\u00A0' : '\u2502').append("\u00A0\u00A0\u00A0");
             } else {
                 buffer.append(last[i] ? '\u2514' : '\u251C').append("\u2500\u2500\u2500");
@@ -185,33 +179,31 @@ public final class OptionalDependencies {
         }
         buffer.append(String.valueOf(node)).append(lineSeparator);
         if (level >= last.length) {
-            last = XArray.resize(last, level*2);
+            last = XArray.resize(last, level * 2);
         }
         final int count = model.getChildCount(node);
-        for (int i=0; i<count; i++) {
-            last[level] = (i == count-1);
-            last = format(model, model.getChild(node,i), buffer, level+1, last, lineSeparator);
+        for (int i = 0; i < count; i++) {
+            last[level] = (i == count - 1);
+            last = format(model, model.getChild(node, i), buffer, level + 1, last, lineSeparator);
         }
         return last;
     }
 
     /**
      * Writes a graphical representation of the specified tree model in the given buffer.
-     * <p>
-     * This method should not be defined here, since this class is about optional dependencies.
-     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put
-     * it here (for now) because it is used in some module that don't want to depend on widgets.
      *
-     * @param  tree          The tree to format.
-     * @param  buffer        Where to format the tree.
-     * @param  lineSeparator The line separator, or {@code null} for the system default.
+     * <p>This method should not be defined here, since this class is about optional dependencies.
+     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put it
+     * here (for now) because it is used in some module that don't want to depend on widgets.
+     *
+     * @param tree The tree to format.
+     * @param buffer Where to format the tree.
+     * @param lineSeparator The line separator, or {@code null} for the system default.
      * @throws IOException if an error occured while writting in the given buffer.
-     *
      * @since 2.5
      */
     public static void format(final TreeModel tree, final Appendable buffer, String lineSeparator)
-            throws IOException
-    {
+            throws IOException {
         final Object root = tree.getRoot();
         if (root != null) {
             if (lineSeparator == null) {
@@ -223,34 +215,32 @@ public final class OptionalDependencies {
 
     /**
      * Writes a graphical representation of the specified tree in the given buffer.
-     * <p>
-     * This method should not be defined here, since this class is about optional dependencies.
-     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put
-     * it here (for now) because it is used in some module that don't want to depend on widgets.
      *
-     * @param  node          The root node of the tree to format.
-     * @param  buffer        Where to format the tree.
-     * @param  lineSeparator The line separator, or {@code null} for the system default.
+     * <p>This method should not be defined here, since this class is about optional dependencies.
+     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put it
+     * here (for now) because it is used in some module that don't want to depend on widgets.
+     *
+     * @param node The root node of the tree to format.
+     * @param buffer Where to format the tree.
+     * @param lineSeparator The line separator, or {@code null} for the system default.
      * @throws IOException if an error occured while writting in the given buffer.
-     *
      * @since 2.5
      */
     public static void format(final TreeNode node, final Appendable buffer, String lineSeparator)
-            throws IOException
-    {
+            throws IOException {
         format(new DefaultTreeModel(node, true), buffer, lineSeparator);
     }
 
     /**
-     * Returns a graphical representation of the specified tree model. This representation can
-     * be printed to the {@linkplain System#out standard output stream} (for example) if it uses
-     * a monospaced font and supports unicode.
-     * <p>
-     * This method should not be defined here, since this class is about optional dependencies.
-     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put
-     * it here (for now) because it is used in some module that don't want to depend on widgets.
+     * Returns a graphical representation of the specified tree model. This representation can be
+     * printed to the {@linkplain System#out standard output stream} (for example) if it uses a
+     * monospaced font and supports unicode.
      *
-     * @param  tree The tree to format.
+     * <p>This method should not be defined here, since this class is about optional dependencies.
+     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put it
+     * here (for now) because it is used in some module that don't want to depend on widgets.
+     *
+     * @param tree The tree to format.
      * @return A string representation of the tree, or {@code null} if it doesn't contain any node.
      */
     public static String toString(final TreeModel tree) {
@@ -270,15 +260,15 @@ public final class OptionalDependencies {
     }
 
     /**
-     * Returns a graphical representation of the specified tree. This representation can be
-     * printed to the {@linkplain System#out standard output stream} (for example) if it uses
-     * a monospaced font and supports unicode.
-     * <p>
-     * This method should not be defined here, since this class is about optional dependencies.
-     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put
-     * it here (for now) because it is used in some module that don't want to depend on widgets.
+     * Returns a graphical representation of the specified tree. This representation can be printed
+     * to the {@linkplain System#out standard output stream} (for example) if it uses a monospaced
+     * font and supports unicode.
      *
-     * @param  node The root node of the tree to format.
+     * <p>This method should not be defined here, since this class is about optional dependencies.
+     * It should be defined in {@link org.geotools.gui.swing.tree.Trees} instead. However we put it
+     * here (for now) because it is used in some module that don't want to depend on widgets.
+     *
+     * @param node The root node of the tree to format.
      * @return A string representation of the tree, or {@code null} if it doesn't contain any node.
      */
     public static String toString(final TreeNode node) {
@@ -286,12 +276,11 @@ public final class OptionalDependencies {
     }
 
     /**
-     * Display the given tree in a Swing frame. This is a convenience
-     * method for debugging purpose only.
+     * Display the given tree in a Swing frame. This is a convenience method for debugging purpose
+     * only.
      *
      * @param tree The tree to display in a Swing frame.
      * @param title The frame title, or {@code null} if none.
-     *
      * @since 2.5
      */
     public static void show(final TreeNode node, final String title) {
@@ -299,12 +288,11 @@ public final class OptionalDependencies {
     }
 
     /**
-     * Display the given tree in a Swing frame. This is a convenience
-     * method for debugging purpose only.
+     * Display the given tree in a Swing frame. This is a convenience method for debugging purpose
+     * only.
      *
      * @param tree The tree to display in a Swing frame.
      * @param title The frame title, or {@code null} if none.
-     *
      * @since 2.5
      */
     public static void show(final TreeModel tree, final String title) {

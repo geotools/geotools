@@ -18,9 +18,7 @@ package org.geotools.styling.css.selector;
 
 public class Accept extends Selector {
 
-    Accept() {
-
-    }
+    Accept() {}
 
     @Override
     public String toString() {
@@ -35,5 +33,4 @@ public class Accept extends Selector {
     public Object accept(SelectorVisitor visitor) {
         return visitor.visit(this);
     }
-
 }

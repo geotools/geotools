@@ -16,10 +16,6 @@
  */
 package org.geotools.sld.bindings;
 
-import org.opengis.util.InternationalString;
-import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.styling.NamedLayer;
@@ -28,13 +24,15 @@ import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.xml.*;
-
+import org.opengis.util.InternationalString;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:StyledLayerDescriptor.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="StyledLayerDescriptor"&gt;
  *      &lt;xsd:annotation&gt;
@@ -58,12 +56,8 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDStyledLayerDescriptorBinding extends AbstractComplexBinding {
@@ -73,14 +67,13 @@ public class SLDStyledLayerDescriptorBinding extends AbstractComplexBinding {
         this.styleFactory = styleFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.STYLEDLAYERDESCRIPTOR;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -91,6 +84,7 @@ public class SLDStyledLayerDescriptorBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -101,47 +95,45 @@ public class SLDStyledLayerDescriptorBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
-        //&lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
         if (node.hasChild("Name")) {
             sld.setName((String) node.getChildValue("Name"));
         }
 
-        //&lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
         if (node.hasChild("Title")) {
-            InternationalString intString = (InternationalString) node
-                    .getChildValue("Title");
+            InternationalString intString = (InternationalString) node.getChildValue("Title");
             sld.setTitle(intString.toString());
         }
 
-        //&lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
         if (node.hasChild("Abstract")) {
-            InternationalString intString = (InternationalString) node
-                    .getChildValue("Abstract");
+            InternationalString intString = (InternationalString) node.getChildValue("Abstract");
             sld.setAbstract(intString.toString());
         }
 
-        //&lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
+        // &lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
         //     &lt;xsd:element ref="sld:NamedLayer"/&gt;
         //     &lt;xsd:element ref="sld:UserLayer"/&gt;
-        //&lt;/xsd:choice&gt;
+        // &lt;/xsd:choice&gt;
         StyledLayer[] layers = null;
 
         if (node.hasChild(NamedLayer.class)) {
@@ -154,8 +146,8 @@ public class SLDStyledLayerDescriptorBinding extends AbstractComplexBinding {
 
         sld.setStyledLayers(layers);
 
-        //&lt;xsd:attribute name="version" type="xsd:string" use="required" fixed="1.0.0"/&gt;
-        //TODO: no version?
+        // &lt;xsd:attribute name="version" type="xsd:string" use="required" fixed="1.0.0"/&gt;
+        // TODO: no version?
         return sld;
     }
 }

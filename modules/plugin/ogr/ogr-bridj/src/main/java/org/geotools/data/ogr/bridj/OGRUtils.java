@@ -16,16 +16,14 @@
  */
 package org.geotools.data.ogr.bridj;
 
-import static org.geotools.data.ogr.bridj.OgrLibrary.*;
 import static org.geotools.data.ogr.bridj.CplErrorLibrary.*;
-
-import java.io.IOException;
+import static org.geotools.data.ogr.bridj.OgrLibrary.*;
 
 import org.bridj.Pointer;
 
 /**
  * Common utilities to deal with OGR pointers
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 @SuppressWarnings("rawtypes")
@@ -33,7 +31,7 @@ class OGRUtils {
 
     private static boolean HAS_L_GETNAME;
 
-	public static void releaseDataSource(Pointer dataSet) {
+    public static void releaseDataSource(Pointer dataSet) {
         if (dataSet != null) {
             OGRReleaseDataSource(dataSet);
             dataSet.release();
@@ -45,7 +43,6 @@ class OGRUtils {
             // OGR_L_Dereference(layer);
             layer.release();
         }
-
     }
 
     public static void releaseDefinition(Pointer definition) {
@@ -61,33 +58,34 @@ class OGRUtils {
             spatialReference.release();
         }
     }
-    
+
     public static String getCString(Pointer<Byte> ptr) {
-        if(ptr == null) {
+        if (ptr == null) {
             return null;
         } else {
             return ptr.getCString();
         }
     }
-    
+
     /**
      * Gets a layer name in a version independent way
+     *
      * @param layer
      */
     public static String getLayerName(Pointer layer) {
-    	Pointer<Byte> namePtr = null;
-    	try {
-    		// this one is more efficient but has been added recently
-    		if(HAS_L_GETNAME) {
-    			namePtr = OGR_L_GetName(layer);
-    		}
-    	} catch(Exception e) {
-    		HAS_L_GETNAME = false;
-    	}
-    	if(namePtr == null) {
-	    	Pointer layerDefinition = OGR_L_GetLayerDefn(layer);
-			namePtr = OGR_FD_GetName(layerDefinition);
-    	}
-		return getCString(namePtr);
+        Pointer<Byte> namePtr = null;
+        try {
+            // this one is more efficient but has been added recently
+            if (HAS_L_GETNAME) {
+                namePtr = OGR_L_GetName(layer);
+            }
+        } catch (Exception e) {
+            HAS_L_GETNAME = false;
+        }
+        if (namePtr == null) {
+            Pointer layerDefinition = OGR_L_GetLayerDefn(layer);
+            namePtr = OGR_FD_GetName(layerDefinition);
+        }
+        return getCString(namePtr);
     }
 }

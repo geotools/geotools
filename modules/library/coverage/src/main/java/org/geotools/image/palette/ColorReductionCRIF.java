@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,24 +19,17 @@ package org.geotools.image.palette;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
-
 import javax.media.jai.CRIFImpl;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ColorReductionCRIF extends CRIFImpl {
 
-	public RenderedImage create(ParameterBlock pb, RenderingHints hints) {
-		final RenderedImage image = (RenderedImage) pb.getSource(0);
-		final int numColors = pb.getIntParameter(0);
-		final int alpaThreshold = pb.getIntParameter(1);
-		final int subsx = pb.getIntParameter(2);
-		final int subsy = pb.getIntParameter(3);
-		return new ColorReduction(image, hints, numColors, alpaThreshold,
-				subsx, subsy);
-	}
-
+    public RenderedImage create(ParameterBlock pb, RenderingHints hints) {
+        final RenderedImage image = (RenderedImage) pb.getSource(0);
+        final int numColors = pb.getIntParameter(0);
+        final int alpaThreshold = pb.getIntParameter(1);
+        final int subsx = pb.getIntParameter(2);
+        final int subsy = pb.getIntParameter(3);
+        return new ColorReduction(image, hints, numColors, alpaThreshold, subsx, subsy);
+    }
 }

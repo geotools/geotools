@@ -1,14 +1,12 @@
 /**
- * <copyright>
- * </copyright>
+ * <copyright> </copyright>
  *
- * $Id$
+ * <p>$Id$
  */
 package org.geotools.data.efeature.internal;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.geotools.data.efeature.EFeatureAttribute;
 import org.geotools.data.efeature.EFeatureAttributeInfo;
@@ -21,37 +19,34 @@ import org.opengis.filter.identity.Identifier;
 
 /**
  * An abstract implementation of the model data type {@link EFeatureAttribute}.
- * 
- * @author kengu, 22. apr. 2011
  *
+ * @author kengu, 22. apr. 2011
  * @source $URL$
  */
-public class EFeatureAttributeDelegate<V> extends
-        EFeaturePropertyDelegate<V, Attribute, EAttribute> implements EFeatureAttribute<V> {
-    
-    /**
-     * Cached value when detached
-     */
-    protected V eValue;
-    
+public class EFeatureAttributeDelegate<V> extends EFeaturePropertyDelegate<V, Attribute, EAttribute>
+        implements EFeatureAttribute<V> {
 
-    // ----------------------------------------------------- 
+    /** Cached value when detached */
+    protected V eValue;
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
 
-
     /**
      * Default constructor.
+     *
      * <p>
-     * @param eInternal - 
-     * @param eName - 
+     *
+     * @param eInternal -
+     * @param eName -
      * @param valueType - {@link #getValue() property value} type.
      */
     public EFeatureAttributeDelegate(EFeatureInternal eInternal, String eName, Class<V> valueType) {
         super(eInternal, eName, Attribute.class, valueType);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  EFeaturePropertyDelegate implementation
     // -----------------------------------------------------
 
@@ -86,15 +81,13 @@ public class EFeatureAttributeDelegate<V> extends
         return eValueType.cast(eData.getValue());
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Attribute delegate implementation
     // -----------------------------------------------------
 
     private class AttributeDelegate implements Attribute {
 
-        /**
-         * Cached User data
-         */
+        /** Cached User data */
         private Map<Object, Object> userData;
 
         @Override
@@ -150,7 +143,5 @@ public class EFeatureAttributeDelegate<V> extends
         public void validate() throws IllegalArgumentException {
             EFeatureAttributeDelegate.this.validate(getValue());
         }
-
     }
-
 } // EFeatureAttributeDelegate

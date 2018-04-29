@@ -17,27 +17,23 @@
 package org.geotools.data.shapefile.index;
 
 /**
- * This exception is thrown when we are asked to use a filter that does not
- * contain a geometry literal (or anything else we can guess a bounds for).
- * 
+ * This exception is thrown when we are asked to use a filter that does not contain a geometry
+ * literal (or anything else we can guess a bounds for).
+ *
  * @author Tommaso Nolli
- *
- *
  * @source $URL$
  */
 public class UnsupportedFilterException extends Exception {
     private static final long serialVersionUID = 3292904738782996000L;
 
-    /**
-     * 
-     */
+    /** */
     public UnsupportedFilterException() {
         super();
     }
 
     /**
      * Filter is not supported.
-     * 
+     *
      * @param message
      */
     public UnsupportedFilterException(String message) {
@@ -46,7 +42,7 @@ public class UnsupportedFilterException extends Exception {
 
     /**
      * Filter is not supported.
-     * 
+     *
      * @param message
      * @param cause
      */
@@ -56,7 +52,7 @@ public class UnsupportedFilterException extends Exception {
 
     /**
      * Filter is not supported.
-     * 
+     *
      * @param cause
      */
     public UnsupportedFilterException(Throwable cause) {

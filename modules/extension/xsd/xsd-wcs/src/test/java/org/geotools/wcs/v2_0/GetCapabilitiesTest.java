@@ -3,9 +3,7 @@ package org.geotools.wcs.v2_0;
 import static org.junit.Assert.*;
 
 import java.util.List;
-
 import net.opengis.wcs20.GetCapabilitiesType;
-
 import org.geotools.xml.Parser;
 import org.junit.Test;
 
@@ -16,8 +14,8 @@ public class GetCapabilitiesTest {
     @Test
     public void testParseCapabilitiesRequest() throws Exception {
         String capRequestPath = "requestGetCapabilities.xml";
-        GetCapabilitiesType caps = (GetCapabilitiesType) parser.parse(getClass()
-                .getResourceAsStream(capRequestPath));
+        GetCapabilitiesType caps =
+                (GetCapabilitiesType) parser.parse(getClass().getResourceAsStream(capRequestPath));
         assertEquals("WCS", caps.getService());
 
         List versions = caps.getAcceptVersions().getVersion();
@@ -28,10 +26,9 @@ public class GetCapabilitiesTest {
         List sections = caps.getSections().getSection();
         assertEquals(1, sections.size());
         assertEquals("OperationsMetadata", sections.get(0));
-        
+
         List formats = caps.getAcceptFormats().getOutputFormat();
         assertEquals(1, formats.size());
         assertEquals("application/xml", formats.get(0));
     }
-
 }

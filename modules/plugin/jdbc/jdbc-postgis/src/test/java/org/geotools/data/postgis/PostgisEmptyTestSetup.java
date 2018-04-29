@@ -19,16 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisEmptyTestSetup extends JDBCEmptyTestSetup {
 
     public PostgisEmptyTestSetup(JDBCTestSetup delegate) {
         super(delegate);
-        
     }
 
     @Override
@@ -42,5 +37,4 @@ public class PostgisEmptyTestSetup extends JDBCEmptyTestSetup {
         runSafe("DELETE GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'empty'");
         runSafe("DROP TABLE \"empty\"");
     }
-
 }

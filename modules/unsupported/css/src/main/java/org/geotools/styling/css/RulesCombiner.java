@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
@@ -46,8 +45,8 @@ class RulesCombiner {
         // apply cascading on properties
         Map<PseudoClass, Map<String, Property>> properties = new LinkedHashMap<>();
         for (CssRule cssRule : rules) {
-            for (Map.Entry<PseudoClass, List<Property>> entry : cssRule.getProperties()
-                    .entrySet()) {
+            for (Map.Entry<PseudoClass, List<Property>> entry :
+                    cssRule.getProperties().entrySet()) {
                 PseudoClass ps = entry.getKey();
                 Map<String, Property> psProperties = properties.get(ps);
                 if (psProperties == null) {
@@ -61,8 +60,8 @@ class RulesCombiner {
                     // we also have to fill values for the pseudo classes owned by this one
                     for (PseudoClass containedClass : properties.keySet()) {
                         if (ps.contains(containedClass)) {
-                            Map<String, Property> containedProperties = properties
-                                    .get(containedClass);
+                            Map<String, Property> containedProperties =
+                                    properties.get(containedClass);
                             for (Property p : entry.getValue()) {
                                 containedProperties.put(p.getName(), p);
                             }
@@ -119,5 +118,4 @@ class RulesCombiner {
         this.lastCombinedSelector = s;
         return s;
     }
-
 }

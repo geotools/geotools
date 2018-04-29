@@ -21,84 +21,79 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
-
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.TiledImage;
-
 import junit.framework.Assert;
-
 import org.geotools.image.ImageWorker;
 import org.junit.Test;
 
 /**
  * Testing custom code for color reduction.
- * 
- * @author Simone Giannecchini, GeoSolutions SAS
  *
+ * @author Simone Giannecchini, GeoSolutions SAS
  */
 public class CustomPaletteBuilderTest extends Assert {
- 
+
     @Test
     public void test2BandsBug() {
         // build a transparent image
-        BufferedImage image = new BufferedImage(256,256,BufferedImage.TYPE_BYTE_GRAY);
-        image=new ImageWorker(image).addBand(image, true, true, null).getBufferedImage();
-        
-        
+        BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
+        image = new ImageWorker(image).addBand(image, true, true, null).getBufferedImage();
+
         // create a palette out of it
-        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 2,2, 1);
+        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 2, 2, 1);
         builder.buildPalette();
         RenderedImage indexed = builder.getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        
+
         // png encoder go mad if they get a one element palette, we need at least two
         assertEquals(2, icm.getMapSize());
     }
-    
-	@Test
+
+    @Test
     public void testOneColorBug() {
         // build a transparent image
-        BufferedImage image = new BufferedImage(256, 256,
-                BufferedImage.TYPE_4BYTE_ABGR);
-        
+        BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_4BYTE_ABGR);
+
         // create a palette out of it
-        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 2,2, 1);
+        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 2, 2, 1);
         builder.buildPalette();
         RenderedImage indexed = builder.getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        
+
         // png encoder go mad if they get a one element palette, we need at least two
         assertEquals(2, icm.getMapSize());
     }
-	
-	@Test
-	public void testGrayColor() {
-		BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
-		Graphics g = image.getGraphics();
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, 20, 20);
-		g.setColor(new Color(20, 20, 20)); // A dark gray
-		g.fillRect(20, 20, 20, 20);
-		g.setColor(new Color(200, 200, 200)); // A light gray
-		g.fillRect(0, 20, 20, 20);
-		g.dispose();
-		CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1, 1, 1);
-        RenderedImage indexed =  builder.buildPalette().getIndexedImage();
+
+    @Test
+    public void testGrayColor() {
+        BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
+        Graphics g = image.getGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 20, 20);
+        g.setColor(new Color(20, 20, 20)); // A dark gray
+        g.fillRect(20, 20, 20, 20);
+        g.setColor(new Color(200, 200, 200)); // A light gray
+        g.fillRect(0, 20, 20, 20);
+        g.dispose();
+        CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1, 1, 1);
+        RenderedImage indexed = builder.buildPalette().getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        assertEquals(4, icm.getMapSize()); //Black background, white fill, light gray fill, dark gray fill = 4 colors
-		
-	}
-	
-	@Test
+        assertEquals(
+                4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
+        // fill = 4 colors
+    }
+
+    @Test
     public void testTranslatedImageTileGrid() {
-	BufferedImage image_ = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage image_ = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
         Graphics g = image_.createGraphics();
         g.setColor(Color.WHITE);
         g.fillRect(236, 236, 20, 20);
@@ -107,37 +102,38 @@ public class CustomPaletteBuilderTest extends Assert {
         g.setColor(new Color(200, 200, 200)); // A light gray
         g.fillRect(216, 236, 20, 20);
         g.dispose();
-        
-        
-        TiledImage image=new TiledImage(
-                0, 
-                0, 
-                256, 
-                256, 
-                128, 
-                128, 
-                image_.getColorModel().createCompatibleSampleModel(256, 256), 
-                image_.getColorModel());
+
+        TiledImage image =
+                new TiledImage(
+                        0,
+                        0,
+                        256,
+                        256,
+                        128,
+                        128,
+                        image_.getColorModel().createCompatibleSampleModel(256, 256),
+                        image_.getColorModel());
         image.set(image_);
-        
+
         CustomPaletteBuilder builder = new CustomPaletteBuilder(image, 256, 1, 1, 1);
-        RenderedImage indexed =  builder.buildPalette().getIndexedImage();
+        RenderedImage indexed = builder.buildPalette().getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        assertEquals(4, icm.getMapSize()); //Black background, white fill, light gray fill, dark gray fill = 4 colors
-        
+        assertEquals(
+                4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
+        // fill = 4 colors
+
         // check image not black
         ImageWorker iw = new ImageWorker(indexed).forceComponentColorModel().intensity();
         double[] mins = iw.getMinimums();
         double[] maxs = iw.getMaximums();
-        boolean result=true;
-        for(int i=0;i<mins.length;i++){
-        	result=mins[i]==maxs[i]?false:result;
+        boolean result = true;
+        for (int i = 0; i < mins.length; i++) {
+            result = mins[i] == maxs[i] ? false : result;
         }
         assertTrue(result);
-        
     }
-	
+
     @Test
     public void testTranslatedImage() {
         BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_BYTE_GRAY);
@@ -154,7 +150,9 @@ public class CustomPaletteBuilderTest extends Assert {
         RenderedImage indexed = builder.buildPalette().getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        assertEquals(4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray fill = 4 colors
+        assertEquals(
+                4, icm.getMapSize()); // Black background, white fill, light gray fill, dark gray
+        // fill = 4 colors
 
         // check image not black
         ImageWorker iw = new ImageWorker(indexed).forceComponentColorModel().intensity();
@@ -165,15 +163,12 @@ public class CustomPaletteBuilderTest extends Assert {
             result = mins[i] == maxs[i] ? false : result;
         }
         assertTrue(result);
-
     }
-	
-    
+
     @Test
     public void testFourColor() {
         // build a transparent image
-        BufferedImage image = new BufferedImage(256, 256,
-                BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics g = image.getGraphics();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, 10, 10);
@@ -184,7 +179,7 @@ public class CustomPaletteBuilderTest extends Assert {
         g.setColor(Color.GREEN);
         g.fillRect(30, 0, 10, 10);
         g.dispose();
-        
+
         //
         // create a palette out of it
         //
@@ -193,25 +188,33 @@ public class CustomPaletteBuilderTest extends Assert {
         RenderedImage indexed = builder.getIndexedImage();
         assertTrue(indexed.getColorModel() instanceof IndexColorModel);
         IndexColorModel icm = (IndexColorModel) indexed.getColorModel();
-        
+
         // make sure we have 4 colors + transparent one
         assertEquals(5, icm.getMapSize());
-        
+
         //
         // now use the JAI op
         //
-        assertNotNull((OperationDescriptor)
-	     JAI.getDefaultInstance().getOperationRegistry().
-             getDescriptor(OperationDescriptor.class, "org.geotools.ColorReduction"));
+        assertNotNull(
+                (OperationDescriptor)
+                        JAI.getDefaultInstance()
+                                .getOperationRegistry()
+                                .getDescriptor(
+                                        OperationDescriptor.class, "org.geotools.ColorReduction"));
         ParameterBlockJAI pbj = new ParameterBlockJAI("org.geotools.ColorReduction");
         // I will tile the image in 4 tiles and force parallelism here
         JAI.getDefaultInstance().getTileScheduler().setParallelism(4);
         pbj.addSource(
-        		new ImageWorker(image).
-        			setRenderingHint(JAI.KEY_IMAGE_LAYOUT, 
-        							 new ImageLayout(image).setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(64).setTileWidth(64)
-        		).tile().getRenderedImage()
-        );
+                new ImageWorker(image)
+                        .setRenderingHint(
+                                JAI.KEY_IMAGE_LAYOUT,
+                                new ImageLayout(image)
+                                        .setTileGridXOffset(0)
+                                        .setTileGridYOffset(0)
+                                        .setTileHeight(64)
+                                        .setTileWidth(64))
+                        .tile()
+                        .getRenderedImage());
         pbj.setParameter("numColors", 255);
         pbj.setParameter("alphaThreshold", 1);
         pbj.setParameter("subsampleX", 1);
@@ -223,38 +226,45 @@ public class CustomPaletteBuilderTest extends Assert {
         // check that we get the same results
         assertEquals(indexed.getColorModel(), icm);
         icm = (IndexColorModel) indexed.getColorModel();
-        
+
         // make sure we have 4 colors + transparent one
         assertEquals(5, icm.getMapSize());
         assertEquals(5, icm.getMapSize());
-        
-        
+
         //
         // now use the inversion of color
         //
-        assertNotNull((OperationDescriptor)
-       	     JAI.getDefaultInstance().getOperationRegistry().
-                    getDescriptor(OperationDescriptor.class, "org.geotools.ColorInversion"));
+        assertNotNull(
+                (OperationDescriptor)
+                        JAI.getDefaultInstance()
+                                .getOperationRegistry()
+                                .getDescriptor(
+                                        OperationDescriptor.class, "org.geotools.ColorInversion"));
         pbj = new ParameterBlockJAI("org.geotools.ColorInversion");
         pbj.addSource(
-        		new ImageWorker(image).
-        			setRenderingHint(JAI.KEY_IMAGE_LAYOUT, 
-        							 new ImageLayout(image).setTileGridXOffset(0).setTileGridYOffset(0).setTileHeight(64).setTileWidth(64)
-        		).tile().getRenderedImage()
-        );
+                new ImageWorker(image)
+                        .setRenderingHint(
+                                JAI.KEY_IMAGE_LAYOUT,
+                                new ImageLayout(image)
+                                        .setTileGridXOffset(0)
+                                        .setTileGridYOffset(0)
+                                        .setTileHeight(64)
+                                        .setTileWidth(64))
+                        .tile()
+                        .getRenderedImage());
         pbj.setParameter("quantizationColors", InverseColorMapRasterOp.DEFAULT_QUANTIZATION_COLORS);
         pbj.setParameter("alphaThreshold", 1);
         pbj.setParameter("IndexColorModel", icm);
         indexed = JAI.create("org.geotools.ColorInversion", pbj);
-        PlanarImage.wrapRenderedImage(indexed).getTiles();   
-        assertTrue(indexed.getColorModel() instanceof IndexColorModel);    
-        
+        PlanarImage.wrapRenderedImage(indexed).getTiles();
+        assertTrue(indexed.getColorModel() instanceof IndexColorModel);
+
         // check that we get the same results
         assertEquals(indexed.getColorModel(), icm);
         icm = (IndexColorModel) indexed.getColorModel();
-        
+
         // make sure we have 4 colors + transparent one
         assertEquals(5, icm.getMapSize());
-        assertEquals(5, icm.getMapSize());        
+        assertEquals(5, icm.getMapSize());
     }
 }

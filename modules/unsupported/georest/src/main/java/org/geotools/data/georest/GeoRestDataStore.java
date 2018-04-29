@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -31,23 +30,20 @@ import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
 
 /**
- * <p>
  * DataStore that connects to a GeoJson service URL. Requires the actual URL of the service and a
- * comma separated list of type-names (layers).<br/>
+ * comma separated list of type-names (layers).<br>
  * This DataStore should be able to connect to a rest-like service as defined in the following
  * projects:
+ *
  * <ul>
- * <li>Geomajas GeoJson plug-in</li>
- * <li>FeatureServer</li>
- * <li>MapFish server</li>
+ *   <li>Geomajas GeoJson plug-in
+ *   <li>FeatureServer
+ *   <li>MapFish server
  * </ul>
+ *
  * For a more detailed description, look up the projects documentation.
- * </p>
- * 
+ *
  * @author Pieter De Graef, Geosparc
- *
- *
- *
  * @source $URL$
  */
 public class GeoRestDataStore extends ContentDataStore {
@@ -76,9 +72,7 @@ public class GeoRestDataStore extends ContentDataStore {
         return new GeoRestFeatureSource(entry, null);
     }
 
-    /**
-     * @return Returns the base URL for the online GeoJson rest service.
-     */
+    /** @return Returns the base URL for the online GeoJson rest service. */
     protected URL getUrl() {
         return url;
     }

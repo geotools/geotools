@@ -17,10 +17,8 @@
 package org.geotools.coverageio.gdal.jp2kak;
 
 import it.geosolutions.imageio.plugins.jp2kakadu.JP2GDALKakaduImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -29,24 +27,18 @@ import org.opengis.geometry.MismatchedDimensionException;
 
 /**
  * An implementation of {@link Format} for the JP2K format.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public final class JP2KFormat extends BaseGDALGridFormat implements Format {
-    /**
-     * Logger.
-     */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.coverageio.gdal.jp2k");
+    /** Logger. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.jp2k");
 
-    /**
-     * Creates an instance and sets the metadata.
-     */
+    /** Creates an instance and sets the metadata. */
     public JP2KFormat() {
         super(new JP2GDALKakaduImageReaderSpi());
 
@@ -59,16 +51,12 @@ public final class JP2KFormat extends BaseGDALGridFormat implements Format {
 
     private static InfoWrapper INFO = new InfoWrapper("JP2K (Kakadu) Coverage Format", "JP2KAK");
 
-    /**
-     * Sets the metadata information.
-     */
+    /** Sets the metadata information. */
     protected void setInfo() {
         setInfo(INFO);
     }
 
-    /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints)
-     */
+    /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
     public JP2KReader getReader(Object source, Hints hints) {
         try {
             return new JP2KReader(source, hints);

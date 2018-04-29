@@ -34,9 +34,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -47,7 +44,7 @@ public class DefaultFeatureBuilderTest {
         DefaultGridFeatureBuilder setter = new DefaultGridFeatureBuilder();
         assertSetter(setter, DefaultGridFeatureBuilder.DEFAULT_TYPE_NAME, null);
     }
-    
+
     @Test
     public void crsConstructor() {
         CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
@@ -76,7 +73,8 @@ public class DefaultFeatureBuilderTest {
         // empty
     }
 
-    private void assertSetter(DefaultGridFeatureBuilder setter, String typeName, CoordinateReferenceSystem crs) {
+    private void assertSetter(
+            DefaultGridFeatureBuilder setter, String typeName, CoordinateReferenceSystem crs) {
         SimpleFeatureType type = setter.getType();
         assertEquals(2, type.getAttributeCount());
         assertNotNull(type.getDescriptor(GridFeatureBuilder.DEFAULT_GEOMETRY_ATTRIBUTE_NAME));
@@ -89,5 +87,4 @@ public class DefaultFeatureBuilderTest {
             assertTrue(CRS.equalsIgnoreMetadata(crs, type.getCoordinateReferenceSystem()));
         }
     }
-
 }

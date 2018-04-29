@@ -23,9 +23,7 @@ import static org.junit.Assert.assertTrue;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 
-/**
- * Tests the MapBox Decision expressions.
- */
+/** Tests the MapBox Decision expressions. */
 public class MBDecisionTest extends AbstractMBExpressionTest {
 
     @Override
@@ -39,11 +37,11 @@ public class MBDecisionTest extends AbstractMBExpressionTest {
     }
 
     /**
-     * Helper method to create a MBDecision object from a JSON text field and evaluate the Expression.
+     * Helper method to create a MBDecision object from a JSON text field and evaluate the
+     * Expression.
      *
      * @param json JSONObject to parse.
      * @param jsonTextField Name of the text field to retrieve.
-     *
      * @return The Boolean value of the MBDecision evaluation.
      */
     private Boolean getExpressionEvaluationAsBoolean(JSONObject json, String jsonTextField) {

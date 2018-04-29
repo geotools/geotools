@@ -21,9 +21,7 @@ import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-/**
- * A class to process glyphs.
- */
+/** A class to process glyphs. */
 abstract class GlyphProcessor {
 
     LabelPainter painter;
@@ -36,6 +34,7 @@ abstract class GlyphProcessor {
 
     /**
      * Process a glyph
+     *
      * @param glyphVector the GlyphVector containing the glyph to process
      * @param g index of the glyph in the GlyphVector
      * @param tx affineTransform to use
@@ -44,10 +43,7 @@ abstract class GlyphProcessor {
      */
     public abstract boolean process(GlyphVector glyphVector, int g, AffineTransform tx, char c);
 
-
-    /**
-     * Processor used to paint the bounds a glyph
-     */
+    /** Processor used to paint the bounds a glyph */
     public static class BoundsPainter extends GlyphProcessor {
 
         public BoundsPainter(LabelPainter painter) {
@@ -55,19 +51,14 @@ abstract class GlyphProcessor {
         }
 
         public boolean process(GlyphVector glyphVector, int g, AffineTransform tx, char c) {
-            if (Character.isWhitespace(c))
-                return false;
-            painter.graphics.draw(tx
-                    .createTransformedShape(glyphVector.getGlyphOutline(g))
-                    .getBounds2D());
+            if (Character.isWhitespace(c)) return false;
+            painter.graphics.draw(
+                    tx.createTransformedShape(glyphVector.getGlyphOutline(g)).getBounds2D());
             return true;
         }
     }
 
-    /**
-     * Processor used to detect if a glyph has conflict with an other element
-     * of the index.
-     */
+    /** Processor used to detect if a glyph has conflict with an other element of the index. */
     public static class ConflictDetector extends GlyphProcessor {
 
         Rectangle displayArea;
@@ -76,38 +67,40 @@ abstract class GlyphProcessor {
         int extraSpace;
         double minDistance;
 
-        public ConflictDetector(LabelPainter painter, Rectangle displayArea,
-                                 LabelIndex paintedBounds, LabelIndex groupLabels) {
+        public ConflictDetector(
+                LabelPainter painter,
+                Rectangle displayArea,
+                LabelIndex paintedBounds,
+                LabelIndex groupLabels) {
             super(painter);
             this.displayArea = displayArea;
             this.paintedBounds = paintedBounds;
             this.groupLabels = groupLabels;
             int space = labelItem.getSpaceAround();
-            int haloRadius = Math.round(labelItem.getTextStyle().getHaloFill() != null ? labelItem
-                    .getTextStyle().getHaloRadius() : 0);
+            int haloRadius =
+                    Math.round(
+                            labelItem.getTextStyle().getHaloFill() != null
+                                    ? labelItem.getTextStyle().getHaloRadius()
+                                    : 0);
             extraSpace = space + haloRadius;
             minDistance = labelItem.getMinGroupDistance();
         }
 
         public boolean process(GlyphVector glyphVector, int g, AffineTransform tx, char c) {
-            Rectangle2D labelEnvelope = tx
-                    .createTransformedShape(glyphVector.getGlyphLogicalBounds(g)).getBounds2D();
+            Rectangle2D labelEnvelope =
+                    tx.createTransformedShape(glyphVector.getGlyphLogicalBounds(g)).getBounds2D();
             // try to paint the label, the condition under which this happens are complex
             // white space character does not conflict with other labels
-            if (Character.isWhitespace(c))
-                return false;
-            else if ((displayArea.contains(labelEnvelope) || labelItem.isPartialsEnabled()) &&
-                    !(labelItem.isConflictResolutionEnabled() && paintedBounds.labelsWithinDistance(labelEnvelope, extraSpace)) &&
-                    !groupLabels.labelsWithinDistance(labelEnvelope, minDistance))
-                return false;
-            else
-                return true; // collision = true
+            if (Character.isWhitespace(c)) return false;
+            else if ((displayArea.contains(labelEnvelope) || labelItem.isPartialsEnabled())
+                    && !(labelItem.isConflictResolutionEnabled()
+                            && paintedBounds.labelsWithinDistance(labelEnvelope, extraSpace))
+                    && !groupLabels.labelsWithinDistance(labelEnvelope, minDistance)) return false;
+            else return true; // collision = true
         }
     }
 
-    /**
-     * Processor used to add a glyph in an index.
-     */
+    /** Processor used to add a glyph in an index. */
     public static class IndexAdder extends GlyphProcessor {
 
         LabelIndex index;
@@ -118,11 +111,9 @@ abstract class GlyphProcessor {
         }
 
         public boolean process(GlyphVector glyphVector, int g, AffineTransform tx, char c) {
-            if (Character.isWhitespace(c))
-                return false;
-            Rectangle2D labelEnvelope = tx
-                    .createTransformedShape(glyphVector.getGlyphOutline(g))
-                    .getBounds2D();
+            if (Character.isWhitespace(c)) return false;
+            Rectangle2D labelEnvelope =
+                    tx.createTransformedShape(glyphVector.getGlyphOutline(g)).getBounds2D();
             index.addLabel(labelItem, labelEnvelope);
             return true;
         }

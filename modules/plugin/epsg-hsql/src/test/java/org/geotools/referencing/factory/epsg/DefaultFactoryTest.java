@@ -36,9 +36,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
-
 import javax.measure.Unit;
-
 import org.geotools.TestData;
 import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
@@ -82,42 +80,30 @@ import org.opengis.referencing.operation.Projection;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.referencing.operation.Transformation;
 
-
 /**
- * Tests transformations from CRS and/or operations created from the EPSG factory, using
- * the default plugin. If the MS-Access database is installed and the {@code epsg-access}
- * plugin is in the classpath, then the default plugin will be the factory backed by the
- * MS-Access database. Otherwise, the default will probably be the one backed by the HSQL
- * database, since this test live in the {@code epsg-hsql} module.
- *
- *
+ * Tests transformations from CRS and/or operations created from the EPSG factory, using the default
+ * plugin. If the MS-Access database is installed and the {@code epsg-access} plugin is in the
+ * classpath, then the default plugin will be the factory backed by the MS-Access database.
+ * Otherwise, the default will probably be the one backed by the HSQL database, since this test live
+ * in the {@code epsg-hsql} module.
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Vadim Semenov
- *
  * @todo Rename as {@code ThreadedEpsgFactoryTest}.
  */
 public class DefaultFactoryTest {
-    /**
-     * Set to {@code true} for verbose tests.
-     */
+    /** Set to {@code true} for verbose tests. */
     private static boolean verbose = false;
 
-    /**
-     * Set to {@code true} for more extensive tests.
-     */
+    /** Set to {@code true} for more extensive tests. */
     private static boolean extensive = false;
 
-    /**
-     * Small value for parameter value comparaisons.
-     */
+    /** Small value for parameter value comparaisons. */
     private static final double EPS = 1E-6;
 
-    /**
-     * The EPSG factory to test. Will be setup only when first needed.
-     */
+    /** The EPSG factory to test. Will be setup only when first needed. */
     private ThreadedEpsgFactory factory;
 
     /**
@@ -128,8 +114,13 @@ public class DefaultFactoryTest {
     @Before
     public void setUp() throws Exception {
         if (factory == null) {
-            factory = (ThreadedEpsgFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG",
-                        new Hints(Hints.CRS_AUTHORITY_FACTORY, ThreadedEpsgFactory.class));
+            factory =
+                    (ThreadedEpsgFactory)
+                            ReferencingFactoryFinder.getCRSAuthorityFactory(
+                                    "EPSG",
+                                    new Hints(
+                                            Hints.CRS_AUTHORITY_FACTORY,
+                                            ThreadedEpsgFactory.class));
             extensive |= TestData.isExtensiveTest();
             if (verbose) {
                 System.out.print("Database version: ");
@@ -142,8 +133,8 @@ public class DefaultFactoryTest {
     }
 
     /**
-     * Make sure that the factory extracted from the registry in the {@link #setUp} method
-     * is a singleton. It may not be the case when there is a bug in {@code FactoryRegistry}.
+     * Make sure that the factory extracted from the registry in the {@link #setUp} method is a
+     * singleton. It may not be the case when there is a bug in {@code FactoryRegistry}.
      */
     @Test
     public void testRegistry() {
@@ -153,9 +144,7 @@ public class DefaultFactoryTest {
         }
     }
 
-    /**
-     * Returns the first identifier for the specified object.
-     */
+    /** Returns the first identifier for the specified object. */
     private static String getIdentifier(final IdentifiedObject object) {
         return object.getIdentifiers().iterator().next().getCode();
     }
@@ -167,7 +156,8 @@ public class DefaultFactoryTest {
      */
     @Test
     public void testCreation() throws FactoryException {
-        final CoordinateOperationFactory opf = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        final CoordinateOperationFactory opf =
+                ReferencingFactoryFinder.getCoordinateOperationFactory(null);
         CoordinateReferenceSystem sourceCRS, targetCRS;
         CoordinateOperation operation;
         ParameterValueGroup parameters;
@@ -187,22 +177,22 @@ public class DefaultFactoryTest {
         assertTrue(sourceCRS instanceof ProjectedCRS);
         assertEquals(2, sourceCRS.getCoordinateSystem().getDimension());
         parameters = ((ProjectedCRS) sourceCRS).getConversionFromBase().getParameterValues();
-        assertEquals(   -93, parameters.parameter("central_meridian"  ).doubleValue(), EPS);
-        assertEquals(     0, parameters.parameter("latitude_of_origin").doubleValue(), EPS);
-        assertEquals(0.9996, parameters.parameter("scale_factor"      ).doubleValue(), EPS);
-        assertEquals(500000, parameters.parameter("false_easting"     ).doubleValue(), EPS);
-        assertEquals(     0, parameters.parameter("false_northing"    ).doubleValue(), EPS);
+        assertEquals(-93, parameters.parameter("central_meridian").doubleValue(), EPS);
+        assertEquals(0, parameters.parameter("latitude_of_origin").doubleValue(), EPS);
+        assertEquals(0.9996, parameters.parameter("scale_factor").doubleValue(), EPS);
+        assertEquals(500000, parameters.parameter("false_easting").doubleValue(), EPS);
+        assertEquals(0, parameters.parameter("false_northing").doubleValue(), EPS);
 
         sourceCRS = factory.createCoordinateReferenceSystem(" EPSG : 2442 ");
         assertEquals("2442", getIdentifier(sourceCRS));
         assertTrue(sourceCRS instanceof ProjectedCRS);
         assertEquals(2, sourceCRS.getCoordinateSystem().getDimension());
         parameters = ((ProjectedCRS) sourceCRS).getConversionFromBase().getParameterValues();
-        assertEquals(   135, parameters.parameter("central_meridian"  ).doubleValue(), EPS);
-        assertEquals(     0, parameters.parameter("latitude_of_origin").doubleValue(), EPS);
-        assertEquals(     1, parameters.parameter("scale_factor"      ).doubleValue(), EPS);
-        assertEquals(500000, parameters.parameter("false_easting"     ).doubleValue(), EPS);
-        assertEquals(     0, parameters.parameter("false_northing"    ).doubleValue(), EPS);
+        assertEquals(135, parameters.parameter("central_meridian").doubleValue(), EPS);
+        assertEquals(0, parameters.parameter("latitude_of_origin").doubleValue(), EPS);
+        assertEquals(1, parameters.parameter("scale_factor").doubleValue(), EPS);
+        assertEquals(500000, parameters.parameter("false_easting").doubleValue(), EPS);
+        assertEquals(0, parameters.parameter("false_northing").doubleValue(), EPS);
 
         sourceCRS = factory.createCoordinateReferenceSystem("EPSG:4915");
         assertEquals("4915", getIdentifier(sourceCRS));
@@ -252,22 +242,23 @@ public class DefaultFactoryTest {
         sourceCRS = factory.createCoordinateReferenceSystem("EPSG:32661");
         targetCRS = factory.createCoordinateReferenceSystem("4326");
         operation = opf.createOperation(sourceCRS, targetCRS);
-        final MathTransform    transform = operation.getMathTransform();
-        final CoordinateSystem  sourceCS = sourceCRS.getCoordinateSystem();
+        final MathTransform transform = operation.getMathTransform();
+        final CoordinateSystem sourceCS = sourceCRS.getCoordinateSystem();
         final CoordinateSystemAxis axis0 = sourceCS.getAxis(0);
         final CoordinateSystemAxis axis1 = sourceCS.getAxis(1);
-        assertEquals("Northing",                axis0.getName().getCode());
-        assertEquals("Easting",                 axis1.getName().getCode());
-        assertEquals("South along 180 deg",     axis0.getDirection().name());
+        assertEquals("Northing", axis0.getName().getCode());
+        assertEquals("Easting", axis1.getName().getCode());
+        assertEquals("South along 180 deg", axis0.getDirection().name());
         assertEquals("South along 90 deg East", axis1.getDirection().name());
         assertFalse(transform.isIdentity());
         assertTrue(transform instanceof ConcatenatedTransform);
         ConcatenatedTransform ct = (ConcatenatedTransform) transform;
         // An affine transform for swapping axis should be
         // performed before and after the map projection.
-        final int mask = AffineTransform.TYPE_FLIP              |
-                         AffineTransform.TYPE_QUADRANT_ROTATION |
-                         AffineTransform.TYPE_UNIFORM_SCALE;
+        final int mask =
+                AffineTransform.TYPE_FLIP
+                        | AffineTransform.TYPE_QUADRANT_ROTATION
+                        | AffineTransform.TYPE_UNIFORM_SCALE;
         assertTrue(ct.transform1 instanceof AffineTransform);
         assertEquals(mask, ((AffineTransform) ct.transform1).getType());
         assertTrue(ct.transform2 instanceof ConcatenatedTransform);
@@ -278,14 +269,14 @@ public class DefaultFactoryTest {
     }
 
     /**
-     * Tests closing the factory after the timeout. <strong>IMPORTANT:</strong> This test must
-     * be run after {@link #testCreation} and before any call to {@code getAuthorityCodes()}.
+     * Tests closing the factory after the timeout. <strong>IMPORTANT:</strong> This test must be
+     * run after {@link #testCreation} and before any call to {@code getAuthorityCodes()}.
      *
      * @throws FactoryException if an error occured while querying the factory.
      */
     @Test
     public void testTimeout() throws FactoryException {
-        System.gc();              // If there is any object holding a connection to the EPSG
+        System.gc(); // If there is any object holding a connection to the EPSG
         System.runFinalization(); // database, running finalizers may help to close them.
         // Fetch this CRS first in order to prevent garbage collection.
         CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("4273");
@@ -310,13 +301,13 @@ public class DefaultFactoryTest {
         // Was not in the cache
         assertEquals("4275", getIdentifier(factory.createCoordinateReferenceSystem("4275")));
         assertTrue(factory.isConnected());
-        factory.setTimeout(30*60*1000L);
+        factory.setTimeout(30 * 60 * 1000L);
     }
 
     /**
-     * Tests the creation of CRS using name instead of primary keys. Note that this test
-     * contains a call to {@code getDescriptionText(...)}, and concequently must be run
-     * after {@link #testTimeout}. See {@link #testDescriptionText}.
+     * Tests the creation of CRS using name instead of primary keys. Note that this test contains a
+     * call to {@code getDescriptionText(...)}, and concequently must be run after {@link
+     * #testTimeout}. See {@link #testDescriptionText}.
      *
      * @throws FactoryException if an error occured while querying the factory.
      */
@@ -325,7 +316,7 @@ public class DefaultFactoryTest {
         /*
          * Tests unit
          */
-        assertSame   (factory.createUnit("9002"), factory.createUnit("foot"));
+        assertSame(factory.createUnit("9002"), factory.createUnit("foot"));
         assertNotSame(factory.createUnit("9001"), factory.createUnit("foot"));
         /*
          * Tests CRS
@@ -346,7 +337,7 @@ public class DefaultFactoryTest {
          */
         factory.dispose(); // Clear the cache. This is not a real disposal.
         assertEquals(primary, factory.createObject("27581"));
-        assertEquals(byName,  factory.createObject("NTF (Paris) / France I"));
+        assertEquals(byName, factory.createObject("NTF (Paris) / France I"));
         /*
          * Tests descriptions.
          */
@@ -354,8 +345,9 @@ public class DefaultFactoryTest {
         /*
          * Tests fetching an object with name containing semi-colon.
          */
-        final IdentifiedObject cs = factory.createCoordinateSystem(
-                "Ellipsoidal 2D CS. Axes: latitude, longitude. Orientations: north, east. UoM: DMS");
+        final IdentifiedObject cs =
+                factory.createCoordinateSystem(
+                        "Ellipsoidal 2D CS. Axes: latitude, longitude. Orientations: north, east. UoM: DMS");
         assertEquals("6411", getIdentifier(cs));
         /*
          * Tests with a unknown name. The exception should be NoSuchAuthorityCodeException
@@ -372,17 +364,22 @@ public class DefaultFactoryTest {
 
     /**
      * Tests the {@link AuthorityFactory#getDescriptionText} method. Note that the default
-     * implementation of {@code getDescriptionText(...)} invokes {@code getAuthorityCodes()},
-     * and concequently this test must be run after {@link #testTimeout}.
+     * implementation of {@code getDescriptionText(...)} invokes {@code getAuthorityCodes()}, and
+     * concequently this test must be run after {@link #testTimeout}.
      *
      * @throws FactoryException if an error occured while querying the factory.
      */
     @Test
     public void testDescriptionText() throws FactoryException {
-        assertEquals("World Geodetic System 1984", factory.getDescriptionText( "6326").toString(Locale.ENGLISH));
-        assertEquals("Mean Sea Level",             factory.getDescriptionText( "5100").toString(Locale.ENGLISH));
-        assertEquals("NTF (Paris) / Nord France",  factory.getDescriptionText("27591").toString(Locale.ENGLISH));
-        assertEquals("Ellipsoidal height",         factory.getDescriptionText(   "84").toString(Locale.ENGLISH));
+        assertEquals(
+                "World Geodetic System 1984",
+                factory.getDescriptionText("6326").toString(Locale.ENGLISH));
+        assertEquals("Mean Sea Level", factory.getDescriptionText("5100").toString(Locale.ENGLISH));
+        assertEquals(
+                "NTF (Paris) / Nord France",
+                factory.getDescriptionText("27591").toString(Locale.ENGLISH));
+        assertEquals(
+                "Ellipsoidal height", factory.getDescriptionText("84").toString(Locale.ENGLISH));
     }
 
     /**
@@ -398,97 +395,98 @@ public class DefaultFactoryTest {
         assertTrue(crs.size() > 0); // Must be after the 'assertEquals' above.
 
         final Set<String> geographicCRS = factory.getAuthorityCodes(GeographicCRS.class);
-        assertTrue (geographicCRS instanceof AuthorityCodes);
+        assertTrue(geographicCRS instanceof AuthorityCodes);
         assertFalse(geographicCRS.isEmpty());
-        assertTrue (geographicCRS.size() > 0);
-        assertTrue (geographicCRS.size() < crs.size());
+        assertTrue(geographicCRS.size() > 0);
+        assertTrue(geographicCRS.size() < crs.size());
         assertFalse(geographicCRS.containsAll(crs));
-        assertTrue (crs.containsAll(geographicCRS));
+        assertTrue(crs.containsAll(geographicCRS));
 
         final Set<String> projectedCRS = factory.getAuthorityCodes(ProjectedCRS.class);
-        assertTrue (projectedCRS instanceof AuthorityCodes);
+        assertTrue(projectedCRS instanceof AuthorityCodes);
         assertFalse(projectedCRS.isEmpty());
-        assertTrue (projectedCRS.size() > 0);
-        assertTrue (projectedCRS.size() < crs.size());
+        assertTrue(projectedCRS.size() > 0);
+        assertTrue(projectedCRS.size() < crs.size());
         assertFalse(projectedCRS.containsAll(crs));
-        assertTrue (crs.containsAll(projectedCRS));
+        assertTrue(crs.containsAll(projectedCRS));
         assertTrue(Collections.disjoint(geographicCRS, projectedCRS));
 
         final Set<String> datum = factory.getAuthorityCodes(Datum.class);
-        assertTrue (datum instanceof AuthorityCodes);
+        assertTrue(datum instanceof AuthorityCodes);
         assertFalse(datum.isEmpty());
-        assertTrue (datum.size() > 0);
-        // starting with EPSG 7.9 the following is no more true, for example EPSG:5214 is at the same time
+        assertTrue(datum.size() > 0);
+        // starting with EPSG 7.9 the following is no more true, for example EPSG:5214 is at the
+        // same time
         // the Vertical CRS "Genoa height" and the Vertical Datum "IGN 1988 SM" (data gotten by
         // http://www.epsg-registry.org/ searching by code)
         // assertTrue(Collections.disjoint(datum, crs));
 
         final Set<String> geodeticDatum = factory.getAuthorityCodes(GeodeticDatum.class);
-        assertTrue (geodeticDatum instanceof AuthorityCodes);
+        assertTrue(geodeticDatum instanceof AuthorityCodes);
         assertFalse(geodeticDatum.isEmpty());
-        assertTrue (geodeticDatum.size() > 0);
+        assertTrue(geodeticDatum.size() > 0);
         assertFalse(geodeticDatum.containsAll(datum));
-        assertTrue (datum.containsAll(geodeticDatum));
+        assertTrue(datum.containsAll(geodeticDatum));
 
         // Ensures that the factory keept the set in its cache.
-        assertSame(crs,           factory.getAuthorityCodes(CoordinateReferenceSystem.class));
-        assertSame(geographicCRS, factory.getAuthorityCodes(            GeographicCRS.class));
-        assertSame(projectedCRS,  factory.getAuthorityCodes(             ProjectedCRS.class));
-        assertSame(datum,         factory.getAuthorityCodes(                    Datum.class));
-        assertSame(geodeticDatum, factory.getAuthorityCodes(            GeodeticDatum.class));
-        assertSame(geodeticDatum, factory.getAuthorityCodes(     DefaultGeodeticDatum.class));
+        assertSame(crs, factory.getAuthorityCodes(CoordinateReferenceSystem.class));
+        assertSame(geographicCRS, factory.getAuthorityCodes(GeographicCRS.class));
+        assertSame(projectedCRS, factory.getAuthorityCodes(ProjectedCRS.class));
+        assertSame(datum, factory.getAuthorityCodes(Datum.class));
+        assertSame(geodeticDatum, factory.getAuthorityCodes(GeodeticDatum.class));
+        assertSame(geodeticDatum, factory.getAuthorityCodes(DefaultGeodeticDatum.class));
 
         // Try a dummy type.
         assertTrue("Dummy type", factory.getAuthorityCodes((Class) String.class).isEmpty());
 
         // Tests projections, which are handle in a special way.
-        final Set<String> operations      = factory.getAuthorityCodes(Operation     .class);
-        final Set<String> conversions     = factory.getAuthorityCodes(Conversion    .class);
-        final Set<String> projections     = factory.getAuthorityCodes(Projection    .class);
+        final Set<String> operations = factory.getAuthorityCodes(Operation.class);
+        final Set<String> conversions = factory.getAuthorityCodes(Conversion.class);
+        final Set<String> projections = factory.getAuthorityCodes(Projection.class);
         final Set<String> transformations = factory.getAuthorityCodes(Transformation.class);
 
-        assertTrue (operations      instanceof AuthorityCodes);
-        assertTrue (conversions     instanceof AuthorityCodes);
-        assertTrue (projections     instanceof AuthorityCodes);
-        assertTrue (transformations instanceof AuthorityCodes);
+        assertTrue(operations instanceof AuthorityCodes);
+        assertTrue(conversions instanceof AuthorityCodes);
+        assertTrue(projections instanceof AuthorityCodes);
+        assertTrue(transformations instanceof AuthorityCodes);
 
-        assertTrue (conversions    .size() < operations .size());
-        assertTrue (projections    .size() < operations .size());
-        assertTrue (transformations.size() < operations .size());
-        assertTrue (projections    .size() < conversions.size());
+        assertTrue(conversions.size() < operations.size());
+        assertTrue(projections.size() < operations.size());
+        assertTrue(transformations.size() < operations.size());
+        assertTrue(projections.size() < conversions.size());
 
         assertFalse(projections.containsAll(conversions));
-        assertTrue (conversions.containsAll(projections));
-        assertTrue (operations .containsAll(conversions));
-        assertTrue (operations .containsAll(transformations));
+        assertTrue(conversions.containsAll(projections));
+        assertTrue(operations.containsAll(conversions));
+        assertTrue(operations.containsAll(transformations));
 
-        assertTrue (Collections.disjoint(conversions, transformations));
+        assertTrue(Collections.disjoint(conversions, transformations));
         assertFalse(Collections.disjoint(conversions, projections));
 
-        assertFalse(operations     .isEmpty());
-        assertFalse(conversions    .isEmpty());
-        assertFalse(projections    .isEmpty());
+        assertFalse(operations.isEmpty());
+        assertFalse(conversions.isEmpty());
+        assertFalse(projections.isEmpty());
         assertFalse(transformations.isEmpty());
 
-        assertTrue (conversions.contains("101"));
+        assertTrue(conversions.contains("101"));
         assertFalse(projections.contains("101"));
-        assertTrue (projections.contains("16001"));
+        assertTrue(projections.contains("16001"));
 
         // We are cheating here since we are breaking generic type check.
         // However in the particular case of our EPSG factory, it works.
         @SuppressWarnings("unchecked")
         final Set units = factory.getAuthorityCodes((Class) Unit.class);
-        assertTrue (units instanceof AuthorityCodes);
+        assertTrue(units instanceof AuthorityCodes);
         assertFalse(units.isEmpty());
-        assertTrue (units.size() > 0);
+        assertTrue(units.size() > 0);
 
         // Tests the fusion of all types
         final Set<String> all = factory.getAuthorityCodes(IdentifiedObject.class);
         assertFalse(all instanceof AuthorityCodes); // Usually a HashSet.
-        assertTrue (all.containsAll(crs));
-        assertTrue (all.containsAll(datum));
-        assertTrue (all.containsAll(operations));
-        assertFalse(all.containsAll(units));  // They are not IdentifiedObjects.
+        assertTrue(all.containsAll(crs));
+        assertTrue(all.containsAll(datum));
+        assertTrue(all.containsAll(operations));
+        assertFalse(all.containsAll(units)); // They are not IdentifiedObjects.
     }
 
     /**
@@ -501,23 +499,25 @@ public class DefaultFactoryTest {
     public void testValidArea() throws FactoryException, TransformException {
         final CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("7400");
         final GeographicBoundingBox bbox = CRS.getGeographicBoundingBox(crs);
-        assertNotNull("No bounding box. Maybe an older EPSG database is running? " +
-                      "Try to clear the tmp/Geotools directory.", bbox);
+        assertNotNull(
+                "No bounding box. Maybe an older EPSG database is running? "
+                        + "Try to clear the tmp/Geotools directory.",
+                bbox);
         assertEquals(42.33, bbox.getSouthBoundLatitude(), EPS);
         assertEquals(51.14, bbox.getNorthBoundLatitude(), EPS);
         assertEquals(-4.87, bbox.getWestBoundLongitude(), EPS);
-        assertEquals( 8.23, bbox.getEastBoundLongitude(), EPS);
+        assertEquals(8.23, bbox.getEastBoundLongitude(), EPS);
         final Envelope envelope = CRS.getEnvelope(crs);
         assertEquals(47.033, envelope.getMinimum(0), 1E-3);
         assertEquals(56.822, envelope.getMaximum(0), 1E-3);
         assertEquals(-8.008, envelope.getMinimum(1), 1E-3);
-        assertEquals( 6.548, envelope.getMaximum(1), 1E-3);
+        assertEquals(6.548, envelope.getMaximum(1), 1E-3);
         assertNull(CRS.getEnvelope(null));
         final GeographicBoundingBox rep = new GeographicBoundingBoxImpl(envelope);
         assertEquals(42.33, rep.getSouthBoundLatitude(), 1E-3);
         assertEquals(51.14, rep.getNorthBoundLatitude(), 1E-3);
         assertEquals(-4.87, rep.getWestBoundLongitude(), 1E-3);
-        assertEquals( 8.23, rep.getEastBoundLongitude(), 1E-3);
+        assertEquals(8.23, rep.getEastBoundLongitude(), 1E-3);
     }
 
     /**
@@ -531,25 +531,36 @@ public class DefaultFactoryTest {
     public void testSerialization() throws FactoryException, IOException, ClassNotFoundException {
         CoordinateReferenceSystem crs1 = factory.createCoordinateReferenceSystem("4326");
         CoordinateReferenceSystem crs2 = factory.createCoordinateReferenceSystem("4322");
-        CoordinateOperationFactory opf = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        CoordinateOperationFactory opf =
+                ReferencingFactoryFinder.getCoordinateOperationFactory(null);
         CoordinateOperation cop = opf.createOperation(crs1, crs2);
         serialize(cop);
 
         crs1 = crs2 = null;
-        final String crs1_name  = "4326";
-        final int crs2_ranges[] = {4326,  4326,
-                       /* [ 2] */  4322,  4322,
-                       /* [ 4] */  4269,  4269,
-                       /* [ 6] */  4267,  4267,
-                       /* [ 8] */  4230,  4230,
-                       /* [10] */ 32601, 32660,
-                       /* [12] */ 32701, 32760,
-                       /* [14] */  2759,  2930};
+        final String crs1_name = "4326";
+        final int crs2_ranges[] = {
+            4326,
+            4326,
+            /* [ 2] */ 4322,
+            4322,
+            /* [ 4] */ 4269,
+            4269,
+            /* [ 6] */ 4267,
+            4267,
+            /* [ 8] */ 4230,
+            4230,
+            /* [10] */ 32601,
+            32660,
+            /* [12] */ 32701,
+            32760,
+            /* [14] */ 2759,
+            2930
+        };
 
-        for (int irange=0; irange<crs2_ranges.length; irange+=2) {
-            int range_start = crs2_ranges[irange  ];
-            int range_end   = crs2_ranges[irange+1];
-            for (int isystem2=range_start; isystem2<=range_end; isystem2++) {
+        for (int irange = 0; irange < crs2_ranges.length; irange += 2) {
+            int range_start = crs2_ranges[irange];
+            int range_end = crs2_ranges[irange + 1];
+            for (int isystem2 = range_start; isystem2 <= range_end; isystem2++) {
                 if (crs1 == null) {
                     crs1 = factory.createCoordinateReferenceSystem(crs1_name);
                 }
@@ -569,18 +580,19 @@ public class DefaultFactoryTest {
     /**
      * Tests the serialization of the specified object.
      *
-     * @todo assertEquals disabled since the switch to JSR-275, because of serialization
-     *       issue with the later.
+     * @todo assertEquals disabled since the switch to JSR-275, because of serialization issue with
+     *     the later.
      */
     private static void serialize(final Object object) throws IOException, ClassNotFoundException {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         final ObjectOutputStream out = new ObjectOutputStream(buffer);
         out.writeObject(object);
         out.close();
-        final ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
+        final ObjectInputStream in =
+                new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
         final Object read = in.readObject();
         in.close();
-//        assertEquals(object,            read);
+        //        assertEquals(object,            read);
         assertEquals(object.hashCode(), read.hashCode());
     }
 
@@ -607,7 +619,7 @@ public class DefaultFactoryTest {
         final CoordinateOperation projection = crs.getConversionFromBase();
         assertEquals("32210", getIdentifier(crs));
         assertEquals("16010", getIdentifier(projection));
-        assertTrue   (projection instanceof Projection);
+        assertTrue(projection instanceof Projection);
         assertNotNull(projection.getSourceCRS());
         assertNotNull(projection.getTargetCRS());
         assertNotNull(projection.getMathTransform());
@@ -641,17 +653,17 @@ public class DefaultFactoryTest {
          * Geocentric translations (9603).
          * Accuracy = 2.5 (since EPSG 7.9)
          */
-        final CoordinateOperation      operation1 = factory.createCoordinateOperation("1087");
+        final CoordinateOperation operation1 = factory.createCoordinateOperation("1087");
         final CoordinateReferenceSystem sourceCRS = operation1.getSourceCRS();
         final CoordinateReferenceSystem targetCRS = operation1.getTargetCRS();
-        final MathTransform             transform = operation1.getMathTransform();
+        final MathTransform transform = operation1.getMathTransform();
         assertEquals("1087", getIdentifier(operation1));
         assertEquals("4230", getIdentifier(sourceCRS));
         assertEquals("4326", getIdentifier(targetCRS));
-        assertTrue   (operation1 instanceof Transformation);
+        assertTrue(operation1 instanceof Transformation);
         assertNotSame(sourceCRS, targetCRS);
-        assertFalse  (operation1.getMathTransform().isIdentity());
-        assertEquals (2.5, AbstractCoordinateOperation.getAccuracy(operation1), 1E-6);
+        assertFalse(operation1.getMathTransform().isIdentity());
+        assertEquals(2.5, AbstractCoordinateOperation.getAccuracy(operation1), 1E-6);
         /*
          * ED50 (4230)  -->  WGS 84 (4326)  using
          * Position Vector 7-param. transformation (9606).
@@ -659,9 +671,9 @@ public class DefaultFactoryTest {
          */
         final CoordinateOperation operation2 = factory.createCoordinateOperation("1631");
         assertEquals("1631", getIdentifier(operation2));
-        assertTrue (operation2 instanceof Transformation);
-        assertSame (sourceCRS, operation2.getSourceCRS());
-        assertSame (targetCRS, operation2.getTargetCRS());
+        assertTrue(operation2 instanceof Transformation);
+        assertSame(sourceCRS, operation2.getSourceCRS());
+        assertSame(targetCRS, operation2.getTargetCRS());
         assertFalse(operation2.getMathTransform().isIdentity());
         assertFalse(transform.equals(operation2.getMathTransform()));
         assertEquals(1.5, AbstractCoordinateOperation.getAccuracy(operation2), 1E-6);
@@ -672,9 +684,9 @@ public class DefaultFactoryTest {
          */
         final CoordinateOperation operation3 = factory.createCoordinateOperation("1989");
         assertEquals("1989", getIdentifier(operation3));
-        assertTrue (operation3 instanceof Transformation);
-        assertSame (sourceCRS, operation3.getSourceCRS());
-        assertSame (targetCRS, operation3.getTargetCRS());
+        assertTrue(operation3 instanceof Transformation);
+        assertSame(sourceCRS, operation3.getSourceCRS());
+        assertSame(targetCRS, operation3.getTargetCRS());
         assertFalse(operation3.getMathTransform().isIdentity());
         assertFalse(transform.equals(operation3.getMathTransform()));
         assertEquals(1.0, AbstractCoordinateOperation.getAccuracy(operation3), 1E-6);
@@ -690,7 +702,10 @@ public class DefaultFactoryTest {
          * (EPSG:9201) instead of the usual "parts per million" (EPSG:9202). It was used to thrown
          * an exception in older EPSG factory implementations.
          */
-        assertEquals(1.0, AbstractCoordinateOperation.getAccuracy(factory.createCoordinateOperation("1609")), 1E-6);
+        assertEquals(
+                1.0,
+                AbstractCoordinateOperation.getAccuracy(factory.createCoordinateOperation("1609")),
+                1E-6);
         /*
          * Creates from CRS codes. There is 40 such operations in EPSG version 6.7.
          * The preferred one (according the "supersession" table) is EPSG:1612.
@@ -706,8 +721,8 @@ public class DefaultFactoryTest {
         assertTrue(all.contains(operation1));
         assertTrue(all.contains(operation2));
         assertTrue(all.contains(operation3));
-        int count=0;
-        for (final Iterator it=all.iterator(); it.hasNext();) {
+        int count = 0;
+        for (final Iterator it = all.iterator(); it.hasNext(); ) {
             final CoordinateOperation check = (CoordinateOperation) it.next();
             assertSame(sourceCRS, check.getSourceCRS());
             assertSame(targetCRS, check.getTargetCRS());
@@ -726,17 +741,17 @@ public class DefaultFactoryTest {
     @Test
     public void testAccuracy() throws FactoryException {
         final Set identifiers = factory.getAuthorityCodes(CoordinateOperation.class);
-        double min     = Double.POSITIVE_INFINITY;
-        double max     = Double.NEGATIVE_INFINITY;
-        double sum     = 0;
-        int    count   = 0; // Number of coordinate operations (minus the skipped ones).
-        int    created = 0; // Number of coordinate operations recognized by the factory.
-        int    valid   = 0; // Number of non-NaN accuracies.
-        for (final Iterator it=identifiers.iterator(); it.hasNext();) {
+        double min = Double.POSITIVE_INFINITY;
+        double max = Double.NEGATIVE_INFINITY;
+        double sum = 0;
+        int count = 0; // Number of coordinate operations (minus the skipped ones).
+        int created = 0; // Number of coordinate operations recognized by the factory.
+        int valid = 0; // Number of non-NaN accuracies.
+        for (final Iterator it = identifiers.iterator(); it.hasNext(); ) {
             final CoordinateOperation operation;
             final String code = (String) it.next();
             final int n = Integer.parseInt(code);
-            if (n>=10087 && n<=10088) {
+            if (n >= 10087 && n <= 10088) {
                 // Valid, but log a warning. Will avoid just in order to keep the output clean.
                 continue;
             }
@@ -759,20 +774,27 @@ public class DefaultFactoryTest {
             final double accuracy = AbstractCoordinateOperation.getAccuracy(operation);
             assertFalse(accuracy < 0);
             if (!Double.isNaN(accuracy)) {
-                if (accuracy < min) min=accuracy;
-                if (accuracy > max) max=accuracy;
+                if (accuracy < min) min = accuracy;
+                if (accuracy > max) max = accuracy;
                 sum += accuracy;
                 valid++;
             }
         }
         if (verbose) {
-            System.out.print("Number of coordinate operations:    "); System.out.println(identifiers.size());
-            System.out.print("Number of tested operations:        "); System.out.println(count);
-            System.out.print("Number of recognized operations:    "); System.out.println(created);
-            System.out.print("Number of operations with accuracy: "); System.out.println(valid);
-            System.out.print("Minimal accuracy value (meters):    "); System.out.println(min);
-            System.out.print("Maximal accuracy value (meters):    "); System.out.println(max);
-            System.out.print("Average accuracy value (meters):    "); System.out.println(sum / valid);
+            System.out.print("Number of coordinate operations:    ");
+            System.out.println(identifiers.size());
+            System.out.print("Number of tested operations:        ");
+            System.out.println(count);
+            System.out.print("Number of recognized operations:    ");
+            System.out.println(created);
+            System.out.print("Number of operations with accuracy: ");
+            System.out.println(valid);
+            System.out.print("Minimal accuracy value (meters):    ");
+            System.out.println(min);
+            System.out.print("Maximal accuracy value (meters):    ");
+            System.out.println(max);
+            System.out.print("Average accuracy value (meters):    ");
+            System.out.println(sum / valid);
         }
     }
 
@@ -780,44 +802,42 @@ public class DefaultFactoryTest {
      * Compares a WKT found in the field with the EPSG equivalent.
      *
      * @throws FactoryException if an error occured while querying the factory.
-     *
      * @see http://jira.codehaus.org/browse/GEOT-1268
      */
     @Test
     public void testEquivalent() throws FactoryException {
         final String wkt =
-            "PROJCS[\"NAD_1983_StatePlane_Massachusetts_Mainland_FIPS_2001\", " +
-              "GEOGCS[\"GCS_North_American_1983\", " +
-                "DATUM[\"D_North_American_1983\", " +
-                  "SPHEROID[\"GRS_1980\", 6378137.0, 298.257222101]], " +
-                "PRIMEM[\"Greenwich\", 0.0], " +
-                "UNIT[\"degree\", 0.017453292519943295], " +
-                "AXIS[\"Longitude\", EAST], " +
-                "AXIS[\"Latitude\", NORTH]], " +
-              "PROJECTION[\"Lambert_Conformal_Conic\"], " +
-              "PARAMETER[\"central_meridian\", -71.5], " +
-              "PARAMETER[\"latitude_of_origin\", 41.0], " +
-              "PARAMETER[\"standard_parallel_1\", 41.71666666666667], " +
-              "PARAMETER[\"scale_factor\", 1.0], " +
-              "PARAMETER[\"false_easting\", 200000.0], " +
-              "PARAMETER[\"false_northing\", 750000.0], " +
-              "PARAMETER[\"standard_parallel_2\", 42.68333333333334], " +
-              "UNIT[\"m\", 1.0], " +
-              "AXIS[\"x\", EAST], " +
-              "AXIS[\"y\", NORTH]]";
+                "PROJCS[\"NAD_1983_StatePlane_Massachusetts_Mainland_FIPS_2001\", "
+                        + "GEOGCS[\"GCS_North_American_1983\", "
+                        + "DATUM[\"D_North_American_1983\", "
+                        + "SPHEROID[\"GRS_1980\", 6378137.0, 298.257222101]], "
+                        + "PRIMEM[\"Greenwich\", 0.0], "
+                        + "UNIT[\"degree\", 0.017453292519943295], "
+                        + "AXIS[\"Longitude\", EAST], "
+                        + "AXIS[\"Latitude\", NORTH]], "
+                        + "PROJECTION[\"Lambert_Conformal_Conic\"], "
+                        + "PARAMETER[\"central_meridian\", -71.5], "
+                        + "PARAMETER[\"latitude_of_origin\", 41.0], "
+                        + "PARAMETER[\"standard_parallel_1\", 41.71666666666667], "
+                        + "PARAMETER[\"scale_factor\", 1.0], "
+                        + "PARAMETER[\"false_easting\", 200000.0], "
+                        + "PARAMETER[\"false_northing\", 750000.0], "
+                        + "PARAMETER[\"standard_parallel_2\", 42.68333333333334], "
+                        + "UNIT[\"m\", 1.0], "
+                        + "AXIS[\"x\", EAST], "
+                        + "AXIS[\"y\", NORTH]]";
         try {
             // Was failing from maven due to differences in Axis order
             Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
-            
+
             final CoordinateReferenceSystem crs1 = CRS.parseWKT(wkt);
-            final CoordinateReferenceSystem crs2 = CRS.decode("EPSG:26986",false);
-    
+            final CoordinateReferenceSystem crs2 = CRS.decode("EPSG:26986", false);
+
             // This is the current state of Geotools, but it is wrong. The CRS should be equivalent.
             // We will change to 'assertTrue' if a MapProjection.equivalent(MapProjection) method is
             // implemented in some future Geotools version.
             assertTrue("CRS should be equivalent", CRS.equalsIgnoreMetadata(crs1, crs2));
-        }
-        finally {
+        } finally {
             Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         }
     }
@@ -829,101 +849,111 @@ public class DefaultFactoryTest {
      */
     @Test
     public void testFind() throws FactoryException {
-        final IdentifiedObjectFinder finder = factory.getIdentifiedObjectFinder(
-                CoordinateReferenceSystem.class);
+        final IdentifiedObjectFinder finder =
+                factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
         assertTrue("Full scan should be enabled by default.", finder.isFullScanAllowed());
-        assertNull("Should not find WGS84 because the axis order is not the same.",
-                   finder.find(DefaultGeographicCRS.WGS84));
+        assertNull(
+                "Should not find WGS84 because the axis order is not the same.",
+                finder.find(DefaultGeographicCRS.WGS84));
 
         String wkt;
-        wkt = "GEOGCS[\"WGS 84\",\n"                                    +
-              "  DATUM[\"World Geodetic System 1984\",\n"               +
-              "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"  +
-              "  PRIMEM[\"Greenwich\", 0.0],\n"                         +
-              "  UNIT[\"degree\", 0.017453292519943295],\n"             +
-              "  AXIS[\"Geodetic latitude\", NORTH],\n"                 +
-              "  AXIS[\"Geodetic longitude\", EAST]]";
+        wkt =
+                "GEOGCS[\"WGS 84\",\n"
+                        + "  DATUM[\"World Geodetic System 1984\",\n"
+                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
+                        + "  PRIMEM[\"Greenwich\", 0.0],\n"
+                        + "  UNIT[\"degree\", 0.017453292519943295],\n"
+                        + "  AXIS[\"Geodetic latitude\", NORTH],\n"
+                        + "  AXIS[\"Geodetic longitude\", EAST]]";
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         IdentifiedObject find = finder.find(crs);
         assertNotNull("With full scan allowed, the CRS should be found.", find);
-        assertTrue("Should found an object equals (ignoring metadata) to the requested one.",
-                   CRS.equalsIgnoreMetadata(crs, find));
-        assertEquals("4326",
+        assertTrue(
+                "Should found an object equals (ignoring metadata) to the requested one.",
+                CRS.equalsIgnoreMetadata(crs, find));
+        assertEquals(
+                "4326",
                 AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode());
         finder.setFullScanAllowed(false);
 
-        ReferenceIdentifier foundri = AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority());
+        ReferenceIdentifier foundri =
+                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority());
 
-        // this is broken because, as we know from above, it is ambiguous, so it may not be EPSG:4326 in the cache at all!
+        // this is broken because, as we know from above, it is ambiguous, so it may not be
+        // EPSG:4326 in the cache at all!
         //        assertEquals("The CRS should still in the cache.",
         //                            "EPSG:4326", finder.findIdentifier(crs));
-        assertEquals("The CRS should still in the cache.",
-                foundri.getCodeSpace()+':'+foundri.getCode(), finder.findIdentifier(crs));
+        assertEquals(
+                "The CRS should still in the cache.",
+                foundri.getCodeSpace() + ':' + foundri.getCode(),
+                finder.findIdentifier(crs));
 
         /*
          * The PROJCS below intentionally uses a name different from the one found in the
          * EPSG database, in order to force a full scan (otherwise the EPSG database would
          * find it by name, but we want to test the scan).
          */
-        wkt = "PROJCS[\"Beijing 1954\",\n"                                 +
-              "   GEOGCS[\"Beijing 1954\",\n"                              +
-              "     DATUM[\"Beijing 1954\",\n"                             +
-              "       SPHEROID[\"Krassowsky 1940\", 6378245.0, 298.3]],\n" +
-              "     PRIMEM[\"Greenwich\", 0.0],\n"                         +
-              "     UNIT[\"degree\", 0.017453292519943295],\n"             +
-              "     AXIS[\"Geodetic latitude\", NORTH],\n"                 +
-              "     AXIS[\"Geodetic longitude\", EAST]],\n"                +
-              "   PROJECTION[\"Transverse Mercator\"],\n"                  +
-              "   PARAMETER[\"central_meridian\", 135.0],\n"               +
-              "   PARAMETER[\"latitude_of_origin\", 0.0],\n"               +
-              "   PARAMETER[\"scale_factor\", 1.0],\n"                     +
-              "   PARAMETER[\"false_easting\", 500000.0],\n"               +
-              "   PARAMETER[\"false_northing\", 0.0],\n"                   +
-              "   UNIT[\"m\", 1.0],\n"                                     +
-              "   AXIS[\"Northing\", NORTH],\n"                            +
-              "   AXIS[\"Easting\", EAST]]";
+        wkt =
+                "PROJCS[\"Beijing 1954\",\n"
+                        + "   GEOGCS[\"Beijing 1954\",\n"
+                        + "     DATUM[\"Beijing 1954\",\n"
+                        + "       SPHEROID[\"Krassowsky 1940\", 6378245.0, 298.3]],\n"
+                        + "     PRIMEM[\"Greenwich\", 0.0],\n"
+                        + "     UNIT[\"degree\", 0.017453292519943295],\n"
+                        + "     AXIS[\"Geodetic latitude\", NORTH],\n"
+                        + "     AXIS[\"Geodetic longitude\", EAST]],\n"
+                        + "   PROJECTION[\"Transverse Mercator\"],\n"
+                        + "   PARAMETER[\"central_meridian\", 135.0],\n"
+                        + "   PARAMETER[\"latitude_of_origin\", 0.0],\n"
+                        + "   PARAMETER[\"scale_factor\", 1.0],\n"
+                        + "   PARAMETER[\"false_easting\", 500000.0],\n"
+                        + "   PARAMETER[\"false_northing\", 0.0],\n"
+                        + "   UNIT[\"m\", 1.0],\n"
+                        + "   AXIS[\"Northing\", NORTH],\n"
+                        + "   AXIS[\"Easting\", EAST]]";
         crs = CRS.parseWKT(wkt);
 
         find = finder.find(crs);
         assertNotNull("With full scan allowed, the CRS should be found.", find);
 
-        assertTrue("Should found an object equals (ignoring metadata) to the requested one.",
-                   CRS.equalsIgnoreMetadata(crs, find));
-        assertEquals("2442", AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode());
+        assertTrue(
+                "Should found an object equals (ignoring metadata) to the requested one.",
+                CRS.equalsIgnoreMetadata(crs, find));
+        assertEquals(
+                "2442",
+                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode());
 
         finder.setFullScanAllowed(false);
-        assertEquals("The CRS should still in the cache.",
-                     "EPSG:2442", finder.findIdentifier(crs));
-
+        assertEquals("The CRS should still in the cache.", "EPSG:2442", finder.findIdentifier(crs));
     }
 
     /**
-     * We are supposed to be able to get back identical {@link CoordinateReferenceSystem}
-     * objects when we create using the same definition. This test case ensures that we do
-     * get back identical objects when using an EPSG code and when using WKT.
-     * <p>
-     * The same definition is used in each case - will it work?
-     * Answer is no because we lost metadata information in WKT formatting;
-     * however two instances created with the same wkt work out okay.
+     * We are supposed to be able to get back identical {@link CoordinateReferenceSystem} objects
+     * when we create using the same definition. This test case ensures that we do get back
+     * identical objects when using an EPSG code and when using WKT.
+     *
+     * <p>The same definition is used in each case - will it work? Answer is no because we lost
+     * metadata information in WKT formatting; however two instances created with the same wkt work
+     * out okay.
      *
      * @throws FactoryException if an error occured while querying the factory.
      */
     @Test
     public void testIntern() throws FactoryException {
         final AbstractCRS epsgCrs = (AbstractCRS) CRS.decode("EPSG:4326");
-        final String      wkt     = epsgCrs.toWKT();
-        final AbstractCRS wktCrs  = (AbstractCRS) CRS.parseWKT(wkt);
+        final String wkt = epsgCrs.toWKT();
+        final AbstractCRS wktCrs = (AbstractCRS) CRS.parseWKT(wkt);
 
-        assertTrue   ("equals ignore metadata",  epsgCrs.equals(wktCrs, false));
-        assertFalse  ("equals compare metadata", epsgCrs.equals(wktCrs, true));
-        assertFalse  ("equals",   epsgCrs.equals(wktCrs));
+        assertTrue("equals ignore metadata", epsgCrs.equals(wktCrs, false));
+        assertFalse("equals compare metadata", epsgCrs.equals(wktCrs, true));
+        assertFalse("equals", epsgCrs.equals(wktCrs));
         assertNotSame("identity", epsgCrs, wktCrs);
 
         // Parsing the same thing twice?
         final AbstractCRS wktCrs2 = (AbstractCRS) CRS.parseWKT(wkt);
-        assertTrue  ("equals ignore metadata",  wktCrs.equals(wktCrs2, false));
-        assertTrue  ("equals compare metadata", wktCrs.equals(wktCrs2, true));
-        assertEquals("equals",   wktCrs, wktCrs2);
-        assertSame  ("identity", wktCrs, wktCrs2);
+        assertTrue("equals ignore metadata", wktCrs.equals(wktCrs2, false));
+        assertTrue("equals compare metadata", wktCrs.equals(wktCrs2, true));
+        assertEquals("equals", wktCrs, wktCrs2);
+        assertSame("identity", wktCrs, wktCrs2);
     }
 }

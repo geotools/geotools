@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
@@ -25,21 +24,19 @@ import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.StyleVisitor;
 import org.opengis.util.Cloneable;
 
-
 /**
  * Default implementation of Mark.
  *
  * @author Ian Turton, CCG
  * @author Johann Sorel (Geomatys)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class MarkImpl implements Mark, Cloneable {
-    
+
     /** The logger for the default core module. */
-    private static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+    private static final java.util.logging.Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
 
     private final FilterFactory filterFactory;
     private FillImpl fill;
@@ -48,33 +45,31 @@ public class MarkImpl implements Mark, Cloneable {
     private ExternalMarkImpl external;
     private Expression wellKnownName = null;
 
-    /**
-     * Creates a new instance of DefaultMark
-     */
+    /** Creates a new instance of DefaultMark */
     public MarkImpl() {
-        this( CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()), null);        
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()), null);
     }
 
     public MarkImpl(String name) {
-        this( CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()), null);
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()), null);
         LOGGER.fine("creating " + name + " type mark");
         setWellKnownName(name);
     }
 
-    public MarkImpl( FilterFactory filterFactory, ExternalMark external ) {
+    public MarkImpl(FilterFactory filterFactory, ExternalMark external) {
         this.filterFactory = filterFactory;
         LOGGER.fine("creating defaultMark");
 
         try {
             StyleFactory sfac = new StyleFactoryImpl();
-            fill = FillImpl.cast( sfac.getDefaultFill() );
-            stroke = StrokeImpl.cast( sfac.getDefaultStroke() );
+            fill = FillImpl.cast(sfac.getDefaultFill());
+            stroke = StrokeImpl.cast(sfac.getDefaultStroke());
 
             wellKnownName = filterFactory.literal("square");
         } catch (org.geotools.filter.IllegalFilterException ife) {
             severe("<init>", "Failed to build default mark: ", ife);
         }
-        this.external = ExternalMarkImpl.cast( external );
+        this.external = ExternalMarkImpl.cast(external);
     }
 
     /**
@@ -84,10 +79,10 @@ public class MarkImpl implements Mark, Cloneable {
      * @param message DOCUMENT ME!
      * @param exception DOCUMENT ME!
      */
-    private static void severe(final String method, final String message,
-        final Exception exception) {
-        final java.util.logging.LogRecord record = new java.util.logging.LogRecord(java.util.logging.Level.SEVERE,
-                message);
+    private static void severe(
+            final String method, final String message, final Exception exception) {
+        final java.util.logging.LogRecord record =
+                new java.util.logging.LogRecord(java.util.logging.Level.SEVERE, message);
         record.setSourceMethodName(method);
         record.setThrown(exception);
         LOGGER.log(record);
@@ -103,8 +98,7 @@ public class MarkImpl implements Mark, Cloneable {
     }
 
     /**
-     * This paramterer defines which stroke style should be used when rendering
-     * the Mark.
+     * This paramterer defines which stroke style should be used when rendering the Mark.
      *
      * @return The Stroke definition to use when rendering the Mark.
      */
@@ -114,11 +108,11 @@ public class MarkImpl implements Mark, Cloneable {
 
     /**
      * This parameter gives the well-known name of the shape of the mark.<br>
-     * Allowed names include at least "square", "circle", "triangle", "star",
-     * "cross" and "x" though renderers may draw a different symbol instead if
-     * they don't have a shape for all of these.<br>
+     * Allowed names include at least "square", "circle", "triangle", "star", "cross" and "x" though
+     * renderers may draw a different symbol instead if they don't have a shape for all of these.
+     * <br>
      *
-     * @return The well-known name of a shape.  The default value is "square".
+     * @return The well-known name of a shape. The default value is "square".
      */
     public Expression getWellKnownName() {
         return wellKnownName;
@@ -139,7 +133,7 @@ public class MarkImpl implements Mark, Cloneable {
      * @param stroke New value of property stroke.
      */
     public void setStroke(org.opengis.style.Stroke stroke) {
-        this.stroke = StrokeImpl.cast( stroke );
+        this.stroke = StrokeImpl.cast(stroke);
     }
 
     /**
@@ -156,26 +150,22 @@ public class MarkImpl implements Mark, Cloneable {
         setWellKnownName(filterFactory.literal(name));
     }
 
-
     public String toString() {
         return wellKnownName.toString();
     }
 
-    public Object accept(StyleVisitor visitor,Object data) {
-        return visitor.visit(this,data);
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
     }
 
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
-    
+
     /**
      * Creates a deep copy of the Mark.
-     * 
-     * <p>
-     * Only the fill and stroke are cloned since Expressions should be
-     * immutable.
-     * </p>
+     *
+     * <p>Only the fill and stroke are cloned since Expressions should be immutable.
      *
      * @see org.geotools.styling.Mark#clone()
      */
@@ -183,10 +173,10 @@ public class MarkImpl implements Mark, Cloneable {
         try {
             MarkImpl clone = (MarkImpl) super.clone();
             if (fill != null) {
-            	clone.fill = (FillImpl) ((Cloneable) fill).clone();
+                clone.fill = (FillImpl) ((Cloneable) fill).clone();
             }
             if (stroke != null && stroke instanceof Cloneable) {
-            	clone.stroke = (StrokeImpl) ((Cloneable)stroke).clone();
+                clone.stroke = (StrokeImpl) ((Cloneable) stroke).clone();
             }
 
             return clone;
@@ -222,14 +212,11 @@ public class MarkImpl implements Mark, Cloneable {
 
     /**
      * Compares this MarkImpl with another for equality.
-     * 
-     * <p>
-     * Two MarkImpls are equal if they have the same well Known Name, the same
-     * size and rotation and the same stroke and fill.
-     * </p>
+     *
+     * <p>Two MarkImpls are equal if they have the same well Known Name, the same size and rotation
+     * and the same stroke and fill.
      *
      * @param oth The Other MarkImpl to compare with.
-     *
      * @return True if this and oth are equal.
      */
     public boolean equals(Object oth) {
@@ -280,31 +267,29 @@ public class MarkImpl implements Mark, Cloneable {
 
         return true;
     }
-    
+
     public ExternalMarkImpl getExternalMark() {
         return external;
     }
 
     public void setExternalMark(org.opengis.style.ExternalMark external) {
-        this.external = ExternalMarkImpl.cast( external );
+        this.external = ExternalMarkImpl.cast(external);
     }
+
     @SuppressWarnings("deprecation")
     static MarkImpl cast(GraphicalSymbol item) {
-        if( item == null ){
+        if (item == null) {
             return null;
-        }
-        else if ( item instanceof MarkImpl){
+        } else if (item instanceof MarkImpl) {
             return (MarkImpl) item;
-        }
-        else if (item instanceof Mark ){
+        } else if (item instanceof Mark) {
             Mark mark = (Mark) item;
             MarkImpl copy = new MarkImpl();
-            copy.setStroke( mark.getStroke() );
-            copy.setWellKnownName( mark.getWellKnownName() );
-            copy.setExternalMark( mark.getExternalMark() );
-            return copy;            
+            copy.setStroke(mark.getStroke());
+            copy.setWellKnownName(mark.getWellKnownName());
+            copy.setExternalMark(mark.getExternalMark());
+            return copy;
         }
         return null;
     }
-
 }

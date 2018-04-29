@@ -22,12 +22,12 @@ import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.XS;
 
-
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:integer.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xs:simpleType name="integer" id="integer"&gt;
  *      &lt;xs:annotation&gt;
@@ -41,23 +41,18 @@ import org.geotools.xs.XS;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class XSIntegerBinding implements SimpleBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return XS.INTEGER;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -68,6 +63,7 @@ public class XSIntegerBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link BigInteger}.
      * <!-- end-user-doc -->
@@ -79,14 +75,14 @@ public class XSIntegerBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link BigInteger}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
         String string = (String) value;
 
         if (string.startsWith("+")) {
@@ -97,13 +93,14 @@ public class XSIntegerBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
     public String encode(Object object, String value) {
-        //dont cast to big integer, this binding is often subclassed 
+        // dont cast to big integer, this binding is often subclassed
         Number integer = (Number) object;
 
         return integer.toString();

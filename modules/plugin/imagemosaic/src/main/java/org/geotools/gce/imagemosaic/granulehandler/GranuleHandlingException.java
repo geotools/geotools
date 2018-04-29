@@ -17,15 +17,13 @@
 
 package org.geotools.gce.imagemosaic.granulehandler;
 
-/**
- * Class signifying issues handling a granule
- */
+/** Class signifying issues handling a granule */
 public class GranuleHandlingException extends Exception {
-    
+
     public GranuleHandlingException(String s) {
         super(s);
     }
-    
+
     public GranuleHandlingException(String s, Exception cause) {
         super(s, cause);
     }

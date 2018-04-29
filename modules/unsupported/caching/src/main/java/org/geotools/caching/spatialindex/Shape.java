@@ -28,11 +28,7 @@
 //    marioh@cs.ucr.edu
 package org.geotools.caching.spatialindex;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public interface Shape {
     public boolean intersects(final Shape s);
 

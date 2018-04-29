@@ -13,7 +13,8 @@ The CSVWriteStrategyTest shows how the strategy code functions fairly well. A mo
 
 	.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/parse/CSVWriteStrategyTest.java
 		:language: java
-		:lines: 41-62
+		:start-after: // docs start attributes
+		:end-before: // docs end attributes
 
 * CSVLatLonStrategy
 
@@ -21,7 +22,8 @@ The CSVWriteStrategyTest shows how the strategy code functions fairly well. A mo
 
 	.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/parse/CSVWriteStrategyTest.java
 		:language: java
-		:lines: 65-116
+		:start-after: // docs start latlon
+		:end-before: // docs end latlon
 
 * CSVSpecifiedWKTStrategy
 
@@ -29,4 +31,5 @@ The CSVWriteStrategyTest shows how the strategy code functions fairly well. A mo
 
 	.. literalinclude:: /../../modules/unsupported/csv/src/test/java/org/geotools/data/csv/parse/CSVWriteStrategyTest.java
 		:language: java
-		:lines: 119-142
+		:start-after: // docs start SpecifiedLatLon
+		:end-before: // docs end SpecifiedLatLon

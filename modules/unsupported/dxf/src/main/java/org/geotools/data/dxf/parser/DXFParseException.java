@@ -4,18 +4,14 @@
 
 package org.geotools.data.dxf.parser;
 
-import org.geotools.data.dxf.entities.DXFEntity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.entities.DXFEntity;
 
 /**
- * Exception thrown while parsing a SDL file, adds line number in front of
- * specified message.
+ * Exception thrown while parsing a SDL file, adds line number in front of specified message.
  *
  * @author Matthijs Laan, B3Partners
- *
- *
- *
  * @source $URL$
  */
 public class DXFParseException extends Exception {

@@ -19,31 +19,26 @@ package org.geotools.coverage.io.metadata;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MetadataNode {
-	
-	public List<MetadataNode> getNodes() {
-		return nodes;
-	}
 
-	public void setNodes(List<MetadataNode> nodes) {
-		this.nodes = nodes;
-	}
+    public List<MetadataNode> getNodes() {
+        return nodes;
+    }
 
-	public Map<String, MetadataAttribute> getAttributes() {
-		return attributes;
-	}
+    public void setNodes(List<MetadataNode> nodes) {
+        this.nodes = nodes;
+    }
 
-	public void setAttributes(Map<String, MetadataAttribute> attributes) {
-		this.attributes = attributes;
-	}
+    public Map<String, MetadataAttribute> getAttributes() {
+        return attributes;
+    }
 
-	private List<MetadataNode> nodes;
-	
-	private Map<String, MetadataAttribute> attributes;
+    public void setAttributes(Map<String, MetadataAttribute> attributes) {
+        this.attributes = attributes;
+    }
 
+    private List<MetadataNode> nodes;
+
+    private Map<String, MetadataAttribute> attributes;
 }

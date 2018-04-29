@@ -25,7 +25,6 @@ import javax.swing.JPanel;
  *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
@@ -37,8 +36,7 @@ public abstract class StatusBarItem extends JPanel {
     private final int minHeight;
 
     /**
-     * Creates a new item with the given name. A border will be drawn for
-     * the item.
+     * Creates a new item with the given name. A border will be drawn for the item.
      *
      * @param name item name; or {@code null} for a default name
      */
@@ -53,8 +51,8 @@ public abstract class StatusBarItem extends JPanel {
      * @param border whether to draw a border around this item
      */
     public StatusBarItem(String name, boolean border) {
-        this.id = ITEM_ID++ ;
-        
+        this.id = ITEM_ID++;
+
         if (name == null || name.trim().length() == 0) {
             setName("Item_" + id);
         } else {
@@ -67,7 +65,7 @@ public abstract class StatusBarItem extends JPanel {
         }
 
         setOpaque(false);
-        minHeight = getHeight(); 
+        minHeight = getHeight();
     }
 
     /**
@@ -89,12 +87,10 @@ public abstract class StatusBarItem extends JPanel {
     }
 
     /**
-     * For items that display numeric values, sets the number
-     * of digits to show to the right of the decimal place. This
-     * base implementation does nothing.
+     * For items that display numeric values, sets the number of digits to show to the right of the
+     * decimal place. This base implementation does nothing.
      *
      * @param numDecimals number of digits after decimal place
      */
     public void setNumDecimals(int numDecimals) {}
-
 }

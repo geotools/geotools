@@ -16,29 +16,30 @@
  */
 package org.geotools.mbstyle.function;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * MapBox Expression function that returns {@link java.lang.Boolean#TRUE} if and only if all expressions evaluate to
- * {@link java.lang.Boolean#TRUE}, {@link java.lang.Boolean#FALSE} otherwise. This function is implemented as a short-
- * circuit in that it will return {@link java.lang.Boolean#FALSE} for the first expression that does not evaluate to
- * {@link java.lang.Boolean#TRUE}.
- * <p>
- * Format:
- * </p>
+ * MapBox Expression function that returns {@link java.lang.Boolean#TRUE} if and only if all
+ * expressions evaluate to {@link java.lang.Boolean#TRUE}, {@link java.lang.Boolean#FALSE}
+ * otherwise. This function is implemented as a short- circuit in that it will return {@link
+ * java.lang.Boolean#FALSE} for the first expression that does not evaluate to {@link
+ * java.lang.Boolean#TRUE}.
+ *
+ * <p>Format:
+ *
  * <pre>
  *     ["all", &lt;condition expression&gt;, &lt;condition expression&gt;, ...]
  * </pre>
+ *
+ * <p>Examples:
+ *
  * <p>
- * Examples:
- * </p>
- * <p>
+ *
  * <table border="1" cellpadding="3">
  *   <tr>
  *     <th align="center">Expression</th>
@@ -57,7 +58,6 @@ import java.util.List;
  *     <td align="center">false</td>
  *   </tr>
  * </table>
- * </p>
  */
 class AllFunction extends FunctionExpressionImpl {
 
@@ -67,18 +67,14 @@ class AllFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    /**
-     * @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List)
-     */
+    /** @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List) */
     @Override
     public void setParameters(List<Expression> params) {
         // set the parameters
         this.params = new ArrayList<>(params);
     }
 
-    /**
-     * @see org.geotools.filter.FunctionExpressionImpl#equals(java.lang.Object)
-     */
+    /** @see org.geotools.filter.FunctionExpressionImpl#equals(java.lang.Object) */
     @Override
     public Object evaluate(Object feature) {
         // loop over the arguments and ensure each evaluates to true

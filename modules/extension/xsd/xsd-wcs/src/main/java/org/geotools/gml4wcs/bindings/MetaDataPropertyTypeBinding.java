@@ -1,18 +1,16 @@
 package org.geotools.gml4wcs.bindings;
 
-
+import javax.xml.namespace.QName;
 import org.geotools.gml4wcs.GML;
 import org.geotools.xml.*;
-
-
-import javax.xml.namespace.QName;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:MetaDataPropertyType.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *
+ * <pre>
+ *  <code>
  *  &lt;complexType name="MetaDataPropertyType"&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt; Base type for complex metadata property types.&lt;/documentation&gt;
@@ -22,47 +20,42 @@ import javax.xml.namespace.QName;
  *      &lt;/sequence&gt;
  *      &lt;attributeGroup ref="gml:AssociationAttributeGroup"/&gt;
  *      &lt;attribute name="about" type="anyURI" use="optional"/&gt;
- *  &lt;/complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
- * </p>
+ *  &lt;/complexType&gt;
+ *
+ *   </code>
+ *  </pre>
  *
  * @generated
- *
- *
  * @source $URL$
  */
 public class MetaDataPropertyTypeBinding extends AbstractComplexBinding {
 
-	/**
-	 * @generated
-	 */
-	public QName getTarget() {
-		return GML.MetaDataPropertyType;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Class getType() {
-		return null;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Object parse(ElementInstance instance, Node node, Object value) 
-		throws Exception {
-		
-		//TODO: implement and remove call to super
-		return super.parse(instance,node,value);
-	}
+    /** @generated */
+    public QName getTarget() {
+        return GML.MetaDataPropertyType;
+    }
 
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Class getType() {
+        return null;
+    }
+
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+
+        // TODO: implement and remove call to super
+        return super.parse(instance, node, value);
+    }
 }

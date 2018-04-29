@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -24,13 +24,9 @@ import org.opengis.filter.expression.PropertyName;
 
 /**
  * Test class for {@link InFunction}.
- * 
- * @author Stefano Costa, GeoSolutions
- * 
- * 
- * 
- * @source $URL$
  *
+ * @author Stefano Costa, GeoSolutions
+ * @source $URL$
  */
 public class InFunctionTest extends FunctionTestSupport {
 
@@ -51,8 +47,8 @@ public class InFunctionTest extends FunctionTestSupport {
 
     public void testIntPresent() {
         PropertyName exp = ff.property("foo");
-        Function func = ff
-                .function(FUNCTION_NAME, exp, ff.literal(3), ff.literal(4), ff.literal(5));
+        Function func =
+                ff.function(FUNCTION_NAME, exp, ff.literal(3), ff.literal(4), ff.literal(5));
         Object result = func.evaluate(feature);
         assertEquals(true, result);
     }
@@ -66,16 +62,21 @@ public class InFunctionTest extends FunctionTestSupport {
 
     public void testDoublePresent() {
         PropertyName exp = ff.property("bar");
-        Function func = ff.function(FUNCTION_NAME, exp, ff.literal(2.5), ff.literal(2.6),
-                ff.literal(3.0));
+        Function func =
+                ff.function(FUNCTION_NAME, exp, ff.literal(2.5), ff.literal(2.6), ff.literal(3.0));
         Object result = func.evaluate(feature);
         assertEquals(true, result);
     }
 
     public void testDoubleMissing() {
         PropertyName exp = ff.property("bar");
-        Function func = ff.function(FUNCTION_NAME, exp, ff.literal(2.499999),
-                ff.literal("2.500001"), ff.literal(2));
+        Function func =
+                ff.function(
+                        FUNCTION_NAME,
+                        exp,
+                        ff.literal(2.499999),
+                        ff.literal("2.500001"),
+                        ff.literal(2));
         Object result = func.evaluate(feature);
         assertEquals(false, result);
     }
@@ -89,16 +90,23 @@ public class InFunctionTest extends FunctionTestSupport {
 
     public void testStringMissing() {
         PropertyName exp = ff.property("group");
-        Function func = ff.function(FUNCTION_NAME, exp, ff.literal("Group1"), ff.literal("Group2"),
-                ff.literal("Group3"));
+        Function func =
+                ff.function(
+                        FUNCTION_NAME,
+                        exp,
+                        ff.literal("Group1"),
+                        ff.literal("Group2"),
+                        ff.literal("Group3"));
         Object result = func.evaluate(feature);
         assertEquals(false, result);
     }
 
     public void testMixedType() {
         PropertyName exp = ff.property("group");
-        Expression[] args = new Expression[] { exp, ff.literal(1), ff.literal(2.5),
-                ff.literal("Group1"), ff.literal(4) };
+        Expression[] args =
+                new Expression[] {
+                    exp, ff.literal(1), ff.literal(2.5), ff.literal("Group1"), ff.literal(4)
+                };
         Function func = ff.function(FUNCTION_NAME, args);
         Object result = func.evaluate(feature);
         assertEquals(false, result);
@@ -108,7 +116,7 @@ public class InFunctionTest extends FunctionTestSupport {
         func = ff.function(FUNCTION_NAME, args);
         result = func.evaluate(feature);
         assertEquals(true, result);
-        
+
         exp = ff.property("bar");
         args[0] = exp;
         func = ff.function(FUNCTION_NAME, args);
@@ -141,7 +149,7 @@ public class InFunctionTest extends FunctionTestSupport {
         Function func = ff.function(FUNCTION_NAME, exp, ff.literal(1), ff.literal(null));
         Object result = func.evaluate(feature);
         assertEquals(true, result);
-        
+
         func = ff.function(FUNCTION_NAME, exp, ff.literal("1"), ff.literal(2));
         result = func.evaluate(feature);
         assertEquals(false, result);

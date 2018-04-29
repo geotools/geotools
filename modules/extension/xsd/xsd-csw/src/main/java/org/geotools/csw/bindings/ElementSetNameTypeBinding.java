@@ -17,36 +17,30 @@
 package org.geotools.csw.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.cat.csw20.Csw20Factory;
 import net.opengis.cat.csw20.ElementSetNameType;
 import net.opengis.cat.csw20.ElementSetType;
-
 import org.geotools.csw.CSW;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.geotools.xml.SimpleContentComplexEMFBinding;
 
 public class ElementSetNameTypeBinding extends SimpleContentComplexEMFBinding {
-    
 
     public ElementSetNameTypeBinding() {
         super(Csw20Factory.eINSTANCE, CSW.ElementSetNameType);
     }
 
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        
+
         ElementSetNameType result = (ElementSetNameType) createEObject(value);
         result.setValue(ElementSetType.get((String) value));
         Node typeNames = node.getAttribute("typeNames");
-        if(typeNames != null) {
+        if (typeNames != null) {
             result.setTypeNames((List<QName>) typeNames.getValue());
         }
-        
-        
+
         return result;
     }
-
 }

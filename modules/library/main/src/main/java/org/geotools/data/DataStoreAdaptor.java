@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,7 +19,6 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -28,8 +27,9 @@ import org.opengis.filter.Filter;
 
 /**
  * Available via {@link DataUtilities#dataStore(SimpleFeatureSource)} methods.
- * <p> This implementation is a wrapper around a provided {@link SimpleFeatureSource}.
- * 
+ *
+ * <p>This implementation is a wrapper around a provided {@link SimpleFeatureSource}.
+ *
  * @author Jody Garnett (Boundless)
  */
 final class DataStoreAdaptor implements DataStore {
@@ -63,8 +63,8 @@ final class DataStoreAdaptor implements DataStore {
         if (this.name.equals(name)) {
             return schema;
         }
-        throw new IOException("Not found: " + name + " DataStoreAdaptor datastore contains "
-                + this.name);
+        throw new IOException(
+                "Not found: " + name + " DataStoreAdaptor datastore contains " + this.name);
     }
 
     @Override
@@ -81,7 +81,7 @@ final class DataStoreAdaptor implements DataStore {
     }
 
     private void ensureNotDisposed() throws IOException {
-        if( this.source == null ){
+        if (this.source == null) {
             throw new IOException("DataStoreAdaptor is not available as it has been disposed");
         }
     }
@@ -111,7 +111,7 @@ final class DataStoreAdaptor implements DataStore {
     @Override
     public String[] getTypeNames() throws IOException {
         ensureNotDisposed();
-        return new String[] { typeName };
+        return new String[] {typeName};
     }
 
     @Override
@@ -120,8 +120,8 @@ final class DataStoreAdaptor implements DataStore {
         if (this.typeName.equals(typeName)) {
             return schema;
         }
-        throw new IOException("Not found: " + typeName + " DataStoreAdaptor datastore contains "
-                + this.typeName);
+        throw new IOException(
+                "Not found: " + typeName + " DataStoreAdaptor datastore contains " + this.typeName);
     }
 
     @Override
@@ -129,9 +129,12 @@ final class DataStoreAdaptor implements DataStore {
         return new LockingManager() {
 
             @Override
-            public void unLockFeatureID(String typeName, String authID, Transaction transaction,
-                    FeatureLock featureLock) throws IOException {
-            }
+            public void unLockFeatureID(
+                    String typeName,
+                    String authID,
+                    Transaction transaction,
+                    FeatureLock featureLock)
+                    throws IOException {}
 
             @Override
             public boolean release(String authID, Transaction transaction) throws IOException {
@@ -144,9 +147,12 @@ final class DataStoreAdaptor implements DataStore {
             }
 
             @Override
-            public void lockFeatureID(String typeName, String authID, Transaction transaction,
-                    FeatureLock featureLock) throws IOException {
-            }
+            public void lockFeatureID(
+                    String typeName,
+                    String authID,
+                    Transaction transaction,
+                    FeatureLock featureLock)
+                    throws IOException {}
 
             @Override
             public boolean exists(String authID) {
@@ -156,20 +162,20 @@ final class DataStoreAdaptor implements DataStore {
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(String typeName,
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
+            String typeName, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("DataStoreAdaptor does not support modification");
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+            String typeName, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("DataStoreAdaptor does not support modification");
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-            Filter filter, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+            String typeName, Filter filter, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException("DataStoreAdaptor does not support modification");
     }
 
@@ -188,18 +194,21 @@ final class DataStoreAdaptor implements DataStore {
         if (this.typeName.equals(typeName)) {
             return source;
         }
-        throw new IOException("Not found: " + typeName + " DataStoreAdaptor contains "
-                + this.typeName);
+        throw new IOException(
+                "Not found: " + typeName + " DataStoreAdaptor contains " + this.typeName);
     }
 
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,
-            Transaction transaction) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+            Query query, Transaction transaction) throws IOException {
         ensureNotDisposed();
         if (this.typeName.equals(query.getTypeName())) {
             return DataUtilities.reader(source.getFeatures());
         }
-        throw new IOException("Not found: " + query.getTypeName() + " DataStoreAdaptor contains "
-                + this.typeName);
+        throw new IOException(
+                "Not found: "
+                        + query.getTypeName()
+                        + " DataStoreAdaptor contains "
+                        + this.typeName);
     }
 }

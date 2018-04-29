@@ -25,18 +25,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-
 import org.geotools.swing.control.DnDListModel;
 import org.junit.Test;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DnDListModelTest {
     class Watcher implements ListDataListener {
         int changed = 0;
@@ -111,8 +105,9 @@ public class DnDListModelTest {
         model.addItem("one");
         model.addItem("two");
 
-        assertEquals(Arrays.asList(new String[] { "one", "two", "one" }), model
-                .getElementsAt(new int[] { 0, 1, 0 }));
+        assertEquals(
+                Arrays.asList(new String[] {"one", "two", "one"}),
+                model.getElementsAt(new int[] {0, 1, 0}));
     }
 
     @Test
@@ -126,14 +121,14 @@ public class DnDListModelTest {
         indexs.add(1);
         indexs.add(0);
 
-        assertEquals(Arrays.asList(new String[] { "one", "two", "one" }), model
-                .getElementsAt(indexs));
+        assertEquals(
+                Arrays.asList(new String[] {"one", "two", "one"}), model.getElementsAt(indexs));
     }
 
     @Test
     public void testAddItemsTArray() {
         DnDListModel<String> model = new DnDListModel<String>();
-        model.addItems(new String[] { "one", "two" });
+        model.addItems(new String[] {"one", "two"});
 
         assertEquals("one", model.getElementAt(0));
         assertEquals("two", model.getElementAt(1));
@@ -142,7 +137,7 @@ public class DnDListModelTest {
     @Test
     public void testAddItemsCollectionOfT() {
         DnDListModel<String> model = new DnDListModel<String>();
-        model.addItems(Arrays.asList(new String[] { "one", "two" }));
+        model.addItems(Arrays.asList(new String[] {"one", "two"}));
 
         assertEquals("one", model.getElementAt(0));
         assertEquals("two", model.getElementAt(1));
@@ -166,7 +161,7 @@ public class DnDListModelTest {
         model.addItem("one");
         model.addItem("two");
 
-        model.insertItems(0, Arrays.asList(new String[] { "zero" }));
+        model.insertItems(0, Arrays.asList(new String[] {"zero"}));
         assertEquals("zero", model.getElementAt(0));
         assertEquals("one", model.getElementAt(1));
         assertEquals("two", model.getElementAt(2));
@@ -178,7 +173,7 @@ public class DnDListModelTest {
         model.addItem("one");
         model.addItem("two");
 
-        model.insertItems(0, new String[] { "zero" });
+        model.insertItems(0, new String[] {"zero"});
         assertEquals("zero", model.getElementAt(0));
         assertEquals("one", model.getElementAt(1));
         assertEquals("two", model.getElementAt(2));
@@ -190,7 +185,7 @@ public class DnDListModelTest {
         model.addItem("one");
         model.addItem("two");
         model.addItem("three");
-        model.moveItems(1, new int[] { 0 });
+        model.moveItems(1, new int[] {0});
 
         assertEquals("two", model.getElementAt(0));
         assertEquals("one", model.getElementAt(1));
@@ -247,8 +242,7 @@ public class DnDListModelTest {
         model.addItem("one");
         model.addItem("two");
 
-        assertEquals(0,model.indexOf("one"));
-        assertEquals(-1,model.indexOf("three"));
+        assertEquals(0, model.indexOf("one"));
+        assertEquals(-1, model.indexOf("three"));
     }
-
 }

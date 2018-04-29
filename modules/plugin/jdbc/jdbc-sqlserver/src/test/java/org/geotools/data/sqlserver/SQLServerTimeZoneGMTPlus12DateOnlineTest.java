@@ -1,15 +1,10 @@
 package org.geotools.data.sqlserver;
 
 import java.util.TimeZone;
-
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTimeZoneDateOnlineTest;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SQLServerTimeZoneGMTPlus12DateOnlineTest extends JDBCTimeZoneDateOnlineTest {
 
     @Override
@@ -17,5 +12,4 @@ public class SQLServerTimeZoneGMTPlus12DateOnlineTest extends JDBCTimeZoneDateOn
         super.setTimeZone(TimeZone.getTimeZone("Etc/GMT+12"));
         return new SQLServerDateTestSetup();
     }
-    
 }

@@ -16,6 +16,9 @@
  */
 package org.geotools.mbstyle.expression;
 
+import static org.junit.Assert.*;
+
+import java.util.List;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
@@ -23,11 +26,7 @@ import org.geotools.styling.SLDTransformer;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 
-import java.util.List;
-
-import static org.junit.Assert.*;
-
-public class MBLookupTest extends AbstractMBExpressionTest{
+public class MBLookupTest extends AbstractMBExpressionTest {
 
     @Override
     protected String getTestResourceName() {
@@ -39,9 +38,7 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         return MBLookup.class;
     }
 
-    /**
-     * Verify that a "get" lookup expression can be parsed correctly.
-     */
+    /** Verify that a "get" lookup expression can be parsed correctly. */
     @Test
     public void testParseGetExpression() {
         // test get with JSONObject argument
@@ -57,7 +54,9 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         List<FeatureTypeStyle> getFeatures = testLayer.transformInternal(getTest);
         try {
             String xml = new SLDTransformer().transform(getFeatures.get(0));
-            assertTrue(xml.contains("<ogc:Function name=\"property\"><ogc:Literal>Name</ogc:Literal></ogc:Function>"));
+            assertTrue(
+                    xml.contains(
+                            "<ogc:Function name=\"property\"><ogc:Literal>Name</ogc:Literal></ogc:Function>"));
         } catch (Exception e) {
         }
         // test nested "get expression
@@ -66,9 +65,7 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         assertEquals("RED", on);
     }
 
-    /**
-     * Verify that an "at" lookup expression can be parsed correctly.
-     */
+    /** Verify that an "at" lookup expression can be parsed correctly. */
     @Test
     public void testParseAtExpression() {
         // test "at" expression for array
@@ -81,9 +78,7 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         assertEquals("length", on);
     }
 
-    /**
-     * Verify that a "length" lookup expression can be parsed correctly.
-     */
+    /** Verify that a "length" lookup expression can be parsed correctly. */
     @Test
     public void testParseLengthExpression() {
         // test string length
@@ -100,11 +95,9 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         assertEquals(9, on);
     }
 
-    /**
-     * Verify that a "has" Lookup expression can be parsed correctly.
-     */
+    /** Verify that a "has" Lookup expression can be parsed correctly. */
     @Test
-    public void testParseHasExpression() throws Exception{
+    public void testParseHasExpression() throws Exception {
         // "has" expression test
         final JSONObject j = getObjectByLayerId("hasExpression", "paint");
         Object o = getExpressionEvaluation(j, "text-color");
@@ -123,6 +116,8 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         SymbolMBLayer rgbLayer = (SymbolMBLayer) getTest.layer("hasExpression");
         List<FeatureTypeStyle> getFeatures = rgbLayer.transformInternal(getTest);
         String xml = new SLDTransformer().transform(getFeatures.get(0));
-        assertTrue(xml.contains("<ogc:Function name=\"PropertyExists\"><ogc:Literal>name</ogc:Literal></ogc:Function>"));
+        assertTrue(
+                xml.contains(
+                        "<ogc:Function name=\"PropertyExists\"><ogc:Literal>name</ogc:Literal></ogc:Function>"));
     }
 }

@@ -1,25 +1,18 @@
 package org.geotools.data.dxf.header;
 
-import java.awt.BasicStroke;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Vector;
-
-import org.geotools.data.dxf.parser.DXFParseException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFConstants;
 import org.geotools.data.dxf.parser.DXFGroupCode;
 import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.geotools.data.dxf.parser.DXFParseException;
 import org.geotools.data.dxf.parser.DXFUnivers;
-import org.geotools.data.dxf.header.DXFBlockRecord;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFTables implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFTables.class);
@@ -27,15 +20,15 @@ public class DXFTables implements DXFConstants {
     public Vector<DXFLayer> theLayers = new Vector<DXFLayer>();
     public Vector<DXFLineType> theLineTypes = new Vector<DXFLineType>();
 
-    public DXFTables() {
-    }
+    public DXFTables() {}
 
     public DXFTables(Vector<DXFLayer> sLayers, Vector<DXFLineType> sLineTypes) {
         this.theLayers = sLayers;
         this.theLineTypes = sLineTypes;
     }
 
-    public static DXFTables readTables(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
+    public static DXFTables readTables(DXFLineNumberReader br, DXFUnivers univers)
+            throws IOException {
         Vector<DXFLayer> sLayers = new Vector<DXFLayer>();
         Vector<DXFLineType> sLineTypes = new Vector<DXFLineType>();
 
@@ -76,7 +69,12 @@ public class DXFTables implements DXFConstants {
         return e;
     }
 
-    public static void readTable(DXFLineNumberReader br, Vector<DXFLayer> sLayers, Vector<DXFLineType> sLineTypes, DXFUnivers univers) throws IOException {
+    public static void readTable(
+            DXFLineNumberReader br,
+            Vector<DXFLayer> sLayers,
+            Vector<DXFLineType> sLineTypes,
+            DXFUnivers univers)
+            throws IOException {
 
         int sln = br.getLineNumber();
         log.debug(">>Enter at line: " + sln);
@@ -121,7 +119,6 @@ public class DXFTables implements DXFConstants {
                 default:
                     break;
             }
-
         }
     }
 

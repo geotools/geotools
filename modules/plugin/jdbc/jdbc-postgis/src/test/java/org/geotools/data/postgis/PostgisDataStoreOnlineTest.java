@@ -19,16 +19,11 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new PostGISTestSetup();
     }
-
 }

@@ -20,68 +20,47 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.Arrays;
 import javax.measure.Unit;
-
-import org.opengis.util.Cloneable;
-import org.opengis.referencing.operation.MathTransform1D;
-
-import org.geotools.util.Utilities;
-import org.geotools.util.NumberRange;
 import org.geotools.resources.Classes;
-
+import org.geotools.util.NumberRange;
+import org.geotools.util.Utilities;
+import org.opengis.referencing.operation.MathTransform1D;
+import org.opengis.util.Cloneable;
 
 /**
- * Argument type for {@link DefaultProcessor} operations for specifying the range,
- * colors and units of a computation result. {@code RangeSpecifier} are used for tuning the
- * {@link org.geotools.coverage.Category} object to be constructed. By default, most
- * {@linkplain OperationJAI operations} try to guess a raisonable range for output
- * values. This default behavior can be overridden with an explicit {@code RangeSpecifier}
- * argument.
- * <p>
- * All {@code RangeSpecifier}'s properties are optional; it is up to processor's
- * {@linkplain OperationJAI operation} to replace {@code null} values by a default
- * one.
+ * Argument type for {@link DefaultProcessor} operations for specifying the range, colors and units
+ * of a computation result. {@code RangeSpecifier} are used for tuning the {@link
+ * org.geotools.coverage.Category} object to be constructed. By default, most {@linkplain
+ * OperationJAI operations} try to guess a raisonable range for output values. This default behavior
+ * can be overridden with an explicit {@code RangeSpecifier} argument.
+ *
+ * <p>All {@code RangeSpecifier}'s properties are optional; it is up to processor's {@linkplain
+ * OperationJAI operation} to replace {@code null} values by a default one.
  *
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
- * @todo Move into the {@code org.geotools.coverage.grid} package as a {@code ImageLayout}
- *       subclass. Rename as {@code GridCoverageLayout}.
+ * @todo Move into the {@code org.geotools.coverage.grid} package as a {@code ImageLayout} subclass.
+ *     Rename as {@code GridCoverageLayout}.
  */
 public class RangeSpecifier implements Serializable, Cloneable {
-    /**
-     * Serial number for compatibility with different versions.
-     */
+    /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = 8436500582161136302L;
 
-    /**
-     * The target range, or {@code null} if none.
-     */
+    /** The target range, or {@code null} if none. */
     private NumberRange<?> range;
 
-    /**
-     * The target "sample to geophysics" transform, or {@code null} if none.
-     */
+    /** The target "sample to geophysics" transform, or {@code null} if none. */
     private MathTransform1D transform;
 
-    /**
-     * The target range units, or {@code null} if none.
-     */
+    /** The target range units, or {@code null} if none. */
     private Unit<?> unit;
 
-    /**
-     * The target colors, or {@code null} if none.
-     */
+    /** The target colors, or {@code null} if none. */
     private Color[] colors;
 
-    /**
-     * Constructs a default {@code RangeSpecifier} with no value set.
-     */
-    public RangeSpecifier() {
-    }
+    /** Constructs a default {@code RangeSpecifier} with no value set. */
+    public RangeSpecifier() {}
 
     /**
      * Constructs a {@code RangeSpecifier} initialised to the spécified range.
@@ -93,8 +72,8 @@ public class RangeSpecifier implements Serializable, Cloneable {
     }
 
     /**
-     * Constructs a {@code RangeSpecifier} initialised to the specified
-     * "sample to geophysics" transform.
+     * Constructs a {@code RangeSpecifier} initialised to the specified "sample to geophysics"
+     * transform.
      *
      * @param transform The sample to geophysics transform.
      */
@@ -112,15 +91,15 @@ public class RangeSpecifier implements Serializable, Cloneable {
     }
 
     /**
-     * Set the target range to the specified values. Setting this property will clear
-     * the {@linkplain #getSampleToGeophysics sample to geophysics transform}, since
-     * those properties are mutually exclusive.
+     * Set the target range to the specified values. Setting this property will clear the
+     * {@linkplain #getSampleToGeophysics sample to geophysics transform}, since those properties
+     * are mutually exclusive.
      *
      * @param range The target range.
      */
     public void setRange(final NumberRange<?> range) {
         this.range = range;
-        transform  = null;
+        transform = null;
     }
 
     /**
@@ -133,9 +112,9 @@ public class RangeSpecifier implements Serializable, Cloneable {
     }
 
     /**
-     * Set the target "sample to geophysics" transform to the specified value.
-     * Setting this property will clear the {@linkplain #getRange range} property,
-     * since those properties are mutually exclusive.
+     * Set the target "sample to geophysics" transform to the specified value. Setting this property
+     * will clear the {@linkplain #getRange range} property, since those properties are mutually
+     * exclusive.
      *
      * @param transform The new sample to geophysics transform.
      */
@@ -188,19 +167,17 @@ public class RangeSpecifier implements Serializable, Cloneable {
     @Override
     public RangeSpecifier clone() {
         try {
-             return (RangeSpecifier) super.clone();
+            return (RangeSpecifier) super.clone();
         } catch (CloneNotSupportedException exception) {
             // Should not happen, since we are cloneable.
             throw new AssertionError(exception);
         }
     }
 
-    /**
-     * Returns a hash code value for this range specifier.
-     */
+    /** Returns a hash code value for this range specifier. */
     @Override
     public int hashCode() {
-        int code = (int)serialVersionUID;
+        int code = (int) serialVersionUID;
         if (range != null) {
             code += range.hashCode();
         }
@@ -218,19 +195,17 @@ public class RangeSpecifier implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object!=null && object.getClass().equals(getClass())) {
+        if (object != null && object.getClass().equals(getClass())) {
             final RangeSpecifier that = (RangeSpecifier) object;
-            return Utilities.equals(this.range,     that.range    ) &&
-                   Utilities.equals(this.transform, that.transform) &&
-                   Utilities.equals(this.unit,      that.unit     ) &&
-                      Arrays.equals(this.colors,    that.colors   );
+            return Utilities.equals(this.range, that.range)
+                    && Utilities.equals(this.transform, that.transform)
+                    && Utilities.equals(this.unit, that.unit)
+                    && Arrays.equals(this.colors, that.colors);
         }
         return false;
     }
 
-    /**
-     * Returns a string representation of this range specifier.
-     */
+    /** Returns a string representation of this range specifier. */
     @Override
     public String toString() {
         final StringBuilder buffer = new StringBuilder(Classes.getShortClassName(this));

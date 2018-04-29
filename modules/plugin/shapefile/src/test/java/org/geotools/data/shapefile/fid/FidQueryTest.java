@@ -18,6 +18,8 @@ package org.geotools.data.shapefile.fid;
 
 import static junit.framework.Assert.*;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -25,7 +27,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -43,14 +44,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.FeatureId;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class FidQueryTest extends FIDTestCase {
 
     private ShapefileDataStore ds;
@@ -78,12 +72,10 @@ public class FidQueryTest extends FIDTestCase {
                     fids.put(feature.getID(), feature);
                 }
             } finally {
-                if (features != null)
-                    features.close();
+                if (features != null) features.close();
             }
             assertEquals(numFeatures, fids.size());
         }
-
     }
 
     @After
@@ -131,8 +123,7 @@ public class FidQueryTest extends FIDTestCase {
             }
             assertFalse(features.hasNext());
         } finally {
-            if (features != null)
-                features.close();
+            if (features != null) features.close();
         }
     }
 
@@ -146,8 +137,8 @@ public class FidQueryTest extends FIDTestCase {
         Id createFidFilter = ff.id(Collections.singleton(ff.featureId(feature.getID())));
 
         SimpleFeatureType schema = feature.getFeatureType();
-        featureStore
-                .modifyFeatures(schema.getDescriptor("ID"), new Integer(newId), createFidFilter);
+        featureStore.modifyFeatures(
+                schema.getDescriptor("ID"), new Integer(newId), createFidFilter);
 
         SimpleFeatureIterator features = featureStore.getFeatures(createFidFilter).features();
         try {
@@ -190,7 +181,6 @@ public class FidQueryTest extends FIDTestCase {
         }
 
         this.assertFidsMatch();
-
     }
 
     private void assertFidsMatch() throws IOException {
@@ -199,7 +189,7 @@ public class FidQueryTest extends FIDTestCase {
 
         int i = 0;
 
-        for (Iterator iter = fids.entrySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = fids.entrySet().iterator(); iter.hasNext(); ) {
             i++;
             Map.Entry entry = (Map.Entry) iter.next();
             String fid = (String) entry.getKey();
@@ -208,7 +198,7 @@ public class FidQueryTest extends FIDTestCase {
             query.setFilter(filter);
             SimpleFeatureIterator features = null;
             try {
-            	features = featureStore.getFeatures(query).features();
+                features = featureStore.getFeatures(query).features();
                 assertTrue("Missing feature for fid " + fid, features.hasNext());
                 SimpleFeature feature = features.next();
                 assertFalse("More than one feature with fid " + fid, features.hasNext());
@@ -218,8 +208,6 @@ public class FidQueryTest extends FIDTestCase {
                     features.close();
                 }
             }
-
         }
     }
-
 }

@@ -16,26 +16,20 @@
  */
 package org.geotools.xml.impl.jxpath;
 
+import java.util.Iterator;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.JXPathContextFactory;
 import org.apache.commons.jxpath.JXPathIntrospector;
-import java.util.Iterator;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Node;
 import org.geotools.xml.impl.DocumentHandler;
 import org.geotools.xml.impl.ElementHandler;
-import org.geotools.xml.impl.ElementHandlerImpl;
 import org.geotools.xml.impl.NodeImpl;
 import org.geotools.xml.impl.StreamingParserHandler;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class JXPathStreamingParserHandler extends StreamingParserHandler {
-    /** xpath to stream **/
+    /** xpath to stream * */
     String xpath;
 
     public JXPathStreamingParserHandler(Configuration config, String xpath) {
@@ -45,13 +39,13 @@ public class JXPathStreamingParserHandler extends StreamingParserHandler {
     }
 
     protected boolean stream(ElementHandler handler) {
-        //create an xpath context from the root element
+        // create an xpath context from the root element
         // TODO: cache the context, should work just the same
         //        JXPathIntrospector.registerDynamicClass(ElementHandlerImpl.class,
         //            ElementHandlerPropertyHandler.class);
         JXPathIntrospector.registerDynamicClass(NodeImpl.class, NodePropertyHandler.class);
 
-        //        ElementHandler rootHandler = 
+        //        ElementHandler rootHandler =
         //        	((DocumentHandler) handlers.firstElement()).getDocumentElementHandler();
         Node root = ((DocumentHandler) handlers.firstElement()).getParseNode();
         JXPathContext jxpContext = JXPathContextFactory.newInstance().newContext(null, root);
@@ -60,7 +54,7 @@ public class JXPathStreamingParserHandler extends StreamingParserHandler {
 
         Iterator itr = jxpContext.iterate(xpath);
 
-        for (; itr.hasNext();) {
+        for (; itr.hasNext(); ) {
             Object obj = itr.next();
 
             if (handler.getParseNode().equals(obj)) {

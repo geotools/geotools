@@ -30,7 +30,7 @@ public class MBFormatException extends RuntimeException {
     public MBFormatException(String message) {
         super(message);
     }
-    
+
     public MBFormatException(String message, Throwable throwable) {
         super(message, throwable);
     }

@@ -17,17 +17,17 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.expression.Expression;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.expression.Expression;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:UpperBoundaryType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="UpperBoundaryType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -37,23 +37,18 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCUpperBoundaryTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.UpperBoundaryType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -64,19 +59,18 @@ public class OGCUpperBoundaryTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(Expression.class);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
-        //&lt;xsd:element ref="ogc:expression"/&gt;
+    public Object getProperty(Object object, QName name) throws Exception {
+        // &lt;xsd:element ref="ogc:expression"/&gt;
         if (OGC.expression.equals(name)) {
             return object;
         }

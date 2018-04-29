@@ -16,26 +16,22 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.picocontainer.MutablePicoContainer;
 import java.util.HashSet;
 import javax.xml.namespace.QName;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.BinaryLogicOperator;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.geotools.filter.FilterParsingUtils;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:FilterType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="FilterType"&gt;
  *      &lt;xsd:choice&gt;
@@ -48,12 +44,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCFilterTypeBinding extends AbstractComplexBinding {
@@ -63,14 +55,13 @@ public class OGCFilterTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.FilterType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -81,25 +72,25 @@ public class OGCFilterTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * Surprised we actually have something to do: namely collapse multiple fid filters using AND
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         if (node.hasChild("FeatureId")) {
-            //round up into a featureId filter
+            // round up into a featureId filter
             HashSet fids = new HashSet();
             fids.addAll(node.getChildValues("FeatureId"));
 
@@ -109,9 +100,8 @@ public class OGCFilterTypeBinding extends AbstractComplexBinding {
         return node.getChildValue(Filter.class);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
-        
+    public Object getProperty(Object object, QName name) throws Exception {
+
         return FilterParsingUtils.Filter_getProperty(object, name);
     }
 }

@@ -27,22 +27,20 @@ public class MBVariableBinding extends MBExpression {
     }
 
     /**
-     * Returns a string describing the type of the given value.
-     * Example:
-     *   ["typeof", value]: string
+     * Returns a string describing the type of the given value. Example: ["typeof", value]: string
+     *
      * @return
      */
-    public Expression variableBindingLet(){
+    public Expression variableBindingLet() {
         return null;
     }
 
     /**
-     * Returns a string describing the type of the given value.
-     * Example:
-     *   ["typeof", value]: string
+     * Returns a string describing the type of the given value. Example: ["typeof", value]: string
+     *
      * @return
      */
-    public Expression variableBindingVar(){
+    public Expression variableBindingVar() {
         return null;
     }
 
@@ -54,7 +52,8 @@ public class MBVariableBinding extends MBExpression {
             case "var":
                 return variableBindingVar();
             default:
-                throw new MBFormatException(name + " is an unsupported variable binding expression");
+                throw new MBFormatException(
+                        name + " is an unsupported variable binding expression");
         }
     }
 }

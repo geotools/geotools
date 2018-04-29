@@ -7,24 +7,18 @@ package org.geotools.data.dxf.header;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Vector;
-
-
-import org.geotools.data.dxf.parser.DXFColor;
-import org.geotools.data.dxf.parser.DXFParseException;
-import org.geotools.data.dxf.parser.DXFUnivers;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
-import org.geotools.data.dxf.entities.DXFEntity;
-import org.geotools.data.dxf.parser.DXFCodeValuePair;
-import org.geotools.data.dxf.parser.DXFGroupCode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.entities.DXFEntity;
+import org.geotools.data.dxf.parser.DXFCodeValuePair;
+import org.geotools.data.dxf.parser.DXFColor;
+import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.geotools.data.dxf.parser.DXFParseException;
+import org.geotools.data.dxf.parser.DXFUnivers;
 
 /**
- *
  * @author Gertjan
- *
- *
- *
  * @source $URL$
  */
 public class DXFBlockRecord extends DXFBlock {
@@ -38,21 +32,23 @@ public class DXFBlockRecord extends DXFBlock {
      */
 
     // TODO GJ DELETE WHOLE UNUSED CLASS???
-    public DXFBlockRecord(double x, double y, int flag, String name, Vector<DXFEntity> ent, int c, DXFLayer l) {
+    public DXFBlockRecord(
+            double x, double y, int flag, String name, Vector<DXFEntity> ent, int c, DXFLayer l) {
         super(x, y, flag, name, ent, c, l);
-    /*
-    _point = new DXFPoint(x, y, c, l, 0, 1);
-    _name = name;
-    _flag = flag;
+        /*
+        _point = new DXFPoint(x, y, c, l, 0, 1);
+        _name = name;
+        _flag = flag;
 
-    if (ent == null) {
-    ent = new Vector<DXFEntity>();
-    }
-    theEntities = ent;
-     * */
+        if (ent == null) {
+        ent = new Vector<DXFEntity>();
+        }
+        theEntities = ent;
+         * */
     }
 
-    public static DXFBlockRecord read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
+    public static DXFBlockRecord read(DXFLineNumberReader br, DXFUnivers univers)
+            throws IOException {
         Vector<DXFEntity> sEnt = new Vector<DXFEntity>();
         String name = "";
         double x = 0, y = 0;
@@ -78,8 +74,7 @@ public class DXFBlockRecord extends DXFBlock {
             }
 
             /// TODO GJ Delete Block::read println
-            //System.out.println("Block: read " + gc);
-
+            // System.out.println("Block: read " + gc);
 
             switch (gc) {
                 case TYPE:
@@ -96,15 +91,16 @@ public class DXFBlockRecord extends DXFBlock {
                     name = cvp.getStringValue();
                     break;
                 default:
-                    //myLog.writeLog("Unknown :" + ligne_temp + " (" + ligne + ")");
+                    // myLog.writeLog("Unknown :" + ligne_temp + " (" + ligne + ")");
                     break;
             }
         }
-        DXFBlockRecord e = new DXFBlockRecord(x, y, flag, name, sEnt, DXFColor.getDefaultColorIndex(), l);
+        DXFBlockRecord e =
+                new DXFBlockRecord(x, y, flag, name, sEnt, DXFColor.getDefaultColorIndex(), l);
 
         /// TODO GJ Delete this Block println
-        // System.out.println(" - " + e.toString(x, y, flag, name, sEnt.size(), DXFColor.getDefaultColorIndex()));
-
+        // System.out.println(" - " + e.toString(x, y, flag, name, sEnt.size(),
+        // DXFColor.getDefaultColorIndex()));
 
         log.debug(e.toString(x, y, flag, name, sEnt.size(), DXFColor.getDefaultColorIndex()));
         log.debug(">Exit at line: " + br.getLineNumber());
@@ -136,4 +132,3 @@ public class DXFBlockRecord extends DXFBlock {
     }
      */
 }
-

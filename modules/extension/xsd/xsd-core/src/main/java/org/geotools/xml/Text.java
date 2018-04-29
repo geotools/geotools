@@ -20,11 +20,8 @@ import java.util.regex.Pattern;
 
 /**
  * Represents text encountered in the parse tree.
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
- *
- *
- *
  * @source $URL$
  */
 public class Text {
@@ -33,7 +30,7 @@ public class Text {
     static Pattern LEADING = Pattern.compile("^\\s+");
     static Pattern TRAILING = Pattern.compile("\\s+$");
     static Pattern INNER = Pattern.compile("\\s{2,}");
-    
+
     String value;
 
     public Text() {
@@ -51,23 +48,23 @@ public class Text {
     public void setValue(String value) {
         this.value = value;
     }
-    
+
     public boolean isWhitespace() {
         return WHITESPACE.matcher(value).matches();
     }
-    
+
     public void trimLeading() {
         value = LEADING.matcher(value).replaceAll("");
     }
-    
+
     public void trimTrailing() {
         value = TRAILING.matcher(value).replaceAll("");
     }
-    
+
     public void trimInner() {
         value = INNER.matcher(value).replaceAll(" ");
     }
-    
+
     @Override
     public String toString() {
         return value;

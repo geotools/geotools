@@ -17,16 +17,11 @@
 package org.geotools.sld.bindings;
 
 import org.geotools.filter.Filters;
+import org.geotools.styling.AnchorPoint;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.geotools.styling.AnchorPoint;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDAnchorPointBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(AnchorPoint.class, new SLDAnchorPointBinding(styleFactory).getType());
@@ -44,8 +39,8 @@ public class SLDAnchorPointBindingTest extends SLDTestSupport {
 
     public void testNoY() throws Exception {
         Element anchorPoint = SLDMockData.anchorPoint(document, document);
-        NodeList anchorPointX = anchorPoint.getElementsByTagNameNS(SLD.NAMESPACE,
-                SLD.ANCHORPOINTY.getLocalPart());
+        NodeList anchorPointX =
+                anchorPoint.getElementsByTagNameNS(SLD.NAMESPACE, SLD.ANCHORPOINTY.getLocalPart());
         anchorPoint.removeChild(anchorPointX.item(0));
 
         AnchorPoint point = (AnchorPoint) parse();

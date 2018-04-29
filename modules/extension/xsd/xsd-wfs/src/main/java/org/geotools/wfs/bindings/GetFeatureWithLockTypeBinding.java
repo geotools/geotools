@@ -17,24 +17,21 @@
 package org.geotools.wfs.bindings;
 
 import java.math.BigInteger;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.GetFeatureWithLockType;
 import net.opengis.wfs.QueryType;
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
 /**
  * Binding object for the type http://www.opengis.net/wfs:GetFeatureWithLockType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="GetFeatureWithLockType"&gt;
  *      &lt;xsd:annotation&gt;
@@ -111,12 +108,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
@@ -126,14 +119,13 @@ public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
         this.wfsfactory = wfsfactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.GetFeatureWithLockType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -144,42 +136,41 @@ public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        GetFeatureWithLockType getFeatureWithLock = wfsfactory
-                .createGetFeatureWithLockType();
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        GetFeatureWithLockType getFeatureWithLock = wfsfactory.createGetFeatureWithLockType();
 
-            WFSBindingUtils.service(getFeatureWithLock, node);
-            WFSBindingUtils.version(getFeatureWithLock, node);
-            WFSBindingUtils.outputFormat(getFeatureWithLock, node, "GML2");
+        WFSBindingUtils.service(getFeatureWithLock, node);
+        WFSBindingUtils.version(getFeatureWithLock, node);
+        WFSBindingUtils.outputFormat(getFeatureWithLock, node, "GML2");
 
-            if (node.getAttributeValue("handle") != null) {
-                getFeatureWithLock.setHandle((String) node.getAttributeValue("handle"));
-            }
+        if (node.getAttributeValue("handle") != null) {
+            getFeatureWithLock.setHandle((String) node.getAttributeValue("handle"));
+        }
 
-            //get the max features
-            BigInteger maxFeatures = WFSBindingUtils.asBigInteger((Number) node.getAttributeValue(
-                        "maxFeatures"));
+        // get the max features
+        BigInteger maxFeatures =
+                WFSBindingUtils.asBigInteger((Number) node.getAttributeValue("maxFeatures"));
 
-            if (maxFeatures != null) {
-                getFeatureWithLock.setMaxFeatures(maxFeatures);
-            }
+        if (maxFeatures != null) {
+            getFeatureWithLock.setMaxFeatures(maxFeatures);
+        }
 
-            //get the lock expiry
-            BigInteger expiry = WFSBindingUtils.asBigInteger((Number) node.getAttributeValue("expiry"));
+        // get the lock expiry
+        BigInteger expiry = WFSBindingUtils.asBigInteger((Number) node.getAttributeValue("expiry"));
 
-            if (expiry != null) {
-                getFeatureWithLock.setExpiry(expiry);
-            }
+        if (expiry != null) {
+            getFeatureWithLock.setExpiry(expiry);
+        }
 
-            //queries
-            getFeatureWithLock.getQuery().addAll(node.getChildValues(QueryType.class));
+        // queries
+        getFeatureWithLock.getQuery().addAll(node.getChildValues(QueryType.class));
 
-            return getFeatureWithLock;
+        return getFeatureWithLock;
     }
 }

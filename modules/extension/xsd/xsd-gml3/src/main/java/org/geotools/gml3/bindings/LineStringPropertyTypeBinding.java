@@ -16,17 +16,17 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:LineStringPropertyType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *         <code>
  *  &lt;complexType name="LineStringPropertyType"&gt;
@@ -50,29 +50,23 @@ import com.vividsolutions.jts.geom.LineString;
  *          &lt;/annotation&gt;
  *      &lt;/attributeGroup&gt;
  *  &lt;/complexType&gt;
- * 
+ *
  *          </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *         /geotools/gml3/bindings/LineStringPropertyTypeBinding.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
+ *     /geotools/gml3/bindings/LineStringPropertyTypeBinding.java $
  */
 public class LineStringPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 
-    public LineStringPropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
+    public LineStringPropertyTypeBinding(
+            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
         super(encodingUtils, idRegistry);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.LineStringPropertyType;
     }
@@ -80,5 +74,4 @@ public class LineStringPropertyTypeBinding extends GeometryPropertyTypeBindingBa
     public Class<? extends Geometry> getGeometryType() {
         return LineString.class;
     }
-
 }

@@ -32,14 +32,13 @@ Regardless of what you want to achieve, there are some common steps to consider:
    * **Please remember to always include a test case, most pull requests will be rejected if they don't contain one.**.
    * Remember to add copyright header with the year of creation to any new file, e.g., if you are adding a file in 2016 the copyright header should contain ``(C) 2016, Open Source Geospatial Foundation (OSGeo)``. It is also recommended to add copyright headers to any pre-existing file missing them.
    * The commit message should refer an existing ticket in Jira, if there is none, create one. The commit message should look like ``[GEOT-XYWZ] Title of the ticket``
-   * Please make sure you're following the [coding conventions](http://docs.geotools.org/latest/developer/conventions/code/style.html), and otherwise avoid any reformats to the existing code, as they make it harder to review your changes.
-     If you find sections not following the coding convetions we prefer that you leave them alone as adjusting them masks useful updates to the code.  However, if you want to amend their formatting, please do so in a separate commit from the real code changes.
+   * Please make sure you perform a maven build before committing, this will also reformat the code according to our coding conventions.
 
 4. Review the work that was done, make sure the changes contain all the files you need, and no other extraneous change:
    ````
    git status
    ````
-   In case you're making a pull request, single commit ones are preferred, you can use `rebase -i` to squash multiple commits into one, it's fine to have two commits if one is used to isolate code formatting changes
+   In case you're making a pull request, single commit ones are preferred, you can use `rebase -i` to squash multiple commits into one
 
 5. Rebase the branch from master so you get a nice clean set of changes:
    ````

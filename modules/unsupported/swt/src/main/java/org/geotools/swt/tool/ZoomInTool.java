@@ -21,7 +21,6 @@ import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
 import java.awt.geom.Point2D;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
@@ -33,21 +32,19 @@ import org.geotools.swt.utils.Messages;
 
 /**
  * A zoom-in tool for JMapPane.
- * <p>
- * For mouse clicks, the display will be zoomed-in such that the 
- * map centre is the position of the mouse click and the map
- * width and height are calculated as:
+ *
+ * <p>For mouse clicks, the display will be zoomed-in such that the map centre is the position of
+ * the mouse click and the map width and height are calculated as:
+ *
  * <pre>   {@code len = len.old / z} </pre>
+ *
  * where {@code z} is the linear zoom increment (>= 1.0)
- * <p>
- * The tool also responds to the user drawing a box on the map mapPane with
- * mouse click-and-drag to define the zoomed-in area.
- * 
+ *
+ * <p>The tool also responds to the user drawing a box on the map mapPane with mouse click-and-drag
+ * to define the zoomed-in area.
+ *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class ZoomInTool extends AbstractZoomTool {
@@ -63,12 +60,11 @@ public class ZoomInTool extends AbstractZoomTool {
     private boolean dragged;
 
     /**
-     * Constructs a new zoom in tool. To activate the tool only on certain
-     * mouse events provide a single mask, e.g. {@link SWT#BUTTON1}, or
-     * a combination of multiple SWT-masks.
+     * Constructs a new zoom in tool. To activate the tool only on certain mouse events provide a
+     * single mask, e.g. {@link SWT#BUTTON1}, or a combination of multiple SWT-masks.
      *
-     * @param triggerButtonMask Mouse button which triggers the tool's activation
-     * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
+     * @param triggerButtonMask Mouse button which triggers the tool's activation or {@value
+     *     #ANY_BUTTON} if the tool is to be triggered by any button
      */
     public ZoomInTool(int triggerButtonMask) {
         super(triggerButtonMask);
@@ -79,24 +75,21 @@ public class ZoomInTool extends AbstractZoomTool {
         dragged = false;
     }
 
-    /**
-     * Constructs a new zoom in tool which is triggered by any mouse button.
-     */
+    /** Constructs a new zoom in tool which is triggered by any mouse button. */
     public ZoomInTool() {
         this(CursorTool.ANY_BUTTON);
     }
 
     /**
-     * Zoom in by the currently set increment, with the map
-     * centred at the location (in world coords) of the mouse
-     * click
-     * 
+     * Zoom in by the currently set increment, with the map centred at the location (in world
+     * coords) of the mouse click
+     *
      * @param e map mapPane mouse event
      */
     @Override
-    public void onMouseClicked( MapMouseEvent e ) {
+    public void onMouseClicked(MapMouseEvent e) {
 
-        if ( ! isTriggerMouseButton(e)) {
+        if (!isTriggerMouseButton(e)) {
             return;
         }
 
@@ -105,14 +98,13 @@ public class ZoomInTool extends AbstractZoomTool {
     }
 
     /**
-     * Records the map position of the mouse event in case this
-     * button press is the beginning of a mouse drag
+     * Records the map position of the mouse event in case this button press is the beginning of a
+     * mouse drag
      *
      * @param ev the mouse event
      */
     @Override
-    public void onMousePressed( MapMouseEvent ev ) {
-    }
+    public void onMousePressed(MapMouseEvent ev) {}
 
     /**
      * Records that the mouse is being dragged
@@ -120,9 +112,9 @@ public class ZoomInTool extends AbstractZoomTool {
      * @param ev the mouse event
      */
     @Override
-    public void onMouseDragged( MapMouseEvent ev ) {
+    public void onMouseDragged(MapMouseEvent ev) {
 
-        if ( ! isTriggerMouseButton(ev)) {
+        if (!isTriggerMouseButton(ev)) {
             return;
         }
 
@@ -130,17 +122,16 @@ public class ZoomInTool extends AbstractZoomTool {
     }
 
     /**
-     * If the mouse was dragged, determines the bounds of the
-     * box that the user defined and passes this to the mapPane's
-     * {@link org.geotools.swing.JMapPane#setDisplayArea(org.opengis.geometry.Envelope) }
-     * method
+     * If the mouse was dragged, determines the bounds of the box that the user defined and passes
+     * this to the mapPane's {@link
+     * org.geotools.swing.JMapPane#setDisplayArea(org.opengis.geometry.Envelope) } method
      *
      * @param ev the mouse event
      */
     @Override
-    public void onMouseReleased( MapMouseEvent ev ) {
+    public void onMouseReleased(MapMouseEvent ev) {
 
-        if ( ! isTriggerMouseButton(ev)) {
+        if (!isTriggerMouseButton(ev)) {
             return;
         }
 
@@ -155,19 +146,18 @@ public class ZoomInTool extends AbstractZoomTool {
             double scale = getMapPane().getWorldToScreenTransform().getScaleX();
             double newScale = scale * zoom;
 
-            DirectPosition2D corner = new DirectPosition2D(startDragPos.getX() - 0.5d * paneArea.width / newScale,
-                    startDragPos.getY() + 0.5d * paneArea.height / newScale);
+            DirectPosition2D corner =
+                    new DirectPosition2D(
+                            startDragPos.getX() - 0.5d * paneArea.width / newScale,
+                            startDragPos.getY() + 0.5d * paneArea.height / newScale);
 
             Envelope2D newMapArea = new Envelope2D();
             newMapArea.setFrameFromCenter(startDragPos, corner);
             getMapPane().setDisplayArea(newMapArea);
         }
-
     }
 
-    /**
-     * Get the mouse cursor for this tool
-     */
+    /** Get the mouse cursor for this tool */
     @Override
     public Cursor getCursor() {
         return cursor;
@@ -182,11 +172,11 @@ public class ZoomInTool extends AbstractZoomTool {
     }
 
     @Override
-	public boolean isDrawing() {
-		return dragged;
-	}
+    public boolean isDrawing() {
+        return dragged;
+    }
 
-	public static double pythagoras( double d1, double d2 ) {
+    public static double pythagoras(double d1, double d2) {
         return sqrt(pow(d1, 2.0) + pow(d2, 2.0));
     }
 }

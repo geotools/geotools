@@ -9,11 +9,10 @@ public class JniOGRDataStoreFactory extends OGRDataStoreFactory {
     protected OGR createOGR() {
         return new JniOGR();
     }
-    
+
     @Override
     protected boolean doIsAvailable() throws Throwable {
         System.loadLibrary("gdaljni");
         return true;
     }
-
 }

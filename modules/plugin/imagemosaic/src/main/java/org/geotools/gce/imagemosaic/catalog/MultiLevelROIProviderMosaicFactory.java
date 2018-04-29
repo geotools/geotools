@@ -21,7 +21,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
 import org.geotools.coverage.grid.io.footprint.FootprintGeometryProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
@@ -31,8 +30,9 @@ import org.geotools.util.URLs;
 import org.opengis.filter.Filter;
 
 /**
- * Factory class used for returning a {@link MultiLevelROIProvider} based on the input footprint properties and files for mosaics
- * 
+ * Factory class used for returning a {@link MultiLevelROIProvider} based on the input footprint
+ * properties and files for mosaics
+ *
  * @author Andrea Aime GeoSolutions
  * @author Nicola Lagomarsini GeoSolutions
  */
@@ -40,12 +40,11 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
 
     public static final String FILTER_PROPERTY = "footprint_filter";
 
-    private MultiLevelROIProviderMosaicFactory() {
-    }
-    
+    private MultiLevelROIProviderMosaicFactory() {}
+
     /**
      * Builds a footprint provider from mosaic location
-     * 
+     *
      * @param mosaicFolder The folder that contains the mosaic config files
      * @return
      * @throws Exception
@@ -61,8 +60,9 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
             // see if we have the default whole mosaic footprint
             File defaultShapefileFootprint = new File(mosaicFolder, "footprints.shp");
             if (defaultShapefileFootprint.exists()) {
-                provider = buildShapefileSource(mosaicFolder, defaultShapefileFootprint.getName(),
-                        properties);
+                provider =
+                        buildShapefileSource(
+                                mosaicFolder, defaultShapefileFootprint.getName(), properties);
             } else {
                 provider = new SidecarFootprintProvider(mosaicFolder);
             }
@@ -74,16 +74,19 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
             // Raster masking
             return new MultiLevelROIRasterProvider(mosaicFolder);
         } else {
-            throw new IllegalArgumentException("Invalid source type, it should be a reference "
-                    + "to a shapefile or 'sidecar', but was '" + source + "' instead");
+            throw new IllegalArgumentException(
+                    "Invalid source type, it should be a reference "
+                            + "to a shapefile or 'sidecar', but was '"
+                            + source
+                            + "' instead");
         }
 
         // Create the provider
         return createProvider(provider, properties, null);
     }
 
-    private static FootprintGeometryProvider buildShapefileSource(File mosaicFolder,
-            String location, Properties properties) {
+    private static FootprintGeometryProvider buildShapefileSource(
+            File mosaicFolder, String location, Properties properties) {
         File shapefile = new File(location);
         if (!shapefile.isAbsolute()) {
             shapefile = new File(mosaicFolder, location);
@@ -91,8 +94,10 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
 
         try {
             if (!shapefile.exists()) {
-                throw new IllegalArgumentException("Tried to load the footprints from "
-                        + shapefile.getCanonicalPath() + " but the file was not found");
+                throw new IllegalArgumentException(
+                        "Tried to load the footprints from "
+                                + shapefile.getCanonicalPath()
+                                + " but the file was not found");
             } else {
                 final Map<String, Serializable> params = new HashMap<String, Serializable>();
                 params.put("url", URLs.fileToUrl(shapefile));
@@ -112,5 +117,4 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
                     "Failed to create a shapefile based footprint provider", e);
         }
     }
-
 }

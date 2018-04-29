@@ -20,21 +20,22 @@ package org.geotools.swing.event;
 import java.awt.event.KeyEvent;
 
 /**
- * Represents a keyboard key or key combination. It is used by {@linkplain MapPaneKeyHandler}
- * to store key bindings associated with map pane actions. 
- * <p>
- * You create instances using values of {@code keyCode} and {@code modifiers} taken from 
+ * Represents a keyboard key or key combination. It is used by {@linkplain MapPaneKeyHandler} to
+ * store key bindings associated with map pane actions.
+ *
+ * <p>You create instances using values of {@code keyCode} and {@code modifiers} taken from
  * constants in the {@linkplain KeyEvent} class:
+ *
  * <pre><code>
  *    KeyInfo left = new KeyInfo(KeyEvent.VK_LEFT, 0, "Left");
  *    KeyInfo shiftUp = new KeyInfo(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK, "Shift+Up");
  * </code></pre>
- * The String argument can later be retrieved with {@linkplain KeyInfo#toString()}
- * and can be useful for GUI elements such as menu items.
- * 
+ *
+ * The String argument can later be retrieved with {@linkplain KeyInfo#toString()} and can be useful
+ * for GUI elements such as menu items.
+ *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
@@ -44,8 +45,8 @@ public class KeyInfo {
     private final String desc;
 
     /**
-     * Creates a new instance. If {@code desc} is {@code null} or empty, 
-     * the description will be set to "KeyInfo(keyCode, modifiers)".
+     * Creates a new instance. If {@code desc} is {@code null} or empty, the description will be set
+     * to "KeyInfo(keyCode, modifiers)".
      *
      * @param keyCode key code
      * @param modifiers modifiers (0 for none)
@@ -54,7 +55,7 @@ public class KeyInfo {
     public KeyInfo(int keyCode, int modifiers, String desc) {
         this.keyCode = keyCode;
         this.modifiers = modifiers;
-        
+
         if (desc == null || desc.trim().length() == 0) {
             this.desc = String.format("KeyInfo(%d, %d)", keyCode, modifiers);
         } else {
@@ -96,8 +97,8 @@ public class KeyInfo {
     }
 
     /**
-     * Gets the short text description for this object. This can be useful for
-     * GUI labels, menu items etc.
+     * Gets the short text description for this object. This can be useful for GUI labels, menu
+     * items etc.
      *
      * @return the description
      */
@@ -107,14 +108,12 @@ public class KeyInfo {
     }
 
     /**
-     * Tests whether the key code and modifiers of this {@code KeyInfo}
-     * match that of a given {@code KeyEvent}. For convenience, this
-     * method will return {@code false} if the input event is {@code null}.
+     * Tests whether the key code and modifiers of this {@code KeyInfo} match that of a given {@code
+     * KeyEvent}. For convenience, this method will return {@code false} if the input event is
+     * {@code null}.
      *
      * @param e the input event
-     *
-     * @return {@code true} if the key code and modifier values match those
-     *     of the input event
+     * @return {@code true} if the key code and modifier values match those of the input event
      */
     public boolean matchesEvent(KeyEvent e) {
         return e != null && e.getKeyCode() == keyCode && (e.getModifiersEx() ^ modifiers) == 0;
@@ -145,5 +144,4 @@ public class KeyInfo {
         hash = 59 * hash + this.modifiers;
         return hash;
     }
-    
 }

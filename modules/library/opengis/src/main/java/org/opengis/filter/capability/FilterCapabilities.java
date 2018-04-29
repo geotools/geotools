@@ -6,12 +6,12 @@
  *    (C) 2005 Open Geospatial Consortium Inc.
  *    (C) 2001 EXSE, Department of Geography, University of Bonn
  *             lat/lon Fitzke/Fretter/Poth GbR
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation; either
  *    version 2.1 of the License, or (at your option) any later version.
- *   
+ *
  *    This library is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -20,9 +20,10 @@
 package org.opengis.filter.capability;
 
 // Annotations
-import org.opengis.annotation.UML;
+
 import static org.opengis.annotation.Specification.*;
 
+import org.opengis.annotation.UML;
 
 /**
  * FilterCapabilitiesBean used to represent
@@ -37,39 +38,29 @@ import static org.opengis.annotation.Specification.*;
  */
 public interface FilterCapabilities {
 
-	/** Version String for Filter 1.0 specification */
+    /** Version String for Filter 1.0 specification */
     public String VERSION_100 = "1.0.0";
-	/** Version String for Filter 1.1 specification */
+    /** Version String for Filter 1.1 specification */
     public String VERSION_110 = "1.1.0";
     /** Version String for Filter 2.0 specification */
     public String VERSION_200 = "2.0.0";
 
-    /**
-     *
-     */
-    @UML(identifier="scalarCapabilities", specification=UNSPECIFIED)
+    /** */
+    @UML(identifier = "scalarCapabilities", specification = UNSPECIFIED)
     ScalarCapabilities getScalarCapabilities();
 
-    /**
-     *
-     */
-    @UML(identifier="spatialCapabilities", specification=UNSPECIFIED)
+    /** */
+    @UML(identifier = "spatialCapabilities", specification = UNSPECIFIED)
     SpatialCapabilities getSpatialCapabilities();
 
-    /**
-     *
-     */
-    @UML(identifier="idCapabilities", specification=UNSPECIFIED)
+    /** */
+    @UML(identifier = "idCapabilities", specification = UNSPECIFIED)
     IdCapabilities getIdCapabilities();
 
-   /**
-    *
-    */
-   @UML(identifier="temporalCapabilities", specification=UNSPECIFIED)
-   TemporalCapabilities getTemporalCapabilities();
+    /** */
+    @UML(identifier = "temporalCapabilities", specification = UNSPECIFIED)
+    TemporalCapabilities getTemporalCapabilities();
 
-    /**
-     * Returns the version.
-     */
+    /** Returns the version. */
     String getVersion();
 }

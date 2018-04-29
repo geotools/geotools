@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -25,7 +25,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
@@ -46,14 +45,12 @@ import org.geotools.util.logging.Logging;
 
 /**
  * An Apache commons HTTP client based {@link HTTPClient} backed by a multithreaded connection
- * manager that allows to reuse connections to the backing server and to limit the
- * {@link #setMaxConnections(int) max number of concurrent connections}.
- * 
- * <p>
- * Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser},
+ * manager that allows to reuse connections to the backing server and to limit the {@link
+ * #setMaxConnections(int) max number of concurrent connections}.
+ *
+ * <p>Java System properties {@code http.proxyHost}, {@code http.proxyPort}, {@code http.proxyUser},
  * and {@code http.proxyPassword} are respected.
- * </p>
- * 
+ *
  * @author groldan
  * @author awaterme
  * @see AbstractOpenWebService#setHttpClient(HTTPClient)
@@ -61,7 +58,7 @@ import org.geotools.util.logging.Logging;
 public class MultithreadedHttpClient implements HTTPClient {
 
     private static final Logger LOGGER = Logging.getLogger(MultithreadedHttpClient.class);
-    
+
     private MultiThreadedHttpConnectionManager connectionManager;
 
     private HttpClient client;
@@ -69,12 +66,12 @@ public class MultithreadedHttpClient implements HTTPClient {
     private String user;
 
     private String password;
-    
+
     private boolean tryGzip = true;
-    
+
     /** Available if a proxy was specified as system property */
     private HostConfiguration hostConfigNoProxy;
-    
+
     private Set<String> nonProxyHosts = new HashSet<String>();
 
     public MultithreadedHttpClient() {
@@ -85,17 +82,17 @@ public class MultithreadedHttpClient implements HTTPClient {
         params.setConnectionTimeout(30000);
         params.setMaxTotalConnections(6);
         params.setDefaultMaxConnectionsPerHost(6);
-        
+
         connectionManager.setParams(params);
 
         client = createHttpClient();
-        
+
         applySystemProxySettings();
     }
 
     // package private to support testing
-	HttpClient createHttpClient() {
-	    return new HttpClient(connectionManager);
+    HttpClient createHttpClient() {
+        return new HttpClient(connectionManager);
     }
 
     private void applySystemProxySettings() {
@@ -104,36 +101,38 @@ public class MultithreadedHttpClient implements HTTPClient {
         String nonProxyHostProp = System.getProperty("http.nonProxyHosts");
 
         if (proxyHost != null) {
-            LOGGER.fine("Found 'http.proxyHost' Java System property. Using it as proxy server. Port: "
-                    + proxyPort);
+            LOGGER.fine(
+                    "Found 'http.proxyHost' Java System property. Using it as proxy server. Port: "
+                            + proxyPort);
             HostConfiguration hostConfig = client.getHostConfiguration();
-            if(nonProxyHostProp != null){
-            	if (nonProxyHostProp.startsWith("\"")) {
-            		nonProxyHostProp = nonProxyHostProp.substring(1);
-            	}
-            	if (nonProxyHostProp.endsWith("\"")) {
-            		nonProxyHostProp = nonProxyHostProp.substring(0, nonProxyHostProp.length() - 1);
-            	}
-            	hostConfigNoProxy = (HostConfiguration) hostConfig.clone();
-            	StringTokenizer tokenizer = new StringTokenizer(nonProxyHostProp, "|");
-            	while(tokenizer.hasMoreTokens()){
-            		nonProxyHosts.add(tokenizer.nextToken().trim().toLowerCase());
-            	}
-            	LOGGER.fine("Initialized with nonProxyHosts: " + nonProxyHosts);
+            if (nonProxyHostProp != null) {
+                if (nonProxyHostProp.startsWith("\"")) {
+                    nonProxyHostProp = nonProxyHostProp.substring(1);
+                }
+                if (nonProxyHostProp.endsWith("\"")) {
+                    nonProxyHostProp = nonProxyHostProp.substring(0, nonProxyHostProp.length() - 1);
+                }
+                hostConfigNoProxy = (HostConfiguration) hostConfig.clone();
+                StringTokenizer tokenizer = new StringTokenizer(nonProxyHostProp, "|");
+                while (tokenizer.hasMoreTokens()) {
+                    nonProxyHosts.add(tokenizer.nextToken().trim().toLowerCase());
+                }
+                LOGGER.fine("Initialized with nonProxyHosts: " + nonProxyHosts);
             }
             hostConfig.setProxy(proxyHost, proxyPort);
-            
         }
 
         final String proxyUser = System.getProperty("http.proxyUser");
         final String proxyPassword = System.getProperty("http.proxyPassword");
         if (proxyUser != null) {
             if (proxyPassword == null || proxyPassword.length() == 0) {
-                LOGGER.warning("System property http.proxyUser provided but http.proxyPassword "
-                        + "not provided or empty. Proxy auth credentials will be passed as is anyway.");
+                LOGGER.warning(
+                        "System property http.proxyUser provided but http.proxyPassword "
+                                + "not provided or empty. Proxy auth credentials will be passed as is anyway.");
             } else {
-                LOGGER.fine("System property http.proxyUser and http.proxyPassword found,"
-                        + " setting proxy auth credentials");
+                LOGGER.fine(
+                        "System property http.proxyUser and http.proxyPassword found,"
+                                + " setting proxy auth credentials");
             }
             HttpState state = client.getState();
             if (state == null) {
@@ -147,8 +146,9 @@ public class MultithreadedHttpClient implements HTTPClient {
     }
 
     @Override
-    public HTTPResponse post(final URL url, final InputStream postContent,
-            final String postContentType) throws IOException {
+    public HTTPResponse post(
+            final URL url, final InputStream postContent, final String postContentType)
+            throws IOException {
 
         PostMethod postMethod = new PostMethod(url.toExternalForm());
         postMethod.setDoAuthentication(user != null && password != null);
@@ -164,29 +164,34 @@ public class MultithreadedHttpClient implements HTTPClient {
         int responseCode = executeMethod(postMethod);
         if (200 != responseCode) {
             postMethod.releaseConnection();
-            throw new IOException("Server returned HTTP error code " + responseCode + " for URL "
-                    + url.toExternalForm());
+            throw new IOException(
+                    "Server returned HTTP error code "
+                            + responseCode
+                            + " for URL "
+                            + url.toExternalForm());
         }
 
         return new HttpMethodResponse(postMethod);
     }
 
-	/**
-	 * @param method
-	 * @return the http status code of the execution
-	 * @throws IOException
-	 * @throws HttpException
-	 */
-	private int executeMethod(HttpMethod method) throws IOException, HttpException {
-		String host = method.getURI().getHost();
-		if (host != null && nonProxyHosts.contains(host.toLowerCase())) {
-			if (LOGGER.isLoggable(Level.FINE)) {
-				LOGGER.fine("Bypassing proxy config due to nonProxyHosts for " + method.getURI().toString());
-			}
-			return client.executeMethod(hostConfigNoProxy, method);
-		}
-		return client.executeMethod(method);
-	}
+    /**
+     * @param method
+     * @return the http status code of the execution
+     * @throws IOException
+     * @throws HttpException
+     */
+    private int executeMethod(HttpMethod method) throws IOException, HttpException {
+        String host = method.getURI().getHost();
+        if (host != null && nonProxyHosts.contains(host.toLowerCase())) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(
+                        "Bypassing proxy config due to nonProxyHosts for "
+                                + method.getURI().toString());
+            }
+            return client.executeMethod(hostConfigNoProxy, method);
+        }
+        return client.executeMethod(method);
+    }
 
     @Override
     public HTTPResponse get(final URL url) throws IOException {
@@ -199,8 +204,11 @@ public class MultithreadedHttpClient implements HTTPClient {
         int responseCode = executeMethod(getMethod);
         if (200 != responseCode) {
             getMethod.releaseConnection();
-            throw new IOException("Server returned HTTP error code " + responseCode + " for URL "
-                    + url.toExternalForm());
+            throw new IOException(
+                    "Server returned HTTP error code "
+                            + responseCode
+                            + " for URL "
+                            + url.toExternalForm());
         }
         return new HttpMethodResponse(getMethod);
     }
@@ -312,7 +320,7 @@ public class MultithreadedHttpClient implements HTTPClient {
                 // commons httpclient does not handle gzip encoding automatically, we have to check
                 // ourselves: https://issues.apache.org/jira/browse/HTTPCLIENT-816
                 Header header = methodResponse.getResponseHeader("Content-Encoding");
-                if(header != null && "gzip".equals(header.getValue())) {
+                if (header != null && "gzip".equals(header.getValue())) {
                     responseBodyAsStream = new GZIPInputStream(responseBodyAsStream);
                 }
             }
@@ -331,7 +339,6 @@ public class MultithreadedHttpClient implements HTTPClient {
             }
             return responseCharSet;
         }
-
     }
 
     /**

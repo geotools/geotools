@@ -17,31 +17,24 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.PropertyIsNotEqualTo;
-import org.opengis.filter.expression.Expression;
 import org.geotools.filter.v1_0.OGCPropertyIsNotEqualToBinding;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:PropertyIsNotEqualTo.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="PropertyIsNotEqualTo"
  *      substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/&gt;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
  * @source $URL$
  */
 public class PropertyIsNotEqualToBinding extends OGCPropertyIsNotEqualToBinding {

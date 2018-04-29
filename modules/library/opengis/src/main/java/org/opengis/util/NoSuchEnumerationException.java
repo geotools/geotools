@@ -4,34 +4,26 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2003-2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.util;
 
-
 /**
- * Exception that is thrown when an invalid enumeration lookup is performed
- * in the {@link SimpleEnumerationType} class.
+ * Exception that is thrown when an invalid enumeration lookup is performed in the {@link
+ * SimpleEnumerationType} class.
  *
  * @author Jesse Crossley (SYS Technologies)
  * @since GeoAPI 1.0
- *
  * @deprecated Not used.
- *
- *
  * @source $URL$
  */
 @Deprecated
 public class NoSuchEnumerationException extends Exception {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 5827953825646995065L;
 
-    /**
-     * The invalid value.
-     */
+    /** The invalid value. */
     private final int value;
 
     /**
@@ -45,11 +37,8 @@ public class NoSuchEnumerationException extends Exception {
         this.value = value;
     }
 
-    /**
-     * Returns the invalid value.
-     */
+    /** Returns the invalid value. */
     public int getValue() {
         return value;
     }
 }
-

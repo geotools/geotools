@@ -25,19 +25,14 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- * @author Simone Giannecchini, GeoSolutions SAS
- * 
- */
+/** @author Simone Giannecchini, GeoSolutions SAS */
 class TimestampFileNameExtractor extends RegExPropertiesCollector {
-    private final static Logger LOGGER = Logging.getLogger(TimestampFileNameExtractor.class);
+    private static final Logger LOGGER = Logging.getLogger(TimestampFileNameExtractor.class);
 
     private static final TimeParser parser = new TimeParser();
 
@@ -46,13 +41,17 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
     /**
      * @deprecated use {@link TimestampFileNameExtractor#TimestampFileNameExtractor(PropertiesCollectorSPI, List, String, String, boolean)
      */
-    public TimestampFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-            String regex, String format) {
+    public TimestampFileNameExtractor(
+            PropertiesCollectorSPI spi, List<String> propertyNames, String regex, String format) {
         this(spi, propertyNames, regex, format, false);
     }
 
-    public TimestampFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-            String regex, String format, boolean fullPath) {
+    public TimestampFileNameExtractor(
+            PropertiesCollectorSPI spi,
+            List<String> propertyNames,
+            String regex,
+            String format,
+            boolean fullPath) {
         super(spi, propertyNames, regex, fullPath);
         if (format != null) {
             customFormat = new SimpleDateFormat(format);
@@ -79,7 +78,6 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             }
-
         }
 
         // set the properties, only if we have matches!
@@ -95,10 +93,7 @@ class TimestampFileNameExtractor extends RegExPropertiesCollector {
             feature.setAttribute(propertyName, dates.get(index++));
 
             // do we have more dates?
-            if (index >= dates.size())
-                return;
+            if (index >= dates.size()) return;
         }
-
     }
-
 }

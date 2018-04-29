@@ -24,7 +24,6 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.imageio.Identification;
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
@@ -37,18 +36,15 @@ import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.TimeCS;
 import org.opengis.referencing.datum.TemporalDatum;
 import org.opengis.temporal.Position;
-
 import ucar.nc2.dataset.CoordinateAxis;
 
-/**
- * A {@link CoordinateVariable} used to wrap Coordinates 
- * expressing climatological time 
- */
+/** A {@link CoordinateVariable} used to wrap Coordinates expressing climatological time */
 public class ClimatologicalTimeCoordinateVariable extends CoordinateVariable<Date> {
 
     private static final String ORIGIN_DATE = "0000-01-01T00:00:00";
 
-    private static final Logger LOGGER = Logger.getLogger(ClimatologicalTimeCoordinateVariable.class.toString());
+    private static final Logger LOGGER =
+            Logger.getLogger(ClimatologicalTimeCoordinateVariable.class.toString());
 
     public ClimatologicalTimeCoordinateVariable(CoordinateAxis coordinateAxis) {
         super(Date.class, coordinateAxis);
@@ -70,24 +66,33 @@ public class ClimatologicalTimeCoordinateVariable extends CoordinateVariable<Dat
             String t_csName = "time_CS";
             final Map<String, String> csMap = Collections.singletonMap("name", t_csName);
 
-            TimeCS timeCS = NetCDFCRSUtilities.FACTORY_CONTAINER.getCSFactory().createTimeCS(csMap,
-                    DefaultCoordinateSystemAxis.getPredefined(axisName, AxisDirection.FUTURE));
+            TimeCS timeCS =
+                    NetCDFCRSUtilities.FACTORY_CONTAINER
+                            .getCSFactory()
+                            .createTimeCS(
+                                    csMap,
+                                    DefaultCoordinateSystemAxis.getPredefined(
+                                            axisName, AxisDirection.FUTURE));
 
             // Creating the Temporal Datum
             if (t_datumName == null) {
                 t_datumName = "Unknown";
             }
             final Map<String, String> datumMap = Collections.singletonMap("name", t_datumName);
-            final Position timeOrigin = new DefaultPosition(new SimpleInternationalString(
-                    ORIGIN_DATE));
-            final TemporalDatum temporalDatum = NetCDFCRSUtilities.FACTORY_CONTAINER
-                    .getDatumFactory().createTemporalDatum(datumMap, timeOrigin.getDate());
+            final Position timeOrigin =
+                    new DefaultPosition(new SimpleInternationalString(ORIGIN_DATE));
+            final TemporalDatum temporalDatum =
+                    NetCDFCRSUtilities.FACTORY_CONTAINER
+                            .getDatumFactory()
+                            .createTemporalDatum(datumMap, timeOrigin.getDate());
 
             // Finally creating the Temporal CoordinateReferenceSystem
             String crsName = "time_CRS";
             final Map<String, String> crsMap = Collections.singletonMap("name", crsName);
-            temporalCRS = NetCDFCRSUtilities.FACTORY_CONTAINER.getCRSFactory().createTemporalCRS(
-                    crsMap, temporalDatum, timeCS);
+            temporalCRS =
+                    NetCDFCRSUtilities.FACTORY_CONTAINER
+                            .getCRSFactory()
+                            .createTemporalCRS(crsMap, temporalDatum, timeCS);
         } catch (FactoryException e) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.log(Level.FINE, "Unable to parse temporal CRS", e);

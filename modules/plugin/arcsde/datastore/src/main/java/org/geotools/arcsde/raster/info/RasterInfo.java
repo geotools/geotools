@@ -17,6 +17,10 @@
  */
 package org.geotools.arcsde.raster.info;
 
+import com.esri.sde.sdk.client.SDEPoint;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeExtent;
+import com.esri.sde.sdk.client.SeRasterAttr;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -24,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
@@ -35,34 +38,25 @@ import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.esri.sde.sdk.client.SDEPoint;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeExtent;
-import com.esri.sde.sdk.client.SeRasterAttr;
-
 /**
  * A RasterInfo gathers the metadata for a single raster in a raster dataset
- * <p>
- * Basically, it wraps the SeRasterAttr object and implements some convenience methods for doing
+ *
+ * <p>Basically, it wraps the SeRasterAttr object and implements some convenience methods for doing
  * calculations with it.
- * </p>
- * 
+ *
  * @author Saul Farber
  * @author Gabriel Roldan
- *
- *
  * @source $URL$
  */
 public final class RasterInfo {
 
-    /**
-     * Orders pyramid levels by their level index
-     */
-    private static final Comparator<PyramidLevelInfo> levelComparator = new Comparator<PyramidLevelInfo>() {
-        public int compare(PyramidLevelInfo p0, PyramidLevelInfo p1) {
-            return (p0.getLevel() - p1.getLevel());
-        }
-    };
+    /** Orders pyramid levels by their level index */
+    private static final Comparator<PyramidLevelInfo> levelComparator =
+            new Comparator<PyramidLevelInfo>() {
+                public int compare(PyramidLevelInfo p0, PyramidLevelInfo p1) {
+                    return (p0.getLevel() - p1.getLevel());
+                }
+            };
 
     ArrayList<PyramidLevelInfo> pyramidList;
 
@@ -84,9 +78,8 @@ public final class RasterInfo {
      * Creates an in-memory representation of an ArcSDE Raster Pyramid. Basically it wraps the
      * supplide SeRasterAttr object and implements some convenience logic for extracting
      * information/ doing calculations with it.
-     * 
-     * @param rasterAttributes
-     *            the SeRasterAttr object for the raster of interest.
+     *
+     * @param rasterAttributes the SeRasterAttr object for the raster of interest.
      * @param crs
      * @throws DataSourceException
      */
@@ -116,13 +109,18 @@ public final class RasterInfo {
                 final GridEnvelope actualImageGridEnvelope;
                 final GeneralEnvelope actualImageSpatialExtent;
 
-                actualImageGridEnvelope = computeImageGridRange(arcsdePyramidLevel,
-                        rasterAttributes);
-                actualImageSpatialExtent = computeImageSpatialExtent(arcsdePyramidLevel,
-                        rasterAttributes, crs, actualImageGridEnvelope);
+                actualImageGridEnvelope =
+                        computeImageGridRange(arcsdePyramidLevel, rasterAttributes);
+                actualImageSpatialExtent =
+                        computeImageSpatialExtent(
+                                arcsdePyramidLevel, rasterAttributes, crs, actualImageGridEnvelope);
 
-                addPyramidLevel(arcsdePyramidLevel, numTilesWide, numTilesHigh,
-                        actualImageGridEnvelope, actualImageSpatialExtent);
+                addPyramidLevel(
+                        arcsdePyramidLevel,
+                        numTilesWide,
+                        numTilesHigh,
+                        actualImageGridEnvelope,
+                        actualImageSpatialExtent);
 
                 internalPyramidLevel++;
             }
@@ -132,9 +130,12 @@ public final class RasterInfo {
         }
     }
 
-    private GeneralEnvelope computeImageSpatialExtent(final int level,
-            final SeRasterAttr rasterAttributes, final CoordinateReferenceSystem crs,
-            final GridEnvelope gridRange) throws SeException {
+    private GeneralEnvelope computeImageSpatialExtent(
+            final int level,
+            final SeRasterAttr rasterAttributes,
+            final CoordinateReferenceSystem crs,
+            final GridEnvelope gridRange)
+            throws SeException {
 
         /*
          * To get the actual resolution we use an image width and height diminished by one pixel,
@@ -193,11 +194,9 @@ public final class RasterInfo {
 
     /**
      * Don't use this constructor. It only exists for unit testing purposes.
-     * 
-     * @param tileWidth
-     *            DON'T USE
-     * @param tileHeight
-     *            DON'T USE
+     *
+     * @param tileWidth DON'T USE
+     * @param tileHeight DON'T USE
      */
     RasterInfo(Long rasterId, int tileWidth, int tileHeight) {
         this.rasterId = rasterId;
@@ -236,10 +235,10 @@ public final class RasterInfo {
     /**
      * Returns the optimal pyramid level for the requested resolution, ignoring pyramid level 1 if
      * {@link SeRasterAttr#skipLevelOne()} was {@code true}.
-     * <p>
-     * NOTE: logic stolen and adapted from {@code AbstractGridCoverage2DReader#getOverviewImage()}
-     * </p>
-     * 
+     *
+     * <p>NOTE: logic stolen and adapted from {@code
+     * AbstractGridCoverage2DReader#getOverviewImage()}
+     *
      * @param policy
      * @return
      */
@@ -269,8 +268,8 @@ public final class RasterInfo {
         final double requestedScaleFactorX = reqx / highestRes[0];
         final double requestedScaleFactorY = reqy / highestRes[1];
         final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
-        final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX
-                : requestedScaleFactorY;
+        final double requestedScaleFactor =
+                leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
 
         // no pyramiding or are we looking for a resolution even higher than the native one?
         if (0 == numLevels || requestedScaleFactor <= 1) {
@@ -304,8 +303,8 @@ public final class RasterInfo {
                                 pyramidLevelChoice = levelN - 1;
                             } else if (policy == OverviewPolicy.SPEED) {
                                 return levelN;
-                            } else if (requestedScaleFactor - prev[2] < curr[2]
-                                    - requestedScaleFactor) {
+                            } else if (requestedScaleFactor - prev[2]
+                                    < curr[2] - requestedScaleFactor) {
                                 pyramidLevelChoice = levelN - 1;
                             } else {
                                 pyramidLevelChoice = levelN;
@@ -339,44 +338,53 @@ public final class RasterInfo {
 
     /**
      * Don't use this method. It's only public for unit testing purposes.
-     * 
-     * @param level
-     *            the zero-based level index for the new level
-     * @param imageExtent
-     *            the geographical extent the actual image size covers at this level
-     * @param imgOffset
-     *            the offset on the X and Y axes of the actual image inside the tile space for this
-     *            level
-     * @param extOffset
-     *            the offset on the X and Y axes of the actual image inside the tile space for this
-     *            level
-     * @param numTilesWide
-     *            the number of tiles that make up the level on the X axis
-     * @param numTilesHigh
-     *            the number of tiles that make up the level on the Y axis
-     * @param imageSize
-     *            the size of the actual image in pixels
+     *
+     * @param level the zero-based level index for the new level
+     * @param imageExtent the geographical extent the actual image size covers at this level
+     * @param imgOffset the offset on the X and Y axes of the actual image inside the tile space for
+     *     this level
+     * @param extOffset the offset on the X and Y axes of the actual image inside the tile space for
+     *     this level
+     * @param numTilesWide the number of tiles that make up the level on the X axis
+     * @param numTilesHigh the number of tiles that make up the level on the Y axis
+     * @param imageSize the size of the actual image in pixels
      */
-    void addPyramidLevel(int level, ReferencedEnvelope imageExtent, Point imgOffset,
-            Point2D extOffset, int numTilesWide, int numTilesHigh, Dimension imageSize) {
+    void addPyramidLevel(
+            int level,
+            ReferencedEnvelope imageExtent,
+            Point imgOffset,
+            Point2D extOffset,
+            int numTilesWide,
+            int numTilesHigh,
+            Dimension imageSize) {
 
         PyramidLevelInfo pyramidLevel;
-        GridEnvelope2D gridEnvelope = new GridEnvelope2D((int) imgOffset.getX(),
-                (int) imgOffset.getY(), imageSize.width, imageSize.height);
+        GridEnvelope2D gridEnvelope =
+                new GridEnvelope2D(
+                        (int) imgOffset.getX(),
+                        (int) imgOffset.getY(),
+                        imageSize.width,
+                        imageSize.height);
         GeneralEnvelope spatialExtent = new GeneralEnvelope(imageExtent);
-        pyramidLevel = new PyramidLevelInfo(level, numTilesWide, numTilesHigh, gridEnvelope,
-                spatialExtent);
+        pyramidLevel =
+                new PyramidLevelInfo(
+                        level, numTilesWide, numTilesHigh, gridEnvelope, spatialExtent);
 
         pyramidList.add(pyramidLevel);
 
         Collections.sort(pyramidList, levelComparator);
     }
 
-    public void addPyramidLevel(final int level, final int numTilesWide, final int numTilesHigh,
-            final GridEnvelope gridEnvelope, final GeneralEnvelope spatialExtent) {
+    public void addPyramidLevel(
+            final int level,
+            final int numTilesWide,
+            final int numTilesHigh,
+            final GridEnvelope gridEnvelope,
+            final GeneralEnvelope spatialExtent) {
 
-        PyramidLevelInfo pyramidLevel = new PyramidLevelInfo(level, numTilesWide, numTilesHigh,
-                gridEnvelope, spatialExtent);
+        PyramidLevelInfo pyramidLevel =
+                new PyramidLevelInfo(
+                        level, numTilesWide, numTilesHigh, gridEnvelope, spatialExtent);
         pyramidList.add(pyramidLevel);
 
         Collections.sort(pyramidList, levelComparator);
@@ -417,8 +425,8 @@ public final class RasterInfo {
         // }
         List<Number> noDataValues = getNoDataValues();
         RasterCellType nativeCellType = getNativeCellType();
-        RasterCellType targetCellType = RasterUtils.determineTargetCellType(nativeCellType,
-                noDataValues);
+        RasterCellType targetCellType =
+                RasterUtils.determineTargetCellType(nativeCellType, noDataValues);
         return targetCellType;
     }
 
@@ -454,8 +462,14 @@ public final class RasterInfo {
         sb.append(", tile size: ").append(getTileWidth()).append("x").append(getTileHeight());
         sb.append(", crs: ").append(srs == null ? getCoordinateReferenceSystem().toWKT() : srs);
         GeneralEnvelope env = getOriginalEnvelope();
-        sb.append(", Envelope: ").append(env.getMinimum(0)).append(",").append(env.getMinimum(1))
-                .append(" ").append(env.getMaximum(0)).append(",").append(env.getMaximum(1));
+        sb.append(", Envelope: ")
+                .append(env.getMinimum(0))
+                .append(",")
+                .append(env.getMinimum(1))
+                .append(" ")
+                .append(env.getMaximum(0))
+                .append(",")
+                .append(env.getMaximum(1));
 
         sb.append("]\n Bands[");
         for (RasterBandInfo band : getBands()) {
@@ -478,5 +492,4 @@ public final class RasterInfo {
     public boolean isSkipLevelOne() {
         return skipLevelone;
     }
-
 }

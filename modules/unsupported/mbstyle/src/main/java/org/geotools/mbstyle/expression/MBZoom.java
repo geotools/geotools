@@ -20,24 +20,23 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 
-/**
- * This class is here to get zoom level properties from a map
- */
+/** This class is here to get zoom level properties from a map */
 public class MBZoom extends MBExpression {
     public MBZoom(JSONArray json) {
         super(json);
     }
 
     /**
-     * Gets the current zoom level. Note that in style layout and paint properties, ["zoom"] may only appear as the
-     * input to a top-level "step" or "interpolate" expression.
+     * Gets the current zoom level. Note that in style layout and paint properties, ["zoom"] may
+     * only appear as the input to a top-level "step" or "interpolate" expression.
      *
-     * Example: ["zoom]: number
+     * <p>Example: ["zoom]: number
      *
-     * Note: MBStyle is currently only supporting srid ESPG:3857
+     * <p>Note: MBStyle is currently only supporting srid ESPG:3857
      */
-    private Expression mbZoom(){
-        return ff.function("zoomLevel",
+    private Expression mbZoom() {
+        return ff.function(
+                "zoomLevel",
                 ff.function("env", ff.literal("wms_scale_denominator")),
                 ff.literal("EPSG:3857"));
     }

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,6 +16,10 @@
  */
 package org.geotools.data.sort;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKBReader;
+import com.vividsolutions.jts.io.WKBWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -26,20 +30,14 @@ import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.util.Date;
 import java.util.List;
-
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKBReader;
-import com.vividsolutions.jts.io.WKBWriter;
-
 /**
  * Allows writing and reading features to/from the given file
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class SimpleFeatureIO {
@@ -61,7 +59,7 @@ public class SimpleFeatureIO {
 
     /**
      * Writes the feature to the file
-     * 
+     *
      * @param sf
      * @throws IOException
      */
@@ -107,8 +105,10 @@ public class SimpleFeatureIO {
                 raf.writeDouble((Double) value);
             } else if (binding == String.class) {
                 raf.writeUTF((String) value);
-            } else if (binding == java.sql.Date.class || binding == java.sql.Time.class
-                    || binding == java.sql.Timestamp.class || binding == java.util.Date.class) {
+            } else if (binding == java.sql.Date.class
+                    || binding == java.sql.Time.class
+                    || binding == java.sql.Timestamp.class
+                    || binding == java.util.Date.class) {
                 raf.writeLong(((Date) value).getTime());
             } else if (Geometry.class.isAssignableFrom(binding)) {
                 WKBWriter writer = new WKBWriter();
@@ -132,7 +132,7 @@ public class SimpleFeatureIO {
 
     /**
      * Reads the next feature form the file
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -151,7 +151,7 @@ public class SimpleFeatureIO {
 
     /**
      * Reads the attributes.
-     * 
+     *
      * @param ad
      * @return
      * @throws IOException
@@ -215,7 +215,7 @@ public class SimpleFeatureIO {
 
     /**
      * Moves the IO to the specified offset in the file
-     * 
+     *
      * @param offset
      * @throws IOException
      */
@@ -225,7 +225,7 @@ public class SimpleFeatureIO {
 
     /**
      * Returns the current reading position in the file
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -235,7 +235,7 @@ public class SimpleFeatureIO {
 
     /**
      * Returns true if the end of file has been reached
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -245,7 +245,7 @@ public class SimpleFeatureIO {
 
     /**
      * Closes the IO, eventually deleting the file in the process
-     * 
+     *
      * @param deleteFile
      * @throws IOException
      */
@@ -257,17 +257,15 @@ public class SimpleFeatureIO {
                 file.delete();
             }
         }
-
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return "SimpleFeatureIO [schema=" + schema + ", file=" + file + "]";
     }
-
 }

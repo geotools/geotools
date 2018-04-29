@@ -20,16 +20,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
+import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
-
 import org.apache.commons.io.IOUtils;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
@@ -38,19 +38,12 @@ import org.geotools.util.URLs;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import it.geosolutions.imageio.plugins.tiff.TIFFImageReadParam;
-import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-
-/**
- * 
- * @author Nicola Lagomarsini Geosolutions
- *
- */
+/** @author Nicola Lagomarsini Geosolutions */
 public class ReadTypeTest {
 
-    private final static int IMAGE_INDEX = 0;
+    private static final int IMAGE_INDEX = 0;
 
-    private final static boolean CLOSE_ELEMENTS = true;
+    private static final boolean CLOSE_ELEMENTS = true;
 
     private static URL granuleUrl;
 
@@ -92,23 +85,51 @@ public class ReadTypeTest {
             assertEquals(jaiImageRead, defaultRead);
 
             // Test 1 = wrong region
-            RenderedImage output = jaiImageRead.read(readParameters, IMAGE_INDEX, granuleUrl,
-                    rasterDimensionsWrong, reader, hints, CLOSE_ELEMENTS);
+            RenderedImage output =
+                    jaiImageRead.read(
+                            readParameters,
+                            IMAGE_INDEX,
+                            granuleUrl,
+                            rasterDimensionsWrong,
+                            reader,
+                            hints,
+                            CLOSE_ELEMENTS);
             assertNull(output);
 
             // Test 2 = null URL
-            output = jaiImageRead.read(readParameters, IMAGE_INDEX, null, rasterDimensions, reader,
-                    hints, CLOSE_ELEMENTS);
+            output =
+                    jaiImageRead.read(
+                            readParameters,
+                            IMAGE_INDEX,
+                            null,
+                            rasterDimensions,
+                            reader,
+                            hints,
+                            CLOSE_ELEMENTS);
             assertNull(output);
 
             // Test 3 = null Reader
-            output = jaiImageRead.read(readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions,
-                    null, hints, CLOSE_ELEMENTS);
+            output =
+                    jaiImageRead.read(
+                            readParameters,
+                            IMAGE_INDEX,
+                            granuleUrl,
+                            rasterDimensions,
+                            null,
+                            hints,
+                            CLOSE_ELEMENTS);
             assertNull(output);
 
             // Test 4 = correct
-            output = jaiImageRead.read(readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions,
-                    reader, hints, CLOSE_ELEMENTS);
+            output =
+                    jaiImageRead.read(
+                            readParameters,
+                            IMAGE_INDEX,
+                            granuleUrl,
+                            rasterDimensions,
+                            reader,
+                            hints,
+                            CLOSE_ELEMENTS);
             assertNotNull(output);
             Rectangle sourceRegion = readParameters.getSourceRegion();
             // Calculate the intersection between the raster dimension and the read parameters
@@ -122,7 +143,7 @@ public class ReadTypeTest {
             if (in != null) {
                 in.close();
             }
-            if(reader != null){
+            if (reader != null) {
                 reader.dispose();
             }
         }
@@ -132,28 +153,59 @@ public class ReadTypeTest {
     public void testDirectReadType() throws IOException {
         // Definition of the reader
 
-
         // Definition of the read type
         ReadType directRead = ReadType.DIRECT_READ;
 
         // Test 1 = wrong region
-        RenderedImage output = testRead(directRead, readParameters, IMAGE_INDEX, granuleUrl,
-                rasterDimensionsWrong, hints, CLOSE_ELEMENTS, true);
+        RenderedImage output =
+                testRead(
+                        directRead,
+                        readParameters,
+                        IMAGE_INDEX,
+                        granuleUrl,
+                        rasterDimensionsWrong,
+                        hints,
+                        CLOSE_ELEMENTS,
+                        true);
         assertNull(output);
 
         // Test 2 = null URL
-        output = testRead(directRead, readParameters, IMAGE_INDEX, null, rasterDimensions, 
-                hints, CLOSE_ELEMENTS, true);
+        output =
+                testRead(
+                        directRead,
+                        readParameters,
+                        IMAGE_INDEX,
+                        null,
+                        rasterDimensions,
+                        hints,
+                        CLOSE_ELEMENTS,
+                        true);
         assertNull(output);
 
         // Test 3 = null Reader
-        output = testRead(directRead, readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions,
-                hints, CLOSE_ELEMENTS, false);
+        output =
+                testRead(
+                        directRead,
+                        readParameters,
+                        IMAGE_INDEX,
+                        granuleUrl,
+                        rasterDimensions,
+                        hints,
+                        CLOSE_ELEMENTS,
+                        false);
         assertNull(output);
 
         // Test 4 = correct
-        output = testRead(directRead, readParameters, IMAGE_INDEX, granuleUrl, rasterDimensions,
-                hints, CLOSE_ELEMENTS, true);
+        output =
+                testRead(
+                        directRead,
+                        readParameters,
+                        IMAGE_INDEX,
+                        granuleUrl,
+                        rasterDimensions,
+                        hints,
+                        CLOSE_ELEMENTS,
+                        true);
         assertNotNull(output);
 
         Rectangle sourceRegion = readParameters.getSourceRegion();
@@ -166,9 +218,16 @@ public class ReadTypeTest {
         assertEquals(output.getHeight(), sourceRegion.height);
     }
 
-    private RenderedImage testRead(ReadType directRead, ImageReadParam readParameters, int imageIndex,
-            URL granuleUrl, Rectangle rasterDimensions, Hints hints, boolean closeElements, 
-            boolean getReader) throws IOException {
+    private RenderedImage testRead(
+            ReadType directRead,
+            ImageReadParam readParameters,
+            int imageIndex,
+            URL granuleUrl,
+            Rectangle rasterDimensions,
+            Hints hints,
+            boolean closeElements,
+            boolean getReader)
+            throws IOException {
         ImageReader reader = null;
         FileImageInputStream in = null;
         try {
@@ -177,8 +236,14 @@ public class ReadTypeTest {
                 reader = new TIFFImageReaderSpi().createReaderInstance();
                 reader.setInput(in);
             }
-            return directRead.read(readParameters, imageIndex, granuleUrl,
-                    rasterDimensions, reader, hints, closeElements);
+            return directRead.read(
+                    readParameters,
+                    imageIndex,
+                    granuleUrl,
+                    rasterDimensions,
+                    reader,
+                    hints,
+                    closeElements);
         } finally {
             if (reader != null) {
                 try {

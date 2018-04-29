@@ -16,26 +16,25 @@
  */
 package org.geotools.data.wmts.model;
 
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import org.geotools.factory.GeoTools;
+import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A tile matrix set is composed of a collection of tile matrices, each one with a resolution
- * optimized for a particular scale and identified by a tile matrix identifier.
- * Each tile matrix set has an optional approximated bounding box but each tile matrix has
- * an exact bounding box that is deduced indirectly from other parameters.
+ * optimized for a particular scale and identified by a tile matrix identifier. Each tile matrix set
+ * has an optional approximated bounding box but each tile matrix has an exact bounding box that is
+ * deduced indirectly from other parameters.
  *
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class TileMatrix {
 
-    static private final GeometryFactory gf = new GeometryFactory();
+    private static final GeometryFactory gf = new GeometryFactory();
 
     String identifier;
 
@@ -57,24 +56,17 @@ public class TileMatrix {
 
     private TileMatrixSet parent;
 
-    /**
-     * @return the identifier
-     */
+    /** @return the identifier */
     public String getIdentifier() {
         return identifier;
     }
 
-    /**
-     * @param identifier
-     *            the identifier to set
-     */
+    /** @param identifier the identifier to set */
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
 
-    /**
-     * @return the denominator
-     */
+    /** @return the denominator */
     public double getDenominator() {
         return denominator;
     }
@@ -83,86 +75,58 @@ public class TileMatrix {
         return resolution;
     }
 
-    /**
-     * @param denominator
-     *            the denominator to set
-     */
+    /** @param denominator the denominator to set */
     public void setDenominator(double denominator) {
         this.denominator = denominator;
         resolution = denominator * pixelWidth;
     }
 
-    /**
-     * @return the topLeft
-     */
+    /** @return the topLeft */
     public Point getTopLeft() {
         return topLeft;
     }
 
-    /**
-     * @param topLeft
-     *            the topLeft to set
-     */
+    /** @param topLeft the topLeft to set */
     public void setTopLeft(Point topLeft) {
         this.topLeft = topLeft;
     }
 
-    /**
-     * @return the tileWidth
-     */
+    /** @return the tileWidth */
     public int getTileWidth() {
         return tileWidth;
     }
 
-    /**
-     * @param tileWidth
-     *            the tileWidth to set
-     */
+    /** @param tileWidth the tileWidth to set */
     public void setTileWidth(int tileWidth) {
         this.tileWidth = tileWidth;
     }
 
-    /**
-     * @return the tileHeight
-     */
+    /** @return the tileHeight */
     public int getTileHeight() {
         return tileHeight;
     }
 
-    /**
-     * @param tileHeight
-     *            the tileHeight to set
-     */
+    /** @param tileHeight the tileHeight to set */
     public void setTileHeight(int tileHeight) {
         this.tileHeight = tileHeight;
     }
 
-    /**
-     * @return the matrixWidth
-     */
+    /** @return the matrixWidth */
     public int getMatrixWidth() {
         return matrixWidth;
     }
 
-    /**
-     * @param matrixWidth
-     *            the matrixWidth to set
-     */
+    /** @param matrixWidth the matrixWidth to set */
     public void setMatrixWidth(int matrixWidth) {
         this.matrixWidth = matrixWidth;
     }
 
-    /**
-     * @return the matrixHeight
-     */
+    /** @return the matrixHeight */
     public int getMatrixHeight() {
         return matrixHeight;
     }
 
-    /**
-     * @param matrixHeight
-     *            the matrixHeight to set
-     */
+    /** @param matrixHeight the matrixHeight to set */
     public void setMatrixHeight(int matrixHeight) {
         this.matrixHeight = matrixHeight;
     }
@@ -170,8 +134,12 @@ public class TileMatrix {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(getIdentifier()).append("\t").append(getDenominator()).append("\t")
-                .append(getResolution()).append("\t");
+        sb.append(getIdentifier())
+                .append("\t")
+                .append(getDenominator())
+                .append("\t")
+                .append(getResolution())
+                .append("\t");
         sb.append(getTopLeft()).append("\t");
         sb.append(getTileWidth()).append("x").append(getTileHeight()).append("\n");
         return sb.toString();
@@ -182,10 +150,10 @@ public class TileMatrix {
      * @param lat
      */
     public void setTopLeft(double lon, double lat) {
-        boolean isLongitudeFirstAxisOrderForced = Boolean
-                .getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
-                || GeoTools.getDefaultHints()
-                        .get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
+        boolean isLongitudeFirstAxisOrderForced =
+                Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
+                        || GeoTools.getDefaultHints().get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER)
+                                == Boolean.TRUE;
 
         CoordinateReferenceSystem crs = getCrs();
         if (isLongitudeFirstAxisOrderForced
@@ -206,9 +174,7 @@ public class TileMatrix {
         this.parent = parent;
     }
 
-    /**
-     * Retrieve the CRS from the parent TileMatrixSet
-     */
+    /** Retrieve the CRS from the parent TileMatrixSet */
     public CoordinateReferenceSystem getCrs() {
         return parent == null ? null : parent.getCoordinateReferenceSystem();
     }

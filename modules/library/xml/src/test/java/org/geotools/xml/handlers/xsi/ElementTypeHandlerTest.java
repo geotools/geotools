@@ -22,9 +22,7 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-/**
- * Tests for {@link ElementTypeHandler}.
- */
+/** Tests for {@link ElementTypeHandler}. */
 public class ElementTypeHandlerTest {
 
     private static final String NAMESPACE_URI = "http://example.org/test";
@@ -33,9 +31,7 @@ public class ElementTypeHandlerTest {
 
     private AttributesImpl attributes = new AttributesImpl();
 
-    /**
-     * Test that a {@code ref} attribute is set as the {@code name}.
-     */
+    /** Test that a {@code ref} attribute is set as the {@code name}. */
     @Test
     public void ref() throws SAXException {
         attributes.addAttribute("", "ref", "ref", "string", "test:another-element");
@@ -44,7 +40,8 @@ public class ElementTypeHandlerTest {
     }
 
     /**
-     * Test that the presence of both {@code ref} and {@code name} attributes results in a {@link SAXException} with the expected message.
+     * Test that the presence of both {@code ref} and {@code name} attributes results in a {@link
+     * SAXException} with the expected message.
      */
     @Test
     public void refAndName() {
@@ -62,7 +59,8 @@ public class ElementTypeHandlerTest {
     }
 
     /**
-     * Test that the presence of both {@code ref} and {@code type} attributes results in a {@link SAXException} with the expected message.
+     * Test that the presence of both {@code ref} and {@code type} attributes results in a {@link
+     * SAXException} with the expected message.
      */
     @Test
     public void refAndType() {
@@ -78,5 +76,4 @@ public class ElementTypeHandlerTest {
                     e.getMessage());
         }
     }
-
 }

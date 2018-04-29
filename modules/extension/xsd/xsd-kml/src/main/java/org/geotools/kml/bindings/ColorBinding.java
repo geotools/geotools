@@ -23,12 +23,12 @@ import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.Binding;
 import org.geotools.xml.InstanceComponent;
 
-
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:color.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;simpleType name="color"&gt;
  *      &lt;annotation&gt;
@@ -48,23 +48,18 @@ import org.geotools.xml.InstanceComponent;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class ColorBinding extends AbstractSimpleBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.color;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -79,13 +74,13 @@ public class ColorBinding extends AbstractSimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
         if (value == null) {
             return null;
         }
@@ -113,11 +108,14 @@ public class ColorBinding extends AbstractSimpleBinding {
         String b = color.substring(i + 4, i + 6);
 
         if (a != null) {
-            return new Color(Integer.parseInt(r, 16), Integer.parseInt(g, 16),
-                Integer.parseInt(b, 16), Integer.parseInt(a, 16));
+            return new Color(
+                    Integer.parseInt(r, 16),
+                    Integer.parseInt(g, 16),
+                    Integer.parseInt(b, 16),
+                    Integer.parseInt(a, 16));
         } else {
-            return new Color(Integer.parseInt(r, 16), Integer.parseInt(g, 16),
-                Integer.parseInt(b, 16));
+            return new Color(
+                    Integer.parseInt(r, 16), Integer.parseInt(g, 16), Integer.parseInt(b, 16));
         }
     }
 }

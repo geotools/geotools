@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,17 +20,13 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.createNiceMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
-import junit.framework.TestCase;
 
+import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DefaultFeatureResultsTest extends TestCase {
 
     public void testMaxFeatureOptimized() throws Exception {
@@ -38,8 +34,8 @@ public class DefaultFeatureResultsTest extends TestCase {
         q.setMaxFeatures(10);
 
         // mock up the feature source so that it'll return a count of 20
-        SimpleFeatureType type = DataUtilities.createType("roads",
-                "_=the_geom:Point,FID:String,NAME:String");
+        SimpleFeatureType type =
+                DataUtilities.createType("roads", "_=the_geom:Point,FID:String,NAME:String");
         SimpleFeatureSource fs = createMock(SimpleFeatureSource.class);
         expect(fs.getSchema()).andReturn(type).anyTimes();
         expect(fs.getCount(q)).andReturn(20);
@@ -56,7 +52,7 @@ public class DefaultFeatureResultsTest extends TestCase {
         // mock up the feature source so that it'll return a count of -1 (too
         // expensive)
         // and then will return a reader
-         FeatureReader<SimpleFeatureType, SimpleFeature> fr = createNiceMock(FeatureReader.class);
+        FeatureReader<SimpleFeatureType, SimpleFeature> fr = createNiceMock(FeatureReader.class);
         expect(fr.hasNext()).andReturn(true).times(2).andReturn(false);
         replay(fr);
 
@@ -64,8 +60,8 @@ public class DefaultFeatureResultsTest extends TestCase {
         expect(ds.getFeatureReader(q, Transaction.AUTO_COMMIT)).andReturn(fr);
         replay(ds);
 
-        SimpleFeatureType type = DataUtilities.createType("roads",
-                "_=the_geom:Point,FID:String,NAME:String");
+        SimpleFeatureType type =
+                DataUtilities.createType("roads", "_=the_geom:Point,FID:String,NAME:String");
         SimpleFeatureSource fs = createMock(SimpleFeatureSource.class);
         expect(fs.getSchema()).andReturn(type).anyTimes();
         expect(fs.getCount(q)).andReturn(-1);

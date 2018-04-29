@@ -17,16 +17,11 @@
 package org.geotools.styling.builder;
 
 import java.awt.Color;
-
 import org.geotools.styling.Fill;
 import org.geotools.util.Converters;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
     Expression color;
 
@@ -34,9 +29,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
 
     GraphicBuilder graphic = new GraphicBuilder(this).unset();
 
-    /**
-     * Create a FillBuilder on its own; not part of a larger data structure.
-     */
+    /** Create a FillBuilder on its own; not part of a larger data structure. */
     public FillBuilder() {
         this(null);
     }
@@ -90,7 +83,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
 
     /**
      * Build Fill as defined; FillBuilder will be reset after this use.
-     * 
+     *
      * @return Created Fill as defined
      */
     public Fill build() {
@@ -109,9 +102,7 @@ public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
         return (FillBuilder) super.unset();
     }
 
-    /**
-     * Reset to produce the default Fill.
-     */
+    /** Reset to produce the default Fill. */
     public FillBuilder reset() {
         unset = false;
         color = Fill.DEFAULT.getColor();
@@ -135,5 +126,4 @@ public class FillBuilder extends AbstractStyleBuilder<org.opengis.style.Fill> {
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().polygon().fill().init(this);
     }
-
 }

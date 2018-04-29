@@ -19,7 +19,6 @@ package org.geotools.tile.impl.bing;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
@@ -29,7 +28,7 @@ import org.geotools.util.logging.Logging;
 
 /**
  * The BingTile, for the Bing Maps family
- * 
+ *
  * @author Tobias Sauerwein
  * @author Ugo Taddei
  * @since 12
@@ -70,6 +69,5 @@ public class BingTile extends Tile {
             LOGGER.log(Level.SEVERE, mesg, e);
             throw new RuntimeException(mesg, e);
         }
-
     }
 }

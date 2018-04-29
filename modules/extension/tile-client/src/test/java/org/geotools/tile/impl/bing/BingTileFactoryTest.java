@@ -32,13 +32,12 @@ public class BingTileFactoryTest extends TileFactoryTest {
     @Test
     public void testGetTileFromCoordinate() {
 
-        Tile tile = factory.findTileAtCoordinate(51, 7, new WebMercatorZoomLevel(5),
-                createService());
+        Tile tile =
+                factory.findTileAtCoordinate(51, 7, new WebMercatorZoomLevel(5), createService());
 
         TileService service = createService();
         BingTile expectedTile = new BingTile(20, 15, new WebMercatorZoomLevel(5), service);
         Assert.assertEquals(expectedTile, tile);
-
     }
 
     @Test
@@ -52,7 +51,6 @@ public class BingTileFactoryTest extends TileFactoryTest {
         BingTile expectedNeighbour = new BingTile(21, 15, new WebMercatorZoomLevel(5), service);
 
         Assert.assertEquals(expectedNeighbour, neighbour);
-
     }
 
     @Test
@@ -66,22 +64,22 @@ public class BingTileFactoryTest extends TileFactoryTest {
         BingTile expectedNeighbour = new BingTile(20, 16, new WebMercatorZoomLevel(5), service);
 
         Assert.assertEquals(expectedNeighbour, neighbour);
-
     }
 
     @Test
     public void testGetExtentFromTileName() {
 
-        BingTileIdentifier tileId = new BingTileIdentifier(10, 12, new WebMercatorZoomLevel(5),
-                "SomeName");
+        BingTileIdentifier tileId =
+                new BingTileIdentifier(10, 12, new WebMercatorZoomLevel(5), "SomeName");
         BingTile tile = new BingTile(tileId, new BingService("2", "d"));
 
         ReferencedEnvelope env = WebMercatorTileFactory.getExtentFromTileName(tileId);
 
         Assert.assertEquals(tile.getExtent(), env);
 
-        ReferencedEnvelope expectedEnv = new ReferencedEnvelope(-67.5, -56.25, 31.9521622380,
-                40.9798980, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope expectedEnv =
+                new ReferencedEnvelope(
+                        -67.5, -56.25, 31.9521622380, 40.9798980, DefaultGeographicCRS.WGS84);
 
         Assert.assertEquals(env.getMinX(), expectedEnv.getMinX(), 0.000001);
         Assert.assertEquals(env.getMinY(), expectedEnv.getMinY(), 0.000001);
@@ -93,9 +91,9 @@ public class BingTileFactoryTest extends TileFactoryTest {
     }
 
     private TileService createService() {
-        String baseURL = "http://ak.dynamic.t2.tiles.virtualearth.net/comp/ch/${code}?mkt=de-de&it=G,VE,BX,L,LA&shading=hill&og=78&n=z";
+        String baseURL =
+                "http://ak.dynamic.t2.tiles.virtualearth.net/comp/ch/${code}?mkt=de-de&it=G,VE,BX,L,LA&shading=hill&og=78&n=z";
         return new BingService("Road", baseURL);
-
     }
 
     protected TileFactory createFactory() {

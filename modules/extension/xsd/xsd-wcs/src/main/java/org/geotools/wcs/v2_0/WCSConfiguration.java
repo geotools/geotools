@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,17 +19,13 @@ package org.geotools.wcs.v2_0;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.ows20.Ows20Factory;
 import net.opengis.wcs20.Wcs20Factory;
-
 import org.geotools.ows.v2_0.OWSConfiguration;
 import org.geotools.wcs.bindings.ExtensionTypeBinding;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
-import org.geotools.xml.XSDParserDelegate;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -41,54 +37,87 @@ public class WCSConfiguration extends Configuration {
 
     /**
      * Creates a new configuration.
-     * 
+     *
      * @generated
-     */     
+     */
     public WCSConfiguration() {
-       super(WCS.getInstance());
-       
-       addDependency(new OWSConfiguration());
+        super(WCS.getInstance());
+
+        addDependency(new OWSConfiguration());
     }
-    
+
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Ows20Factory.eINSTANCE);
-        
+
         // register parser delegate for extension schemas
         container.registerComponentInstance(new RangeSubsetParserDelegate());
         container.registerComponentInstance(new ScalingParserDelegate());
         container.registerComponentInstance(new InterpolationParserDelegate());
     }
-    
-    
+
     /**
      * Registers the bindings for the configuration.
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
     protected final void registerBindings(Map bindings) {
         // manually setup bindings
         bindings.put(WCS.ExtensionType, new ExtensionTypeBinding());
-        
+
         // "automatic" bindings
-        bindings.put(WCS.CapabilitiesType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CapabilitiesType));
-        bindings.put(WCS.ContentsType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ContentsType));
-        bindings.put(WCS.CoverageDescriptionsType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageDescriptionsType));
-        bindings.put(WCS.CoverageDescriptionType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageDescriptionType));
-        bindings.put(WCS.CoverageOfferingsType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageOfferingsType));
-        bindings.put(WCS.CoverageSubtypeParentType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageSubtypeParentType));
-        bindings.put(WCS.CoverageSummaryType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageSummaryType));
-        bindings.put(WCS.DescribeCoverageType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DescribeCoverageType));
-        bindings.put(WCS.DimensionSliceType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionSliceType));
-        bindings.put(WCS.DimensionSubsetType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionSubsetType));
-        bindings.put(WCS.DimensionTrimType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionTrimType));
-        bindings.put(WCS.GetCapabilitiesType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.GetCapabilitiesType));
-        bindings.put(WCS.GetCoverageType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.GetCoverageType));
-        bindings.put(WCS.OfferedCoverageType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.OfferedCoverageType));
-        bindings.put(WCS.RequestBaseType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.RequestBaseType));
-        bindings.put(WCS.ServiceMetadataType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceMetadataType));
-        bindings.put(WCS.ServiceParametersType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceParametersType));
-        // bindings.put(WCS.VersionStringType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.VersionStringType));
+        bindings.put(
+                WCS.CapabilitiesType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CapabilitiesType));
+        bindings.put(
+                WCS.ContentsType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ContentsType));
+        bindings.put(
+                WCS.CoverageDescriptionsType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageDescriptionsType));
+        bindings.put(
+                WCS.CoverageDescriptionType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageDescriptionType));
+        bindings.put(
+                WCS.CoverageOfferingsType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageOfferingsType));
+        bindings.put(
+                WCS.CoverageSubtypeParentType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageSubtypeParentType));
+        bindings.put(
+                WCS.CoverageSummaryType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.CoverageSummaryType));
+        bindings.put(
+                WCS.DescribeCoverageType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DescribeCoverageType));
+        bindings.put(
+                WCS.DimensionSliceType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionSliceType));
+        bindings.put(
+                WCS.DimensionSubsetType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionSubsetType));
+        bindings.put(
+                WCS.DimensionTrimType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.DimensionTrimType));
+        bindings.put(
+                WCS.GetCapabilitiesType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.GetCapabilitiesType));
+        bindings.put(
+                WCS.GetCoverageType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.GetCoverageType));
+        bindings.put(
+                WCS.OfferedCoverageType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.OfferedCoverageType));
+        bindings.put(
+                WCS.RequestBaseType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.RequestBaseType));
+        bindings.put(
+                WCS.ServiceMetadataType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceMetadataType));
+        bindings.put(
+                WCS.ServiceParametersType,
+                new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.ServiceParametersType));
+        // bindings.put(WCS.VersionStringType, new ComplexEMFBinding(Wcs20Factory.eINSTANCE,
+        // WCS.VersionStringType));
         /*
         bindings.put(WCS.Capabilities, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.Capabilities));
         bindings.put(WCS.Contents, new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS.Contents));
@@ -114,17 +143,20 @@ public class WCSConfiguration extends Configuration {
 
     /**
      * Generates the bindings registrations for this class
-     * 
+     *
      * @param args
      */
     public static void main(String[] args) {
         for (Field f : WCS.class.getFields()) {
             if ((f.getModifiers() & (Modifier.STATIC | Modifier.FINAL)) != 0
                     && f.getType().equals(QName.class)) {
-                System.out.println("bindings.put(WCS." + f.getName()
-                        + ", new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS." + f.getName()
-                        + "));");
+                System.out.println(
+                        "bindings.put(WCS."
+                                + f.getName()
+                                + ", new ComplexEMFBinding(Wcs20Factory.eINSTANCE, WCS."
+                                + f.getName()
+                                + "));");
             }
         }
     }
-} 
+}

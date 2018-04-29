@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.geotools.data.Query;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -59,15 +58,15 @@ public class MarkFeatureIteratorTest {
     public void testCanceled() throws Exception {
         DefaultProgressListener listener = new DefaultProgressListener();
         listener.setCanceled(true);
-        MarkFeatureIterator iterator = MarkFeatureIterator.create(zroads.getFeatures(), 1000,
-                listener);
+        MarkFeatureIterator iterator =
+                MarkFeatureIterator.create(zroads.getFeatures(), 1000, listener);
         assertNull(iterator);
     }
 
     private void testReset(int limit) throws IOException {
         DefaultProgressListener listener = new DefaultProgressListener();
-        try (MarkFeatureIterator iterator = MarkFeatureIterator.create(zroads.getFeatures(), limit,
-                listener)) {
+        try (MarkFeatureIterator iterator =
+                MarkFeatureIterator.create(zroads.getFeatures(), limit, listener)) {
             if (limit >= zroads.getCount(Query.ALL)) {
                 assertTrue(iterator instanceof MemoryMarkFeatureIterator);
             } else {
@@ -81,7 +80,6 @@ public class MarkFeatureIteratorTest {
         }
     }
 
-
     private void assertThreeFeatures(MarkFeatureIterator iterator) {
         assertTrue(iterator.hasNext());
         assertEquals("Line.1", iterator.next().getIdentifier().getID());
@@ -91,5 +89,4 @@ public class MarkFeatureIteratorTest {
         assertEquals("Line.3", iterator.next().getIdentifier().getID());
         assertFalse(iterator.hasNext());
     }
-
 }

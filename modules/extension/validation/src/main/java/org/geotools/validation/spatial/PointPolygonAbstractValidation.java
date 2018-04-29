@@ -18,43 +18,33 @@ package org.geotools.validation.spatial;
 
 import org.geotools.validation.DefaultIntegrityValidation;
 
-
 /**
  * PointCoveredByLineValidation purpose.
- * 
- * <p>
- * Basic typeref functionality for a point-polygon validation.
- * </p>
+ *
+ * <p>Basic typeref functionality for a point-polygon validation.
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public abstract class PointPolygonAbstractValidation
-    extends DefaultIntegrityValidation {
+public abstract class PointPolygonAbstractValidation extends DefaultIntegrityValidation {
     private String restrictedPolygonTypeRef;
     private String pointTypeRef;
 
     /**
      * PointCoveredByLineValidation constructor.
-     * 
-     * <p>
-     * Super
-     * </p>
+     *
+     * <p>Super
      */
     public PointPolygonAbstractValidation() {
         super();
     }
 
     /**
-     * Implementation of getTypeNames. Should be called by sub-classes is being
-     * overwritten.
+     * Implementation of getTypeNames. Should be called by sub-classes is being overwritten.
      *
      * @return Array of typeNames, or empty array for all, null for disabled
-     *
      * @see org.geotools.validation.Validation#getTypeNames()
      */
     public String[] getTypeRefs() {
@@ -62,7 +52,7 @@ public abstract class PointPolygonAbstractValidation
             return null;
         }
 
-        return new String[] { pointTypeRef, restrictedPolygonTypeRef };
+        return new String[] {pointTypeRef, restrictedPolygonTypeRef};
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
@@ -32,15 +31,12 @@ import org.opengis.util.InternationalString;
  * A replacement for {@link AttributeTypeImpl} with lazy evaluation of super type, so types can be
  * defined in any order. Note that type equality is defined by name, so do not allow different types
  * with the same name to be put in any Collection.
- * 
- * <p>
- * 
- * Inspired by {@link AttributeTypeImpl} and {@link PropertyTypeImpl}.
- * 
+ *
+ * <p>Inspired by {@link AttributeTypeImpl} and {@link PropertyTypeImpl}.
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see AttributeTypeImpl
  * @see PropertyTypeImpl
- *
  * @source $URL$
  */
 public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
@@ -63,7 +59,7 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
 
     /**
      * Constructor arguments have the same meaning as in {@link AttributeTypeImpl}.
-     * 
+     *
      * @param name
      * @param binding
      * @param identified
@@ -71,8 +67,13 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
      * @param restrictions
      * @param description
      */
-    public AbstractLazyAttributeTypeImpl(Name name, Class<?> binding, boolean identified,
-            boolean isAbstract, List<Filter> restrictions, InternationalString description) {
+    public AbstractLazyAttributeTypeImpl(
+            Name name,
+            Class<?> binding,
+            boolean identified,
+            boolean isAbstract,
+            List<Filter> restrictions,
+            InternationalString description) {
         if (name == null) {
             throw new NullPointerException("Type has no name");
         }
@@ -95,21 +96,17 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
     /**
      * Subclasses must override this method to return the super type of this type or null if none.
      * This method will only be called once at most.
-     * 
+     *
      * @return super type or null
      */
     public abstract AttributeType buildSuper();
 
-    /**
-     * @see org.opengis.feature.type.AttributeType#isIdentified()
-     */
+    /** @see org.opengis.feature.type.AttributeType#isIdentified() */
     public boolean isIdentified() {
         return identified;
     }
 
-    /**
-     * @see org.opengis.feature.type.AttributeType#getSuper()
-     */
+    /** @see org.opengis.feature.type.AttributeType#getSuper() */
     public AttributeType getSuper() {
         if (superType == null) {
             superType = buildSuper();
@@ -117,44 +114,32 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
         return superType;
     }
 
-    /**
-     * @see org.opengis.feature.type.PropertyType#getName()
-     */
+    /** @see org.opengis.feature.type.PropertyType#getName() */
     public Name getName() {
         return name;
     }
 
-    /**
-     * @see org.opengis.feature.type.PropertyType#getBinding()
-     */
+    /** @see org.opengis.feature.type.PropertyType#getBinding() */
     public Class<?> getBinding() {
         return binding;
     }
 
-    /**
-     * @see org.opengis.feature.type.PropertyType#isAbstract()
-     */
+    /** @see org.opengis.feature.type.PropertyType#isAbstract() */
     public boolean isAbstract() {
         return isAbstract;
     }
 
-    /**
-     * @see org.opengis.feature.type.PropertyType#getRestrictions()
-     */
+    /** @see org.opengis.feature.type.PropertyType#getRestrictions() */
     public List<Filter> getRestrictions() {
         return restrictions;
     }
 
-    /**
-     * @see org.opengis.feature.type.PropertyType#getDescription()
-     */
+    /** @see org.opengis.feature.type.PropertyType#getDescription() */
     public InternationalString getDescription() {
         return description;
     }
 
-    /**
-     * @see org.opengis.feature.type.PropertyType#getUserData()
-     */
+    /** @see org.opengis.feature.type.PropertyType#getUserData() */
     public Map<Object, Object> getUserData() {
         return userData;
     }
@@ -163,7 +148,7 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
      * Equality by name. Yes, this may be a surprise to some client code, but how else do you define
      * equality in the face of cyclic type definitions, without breaking encapsulation to analyse
      * the full graph of types?
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object other) {
@@ -174,19 +159,14 @@ public abstract class AbstractLazyAttributeTypeImpl implements AttributeType {
         }
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
         return name.hashCode();
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
+    /** @see java.lang.Object#toString() */
     @Override
     public String toString() {
         return "LazyAttributeType: " + getName();
     }
-
 }

@@ -18,11 +18,8 @@ package org.geotools.coverage.processing;
 
 import java.io.Serializable;
 import java.util.Iterator;
-
 import org.geotools.factory.Hints;
 import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.processing.Operation;
@@ -34,33 +31,26 @@ import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.util.InternationalString;
 
-
 /**
- * Provides descriptive information for a {@linkplain Coverage coverage} processing operation.
- * The descriptive information includes such information as the name of the operation, operation
+ * Provides descriptive information for a {@linkplain Coverage coverage} processing operation. The
+ * descriptive information includes such information as the name of the operation, operation
  * description, and number of source grid coverages required for the operation.
  *
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public abstract class AbstractOperation implements Operation, Serializable {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -1441856042779942954L;;
 
-    /**
-     * The parameters descriptor.
-     */
+    /** The parameters descriptor. */
     protected final ParameterDescriptorGroup descriptor;
 
     /**
-     * Constructs an operation. The operation name will be the same than the
-     * parameter descriptor name.
+     * Constructs an operation. The operation name will be the same than the parameter descriptor
+     * name.
      *
      * @param descriptor The parameters descriptor.
      */
@@ -70,8 +60,8 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Returns the name of the processing operation. The default implementation
-     * returns the {@linkplain #descriptor} code name.
+     * Returns the name of the processing operation. The default implementation returns the
+     * {@linkplain #descriptor} code name.
      *
      * @todo The return type will be changed from {@link String} to {@link Identifier}.
      */
@@ -80,21 +70,20 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Returns the description of the processing operation. If there is no description,
-     * returns {@code null}. The default implementation returns the {@linkplain #descriptor}
-     * remarks.
+     * Returns the description of the processing operation. If there is no description, returns
+     * {@code null}. The default implementation returns the {@linkplain #descriptor} remarks.
      *
      * @deprecated Return type need to be changed, maybe to {@link InternationalString}.
      */
     @Deprecated
     public String getDescription() {
         final InternationalString remarks = descriptor.getRemarks();
-        return (remarks!=null) ? remarks.toString() : null;
+        return (remarks != null) ? remarks.toString() : null;
     }
 
     /**
-     * Returns the URL for documentation on the processing operation. If no online documentation
-     * is available the string will be null. The default implementation returns {@code null}.
+     * Returns the URL for documentation on the processing operation. If no online documentation is
+     * available the string will be null. The default implementation returns {@code null}.
      *
      * @deprecated To be replaced by a method returning a {@link Citation}.
      */
@@ -114,8 +103,8 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Returns the vendor name of the processing operation implementation.
-     * The default implementation returns "Geotools 2".
+     * Returns the vendor name of the processing operation implementation. The default
+     * implementation returns "Geotools 2".
      *
      * @deprecated Replaced by {@code getName().getAuthority()}.
      */
@@ -124,19 +113,15 @@ public abstract class AbstractOperation implements Operation, Serializable {
         return "Geotools 2";
     }
 
-    /**
-     * Returns the number of source coverages required for the operation.
-     */
+    /** Returns the number of source coverages required for the operation. */
     public int getNumSources() {
         return getNumSources(descriptor);
     }
 
-    /**
-     * Returns the number of source coverages in the specified parameter group.
-     */
+    /** Returns the number of source coverages in the specified parameter group. */
     private static int getNumSources(final ParameterDescriptorGroup descriptor) {
         int count = 0;
-        for (final Iterator it=descriptor.descriptors().iterator(); it.hasNext();) {
+        for (final Iterator it = descriptor.descriptors().iterator(); it.hasNext(); ) {
             final GeneralParameterDescriptor candidate = (GeneralParameterDescriptor) it.next();
             if (candidate instanceof ParameterDescriptorGroup) {
                 count += getNumSources((ParameterDescriptorGroup) candidate);
@@ -152,22 +137,20 @@ public abstract class AbstractOperation implements Operation, Serializable {
         return count;
     }
 
-    /**
-     * Returns an initially empty set of parameters.
-     */
+    /** Returns an initially empty set of parameters. */
     public ParameterValueGroup getParameters() {
         return descriptor.createValue();
     }
 
     /**
-     * Applies a process operation to a coverage. This method is invoked by {@link DefaultProcessor}.
+     * Applies a process operation to a coverage. This method is invoked by {@link
+     * DefaultProcessor}.
      *
-     * @param  parameters List of name value pairs for the parameters required for the operation.
-     * @param  hints A set of rendering hints, or {@code null} if none. The {@code DefaultProcessor}
-     *         may provides hints for the following keys: {@link Hints#COORDINATE_OPERATION_FACTORY}
-     *         and {@link Hints#JAI_INSTANCE}.
+     * @param parameters List of name value pairs for the parameters required for the operation.
+     * @param hints A set of rendering hints, or {@code null} if none. The {@code DefaultProcessor}
+     *     may provides hints for the following keys: {@link Hints#COORDINATE_OPERATION_FACTORY} and
+     *     {@link Hints#JAI_INSTANCE}.
      * @return The result as a coverage.
-     *
      * @throws CoverageProcessingException if the operation can't be applied.
      */
     public abstract Coverage doOperation(final ParameterValueGroup parameters, final Hints hints)
@@ -181,7 +164,7 @@ public abstract class AbstractOperation implements Operation, Serializable {
     public int hashCode() {
         // Since we should have only one operation registered for each name,
         // the descriptors hash code should be enough.
-        return descriptor.hashCode() ^ (int)serialVersionUID;
+        return descriptor.hashCode() ^ (int) serialVersionUID;
     }
 
     /**
@@ -192,7 +175,7 @@ public abstract class AbstractOperation implements Operation, Serializable {
      */
     @Override
     public boolean equals(final Object object) {
-        if (object!=null && object.getClass().equals(getClass())) {
+        if (object != null && object.getClass().equals(getClass())) {
             final AbstractOperation that = (AbstractOperation) object;
             return Utilities.equals(this.descriptor, that.descriptor);
         }
@@ -200,8 +183,8 @@ public abstract class AbstractOperation implements Operation, Serializable {
     }
 
     /**
-     * Returns a string representation of this operation. The returned string is
-     * implementation dependent. It is usually provided for debugging purposes only.
+     * Returns a string representation of this operation. The returned string is implementation
+     * dependent. It is usually provided for debugging purposes only.
      */
     @Override
     public String toString() {

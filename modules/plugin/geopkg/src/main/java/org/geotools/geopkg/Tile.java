@@ -20,18 +20,16 @@ import java.util.Arrays;
 
 /**
  * A single tile from a geopackage tiles layer.
- * 
+ *
  * @author Justin Deoliveira
  * @author Niels Charlier
- *
  */
 public class Tile {
 
     Integer zoom, column, row;
     byte[] data;
 
-    public Tile() {
-    }
+    public Tile() {}
 
     public Tile(Integer zoom, Integer column, Integer row, byte[] data) {
         super();
@@ -86,30 +84,20 @@ public class Tile {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Tile other = (Tile) obj;
         if (column == null) {
-            if (other.column != null)
-                return false;
-        } else if (!column.equals(other.column))
-            return false;
-        if (!Arrays.equals(data, other.data))
-            return false;
+            if (other.column != null) return false;
+        } else if (!column.equals(other.column)) return false;
+        if (!Arrays.equals(data, other.data)) return false;
         if (row == null) {
-            if (other.row != null)
-                return false;
-        } else if (!row.equals(other.row))
-            return false;
+            if (other.row != null) return false;
+        } else if (!row.equals(other.row)) return false;
         if (zoom == null) {
-            if (other.zoom != null)
-                return false;
-        } else if (!zoom.equals(other.zoom))
-            return false;
+            if (other.zoom != null) return false;
+        } else if (!zoom.equals(other.zoom)) return false;
         return true;
     }
 }

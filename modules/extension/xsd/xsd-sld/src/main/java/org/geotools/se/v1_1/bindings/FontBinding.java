@@ -16,19 +16,18 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDFontBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:Font.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="Font" type="se:FontType"&gt;
@@ -39,16 +38,12 @@ import javax.xml.namespace.QName;
  *          and "font-size".
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class FontBinding extends SLDFontBinding {
@@ -57,9 +52,7 @@ public class FontBinding extends SLDFontBinding {
         super(styleFactory, filterFactory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.Font;
     }

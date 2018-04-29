@@ -19,12 +19,7 @@ package org.geotools.gce.grassraster.core.color;
 import java.util.Enumeration;
 import java.util.Vector;
 
-/**
- *
- *
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AttributeTable {
     private Vector<CellAttribute> atts = null;
 
@@ -33,42 +28,34 @@ public class AttributeTable {
         atts = new Vector<CellAttribute>();
     }
 
-    /**
-     *
-     */
+    /** */
     public int size() {
         return atts.size();
     }
 
-    /**
-     *
-     */
+    /** */
     public Enumeration<CellAttribute> getCategories() {
         return atts.elements();
     }
 
-    /**
-     *
-     */
-    public void addAttribute( float cat, String value ) {
+    /** */
+    public void addAttribute(float cat, String value) {
         if (get(cat) == null) {
             insertAttribute(cat, value);
         }
     }
 
-    public void addAttribute( float cat0, float cat1, String value ) {
+    public void addAttribute(float cat0, float cat1, String value) {
         // TODO implement
         //        System.out.println("Not yet implemented!"); //$NON-NLS-1$
     }
 
-    /**
-     *
-     */
-    private String get( float cat ) {
+    /** */
+    private String get(float cat) {
         int low = 0;
         int high = atts.size() - 1;
 
-        while( low <= high ) {
+        while (low <= high) {
             int i = (low + high) / 2;
             CellAttribute catt = (CellAttribute) atts.elementAt(i);
             int c = catt.compare(cat);
@@ -83,12 +70,12 @@ public class AttributeTable {
         return null;
     }
 
-    private void insertAttribute( float cat, String value ) {
+    private void insertAttribute(float cat, String value) {
         int i = 0;
         int low = 0;
         int high = atts.size() - 1;
 
-        while( low <= high ) {
+        while (low <= high) {
             i = (low + high) / 2;
             CellAttribute catt = (CellAttribute) atts.elementAt(i);
             int c = catt.compare(cat);
@@ -106,9 +93,7 @@ public class AttributeTable {
         atts.insertElementAt(new CellAttribute(cat, value), i);
     }
 
-    /**
-     *
-     */
+    /** */
     public class CellAttribute {
         private float low = 0f;
 
@@ -116,19 +101,15 @@ public class AttributeTable {
 
         private String catText = null;
 
-        /**
-         *
-         */
-        public CellAttribute( float cat, String text ) {
+        /** */
+        public CellAttribute(float cat, String text) {
             low = cat;
             range = 0;
             catText = text;
         }
 
-        /**
-         *
-         */
-        public CellAttribute( float cat0, float cat1, String text ) {
+        /** */
+        public CellAttribute(float cat0, float cat1, String text) {
             if (cat1 > cat0) {
                 low = cat0;
                 range = cat1 - cat0;
@@ -143,12 +124,10 @@ public class AttributeTable {
          * Compare a value to the range of values in this attribute If the cat is below the renage
          * then return -1, if it is aboove the ramge then return +1, if it is equal return 0
          */
-        public int compare( float cat ) {
+        public int compare(float cat) {
             float diff = cat - low;
-            if (diff < 0)
-                return -1;
-            else if (diff > range)
-                return 1;
+            if (diff < 0) return -1;
+            else if (diff > range) return 1;
 
             return 0;
         }
@@ -166,10 +145,13 @@ public class AttributeTable {
         }
 
         public String toString() {
-            if (range == 0f)
-                return String.valueOf(low) + ":" + catText; //$NON-NLS-1$
+            if (range == 0f) return String.valueOf(low) + ":" + catText; // $NON-NLS-1$
             else
-                return String.valueOf(low) + "-" + String.valueOf(low + range) + ":" + catText; //$NON-NLS-1$
+                return String.valueOf(low)
+                        + "-"
+                        + String.valueOf(low + range)
+                        + ":"
+                        + catText; // $NON-NLS-1$
         }
     }
 }

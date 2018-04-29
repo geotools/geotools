@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,21 +19,19 @@ package org.geotools.filter.visitor;
 
 import org.opengis.annotation.XmlElement;
 
-
 /**
  * Used by Categorize function.<br>
- * Whether the Threshold values themselves belong to the preceding or the succeeding
- * interval can be controlled by the attribute thresholdsBelongTo= with the possible values
- * "preceding" and "succeeding" the latter being the default.
- *
- *
+ * Whether the Threshold values themselves belong to the preceding or the succeeding interval can be
+ * controlled by the attribute thresholdsBelongTo= with the possible values "preceding" and
+ * "succeeding" the latter being the default.
  *
  * @source $URL$
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
+ *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
 @XmlElement("ThreshholdsBelongToType")
 public enum ThreshholdsBelongTo {
-        SUCCEEDING,
-        PRECEDING
+    SUCCEEDING,
+    PRECEDING
 }

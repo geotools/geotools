@@ -19,16 +19,11 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCBooleanOnlineTest;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeoPkgBooleanOnlineTest extends JDBCBooleanOnlineTest {
 
     @Override
     protected JDBCBooleanTestSetup createTestSetup() {
         return new GeoPkgBooleanTestSetup(new GeoPkgTestSetup());
     }
-
 }

@@ -16,32 +16,28 @@
  */
 package org.geotools.filter.v1_0;
 
-import javax.xml.namespace.QName;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.Disjoint;
+import javax.xml.namespace.QName;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.spatial.Disjoint;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:Disjoint.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Disjoint" substitutionGroup="ogc:spatialOps" type="ogc:BinarySpatialOpType"/&gt;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCDisjointBinding extends AbstractComplexBinding {
@@ -53,14 +49,13 @@ public class OGCDisjointBinding extends AbstractComplexBinding {
         this.geometryFactory = geometryFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.Disjoint;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -75,13 +70,13 @@ public class OGCDisjointBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] operands = OGCUtils.spatial(node, filterFactory, geometryFactory);
 
         return filterFactory.disjoint(operands[0], operands[1]);

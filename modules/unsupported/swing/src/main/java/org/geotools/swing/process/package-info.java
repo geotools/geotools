@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * GUI components for running GeoTools processes.
- */
+/** GUI components for running GeoTools processes. */
 package org.geotools.swing.process;

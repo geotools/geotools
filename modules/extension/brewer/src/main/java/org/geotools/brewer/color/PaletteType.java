@@ -16,11 +16,8 @@
  */
 package org.geotools.brewer.color;
 
-
 /**
  * This class doubles as a filter and an identifier for colour palettes.
- *
- *
  *
  * @source $URL$
  */
@@ -51,7 +48,6 @@ public class PaletteType {
     }
 
     /**
-     *
      * @param suitableRanged true, false, or null (for don't care)
      * @param suitableUnique
      */
@@ -85,19 +81,19 @@ public class PaletteType {
 
     public boolean isMatch(PaletteType filter) {
         if (filter.equals(ColorBrewer.ALL)) {
-            return true; //wildcard
+            return true; // wildcard
         }
 
         if (filter.isEmpty) {
-            return true; //wildcard (everything is null)
+            return true; // wildcard (everything is null)
         }
 
-        if (filter.getName() == null) { //generic filter
+        if (filter.getName() == null) { // generic filter
 
             if (isEmpty) {
-                return false; //we know nothing about this item, so we assume it doesn't match 
+                return false; // we know nothing about this item, so we assume it doesn't match
             }
-        } else { //specific filter (exact name match + conditions)
+        } else { // specific filter (exact name match + conditions)
 
             if (!filter.getName().equals(name)) {
                 return false;

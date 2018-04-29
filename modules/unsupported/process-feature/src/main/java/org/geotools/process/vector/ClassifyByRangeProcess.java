@@ -18,7 +18,6 @@ package org.geotools.process.vector;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.CategorizeFunction;
@@ -37,27 +36,77 @@ import org.opengis.filter.expression.Function;
 
 /**
  * Computes a new attribute to classify another attribute by intervals over vector data sets.
- * 
- * @author Mauro Bartolomeoli
  *
+ * @author Mauro Bartolomeoli
  * @source $URL$
  */
-@DescribeProcess(title = "ClassifyByRange", description = "Computes a new attribute to classify another attribute by intervals over vector data sets.")
+@DescribeProcess(
+    title = "ClassifyByRange",
+    description =
+            "Computes a new attribute to classify another attribute by intervals over vector data sets."
+)
 public class ClassifyByRangeProcess implements VectorProcess {
 
     private static final FilterFactory FF = CommonFactoryFinder.getFilterFactory(null);
 
     @DescribeResult(name = "result", description = "Classified feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
-            @DescribeParameter(name = "classifyOnAttribute", description = "Attribute to be classified using intervals of values.") String classifyOnAttribute,
-            @DescribeParameter(name = "thresholds", min = 0, description = "List of thresholds (use this one to specify custom intervals). Ignored if classifier is specified (use classes in that case).") String[] thresholds,
-            @DescribeParameter(name = "outputValues", min = 0, description = "List of class values for each given threshold (+1 for out of range).") String[] outputValues,
-            @DescribeParameter(name = "classifier", min = 0, description = "Classifier type (EqualInterval, Quantile, Jenks, etc.). Use with classes to calculate intervals automatically") String classifier,
-            @DescribeParameter(name = "classes", min = 0, description = "Classifier # of classes, used when classifier is specified (defaults to 5).") Integer classes,
-            @DescribeParameter(name = "include", min = 0, defaultValue = "FALSE", description = "Include or exclude current threshold in the interval.") Boolean include,
-            @DescribeParameter(name = "outputAttribute", min = 0, description = "Name of the output attribute with class values (defaults to class).") String outputAttribute,
-            @DescribeParameter(name = "outputType", min = 0, description = "Optional binding type for output values (defaults to String).") String outputType)
+            @DescribeParameter(name = "features", description = "Input feature collection")
+                    SimpleFeatureCollection features,
+            @DescribeParameter(
+                        name = "classifyOnAttribute",
+                        description = "Attribute to be classified using intervals of values."
+                    )
+                    String classifyOnAttribute,
+            @DescribeParameter(
+                        name = "thresholds",
+                        min = 0,
+                        description =
+                                "List of thresholds (use this one to specify custom intervals). Ignored if classifier is specified (use classes in that case)."
+                    )
+                    String[] thresholds,
+            @DescribeParameter(
+                        name = "outputValues",
+                        min = 0,
+                        description =
+                                "List of class values for each given threshold (+1 for out of range)."
+                    )
+                    String[] outputValues,
+            @DescribeParameter(
+                        name = "classifier",
+                        min = 0,
+                        description =
+                                "Classifier type (EqualInterval, Quantile, Jenks, etc.). Use with classes to calculate intervals automatically"
+                    )
+                    String classifier,
+            @DescribeParameter(
+                        name = "classes",
+                        min = 0,
+                        description =
+                                "Classifier # of classes, used when classifier is specified (defaults to 5)."
+                    )
+                    Integer classes,
+            @DescribeParameter(
+                        name = "include",
+                        min = 0,
+                        defaultValue = "FALSE",
+                        description = "Include or exclude current threshold in the interval."
+                    )
+                    Boolean include,
+            @DescribeParameter(
+                        name = "outputAttribute",
+                        min = 0,
+                        description =
+                                "Name of the output attribute with class values (defaults to class)."
+                    )
+                    String outputAttribute,
+            @DescribeParameter(
+                        name = "outputType",
+                        min = 0,
+                        description =
+                                "Optional binding type for output values (defaults to String)."
+                    )
+                    String outputType)
             throws ProcessException {
 
         if (features == null) {
@@ -85,8 +134,8 @@ public class ClassifyByRangeProcess implements VectorProcess {
                     outputType + " is not a valid value for outputType: should be a class name");
         }
 
-        AttributeDescriptor classifyDescriptor = features.getSchema()
-                .getDescriptor(classifyOnAttribute);
+        AttributeDescriptor classifyDescriptor =
+                features.getSchema().getDescriptor(classifyOnAttribute);
         if (classifyDescriptor == null) {
             throw new ProcessException(
                     "classifyOnAttribute is not a valid schema attribute: " + classifyOnAttribute);
@@ -106,8 +155,8 @@ public class ClassifyByRangeProcess implements VectorProcess {
             if (classes == null) {
                 classes = 5;
             }
-            Function classifyFun = FF.function(classifier, FF.property(classifyOnAttribute),
-                    FF.literal(classes));
+            Function classifyFun =
+                    FF.function(classifier, FF.property(classifyOnAttribute), FF.literal(classes));
             RangedClassifier rc = (RangedClassifier) classifyFun.evaluate(features);
             for (int i = 0; i < rc.getSize(); i++) {
                 ranges.add(rc.getMin(i));
@@ -132,19 +181,27 @@ public class ClassifyByRangeProcess implements VectorProcess {
         for (int count = 0; count < ranges.size(); count++) {
             Object outputValue = Converters.convert(outputValues[count], classify.binding);
             if (outputValue == null) {
-                throw new ProcessException("Incompatible output value found " + outputValues[count]
-                        + " for type " + classify.binding.getName());
+                throw new ProcessException(
+                        "Incompatible output value found "
+                                + outputValues[count]
+                                + " for type "
+                                + classify.binding.getName());
             }
             params.add(FF.literal(outputValue));
             Object rangeValue = Converters.convert(ranges.get(count), rangeType);
             if (rangeValue == null) {
-                throw new ProcessException("Incompatible range value found " + rangeValue
-                        + " for type " + rangeType.getName());
+                throw new ProcessException(
+                        "Incompatible range value found "
+                                + rangeValue
+                                + " for type "
+                                + rangeType.getName());
             }
             params.add(FF.literal(rangeValue));
         }
-        params.add(FF.literal(
-                Converters.convert(outputValues[outputValues.length - 1], classify.binding)));
+        params.add(
+                FF.literal(
+                        Converters.convert(
+                                outputValues[outputValues.length - 1], classify.binding)));
         params.add(
                 FF.literal(include ? CategorizeFunction.PRECEDING : CategorizeFunction.SUCCEEDING));
         classify.expression = new CategorizeFunction(params, null);

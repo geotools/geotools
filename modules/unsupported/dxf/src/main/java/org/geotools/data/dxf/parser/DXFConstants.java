@@ -1,11 +1,7 @@
 package org.geotools.data.dxf.parser;
 
 /**
- *
  * @author Chris
- *
- *
- *
  * @source $URL$
  */
 public interface DXFConstants {
@@ -51,20 +47,21 @@ public interface DXFConstants {
     public static final String $ACADVER = "$ACADVER";
     public static final String $FILLMODE = "$FILLMODE";
     /* layer constants */
-    public static final short LAYER_FROZEN = 1;  /* layer is frozen */
+    public static final short LAYER_FROZEN = 1; /* layer is frozen */
 
-    public static final short LAYER_AUTO_FROZEN = 2;  /* layer automatically frozen in all VIEWPORTS */
+    public static final short LAYER_AUTO_FROZEN =
+            2; /* layer automatically frozen in all VIEWPORTS */
 
-    public static final short LAYER_LOCKED = 4;  /* layer is locked */
+    public static final short LAYER_LOCKED = 4; /* layer is locked */
 
-    public static final short LAYER_XREF = 8;  /* layer is from XREF */
+    public static final short LAYER_XREF = 8; /* layer is from XREF */
 
-    public static final short LAYER_XREF_FOUND = 16;  /* layer is from known XREF */
+    public static final short LAYER_XREF_FOUND = 16; /* layer is from known XREF */
 
-    public static final short LAYER_USED = 32;  /* layer was used */
+    public static final short LAYER_USED = 32; /* layer was used */
 
-    public static final short LAYER_INVISIBLE = 16384;  /* (own:) layer is invisible */
-    
+    public static final short LAYER_INVISIBLE = 16384; /* (own:) layer is invisible */
+
     /*
     Polyline flag (bit-coded); default is 0:
     1 = This is a closed polyline (or a polygon mesh closed in the M direction).
@@ -76,6 +73,5 @@ public interface DXFConstants {
     64 = The polyline is a polyface mesh.
     128 = The linetype pattern is generated continuously around the vertices of this polyline.
      */
-
 
 }

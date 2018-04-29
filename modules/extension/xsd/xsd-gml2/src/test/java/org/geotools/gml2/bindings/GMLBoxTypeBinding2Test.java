@@ -16,18 +16,12 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLBoxTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Envelope.class, binding(GML.BoxType).getType());
@@ -50,7 +44,7 @@ public class GMLBoxTypeBinding2Test extends GMLTestSupport {
     public void testEncode() throws Exception {
         Document doc = encode(new Envelope(1, 2, 3, 4), GML.Box);
 
-        assertEquals(2,
-            doc.getElementsByTagNameNS(GML.NAMESPACE, GML.coord.getLocalPart()).getLength());
+        assertEquals(
+                2, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.coord.getLocalPart()).getLength());
     }
 }

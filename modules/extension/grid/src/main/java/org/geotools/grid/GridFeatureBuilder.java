@@ -18,12 +18,11 @@
 package org.geotools.grid;
 
 import java.util.Map;
-
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Controls the creating of features representing grid elements during vector
- * grid construction.
+ * Controls the creating of features representing grid elements during vector grid construction.
+ *
  * <pre><code>
  * GridFeatureBuilder builder = new GridFeatureBuilder(myFeatureType) {
  *     private int id = 0;
@@ -39,9 +38,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -62,7 +58,7 @@ public abstract class GridFeatureBuilder {
     }
 
     /**
-     * Gets the feature type. 
+     * Gets the feature type.
      *
      * @return the feature type
      */
@@ -71,28 +67,24 @@ public abstract class GridFeatureBuilder {
     }
 
     /**
-     * Sets the values of attributes for a new {@code SimpleFeature} being
-     * constructed from the given {@code GridElement}.
-     * <p>
-     * This method must be overridden by the user. It is called by the grid
-     * building classes as each new feature is constructed.
+     * Sets the values of attributes for a new {@code SimpleFeature} being constructed from the
+     * given {@code GridElement}.
+     *
+     * <p>This method must be overridden by the user. It is called by the grid building classes as
+     * each new feature is constructed.
      *
      * @param el the element from which the new feature is being constructed
-     *
-     * @param attributes a {@code Map} with attribute names as keys and
-     *        attribute values as values
+     * @param attributes a {@code Map} with attribute names as keys and attribute values as values
      */
     public abstract void setAttributes(GridElement el, Map<String, Object> attributes);
 
     /**
-     * Gets the {@code FeatureID} as a {@code String} for a new {@code SimpleFeature}
-     * being constructed from the given {@code GridElement}.
-     * <p>
-     * It is optional to override this method. The base implementation returns
-     * {@code null}.
+     * Gets the {@code FeatureID} as a {@code String} for a new {@code SimpleFeature} being
+     * constructed from the given {@code GridElement}.
+     *
+     * <p>It is optional to override this method. The base implementation returns {@code null}.
      *
      * @param el the element from which the new feature is being constructed
-     *
      * @return value to use as the feature ID
      */
     public String getFeatureID(GridElement el) {
@@ -100,19 +92,16 @@ public abstract class GridFeatureBuilder {
     }
 
     /**
-     * Tests whether a feature will be constructed for the given {@code GridElement}.
-     * This can be overriden to create vector grids with 'holes' where elements are not
-     * required, for example, based on location or the relationship to other data layers.
-     * <p>
-     * The base implementation always returns {@code true}.
+     * Tests whether a feature will be constructed for the given {@code GridElement}. This can be
+     * overriden to create vector grids with 'holes' where elements are not required, for example,
+     * based on location or the relationship to other data layers.
+     *
+     * <p>The base implementation always returns {@code true}.
      *
      * @param el the element from which the new feature would be constructed
-     *
-     * @return {@code true} to create a feature for the element; {@code false}
-     *         to skip the element
+     * @return {@code true} to create a feature for the element; {@code false} to skip the element
      */
     public boolean getCreateFeature(GridElement el) {
         return true;
     }
-
 }

@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
@@ -9,62 +8,46 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class DrawingInfo {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("renderer")
     @Expose
     private Renderer renderer;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("transparency")
     @Expose
     private Integer transparency;
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The renderer
+     *
+     * @return The renderer
      */
     public Renderer getRenderer() {
         return renderer;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param renderer
-     *     The renderer
+     *
+     * @param renderer The renderer
      */
     public void setRenderer(Renderer renderer) {
         this.renderer = renderer;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The transparency
+     *
+     * @return The transparency
      */
     public Integer getTransparency() {
         return transparency;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param transparency
-     *     The transparency
+     *
+     * @param transparency The transparency
      */
     public void setTransparency(Integer transparency) {
         this.transparency = transparency;
@@ -89,7 +72,9 @@ public class DrawingInfo {
             return false;
         }
         DrawingInfo rhs = ((DrawingInfo) other);
-        return new EqualsBuilder().append(renderer, rhs.renderer).append(transparency, rhs.transparency).isEquals();
+        return new EqualsBuilder()
+                .append(renderer, rhs.renderer)
+                .append(transparency, rhs.transparency)
+                .isEquals();
     }
-
 }

@@ -21,12 +21,12 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /**
- * Take an object as an argument and returns a boolean value.
- * The result is false when then input is an empty string, 0, false, null,
- * or NaN; otherwise it is true.
+ * Take an object as an argument and returns a boolean value. The result is false when then input is
+ * an empty string, 0, false, null, or NaN; otherwise it is true.
  *
- * This function is a helper to accommodate MBType expressions. Expressions in this section are provided for the purpose of
- * testing for and converting between different data types like strings, numbers, and boolean values.
+ * <p>This function is a helper to accommodate MBType expressions. Expressions in this section are
+ * provided for the purpose of testing for and converting between different data types like strings,
+ * numbers, and boolean values.
  */
 class ToBoolFunction extends FunctionExpressionImpl {
 
@@ -49,16 +49,16 @@ class ToBoolFunction extends FunctionExpressionImpl {
         if (arg0 == null) {
             return Boolean.FALSE;
         }
-        if (arg0 instanceof Double && ((Double) arg0).isNaN()){
+        if (arg0 instanceof Double && ((Double) arg0).isNaN()) {
             return Boolean.FALSE;
         }
-        if (Number.class.isAssignableFrom(arg0.getClass()) && ((Number)arg0).doubleValue() == 0d){
+        if (Number.class.isAssignableFrom(arg0.getClass()) && ((Number) arg0).doubleValue() == 0d) {
             return Boolean.FALSE;
         }
-        if (arg0 instanceof Boolean && (Boolean) arg0 == false){
+        if (arg0 instanceof Boolean && (Boolean) arg0 == false) {
             return Boolean.FALSE;
         }
-        if (arg0 instanceof String && ((String)arg0).isEmpty()){
+        if (arg0 instanceof String && ((String) arg0).isEmpty()) {
             return Boolean.FALSE;
         }
         return Boolean.TRUE;

@@ -25,5 +25,4 @@ public class SQLServerJoinOnlineTest extends JDBCJoinOnlineTest {
     protected JDBCJoinTestSetup createTestSetup() {
         return new SQLServerJoinTestSetup();
     }
-
 }

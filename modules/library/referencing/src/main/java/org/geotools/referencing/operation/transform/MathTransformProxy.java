@@ -20,43 +20,34 @@
 package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
-
+import org.geotools.util.Utilities;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.Matrix;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
-
-import org.geotools.util.Utilities;
-
 
 /**
- * A math transform which delegates part of its work to an other math transform. This is used
- * as a starting point for subclass wanting to modifies only some aspect of an existing math
- * transform, or to attach additional informations to it. The default implementation delegates
- * all method calls to the {@linkplain #transform underlying transform}. Subclasses typically
- * override some of those methods.
- * <p>
- * This class is serializable if the {@linkplain #transform underlying transform} is serializable
+ * A math transform which delegates part of its work to an other math transform. This is used as a
+ * starting point for subclass wanting to modifies only some aspect of an existing math transform,
+ * or to attach additional informations to it. The default implementation delegates all method calls
+ * to the {@linkplain #transform underlying transform}. Subclasses typically override some of those
+ * methods.
+ *
+ * <p>This class is serializable if the {@linkplain #transform underlying transform} is serializable
  * too.
  *
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class MathTransformProxy implements MathTransform, Serializable {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 8844242705205498128L;
 
-    /**
-     * The math transform on which to delegate the work.
-     */
+    /** The math transform on which to delegate the work. */
     public final MathTransform transform;
 
     /**
@@ -68,16 +59,12 @@ public class MathTransformProxy implements MathTransform, Serializable {
         this.transform = transform;
     }
 
-    /**
-     * Gets the dimension of input points.
-     */
+    /** Gets the dimension of input points. */
     public int getSourceDimensions() {
         return transform.getTargetDimensions();
     }
 
-    /**
-     * Gets the dimension of output points.
-     */
+    /** Gets the dimension of output points. */
     public int getTargetDimensions() {
         return transform.getSourceDimensions();
     }
@@ -85,79 +72,80 @@ public class MathTransformProxy implements MathTransform, Serializable {
     /**
      * Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}.
      *
-     * @throws MismatchedDimensionException if {@code ptSrc} or
-     *         {@code ptDst} doesn't have the expected dimension.
+     * @throws MismatchedDimensionException if {@code ptSrc} or {@code ptDst} doesn't have the
+     *     expected dimension.
      * @throws TransformException if the point can't be transformed.
      */
     public DirectPosition transform(final DirectPosition ptSrc, final DirectPosition ptDst)
-            throws MismatchedDimensionException, TransformException
-    {
+            throws MismatchedDimensionException, TransformException {
         return transform.transform(ptSrc, ptDst);
     }
 
-    /**
-     * Transforms a list of coordinate point ordinal values.
-     */
-    public void transform(final double[] srcPts, final int srcOff,
-                          final double[] dstPts, final int dstOff,
-                          final int numPts) throws TransformException
-    {
+    /** Transforms a list of coordinate point ordinal values. */
+    public void transform(
+            final double[] srcPts,
+            final int srcOff,
+            final double[] dstPts,
+            final int dstOff,
+            final int numPts)
+            throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
 
-    /**
-     * Transforms a list of coordinate point ordinal values.
-     */
-    public void transform(final float[] srcPts, final int srcOff,
-                          final float[] dstPts, final int dstOff,
-                          final int numPts) throws TransformException
-    {
+    /** Transforms a list of coordinate point ordinal values. */
+    public void transform(
+            final float[] srcPts,
+            final int srcOff,
+            final float[] dstPts,
+            final int dstOff,
+            final int numPts)
+            throws TransformException {
         transform.transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
 
     /**
      * Transforms a list of coordinate point ordinal values.
      *
-     * @todo Remove the cast to {@link AbstractMathTransform}
-     *       when this method will be part of GeoAPI.
+     * @todo Remove the cast to {@link AbstractMathTransform} when this method will be part of
+     *     GeoAPI.
      */
-    public void transform(final float [] srcPts, final int srcOff,
-                          final double[] dstPts, final int dstOff,
-                          final int numPts) throws TransformException
-    {
+    public void transform(
+            final float[] srcPts,
+            final int srcOff,
+            final double[] dstPts,
+            final int dstOff,
+            final int numPts)
+            throws TransformException {
         ((AbstractMathTransform) transform).transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
 
     /**
      * Transforms a list of coordinate point ordinal values.
      *
-     * @todo Remove the cast to {@link AbstractMathTransform}
-     *       when this method will be part of GeoAPI.
+     * @todo Remove the cast to {@link AbstractMathTransform} when this method will be part of
+     *     GeoAPI.
      */
-    public void transform(final double[] srcPts, final int srcOff,
-                          final float [] dstPts, final int dstOff,
-                          final int numPts) throws TransformException
-    {
+    public void transform(
+            final double[] srcPts,
+            final int srcOff,
+            final float[] dstPts,
+            final int dstOff,
+            final int numPts)
+            throws TransformException {
         ((AbstractMathTransform) transform).transform(srcPts, srcOff, dstPts, dstOff, numPts);
     }
 
-    /**
-     * Gets the derivative of this transform at a point.
-     */
+    /** Gets the derivative of this transform at a point. */
     public Matrix derivative(final DirectPosition point) throws TransformException {
         return transform.derivative(point);
     }
 
-    /**
-     * Returns the inverse of this math transform.
-     */
+    /** Returns the inverse of this math transform. */
     public MathTransform inverse() throws NoninvertibleTransformException {
         return transform.inverse();
     }
 
-    /**
-     * Tests whether this transform does not move any points.
-     */
+    /** Tests whether this transform does not move any points. */
     public boolean isIdentity() {
         return transform.isIdentity();
     }
@@ -171,9 +159,7 @@ public class MathTransformProxy implements MathTransform, Serializable {
         return transform.toWKT();
     }
 
-    /**
-     * Returns a string representation for this transform.
-     */
+    /** Returns a string representation for this transform. */
     @Override
     public String toString() {
         return transform.toString();
@@ -183,23 +169,21 @@ public class MathTransformProxy implements MathTransform, Serializable {
      * Compares the specified object with this inverse math transform for equality.
      *
      * @param object The object to compare with this transform.
-     * @return {@code true} if the given object is of the same class and if the wrapped
-     *         transforms are equal.
+     * @return {@code true} if the given object is of the same class and if the wrapped transforms
+     *     are equal.
      */
     @Override
     public boolean equals(final Object object) {
-        if (object!=null && object.getClass().equals(getClass())) {
+        if (object != null && object.getClass().equals(getClass())) {
             final MathTransformProxy that = (MathTransformProxy) object;
             return Utilities.equals(this.transform, that.transform);
         }
         return false;
     }
 
-    /**
-     * Returns a hash code value for this math transform.
-     */
+    /** Returns a hash code value for this math transform. */
     @Override
     public int hashCode() {
-        return transform.hashCode() ^ (int)serialVersionUID;
+        return transform.hashCode() ^ (int) serialVersionUID;
     }
 }

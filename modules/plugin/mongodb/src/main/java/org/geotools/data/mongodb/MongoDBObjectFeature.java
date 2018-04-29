@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -48,10 +48,11 @@ public class MongoDBObjectFeature implements SimpleFeature {
     private final SimpleFeatureType featureType;
     private final DBObject featureDBO;
     private final CollectionMapper mapper;
-    
-    private Map<Object, Object> userData; 
 
-    public MongoDBObjectFeature(DBObject dbo, SimpleFeatureType featureType, CollectionMapper mapper) {
+    private Map<Object, Object> userData;
+
+    public MongoDBObjectFeature(
+            DBObject dbo, SimpleFeatureType featureType, CollectionMapper mapper) {
         this.featureDBO = dbo;
         this.featureType = featureType;
         this.mapper = mapper;
@@ -65,7 +66,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
     public SimpleFeatureType getType() {
         return featureType;
     }
-    
+
     @Override
     public SimpleFeatureType getFeatureType() {
         return getType();
@@ -80,20 +81,20 @@ public class MongoDBObjectFeature implements SimpleFeature {
     @Override
     public String getID() {
         Object id = featureDBO.get("_id");
-        return id != null ? id.toString() : null; 
+        return id != null ? id.toString() : null;
     }
 
     @Override
     public BoundingBox getBounds() {
         Object o = getDefaultGeometry();
-        if ( o instanceof Geometry ) {
+        if (o instanceof Geometry) {
             CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
             if (crs == null) {
                 crs = DefaultGeographicCRS.WGS84;
             }
-            Envelope bounds = ReferencedEnvelope.create( crs );
-            bounds.init(JTS.bounds((Geometry)o, crs ));
-            return (BoundingBox)bounds;
+            Envelope bounds = ReferencedEnvelope.create(crs);
+            bounds.init(JTS.bounds((Geometry) o, crs));
+            return (BoundingBox) bounds;
         }
         return null;
     }
@@ -105,14 +106,15 @@ public class MongoDBObjectFeature implements SimpleFeature {
 
     @Override
     public void setDefaultGeometry(Object geometry) {
-        MongoUtil.setDBOValue(featureDBO, mapper.getGeometryPath(), mapper.toObject((Geometry)geometry));
+        MongoUtil.setDBOValue(
+                featureDBO, mapper.getGeometryPath(), mapper.toObject((Geometry) geometry));
     }
 
     @Override
     public Object getAttribute(Name name) {
         return doGetAttribute(featureType.getDescriptor(name));
     }
-    
+
     @Override
     public void setAttribute(Name name, Object value) {
         doSetAttribute(featureType.getDescriptor(name), value);
@@ -122,7 +124,6 @@ public class MongoDBObjectFeature implements SimpleFeature {
     public Object getAttribute(String name) {
         return doGetAttribute(featureType.getDescriptor(name));
     }
-
 
     @Override
     public void setAttribute(String name, Object value) {
@@ -138,32 +139,31 @@ public class MongoDBObjectFeature implements SimpleFeature {
     public void setAttribute(int index, Object value) throws IndexOutOfBoundsException {
         doSetAttribute(featureType.getDescriptor(index), value);
     }
-    
+
     private Object doGetAttribute(AttributeDescriptor d) throws IndexOutOfBoundsException {
         if (d instanceof GeometryDescriptor) {
             Object o = getDBOValue(mapper.getGeometryPath());
-            return o instanceof DBObject ?
-                    mapper.getGeometry((DBObject)o) : null;
+            return o instanceof DBObject ? mapper.getGeometry((DBObject) o) : null;
         }
         return getDBOValue(mapper.getPropertyPath(d.getLocalName()));
     }
 
     private void doSetAttribute(AttributeDescriptor d, Object o) {
         if (d instanceof GeometryDescriptor) {
-            MongoUtil.setDBOValue(featureDBO,
-                    mapper.getGeometryPath(),
-                    mapper.toObject((Geometry)o));
+            MongoUtil.setDBOValue(
+                    featureDBO, mapper.getGeometryPath(), mapper.toObject((Geometry) o));
         } else {
-            MongoUtil.setDBOValue(featureDBO,
+            MongoUtil.setDBOValue(
+                    featureDBO,
                     mapper.getPropertyPath(d.getLocalName()),
                     Converters.convert(o, d.getType().getBinding()));
         }
     }
-    
+
     Object getDBOValue(String path) {
         return MongoUtil.getDBOValue(featureDBO, path);
     }
-    
+
     @Override
     public int getAttributeCount() {
         return featureType.getAttributeCount();
@@ -182,7 +182,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
     @Override
     public void setAttributes(List<Object> values) {
         int index = 0;
-        for(Object value : values) {
+        for (Object value : values) {
             setAttribute(index++, value);
         }
     }
@@ -190,7 +190,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
     @Override
     public void setAttributes(Object[] values) {
         int index = 0;
-        for(Object value : values) {
+        for (Object value : values) {
             setAttribute(index++, value);
         }
     }
@@ -207,19 +207,18 @@ public class MongoDBObjectFeature implements SimpleFeature {
     public GeometryAttribute getDefaultGeometryProperty() {
         GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
         GeometryAttribute geometryAttribute = null;
-        if(geometryDescriptor != null){
+        if (geometryDescriptor != null) {
             Object defaultGeometry = getDefaultGeometry();
-            geometryAttribute = new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);            
+            geometryAttribute =
+                    new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);
         }
         return geometryAttribute;
     }
 
     @Override
     public void setDefaultGeometryProperty(GeometryAttribute geometryAttribute) {
-        if(geometryAttribute != null)
-            setDefaultGeometry(geometryAttribute.getValue());
-        else
-            setDefaultGeometry(null);
+        if (geometryAttribute != null) setDefaultGeometry(geometryAttribute.getValue());
+        else setDefaultGeometry(null);
     }
 
     @Override
@@ -248,7 +247,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
     }
 
     @Override
-    public Collection<?extends Property> getValue() {
+    public Collection<? extends Property> getValue() {
         throw new UnsupportedOperationException();
     }
 
@@ -259,8 +258,8 @@ public class MongoDBObjectFeature implements SimpleFeature {
 
     @Override
     public AttributeDescriptor getDescriptor() {
-        return new AttributeDescriptorImpl(featureType, featureType.getName(), 0,
-                Integer.MAX_VALUE, true, null);
+        return new AttributeDescriptorImpl(
+                featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
     }
 
     @Override
@@ -277,9 +276,7 @@ public class MongoDBObjectFeature implements SimpleFeature {
     public void setValue(Object value) {
         throw new UnsupportedOperationException();
     }
-    
-    @Override
-    public void validate() {
-    }
 
+    @Override
+    public void validate() {}
 }

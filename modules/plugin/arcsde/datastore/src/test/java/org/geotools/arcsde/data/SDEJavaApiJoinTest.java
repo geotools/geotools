@@ -23,13 +23,20 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeQuery;
+import com.esri.sde.sdk.client.SeQueryInfo;
+import com.esri.sde.sdk.client.SeRow;
+import com.esri.sde.sdk.client.SeShape;
+import com.esri.sde.sdk.client.SeSqlConstruct;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Point;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectBody;
-
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.SdeRow;
@@ -52,22 +59,12 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeQuery;
-import com.esri.sde.sdk.client.SeQueryInfo;
-import com.esri.sde.sdk.client.SeRow;
-import com.esri.sde.sdk.client.SeShape;
-import com.esri.sde.sdk.client.SeSqlConstruct;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Point;
-
 /**
  * ArcSDEDAtaStore test case for a master-child joining
  * <p>
  * This test will create an sde layer (table + spatial table) as master and a business table as
  * child:
- * 
+ *
  * <pre>
  * &lt;code&gt;
  *  -----------------------------------------------
@@ -81,7 +78,7 @@ import com.vividsolutions.jts.geom.Point;
  *  -----------------------------------------------
  *  |     3     |   name3        |  POINT(3, 3)   |
  *  -----------------------------------------------
- * 
+ *
  *  ---------------------------------------------------------------------
  *  |                     GT_SDE_TEST_CHILD                             |
  *  ---------------------------------------------------------------------
@@ -101,16 +98,16 @@ import com.vividsolutions.jts.geom.Point;
  *  ---------------------------------------------------------------------
  * &lt;/code&gt;
  * &lt;/re&gt;
- * 
+ *
  * </p>
  * <p>
  * The following are rules that may help you in correctly specifying an SQL query that will work
  * with the ArcSDE Java API. This rules was collected empirically based on some of the tests of this
  * test suite. Be aware that ArcSDE Java API only supports &quot;queries&quot; of the following
  * form: <code>
- * SELECT &lt;list of qualified column names&gt; 
- *  FROM &lt;list of qualified table names&gt; 
- *  WHERE &lt;any where clause supported by the RDBMS&gt; 
+ * SELECT &lt;list of qualified column names&gt;
+ *  FROM &lt;list of qualified table names&gt;
+ *  WHERE &lt;any where clause supported by the RDBMS&gt;
  *  [ORDER BY &lt;qualified column names&gt;]
  * </code> Rules to create SQL QUERIES:
  * <ul>
@@ -131,14 +128,14 @@ import com.vividsolutions.jts.geom.Point;
  * </code>
  * </ul>
  * </p>
- * 
+ *
  * &#064;author Gabriel Roldan, Axios Engineering &#064;source $URL:
  * http://gtsvn.refractions.net/branches
  * /2.5.x/modules/plugin/arcsde/datastore/src/test/java/org/geotools
  * /arcsde/data/SDEJavaApiJoinTest.java $ &#064;version $Id: SDEJavaApiJoinTest.java 31903
  * 2008-11-22 20:44:25Z groldan $ &#064;since 2.3.x
- * 
- * 
+ *
+ *
  *
  *
  * @source $URL$
@@ -156,7 +153,7 @@ public class SDEJavaApiJoinTest {
 
     /**
      * Initialization code for the whole test suite
-     * 
+     *
      * @throws IOException
      * @throws SeException
      * @throws FactoryException
@@ -164,8 +161,9 @@ public class SDEJavaApiJoinTest {
      * @throws UnavailableConnectionException
      */
     @BeforeClass
-    public static void oneTimeSetUp() throws IOException, SeException,
-            NoSuchAuthorityCodeException, FactoryException, UnavailableConnectionException {
+    public static void oneTimeSetUp()
+            throws IOException, SeException, NoSuchAuthorityCodeException, FactoryException,
+                    UnavailableConnectionException {
         testData = new TestData();
         testData.setUp();
 
@@ -177,9 +175,7 @@ public class SDEJavaApiJoinTest {
         }
     }
 
-    /**
-     * Tear down code for the whole suite
-     */
+    /** Tear down code for the whole suite */
     @AfterClass
     public static void oneTimeTearDown() {
         final boolean cleanTestTable = true;
@@ -191,7 +187,7 @@ public class SDEJavaApiJoinTest {
     /**
      * loads {@code testData/testparams.properties} into a Properties object, wich is used to obtain
      * test tables names and is used as parameter to find the DataStore
-     * 
+     *
      * @throws Exception
      */
     @Before
@@ -206,19 +202,17 @@ public class SDEJavaApiJoinTest {
      * G.DRILLED_DE, G.DRILLED__1, B.SHAPE" + " FROM SCO.LOUGHBOROUGH_BORES B,
      * SCO.LOUGHBOROUGH_BORE_GEOL G" + " WHERE (B.QS = G.QS AND B.NUMB = G.NUMB AND B.BSUFF =
      * G.BSUFF AND B.RT = G.RT)" + " ORDER BY B.QS, B.RT, B.NUMB, B.BSUFF";
-     * 
+     *
      * try { store.registerView(typeName, definitionQuery); } catch (Exception e) {
      * e.printStackTrace(); throw e; }
-     * 
+     *
      * SimpleFeatureType type = (SimpleFeatureType) store.getSchema(typeName); assertNotNull(type);
-     * 
+     *
      * SimpleFeatureSource fs = store.getFeatureSource(typeName); assertNotNull(fs); int count =
      * fs.getCount(Query.ALL); final int expected = 16479; assertEquals(expected, count); }
      */
 
-    /**
-     * Assert that the datastore complains on views with non supported features
-     */
+    /** Assert that the datastore complains on views with non supported features */
     @Test
     public void testRegisterIllegalView() throws IOException {
         final String typeName = "badQuery";
@@ -262,9 +256,7 @@ public class SDEJavaApiJoinTest {
         }
     }
 
-    /**
-     * Fail if tried to register the same view name more than once
-     */
+    /** Fail if tried to register the same view name more than once */
     @Test
     public void testRegisterDuplicateViewName() throws IOException {
         final String plainSQL = InProcessViewSupportTestData.masterChildSql;
@@ -292,12 +284,20 @@ public class SDEJavaApiJoinTest {
 
     @Test
     public void testRegisterViewBuildsCorrectFeatureType() throws IOException {
-        final String plainSQL = "SELECT " + InProcessViewSupportTestData.MASTER_UNQUALIFIED
-                + ".*, " + InProcessViewSupportTestData.CHILD_UNQUALIFIED + ".DESCRIPTION FROM "
-                + InProcessViewSupportTestData.MASTER_UNQUALIFIED + ", "
-                + InProcessViewSupportTestData.CHILD_UNQUALIFIED + " WHERE "
-                + InProcessViewSupportTestData.CHILD_UNQUALIFIED + ".MASTER_ID = "
-                + InProcessViewSupportTestData.MASTER_UNQUALIFIED + ".ID";
+        final String plainSQL =
+                "SELECT "
+                        + InProcessViewSupportTestData.MASTER_UNQUALIFIED
+                        + ".*, "
+                        + InProcessViewSupportTestData.CHILD_UNQUALIFIED
+                        + ".DESCRIPTION FROM "
+                        + InProcessViewSupportTestData.MASTER_UNQUALIFIED
+                        + ", "
+                        + InProcessViewSupportTestData.CHILD_UNQUALIFIED
+                        + " WHERE "
+                        + InProcessViewSupportTestData.CHILD_UNQUALIFIED
+                        + ".MASTER_ID = "
+                        + InProcessViewSupportTestData.MASTER_UNQUALIFIED
+                        + ".ID";
 
         SelectBody select = ViewRegisteringFactoryHelper.parseSqlQuery(plainSQL);
         store.registerView(InProcessViewSupportTestData.typeName, (PlainSelect) select);
@@ -328,8 +328,9 @@ public class SDEJavaApiJoinTest {
 
     @Test
     public void testViewBounds() throws IOException {
-        SelectBody select = ViewRegisteringFactoryHelper
-                .parseSqlQuery(InProcessViewSupportTestData.masterChildSql);
+        SelectBody select =
+                ViewRegisteringFactoryHelper.parseSqlQuery(
+                        InProcessViewSupportTestData.masterChildSql);
         store.registerView(InProcessViewSupportTestData.typeName, (PlainSelect) select);
 
         SimpleFeatureSource fs = store.getFeatureSource(InProcessViewSupportTestData.typeName);
@@ -344,8 +345,9 @@ public class SDEJavaApiJoinTest {
 
     @Test
     public void testViewBoundsQuery() throws Exception {
-        SelectBody select = ViewRegisteringFactoryHelper
-                .parseSqlQuery(InProcessViewSupportTestData.masterChildSql);
+        SelectBody select =
+                ViewRegisteringFactoryHelper.parseSqlQuery(
+                        InProcessViewSupportTestData.masterChildSql);
         store.registerView(InProcessViewSupportTestData.typeName, (PlainSelect) select);
 
         SimpleFeatureSource fs = store.getFeatureSource(InProcessViewSupportTestData.typeName);
@@ -366,8 +368,9 @@ public class SDEJavaApiJoinTest {
 
     @Test
     public void testViewCount() throws Exception {
-        SelectBody select = ViewRegisteringFactoryHelper
-                .parseSqlQuery(InProcessViewSupportTestData.masterChildSql);
+        SelectBody select =
+                ViewRegisteringFactoryHelper.parseSqlQuery(
+                        InProcessViewSupportTestData.masterChildSql);
         store.registerView(InProcessViewSupportTestData.typeName, (PlainSelect) select);
 
         SimpleFeatureSource fs = store.getFeatureSource(InProcessViewSupportTestData.typeName);
@@ -379,8 +382,9 @@ public class SDEJavaApiJoinTest {
 
     @Test
     public void testViewCountQuery() throws Exception {
-        SelectBody select = ViewRegisteringFactoryHelper
-                .parseSqlQuery(InProcessViewSupportTestData.masterChildSql);
+        SelectBody select =
+                ViewRegisteringFactoryHelper.parseSqlQuery(
+                        InProcessViewSupportTestData.masterChildSql);
         store.registerView(InProcessViewSupportTestData.typeName, (PlainSelect) select);
 
         SimpleFeatureSource fs = store.getFeatureSource(InProcessViewSupportTestData.typeName);
@@ -397,13 +401,18 @@ public class SDEJavaApiJoinTest {
 
     @Test
     public void testReadView() throws Exception {
-        SelectBody select = ViewRegisteringFactoryHelper
-                .parseSqlQuery(InProcessViewSupportTestData.masterChildSql);
+        SelectBody select =
+                ViewRegisteringFactoryHelper.parseSqlQuery(
+                        InProcessViewSupportTestData.masterChildSql);
         store.registerView(InProcessViewSupportTestData.typeName, (PlainSelect) select);
 
         SimpleFeatureSource fs = store.getFeatureSource(InProcessViewSupportTestData.typeName);
 
-        Query query = new Query(InProcessViewSupportTestData.typeName, Filter.INCLUDE, Query.ALL_PROPERTIES);
+        Query query =
+                new Query(
+                        InProcessViewSupportTestData.typeName,
+                        Filter.INCLUDE,
+                        Query.ALL_PROPERTIES);
         SimpleFeatureCollection fc = fs.getFeatures(query);
         int fcCount = fc.size();
         int itCount = 0;
@@ -424,8 +433,9 @@ public class SDEJavaApiJoinTest {
 
     @Test
     public void testQueryView() throws Exception {
-        SelectBody select = ViewRegisteringFactoryHelper
-                .parseSqlQuery(InProcessViewSupportTestData.masterChildSql);
+        SelectBody select =
+                ViewRegisteringFactoryHelper.parseSqlQuery(
+                        InProcessViewSupportTestData.masterChildSql);
         store.registerView(InProcessViewSupportTestData.typeName, (PlainSelect) select);
 
         String cqlQuery = "NAME='name2' OR DESCRIPTION='description6'";
@@ -453,7 +463,7 @@ public class SDEJavaApiJoinTest {
 
     /**
      * Meant as example to be sure we're using the ArcSDE java api correctly
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -461,19 +471,24 @@ public class SDEJavaApiJoinTest {
         ISession session = store.getSession(Transaction.AUTO_COMMIT);
 
         SeSqlConstruct sqlConstruct = new SeSqlConstruct();
-        String[] tables = { InProcessViewSupportTestData.MASTER, InProcessViewSupportTestData.CHILD };
+        String[] tables = {InProcessViewSupportTestData.MASTER, InProcessViewSupportTestData.CHILD};
         sqlConstruct.setTables(tables);
-        String where = InProcessViewSupportTestData.CHILD + ".MASTER_ID = "
-                + InProcessViewSupportTestData.MASTER + ".ID";
+        String where =
+                InProcessViewSupportTestData.CHILD
+                        + ".MASTER_ID = "
+                        + InProcessViewSupportTestData.MASTER
+                        + ".ID";
         sqlConstruct.setWhere(where);
 
         // tricky part is that SHAPE column must always be the last one
-        String[] propertyNames = { InProcessViewSupportTestData.MASTER + ".ID AS myid2",
-                InProcessViewSupportTestData.MASTER + ".NAME AS MNAME",
-                InProcessViewSupportTestData.CHILD + ".ID",
-                InProcessViewSupportTestData.CHILD + ".NAME",
-                InProcessViewSupportTestData.CHILD + ".DESCRIPTION",
-                InProcessViewSupportTestData.MASTER + ".SHAPE" };
+        String[] propertyNames = {
+            InProcessViewSupportTestData.MASTER + ".ID AS myid2",
+            InProcessViewSupportTestData.MASTER + ".NAME AS MNAME",
+            InProcessViewSupportTestData.CHILD + ".ID",
+            InProcessViewSupportTestData.CHILD + ".NAME",
+            InProcessViewSupportTestData.CHILD + ".DESCRIPTION",
+            InProcessViewSupportTestData.MASTER + ".SHAPE"
+        };
         final int shapeIndex = 5;
         final int expectedCount = 7;
 
@@ -482,8 +497,15 @@ public class SDEJavaApiJoinTest {
         queryInfo.setColumns(propertyNames);
         queryInfo.setByClause(" ORDER BY " + InProcessViewSupportTestData.CHILD + ".ID DESC");
 
-        final Integer[] expectedChildIds = { new Integer(7), new Integer(6), new Integer(5),
-                new Integer(4), new Integer(3), new Integer(2), new Integer(1) };
+        final Integer[] expectedChildIds = {
+            new Integer(7),
+            new Integer(6),
+            new Integer(5),
+            new Integer(4),
+            new Integer(3),
+            new Integer(2),
+            new Integer(1)
+        };
 
         // final int[] expectedShapeIndicators = { SeRow.SE_IS_NOT_NULL_VALUE, // child7
         // SeRow.SE_IS_REPEATED_FEATURE, // child6
@@ -494,17 +516,19 @@ public class SDEJavaApiJoinTest {
         // SeRow.SE_IS_NOT_NULL_VALUE // child1
         // };
 
-        final SeQuery query = session.issue(new Command<SeQuery>() {
+        final SeQuery query =
+                session.issue(
+                        new Command<SeQuery>() {
 
-            @Override
-            public SeQuery execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                SeQuery query = new SeQuery(connection);
-                query.prepareQueryInfo(queryInfo);
-                query.execute();
-                return query;
-            }
-        });
+                            @Override
+                            public SeQuery execute(ISession session, SeConnection connection)
+                                    throws SeException, IOException {
+                                SeQuery query = new SeQuery(connection);
+                                query.prepareQueryInfo(queryInfo);
+                                query.execute();
+                                return query;
+                            }
+                        });
 
         try {
             SdeRow row = session.fetch(query);
@@ -543,10 +567,9 @@ public class SDEJavaApiJoinTest {
 
     /**
      * Using table alias leads to ArcSDE returning SHAPE id instead of SHAPE geometry.
-     * 
-     * @throws Exception
-     *             TODO: revisit, this test hangs with SDE 9.2/Oracle9i at
-     *             query.prepareQueryInfo(queryInfo);
+     *
+     * @throws Exception TODO: revisit, this test hangs with SDE 9.2/Oracle9i at
+     *     query.prepareQueryInfo(queryInfo);
      */
     @Test
     @Ignore
@@ -554,14 +577,16 @@ public class SDEJavaApiJoinTest {
         ISession session = store.getSession(Transaction.AUTO_COMMIT);
 
         SeSqlConstruct sqlConstruct = new SeSqlConstruct();
-        String[] tables = { InProcessViewSupportTestData.MASTER + " MASTER",
-                InProcessViewSupportTestData.CHILD + " CHILD" };
+        String[] tables = {
+            InProcessViewSupportTestData.MASTER + " MASTER",
+            InProcessViewSupportTestData.CHILD + " CHILD"
+        };
         sqlConstruct.setTables(tables);
         String where = "CHILD.MASTER_ID = MASTER.ID";
         sqlConstruct.setWhere(where);
 
         // tricky part is that SHAPE column must always be the last one
-        String[] propertyNames = { "MASTER.ID", "CHILD.NAME", "MASTER.SHAPE" };
+        String[] propertyNames = {"MASTER.ID", "CHILD.NAME", "MASTER.SHAPE"};
 
         final int shapeIndex = 2;
         final int expectedCount = 7;
@@ -570,16 +595,18 @@ public class SDEJavaApiJoinTest {
         queryInfo.setConstruct(sqlConstruct);
         queryInfo.setColumns(propertyNames);
 
-        final SeQuery query = session.issue(new Command<SeQuery>() {
-            @Override
-            public SeQuery execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                SeQuery query = new SeQuery(connection);
-                query.prepareQueryInfo(queryInfo);
-                query.execute();
-                return query;
-            }
-        });
+        final SeQuery query =
+                session.issue(
+                        new Command<SeQuery>() {
+                            @Override
+                            public SeQuery execute(ISession session, SeConnection connection)
+                                    throws SeException, IOException {
+                                SeQuery query = new SeQuery(connection);
+                                query.prepareQueryInfo(queryInfo);
+                                query.execute();
+                                return query;
+                            }
+                        });
 
         try {
             SdeRow row = session.fetch(query);
@@ -608,7 +635,7 @@ public class SDEJavaApiJoinTest {
     /**
      * Meant as example to be sure we're using the ArcSDE java api correctly Nasty thing about group
      * by is that is seems that we cannot include/use the geometry column :(
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -616,15 +643,19 @@ public class SDEJavaApiJoinTest {
         ISession session = store.getSession(Transaction.AUTO_COMMIT);
 
         SeSqlConstruct sqlConstruct = new SeSqlConstruct();
-        String[] tables = { InProcessViewSupportTestData.MASTER, InProcessViewSupportTestData.CHILD };
+        String[] tables = {InProcessViewSupportTestData.MASTER, InProcessViewSupportTestData.CHILD};
         sqlConstruct.setTables(tables);
-        String where = InProcessViewSupportTestData.CHILD + ".MASTER_ID = "
-                + InProcessViewSupportTestData.MASTER + ".ID";
+        String where =
+                InProcessViewSupportTestData.CHILD
+                        + ".MASTER_ID = "
+                        + InProcessViewSupportTestData.MASTER
+                        + ".ID";
         sqlConstruct.setWhere(where);
 
         // tricky part is that SHAPE column must always be the last one
-        String[] propertyNames = { InProcessViewSupportTestData.MASTER + ".ID",
-                InProcessViewSupportTestData.CHILD + ".NAME" /*
+        String[] propertyNames = {
+            InProcessViewSupportTestData.MASTER + ".ID",
+            InProcessViewSupportTestData.CHILD + ".NAME" /*
                                                               * , MASTER + ".SHAPE"
                                                               */
         };
@@ -636,12 +667,20 @@ public class SDEJavaApiJoinTest {
         queryInfo.setConstruct(sqlConstruct);
         queryInfo.setColumns(propertyNames);
 
-        String groupBy = InProcessViewSupportTestData.MASTER + ".ID, "
-                + InProcessViewSupportTestData.CHILD + ".NAME, "
-                + InProcessViewSupportTestData.MASTER + ".SHAPE";
+        String groupBy =
+                InProcessViewSupportTestData.MASTER
+                        + ".ID, "
+                        + InProcessViewSupportTestData.CHILD
+                        + ".NAME, "
+                        + InProcessViewSupportTestData.MASTER
+                        + ".SHAPE";
 
-        queryInfo.setByClause(" GROUP BY " + groupBy + " ORDER BY "
-                + InProcessViewSupportTestData.CHILD + ".NAME DESC");
+        queryInfo.setByClause(
+                " GROUP BY "
+                        + groupBy
+                        + " ORDER BY "
+                        + InProcessViewSupportTestData.CHILD
+                        + ".NAME DESC");
 
         // final int[] expectedShapeIndicators = { SeRow.SE_IS_NOT_NULL_VALUE,
         // // child6
@@ -654,16 +693,18 @@ public class SDEJavaApiJoinTest {
         // SeRow.SE_IS_NOT_NULL_VALUE // child1
         // };
 
-        SeQuery query = session.issue(new Command<SeQuery>() {
-            @Override
-            public SeQuery execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                SeQuery query = new SeQuery(connection);
-                query.prepareQueryInfo(queryInfo);
-                query.execute();
-                return query;
-            }
-        });
+        SeQuery query =
+                session.issue(
+                        new Command<SeQuery>() {
+                            @Override
+                            public SeQuery execute(ISession session, SeConnection connection)
+                                    throws SeException, IOException {
+                                SeQuery query = new SeQuery(connection);
+                                query.prepareQueryInfo(queryInfo);
+                                query.execute();
+                                return query;
+                            }
+                        });
         try {
             SdeRow row = session.fetch(query);
             int count = 0;
@@ -692,33 +733,45 @@ public class SDEJavaApiJoinTest {
      * Meant as example to be sure we're using the ArcSDE java api correctly. We can execute a plain
      * sql query, but shapes are not returned by ArcSDE. Instead, the SHAPE field contains the SHAPE
      * id, just like in the real business table.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testApiPlainSql() throws Exception {
         ISession session = store.getSession(Transaction.AUTO_COMMIT);
 
-        final String plainQuery = "SELECT " + InProcessViewSupportTestData.MASTER + ".ID, "
-                + InProcessViewSupportTestData.MASTER + ".SHAPE, "
-                + InProcessViewSupportTestData.CHILD + ".NAME  FROM "
-                + InProcessViewSupportTestData.MASTER + " INNER JOIN "
-                + InProcessViewSupportTestData.CHILD + " ON " + InProcessViewSupportTestData.CHILD
-                + ".MASTER_ID = " + InProcessViewSupportTestData.MASTER + ".ID";
+        final String plainQuery =
+                "SELECT "
+                        + InProcessViewSupportTestData.MASTER
+                        + ".ID, "
+                        + InProcessViewSupportTestData.MASTER
+                        + ".SHAPE, "
+                        + InProcessViewSupportTestData.CHILD
+                        + ".NAME  FROM "
+                        + InProcessViewSupportTestData.MASTER
+                        + " INNER JOIN "
+                        + InProcessViewSupportTestData.CHILD
+                        + " ON "
+                        + InProcessViewSupportTestData.CHILD
+                        + ".MASTER_ID = "
+                        + InProcessViewSupportTestData.MASTER
+                        + ".ID";
 
         final int shapeIndex = 1;
         final int expectedCount = 7;
-        final SeQuery query = session.issue(new Command<SeQuery>() {
+        final SeQuery query =
+                session.issue(
+                        new Command<SeQuery>() {
 
-            @Override
-            public SeQuery execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                SeQuery query = new SeQuery(connection);
-                query.prepareSql(plainQuery);
-                query.execute();
-                return query;
-            }
-        });
+                            @Override
+                            public SeQuery execute(ISession session, SeConnection connection)
+                                    throws SeException, IOException {
+                                SeQuery query = new SeQuery(connection);
+                                query.prepareSql(plainQuery);
+                                query.execute();
+                                return query;
+                            }
+                        });
 
         try {
             SdeRow row = session.fetch(query);
@@ -738,5 +791,4 @@ public class SDEJavaApiJoinTest {
             session.dispose();
         }
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,27 +21,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import junit.framework.TestCase;
-
 import org.xml.sax.SAXException;
 
+/** @source $URL$ */
+public class SLDParserTest extends TestCase {
 
-/**
- *
- *
- *
- * @source $URL$
- */
-public class SLDParserTest extends TestCase{
-
-    public void testRemoteSLD() throws ParserConfigurationException, SAXException, URISyntaxException, IOException{
+    public void testRemoteSLD()
+            throws ParserConfigurationException, SAXException, URISyntaxException, IOException {
         URL example = new URL("http://schemas.opengis.net/sld/1.0.20/example-sld.xml");
-        
 
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -49,16 +40,16 @@ public class SLDParserTest extends TestCase{
 
         SAXParser parser = spf.newSAXParser();
 
-        XMLSAXHandler xmlContentHandler = new XMLSAXHandler(new URI(example.toString()),null);
+        XMLSAXHandler xmlContentHandler = new XMLSAXHandler(new URI(example.toString()), null);
         XMLSAXHandler.setLogLevel(Level.FINEST);
         XSISAXHandler.setLogLevel(Level.FINEST);
         XMLElementHandler.setLogLevel(Level.FINEST);
         XSIElementHandler.setLogLevel(Level.FINEST);
 
         // fails
-//        parser.parse(example.openStream(), xmlContentHandler);
-//
-//        Object doc = xmlContentHandler.getDocument();
-//        assertNotNull("Document missing", doc);
+        //        parser.parse(example.openStream(), xmlContentHandler);
+        //
+        //        Object doc = xmlContentHandler.getDocument();
+        //        assertNotNull("Document missing", doc);
     }
 }

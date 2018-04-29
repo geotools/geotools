@@ -19,18 +19,16 @@ package org.geotools.data.wmts;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
+import static org.geotools.wmts.WMTSTestUtils.createCapabilities;
+
 import org.geotools.data.ows.Layer;
 import org.geotools.data.wmts.model.WMTSCapabilities;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
-import static org.geotools.wmts.WMTSTestUtils.createCapabilities;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- *
- * @author Emanuele Tajariol (etj at geo-solutions dot it)
- */
+/** @author Emanuele Tajariol (etj at geo-solutions dot it) */
 public class WebMapTileServerTest {
 
     @Test

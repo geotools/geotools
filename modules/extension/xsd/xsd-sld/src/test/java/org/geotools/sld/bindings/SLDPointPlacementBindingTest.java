@@ -19,12 +19,7 @@ package org.geotools.sld.bindings;
 import org.geotools.filter.Filters;
 import org.geotools.styling.PointPlacement;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDPointPlacementBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(PointPlacement.class, new SLDPointPlacementBinding(null).getType());

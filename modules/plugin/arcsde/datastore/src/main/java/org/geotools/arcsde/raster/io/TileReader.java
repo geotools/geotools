@@ -21,62 +21,45 @@ import java.io.IOException;
 
 /**
  * Offers a random access interface to the tile data for a raster request.
- * <p>
- * Implementations are expected to perform better when the tiles are requested in sequential x/y
+ *
+ * <p>Implementations are expected to perform better when the tiles are requested in sequential x/y
  * order (e.g., 0,0; 1,0; 2,0; 0,1; 1,1; 2,1 for 3x2 tile set), though they're required to be able
  * to return any randomly requested tile, probably by being forced to issue a separate request to
  * the server or do some cacheing.
- * </p>
- * 
+ *
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
  * @version $Id$
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *         /geotools/arcsde/gce/TileReader.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
+ *     /geotools/arcsde/gce/TileReader.java $
  */
 public interface TileReader {
 
-    /**
-     * @return number of bits per sample
-     */
+    /** @return number of bits per sample */
     public abstract int getBitsPerSample();
 
-    /**
-     * @return number of samples per tile
-     */
+    /** @return number of samples per tile */
     public abstract int getPixelsPerTile();
 
-    /**
-     * @return numbre of bands being fetched
-     */
+    /** @return numbre of bands being fetched */
     public abstract int getNumberOfBands();
 
-    /**
-     * @return number of pixels per tile over the X axis
-     */
+    /** @return number of pixels per tile over the X axis */
     public abstract int getTileWidth();
 
-    /**
-     * @return number of pixels per tile over the Y axis
-     */
+    /** @return number of pixels per tile over the Y axis */
     public abstract int getTileHeight();
 
-    /**
-     * @return number of tiles being fetched over the X axis
-     */
+    /** @return number of tiles being fetched over the X axis */
     public abstract int getTilesWide();
 
-    /**
-     * @return number of tiles being fetched over the Y axis
-     */
+    /** @return number of tiles being fetched over the Y axis */
     public abstract int getTilesHigh();
 
     /**
      * @return number of bytes in the raw pixel content of a tile, not taking into account any
-     *         trailing bitmask data.
+     *     trailing bitmask data.
      */
     public abstract int getBytesPerTile();
 
@@ -111,5 +94,4 @@ public interface TileReader {
     public abstract int getMaxTileX();
 
     public abstract int getMaxTileY();
-
 }

@@ -18,11 +18,10 @@ package org.geotools.process;
 
 /**
  * A runtime exception used when executing a process.
- * 
+ *
  * @author Michael Bedward
  * @since 2.6
  * @version 8.0
- *
  * @source $URL$
  */
 public class ProcessException extends RuntimeException {
@@ -39,7 +38,4 @@ public class ProcessException extends RuntimeException {
     public ProcessException(String message) {
         super(message);
     }
-
 }
-
-

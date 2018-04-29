@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -23,15 +23,13 @@ import org.opengis.filter.Filter;
 
 /**
  * Extension of {@link FilteringFeatureIterator} that type narrows to {@link SimpleFeature}.
- * 
- * @author Justin Deoliveira, OpenGeo
  *
+ * @author Justin Deoliveira, OpenGeo
  */
-public class FilteringSimpleFeatureIterator extends FilteringFeatureIterator<SimpleFeature> 
-    implements SimpleFeatureIterator {
+public class FilteringSimpleFeatureIterator extends FilteringFeatureIterator<SimpleFeature>
+        implements SimpleFeatureIterator {
 
     public FilteringSimpleFeatureIterator(SimpleFeatureIterator delegate, Filter filter) {
         super(delegate, filter);
     }
-
 }

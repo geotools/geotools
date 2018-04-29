@@ -9,5 +9,4 @@ public class PostgisTemporalFilterOnlineTest extends JDBCTemporalFilterOnlineTes
     protected JDBCDateTestSetup createTestSetup() {
         return new PostgisDateTestSetup(new PostGISTestSetup());
     }
-
 }

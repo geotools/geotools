@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,33 +24,33 @@ import org.opengis.temporal.TemporalReferenceSystem;
 import org.opengis.util.InternationalString;
 
 /**
- * Provides a single data type for identifying a temporal position with a resolution
- * of less than a day.
+ * Provides a single data type for identifying a temporal position with a resolution of less than a
+ * day.
  *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultDateAndTime extends DefaultTemporalPosition implements DateAndTime {
 
-    /**
-     * This is the name of the calendar era to which the date is referenced.
-     */
+    /** This is the name of the calendar era to which the date is referenced. */
     private InternationalString calendarEraName;
     /**
-     * This is a sequence of positive integers in which the first integeridentifies a specific instance of the unit used at the highest level of the calendar hierarchy,
-     * the second integer identifies a specific instance of the unit used at the next lower level in the hierarchy, and so on.
-     * The format defined in ISO 8601 for dates in the Gregorian calendar may be used for any date that is composed of values for year, month and day.
+     * This is a sequence of positive integers in which the first integeridentifies a specific
+     * instance of the unit used at the highest level of the calendar hierarchy, the second integer
+     * identifies a specific instance of the unit used at the next lower level in the hierarchy, and
+     * so on. The format defined in ISO 8601 for dates in the Gregorian calendar may be used for any
+     * date that is composed of values for year, month and day.
      */
     private int[] calendarDate;
-    /**
-     * This is a sequence of positive numbers with a structure similar to a CalendarDate.
-     */
+    /** This is a sequence of positive numbers with a structure similar to a CalendarDate. */
     private Number[] clockTime;
 
-    public DefaultDateAndTime(TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, InternationalString calendarEraName, int[] calendarDate, Number[] clockTime) {
+    public DefaultDateAndTime(
+            TemporalReferenceSystem frame,
+            IndeterminateValue indeterminatePosition,
+            InternationalString calendarEraName,
+            int[] calendarDate,
+            Number[] clockTime) {
         super(frame, indeterminatePosition);
         this.calendarDate = calendarDate;
         this.calendarEraName = calendarEraName;
@@ -59,11 +59,10 @@ public class DefaultDateAndTime extends DefaultTemporalPosition implements DateA
 
     /**
      * A sequence of numbers with a structure similar to that of {@link CalendarDate#getCalendarDate
-     * CalendarDate}. The first number integer identifies a specific instance of the unit used at the
-     * highest level of the clock hierarchy, the second number identifies a specific instance of the
-     * unit used at the next lower level, and so on. All but the last number in the sequence shall be
-     * integers; the last number may be integer or real.
-     *
+     * CalendarDate}. The first number integer identifies a specific instance of the unit used at
+     * the highest level of the clock hierarchy, the second number identifies a specific instance of
+     * the unit used at the next lower level, and so on. All but the last number in the sequence
+     * shall be integers; the last number may be integer or real.
      */
     public Number[] getClockTime() {
         return clockTime;
@@ -74,12 +73,11 @@ public class DefaultDateAndTime extends DefaultTemporalPosition implements DateA
     }
 
     /**
-     * Provides a sequence of integers in which the first integer identifies a specific instance
-     * of the unit used at the highest level of the calendar hierarchy, the second integer
-     * identifies a specific instance of the unit used at the next lower level in the hierarchy,
-     * and so on. The format defined in ISO 8601 for dates in the Gregorian calendar may be
-     * used for any date that is composed of values for year, month and day.
-     *
+     * Provides a sequence of integers in which the first integer identifies a specific instance of
+     * the unit used at the highest level of the calendar hierarchy, the second integer identifies a
+     * specific instance of the unit used at the next lower level in the hierarchy, and so on. The
+     * format defined in ISO 8601 for dates in the Gregorian calendar may be used for any date that
+     * is composed of values for year, month and day.
      */
     public int[] getCalendarDate() {
         return calendarDate;
@@ -105,9 +103,9 @@ public class DefaultDateAndTime extends DefaultTemporalPosition implements DateA
         if (object instanceof DefaultDateAndTime && super.equals(object)) {
             final DefaultDateAndTime that = (DefaultDateAndTime) object;
 
-            return Utilities.equals(this.calendarDate, that.calendarDate) &&
-                    Utilities.equals(this.calendarEraName, that.calendarEraName) &&
-                    Utilities.equals(this.clockTime, that.clockTime);
+            return Utilities.equals(this.calendarDate, that.calendarDate)
+                    && Utilities.equals(this.calendarEraName, that.calendarEraName)
+                    && Utilities.equals(this.clockTime, that.clockTime);
         }
         return false;
     }

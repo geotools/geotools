@@ -16,6 +16,8 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.swing.Icon;
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDExternalGraphicBinding;
 import org.geotools.styling.ExternalGraphic;
@@ -23,14 +25,11 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import javax.swing.Icon;
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:ExternalGraphic.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="ExternalGraphic" type="se:ExternalGraphicType"&gt;
@@ -41,11 +40,11 @@ import javax.xml.namespace.QName;
  *          graphic format.
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
+ *
  * <pre>
  *       <code>
  *  &lt;xsd:complexType name="ExternalGraphicType"&gt;
@@ -57,16 +56,12 @@ import javax.xml.namespace.QName;
  *          &lt;xsd:element ref="se:Format"/&gt;
  *          &lt;xsd:element maxOccurs="unbounded" minOccurs="0" ref="se:ColorReplacement"/&gt;
  *      &lt;/xsd:sequence&gt;
- *  &lt;/xsd:complexType&gt; 
- *              
+ *  &lt;/xsd:complexType&gt;
+ *
  *        </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class ExternalGraphicBinding extends SLDExternalGraphicBinding {
@@ -75,16 +70,16 @@ public class ExternalGraphicBinding extends SLDExternalGraphicBinding {
         super(styleFactory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.ExternalGraphic;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
@@ -96,8 +91,7 @@ public class ExternalGraphicBinding extends SLDExternalGraphicBinding {
         } else {
             g = (ExternalGraphic) super.parse(instance, node, value);
         }
-        
+
         return g;
     }
-
 }

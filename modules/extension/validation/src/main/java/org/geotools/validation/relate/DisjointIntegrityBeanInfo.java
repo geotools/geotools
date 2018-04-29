@@ -20,25 +20,18 @@ import java.beans.PropertyDescriptor;
 
 /**
  * @author Pati
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- *
- *
+ *     <p>To change the template for this generated type comment go to
+ *     Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  * @source $URL$
  */
-public class DisjointIntegrityBeanInfo extends RelationIntegrityBeanInfo  {
-	/**
-	 * 
-	 */
-	public DisjointIntegrityBeanInfo(){
+public class DisjointIntegrityBeanInfo extends RelationIntegrityBeanInfo {
+    /** */
+    public DisjointIntegrityBeanInfo() {
         super();
     }
 
-	
     /**
      * Implementation of getPropertyDescriptors.
-     *
      *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */

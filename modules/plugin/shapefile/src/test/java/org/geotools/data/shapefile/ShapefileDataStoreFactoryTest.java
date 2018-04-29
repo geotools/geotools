@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.QueryCapabilities;
@@ -40,8 +39,8 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 /**
- * Test the functionality of ShapefileDataStoreFactory; specifically the handling of 
- * connection parameters.
+ * Test the functionality of ShapefileDataStoreFactory; specifically the handling of connection
+ * parameters.
  *
  * @author Jody Garnett
  */
@@ -49,59 +48,63 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
 
     private ShapefileDataStore store = null;
     private ShapefileDataStoreFactory factory = new ShapefileDataStoreFactory();
-    
+
     @After
     public void tearDown() throws Exception {
-        if(store != null) {
-                store.dispose();
+        if (store != null) {
+            store.dispose();
         }
         super.tearDown();
     }
-    
+
     @Test
     public void testFSTypeParameter() throws Exception {
         URL url = TestData.url(STATE_POP);
-        
-        KVP params = new KVP( URLP.key,url );
-        
-        assertTrue( "Sorting is optional", factory.canProcess(params) );
-        
-        params.put( FSTYPE.key, "shape-ng" );
-        assertTrue( "Shape NG supported", factory.canProcess(params) );
-        
-        params.put(FSTYPE.key, "shape" );
-        assertTrue( "Plain shape supported", factory.canProcess(params) );
-        
-        params.put(FSTYPE.key, "index" );
-        assertTrue( "Plain index supported", factory.canProcess(params) );
-        
-        params.put( FSTYPE.key, "smurf" );
-        assertFalse( "Feeling blue; don't try a smruf", factory.canProcess(params) );
+
+        KVP params = new KVP(URLP.key, url);
+
+        assertTrue("Sorting is optional", factory.canProcess(params));
+
+        params.put(FSTYPE.key, "shape-ng");
+        assertTrue("Shape NG supported", factory.canProcess(params));
+
+        params.put(FSTYPE.key, "shape");
+        assertTrue("Plain shape supported", factory.canProcess(params));
+
+        params.put(FSTYPE.key, "index");
+        assertTrue("Plain index supported", factory.canProcess(params));
+
+        params.put(FSTYPE.key, "smurf");
+        assertFalse("Feeling blue; don't try a smruf", factory.canProcess(params));
     }
+
     @Test
     public void testQueryCapabilities() throws Exception {
         URL url = TestData.url(STATE_POP);
-        
-        Map params = new KVP( URLP.key,url );
-        DataStore dataStore = factory.createDataStore( params );
+
+        Map params = new KVP(URLP.key, url);
+        DataStore dataStore = factory.createDataStore(params);
         Name typeName = dataStore.getNames().get(0);
-        SimpleFeatureSource featureSource = dataStore.getFeatureSource( typeName);
-        
+        SimpleFeatureSource featureSource = dataStore.getFeatureSource(typeName);
+
         QueryCapabilities caps = featureSource.getQueryCapabilities();
-        
-        SortBy[] sortBy = new SortBy[]{SortBy.NATURAL_ORDER,};
-        assertTrue( "Natural", caps.supportsSorting( sortBy ));
-        
+
+        SortBy[] sortBy =
+                new SortBy[] {
+                    SortBy.NATURAL_ORDER,
+                };
+        assertTrue("Natural", caps.supportsSorting(sortBy));
+
         SimpleFeatureType schema = featureSource.getSchema();
         String attr = schema.getDescriptor(1).getLocalName();
-        
-        sortBy[0] = ff.sort( attr, SortOrder.ASCENDING );
-        assertTrue( "Sort "+attr, caps.supportsSorting( sortBy ));
-        
-        sortBy[0] = ff.sort( "the_geom", SortOrder.ASCENDING );
-        assertFalse( "Cannot sort the_geom", caps.supportsSorting( sortBy ));
+
+        sortBy[0] = ff.sort(attr, SortOrder.ASCENDING);
+        assertTrue("Sort " + attr, caps.supportsSorting(sortBy));
+
+        sortBy[0] = ff.sort("the_geom", SortOrder.ASCENDING);
+        assertFalse("Cannot sort the_geom", caps.supportsSorting(sortBy));
     }
-    
+
     @Test
     public void testEnableIndexParameter() throws Exception {
         Map<String, Serializable> params;
@@ -118,7 +121,8 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         params = map(URLP.key, remoteUrl, ENABLE_SPATIAL_INDEX.key, true);
         ds = (ShapefileDataStore) factory.createDataStore(params);
         assertNotNull("Null datastore should not be returned", ds);
-        assertTrue("should be a non indexed shapefile",
+        assertTrue(
+                "should be a non indexed shapefile",
                 ds instanceof org.geotools.data.shapefile.ShapefileDataStore);
         ds.dispose();
 
@@ -146,7 +150,7 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
         assertTrue(ds.isIndexCreationEnabled());
         ds.dispose();
     }
-    
+
     private Map<String, Serializable> map(Object... pairs) {
         if ((pairs.length & 1) != 0) {
             throw new IllegalArgumentException("Pairs was not an even number");
@@ -157,7 +161,7 @@ public class ShapefileDataStoreFactoryTest extends TestCaseSupport {
             Serializable value = (Serializable) pairs[i + 1];
             result.put(key, value);
         }
-        
+
         return result;
     }
 }

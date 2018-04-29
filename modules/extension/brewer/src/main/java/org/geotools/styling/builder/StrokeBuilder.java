@@ -18,16 +18,11 @@ package org.geotools.styling.builder;
 
 import java.awt.Color;
 import java.util.List;
-
 import org.geotools.styling.Stroke;
 import org.geotools.util.Converters;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     Expression color;
 
@@ -40,7 +35,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     Expression lineJoin;
 
     float[] dashArray = null;
-    
+
     List<Expression> dashArrayExpressions = null;
 
     Expression dashOffset;
@@ -62,9 +57,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         return (StrokeBuilder) super.unset();
     }
 
-    /**
-     * Reset stroke to default values.
-     */
+    /** Reset stroke to default values. */
     public StrokeBuilder reset() {
         color = Stroke.DEFAULT.getColor();
         width = Stroke.DEFAULT.getWidth();
@@ -87,7 +80,7 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
 
     /**
      * Reset builder to provided original stroke.
-     * 
+     *
      * @param stroke
      */
     public StrokeBuilder reset(org.opengis.style.Stroke stroke) {
@@ -192,9 +185,9 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         unset = false;
         return this;
     }
-    
+
     public StrokeBuilder dashArray(List<Expression> dashArrayExpressions) {
-        this.dashArrayExpressions = dashArrayExpressions; 
+        this.dashArrayExpressions = dashArrayExpressions;
         return this;
     }
 
@@ -225,9 +218,18 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
         if (unset) {
             return null;
         }
-        Stroke stroke = sf.createStroke(color, width, opacity, lineJoin, lineCap, dashArray,
-                dashOffset, graphicFill.build(), this.graphicStroke.build());
-        if(dashArrayExpressions != null && !dashArrayExpressions.isEmpty()) {
+        Stroke stroke =
+                sf.createStroke(
+                        color,
+                        width,
+                        opacity,
+                        lineJoin,
+                        lineCap,
+                        dashArray,
+                        dashOffset,
+                        graphicFill.build(),
+                        this.graphicStroke.build());
+        if (dashArrayExpressions != null && !dashArrayExpressions.isEmpty()) {
             stroke.setDashArray(dashArrayExpressions);
         }
         if (parent == null) {
@@ -240,6 +242,4 @@ public class StrokeBuilder extends AbstractStyleBuilder<Stroke> {
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().line().stroke().init(this);
     }
-
-
 }

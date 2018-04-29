@@ -5,11 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- *
  * @author Gertjan
- *
- *
- *
  * @source $URL$
  */
 public class GeometryTypeMap extends HashMap<String, GeometryType> {

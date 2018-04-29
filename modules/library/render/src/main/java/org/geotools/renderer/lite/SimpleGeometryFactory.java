@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 /**
  * A subclass of {@link GeometryFactory} with special optimizations for geometry collections made of
  * a single element (a typical case in shapefiles and data imported from shapefiles)
- * 
+ *
  * @author Andrea Aime
  */
 @SuppressWarnings("serial")
@@ -341,7 +341,6 @@ class SimpleGeometryFactory extends GeometryFactory {
         public boolean within(Geometry g) {
             return geometry.within(g);
         }
-
     }
 
     static class SingleLineCollection extends MultiLineString {
@@ -918,7 +917,6 @@ class SimpleGeometryFactory extends GeometryFactory {
         public boolean within(Geometry g) {
             return polygon.within(g);
         }
-
     }
 
     static class SinglePointCollection extends MultiPoint {
@@ -1196,7 +1194,5 @@ class SimpleGeometryFactory extends GeometryFactory {
         public boolean within(Geometry g) {
             return point.within(g);
         }
-
     }
-
 }

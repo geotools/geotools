@@ -29,12 +29,10 @@ import org.restlet.resource.Variant;
 
 /**
  * This class will handle requests like:
- * http://localhost:8082/simplefeatureservice/data/layerAsia?mode=count
- * It returns a json array with the requested features bounds
+ * http://localhost:8082/simplefeatureservice/data/layerAsia?mode=count It returns a json array with
+ * the requested features bounds
+ *
  * @author narad
- *
- *
- *
  * @source $URL$
  */
 public class FeatureCountResource extends Resource {
@@ -71,6 +69,7 @@ public class FeatureCountResource extends Resource {
     /**
      * This method is used to server a list of available layers
      * http://localhost:8084/simplefeatureservice-mockup-service-1.0-SNAPSHOT/data/layerAsia?mode=count
+     *
      * @param variant
      * @return
      * @throws ResourceException
@@ -78,7 +77,8 @@ public class FeatureCountResource extends Resource {
     @Override
     public Representation represent(Variant variant) throws ResourceException {
         String _strJson = "2";
-        Representation representation = new StringRepresentation(_strJson, MediaType.APPLICATION_JSON);
+        Representation representation =
+                new StringRepresentation(_strJson, MediaType.APPLICATION_JSON);
         return representation;
     }
 }

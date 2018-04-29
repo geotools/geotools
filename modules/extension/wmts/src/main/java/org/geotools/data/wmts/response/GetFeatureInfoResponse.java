@@ -18,7 +18,6 @@
 package org.geotools.data.wmts.response;
 
 import java.io.IOException;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
@@ -26,7 +25,7 @@ import org.geotools.ows.ServiceException;
 /**
  * Process GetFeatureInfoResponse.
  *
- * (Based on existing work by rgould for WMS service)
+ * <p>(Based on existing work by rgould for WMS service)
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)

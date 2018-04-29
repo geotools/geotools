@@ -22,24 +22,20 @@ import org.geotools.data.efeature.query.EGeometryValueCrosses;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EGeometryValueCrossesTest extends AbstractEGeometryValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EGeometryValueCrossesTest(String name) {
-        super(name,CROSSES);
+        super(name, CROSSES);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -50,5 +46,4 @@ public class EGeometryValueCrossesTest extends AbstractEGeometryValueTest {
         //
         return new EGeometryValueCrosses(eAttribute, filter, false);
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,8 @@
  */
 package org.geotools.temporal.object;
 
+import static org.junit.Assert.*;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -23,16 +25,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.temporal.Instant;
-import static org.junit.Assert.*;
 import org.opengis.temporal.Period;
 import org.opengis.temporal.Position;
 
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultInstantTest {
@@ -62,36 +59,28 @@ public class DefaultInstantTest {
         position2 = null;
     }
 
-    /**
-     * Test of getPosition method, of class DefaultInstant.
-     */
+    /** Test of getPosition method, of class DefaultInstant. */
     @Test
     public void testGetPosition() {
         Position result = instant1.getPosition();
         assertFalse(instant2.getPosition().equals(result));
     }
 
-    /**
-     * Test of getBegunBy method, of class DefaultInstant.
-     */
+    /** Test of getBegunBy method, of class DefaultInstant. */
     @Test
     public void testGetBegunBy() {
         Collection<Period> result = instant1.getBegunBy();
         assertEquals(instant2.getBegunBy(), result);
     }
 
-    /**
-     * Test of getEndedBy method, of class DefaultInstant.
-     */
+    /** Test of getEndedBy method, of class DefaultInstant. */
     @Test
     public void testGetEndedBy() {
         Collection<Period> result = instant1.getEndedBy();
         assertEquals(instant2.getEndedBy(), result);
     }
 
-    /**
-     * Test of setPosition method, of class DefaultInstant.
-     */
+    /** Test of setPosition method, of class DefaultInstant. */
     @Test
     public void testSetPosition() {
         Position result = instant1.getPosition();
@@ -100,9 +89,7 @@ public class DefaultInstantTest {
         assertFalse(instant1.getPosition().equals(result));
     }
 
-    /**
-     * Test of setBegunBy method, of class DefaultInstant.
-     */
+    /** Test of setBegunBy method, of class DefaultInstant. */
     @Test
     public void testSetBegunBy() {
         Collection<Period> result = instant1.getBegunBy();
@@ -110,21 +97,16 @@ public class DefaultInstantTest {
         ((DefaultInstant) instant1).setBegunBy(begunby);
         assertEquals(instant1.getBegunBy(), result);
     }
-    
-    
-    /**
-     * Test comparison of Instants
-     */
+
+    /** Test comparison of Instants */
     @Test
     public void testCompare() {
-       assertEquals(1,((DefaultInstant)instant1).compareTo(instant2));
-       assertEquals(0,((DefaultInstant)instant1).compareTo(instant1));
-       assertEquals(0,((DefaultInstant)instant2).compareTo(instant2));
+        assertEquals(1, ((DefaultInstant) instant1).compareTo(instant2));
+        assertEquals(0, ((DefaultInstant) instant1).compareTo(instant1));
+        assertEquals(0, ((DefaultInstant) instant2).compareTo(instant2));
     }
 
-    /**
-     * Test of setEndBy method, of class DefaultInstant.
-     */
+    /** Test of setEndBy method, of class DefaultInstant. */
     @Test
     public void testSetEndBy() {
         Collection<Period> result = instant1.getEndedBy();
@@ -133,9 +115,7 @@ public class DefaultInstantTest {
         assertEquals(instant1.getEndedBy(), result);
     }
 
-    /**
-     * Test of equals method, of class DefaultInstant.
-     */
+    /** Test of equals method, of class DefaultInstant. */
     @Test
     public void testEquals() {
         cal.set(2000, 1, 1);
@@ -145,18 +125,14 @@ public class DefaultInstantTest {
         assertFalse(instant1.equals(instant2));
     }
 
-    /**
-     * Test of hashCode method, of class DefaultInstant.
-     */
+    /** Test of hashCode method, of class DefaultInstant. */
     @Test
     public void testHashCode() {
         int result = instant1.hashCode();
         assertFalse(instant2.hashCode() == result);
     }
 
-    /**
-     * Test of toString method, of class DefaultInstant.
-     */
+    /** Test of toString method, of class DefaultInstant. */
     @Test
     public void testToString() {
         String result = instant1.toString();

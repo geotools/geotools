@@ -16,34 +16,33 @@
  */
 package org.geotools.geopkg.wps;
 
+import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Color;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.geopkg.TileMatrix;
 import org.opengis.filter.Filter;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
- * GeoPackage Process Request. 
- * Object representation of the XML submitted to the GeoPackage process.
- * 
+ * GeoPackage Process Request. Object representation of the XML submitted to the GeoPackage process.
+ *
  * @author Niels Charlier
  */
 public class GeoPackageProcessRequest {
-    
+
     protected String name;
-    
-    public enum LayerType {FEATURES, TILES};
-    
-    public static abstract class Layer {
-                
+
+    public enum LayerType {
+        FEATURES,
+        TILES
+    };
+
+    public abstract static class Layer {
+
         protected String name = null;
         protected String identifier = null;
         protected String description = null;
@@ -53,39 +52,48 @@ public class GeoPackageProcessRequest {
         public String getName() {
             return name;
         }
+
         public void setName(String name) {
             this.name = name;
         }
+
         public String getIdentifier() {
             return identifier;
         }
+
         public void setIdentifier(String identifier) {
             this.identifier = identifier;
         }
+
         public URI getSrs() {
             return srs;
         }
+
         public void setSrs(URI srs) {
             this.srs = srs;
         }
+
         public Envelope getBbox() {
             return bbox;
         }
+
         public void setBbox(Envelope bbox) {
             this.bbox = bbox;
-        }          
+        }
+
         public String getDescription() {
             return description;
         }
+
         public void setDescription(String description) {
             this.description = description;
         }
+
         public abstract LayerType getType();
-        
     }
-    
+
     public static class FeaturesLayer extends Layer {
-        
+
         protected QName featureType = null;
         protected Set<QName> propertyNames = null;
         protected Filter filter = null;
@@ -128,16 +136,16 @@ public class GeoPackageProcessRequest {
             this.indexed = indexed;
         }
     }
-    
+
     public static class TilesLayer extends Layer {
-        
+
         public static class TilesCoverage {
             protected Integer minZoom = null;
             protected Integer maxZoom = null;
             protected Integer minColumn = null;
             protected Integer maxColumn = null;
             protected Integer minRow = null;
-            protected Integer maxRow = null;            
+            protected Integer maxRow = null;
 
             public Integer getMinZoom() {
                 return minZoom;
@@ -187,7 +195,7 @@ public class GeoPackageProcessRequest {
                 this.maxRow = maxRow;
             }
         }
-        
+
         protected List<QName> layers = null;
         protected String format = null;
         protected Color bgColor = null;
@@ -282,14 +290,13 @@ public class GeoPackageProcessRequest {
 
         public void setLayers(List<QName> layers) {
             this.layers = layers;
-        }           
-        
+        }
     }
-    
+
     protected List<Layer> layers = new ArrayList<Layer>();
     protected URL path = null;
     protected boolean remove = true;
-        
+
     public Boolean getRemove() {
         return remove;
     }
@@ -301,12 +308,12 @@ public class GeoPackageProcessRequest {
     public void addLayer(Layer layer) {
         layers.add(layer);
     }
-    
+
     public Layer getLayer(int i) {
         return layers.get(i);
     }
-    
-    public int getLayerCount(){
+
+    public int getLayerCount() {
         return layers.size();
     }
 
@@ -321,6 +328,7 @@ public class GeoPackageProcessRequest {
     public URL getPath() {
         return path;
     }
+
     public void setPath(URL path) {
         this.path = path;
     }

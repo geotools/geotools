@@ -19,21 +19,16 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SpatiaLitePrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override
     protected JDBCPrimaryKeyTestSetup createTestSetup() {
         return new SpatiaLitePrimaryKeyTestSetup();
     }
-    
+
     @Override
     public void testSequencedPrimaryKey() throws Exception {
-        //SQLite does not do sequences
+        // SQLite does not do sequences
     }
-
 }

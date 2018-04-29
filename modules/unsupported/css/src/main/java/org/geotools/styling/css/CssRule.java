@@ -30,7 +30,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import org.geotools.styling.Style;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.selector.PseudoClass;
@@ -40,9 +39,8 @@ import org.geotools.util.Converters;
 
 /**
  * A rule in CSS
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class CssRule {
 
@@ -60,7 +58,7 @@ public class CssRule {
 
     /**
      * Builds a CSS rule
-     * 
+     *
      * @param selector The rule selector
      * @param properties The set of rule properties
      */
@@ -78,7 +76,7 @@ public class CssRule {
 
     /**
      * Builds a CSS rule
-     * 
+     *
      * @param selector The rule selector
      * @param properties The set of rule properties
      * @param comment The rule comment (can be used to generate SLD's title and abstract
@@ -90,7 +88,7 @@ public class CssRule {
 
     /**
      * Builds a CSS rule
-     * 
+     *
      * @param selector The rule selector
      * @param properties The set of rule properties, already organized by pseudo-selector
      * @param comment The rule comment (can be used to generate SLD's title and abstract
@@ -103,8 +101,12 @@ public class CssRule {
 
     @Override
     public String toString() {
-        String base = "Rule [\n    selector=" + getSelector() + ",\n    properties="
-                + getProperties() + "]";
+        String base =
+                "Rule [\n    selector="
+                        + getSelector()
+                        + ",\n    properties="
+                        + getProperties()
+                        + "]";
         return base;
     }
 
@@ -120,40 +122,32 @@ public class CssRule {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         CssRule other = (CssRule) obj;
         if (getComment() == null) {
-            if (other.getComment() != null)
-                return false;
-        } else if (!getComment().equals(other.getComment()))
-            return false;
+            if (other.getComment() != null) return false;
+        } else if (!getComment().equals(other.getComment())) return false;
         if (getProperties() == null) {
-            if (other.getProperties() != null)
-                return false;
-        } else if (!getProperties().equals(other.getProperties()))
-            return false;
+            if (other.getProperties() != null) return false;
+        } else if (!getProperties().equals(other.getProperties())) return false;
         if (getSelector() == null) {
-            if (other.getSelector() != null)
-                return false;
-        } else if (!getSelector().equals(other.getSelector()))
-            return false;
+            if (other.getSelector() != null) return false;
+        } else if (!getSelector().equals(other.getSelector())) return false;
         return true;
     }
 
     /**
-     * Returns the property values by pseudo-class, matching those that satisfy the specified name prefixes
-     * 
+     * Returns the property values by pseudo-class, matching those that satisfy the specified name
+     * prefixes
+     *
      * @param pseudoClass
      * @param symbolizerPrefixes
      * @return
      */
-    public Map<String, List<Value>> getPropertyValues(PseudoClass pseudoClass,
-            String... symbolizerPrefixes) {
+    public Map<String, List<Value>> getPropertyValues(
+            PseudoClass pseudoClass, String... symbolizerPrefixes) {
         List<Property> psProperties = getProperties().get(pseudoClass);
         if (psProperties == null) {
             return Collections.emptyMap();
@@ -162,7 +156,8 @@ public class CssRule {
         if (symbolizerPrefixes != null && symbolizerPrefixes.length > 0) {
             for (Property property : psProperties) {
                 for (String symbolizerPrefix : symbolizerPrefixes) {
-                    if (symbolizerPrefix == null || property.getName().startsWith(symbolizerPrefix)
+                    if (symbolizerPrefix == null
+                            || property.getName().startsWith(symbolizerPrefix)
                             || property.getName().startsWith("-gt-" + symbolizerPrefix)) {
                         result.put(property.getName(), property.getValues());
                     }
@@ -179,7 +174,7 @@ public class CssRule {
 
     /**
      * Returns true if the rule has any property for the given name, in the give pseudo-class
-     * 
+     *
      * @param pseudoClass
      * @param propertyName
      * @return
@@ -200,7 +195,7 @@ public class CssRule {
 
     /**
      * Returns the property with a given name (will look for an exact match)
-     * 
+     *
      * @param pseudoClass
      * @param propertyName
      * @return
@@ -221,7 +216,7 @@ public class CssRule {
 
     /**
      * Returns true if any of the "vendor" properties specified is found in the given pseudo-class
-     * 
+     *
      * @param pseudoClass
      * @param propertyNames
      * @return
@@ -246,7 +241,7 @@ public class CssRule {
 
     /**
      * Returns true if any of the properties specified is found in the given pseudo-class
-     * 
+     *
      * @param pseudoClass
      * @param propertyNames
      * @return
@@ -266,8 +261,9 @@ public class CssRule {
     }
 
     /**
-     * This rule covers the other if it has the same selector, and has all the properties of the other, plus eventually some more
-     * 
+     * This rule covers the other if it has the same selector, and has all the properties of the
+     * other, plus eventually some more
+     *
      * @param other
      * @return
      */
@@ -294,8 +290,9 @@ public class CssRule {
     }
 
     /**
-     * Extracts a sub-rule at the given z-index. Will return null if this rule has nothing at that specific z-index
-     * 
+     * Extracts a sub-rule at the given z-index. Will return null if this rule has nothing at that
+     * specific z-index
+     *
      * @param zIndex
      * @return
      */
@@ -326,8 +323,10 @@ public class CssRule {
                         }
                         List<Value> values = property.getValues();
                         if (zIndexPosition < values.size()) {
-                            Property p = new Property(property.getName(),
-                                    Arrays.asList(values.get(zIndexPosition)));
+                            Property p =
+                                    new Property(
+                                            property.getName(),
+                                            Arrays.asList(values.get(zIndexPosition)));
                             zIndexProperties.add(p);
                         } else if (values.size() == 1) {
                             // properties that does not have multiple values are bound to all levels
@@ -351,8 +350,10 @@ public class CssRule {
                     rootProperties = new ArrayList<>();
                     zProperties.put(PseudoClass.ROOT, rootProperties);
                 }
-                rootProperties.add(new Property("z-index",
-                        Arrays.asList((Value) new Value.Literal(String.valueOf(zIndex)))));
+                rootProperties.add(
+                        new Property(
+                                "z-index",
+                                Arrays.asList((Value) new Value.Literal(String.valueOf(zIndex)))));
             }
             CssRule zRule = new CssRule(this.getSelector(), zProperties, this.getComment());
             zRule.ancestry = Arrays.asList(this);
@@ -364,7 +365,7 @@ public class CssRule {
 
     /**
      * Returns all z-index values used by this rule
-     * 
+     *
      * @return
      */
     public Set<Integer> getZIndexes() {
@@ -380,7 +381,7 @@ public class CssRule {
 
     /**
      * Returns the z-index values, in the order they are submitted
-     * 
+     *
      * @param properties
      * @return
      */
@@ -426,7 +427,7 @@ public class CssRule {
 
     /**
      * Returns the rule selector
-     * 
+     *
      * @return
      */
     public Selector getSelector() {
@@ -439,7 +440,7 @@ public class CssRule {
 
     /**
      * Returns the rules properties, organized by pseudo-class
-     * 
+     *
      * @return
      */
     public Map<PseudoClass, List<Property>> getProperties() {
@@ -452,7 +453,7 @@ public class CssRule {
 
     /**
      * Returns the rule comment
-     * 
+     *
      * @return
      */
     public String getComment() {
@@ -464,8 +465,8 @@ public class CssRule {
     }
 
     /**
-     * Returns the original rules from which this rule originated (rules get re-organized and combined a lot during the translation process to
-     * Geotools {@link Style}
+     * Returns the original rules from which this rule originated (rules get re-organized and
+     * combined a lot during the translation process to Geotools {@link Style}
      */
     public List<CssRule> getAncestry() {
         return ancestry;
@@ -477,7 +478,7 @@ public class CssRule {
 
     /**
      * Returns the rules nested in this one
-     * 
+     *
      * @return
      */
     public List<CssRule> getNestedRules() {
@@ -485,8 +486,9 @@ public class CssRule {
     }
 
     /**
-     * Returns true if the style has at least one property activating a symbolizer, e.g., fill, stroke, mark, label or raster-channel
-     * 
+     * Returns true if the style has at least one property activating a symbolizer, e.g., fill,
+     * stroke, mark, label or raster-channel
+     *
      * @param rootProperties
      * @return
      */
@@ -498,12 +500,12 @@ public class CssRule {
         for (Property property : rootProperties) {
             String name = property.getName();
             switch (name) {
-            case "fill":
-            case "stroke":
-            case "mark":
-            case "label":
-            case "raster-channels":
-                return true;
+                case "fill":
+                case "stroke":
+                case "mark":
+                case "label":
+                case "raster-channels":
+                    return true;
             }
         }
 
@@ -511,9 +513,9 @@ public class CssRule {
     }
 
     /**
-     * Returns the list of pseudo classes that can be mixed into this rule, meaning we have root properties in which these pseudo classes can be mixed
-     * in.
-     * 
+     * Returns the list of pseudo classes that can be mixed into this rule, meaning we have root
+     * properties in which these pseudo classes can be mixed in.
+     *
      * @param rootProperties
      * @return
      */
@@ -526,21 +528,21 @@ public class CssRule {
         for (Property property : rootProperties) {
             String name = property.getName();
             switch (name) {
-            case "fill":
-            case "stroke":
-                result.add(PseudoClass.newPseudoClass("symbol"));
-                addPseudoClassesForConditionallyMixableProperty(result, property);
-                break;
-            case "mark":
-                result.add(PseudoClass.newPseudoClass("symbol"));
-                result.add(PseudoClass.newPseudoClass("mark"));
-                addIndexedPseudoClasses(result, "mark");
-                break;
-            case "label":
-                result.add(PseudoClass.newPseudoClass("symbol"));
-                result.add(PseudoClass.newPseudoClass("shield"));
-                addIndexedPseudoClasses(result, "shield");
-                break;
+                case "fill":
+                case "stroke":
+                    result.add(PseudoClass.newPseudoClass("symbol"));
+                    addPseudoClassesForConditionallyMixableProperty(result, property);
+                    break;
+                case "mark":
+                    result.add(PseudoClass.newPseudoClass("symbol"));
+                    result.add(PseudoClass.newPseudoClass("mark"));
+                    addIndexedPseudoClasses(result, "mark");
+                    break;
+                case "label":
+                    result.add(PseudoClass.newPseudoClass("symbol"));
+                    result.add(PseudoClass.newPseudoClass("shield"));
+                    addIndexedPseudoClasses(result, "shield");
+                    break;
             }
         }
 
@@ -548,14 +550,14 @@ public class CssRule {
     }
 
     /**
-     * Adds pseudo classes for fill and stroke, whose ability to mix-in depends on whether a function (symbol) or a straight value was used for the
-     * value of the property
-     * 
+     * Adds pseudo classes for fill and stroke, whose ability to mix-in depends on whether a
+     * function (symbol) or a straight value was used for the value of the property
+     *
      * @param result
      * @param property
      */
-    private void addPseudoClassesForConditionallyMixableProperty(Set<PseudoClass> result,
-            Property property) {
+    private void addPseudoClassesForConditionallyMixableProperty(
+            Set<PseudoClass> result, Property property) {
         String propertyName = property.getName();
         List<Value> values = property.getValues();
         if (values.size() == 1 && values.get(0) instanceof Function) {
@@ -572,8 +574,9 @@ public class CssRule {
     }
 
     /**
-     * Collects all properties starting with the propertyName, and adds pseudo classes up to the max index found in said properties
-     * 
+     * Collects all properties starting with the propertyName, and adds pseudo classes up to the max
+     * index found in said properties
+     *
      * @param result
      * @param propertyName
      */
@@ -589,8 +592,9 @@ public class CssRule {
     }
 
     /**
-     * Returns the max number of property values in the provided property set (for repeated symbolizers)
-     * 
+     * Returns the max number of property values in the provided property set (for repeated
+     * symbolizers)
+     *
      * @param valueMap
      * @return
      */
@@ -604,25 +608,34 @@ public class CssRule {
     }
 
     /**
-     * Turns a rule with nested subrules into a flat list of rules (this rule, plus all nested with a properly combined selector and property
-     * inheritance)
-     * 
+     * Turns a rule with nested subrules into a flat list of rules (this rule, plus all nested with
+     * a properly combined selector and property inheritance)
+     *
      * @return
      */
     public List<CssRule> expandNested(RulesCombiner combiner) {
         if (nestedRules.isEmpty()) {
             return Collections.singletonList(this);
         } else {
-            Stream<CssRule> nestedRulesStream = nestedRules.stream().flatMap(r -> {
-                return r.expandNested(combiner).stream().map(sr -> {
-                    CssRule combined = combiner.combineRules(Arrays.asList(this, sr));
-                    combined.setComment(sr.getComment());
-                    combined.setAncestry(null);
-                    return combined;
-                });
-            });
+            Stream<CssRule> nestedRulesStream =
+                    nestedRules
+                            .stream()
+                            .flatMap(
+                                    r -> {
+                                        return r.expandNested(combiner)
+                                                .stream()
+                                                .map(
+                                                        sr -> {
+                                                            CssRule combined =
+                                                                    combiner.combineRules(
+                                                                            Arrays.asList(
+                                                                                    this, sr));
+                                                            combined.setComment(sr.getComment());
+                                                            combined.setAncestry(null);
+                                                            return combined;
+                                                        });
+                                    });
             return Stream.concat(Stream.of(this), nestedRulesStream).collect(Collectors.toList());
         }
     }
-
 }

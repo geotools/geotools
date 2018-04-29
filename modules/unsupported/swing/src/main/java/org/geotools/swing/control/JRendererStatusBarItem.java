@@ -19,23 +19,19 @@ package org.geotools.swing.control;
 
 import java.awt.Dimension;
 import java.awt.Insets;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
-import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
+import org.geotools.swing.locale.LocaleUtils;
 
 /**
  * A status bar item that displays an animated icon to indicate renderer activity.
  *
  * @see JMapStatusBar
- *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
@@ -61,23 +57,24 @@ public class JRendererStatusBarItem extends StatusBarItem {
         renderLabel.setToolTipText(TOOL_TIP);
 
         Insets insets = getInsets();
-        renderLabel.setMinimumSize(new Dimension(
-                busyIcon.getIconWidth() + insets.left + insets.right,
-                busyIcon.getIconHeight() + insets.top + insets.bottom));
+        renderLabel.setMinimumSize(
+                new Dimension(
+                        busyIcon.getIconWidth() + insets.left + insets.right,
+                        busyIcon.getIconHeight() + insets.top + insets.bottom));
 
         add(renderLabel);
 
-        mapPane.addMapPaneListener(new MapPaneAdapter() {
-            @Override
-            public void onRenderingStarted(MapPaneEvent ev) {
-                renderLabel.setIcon(busyIcon);
-            }
+        mapPane.addMapPaneListener(
+                new MapPaneAdapter() {
+                    @Override
+                    public void onRenderingStarted(MapPaneEvent ev) {
+                        renderLabel.setIcon(busyIcon);
+                    }
 
-            @Override
-            public void onRenderingStopped(MapPaneEvent ev) {
-                renderLabel.setIcon(idleIcon);
-            }
-        });
+                    @Override
+                    public void onRenderingStopped(MapPaneEvent ev) {
+                        renderLabel.setIcon(idleIcon);
+                    }
+                });
     }
-
 }

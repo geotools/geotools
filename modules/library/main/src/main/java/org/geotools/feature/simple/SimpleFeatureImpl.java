@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,8 @@
  */
 package org.geotools.feature.simple;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,16 +26,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.IllegalAttributeException;
-import org.geotools.feature.PropertyImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.util.Converters;
 import org.geotools.util.Utilities;
@@ -51,155 +49,144 @@ import org.opengis.filter.identity.Identifier;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceComparator;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * An implementation of {@link SimpleFeature} geared towards speed and backed by an Object[].
- * 
+ *
  * @author Justin
  * @author Andrea Aime
- *
- *
- *
  * @source $URL$
  */
 public class SimpleFeatureImpl implements SimpleFeature {
-    
+
     protected FeatureId id;
     protected SimpleFeatureType featureType;
-    /**
-     * The actual values held by this feature
-     */
+    /** The actual values held by this feature */
     protected Object[] values;
-    /**
-     * The attribute name -> position index
-     */
-    protected Map<String,Integer> index;
-    /**
-     * The set of user data attached to the feature (lazily created)
-     */
+    /** The attribute name -> position index */
+    protected Map<String, Integer> index;
+    /** The set of user data attached to the feature (lazily created) */
     protected Map<Object, Object> userData;
-    /**
-     * The set of user data attached to each attribute (lazily created)
-     */
+    /** The set of user data attached to each attribute (lazily created) */
     protected Map<Object, Object>[] attributeUserData;
-    
-    /**
-     * Whether this feature is self validating or not
-     */
-    protected  boolean validating;
-    
+
+    /** Whether this feature is self validating or not */
+    protected boolean validating;
+
     /**
      * Builds a new feature based on the provided values and feature type
+     *
      * @param values
      * @param featureType
      * @param id
      */
-    public SimpleFeatureImpl( List<Object> values, SimpleFeatureType featureType, FeatureId id) {
-        this(values.toArray(), featureType, id, false,index(featureType));
+    public SimpleFeatureImpl(List<Object> values, SimpleFeatureType featureType, FeatureId id) {
+        this(values.toArray(), featureType, id, false, index(featureType));
     }
-    
+
     /**
-     * Fast construction of a new feature. 
-     * <p>
-     * The object takes ownership of the provided value array,
-     * do not modify after calling the constructor
-     *</p>
+     * Fast construction of a new feature.
+     *
+     * <p>The object takes ownership of the provided value array, do not modify after calling the
+     * constructor
+     *
      * @param values
      * @param featureType
      * @param id
      * @param validating
      */
-    public SimpleFeatureImpl(Object[] values, SimpleFeatureType featureType, FeatureId id, boolean validating) {
+    public SimpleFeatureImpl(
+            Object[] values, SimpleFeatureType featureType, FeatureId id, boolean validating) {
         this(values, featureType, id, validating, index(featureType));
-    }    
-    
+    }
+
     /**
-     * Fast construction of a new feature. 
-     * <p>
-     * The object takes ownership of the provided value array,
-     * do not modify after calling the constructor
-     *</p>
+     * Fast construction of a new feature.
+     *
+     * <p>The object takes ownership of the provided value array, do not modify after calling the
+     * constructor
+     *
      * @param values
      * @param featureType
      * @param id
      * @param validating
      * @param index - attribute name to value index mapping
      */
-    public SimpleFeatureImpl(Object[] values, SimpleFeatureType featureType, 
-            FeatureId id, boolean validating, Map<String,Integer> index) {
+    public SimpleFeatureImpl(
+            Object[] values,
+            SimpleFeatureType featureType,
+            FeatureId id,
+            boolean validating,
+            Map<String, Integer> index) {
         this.id = id;
         this.featureType = featureType;
         this.values = values;
         this.validating = validating;
         this.index = index;
-        
+
         // if we're self validating, do validation right now
-        if(validating)
-            validate();
-    }        
-    
+        if (validating) validate();
+    }
+
     /**
      * Generate (or lookup) an "index" mapping attribute to index for the provided FeatureType.
-     * <p>
-     * This method will use the following:
+     *
+     * <p>This method will use the following:
+     *
      * <ul>
-     * <li>SimpleFeatureTypeImpl.index; or
-     * <li>Check getUserData().get("indexLookup");
-     * <li>or call {@link SimpleFeatureTypeImpl#buildIndex(SimpleFeatureType)} to generate the
-     *     required index
+     *   <li>SimpleFeatureTypeImpl.index; or
+     *   <li>Check getUserData().get("indexLookup");
+     *   <li>or call {@link SimpleFeatureTypeImpl#buildIndex(SimpleFeatureType)} to generate the
+     *       required index
      * </ul>
+     *
      * @param featureType
      * @return mapping between attribute name to attribute index
      */
     @SuppressWarnings("unchecked")
-    private static Map<String,Integer> index(SimpleFeatureType featureType) {
+    private static Map<String, Integer> index(SimpleFeatureType featureType) {
         // in the most common case reuse the map cached in the feature type
-        if(featureType instanceof SimpleFeatureTypeImpl) {
+        if (featureType instanceof SimpleFeatureTypeImpl) {
             return ((SimpleFeatureTypeImpl) featureType).index;
         } else {
             synchronized (featureType) {
-                // if we're not lucky, rebuild the index completely... 
+                // if we're not lucky, rebuild the index completely...
                 Object cache = featureType.getUserData().get("indexLookup");
-                if( cache instanceof Map){
-                    return (Map<String,Integer>) cache;
-                }
-                else {
-                    Map<String,Integer> generatedIndex = SimpleFeatureTypeImpl.buildIndex(featureType);
-                    featureType.getUserData().put("indexLookup", generatedIndex );
+                if (cache instanceof Map) {
+                    return (Map<String, Integer>) cache;
+                } else {
+                    Map<String, Integer> generatedIndex =
+                            SimpleFeatureTypeImpl.buildIndex(featureType);
+                    featureType.getUserData().put("indexLookup", generatedIndex);
                     return generatedIndex;
                 }
             }
-        }        
+        }
     }
-    
+
     public FeatureId getIdentifier() {
         return id;
     }
+
     public String getID() {
-    	return id.getID();
+        return id.getID();
     }
-    
+
     public int getNumberOfAttributes() {
         return values.length;
     }
-    
+
     public Object getAttribute(int index) throws IndexOutOfBoundsException {
-        return values[ index ];
+        return values[index];
     }
-    
+
     public Object getAttribute(String name) {
         Integer idx = index.get(name);
-        if(idx != null)
-            return getAttribute(idx);
-        else
-            return null;
+        if (idx != null) return getAttribute(idx);
+        else return null;
     }
 
     public Object getAttribute(Name name) {
-        return getAttribute( name.getLocalPart() );
+        return getAttribute(name.getLocalPart());
     }
 
     public int getAttributeCount() {
@@ -207,24 +194,24 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     public List<Object> getAttributes() {
-        return new ArrayList(Arrays.asList( values ));
+        return new ArrayList(Arrays.asList(values));
     }
 
     public Object getDefaultGeometry() {
         // should be specified in the index as the default key (null)
         Integer idx = index.get(null);
-        Object defaultGeometry = idx != null ? getAttribute( idx ) : null;
-           
-       // not found? do we have a default geometry at all?
-       if(defaultGeometry == null){
-           GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
-           if(geometryDescriptor != null){
-               Integer defaultGeomIndex = index.get(geometryDescriptor.getName().getLocalPart());
-               defaultGeometry = getAttribute(defaultGeomIndex.intValue());
-           }
-       }
-    
-       return defaultGeometry;
+        Object defaultGeometry = idx != null ? getAttribute(idx) : null;
+
+        // not found? do we have a default geometry at all?
+        if (defaultGeometry == null) {
+            GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
+            if (geometryDescriptor != null) {
+                Integer defaultGeomIndex = index.get(geometryDescriptor.getName().getLocalPart());
+                defaultGeometry = getAttribute(defaultGeomIndex.intValue());
+            }
+        }
+
+        return defaultGeometry;
     }
 
     public SimpleFeatureType getFeatureType() {
@@ -235,26 +222,25 @@ public class SimpleFeatureImpl implements SimpleFeature {
         return featureType;
     }
 
-    public void setAttribute(int index, Object value)
-        throws IndexOutOfBoundsException {
+    public void setAttribute(int index, Object value) throws IndexOutOfBoundsException {
         // first do conversion
-        Object converted = Converters.convert(value, getFeatureType().getDescriptor(index).getType().getBinding());
+        Object converted =
+                Converters.convert(
+                        value, getFeatureType().getDescriptor(index).getType().getBinding());
         // if necessary, validation too
-        if(validating)
-            Types.validate(featureType.getDescriptor(index), converted);
+        if (validating) Types.validate(featureType.getDescriptor(index), converted);
         // finally set the value into the feature
         values[index] = converted;
     }
-    
+
     public void setAttribute(String name, Object value) {
         final Integer idx = index.get(name);
-        if(idx == null)
-            throw new IllegalAttributeException("Unknown attribute " + name);
-        setAttribute( idx.intValue(), value );
+        if (idx == null) throw new IllegalAttributeException("Unknown attribute " + name);
+        setAttribute(idx.intValue(), value);
     }
 
     public void setAttribute(Name name, Object value) {
-        setAttribute( name.getLocalPart(), value );
+        setAttribute(name.getLocalPart(), value);
     }
 
     public void setAttributes(List<Object> values) {
@@ -264,53 +250,51 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     public void setAttributes(Object[] values) {
-        setAttributes( Arrays.asList( values ) );
+        setAttributes(Arrays.asList(values));
     }
 
     public void setDefaultGeometry(Object geometry) {
-        Integer geometryIndex = index.get( null );
-        if ( geometryIndex != null ) {
-            setAttribute( geometryIndex, geometry );
+        Integer geometryIndex = index.get(null);
+        if (geometryIndex != null) {
+            setAttribute(geometryIndex, geometry);
         }
     }
 
     public BoundingBox getBounds() {
-        //TODO: cache this value
-    	CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
-        Envelope bounds = ReferencedEnvelope.create( crs );
-    	
-    	for ( Object o : values ) {
-            if ( o instanceof Geometry ) {
+        // TODO: cache this value
+        CoordinateReferenceSystem crs = featureType.getCoordinateReferenceSystem();
+        Envelope bounds = ReferencedEnvelope.create(crs);
+
+        for (Object o : values) {
+            if (o instanceof Geometry) {
                 Geometry g = (Geometry) o;
-                //TODO: check userData for crs... and ensure its of the same 
+                // TODO: check userData for crs... and ensure its of the same
                 // crs as the feature type
-                if ( bounds.isNull() ) {
-                    bounds.init(JTS.bounds( g, crs ));
-                }
-                else {
-                    bounds.expandToInclude(JTS.bounds( g, crs ));
+                if (bounds.isNull()) {
+                    bounds.init(JTS.bounds(g, crs));
+                } else {
+                    bounds.expandToInclude(JTS.bounds(g, crs));
                 }
             }
         }
-        
+
         return (BoundingBox) bounds;
     }
 
     public GeometryAttribute getDefaultGeometryProperty() {
         GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
         GeometryAttribute geometryAttribute = null;
-        if(geometryDescriptor != null){
+        if (geometryDescriptor != null) {
             Object defaultGeometry = getDefaultGeometry();
-            geometryAttribute = new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);            
+            geometryAttribute =
+                    new GeometryAttributeImpl(defaultGeometry, geometryDescriptor, null);
         }
         return geometryAttribute;
     }
 
     public void setDefaultGeometryProperty(GeometryAttribute geometryAttribute) {
-        if(geometryAttribute != null)
-            setDefaultGeometry(geometryAttribute.getValue());
-        else
-            setDefaultGeometry(null);
+        if (geometryAttribute != null) setDefaultGeometry(geometryAttribute.getValue());
+        else setDefaultGeometry(null);
     }
 
     public Collection<Property> getProperties() {
@@ -318,14 +302,14 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     public Collection<Property> getProperties(Name name) {
-        return getProperties( name.getLocalPart() );
+        return getProperties(name.getLocalPart());
     }
 
     public Collection<Property> getProperties(String name) {
         final Integer idx = index.get(name);
-        if(idx != null) {
+        if (idx != null) {
             // cast temporarily to a plain collection to avoid type problems with generics
-            Collection c = Collections.singleton( new Attribute( idx ) );
+            Collection c = Collections.singleton(new Attribute(idx));
             return c;
         } else {
             return Collections.emptyList();
@@ -333,20 +317,21 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     public Property getProperty(Name name) {
-        return getProperty( name.getLocalPart() );
+        return getProperty(name.getLocalPart());
     }
 
     public Property getProperty(String name) {
         final Integer idx = index.get(name);
-        if(idx == null){
+        if (idx == null) {
             return null;
         } else {
             int index = idx.intValue();
             AttributeDescriptor descriptor = featureType.getDescriptor(index);
-            if(descriptor instanceof GeometryDescriptor){
-                return new GeometryAttributeImpl(values[index], (GeometryDescriptor) descriptor, null); 
-            }else{
-                return new Attribute( index );
+            if (descriptor instanceof GeometryDescriptor) {
+                return new GeometryAttributeImpl(
+                        values[index], (GeometryDescriptor) descriptor, null);
+            } else {
+                return new Attribute(index);
             }
         }
     }
@@ -357,21 +342,19 @@ public class SimpleFeatureImpl implements SimpleFeature {
 
     public void setValue(Collection<Property> values) {
         int i = 0;
-        for ( Property p : values ) {
+        for (Property p : values) {
             this.values[i++] = p.getValue();
         }
     }
 
     public void setValue(Object newValue) {
-        setValue( (Collection<Property>) newValue );
+        setValue((Collection<Property>) newValue);
     }
-    
-    /**
-     * @see org.opengis.feature.Attribute#getDescriptor()
-     */
+
+    /** @see org.opengis.feature.Attribute#getDescriptor() */
     public AttributeDescriptor getDescriptor() {
-        return new AttributeDescriptorImpl(featureType, featureType.getName(), 0,
-                Integer.MAX_VALUE, true, null);
+        return new AttributeDescriptorImpl(
+                featureType, featureType.getName(), 0, Integer.MAX_VALUE, true, null);
     }
 
     /**
@@ -387,11 +370,10 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     public Map<Object, Object> getUserData() {
-        if(userData == null)
-            userData = new HashMap<Object, Object>();
+        if (userData == null) userData = new HashMap<Object, Object>();
         return userData;
     }
-    
+
     /**
      * returns a unique code for this feature
      *
@@ -402,12 +384,10 @@ public class SimpleFeatureImpl implements SimpleFeature {
     }
 
     /**
-     * override of equals.  Returns if the passed in object is equal to this.
+     * override of equals. Returns if the passed in object is equal to this.
      *
      * @param obj the Object to test for equality.
-     *
-     * @return <code>true</code> if the object is equal, <code>false</code>
-     *         otherwise.
+     * @return <code>true</code> if the object is equal, <code>false</code> otherwise.
      */
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -423,9 +403,9 @@ public class SimpleFeatureImpl implements SimpleFeature {
         }
 
         SimpleFeatureImpl feat = (SimpleFeatureImpl) obj;
-        
-        // this check shouldn't exist, by contract, 
-        //all features should have an ID.
+
+        // this check shouldn't exist, by contract,
+        // all features should have an ID.
         if (id == null) {
             if (feat.getIdentifier() != null) {
                 return false;
@@ -448,21 +428,22 @@ public class SimpleFeatureImpl implements SimpleFeature {
                     return false;
                 }
             } else {
-                if(values[i] instanceof Geometry) {
-                    if(!(otherAtt instanceof Geometry)) {
+                if (values[i] instanceof Geometry) {
+                    if (!(otherAtt instanceof Geometry)) {
                         return false;
-                    } else if(!CoordinateSequences.equalsND((Geometry) values[i], (Geometry) otherAtt)) {
+                    } else if (!CoordinateSequences.equalsND(
+                            (Geometry) values[i], (Geometry) otherAtt)) {
                         return false;
                     }
                 } else if (!values[i].equals(otherAtt)) {
                     return false;
-                } 
+                }
             }
         }
 
         return true;
     }
-    
+
     public void validate() {
         for (int i = 0; i < values.length; i++) {
             AttributeDescriptor descriptor = getType().getDescriptor(i);
@@ -470,9 +451,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         }
     }
 
-    /**
-     * Live collection backed directly on the value array
-     */
+    /** Live collection backed directly on the value array */
     class AttributeList extends AbstractList<Property> {
 
         public Property get(int index) {
@@ -482,36 +461,33 @@ public class SimpleFeatureImpl implements SimpleFeature {
             }
             return new Attribute(index);
         }
-        
+
         public Attribute set(int index, Property element) {
-            values[index] =  element.getValue();
+            values[index] = element.getValue();
             return null;
         }
-        
+
         public int size() {
             return values.length;
         }
     }
-    
+
     public String toString() {
         StringBuffer sb = new StringBuffer("SimpleFeatureImpl:");
-        sb.append( getType().getName().getLocalPart());
+        sb.append(getType().getName().getLocalPart());
         sb.append("=");
-        sb.append( getValue() );
+        sb.append(getValue());
         return sb.toString();
     }
-    
 
-    /**
-     * Attribute that delegates directly to the value array
-     */
+    /** Attribute that delegates directly to the value array */
     class Attribute implements org.opengis.feature.Attribute {
         int index;
-        
-        Attribute( int index ) {
+
+        Attribute(int index) {
             this.index = index;
         }
-        
+
         public Identifier getIdentifier() {
             return null;
         }
@@ -530,10 +506,9 @@ public class SimpleFeatureImpl implements SimpleFeature {
 
         public Map<Object, Object> getUserData() {
             // lazily create the user data holder
-            if(attributeUserData == null)
-                attributeUserData = new HashMap[values.length];
+            if (attributeUserData == null) attributeUserData = new HashMap[values.length];
             // lazily create the attribute user data
-            if(attributeUserData[index] == null)
+            if (attributeUserData[index] == null)
                 attributeUserData[index] = new HashMap<Object, Object>();
             return attributeUserData[index];
         }
@@ -551,7 +526,7 @@ public class SimpleFeatureImpl implements SimpleFeature {
         }
         /**
          * Override of hashCode; uses descriptor name to agree with AttributeImpl
-         * 
+         *
          * @return hashCode for this object.
          */
         public int hashCode() {
@@ -561,30 +536,28 @@ public class SimpleFeatureImpl implements SimpleFeature {
 
         /**
          * Override of equals.
-         * 
-         * @param other
-         *            the object to be tested for equality.
-         * 
+         *
+         * @param other the object to be tested for equality.
          * @return whether other is equal to this attribute Type.
          */
         public boolean equals(Object obj) {
-            if ( this == obj ) {
+            if (this == obj) {
                 return true;
             }
-            
+
             if (!(obj instanceof Attribute)) {
                 return false;
             }
             Attribute other = (Attribute) obj;
-            if (!Utilities.equals(getDescriptor(), other.getDescriptor())){
+            if (!Utilities.equals(getDescriptor(), other.getDescriptor())) {
                 return false;
             }
-            if (!Utilities.deepEquals(getValue(), other.getValue())){
-                return false;   
+            if (!Utilities.deepEquals(getValue(), other.getValue())) {
+                return false;
             }
-            return Utilities.equals( getIdentifier(), other.getIdentifier());
+            return Utilities.equals(getIdentifier(), other.getIdentifier());
         }
-        
+
         public void validate() {
             Types.validate(getDescriptor(), values[index]);
         }
@@ -592,8 +565,10 @@ public class SimpleFeatureImpl implements SimpleFeature {
         public String toString() {
             StringBuffer sb = new StringBuffer("SimpleFeatureImpl.Attribute: ");
             sb.append(getDescriptor().getName().getLocalPart());
-            if (!getDescriptor().getName().getLocalPart().equals(
-                    getDescriptor().getType().getName().getLocalPart())
+            if (!getDescriptor()
+                            .getName()
+                            .getLocalPart()
+                            .equals(getDescriptor().getType().getName().getLocalPart())
                     || id != null) {
                 sb.append("<");
                 sb.append(getDescriptor().getType().getName().getLocalPart());
@@ -604,11 +579,11 @@ public class SimpleFeatureImpl implements SimpleFeature {
                 sb.append(">");
             }
             sb.append("=");
-            sb.append( values[index] );
+            sb.append(values[index]);
             return sb.toString();
         }
     }
-    
+
     class SimpleGeometryAttribute extends Attribute implements GeometryAttribute {
 
         SimpleGeometryAttribute(int index) {
@@ -627,8 +602,8 @@ public class SimpleFeatureImpl implements SimpleFeature {
 
         @Override
         public BoundingBox getBounds() {
-            ReferencedEnvelope bounds = new ReferencedEnvelope(
-                    featureType.getCoordinateReferenceSystem());
+            ReferencedEnvelope bounds =
+                    new ReferencedEnvelope(featureType.getCoordinateReferenceSystem());
             Object value = getAttribute(index);
             if (value instanceof Geometry) {
                 bounds.init(((Geometry) value).getEnvelopeInternal());

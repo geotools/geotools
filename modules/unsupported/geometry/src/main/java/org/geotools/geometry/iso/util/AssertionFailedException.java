@@ -1,10 +1,10 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,31 +18,23 @@
 package org.geotools.geometry.iso.util;
 
 /**
- * Thrown when the application is in an inconsistent state. Indicates a problem
- * with the code.
- *
- *
- *
+ * Thrown when the application is in an inconsistent state. Indicates a problem with the code.
  *
  * @source $URL$
  */
 public class AssertionFailedException extends RuntimeException {
 
-	/**
-	 * Creates an <code>AssertionFailedException</code>.
-	 */
-	public AssertionFailedException() {
-		super();
-	}
+    /** Creates an <code>AssertionFailedException</code>. */
+    public AssertionFailedException() {
+        super();
+    }
 
-	/**
-	 * Creates a <code>AssertionFailedException</code> with the given detail
-	 * message.
-	 * 
-	 * @param message
-	 *            a description of the assertion
-	 */
-	public AssertionFailedException(String message) {
-		super(message);
-	}
+    /**
+     * Creates a <code>AssertionFailedException</code> with the given detail message.
+     *
+     * @param message a description of the assertion
+     */
+    public AssertionFailedException(String message) {
+        super(message);
+    }
 }

@@ -20,8 +20,9 @@ package org.geotools.grid;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
- * A helper class to create bounding envelopes with width and height that are
- * simple multiples of a given resolution.
+ * A helper class to create bounding envelopes with width and height that are simple multiples of a
+ * given resolution.
+ *
  * <pre><code>
  * // Example of use: creating an envlope with 'neat' lat-lon bounds
  * // that encompasses a set of features
@@ -36,12 +37,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
  * </code></pre>
  *
  * @todo move this class or its methods to a more general module
- *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -50,12 +47,11 @@ public class Envelopes {
     private static final double EPS = 1.0E-8;
 
     /**
-     * Include the provided envelope, expanding as necessary and rounding
-     * the bounding coordinates such that they are multiples of the
-     * specified resolution. For example, if {@code resolution} is 100 then the
-     * min and max bounding coordinates of this envelope will set to mutliples
-     * of 100 by rounding down the min values and rounding up the max values
-     * if required.
+     * Include the provided envelope, expanding as necessary and rounding the bounding coordinates
+     * such that they are multiples of the specified resolution. For example, if {@code resolution}
+     * is 100 then the min and max bounding coordinates of this envelope will set to mutliples of
+     * 100 by rounding down the min values and rounding up the max values if required.
+     *
      * <pre><code>
      * // Example, create a new envelope that cntains an input envlope and
      * // whose boundind coordinates are multiples of 100
@@ -66,9 +62,7 @@ public class Envelopes {
      * </code></pre>
      *
      * @param srcEnv the envelope to include
-     * @param resolution resolution (in world distance units) of the resulting
-     *        boundary coordinates
-     *
+     * @param resolution resolution (in world distance units) of the resulting boundary coordinates
      * @return a new envelope with 'rounded' bounding coordinates
      */
     public static ReferencedEnvelope expandToInclude(ReferencedEnvelope srcEnv, double resolution) {
@@ -76,7 +70,7 @@ public class Envelopes {
         double maxX = roundOrdinate(srcEnv.getMaxX(), resolution, true);
         double minY = roundOrdinate(srcEnv.getMinY(), resolution, false);
         double maxY = roundOrdinate(srcEnv.getMaxY(), resolution, true);
-        
+
         ReferencedEnvelope expanded = new ReferencedEnvelope(srcEnv);
         expanded.expandToInclude(minX, minY);
         expanded.expandToInclude(maxX, maxY);
@@ -84,8 +78,9 @@ public class Envelopes {
     }
 
     /**
-     * Helper method to round ordinate values up or down to a specified resolution.
-     * The returned value will be a multiple of the specified resolution.
+     * Helper method to round ordinate values up or down to a specified resolution. The returned
+     * value will be a multiple of the specified resolution.
+     *
      * <pre><code>
      * double ordinate = 1234.56;
      * double resolution = 100;
@@ -97,10 +92,10 @@ public class Envelopes {
      * // this will return 1300
      * rounded = roundOrdinate(ordinate, resolution, true);
      * </code></pre>
+     *
      * @param ordinate the ordinate to round up or down.
      * @param resolution the desired resolution
      * @param roundUp true to round up; false to round down
-     *
      * @return the rounded ordinate value
      */
     private static double roundOrdinate(double ordinate, double resolution, boolean roundUp) {

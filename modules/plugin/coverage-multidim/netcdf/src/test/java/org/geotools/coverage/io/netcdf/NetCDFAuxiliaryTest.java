@@ -10,11 +10,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.geotools.coverage.io.netcdf.NetCDFAuxiliaryStoreFactory;
 import org.geotools.data.DataStore;
 import org.geotools.test.TestData;
-import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -36,52 +33,51 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 public class NetCDFAuxiliaryTest {
 
-    @Test    
+    @Test
     public void test() throws Exception {
 
         File file = TestData.file(this, "fivedim.nc");
-        
-        //first create reader to build index
+
+        // first create reader to build index
         new NetCDFFormat().getReader(file);
-        
+
         NetCDFAuxiliaryStoreFactory fac = new NetCDFAuxiliaryStoreFactory();
         Map<String, Serializable> params = new HashMap<>();
         params.put(NetCDFAuxiliaryStoreFactory.FILE_PARAM.getName(), file);
-        
+
         assertTrue(fac.canProcess(params));
-        
+
         DataStore store = fac.createDataStore(params);
-        
+
         assertNotNull(store);
-        
-        assertArrayEquals(new String[] {"D"},store.getTypeNames());
-        
+
+        assertArrayEquals(new String[] {"D"}, store.getTypeNames());
+
         SimpleFeatureType type = store.getSchema("D");
-        
+
         assertNotNull(type);
-        
+
         assertEquals(5, type.getAttributeCount());
-        
+
         assertEquals("the_geom", type.getAttributeDescriptors().get(0).getName().getLocalPart());
         assertEquals("imageindex", type.getAttributeDescriptors().get(1).getName().getLocalPart());
         assertEquals("time", type.getAttributeDescriptors().get(2).getName().getLocalPart());
         assertEquals("z", type.getAttributeDescriptors().get(3).getName().getLocalPart());
         assertEquals("runtime", type.getAttributeDescriptors().get(4).getName().getLocalPart());
     }
-    
+
     @Test
     public void testAvailability() {
         NetCDFAuxiliaryStoreFactory fac = new NetCDFAuxiliaryStoreFactory();
-        
+
         assertFalse(fac.isAvailable());
-        
+
         System.setProperty(NetCDFAuxiliaryStoreFactory.AUXILIARY_STORE_KEY, "true");
-        
+
         assertTrue(fac.isAvailable());
-        
+
         System.clearProperty(NetCDFAuxiliaryStoreFactory.AUXILIARY_STORE_KEY);
-        
+
         assertFalse(fac.isAvailable());
     }
-
 }

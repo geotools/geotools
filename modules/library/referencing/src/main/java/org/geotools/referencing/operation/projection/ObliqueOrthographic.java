@@ -20,91 +20,75 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import java.awt.geom.Point2D;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterValueGroup;
-import org.geotools.resources.i18n.ErrorKeys;
-
 import static java.lang.Math.*;
 
+import java.awt.geom.Point2D;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.opengis.parameter.ParameterNotFoundException;
+import org.opengis.parameter.ParameterValueGroup;
 
 /**
- * The oblique case of the {@link Orthographic} projection. Only the spherical
- * form is given here.
+ * The oblique case of the {@link Orthographic} projection. Only the spherical form is given here.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  */
 public class ObliqueOrthographic extends Orthographic {
-    /**
-     * For compatibility with different versions during deserialization.
-     */
+    /** For compatibility with different versions during deserialization. */
     private static final long serialVersionUID = -2306183438166607066L;
 
-    /**
-     * Maximum difference allowed when comparing real numbers.
-     */
+    /** Maximum difference allowed when comparing real numbers. */
     private static final double EPSILON = 1E-6;
 
-    /**
-     * The sine of the {@link #latitudeOfOrigin}.
-     */
+    /** The sine of the {@link #latitudeOfOrigin}. */
     private final double sinphi0;
 
-    /**
-     * The cosine of the {@link #latitudeOfOrigin}.
-     */
+    /** The cosine of the {@link #latitudeOfOrigin}. */
     private final double cosphi0;
 
     /**
      * Constructs an oblique orthographic projection.
      *
-     * @param  parameters The parameter values in standard units.
+     * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
     protected ObliqueOrthographic(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException
-    {
+            throws ParameterNotFoundException {
         super(parameters);
         sinphi0 = sin(latitudeOfOrigin);
         cosphi0 = cos(latitudeOfOrigin);
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates
-     * (units in radians) and stores the result in {@code ptDst} (linear distance
-     * on a unit sphere).
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
+     * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     protected Point2D transformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException
-    {
+            throws ProjectionException {
         final double cosphi = cos(y);
         final double coslam = cos(x);
         final double sinphi = sin(y);
-        if (sinphi0*sinphi + cosphi0*cosphi*coslam < - EPSILON) {
+        if (sinphi0 * sinphi + cosphi0 * cosphi * coslam < -EPSILON) {
             throw new ProjectionException(ErrorKeys.POINT_OUTSIDE_HEMISPHERE);
         }
         y = cosphi0 * sinphi - sinphi0 * cosphi * coslam;
         x = cosphi * sin(x);
 
         if (ptDst != null) {
-            ptDst.setLocation(x,y);
+            ptDst.setLocation(x, y);
             return ptDst;
         }
-        return new Point2D.Double(x,y);
+        return new Point2D.Double(x, y);
     }
 
     /**
-     * Transforms the specified (<var>x</var>,<var>y</var>) coordinates
-     * and stores the result in {@code ptDst}.
+     * Transforms the specified (<var>x</var>,<var>y</var>) coordinates and stores the result in
+     * {@code ptDst}.
      */
     protected Point2D inverseTransformNormalized(double x, double y, final Point2D ptDst)
-            throws ProjectionException
-    {
+            throws ProjectionException {
         final double rho = hypot(x, y);
         double sinc = rho;
         if (sinc > 1.0) {
@@ -119,14 +103,13 @@ public class ObliqueOrthographic extends Orthographic {
             x = 0.0;
         } else {
             double phi = (cosc * sinphi0) + (y * sinc * cosphi0 / rho);
-            y = (cosc - sinphi0 * phi) * rho;       //rather clever; equivalent to part of (20-15)
+            y = (cosc - sinphi0 * phi) * rho; // rather clever; equivalent to part of (20-15)
             x *= sinc * cosphi0;
 
             // begin sinchk
             if (abs(phi) >= 1.0) {
-                phi = (phi < 0.0) ? -PI/2 : PI/2;
-            }
-            else {
+                phi = (phi < 0.0) ? -PI / 2 : PI / 2;
+            } else {
                 phi = asin(phi);
             }
             // end sinchk
@@ -135,7 +118,7 @@ public class ObliqueOrthographic extends Orthographic {
                 if (x == 0.0) {
                     x = 0.0;
                 } else {
-                    x = (x < 0.0) ? -PI/2 : PI/2;
+                    x = (x < 0.0) ? -PI / 2 : PI / 2;
                 }
             } else {
                 x = atan2(x, y);
@@ -143,9 +126,9 @@ public class ObliqueOrthographic extends Orthographic {
             y = phi;
         }
         if (ptDst != null) {
-            ptDst.setLocation(x,y);
+            ptDst.setLocation(x, y);
             return ptDst;
         }
-        return new Point2D.Double(x,y);
+        return new Point2D.Double(x, y);
     }
 }

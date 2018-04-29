@@ -17,13 +17,12 @@
 package org.geotools.data.postgis;
 
 import java.util.logging.Logger;
-
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
 import org.postgresql.util.PSQLException;
 
 public class PostGISHStoreTestSetup extends JDBCDelegatingTestSetup {
 
-    private final static Logger LOGGER = Logger.getLogger(PostGISHStoreTestSetup.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PostGISHStoreTestSetup.class.getName());
 
     protected boolean hasException = false;
 
@@ -43,7 +42,9 @@ public class PostGISHStoreTestSetup extends JDBCDelegatingTestSetup {
             // Typically: ERROR: permission denied to create extension "hstore"
             // when creating the extension
             if (!LOGGED) {
-                LOGGER.warning("HSTORE tests will be skipped due to:\n >>>> " + psqle.getLocalizedMessage());
+                LOGGER.warning(
+                        "HSTORE tests will be skipped due to:\n >>>> "
+                                + psqle.getLocalizedMessage());
                 LOGGED = true;
             }
             hasException = true;
@@ -58,15 +59,17 @@ public class PostGISHStoreTestSetup extends JDBCDelegatingTestSetup {
 
     private void createTestHStoreTable() throws Exception {
 
-        String sql = "CREATE TABLE \"hstoretest\" ("
-                + "\"id\" INT, \"name\" VARCHAR, \"mapping\" HSTORE, PRIMARY KEY(id))";
+        String sql =
+                "CREATE TABLE \"hstoretest\" ("
+                        + "\"id\" INT, \"name\" VARCHAR, \"mapping\" HSTORE, PRIMARY KEY(id))";
         run(sql);
 
-        sql = "INSERT INTO \"hstoretest\" VALUES (0, 'singlepair','key1 => value1 ');"
-                + "INSERT INTO \"hstoretest\" VALUES (1, 'doublepair','key2 => value2, key3 => value3 ');"
-                + "INSERT INTO \"hstoretest\" VALUES (2, 'pairwithnullvalue', 'key4 => NULL');"
-                + "INSERT INTO \"hstoretest\" VALUES (3, 'emptycontent', '');"
-                + "INSERT INTO \"hstoretest\" VALUES (4, 'nullcontent', null);";
+        sql =
+                "INSERT INTO \"hstoretest\" VALUES (0, 'singlepair','key1 => value1 ');"
+                        + "INSERT INTO \"hstoretest\" VALUES (1, 'doublepair','key2 => value2, key3 => value3 ');"
+                        + "INSERT INTO \"hstoretest\" VALUES (2, 'pairwithnullvalue', 'key4 => NULL');"
+                        + "INSERT INTO \"hstoretest\" VALUES (3, 'emptycontent', '');"
+                        + "INSERT INTO \"hstoretest\" VALUES (4, 'nullcontent', null);";
 
         run(sql);
     }
@@ -74,5 +77,4 @@ public class PostGISHStoreTestSetup extends JDBCDelegatingTestSetup {
     private void dropTestHStoreTable() throws Exception {
         runSafe("DROP TABLE \"hstoretest\" cascade");
     }
-
 }

@@ -30,12 +30,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.util.ImagingException;
-
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
@@ -63,9 +61,9 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * A RasterLayerResponse. An instance of this class is produced everytime a
- * requestCoverage is called to a reader.
- * 
+ * A RasterLayerResponse. An instance of this class is produced everytime a requestCoverage is
+ * called to a reader.
+ *
  * @author Daniele Romagnoli, GeoSolutions
  */
 class RasterLayerResponse {
@@ -78,12 +76,11 @@ class RasterLayerResponse {
 
         /**
          * Default {@link Constructor}
-         * 
+         *
          * @param aoi
          * @param gridToWorldCorner
          */
-        public GranuleWorker(ReferencedEnvelope aoi,
-                MathTransform gridToWorldCorner) {
+        public GranuleWorker(ReferencedEnvelope aoi, MathTransform gridToWorldCorner) {
             init(aoi, gridToWorldCorner);
         }
 
@@ -98,7 +95,6 @@ class RasterLayerResponse {
 
             // rasterGranuleLoader creation
             rasterGranuleLoader = new RasterGranuleLoader(granuleBBox, rasterFile, gridToWorld);
-
         }
 
         public void produce() {
@@ -110,16 +106,19 @@ class RasterLayerResponse {
             RenderedImage loadedImage;
             try {
 
-                loadedImage = rasterGranuleLoader.loadRaster(
-                        baseReadParameters, imageChoice, bbox,
-                        finalWorldToGridCorner, request,
-                        request.getTileDimensions());
+                loadedImage =
+                        rasterGranuleLoader.loadRaster(
+                                baseReadParameters,
+                                imageChoice,
+                                bbox,
+                                finalWorldToGridCorner,
+                                request,
+                                request.getTileDimensions());
                 if (loadedImage == null) {
                     if (LOGGER.isLoggable(Level.FINE))
-                        LOGGER.log(Level.FINE,
-                                "Unable to load the raster with request "
-                                        + request.toString());
-
+                        LOGGER.log(
+                                Level.FINE,
+                                "Unable to load the raster with request " + request.toString());
                 }
                 //
                 // We check here if the images have an alpha channel or some
@@ -145,8 +144,7 @@ class RasterLayerResponse {
                 return;
             }
 
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("Processing loaded raster data ");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Processing loaded raster data ");
 
             // final RenderedImage raster = processGranuleRaster(loadedImage,
             // granuleIndex, alphaIn, doInputTransparency,
@@ -155,14 +153,12 @@ class RasterLayerResponse {
             final RenderedImage raster = processGranuleRaster(loadedImage, alphaIn, false, null);
 
             theImage = raster;
-
         }
-
     }
 
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(RasterLayerResponse.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(RasterLayerResponse.class);
 
     /** The GridCoverage produced after a {@link #compute()} method call */
     private GridCoverage2D gridCoverage;
@@ -203,22 +199,17 @@ class RasterLayerResponse {
     private double[] backgroundValues;
 
     /**
-     * Construct a {@code RasterLayerResponse} given a specific
-     * {@link RasterLayerRequest}, a {@code GridCoverageFactory} to produce
-     * {@code GridCoverage}s and an {@code ImageReaderSpi} to be used for
-     * instantiating an Image Reader for a read operation,
-     * 
-     * @param request
-     *            a {@link RasterLayerRequest} originating this response.
-     * @param coverageFactory
-     *            a {@code GridCoverageFactory} to produce a
-     *            {@code GridCoverage} when calling the {@link #compute()}
-     *            method.
-     * @param readerSpi
-     *            the Image Reader Service provider interface.
+     * Construct a {@code RasterLayerResponse} given a specific {@link RasterLayerRequest}, a {@code
+     * GridCoverageFactory} to produce {@code GridCoverage}s and an {@code ImageReaderSpi} to be
+     * used for instantiating an Image Reader for a read operation,
+     *
+     * @param request a {@link RasterLayerRequest} originating this response.
+     * @param coverageFactory a {@code GridCoverageFactory} to produce a {@code GridCoverage} when
+     *     calling the {@link #compute()} method.
+     * @param readerSpi the Image Reader Service provider interface.
      */
-    public RasterLayerResponse(final RasterLayerRequest request,
-            final RasterManager rasterManager) {
+    public RasterLayerResponse(
+            final RasterLayerRequest request, final RasterManager rasterManager) {
         this.request = request;
         location = request.imageManager.property.getPath();
         coverageEnvelope = request.imageManager.coverageEnvelope;
@@ -231,12 +222,11 @@ class RasterLayerResponse {
     }
 
     /**
-     * Compute the coverage request and produce a grid coverage which will be
-     * returned by {@link #createResponse()}. The produced grid coverage may be
-     * {@code null} in case of empty request.
-     * 
-     * @return the {@link GridCoverage} produced as computation of this response
-     *         using the {@link #compute()} method.
+     * Compute the coverage request and produce a grid coverage which will be returned by {@link
+     * #createResponse()}. The produced grid coverage may be {@code null} in case of empty request.
+     *
+     * @return the {@link GridCoverage} produced as computation of this response using the {@link
+     *     #compute()} method.
      * @throws IOException
      * @uml.property name="gridCoverage"
      */
@@ -247,7 +237,6 @@ class RasterLayerResponse {
 
     /**
      * @return the {@link RasterLayerRequest} originating this response.
-     * 
      * @uml.property name="request"
      */
     public RasterLayerRequest getOriginatingCoverageRequest() {
@@ -255,27 +244,28 @@ class RasterLayerResponse {
     }
 
     /**
-     * This method creates the GridCoverage2D from the underlying file given a
-     * specified envelope, and a requested dimension.
-     * 
-     * @param iUseJAI
-     *            specify if the underlying read process should leverage on a
-     *            JAI ImageRead operation or a simple direct call to the
-     *            {@code read} method of a proper {@code ImageReader}.
-     * @param overviewPolicy
-     *            the overview policy which need to be adopted
+     * This method creates the GridCoverage2D from the underlying file given a specified envelope,
+     * and a requested dimension.
+     *
+     * @param iUseJAI specify if the underlying read process should leverage on a JAI ImageRead
+     *     operation or a simple direct call to the {@code read} method of a proper {@code
+     *     ImageReader}.
+     * @param overviewPolicy the overview policy which need to be adopted
      * @return a {@code GridCoverage}
-     * 
      * @throws java.io.IOException
      */
     private void processRequest() throws IOException {
 
         if (request.isEmpty()) {
             throw new DataSourceException("Empty request: " + request.toString());
-        } else if (request.imageManager.property.getPath().equalsIgnoreCase(Utils.FAKE_IMAGE_PATH)){
-            finalGridToWorldCorner = Utils.IDENTITY_2D_FLIP ;
-            //TODO Re-enable this when supportin y as DISPLAY_DOWN
-//            finalGridToWorldCorner = rasterManager.parent.defaultValues.epsgCode == 404001 ? Utils.IDENTITY_2D : Utils.IDENTITY_2D_FLIP ;
+        } else if (request.imageManager
+                .property
+                .getPath()
+                .equalsIgnoreCase(Utils.FAKE_IMAGE_PATH)) {
+            finalGridToWorldCorner = Utils.IDENTITY_2D_FLIP;
+            // TODO Re-enable this when supportin y as DISPLAY_DOWN
+            //            finalGridToWorldCorner = rasterManager.parent.defaultValues.epsgCode ==
+            // 404001 ? Utils.IDENTITY_2D : Utils.IDENTITY_2D_FLIP ;
             gridCoverage = prepareCoverage(Utils.DEFAULT_IMAGE);
             return;
         }
@@ -283,17 +273,15 @@ class RasterLayerResponse {
         // assemble granules
         final RenderedImage image = prepareResponse();
 
-//        RenderedImage finalRaster = postProcessRaster(image);
+        //        RenderedImage finalRaster = postProcessRaster(image);
 
         // create the coverage
         gridCoverage = prepareCoverage(image);
-
     }
 
     /**
-     * This method loads the granules which overlap the requested
-     * {@link GeneralEnvelope} using the provided values for alpha and input
-     * ROI.
+     * This method loads the granules which overlap the requested {@link GeneralEnvelope} using the
+     * provided values for alpha and input ROI.
      */
     private RenderedImage prepareResponse() throws DataSourceException {
 
@@ -302,25 +290,27 @@ class RasterLayerResponse {
             // final double[] backgroundValues = request.getBackgroundValues();
 
             // select the relevant overview, notice that at this time we have
-            // The grid to world transforms for the other levels can be computed 
+            // The grid to world transforms for the other levels can be computed
             // accordingly knowning the scale factors.
             if (request.getRequestedBBox() != null && request.getRequestedRasterArea() != null)
-                imageChoice = setReadParams(request.getOverviewPolicy(), baseReadParameters, request);
-            else
-                imageChoice = 0;
+                imageChoice =
+                        setReadParams(request.getOverviewPolicy(), baseReadParameters, request);
+            else imageChoice = 0;
             assert imageChoice >= 0;
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("Loading level " + imageChoice + "with subsampling factors "
-                        + baseReadParameters.getSourceXSubsampling() + " "
-                        + baseReadParameters.getSourceYSubsampling());
+                LOGGER.fine(
+                        "Loading level "
+                                + imageChoice
+                                + "with subsampling factors "
+                                + baseReadParameters.getSourceXSubsampling()
+                                + " "
+                                + baseReadParameters.getSourceYSubsampling());
 
             final BoundingBox cropBBOX = request.getCropBBox();
-            if (cropBBOX != null)
-                bbox = ReferencedEnvelope.reference(cropBBOX);
-            else
-                bbox = new ReferencedEnvelope(coverageEnvelope);
+            if (cropBBOX != null) bbox = ReferencedEnvelope.reference(cropBBOX);
+            else bbox = new ReferencedEnvelope(coverageEnvelope);
 
-//            XAffineTransform.getFlip((AffineTransform) baseGridToWorld);
+            //            XAffineTransform.getFlip((AffineTransform) baseGridToWorld);
             // compute final world to grid
             // base grid to world for the center of pixels
             final AffineTransform g2w = new AffineTransform((AffineTransform) baseGridToWorld);
@@ -328,23 +318,32 @@ class RasterLayerResponse {
             g2w.concatenate(CoverageUtilities.CENTER_TO_CORNER);
 
             // keep into account overviews and subsampling
-            final OverviewLevel level = request.imageManager.overviewsController.resolutionsLevels
-                    .get(imageChoice);
-            final OverviewLevel baseLevel = request.imageManager.overviewsController.resolutionsLevels.get(0);
-            final AffineTransform2D adjustments = new AffineTransform2D(
-                    (level.resolutionX / baseLevel.resolutionX)
-                            * baseReadParameters.getSourceXSubsampling(), 0, 0,
-                    (level.resolutionY / baseLevel.resolutionY)
-                            * baseReadParameters.getSourceYSubsampling(), 0, 0);
+            final OverviewLevel level =
+                    request.imageManager.overviewsController.resolutionsLevels.get(imageChoice);
+            final OverviewLevel baseLevel =
+                    request.imageManager.overviewsController.resolutionsLevels.get(0);
+            final AffineTransform2D adjustments =
+                    new AffineTransform2D(
+                            (level.resolutionX / baseLevel.resolutionX)
+                                    * baseReadParameters.getSourceXSubsampling(),
+                            0,
+                            0,
+                            (level.resolutionY / baseLevel.resolutionY)
+                                    * baseReadParameters.getSourceYSubsampling(),
+                            0,
+                            0);
             g2w.concatenate(adjustments);
             finalGridToWorldCorner = new AffineTransform2D(g2w);
             finalWorldToGridCorner = finalGridToWorldCorner.inverse();
-            rasterBounds = new GeneralGridEnvelope(CRS.transform(
-                    finalWorldToGridCorner, bbox), PixelInCell.CELL_CORNER,
-                    false).toRectangle();
+            rasterBounds =
+                    new GeneralGridEnvelope(
+                                    CRS.transform(finalWorldToGridCorner, bbox),
+                                    PixelInCell.CELL_CORNER,
+                                    false)
+                            .toRectangle();
 
-            final GranuleWorker worker = new GranuleWorker(
-                    new ReferencedEnvelope(coverageEnvelope), baseGridToWorld);
+            final GranuleWorker worker =
+                    new GranuleWorker(new ReferencedEnvelope(coverageEnvelope), baseGridToWorld);
             worker.produce();
 
             //
@@ -352,8 +351,11 @@ class RasterLayerResponse {
             //
             if (theImage != null) {
                 if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Loaded bbox " + bbox.toString()
-                            + " while crop bbox " + request.getCropBBox());
+                    LOGGER.fine(
+                            "Loaded bbox "
+                                    + bbox.toString()
+                                    + " while crop bbox "
+                                    + request.getCropBBox());
 
                 return theImage;
 
@@ -365,16 +367,17 @@ class RasterLayerResponse {
                     return ConstantDescriptor.create(
                             Float.valueOf(rasterBounds.width),
                             Float.valueOf(rasterBounds.height),
-                            new Byte[] { 0 }, this.rasterManager.getHints());
+                            new Byte[] {0},
+                            this.rasterManager.getHints());
                 } else {
 
                     // we have background values available
                     final Double[] values = new Double[backgroundValues.length];
-                    for (int i = 0; i < values.length; i++)
-                        values[i] = backgroundValues[i];
+                    for (int i = 0; i < values.length; i++) values[i] = backgroundValues[i];
                     return ConstantDescriptor.create(
                             Float.valueOf(rasterBounds.width),
-                            Float.valueOf(rasterBounds.height), values,
+                            Float.valueOf(rasterBounds.height),
+                            values,
                             this.rasterManager.getHints());
                 }
             }
@@ -386,8 +389,11 @@ class RasterLayerResponse {
         }
     }
 
-    private RenderedImage processGranuleRaster(RenderedImage granule, final boolean alphaIn,
-            final boolean doTransparentColor, final Color transparentColor) {
+    private RenderedImage processGranuleRaster(
+            RenderedImage granule,
+            final boolean alphaIn,
+            final boolean doTransparentColor,
+            final Color transparentColor) {
 
         //
         // INDEX COLOR MODEL EXPANSION
@@ -413,8 +419,7 @@ class RasterLayerResponse {
         //
         //
         if (rasterManager.expandMe && granule.getColorModel() instanceof IndexColorModel) {
-            granule = new ImageWorker(granule).forceComponentColorModel()
-                    .getRenderedImage();
+            granule = new ImageWorker(granule).forceComponentColorModel().getRenderedImage();
         }
 
         //
@@ -422,16 +427,13 @@ class RasterLayerResponse {
         //
         //
         if (doTransparentColor) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("Support for alpha on input image");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Support for alpha on input image");
             granule = ImageUtilities.maskColor(transparentColor, granule);
         }
         return granule;
-
     }
 
-    private GridCoverage2D prepareCoverage(final RenderedImage data)
-            throws IOException {
+    private GridCoverage2D prepareCoverage(final RenderedImage data) throws IOException {
         // creating bands
         final SampleModel sm = data.getSampleModel();
         final ColorModel cm = data.getColorModel();
@@ -439,8 +441,7 @@ class RasterLayerResponse {
         final GridSampleDimension[] bands = new GridSampleDimension[numBands];
         // setting bands names.
         for (int i = 0; i < numBands; i++) {
-            final ColorInterpretation colorInterpretation = TypeMap
-                    .getColorInterpretation(cm, i);
+            final ColorInterpretation colorInterpretation = TypeMap.getColorInterpretation(cm, i);
             if (colorInterpretation == null)
                 throw new IOException("Unrecognized sample dimension type");
             bands[i] = new GridSampleDimension(colorInterpretation.name());
@@ -448,49 +449,48 @@ class RasterLayerResponse {
 
         // creating the final coverage by keeping into account the fact that we
         // can just use the envelope, but we need to use the G2W
-        Map <String, String> properties = new HashMap<String,String>();
+        Map<String, String> properties = new HashMap<String, String>();
         properties.put(AbstractGridCoverage2DReader.FILE_SOURCE_PROPERTY, location);
-        
-        return coverageFactory.create(rasterManager.getCoverageIdentifier(),
-                data, new GridGeometry2D(new GeneralGridEnvelope(data, 2),
-                        PixelInCell.CELL_CORNER, finalGridToWorldCorner,
-                        this.rasterManager.getCoverageCRS(), null), bands,
-                null, properties);
 
+        return coverageFactory.create(
+                rasterManager.getCoverageIdentifier(),
+                data,
+                new GridGeometry2D(
+                        new GeneralGridEnvelope(data, 2),
+                        PixelInCell.CELL_CORNER,
+                        finalGridToWorldCorner,
+                        this.rasterManager.getCoverageCRS(),
+                        null),
+                bands,
+                null,
+                properties);
     }
 
     /**
-     * This method is responsible for preparing the read param for doing an
-     * {@link ImageReader#read(int, ImageReadParam)}.
-     * 
-     * 
-     * <p>
-     * This method is responsible for preparing the read param for doing an
-     * {@link ImageReader#read(int, ImageReadParam)}. It sets the passed
-     * {@link ImageReadParam} in terms of decimation on reading using the
-     * provided requestedEnvelope and requestedDim to evaluate the needed
-     * resolution. It also returns and {@link Integer} representing the index of
-     * the raster to be read when dealing with multipage raster.
-     * 
-     * @param overviewPolicy
-     *            it can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE},
-     *            {@link Hints#VALUE_OVERVIEW_POLICY_NEAREST},
-     *            {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
-     *            {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the
-     *            policy to compute the overviews level upon request.
-     * @param readParams
-     *            an instance of {@link ImageReadParam} for setting the
-     *            subsampling factors.
-     * @param requestedEnvelope
-     *            the {@link GeneralEnvelope} we are requesting.
-     * @param requestedDim
-     *            the requested dimensions.
+     * This method is responsible for preparing the read param for doing an {@link
+     * ImageReader#read(int, ImageReadParam)}.
+     *
+     * <p>This method is responsible for preparing the read param for doing an {@link
+     * ImageReader#read(int, ImageReadParam)}. It sets the passed {@link ImageReadParam} in terms of
+     * decimation on reading using the provided requestedEnvelope and requestedDim to evaluate the
+     * needed resolution. It also returns and {@link Integer} representing the index of the raster
+     * to be read when dealing with multipage raster.
+     *
+     * @param overviewPolicy it can be one of {@link Hints#VALUE_OVERVIEW_POLICY_IGNORE}, {@link
+     *     Hints#VALUE_OVERVIEW_POLICY_NEAREST}, {@link Hints#VALUE_OVERVIEW_POLICY_QUALITY} or
+     *     {@link Hints#VALUE_OVERVIEW_POLICY_SPEED}. It specifies the policy to compute the
+     *     overviews level upon request.
+     * @param readParams an instance of {@link ImageReadParam} for setting the subsampling factors.
+     * @param requestedEnvelope the {@link GeneralEnvelope} we are requesting.
+     * @param requestedDim the requested dimensions.
      * @return the index of the raster to read in the underlying data source.
      * @throws IOException
      * @throws TransformException
      */
-    private int setReadParams(final OverviewPolicy overviewPolicy,
-            final ImageReadParam readParams, final RasterLayerRequest request)
+    private int setReadParams(
+            final OverviewPolicy overviewPolicy,
+            final ImageReadParam readParams,
+            final RasterLayerRequest request)
             throws IOException, TransformException {
 
         // Default image index 0
@@ -505,18 +505,15 @@ class RasterLayerResponse {
         // when policy is explictly provided it overrides the policy provided
         // using hints.
         final OverviewPolicy policy;
-        if (overviewPolicy == null)
-            policy = rasterManager.overviewPolicy;
-        else
-            policy = overviewPolicy;
+        if (overviewPolicy == null) policy = rasterManager.overviewPolicy;
+        else policy = overviewPolicy;
 
         // requested to ignore overviews
-        if (policy.equals(OverviewPolicy.IGNORE))
-            return imageChoice;
+        if (policy.equals(OverviewPolicy.IGNORE)) return imageChoice;
 
         // overviews and decimation
-        imageChoice = request.imageManager.overviewsController.pickOverviewLevel(
-                overviewPolicy, request);
+        imageChoice =
+                request.imageManager.overviewsController.pickOverviewLevel(overviewPolicy, request);
 
         // DECIMATION ON READING
         rasterManager.decimationController.computeDecimationFactors(
@@ -524,16 +521,16 @@ class RasterLayerResponse {
         return imageChoice;
     }
 
-//    private RenderedImage postProcessRaster(RenderedImage image) {
-//        if (transparentColor != null) {
-//            if (LOGGER.isLoggable(Level.FINE))
-//                LOGGER.fine("Support for alpha on final image");
-//            final ImageWorker w = new ImageWorker(image);
-//            if (image.getSampleModel() instanceof MultiPixelPackedSampleModel)
-//                w.forceComponentColorModel();
-//            return w.makeColorTransparent(transparentColor).getRenderedImage();
-//
-//        }
-//        return image;
-//    }
+    //    private RenderedImage postProcessRaster(RenderedImage image) {
+    //        if (transparentColor != null) {
+    //            if (LOGGER.isLoggable(Level.FINE))
+    //                LOGGER.fine("Support for alpha on final image");
+    //            final ImageWorker w = new ImageWorker(image);
+    //            if (image.getSampleModel() instanceof MultiPixelPackedSampleModel)
+    //                w.forceComponentColorModel();
+    //            return w.makeColorTransparent(transparentColor).getRenderedImage();
+    //
+    //        }
+    //        return image;
+    //    }
 }

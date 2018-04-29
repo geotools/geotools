@@ -1,14 +1,7 @@
 package org.geotools.wmts.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
 import net.opengis.ows11.CodeType;
 import net.opengis.ows11.DatasetDescriptionSummaryBaseType;
 import net.opengis.ows11.MetadataType;
@@ -18,20 +11,23 @@ import net.opengis.wmts.v_1.StyleType;
 import net.opengis.wmts.v_1.TileMatrixSetLinkType;
 import net.opengis.wmts.v_1.URLTemplateType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.AbstractSimpleBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:Layer.
  *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
  *     &lt;element name="Layer" substitutionGroup="ows:DatasetDescriptionSummary" type="wmts:LayerType" xmlns="http://www.w3.org/2001/XMLSchema"/&gt;
- *		
- *	  </code>
+ *
+ *   </code>
  * </pre>
- * </p>
  *
  * @generated
  */
@@ -44,16 +40,17 @@ public class LayerBinding extends AbstractSimpleBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.Layer;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc --> <b>
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * <b>
+     *
      * @generated modifiable
      */
     public Class<LayerType> getType() {
@@ -61,8 +58,10 @@ public class LayerBinding extends AbstractSimpleBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     @SuppressWarnings("unchecked")
@@ -74,7 +73,7 @@ public class LayerBinding extends AbstractSimpleBinding {
             layer.getAbstract().add(c.getValue());
         }
         children = node.getChildren("BoundingBox");
-        for(Node c:children) {
+        for (Node c : children) {
             layer.getBoundingBox().add(c.getValue());
         }
         layer.getWGS84BoundingBox().add(node.getChildValue("WGS84BoundingBox"));
@@ -100,7 +99,7 @@ public class LayerBinding extends AbstractSimpleBinding {
         }
 
         List<Node> children2 = node.getChildren(TileMatrixSetLinkType.class);
-        for(Node c:children2) {
+        for (Node c : children2) {
             layer.getTileMatrixSetLink().add((TileMatrixSetLinkType) c);
         }
         children = node.getChildren("Title");
@@ -110,5 +109,4 @@ public class LayerBinding extends AbstractSimpleBinding {
 
         return layer;
     }
-
 }

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,15 +18,13 @@ package org.geotools.data.sort;
 
 import java.util.Comparator;
 import java.util.List;
-
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * A composite comparator that applies the provided comparators as a hierarchical list, the first
  * comparator that returns a non zero value "wins"
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 class CompositeComparator implements Comparator<SimpleFeature> {
 
@@ -45,5 +43,4 @@ class CompositeComparator implements Comparator<SimpleFeature> {
         }
         return 0;
     }
-
 }

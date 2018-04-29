@@ -29,9 +29,9 @@ import java.util.Set;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.wmts.v_1.CapabilitiesType;
 import org.apache.commons.io.IOUtils;
+import org.geotools.data.wmts.WebMapTileServer;
 import org.geotools.data.wmts.model.WMTSCapabilities;
 import org.geotools.data.wmts.model.WMTSLayer;
-import org.geotools.data.wmts.WebMapTileServer;
 import org.geotools.data.wmts.request.GetTileRequest;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
@@ -39,26 +39,24 @@ import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
 import org.geotools.wmts.WMTSConfiguration;
 import org.geotools.xml.Parser;
-
 import org.junit.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-/**
- * @author ian
- *
- */
+/** @author ian */
 public class WMTSCoverageReaderTest {
 
-    private final static String KVP_CAPA_RESOURCENAME = "test-data/getcapa_kvp.xml";
+    private static final String KVP_CAPA_RESOURCENAME = "test-data/getcapa_kvp.xml";
 
-    private final static String REST_CAPA_RESOURCENAME = "test-data/admin_ch.getcapa.xml";
+    private static final String REST_CAPA_RESOURCENAME = "test-data/admin_ch.getcapa.xml";
 
     @Test
     public void testRESTInitMapRequest() throws Exception {
         WebMapTileServer server = createServer(REST_CAPA_RESOURCENAME);
-        WMTSLayer layer = (WMTSLayer) server.getCapabilities()
-                .getLayer("ch.are.agglomerationen_isolierte_staedte");
+        WMTSLayer layer =
+                (WMTSLayer)
+                        server.getCapabilities()
+                                .getLayer("ch.are.agglomerationen_isolierte_staedte");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
         ReferencedEnvelope bbox = new ReferencedEnvelope(5, 12, 45, 49, CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);
@@ -69,8 +67,8 @@ public class WMTSCoverageReaderTest {
         WebMapTileServer server = createServer(KVP_CAPA_RESOURCENAME);
         WMTSLayer layer = (WMTSLayer) server.getCapabilities().getLayer("topp:states");
         WMTSCoverageReader wcr = new WMTSCoverageReader(server, layer);
-        ReferencedEnvelope bbox = new ReferencedEnvelope(-180, 180, -90, 90,
-                CRS.decode("EPSG:4326"));
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         testInitMapRequest(wcr, bbox);
     }
 

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -35,41 +35,38 @@ import org.opengis.feature.type.Name;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- *
- * @author tkunicki@boundlessgeo.com
- */
+/** @author tkunicki@boundlessgeo.com */
 public class FeatureTypeDBObject {
 
-    final static String KEY_typeName = "typeName";
+    static final String KEY_typeName = "typeName";
 
-    final static String KEY_geometryDescriptor = "geometryDescriptor";
+    static final String KEY_geometryDescriptor = "geometryDescriptor";
 
-    final static String KEY_localName = "localName";
+    static final String KEY_localName = "localName";
 
-    final static String KEY_crs = "crs";
+    static final String KEY_crs = "crs";
 
-    final static String KEY_type = "type";
+    static final String KEY_type = "type";
 
-    final static String KEY_properties = "properties";
+    static final String KEY_properties = "properties";
 
-    final static String KEY_name = "name";
+    static final String KEY_name = "name";
 
-    final static String KEY_defaultValue = "defaultValue";
+    static final String KEY_defaultValue = "defaultValue";
 
-    final static String KEY_minOccurs = "minOccurs";
+    static final String KEY_minOccurs = "minOccurs";
 
-    final static String KEY_maxOccurs = "maxOccurs";
+    static final String KEY_maxOccurs = "maxOccurs";
 
-    final static String KEY_binding = "binding";
+    static final String KEY_binding = "binding";
 
-    final static String KEY_attributeDescriptors = "attributeDescriptors";
+    static final String KEY_attributeDescriptors = "attributeDescriptors";
 
-    final static String KEY_userData = "userData";
+    static final String KEY_userData = "userData";
 
-    final static String VALUE_name = "name";
+    static final String VALUE_name = "name";
 
-    final static String PREFIX_URN_OGC = "urn:ogc:def:crs:";
+    static final String PREFIX_URN_OGC = "urn:ogc:def:crs:";
 
     public static DBObject convert(SimpleFeatureType ft) {
 
@@ -105,8 +102,8 @@ public class FeatureTypeDBObject {
                 adDBO.put(KEY_minOccurs, ad.getMinOccurs());
                 adDBO.put(KEY_maxOccurs, ad.getMaxOccurs());
             }
-            Class<?> binding = ad instanceof GeometryDescriptor ? Geometry.class : ad.getType()
-                    .getBinding();
+            Class<?> binding =
+                    ad instanceof GeometryDescriptor ? Geometry.class : ad.getType().getBinding();
             adDBO.put(KEY_type, new BasicDBObject(KEY_binding, binding.getName()));
             Map<String, String> adUserData = typeCheck(ad.getUserData());
             if (!adUserData.isEmpty()) {
@@ -151,19 +148,19 @@ public class FeatureTypeDBObject {
                 try {
                     atBuilder.binding(Class.forName(bindingName));
                 } catch (ClassNotFoundException ex) {
-                    throw new RuntimeException("Unable to generate Class instance for binding "
-                            + bindingName);
+                    throw new RuntimeException(
+                            "Unable to generate Class instance for binding " + bindingName);
                 }
                 BasicDBObject adUserDataDBO = extractDBObject(adDBO, KEY_userData, false);
                 if (adUserDataDBO != null) {
-                    for (Map.Entry<?,?> entry : ((Map<?, ?>) adUserDataDBO.toMap()).entrySet()) {
+                    for (Map.Entry<?, ?> entry : ((Map<?, ?>) adUserDataDBO.toMap()).entrySet()) {
                         atBuilder.userData(entry.getKey(), entry.getValue());
                     }
                 }
                 if (gdLocalName.equals(adLocalName)) {
                     atBuilder.crs(crs);
-                    ftBuilder.add(atBuilder.buildDescriptor(adLocalName,
-                            atBuilder.buildGeometryType()));
+                    ftBuilder.add(
+                            atBuilder.buildDescriptor(adLocalName, atBuilder.buildGeometryType()));
                 } else {
                     Integer min = extractInteger(adDBO, KEY_minOccurs, false);
                     if (min != null) {
@@ -186,8 +183,8 @@ public class FeatureTypeDBObject {
 
         BasicDBObject ftUserDataDBO = extractDBObject(ftDBO, KEY_userData, false);
         if (ftUserDataDBO != null) {
-            Map<Object,Object> ftUserData = ft.getUserData();
-            for (Map.Entry<?,?> entry : ((Map<?, ?>) ftUserDataDBO.toMap()).entrySet()) {
+            Map<Object, Object> ftUserData = ft.getUserData();
+            for (Map.Entry<?, ?> entry : ((Map<?, ?>) ftUserDataDBO.toMap()).entrySet()) {
                 ftUserData.put(entry.getKey(), entry.getValue());
             }
         }
@@ -197,7 +194,7 @@ public class FeatureTypeDBObject {
     private static Map<String, String> typeCheck(Map<?, ?> map) {
         Map<String, String> typeChecked = new LinkedHashMap<String, String>();
         if (map != null && !map.isEmpty()) {
-            for (Map.Entry<?,?> entry : map.entrySet()) {
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
                 Object key = entry.getKey();
                 Object value = entry.getValue();
                 if (key instanceof String && value instanceof String) {
@@ -208,8 +205,8 @@ public class FeatureTypeDBObject {
         return typeChecked;
     }
 
-    private static <T> T extractAndVerifyType(Class<T> type, DBObject dbo, String key,
-            boolean required) {
+    private static <T> T extractAndVerifyType(
+            Class<T> type, DBObject dbo, String key, boolean required) {
         Object o = dbo.get(key);
         if (type.isInstance(o)) {
             return type.cast(o);
@@ -299,7 +296,8 @@ public class FeatureTypeDBObject {
             return null;
         }
         DBObject crsDBO = new BasicDBObject(KEY_type, VALUE_name);
-        crsDBO.put(KEY_properties, new BasicDBObject(KEY_name, PREFIX_URN_OGC + "EPSG:" + epsgCode));
+        crsDBO.put(
+                KEY_properties, new BasicDBObject(KEY_name, PREFIX_URN_OGC + "EPSG:" + epsgCode));
         return crsDBO;
     }
 }

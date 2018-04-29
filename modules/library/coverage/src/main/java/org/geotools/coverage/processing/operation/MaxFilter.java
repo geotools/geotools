@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,21 +16,18 @@
  */
 package org.geotools.coverage.processing.operation;
 
-// JAI dependencies (for javadoc)
 import javax.media.jai.operator.MaxFilterDescriptor;
 import javax.media.jai.operator.MaxFilterShape;
-
-// Geotools dependencies
 import org.geotools.coverage.processing.OperationJAI;
 
-
 /**
- * For each position of the mask, replaces the center pixel by the maximum of the pixel
- * values covered by the mask.
+ * For each position of the mask, replaces the center pixel by the maximum of the pixel values
+ * covered by the mask.
  *
- * <P><STRONG>Name:</STRONG>&nbsp;<CODE>"MaxFilter"</CODE><BR>
- *    <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MaxFilterDescriptor MaxFilter}"</CODE><BR>
- *    <STRONG>Parameters:</STRONG></P>
+ * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"MaxFilter"</CODE><br>
+ * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MaxFilterDescriptor MaxFilter}"</CODE><br>
+ * <STRONG>Parameters:</STRONG>
+ *
  * <table border='3' cellpadding='6' bgcolor='F4F8FF'>
  *   <tr bgcolor='#B9DCFF'>
  *     <th>Name</th>
@@ -63,21 +60,15 @@ import org.geotools.coverage.processing.OperationJAI;
  * </table>
  *
  * @since 2.3
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class MaxFilter extends OperationJAI {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 3368109980974496342L;
 
-    /**
-     * Constructs a default {@code "MaxFilter"} operation.
-     */
+    /** Constructs a default {@code "MaxFilter"} operation. */
     public MaxFilter() {
         super("MaxFilter");
     }

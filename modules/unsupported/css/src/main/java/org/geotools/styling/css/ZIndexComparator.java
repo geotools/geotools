@@ -20,9 +20,8 @@ import java.util.Comparator;
 
 /**
  * Compares zIndex levels, equating {@link CssRule#NO_Z_INDEX} to 0, the base level
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 class ZIndexComparator implements Comparator<Integer> {
     @Override

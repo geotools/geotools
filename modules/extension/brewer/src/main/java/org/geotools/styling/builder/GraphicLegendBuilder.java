@@ -17,16 +17,11 @@
 package org.geotools.styling.builder;
 
 import java.util.List;
-
 import org.geotools.styling.GraphicLegend;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
     private List<GraphicalSymbol> symbols;
 
@@ -53,8 +48,14 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
         if (unset) {
             return null;
         }
-        GraphicLegend graphic = sf.graphicLegend(symbols, opacity, size, rotation,
-                anchorPoint.build(), displacement.build());
+        GraphicLegend graphic =
+                sf.graphicLegend(
+                        symbols,
+                        opacity,
+                        size,
+                        rotation,
+                        anchorPoint.build(),
+                        displacement.build());
         return graphic;
     }
 
@@ -144,5 +145,4 @@ public class GraphicLegendBuilder extends AbstractStyleBuilder<GraphicLegend> {
         reset((org.opengis.style.GraphicLegend) original);
         return this;
     }
-
 }

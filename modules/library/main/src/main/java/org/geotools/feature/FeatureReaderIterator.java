@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,28 +21,23 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.FeatureReader;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
 /**
  * An iterator that wraps around a FeatureReader.
- * <p>
- * The Iterator's hasNext() will return false if the wrapped feature reader's hasNext method throws
- * an exception. If next() throws an exception a NoSuchElementException will be thrown.
- * </p>
- * <p>
- * {@link #close()} shall be called before disposing the iterator. Before propagating an exception
- * from {@link #next()} or eating an exception from the underlying feature reader at
+ *
+ * <p>The Iterator's hasNext() will return false if the wrapped feature reader's hasNext method
+ * throws an exception. If next() throws an exception a NoSuchElementException will be thrown.
+ *
+ * <p>{@link #close()} shall be called before disposing the iterator. Before propagating an
+ * exception from {@link #next()} or eating an exception from the underlying feature reader at
  * {@link #hasNext()}, this iterator will auto-close.
- * </p>
- * 
+ *
  * @author jeichar
  * @author Jody Garnett
  * @author Gabriel Roldan
- *
- *
  * @source $URL$
  */
 public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Closeable {
@@ -55,8 +50,7 @@ public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Cl
 
     public boolean hasNext() {
         try {
-            if (reader == null)
-                return false;
+            if (reader == null) return false;
             if (reader.hasNext()) {
                 return true;
             } else {
@@ -79,14 +73,14 @@ public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Cl
             return reader.next();
         } catch (IOException io) {
             close();
-            NoSuchElementException problem = new NoSuchElementException(
-                    "Could not obtain the next feature:" + io);
+            NoSuchElementException problem =
+                    new NoSuchElementException("Could not obtain the next feature:" + io);
             problem.initCause(io);
             throw problem;
         } catch (org.opengis.feature.IllegalAttributeException create) {
             close();
-            NoSuchElementException problem = new NoSuchElementException(
-                    "Could not create the next feature:" + create);
+            NoSuchElementException problem =
+                    new NoSuchElementException("Could not create the next feature:" + create);
             problem.initCause(create);
             throw problem;
         }
@@ -97,9 +91,7 @@ public class FeatureReaderIterator<F extends Feature> implements Iterator<F>, Cl
         throw new UnsupportedOperationException("Modification of contents is not supported");
     }
 
-    /**
-     * Close the reader please.
-     */
+    /** Close the reader please. */
     public void close() {
         if (reader != null) {
             try {

@@ -2,7 +2,6 @@ package org.geotools.data.sqlserver.reader;
 
 /**
  * @author Anders Bakkevold, Bouvet
- *
  * @source $URL$
  */
 public class Figure {

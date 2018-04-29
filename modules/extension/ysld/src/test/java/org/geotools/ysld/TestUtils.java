@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -32,7 +32,6 @@ import static org.hamcrest.Matchers.nullValue;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.regex.Pattern;
-
 import org.geotools.styling.Rule;
 import org.geotools.ysld.parse.ScaleRange;
 import org.hamcrest.BaseMatcher;
@@ -50,37 +49,42 @@ public enum TestUtils {
 
     /**
      * Matches a rule if it applies to a given scale
-     * 
+     *
      * @param scale denominator of the scale
      */
     public static Matcher<Rule> appliesToScale(double scale) {
-        return describedAs("rule applies to scale denom %0", allOf(
-                Matchers.<Rule> hasProperty("maxScaleDenominator", greaterThan(scale)),
-                Matchers.<Rule> hasProperty("minScaleDenominator", lessThanOrEqualTo(scale))),
+        return describedAs(
+                "rule applies to scale denom %0",
+                allOf(
+                        Matchers.<Rule>hasProperty("maxScaleDenominator", greaterThan(scale)),
+                        Matchers.<Rule>hasProperty(
+                                "minScaleDenominator", lessThanOrEqualTo(scale))),
                 scale);
     }
 
     public static Matcher<ScaleRange> rangeContains(double scale) {
-        return describedAs("scale range that contains 1:%0",
-                allOf(Matchers.<ScaleRange> hasProperty("maxDenom", greaterThan(scale)),
-                        Matchers.<ScaleRange> hasProperty("minDenom", lessThanOrEqualTo(scale))),
+        return describedAs(
+                "scale range that contains 1:%0",
+                allOf(
+                        Matchers.<ScaleRange>hasProperty("maxDenom", greaterThan(scale)),
+                        Matchers.<ScaleRange>hasProperty("minDenom", lessThanOrEqualTo(scale))),
                 scale);
     }
 
     /**
      * Matches a Literal expression with a value matching m
-     * 
+     *
      * @param m
      * @return
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Expression> literal(Matcher m) {
         return (Matcher) allOf(instanceOf(Literal.class), hasProperty("value", m));
     }
 
     /**
      * Matches a Literal expression with a value matching o
-     * 
+     *
      * @param m
      * @return
      */
@@ -90,28 +94,29 @@ public enum TestUtils {
 
     /**
      * Matches a nil expression or null.
-     * 
+     *
      * @return
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Expression> nilExpression() {
         return (Matcher) Matchers.anyOf(nullValue(), instanceOf(NilExpression.class));
     }
 
     /**
      * Matches as an attribute expression for a named attribute.
-     * 
+     *
      * @param name
      * @return
      */
     public static Matcher<Expression> attribute(String name) {
-        return Matchers.<Expression> allOf(Matchers.<Expression> instanceOf(PropertyName.class),
-                Matchers.<Expression> hasProperty("propertyName", equalTo(name)));
+        return Matchers.<Expression>allOf(
+                Matchers.<Expression>instanceOf(PropertyName.class),
+                Matchers.<Expression>hasProperty("propertyName", equalTo(name)));
     }
 
     /**
      * Matches a function with the given name and parameters matching the given matchers.
-     * 
+     *
      * @param name
      * @param parameters
      * @return
@@ -123,22 +128,24 @@ public enum TestUtils {
 
     /**
      * Matches a function with the given name and a parameter list matching the given matcher.
-     * 
+     *
      * @param name
      * @param parameters
      * @return
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static Matcher<Expression> function(String name,
-            Matcher<? extends Iterable<Expression>> parameters) {
-        return (Matcher) allOf(instanceOf(Function.class),
-                hasProperty("functionName", hasProperty("name", equalTo(name))),
-                hasProperty("parameters", parameters));
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static Matcher<Expression> function(
+            String name, Matcher<? extends Iterable<Expression>> parameters) {
+        return (Matcher)
+                allOf(
+                        instanceOf(Function.class),
+                        hasProperty("functionName", hasProperty("name", equalTo(name))),
+                        hasProperty("parameters", parameters));
     }
 
     /**
      * Compares the string representation of the object being matched to that of value.
-     * 
+     *
      * @param value
      * @return
      */
@@ -157,13 +164,13 @@ public enum TestUtils {
             public void describeTo(Description arg0) {
                 arg0.appendText("lexicaly equal to ").appendValue(value.toString());
             }
-
         };
     }
 
     /**
-     * Converts a Number to double, otherwise converts to string and then parses as double then matches to the given value.
-     * 
+     * Converts a Number to double, otherwise converts to string and then parses as double then
+     * matches to the given value.
+     *
      * @param value
      * @return
      */
@@ -186,13 +193,13 @@ public enum TestUtils {
                 arg0.appendText("can be parsed as ").appendValue(value);
                 arg0.appendText(" to within ").appendValue(epsilon);
             }
-
         };
     }
 
     /**
-     * Converts a Number to long, otherwise converts to string and then parses as double then matches to the given value.
-     * 
+     * Converts a Number to long, otherwise converts to string and then parses as double then
+     * matches to the given value.
+     *
      * @param value
      * @return
      */
@@ -214,7 +221,6 @@ public enum TestUtils {
             public void describeTo(Description arg0) {
                 arg0.appendText("can be parsed as ").appendValue(value);
             }
-
         };
     }
 
@@ -252,13 +258,17 @@ public enum TestUtils {
         };
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Object> isColor(Color c) {
         String hex = String.format("#%06x", c.getRGB() & 0x00FFFFFF);
-        return Matchers.describedAs("is the colour %0 %1", anyOf(
-                (Matcher) allOf(instanceOf(String.class), asColor(equalTo(c))),
-                (Matcher) allOf(instanceOf(Color.class), equalTo(c)),
-                (Matcher) allOf(instanceOf(Integer.class), equalTo(c.getRGB() & 0x00FFFFFF))), hex,
+        return Matchers.describedAs(
+                "is the colour %0 %1",
+                anyOf(
+                        (Matcher) allOf(instanceOf(String.class), asColor(equalTo(c))),
+                        (Matcher) allOf(instanceOf(Color.class), equalTo(c)),
+                        (Matcher)
+                                allOf(instanceOf(Integer.class), equalTo(c.getRGB() & 0x00FFFFFF))),
+                hex,
                 c);
     }
 
@@ -270,19 +280,18 @@ public enum TestUtils {
 
     /**
      * Matches a YamlSeq where the specified entry matching the given matcher
-     * 
+     *
      * @param i
      * @param m
      * @return
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static Matcher<Object> yHasItem(final int i, final Matcher<? extends Object> m) {
         return new BaseMatcher() {
 
             @Override
             public boolean matches(Object obj) {
-                if (!(obj instanceof YamlSeq))
-                    return false;
+                if (!(obj instanceof YamlSeq)) return false;
                 YamlSeq seq = (YamlSeq) obj;
 
                 Object value = null;
@@ -300,32 +309,31 @@ public enum TestUtils {
 
             @Override
             public void describeTo(Description desc) {
-                desc.appendText("YamlSeq with item ").appendValue(i).appendText(" that ")
+                desc.appendText("YamlSeq with item ")
+                        .appendValue(i)
+                        .appendText(" that ")
                         .appendDescriptionOf(m);
             }
-
         };
     }
 
     /**
      * Matches a YamlMap with an entry as named that has a value which matches the given matcher
-     * 
+     *
      * @param key
      * @param m
      * @return
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static Matcher<Object> yHasEntry(final String key, final Matcher<? extends Object> m) {
         return new BaseMatcher() {
 
             @Override
             public boolean matches(Object obj) {
-                if (!(obj instanceof YamlMap))
-                    return false;
+                if (!(obj instanceof YamlMap)) return false;
                 YamlMap map = (YamlMap) obj;
 
-                if (!map.has(key))
-                    return false;
+                if (!map.has(key)) return false;
                 Object value = null;
                 try {
                     value = map.map(key);
@@ -341,16 +349,17 @@ public enum TestUtils {
 
             @Override
             public void describeTo(Description desc) {
-                desc.appendText("YamlMap with entry ").appendValue(key).appendText(" and value ")
+                desc.appendText("YamlMap with entry ")
+                        .appendValue(key)
+                        .appendText(" and value ")
                         .appendDescriptionOf(m);
             }
-
         };
     }
 
     /**
      * Matches a YamlMap with an entry as named that has a value which matches the given matcher
-     * 
+     *
      * @param key
      * @return
      */
@@ -364,12 +373,12 @@ public enum TestUtils {
 
     /**
      * Matches a YamlSeq
-     * 
+     *
      * @param matchers
      * @return
      */
     @SafeVarargs
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static Matcher<? extends Object> yContains(final Matcher<? extends Object>... matchers) {
         return new BaseMatcher() {
 
@@ -399,13 +408,12 @@ public enum TestUtils {
             public void describeTo(Description desc) {
                 desc.appendList("Yaml Sequence with values [", ", ", "]", Arrays.asList(matchers));
             }
-
         };
     }
 
     /**
      * Matches a YSLD Tuple with values matching the given matchers.
-     * 
+     *
      * @param matchers
      * @return
      */
@@ -416,11 +424,11 @@ public enum TestUtils {
 
     /**
      * Matches a YSLD Tuple with n values
-     * 
+     *
      * @param n
      * @return
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Matcher<Object> yTuple(int n) {
         Matcher[] matchers = new Matcher[n];
         Arrays.fill(matchers, anything());
@@ -429,11 +437,11 @@ public enum TestUtils {
 
     /**
      * For apparent consistency to the user, some values are wrapped in fake YAML strings.
-     * 
+     *
      * @param m
      * @return
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static Matcher<? extends Object> fakeString(final Matcher<? extends Object> m) {
         return new BaseMatcher() {
 
@@ -456,18 +464,16 @@ public enum TestUtils {
             public void describeTo(Description desc) {
                 desc.appendText("a fake YAML string ").appendDescriptionOf(m);
             }
-
         };
     }
 
     /**
      * For apparent consistency to the user, some values are wrapped in fake YAML strings.
-     * 
+     *
      * @param m
      * @return
      */
     public static Matcher<? extends Object> fakeString(final String s) {
         return fakeString(equalTo(s));
     }
-
 }

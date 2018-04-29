@@ -28,11 +28,7 @@
 //    marioh@cs.ucr.edu
 package org.geotools.caching.spatialindex;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public interface NearestNeighborComparator {
     public double getMinimumDistance(Shape query, Entry e);
 } // INearestNeighborComparator

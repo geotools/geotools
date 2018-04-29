@@ -17,6 +17,16 @@
  */
 package org.geotools.coverageio.gdal.srp;
 
+import static org.junit.Assert.*;
+
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.image.DataBuffer;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -25,43 +35,24 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.coverageio.gdal.GDALTestCase;
-import org.geotools.coverageio.gdal.vrt.VRTFormatFactory;
-import org.geotools.coverageio.gdal.vrt.VRTReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.test.TestData;
-import org.junit.Assert;
 import org.junit.Test;
-import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
-import javax.media.jai.ImageLayout;
-import javax.media.jai.JAI;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.image.DataBuffer;
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-
-import static org.junit.Assert.*;
-
 /**
  * @author Andrea Aime, GeoSolutions
- *
- *         Testing {@link SRPReader}
- *
+ *     <p>Testing {@link SRPReader}
  * @source $URL$
  */
 public final class SRPTest extends GDALTestCase {
 
-    /**
-     * file name of a valid VRT file to be used for tests.
-     */
-    private final static String fileName = "FKUSRP01.IMG";
+    /** file name of a valid VRT file to be used for tests. */
+    private static final String fileName = "FKUSRP01.IMG";
 
     public SRPTest() {
         super("SRP", new SRPFormatFactory());
@@ -146,20 +137,31 @@ public final class SRPTest extends GDALTestCase {
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
 
-        final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
-                oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
-
-                oldEnvelope.getLowerCorner().getOrdinate(1)
-                        + (oldEnvelope.getSpan(1) / cropFactor) },
-                new double[] { oldEnvelope.getUpperCorner().getOrdinate(0),
-                        oldEnvelope.getUpperCorner().getOrdinate(1) });
+        final GeneralEnvelope cropEnvelope =
+                new GeneralEnvelope(
+                        new double[] {
+                            oldEnvelope.getLowerCorner().getOrdinate(0)
+                                    + (oldEnvelope.getSpan(0) / cropFactor),
+                            oldEnvelope.getLowerCorner().getOrdinate(1)
+                                    + (oldEnvelope.getSpan(1) / cropFactor)
+                        },
+                        new double[] {
+                            oldEnvelope.getUpperCorner().getOrdinate(0),
+                            oldEnvelope.getUpperCorner().getOrdinate(1)
+                        });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
 
         final ParameterValue gg = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0,
-                (int) (range.width / 2.0 / cropFactor), (int) (range.height / 2.0 / cropFactor))),
-                cropEnvelope));
-        GridCoverage2D gcSubsampled = reader.read(new GeneralParameterValue[] { gg });
+        gg.setValue(
+                new GridGeometry2D(
+                        new GridEnvelope2D(
+                                new Rectangle(
+                                        0,
+                                        0,
+                                        (int) (range.width / 2.0 / cropFactor),
+                                        (int) (range.height / 2.0 / cropFactor))),
+                        cropEnvelope));
+        GridCoverage2D gcSubsampled = reader.read(new GeneralParameterValue[] {gg});
         assertEquals(32, gcSubsampled.getGridGeometry().getGridRange2D().width);
         assertEquals(32, gcSubsampled.getGridGeometry().getGridRange2D().height);
         forceDataLoading(gcSubsampled);

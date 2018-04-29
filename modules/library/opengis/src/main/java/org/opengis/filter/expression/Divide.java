@@ -4,24 +4,21 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.filter.expression;
 
 // Annotations
-import org.opengis.annotation.XmlElement;
 
+import org.opengis.annotation.XmlElement;
 
 /**
  * Encodes the operation of division where the first argument is divided by the second argument.
- * <p>
- * Instances of this interface implement their {@link #evaluate evaluate} method by
- * computing the numeric quotient resulting from dividing the {@linkplain #getExpression1 first}
- * operand by the {@linkplain #getExpression2 second}. The second argument or expression cannot
- * evaluate to zero.
- * </p>
  *
+ * <p>Instances of this interface implement their {@link #evaluate evaluate} method by computing the
+ * numeric quotient resulting from dividing the {@linkplain #getExpression1 first} operand by the
+ * {@linkplain #getExpression2 second}. The second argument or expression cannot evaluate to zero.
  *
  * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
@@ -30,6 +27,6 @@ import org.opengis.annotation.XmlElement;
  */
 @XmlElement("Div")
 public interface Divide extends BinaryExpression {
-	/** Operator name used to check FilterCapabilities */
-	public static String NAME = "Div";
+    /** Operator name used to check FilterCapabilities */
+    public static String NAME = "Div";
 }

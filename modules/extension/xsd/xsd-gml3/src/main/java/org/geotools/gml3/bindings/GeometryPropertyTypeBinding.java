@@ -20,12 +20,11 @@ import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
 
-
 /**
  * Binding object for the type http://www.opengis.net/gml:GeometryPropertyType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *         <code>
  *  &lt;complexType name="GeometryPropertyType"&gt;
@@ -49,19 +48,14 @@ import org.geotools.gml3.XSDIdRegistry;
  *          &lt;/annotation&gt;
  *      &lt;/attributeGroup&gt;
  *  &lt;/complexType&gt;
- * 
+ *
  *          </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *         /geotools/gml3/bindings/GeometryPropertyTypeBinding.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
+ *     /geotools/gml3/bindings/GeometryPropertyTypeBinding.java $
  */
 public class GeometryPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 
@@ -70,11 +64,8 @@ public class GeometryPropertyTypeBinding extends GeometryPropertyTypeBindingBase
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.GeometryPropertyType;
     }
-
 }

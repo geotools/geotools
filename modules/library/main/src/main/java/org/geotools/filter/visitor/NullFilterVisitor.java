@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -15,8 +15,6 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.filter.visitor;
-
-import java.util.Iterator;
 
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
@@ -38,7 +36,6 @@ import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
-import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -74,13 +71,16 @@ import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Abstract implementation of FilterVisitor simple returns the provided data.
- * <p>
- * This class can be used as is as a placeholder that does nothing:<pre><code>
+ *
+ * <p>This class can be used as is as a placeholder that does nothing:
+ *
+ * <pre><code>
  * Integer one = (Integer) filter.accepts( NullFilterVisitor.NULL_VISITOR, 1 );
  * </code></pre>
- * 
- * The class can also be used as an alternative to DefaultFilterVisitor if
- * you want to only walk part of the data structure:
+ *
+ * The class can also be used as an alternative to DefaultFilterVisitor if you want to only walk
+ * part of the data structure:
+ *
  * <pre><code>
  * FilterVisitor allFids = new NullFilterVisitor(){
  *     public Object visit( Id filter, Object data ) {
@@ -93,114 +93,115 @@ import org.opengis.filter.temporal.TOverlaps;
  * Set set = (Set) myFilter.accept(allFids, new HashSet());
  * Set set2 = (Set) myFilter.accept(allFids, null ); // set2 will be null
  * </code></pre>
+ *
  * The base class provides implementations for:
+ *
  * <ul>
- * <li>walking And, Or, and Not data structures, returning null at any point will exit early
- * <li>a default implementation for every other construct that will return the provided data
+ *   <li>walking And, Or, and Not data structures, returning null at any point will exit early
+ *   <li>a default implementation for every other construct that will return the provided data
  * </ul>
- * 
+ *
  * @author Jody Garnett (Refractions Research)
- *
- *
- *
  * @source $URL$
  */
 public abstract class NullFilterVisitor implements FilterVisitor, ExpressionVisitor {
-    static public NullFilterVisitor NULL_VISITOR = new NullFilterVisitor(){
-        @Override
-        public Object visit( And filter, Object data ) {
-            return data;
-        }
-        @Override
-        public Object visit( Or filter, Object data ) {
-            return data;
-        }
-        @Override
-        public Object visit( Not filter, Object data ) {
-            return data;
-        }
-    };
-    
-    public NullFilterVisitor() {        
-    }
+    public static NullFilterVisitor NULL_VISITOR =
+            new NullFilterVisitor() {
+                @Override
+                public Object visit(And filter, Object data) {
+                    return data;
+                }
 
-    public Object visit( ExcludeFilter filter, Object data ) {
+                @Override
+                public Object visit(Or filter, Object data) {
+                    return data;
+                }
+
+                @Override
+                public Object visit(Not filter, Object data) {
+                    return data;
+                }
+            };
+
+    public NullFilterVisitor() {}
+
+    public Object visit(ExcludeFilter filter, Object data) {
         return data;
     }
 
-    public Object visit( IncludeFilter filter, Object data ) {
+    public Object visit(IncludeFilter filter, Object data) {
         return data;
     }
 
-    public Object visit( And filter, Object data ) {
-        if( data == null ) return null;
+    public Object visit(And filter, Object data) {
+        if (data == null) return null;
         if (filter.getChildren() != null) {
-            for( Filter child : filter.getChildren() ) {
+            for (Filter child : filter.getChildren()) {
                 data = child.accept(this, data);
-                if( data == null ) return null;
+                if (data == null) return null;
             }
         }
         return data;
     }
 
-    public Object visit( Id filter, Object data ) {
+    public Object visit(Id filter, Object data) {
         return data;
     }
 
-    public Object visit( Not filter, Object data ) {
-        if( data == null ) return data;
+    public Object visit(Not filter, Object data) {
+        if (data == null) return data;
 
         Filter child = filter.getFilter();
-        if ( child != null) {
+        if (child != null) {
             data = child.accept(this, data);
         }
         return data;
     }
 
-    public Object visit( Or filter, Object data ) {
-        if( data == null ) return null;
+    public Object visit(Or filter, Object data) {
+        if (data == null) return null;
         if (filter.getChildren() != null) {
-            for( Filter child : filter.getChildren() ) {
+            for (Filter child : filter.getChildren()) {
                 data = child.accept(this, data);
-                if( data == null ) return null;
+                if (data == null) return null;
             }
         }
         return data;
     }
 
-    public Object visit( PropertyIsBetween filter, Object data ) {
+    public Object visit(PropertyIsBetween filter, Object data) {
         return data;
     }
 
-    public Object visit( PropertyIsEqualTo filter, Object data ) {
+    public Object visit(PropertyIsEqualTo filter, Object data) {
         return data;
     }
 
-    public Object visit( PropertyIsNotEqualTo filter, Object data ) {
+    public Object visit(PropertyIsNotEqualTo filter, Object data) {
         return data;
     }
 
-    public Object visit( PropertyIsGreaterThan filter, Object data ) {
+    public Object visit(PropertyIsGreaterThan filter, Object data) {
         return data;
     }
 
-    public Object visit( PropertyIsGreaterThanOrEqualTo filter, Object data ) {
+    public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object data) {
         return data;
     }
 
-    public Object visit( PropertyIsLessThan filter, Object data ) {        
+    public Object visit(PropertyIsLessThan filter, Object data) {
         return data;
     }
 
-    public Object visit( PropertyIsLessThanOrEqualTo filter, Object data ) {
+    public Object visit(PropertyIsLessThanOrEqualTo filter, Object data) {
         return data;
     }
 
-    public Object visit( PropertyIsLike filter, Object data ) {        
+    public Object visit(PropertyIsLike filter, Object data) {
         return data;
     }
 
-    public Object visit( PropertyIsNull filter, Object data ) {
+    public Object visit(PropertyIsNull filter, Object data) {
         return data;
     }
 
@@ -208,86 +209,86 @@ public abstract class NullFilterVisitor implements FilterVisitor, ExpressionVisi
         return data;
     }
 
-    public Object visit( final BBOX filter, Object data ) {
+    public Object visit(final BBOX filter, Object data) {
         return data;
     }
 
-    public Object visit( Beyond filter, Object data ) {
+    public Object visit(Beyond filter, Object data) {
         return data;
     }
 
-    public Object visit( Contains filter, Object data ) {
+    public Object visit(Contains filter, Object data) {
         return data;
     }
 
-    public Object visit( Crosses filter, Object data ) {
+    public Object visit(Crosses filter, Object data) {
         return data;
     }
 
-    public Object visit( Disjoint filter, Object data ) {
+    public Object visit(Disjoint filter, Object data) {
         return data;
     }
 
-    public Object visit( DWithin filter, Object data ) {
+    public Object visit(DWithin filter, Object data) {
         return data;
     }
 
-    public Object visit( Equals filter, Object data ) {
+    public Object visit(Equals filter, Object data) {
         return data;
     }
 
-    public Object visit( Intersects filter, Object data ) {
+    public Object visit(Intersects filter, Object data) {
         return data;
     }
 
-    public Object visit( Overlaps filter, Object data ) {
+    public Object visit(Overlaps filter, Object data) {
         return data;
     }
 
-    public Object visit( Touches filter, Object data ) {
+    public Object visit(Touches filter, Object data) {
         return data;
     }
 
-    public Object visit( Within filter, Object data ) {
+    public Object visit(Within filter, Object data) {
         return data;
     }
 
-    public Object visitNullFilter( Object data ) {
+    public Object visitNullFilter(Object data) {
         return data;
     }
 
-    public Object visit( NilExpression expression, Object data ) {        
+    public Object visit(NilExpression expression, Object data) {
         return null;
     }
 
-    public Object visit( Add expression, Object data ) {
+    public Object visit(Add expression, Object data) {
         return data;
     }
 
-    public Object visit( Divide expression, Object data ) {
+    public Object visit(Divide expression, Object data) {
         return data;
     }
 
-    public Object visit( Function expression, Object data ) {
+    public Object visit(Function expression, Object data) {
         return data;
     }
 
-    public Object visit( Literal expression, Object data ) {        
+    public Object visit(Literal expression, Object data) {
         return data;
     }
 
-    public Object visit( Multiply expression, Object data ) {
+    public Object visit(Multiply expression, Object data) {
         return data;
     }
 
-    public Object visit( PropertyName expression, Object data ) {
+    public Object visit(PropertyName expression, Object data) {
         return data;
     }
 
-    public Object visit( Subtract expression, Object data ) {
+    public Object visit(Subtract expression, Object data) {
         return data;
     }
-    
+
     public Object visit(After after, Object data) {
         return data;
     }

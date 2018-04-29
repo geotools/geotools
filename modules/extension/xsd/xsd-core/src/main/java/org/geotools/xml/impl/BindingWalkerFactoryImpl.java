@@ -17,16 +17,11 @@
 package org.geotools.xml.impl;
 
 import org.eclipse.xsd.XSDFeature;
-import org.picocontainer.MutablePicoContainer;
 import org.geotools.xml.BindingWalkerFactory;
 import org.geotools.xml.impl.BindingWalker.Visitor;
+import org.picocontainer.MutablePicoContainer;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class BindingWalkerFactoryImpl implements BindingWalkerFactory {
     BindingLoader bindingLoader;
     MutablePicoContainer context;

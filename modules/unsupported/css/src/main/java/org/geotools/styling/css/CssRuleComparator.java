@@ -21,9 +21,8 @@ import java.util.Comparator;
 
 /**
  * Orders rules by their selector selectivity
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 class CssRuleComparator implements Comparator<CssRule> {
 
@@ -31,9 +30,7 @@ class CssRuleComparator implements Comparator<CssRule> {
 
     public static final Comparator<CssRule> DESCENDING = Collections.reverseOrder(ASCENDING);
 
-    private CssRuleComparator() {
-
-    }
+    private CssRuleComparator() {}
 
     @Override
     public int compare(CssRule o1, CssRule o2) {

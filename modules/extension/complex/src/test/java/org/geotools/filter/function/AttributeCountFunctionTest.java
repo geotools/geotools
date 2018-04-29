@@ -17,7 +17,6 @@
 package org.geotools.filter.function;
 
 import java.util.ArrayList;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeImpl;
@@ -29,7 +28,6 @@ import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
-import org.geotools.filter.function.FunctionTestSupport;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -42,9 +40,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Test {@link AttributeCountFunction}
- * 
- * @author Rini Angreani (CSIRO Mineral Resources)
  *
+ * @author Rini Angreani (CSIRO Mineral Resources)
  */
 public class AttributeCountFunctionTest extends FunctionTestSupport {
 
@@ -52,9 +49,7 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
-    /**
-     * @param testName
-     */
+    /** @param testName */
     public AttributeCountFunctionTest(String testName) {
         super(testName);
     }
@@ -67,21 +62,35 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
         // nested feature type
         ArrayList<PropertyDescriptor> childSchema = new ArrayList<PropertyDescriptor>();
         Name attOne = new NameImpl("ns", "att1");
-        AttributeDescriptor attOneDescriptor = new AttributeDescriptorImpl(FakeTypes.STRING_TYPE,
-                attOne, 0, -1, false, null);
+        AttributeDescriptor attOneDescriptor =
+                new AttributeDescriptorImpl(FakeTypes.STRING_TYPE, attOne, 0, -1, false, null);
         childSchema.add(attOneDescriptor);
-        FeatureType childType = new FeatureTypeImpl(new NameImpl("ns", "childType"), childSchema,
-                null, false, null, null, null);
+        FeatureType childType =
+                new FeatureTypeImpl(
+                        new NameImpl("ns", "childType"),
+                        childSchema,
+                        null,
+                        false,
+                        null,
+                        null,
+                        null);
 
         // parent feature type
         ArrayList<PropertyDescriptor> parentSchema = new ArrayList<PropertyDescriptor>();
         parentSchema.add(attOneDescriptor);
         Name attTwo = new NameImpl("ns", "att2");
-        AttributeDescriptor attTwoDescriptor = new AttributeDescriptorImpl(childType, attTwo, 1, -1,
-                false, null);
+        AttributeDescriptor attTwoDescriptor =
+                new AttributeDescriptorImpl(childType, attTwo, 1, -1, false, null);
         parentSchema.add(attTwoDescriptor);
-        FeatureType parentType = new FeatureTypeImpl(new NameImpl("ns", "parentType"), parentSchema,
-                null, false, null, null, null);
+        FeatureType parentType =
+                new FeatureTypeImpl(
+                        new NameImpl("ns", "parentType"),
+                        parentSchema,
+                        null,
+                        false,
+                        null,
+                        null,
+                        null);
 
         // build complex feature
         ComplexFeatureBuilder builder = new ComplexFeatureBuilder(childType);
@@ -96,7 +105,6 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
         childFeatures.add(childFeature);
         builder.append(attTwo, new ComplexAttributeImpl(childFeatures, attTwoDescriptor, null));
         complexFeature = builder.buildFeature("parentFeature");
-
     }
 
     public void testComplexFeature() {
@@ -116,8 +124,8 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
         assertEquals(1, ff.function("attributeCount", att2).evaluate(complexFeature));
 
         // check att2/childType/att1
-        AttributeExpressionImpl nestedPath = new AttributeExpressionImpl(
-                "ns:att2/ns:childType/ns:att1", hints);
+        AttributeExpressionImpl nestedPath =
+                new AttributeExpressionImpl("ns:att2/ns:childType/ns:att1", hints);
         ff.function("attributeCount", nestedPath);
         assertEquals(2, ff.function("attributeCount", nestedPath).evaluate(complexFeature));
     }
@@ -130,7 +138,5 @@ public class AttributeCountFunctionTest extends FunctionTestSupport {
 
         AttributeExpressionImpl att1 = new AttributeExpressionImpl("att1");
         assertEquals(0, ff.function("attributeCount", att1).evaluate(f));
-
     }
-
 }

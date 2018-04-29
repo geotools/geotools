@@ -18,18 +18,10 @@ package org.geotools.data.h2;
 
 import org.geotools.jdbc.JDBCFeatureSourceExposePkOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
-import org.geotools.referencing.CRS;
-import org.opengis.feature.simple.SimpleFeatureType;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2FeatureSourceExposePkTest extends JDBCFeatureSourceExposePkOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }
-    
 }

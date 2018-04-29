@@ -4,7 +4,7 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2008, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.style;
@@ -14,13 +14,12 @@ import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
 /**
- * An AnchorPoint identifies the location inside a textlabel to use as an
- * "anchor" for positioning it relative to a point geometry.
- *
- *
+ * An AnchorPoint identifies the location inside a textlabel to use as an "anchor" for positioning
+ * it relative to a point geometry.
  *
  * @source $URL$
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
+ *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @author Ian Turton
@@ -44,7 +43,7 @@ public interface AnchorPoint {
      */
     @XmlElement("AnchorPointY")
     Expression getAnchorPointY();
-    
+
     /**
      * calls the visit method of a StyleVisitor
      *
@@ -52,5 +51,4 @@ public interface AnchorPoint {
      */
     @Extension
     Object accept(StyleVisitor visitor, Object extraData);
-    
 }

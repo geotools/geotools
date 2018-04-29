@@ -9,5 +9,4 @@ public class SQLServerLobOnlineTest extends JDBCLobOnlineTest {
     protected JDBCLobTestSetup createTestSetup() {
         return new SQLServerLobTestSetup(new SQLServerTestSetup());
     }
-
 }

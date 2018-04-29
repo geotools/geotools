@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2009 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,36 +17,25 @@
 
 package org.geotools.renderer.lite;
 
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.renderer.style.FontCache;
-import org.geotools.styling.SLD;
-import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
-import org.geotools.styling.StyleFactory;
-import org.geotools.styling.Symbolizer;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-
-import static java.awt.RenderingHints.KEY_ANTIALIASING;
-import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
-
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeometryFunctionTest {
     private static final long TIME = 40000;
 
@@ -62,7 +51,9 @@ public class GeometryFunctionTest {
         bounds = fs.getBounds();
         bounds.expandBy(0.5);
 
-        Font font = Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "Vera.ttf").openStream());
+        Font font =
+                Font.createFont(
+                        Font.TRUETYPE_FONT, TestData.getResource(this, "Vera.ttf").openStream());
         FontCache.getDefaultInstance().registerFont(font);
     }
 
@@ -88,11 +79,11 @@ public class GeometryFunctionTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
         BufferedImage image = RendererBaseTest.showRender(styleName, renderer, TIME, bounds);
-        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/"
-                + styleName + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/"
+                                + styleName
+                                + ".png");
         ImageAssert.assertEquals(reference, image, threshold);
     }
-
-
-
 }

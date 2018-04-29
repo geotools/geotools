@@ -16,35 +16,26 @@
  */
 package org.geotools.graph.structure.line;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import org.geotools.graph.structure.basic.BasicNode;
 
-import com.vividsolutions.jts.geom.Coordinate;
-
 /**
- * Basic implementation of XYNode extended from BasicNode. The coordinate is
- * stored in the underlying object reference of the node.
- * 
+ * Basic implementation of XYNode extended from BasicNode. The coordinate is stored in the
+ * underlying object reference of the node.
+ *
  * @see org.geotools.graph.structure.basic.BasicNode
- * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * 
- *
- *
  * @source $URL$
  */
 public class BasicXYNode extends BasicNode implements XYNode {
 
-  /**
-   * @see XYNode#getCoordinate()
-   */
-  public Coordinate getCoordinate() {
-    return((Coordinate)getObject());
-  }
+    /** @see XYNode#getCoordinate() */
+    public Coordinate getCoordinate() {
+        return ((Coordinate) getObject());
+    }
 
-  /**
-   * @see XYNode#setCoordinate(Coordinate)
-   */
-  public void setCoordinate(Coordinate c) {
-    setObject(c);
-  }
+    /** @see XYNode#setCoordinate(Coordinate) */
+    public void setCoordinate(Coordinate c) {
+        setObject(c);
+    }
 }

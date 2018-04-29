@@ -7,5 +7,4 @@ public class JniGeometryMapperTest extends GeometryMapperTest {
     public JniGeometryMapperTest() {
         super(JniOGRDataStoreFactory.class);
     }
-
 }

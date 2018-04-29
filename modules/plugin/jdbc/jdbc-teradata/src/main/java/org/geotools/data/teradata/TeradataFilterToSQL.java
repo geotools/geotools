@@ -16,15 +16,12 @@
  */
 package org.geotools.data.teradata;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKeyColumn;
@@ -46,18 +43,11 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataFilterToSQL extends PreparedFilterToSQL {
 
     static final Logger LOGGER = Logging.getLogger(TeradataFilterToSQL.class);
-    
+
     boolean looseBBOX;
 
     public TeradataFilterToSQL(TeradataDialect dialect) {
@@ -86,29 +76,32 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
         return caps;
     }
 
-//    protected void visitLiteralGeometry(Literal expression) throws IOException {
-//        // evaluate the literal and store it for later
-//        Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);
-//
-//        if (geom instanceof LinearRing) {
-//            // teradata does not handle linear rings, convert to just a line
-//            // string
-//            geom = geom.getFactory().createLineString(((LinearRing) geom).getCoordinateSequence());
-//        }
-//
-//        out.write("'");
-//        out.write(geom.toText());
-//        out.write("'");
-//    }
+    //    protected void visitLiteralGeometry(Literal expression) throws IOException {
+    //        // evaluate the literal and store it for later
+    //        Geometry geom = (Geometry) evaluateLiteral(expression, Geometry.class);
+    //
+    //        if (geom instanceof LinearRing) {
+    //            // teradata does not handle linear rings, convert to just a line
+    //            // string
+    //            geom = geom.getFactory().createLineString(((LinearRing)
+    // geom).getCoordinateSequence());
+    //        }
+    //
+    //        out.write("'");
+    //        out.write(geom.toText());
+    //        out.write("'");
+    //    }
 
-    
-
-    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
-            PropertyName property, Literal geometry, boolean swapped, Object extraData) {
+    protected Object visitBinarySpatialOperator(
+            BinarySpatialOperator filter,
+            PropertyName property,
+            Literal geometry,
+            boolean swapped,
+            Object extraData) {
         try {
             if (filter instanceof DistanceBufferOperator) {
-                visitDistanceSpatialOperator((DistanceBufferOperator) filter, property, geometry,
-                        swapped, extraData);
+                visitDistanceSpatialOperator(
+                        (DistanceBufferOperator) filter, property, geometry, swapped, extraData);
             } else {
                 visitComparisonSpatialOperator(filter, property, geometry, swapped, extraData);
             }
@@ -118,8 +111,13 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
         return extraData;
     }
 
-    void visitDistanceSpatialOperator(DistanceBufferOperator filter, PropertyName property,
-            Literal geometry, boolean swapped, Object extraData) throws IOException {
+    void visitDistanceSpatialOperator(
+            DistanceBufferOperator filter,
+            PropertyName property,
+            Literal geometry,
+            boolean swapped,
+            Object extraData)
+            throws IOException {
 
         if ((filter instanceof DWithin && !swapped) || (filter instanceof Beyond && swapped)) {
             encodeIndexPredicate(property, geometry);
@@ -142,12 +140,17 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
         }
     }
 
-    void visitComparisonSpatialOperator(BinarySpatialOperator filter, PropertyName property,
-            Literal geometry, boolean swapped, Object extraData) throws IOException {
+    void visitComparisonSpatialOperator(
+            BinarySpatialOperator filter,
+            PropertyName property,
+            Literal geometry,
+            boolean swapped,
+            Object extraData)
+            throws IOException {
 
         if (!(filter instanceof Disjoint)) {
             if (encodeIndexPredicate(property, geometry)) {
-                out.write( " AND ");
+                out.write(" AND ");
             }
         }
 
@@ -163,15 +166,11 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
         } else if (filter instanceof Crosses) {
             out.write("ST_Crosses");
         } else if (filter instanceof Within) {
-            if (swapped)
-                out.write("ST_Contains");
-            else
-                out.write("ST_Within");
+            if (swapped) out.write("ST_Contains");
+            else out.write("ST_Within");
         } else if (filter instanceof Contains) {
-            if (swapped)
-                out.write("ST_Within");
-            else
-                out.write("ST_Contains");
+            if (swapped) out.write("ST_Within");
+            else out.write("ST_Contains");
         } else if (filter instanceof Overlaps) {
             out.write("ST_Overlaps");
         } else if (filter instanceof Touches) {
@@ -180,13 +179,12 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
             throw new RuntimeException("Unsupported filter type " + filter.getClass());
         }
 
-        int tdVersion = ((TeradataDialect)dialect).getTdVersion();
+        int tdVersion = ((TeradataDialect) dialect).getTdVersion();
         if (tdVersion > 12) {
             out.write("(new ST_Geometry(");
             geometry.accept(this, extraData);
             out.write(")) = 1");
-        }
-        else {
+        } else {
             out.write("(CAST (");
             geometry.accept(this, extraData);
             out.write(" AS ST_Geometry)) = 1");
@@ -194,57 +192,73 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
     }
 
     boolean encodeIndexPredicate(PropertyName property, Literal geometry) throws IOException {
-        
-        TessellationInfo tinfo = 
-            (TessellationInfo) currentGeometry.getUserData().get(TessellationInfo.KEY);
+
+        TessellationInfo tinfo =
+                (TessellationInfo) currentGeometry.getUserData().get(TessellationInfo.KEY);
         if (tinfo == null) {
-            LOGGER.info("Tessellation info not available for " + currentGeometry.getLocalName() + 
-                ", unable to perform spatially indexed query");
+            LOGGER.info(
+                    "Tessellation info not available for "
+                            + currentGeometry.getLocalName()
+                            + ", unable to perform spatially indexed query");
             return false;
         }
-        
+
         if (tinfo.getIndexTableName() == null) {
-            LOGGER.info("Tessellation info available for " + currentGeometry.getLocalName() + 
-                ", but index table does not exist, unable to perform spatially index query.");
+            LOGGER.info(
+                    "Tessellation info available for "
+                            + currentGeometry.getLocalName()
+                            + ", but index table does not exist, unable to perform spatially index query.");
             return false;
         }
-        
+
         if (primaryKey == null || primaryKey.getColumns().isEmpty()) {
-            LOGGER.info("No primary key for " + featureType.getTypeName() + 
-                ", unable to perform spatially indexed query");
+            LOGGER.info(
+                    "No primary key for "
+                            + featureType.getTypeName()
+                            + ", unable to perform spatially indexed query");
             return false;
         }
 
         Geometry g = (Geometry) geometry.getValue();
-        
-        //check the geomtry envelope vs the world envelope, if it falls outside of the world bounds
+
+        // check the geomtry envelope vs the world envelope, if it falls outside of the world bounds
         // we can't use the index
         Envelope oenv = g.getEnvelopeInternal();
         Envelope uenv = tinfo.getUBounds();
-        
+
         if (!uenv.contains(oenv)) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Bounds:" + oenv + " falls outside of univerise bounds: " + uenv + 
-                    ". Unable to perform index query.");
+                LOGGER.fine(
+                        "Bounds:"
+                                + oenv
+                                + " falls outside of univerise bounds: "
+                                + uenv
+                                + ". Unable to perform index query.");
             }
             return false;
         }
-        
-        //check coverage... if the geometry bounds covers most of the the index universe don't use
+
+        // check coverage... if the geometry bounds covers most of the the index universe don't use
         // the index since the join query is expensive... it will be more efficient to just do the
         // direct intersection
-        //TODO: make this threshhold configurable
-        double coverage = uenv.intersection(oenv).getArea() / uenv.getArea(); 
+        // TODO: make this threshhold configurable
+        double coverage = uenv.intersection(oenv).getArea() / uenv.getArea();
         if (coverage > 0.5) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Bounds:" + oenv + " covers " + (coverage * 100) + " of universe bounds: " 
-                  + uenv + ". Forgoing index query.");
+                LOGGER.fine(
+                        "Bounds:"
+                                + oenv
+                                + " covers "
+                                + (coverage * 100)
+                                + " of universe bounds: "
+                                + uenv
+                                + ". Forgoing index query.");
             }
             return false;
         }
-        
+
         out.write('(');
-        for (Iterator<PrimaryKeyColumn> it = primaryKey.getColumns().iterator(); it.hasNext();) {
+        for (Iterator<PrimaryKeyColumn> it = primaryKey.getColumns().iterator(); it.hasNext(); ) {
             out.write(it.next().getName());
             if (it.hasNext()) {
                 out.write(", ");
@@ -253,26 +267,38 @@ public class TeradataFilterToSQL extends PreparedFilterToSQL {
         out.write(')');
 
         out.write(" IN (SELECT DISTINCT ");
-        for (Iterator<PrimaryKeyColumn> it = primaryKey.getColumns().iterator(); it.hasNext();) {
+        for (Iterator<PrimaryKeyColumn> it = primaryKey.getColumns().iterator(); it.hasNext(); ) {
             out.write("t." + it.next().getName());
             if (it.hasNext()) {
                 out.write(", ");
             }
         }
-        
+
         out.write(" FROM ");
         if (tinfo.getSchemaName() != null) {
             out.write(escapeName(tinfo.getSchemaName()));
             out.write(".");
         }
         out.write(escapeName(tinfo.getIndexTableName()));
-        out.write( " t, TABLE (SYSSPATIAL.tessellate_search(1,");
-        
-        out.write(String.format("%f, %f, %f, %f, %f, %f, %f, %f, %d, %d, %d, %f, %d)) AS i ", 
-            oenv.getMinX(), oenv.getMinY(), oenv.getMaxX(), oenv.getMaxY(), uenv.getMinX(), 
-            uenv.getMinY(), uenv.getMaxX(), uenv.getMaxY(), tinfo.getNx(), tinfo.getNy(), 
-            tinfo.getLevels(), tinfo.getScale(), tinfo.getShift()));
-        
+        out.write(" t, TABLE (SYSSPATIAL.tessellate_search(1,");
+
+        out.write(
+                String.format(
+                        "%f, %f, %f, %f, %f, %f, %f, %f, %d, %d, %d, %f, %d)) AS i ",
+                        oenv.getMinX(),
+                        oenv.getMinY(),
+                        oenv.getMaxX(),
+                        oenv.getMaxY(),
+                        uenv.getMinX(),
+                        uenv.getMinY(),
+                        uenv.getMaxX(),
+                        uenv.getMaxY(),
+                        tinfo.getNx(),
+                        tinfo.getNy(),
+                        tinfo.getLevels(),
+                        tinfo.getScale(),
+                        tinfo.getShift()));
+
         out.write(" WHERE t.cellid = i.cellid)");
         return true;
     }

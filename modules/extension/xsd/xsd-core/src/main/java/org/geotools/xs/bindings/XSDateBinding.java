@@ -19,21 +19,19 @@ package org.geotools.xs.bindings;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.TimeZone;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.factory.Hints;
 import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xs.XS;
 
-
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:date.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xs:simpleType name="date" id="date"&gt;
  *      &lt;xs:annotation&gt;
@@ -59,23 +57,18 @@ import org.geotools.xs.XS;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class XSDateBinding implements SimpleBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return XS.DATE;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -86,6 +79,7 @@ public class XSDateBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link java.sql.Date}.
      * <!-- end-user-doc -->
@@ -97,6 +91,7 @@ public class XSDateBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link java.sql.Date}.
      * <!-- end-user-doc -->
@@ -112,9 +107,9 @@ public class XSDateBinding implements SimpleBinding {
         final Date date = (Date) object;
         Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);
         Calendar calendar;
-        if(Boolean.TRUE.equals(hint)){
+        if (Boolean.TRUE.equals(hint)) {
             calendar = Calendar.getInstance();
-        }else{
+        } else {
             calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         }
         calendar.clear();

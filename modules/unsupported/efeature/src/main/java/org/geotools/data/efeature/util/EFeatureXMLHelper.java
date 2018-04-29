@@ -16,10 +16,11 @@
  */
 package org.geotools.data.efeature.util;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
 import java.math.BigInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.xmi.impl.XMLHelperImpl;
@@ -27,20 +28,13 @@ import org.geotools.data.efeature.DataBuilder;
 import org.geotools.data.efeature.DataTypes;
 import org.geotools.util.logging.Logging;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-
 /**
  * @author kengu
- *
- *
  * @source $URL$
  */
 public class EFeatureXMLHelper extends XMLHelperImpl {
-    
-    /**
-     * Cached {@link Logger} for this class
-     */
+
+    /** Cached {@link Logger} for this class */
     protected static final Logger LOGGER = Logging.getLogger(EFeatureXMLHelper.class);
 
     @Override
@@ -48,16 +42,16 @@ public class EFeatureXMLHelper extends XMLHelperImpl {
         //
         // Only serialize Geometry instances
         //
-        if(value instanceof Geometry) {
+        if (value instanceof Geometry) {
             //
             // Convert geometry to byte array
             //
-            byte[] b = DataBuilder.toWKB((Geometry)value);
+            byte[] b = DataBuilder.toWKB((Geometry) value);
             //
             // Convert to compressed string
             //
             return toString(b);
-            //return DataBuilder.toWKT((Geometry)value);
+            // return DataBuilder.toWKT((Geometry)value);
         }
         //
         // Forward to default implementation
@@ -74,18 +68,18 @@ public class EFeatureXMLHelper extends XMLHelperImpl {
         //
         // Only serialize Geometry instances
         //
-        if(DataTypes.isGeometry(type)) {
+        if (DataTypes.isGeometry(type)) {
             //
             // Convert hex string to WKB formated byte array
             //
             byte[] b = toByte(value);
             try {
-                
+
                 //
                 // Convert to Geometry
                 //
                 return DataBuilder.toGeometry(b);
-                
+
             } catch (ParseException e) {
                 //
                 // Notify
@@ -113,7 +107,7 @@ public class EFeatureXMLHelper extends XMLHelperImpl {
         //
         return super.createFromString(eFactory, eDataType, value);
     }
-    
+
     private static final String toString(byte[] b) {
         //
         // Create a BigInteger using the byte array
@@ -124,17 +118,15 @@ public class EFeatureXMLHelper extends XMLHelperImpl {
         //
         return bi.toString(32);
     }
-    
+
     private static final byte[] toByte(String s) {
         //
         // Create a BigInteger using the byte array
         //
-        BigInteger bi = new BigInteger(s,32);
+        BigInteger bi = new BigInteger(s, 32);
         //
         // Return as byte array
         //
         return bi.toByteArray();
     }
-    
-
 }

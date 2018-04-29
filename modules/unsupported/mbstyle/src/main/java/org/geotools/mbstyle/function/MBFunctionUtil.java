@@ -16,20 +16,18 @@
  */
 package org.geotools.mbstyle.function;
 
-/**
- * Utility functions for MBExpressions.
- */
+/** Utility functions for MBExpressions. */
 public class MBFunctionUtil {
 
     /**
-     * Compares two Objects for equality. Numeric values are converted to doubles before comparing. Null objects are
-     * equal by definition. All other Objects will be compared with {@link java.lang.Object#equals(java.lang.Object)}
+     * Compares two Objects for equality. Numeric values are converted to doubles before comparing.
+     * Null objects are equal by definition. All other Objects will be compared with {@link
+     * java.lang.Object#equals(java.lang.Object)}
      *
      * @param arg0 An Object to compare.
      * @param arg1 A second Object to compare.
-     *
-     * @return {@link java.lang.Boolean#TRUE} if the arguments are equivalent, {@link java.lang.Boolean#FALSE}
-     * otherwise.
+     * @return {@link java.lang.Boolean#TRUE} if the arguments are equivalent, {@link
+     *     java.lang.Boolean#FALSE} otherwise.
      */
     static Boolean argsEqual(final Object arg0, final Object arg1) {
         if (arg0 == null) {
@@ -52,5 +50,4 @@ public class MBFunctionUtil {
         // at least one of the args is not numeric, just use Object.equals()
         return arg0.equals(arg1);
     }
-
 }

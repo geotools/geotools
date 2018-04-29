@@ -17,23 +17,16 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.PropertyIsNull;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 import org.geotools.filter.v1_0.OGCPropertyIsNullTypeBinding;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:PropertyIsNullType.
  *
  * <p>
- *      <pre>
+ *
+ * <pre>
  *       <code>
  *  &lt;xsd:complexType name="PropertyIsNullType"&gt;
  *      &lt;xsd:complexContent&gt;
@@ -43,11 +36,10 @@ import org.geotools.xml.Node;
  *              &lt;/xsd:sequence&gt;
  *          &lt;/xsd:extension&gt;
  *      &lt;/xsd:complexContent&gt;
- *  &lt;/xsd:complexType&gt; 
- *              
+ *  &lt;/xsd:complexType&gt;
+ *
  *        </code>
  *       </pre>
- * </p>
  *
  * @generated
  */

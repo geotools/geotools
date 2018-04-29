@@ -21,43 +21,31 @@ import java.net.URL;
 
 /**
  * Enumerates the known types of files associated with a shapefile.
- * 
+ *
  * @author jesse
- *
- *
  * @source $URL$
  */
 public enum ShpFileType {
 
-    /**
-     * The .shp file. It contains the geometries of the shapefile
-     */
+    /** The .shp file. It contains the geometries of the shapefile */
     SHP("shp"),
-    /**
-     * the .dbf file, it contains the attribute information of the shapefile
-     */
+    /** the .dbf file, it contains the attribute information of the shapefile */
     DBF("dbf"),
-    /**
-     * the .shx file, it contains index information of the existing features
-     */
+    /** the .shx file, it contains index information of the existing features */
     SHX("shx"),
-    /**
-     * the .prj file, it contains the projection information of the shapefile
-     */
+    /** the .prj file, it contains the projection information of the shapefile */
     PRJ("prj"),
     /**
-     * the .qix file, A quad tree spatial index of the shapefile. It is the same
-     * format the mapservers shptree tool generates
+     * the .qix file, A quad tree spatial index of the shapefile. It is the same format the
+     * mapservers shptree tool generates
      */
     QIX("qix"),
     /**
-     * the .fix file, it contains all the Feature IDs for constant time lookup
-     * by fid also so that the fids stay consistent across deletes and adds
+     * the .fix file, it contains all the Feature IDs for constant time lookup by fid also so that
+     * the fids stay consistent across deletes and adds
      */
     FIX("fix"),
-    /**
-     * the .shp.xml file, it contains the metadata about the shapefile
-     */
+    /** the .shp.xml file, it contains the metadata about the shapefile */
     SHP_XML("shp.xml");
 
     public final String extension;
@@ -69,11 +57,11 @@ public enum ShpFileType {
     }
 
     /**
-     * Returns the base of the file or null if the file passed in is not of the
-     * correct type (has the correct extension.)
-     * <p>
-     * For example if the file is c:\shapefiles\file1.dbf. The DBF type will
-     * return c:\shapefiles\file1 but all other will return null.
+     * Returns the base of the file or null if the file passed in is not of the correct type (has
+     * the correct extension.)
+     *
+     * <p>For example if the file is c:\shapefiles\file1.dbf. The DBF type will return
+     * c:\shapefiles\file1 but all other will return null.
      */
     public String toBase(File file) {
         String path = file.getPath();
@@ -81,11 +69,11 @@ public enum ShpFileType {
     }
 
     /**
-     * Returns the base of the file or null if the file passed in is not of the
-     * correct type (has the correct extension.)
-     * <p>
-     * For example if the file is c:\shapefiles\file1.dbf. The DBF type will
-     * return c:\shapefiles\file1 but all other will return null.
+     * Returns the base of the file or null if the file passed in is not of the correct type (has
+     * the correct extension.)
+     *
+     * <p>For example if the file is c:\shapefiles\file1.dbf. The DBF type will return
+     * c:\shapefiles\file1 but all other will return null.
      */
     public String toBase(String path) {
         if (!path.toLowerCase().endsWith(extensionWithPeriod)
@@ -93,19 +81,18 @@ public enum ShpFileType {
             return null;
         }
 
-        int indexOfExtension = path.toLowerCase().lastIndexOf(
-                extensionWithPeriod);
+        int indexOfExtension = path.toLowerCase().lastIndexOf(extensionWithPeriod);
         return path.substring(0, indexOfExtension);
     }
 
     /**
-     * Returns the base of the file or null if the file passed in is not of the
-     * correct type (has the correct extension.)
-     * <p>
-     * For example if the file is c:\shapefiles\file1.dbf. The DBF type will
-     * return c:\shapefiles\file1 but all other will return null.
+     * Returns the base of the file or null if the file passed in is not of the correct type (has
+     * the correct extension.)
+     *
+     * <p>For example if the file is c:\shapefiles\file1.dbf. The DBF type will return
+     * c:\shapefiles\file1 but all other will return null.
      */
     public String toBase(URL url) {
-        return toBase( url.toExternalForm() );        
+        return toBase(url.toExternalForm());
     }
 }

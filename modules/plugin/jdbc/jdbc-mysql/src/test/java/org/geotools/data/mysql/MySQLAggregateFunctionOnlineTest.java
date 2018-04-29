@@ -19,16 +19,11 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCAggregateFunctionOnlineTest;
 import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySQLAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnlineTest {
 
     @Override
     protected JDBCAggregateTestSetup createTestSetup() {
         return new MySQLAggregateTestSetup();
     }
-
 }

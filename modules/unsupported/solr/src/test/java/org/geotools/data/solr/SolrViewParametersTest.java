@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@ package org.geotools.data.solr;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
@@ -120,5 +119,4 @@ public class SolrViewParametersTest extends SolrTestSupport {
         assertTrue(fsi.hasNext());
         assertEquals(fsi.next().getAttribute("modem_b"), false);
     }
-
 }

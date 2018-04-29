@@ -31,12 +31,10 @@ import org.opengis.coverage.grid.GridCoverageReader;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @author Ugo Moschini, GeoSolutions
  * @since 2.10.x
- *
- *
  * @source $URL$
  */
 public final class VRTReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
-    private final static String worldFileExt = "";
+    private static final String worldFileExt = "";
 
     /**
      * Creates a new instance of a {@link VRTReader}.

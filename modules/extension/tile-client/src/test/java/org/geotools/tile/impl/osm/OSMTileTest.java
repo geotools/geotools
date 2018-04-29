@@ -32,27 +32,23 @@ public class OSMTileTest {
 
         String baseURL = "http://tile.openstreetmap.org/";
         TileService service = new OSMService("Mapnik", baseURL);
-        OSMTileIdentifier tileIdentifier = new OSMTileIdentifier(10, 12,
-                new WebMercatorZoomLevel(5), service.getName());
+        OSMTileIdentifier tileIdentifier =
+                new OSMTileIdentifier(10, 12, new WebMercatorZoomLevel(5), service.getName());
 
         this.tile = new OSMTile(tileIdentifier, service);
-
     }
 
     @Test
     public void testConstructor() {
 
         Assert.assertNotNull(this.tile);
-
     }
 
     @Test
     public void testGetURL() {
 
         System.out.println();
-        Assert.assertEquals("http://tile.openstreetmap.org/5/10/12.png",
-                this.tile.getUrl().toString());
-
+        Assert.assertEquals(
+                "http://tile.openstreetmap.org/5/10/12.png", this.tile.getUrl().toString());
     }
-
 }

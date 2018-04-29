@@ -3,11 +3,7 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2SkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     protected H2SkipColumnTestSetup() {
@@ -19,14 +15,16 @@ public class H2SkipColumnTestSetup extends JDBCSkipColumnTestSetup {
         super.setUpDataStore(dataStore);
         dataStore.setDatabaseSchema(null);
     }
-    
+
     @Override
     protected void createSkipColumnTable() throws Exception {
-        run("CREATE TABLE \"skipcolumn\" (\"fid\" int AUTO_INCREMENT(1) PRIMARY KEY, "
-        + "\"id\" int, \"geom\" POINT, \"weird\" array, \"name\" varchar)");
+        run(
+                "CREATE TABLE \"skipcolumn\" (\"fid\" int AUTO_INCREMENT(1) PRIMARY KEY, "
+                        + "\"id\" int, \"geom\" POINT, \"weird\" array, \"name\" varchar)");
         run("CALL AddGeometryColumn(NULL, 'skipcolumn', 'geom', 4326, 'POINT', 2)");
-        run("INSERT INTO \"skipcolumn\" VALUES ("
-            + "0, 0, ST_GeomFromText('POINT(0 0)',4326), null, 'GeoTools')");
+        run(
+                "INSERT INTO \"skipcolumn\" VALUES ("
+                        + "0, 0, ST_GeomFromText('POINT(0 0)',4326), null, 'GeoTools')");
     }
 
     @Override
@@ -34,5 +32,4 @@ public class H2SkipColumnTestSetup extends JDBCSkipColumnTestSetup {
         runSafe("DELETE FROM geometry_columns WHERE f_table_name = 'skipcolumn'");
         runSafe("DROP TABLE \"skipcolumn\"");
     }
-
 }

@@ -14,6 +14,4 @@ public class H2UuidTest extends JDBCUuidOnlineTest {
     protected JDBCUuidTestSetup createTestSetup() {
         return new H2UuidTestSetup(new H2UuidTestSetup(new H2TestSetup()));
     }
-
 }
-

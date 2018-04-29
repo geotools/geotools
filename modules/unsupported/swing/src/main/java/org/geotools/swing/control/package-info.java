@@ -16,7 +16,7 @@
  */
 
 /**
- * A small collection of Swing controls including type-specific text fields and a list
- * class with drag and drop item re-ordering.
+ * A small collection of Swing controls including type-specific text fields and a list class with
+ * drag and drop item re-ordering.
  */
 package org.geotools.swing.control;

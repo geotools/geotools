@@ -6,11 +6,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -28,10 +30,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.xml.sax.helpers.NamespaceSupport;
 
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTWriter;
-
 public class DefaultGeometryTest {
 
     static final String STATIONS_SCHEMA_BASE = "/test-data/stations/";
@@ -46,20 +44,20 @@ public class DefaultGeometryTest {
 
     static final Name STATION_MULTIPLE_GEOM_MAPPING = Types.typeName("stationsMultipleGeometries");
 
-    static final Name STATION_WITH_MEASUREMENTS_FEATURE_TYPE = Types.typeName(STATIONS_NS,
-            "StationWithMeasurementsType");
+    static final Name STATION_WITH_MEASUREMENTS_FEATURE_TYPE =
+            Types.typeName(STATIONS_NS, "StationWithMeasurementsType");
 
-    static final Name STATION_WITH_MEASUREMENTS_FEATURE = Types.typeName(STATIONS_NS,
-            "StationWithMeasurements");
+    static final Name STATION_WITH_MEASUREMENTS_FEATURE =
+            Types.typeName(STATIONS_NS, "StationWithMeasurements");
 
-    static final Name STATION_WITH_GEOM_FEATURE_TYPE = Types.typeName(STATIONS_NS,
-            "StationWithGeometryPropertyType");
+    static final Name STATION_WITH_GEOM_FEATURE_TYPE =
+            Types.typeName(STATIONS_NS, "StationWithGeometryPropertyType");
 
-    static final Name STATION_WITH_GEOM_FEATURE = Types.typeName(STATIONS_NS,
-            "StationWithGeometryProperty");
+    static final Name STATION_WITH_GEOM_FEATURE =
+            Types.typeName(STATIONS_NS, "StationWithGeometryProperty");
 
-    static final Name STATION_DEFAULT_GEOM_OVERRIDE_MAPPING = Types
-            .typeName("stationsDefaultGeometryOverride");
+    static final Name STATION_DEFAULT_GEOM_OVERRIDE_MAPPING =
+            Types.typeName("stationsDefaultGeometryOverride");
 
     static final String MEASUREMENTS_NS = "http://www.measurements.org/1.0";
 
@@ -97,14 +95,10 @@ public class DefaultGeometryTest {
      * @throws Exception
      */
     private static void loadDataAccesses() throws Exception {
-        /**
-         * Load measurements data access
-         */
+        /** Load measurements data access */
         measurementsDataAccess = loadDataAccess("measurementsDefaultGeometry.xml");
 
-        /**
-         * Load stations data access
-         */
+        /** Load stations data access */
         stationsDataAccess = loadDataAccess("stationsDefaultGeometry.xml");
 
         FeatureType ft = stationsDataAccess.getSchema(STATION_FEATURE);
@@ -159,17 +153,19 @@ public class DefaultGeometryTest {
     }
 
     /**
-     * Tests that the default geometry configuration in the mapping file is correctly picked up and properly applied.
+     * Tests that the default geometry configuration in the mapping file is correctly picked up and
+     * properly applied.
      */
     @Test
     public void testDefaultGeometryMappingConfiguration() throws IOException {
         FeatureType ftWithDefaultGeom = stationsDataAccess.getSchema(STATION_FEATURE);
         assertNotNull(ftWithDefaultGeom.getGeometryDescriptor());
-        assertEquals(ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME,
+        assertEquals(
+                ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME,
                 ftWithDefaultGeom.getGeometryDescriptor().getLocalName());
 
-        FeatureTypeMapping mappingDefaultGeom = stationsDataAccess
-                .getMappingByName(STATION_FEATURE);
+        FeatureTypeMapping mappingDefaultGeom =
+                stationsDataAccess.getMappingByName(STATION_FEATURE);
         assertNotNull(mappingDefaultGeom);
         assertNotNull(mappingDefaultGeom.getDefaultGeometryXPath());
         assertEquals("st:location/st:position", mappingDefaultGeom.getDefaultGeometryXPath());
@@ -194,12 +190,13 @@ public class DefaultGeometryTest {
     }
 
     /**
-     * Tests that no default geometry is available for a feature type with no direct child geometry property.
+     * Tests that no default geometry is available for a feature type with no direct child geometry
+     * property.
      */
     @Test
     public void testDefaultGeometryNone() throws IOException {
-        FeatureTypeMapping mappingNoDefaultGeom = stationsDataAccess
-                .getMappingByNameOrElement(STATION_NO_DEFAULT_GEOM_MAPPING);
+        FeatureTypeMapping mappingNoDefaultGeom =
+                stationsDataAccess.getMappingByNameOrElement(STATION_NO_DEFAULT_GEOM_MAPPING);
         assertNotNull(mappingNoDefaultGeom);
         // no default geometry configured
         assertNull(mappingNoDefaultGeom.getDefaultGeometryXPath());
@@ -210,13 +207,13 @@ public class DefaultGeometryTest {
     }
 
     /**
-     * Tests that the default geometry configuration overrides the default geometry that would be automatically picked up by the feature type building
-     * machinery.
+     * Tests that the default geometry configuration overrides the default geometry that would be
+     * automatically picked up by the feature type building machinery.
      */
     @Test
     public void testDefaultGeometryOverride() throws IOException {
-        FeatureTypeMapping mappingWithGeom = stationsDataAccess
-                .getMappingByName(STATION_WITH_GEOM_FEATURE);
+        FeatureTypeMapping mappingWithGeom =
+                stationsDataAccess.getMappingByName(STATION_WITH_GEOM_FEATURE);
         assertNotNull(mappingWithGeom);
         // no default geometry configured
         assertNull(mappingWithGeom.getDefaultGeometryXPath());
@@ -224,24 +221,27 @@ public class DefaultGeometryTest {
         FeatureType ftWithGeom = stationsDataAccess.getSchema(STATION_WITH_GEOM_FEATURE);
         assertNotNull(ftWithGeom.getGeometryDescriptor());
         // the direct child geometry property is automatically picked as default geometry
-        assertEquals(Types.typeName(STATIONS_NS, "geometry"),
+        assertEquals(
+                Types.typeName(STATIONS_NS, "geometry"),
                 ftWithGeom.getGeometryDescriptor().getName());
 
         // same feature type, this time default geometry is configured
-        FeatureTypeMapping mappingDefaultGeomOverride = stationsDataAccess
-                .getMappingByName(STATION_DEFAULT_GEOM_OVERRIDE_MAPPING);
-        assertEquals(mappingWithGeom.getTargetFeature().getName(),
+        FeatureTypeMapping mappingDefaultGeomOverride =
+                stationsDataAccess.getMappingByName(STATION_DEFAULT_GEOM_OVERRIDE_MAPPING);
+        assertEquals(
+                mappingWithGeom.getTargetFeature().getName(),
                 mappingDefaultGeomOverride.getTargetFeature().getName());
         assertNotNull(mappingDefaultGeomOverride);
-        assertEquals("st:location/st:position",
-                mappingDefaultGeomOverride.getDefaultGeometryXPath());
+        assertEquals(
+                "st:location/st:position", mappingDefaultGeomOverride.getDefaultGeometryXPath());
 
-        FeatureType ftDefaultGeomOverride = stationsDataAccess
-                .getSchema(STATION_DEFAULT_GEOM_OVERRIDE_MAPPING);
+        FeatureType ftDefaultGeomOverride =
+                stationsDataAccess.getSchema(STATION_DEFAULT_GEOM_OVERRIDE_MAPPING);
         assertEquals(ftWithGeom.getName(), ftDefaultGeomOverride.getName());
         assertNotNull(ftDefaultGeomOverride.getGeometryDescriptor());
         // the direct child geometry property is automatically picked as default geometry
-        assertEquals(ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME,
+        assertEquals(
+                ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME,
                 ftDefaultGeomOverride.getGeometryDescriptor().getLocalName());
     }
 
@@ -250,15 +250,17 @@ public class DefaultGeometryTest {
      */
     @Test
     public void testDefaultGeometryInsideChainedFeatureType() throws IOException {
-        FeatureTypeMapping mappingChained = stationsDataAccess
-                .getMappingByName(STATION_WITH_MEASUREMENTS_FEATURE);
+        FeatureTypeMapping mappingChained =
+                stationsDataAccess.getMappingByName(STATION_WITH_MEASUREMENTS_FEATURE);
         assertNotNull(mappingChained);
-        assertEquals("st:measurements/ms:Measurement/ms:sampledArea/ms:SampledArea/ms:geometry",
+        assertEquals(
+                "st:measurements/ms:Measurement/ms:sampledArea/ms:SampledArea/ms:geometry",
                 mappingChained.getDefaultGeometryXPath());
 
         FeatureType ftChained = stationsDataAccess.getSchema(STATION_WITH_MEASUREMENTS_FEATURE);
         assertNotNull(ftChained.getGeometryDescriptor());
-        assertEquals(ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME,
+        assertEquals(
+                ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME,
                 ftChained.getGeometryDescriptor().getLocalName());
 
         FeatureSource fs = stationsDataAccess.getFeatureSource(STATION_WITH_MEASUREMENTS_FEATURE);
@@ -283,8 +285,9 @@ public class DefaultGeometryTest {
     }
 
     /**
-     * Tests that an exception is thrown at runtime if the evaluation of the default geometry expression against a target feature type does not yield
-     * a {@link GeometryDescriptor} instance.
+     * Tests that an exception is thrown at runtime if the evaluation of the default geometry
+     * expression against a target feature type does not yield a {@link GeometryDescriptor}
+     * instance.
      */
     @Test
     public void testDefaultGeometryWrongType() {
@@ -296,17 +299,21 @@ public class DefaultGeometryTest {
             assertTrue(ex.getCause() instanceof IllegalArgumentException);
             IllegalArgumentException iae = (IllegalArgumentException) ex.getCause();
             // check error message
-            assertEquals("Default geometry descriptor could not be found for type "
-                    + "\"http://www.stations.org/1.0:Station\" at x-path \"st:location/st:name\"",
+            assertEquals(
+                    "Default geometry descriptor could not be found for type "
+                            + "\"http://www.stations.org/1.0:Station\" at x-path \"st:location/st:name\"",
                     iae.getMessage());
         } catch (Exception e) {
-            fail("Expected IllegalArgumentException to be thrown, but " + e.getClass().getName()
-                    + " was thrown instead");
+            fail(
+                    "Expected IllegalArgumentException to be thrown, but "
+                            + e.getClass().getName()
+                            + " was thrown instead");
         }
     }
 
     /**
-     * Tests that an exception is thrown at runtime if the default geometry expression addresses a non-existent property.
+     * Tests that an exception is thrown at runtime if the default geometry expression addresses a
+     * non-existent property.
      */
     @Test
     public void testDefaultGeometryNonExistentProperty() {
@@ -318,12 +325,15 @@ public class DefaultGeometryTest {
             assertTrue(ex.getCause() instanceof IllegalArgumentException);
             IllegalArgumentException iae = (IllegalArgumentException) ex.getCause();
             // check error message
-            assertEquals("Default geometry descriptor could not be found for type "
-                    + "\"http://www.stations.org/1.0:Station\" at x-path \"st:location/st:notThere\"",
+            assertEquals(
+                    "Default geometry descriptor could not be found for type "
+                            + "\"http://www.stations.org/1.0:Station\" at x-path \"st:location/st:notThere\"",
                     iae.getMessage());
         } catch (Exception e) {
-            fail("Expected IllegalArgumentException to be thrown, but " + e.getClass().getName()
-                    + " was thrown instead");
+            fail(
+                    "Expected IllegalArgumentException to be thrown, but "
+                            + e.getClass().getName()
+                            + " was thrown instead");
         }
     }
 
@@ -342,11 +352,13 @@ public class DefaultGeometryTest {
                 it.next();
             } catch (Exception ex) {
                 assertNotNull(ex.getCause());
-                assertTrue("Expected RuntimeException to be thrown",
+                assertTrue(
+                        "Expected RuntimeException to be thrown",
                         ex.getCause() instanceof RuntimeException);
                 // check error message
                 RuntimeException re = (RuntimeException) ex.getCause();
-                assertEquals("Error setting default geometry value: multiple values were found",
+                assertEquals(
+                        "Error setting default geometry value: multiple values were found",
                         re.getMessage());
             }
         }

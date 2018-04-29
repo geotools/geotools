@@ -19,13 +19,10 @@ package org.geotools.data.shapefile.shp;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
- * Not much but a type safe enumeration of file types as ints and names. The
- * descriptions can easily be tied to a ResourceBundle if someone wants to do
- * that.
- * 
+ * Not much but a type safe enumeration of file types as ints and names. The descriptions can easily
+ * be tied to a ResourceBundle if someone wants to do that.
+ *
  * @author Ian Schneider
- *
- *
  * @source $URL$
  */
 public final class ShapeType {
@@ -70,11 +67,9 @@ public final class ShapeType {
 
     /**
      * Creates a new instance of ShapeType. Hidden on purpose.
-     * 
-     * @param id
-     *                The id.
-     * @param name
-     *                The name.
+     *
+     * @param id The id.
+     * @param name The name.
      */
     protected ShapeType(int id, String name) {
         this.id = id;
@@ -83,7 +78,7 @@ public final class ShapeType {
 
     /**
      * Get the name of this ShapeType.
-     * 
+     *
      * @return The name.
      */
     public String toString() {
@@ -91,9 +86,9 @@ public final class ShapeType {
     }
 
     /**
-     * Is this a multipoint shape? Hint- all shapes are multipoint except NULL,
-     * UNDEFINED, and the POINTs.
-     * 
+     * Is this a multipoint shape? Hint- all shapes are multipoint except NULL, UNDEFINED, and the
+     * POINTs.
+     *
      * @return true if multipoint, false otherwise.
      */
     public boolean isMultiPoint() {
@@ -126,95 +121,92 @@ public final class ShapeType {
 
     /**
      * Determine the ShapeType for the id.
-     * 
-     * @param id
-     *                The id to search for.
+     *
+     * @param id The id to search for.
      * @return The ShapeType for the id.
      */
     public static ShapeType forID(int id) {
         ShapeType t;
         switch (id) {
-        case 0:
-            t = NULL;
-            break;
-        case 1:
-            t = POINT;
-            break;
-        case 11:
-            t = POINTZ;
-            break;
-        case 21:
-            t = POINTM;
-            break;
-        case 3:
-            t = ARC;
-            break;
-        case 13:
-            t = ARCZ;
-            break;
-        case 23:
-            t = ARCM;
-            break;
-        case 5:
-            t = POLYGON;
-            break;
-        case 15:
-            t = POLYGONZ;
-            break;
-        case 25:
-            t = POLYGONM;
-            break;
-        case 8:
-            t = MULTIPOINT;
-            break;
-        case 18:
-            t = MULTIPOINTZ;
-            break;
-        case 28:
-            t = MULTIPOINTM;
-            break;
-        default:
-            t = UNDEFINED;
-            break;
+            case 0:
+                t = NULL;
+                break;
+            case 1:
+                t = POINT;
+                break;
+            case 11:
+                t = POINTZ;
+                break;
+            case 21:
+                t = POINTM;
+                break;
+            case 3:
+                t = ARC;
+                break;
+            case 13:
+                t = ARCZ;
+                break;
+            case 23:
+                t = ARCM;
+                break;
+            case 5:
+                t = POLYGON;
+                break;
+            case 15:
+                t = POLYGONZ;
+                break;
+            case 25:
+                t = POLYGONM;
+                break;
+            case 8:
+                t = MULTIPOINT;
+                break;
+            case 18:
+                t = MULTIPOINTZ;
+                break;
+            case 28:
+                t = MULTIPOINTM;
+                break;
+            default:
+                t = UNDEFINED;
+                break;
         }
         return t;
     }
 
     /**
-     * Each ShapeType corresponds to a handler. In the future this should
-     * probably go else where to allow different handlers, or something...
-     * 
-     * @throws ShapefileException
-     *                 If the ShapeType is bogus.
+     * Each ShapeType corresponds to a handler. In the future this should probably go else where to
+     * allow different handlers, or something...
+     *
+     * @throws ShapefileException If the ShapeType is bogus.
      * @return The correct handler for this ShapeType. Returns a new one.
      */
     public ShapeHandler getShapeHandler(GeometryFactory gf) throws ShapefileException {
         ShapeHandler handler;
         switch (id) {
-        case 1:
-        case 11:
-        case 21:
-            handler = new PointHandler(this, gf);
-            break;
-        case 3:
-        case 13:
-        case 23:
-            handler = new MultiLineHandler(this, gf);
-            break;
-        case 5:
-        case 15:
-        case 25:
-            handler = new PolygonHandler(this, gf);
-            break;
-        case 8:
-        case 18:
-        case 28:
-            handler = new MultiPointHandler(this, gf);
-            break;
-        default:
-            handler = null;
+            case 1:
+            case 11:
+            case 21:
+                handler = new PointHandler(this, gf);
+                break;
+            case 3:
+            case 13:
+            case 23:
+                handler = new MultiLineHandler(this, gf);
+                break;
+            case 5:
+            case 15:
+            case 25:
+                handler = new PolygonHandler(this, gf);
+                break;
+            case 8:
+            case 18:
+            case 28:
+                handler = new MultiPointHandler(this, gf);
+                break;
+            default:
+                handler = null;
         }
         return handler;
     }
-
 }

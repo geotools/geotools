@@ -20,18 +20,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
 /**
  * PlugInConfig purpose.
- * 
- * <p>
- * Description of PlugInConfig ...
- * </p>
+ *
+ * <p>Description of PlugInConfig ...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -50,20 +45,15 @@ public class PlugInDTO {
 
     /**
      * PlugInDTO constructor.
-     * 
-     * <p>
-     * Does nothing.
-     * </p>
+     *
+     * <p>Does nothing.
      */
-    public PlugInDTO() {
-    }
+    public PlugInDTO() {}
 
     /**
      * PlugInDTO constructor.
-     * 
-     * <p>
-     * Creates a copy of the DTO passed in in this object.
-     * </p>
+     *
+     * <p>Creates a copy of the DTO passed in in this object.
      *
      * @param pi
      */
@@ -79,9 +69,8 @@ public class PlugInDTO {
             while (i.hasNext()) {
                 String key = (String) i.next();
 
-                //TODO clone value.
-                args.put(key,
-                    new ArgumentDTO((ArgumentDTO) pi.getArgs().get(key)));
+                // TODO clone value.
+                args.put(key, new ArgumentDTO((ArgumentDTO) pi.getArgs().get(key)));
             }
         }
     }
@@ -90,7 +79,6 @@ public class PlugInDTO {
      * Implementation of clone.
      *
      * @return a copy of this class.
-     *
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -101,9 +89,7 @@ public class PlugInDTO {
      * Implementation of equals.
      *
      * @param obj
-     *
      * @return true when the two objects are equal.
-     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj) {
@@ -145,7 +131,6 @@ public class PlugInDTO {
      * Implementation of hashCode.
      *
      * @return the hashcode.
-     *
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {

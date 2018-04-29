@@ -17,34 +17,33 @@
 
 package org.geotools.swing.tool;
 
-import java.util.Map;
+import static org.junit.Assert.*;
 
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Unit tests for InfoToolResult.
  *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $URL$
  */
 public class InfoToolResultTest {
     private InfoToolResult result;
-    
+
     @Before
     public void setup() {
         result = new InfoToolResult();
     }
-    
-    @Test(expected=IllegalStateException.class)
+
+    @Test(expected = IllegalStateException.class)
     public void missingNewFeatureCall() {
         result.setFeatureValue("foo", 0);
     }
-    
+
     @Test
     public void getNumFeatures() {
         result.newFeature("foo.1");
@@ -52,17 +51,17 @@ public class InfoToolResultTest {
         result.newFeature("foo.2");
         assertEquals(2, result.getNumFeatures());
     }
-    
+
     @Test
     public void getFeatureData() {
         result.newFeature("foo.1");
         result.setFeatureValue("bar", 1);
         result.setFeatureValue("baz", "one");
-        
+
         result.newFeature("foo.2");
         result.setFeatureValue("bar", 2);
         result.setFeatureValue("baz", "two");
-        
+
         assertEquals("foo.1", result.getFeatureId(0));
         Map<String, Object> featureData = result.getFeatureData(0);
         assertEquals(1, featureData.get("bar"));
@@ -73,14 +72,14 @@ public class InfoToolResultTest {
         assertEquals(2, featureData.get("bar"));
         assertEquals("two", featureData.get("baz"));
     }
-    
-    @Test(expected=IndexOutOfBoundsException.class)
+
+    @Test(expected = IndexOutOfBoundsException.class)
     public void getFeatureId_badIndex() {
         result.newFeature("foo.1");
         result.getFeatureId(1);
     }
-    
-    @Test(expected=IndexOutOfBoundsException.class)
+
+    @Test(expected = IndexOutOfBoundsException.class)
     public void getFeatureData_badIndex() {
         result.newFeature("foo.1");
         result.getFeatureData(1);

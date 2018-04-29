@@ -28,30 +28,29 @@ public class MBLookup extends MBExpression {
     }
 
     /**
-     * Retrieves an item from an array.
-     * Example:
-     *   ["at", number, array]: ItemType
+     * Retrieves an item from an array. Example: ["at", number, array]: ItemType
+     *
      * @return
      */
-    public Expression lookupAt(){
+    public Expression lookupAt() {
         // requires an instance of a "literal" array expression ie. non-expression array
         if (json.size() == 3 && parse.string(json, 2) != null) {
             Expression e = parse.string(json, 2);
             Expression at = parse.string(json, 1);
             return ff.function("at", e, at);
         }
-        throw new MBFormatException("The \"at\" expression requires an integer value at index 1, and a literal" +
-                " array value at index 2");
+        throw new MBFormatException(
+                "The \"at\" expression requires an integer value at index 1, and a literal"
+                        + " array value at index 2");
     }
 
     /**
-     * Retrieves a property value from the current feature's properties, or from another object if a second argument
-     * is provided. Returns null if the requested property is missing.
-     * Example:
-     *   ["get", string]: value
-     *   ["get", string, object]: value
+     * Retrieves a property value from the current feature's properties, or from another object if a
+     * second argument is provided. Returns null if the requested property is missing. Example:
+     * ["get", string]: value ["get", string, object]: value
      *
-     *   As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
+     * <p>As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
+     *
      * @return
      */
     public Expression lookupGet() {
@@ -70,13 +69,12 @@ public class MBLookup extends MBExpression {
     }
 
     /**
-     * Tests for the presence of an property value in the current feature's properties, or from another object
-     * if a second argument is provided.
-     * Example:
-     *   ["has", string]: boolean
-     *   ["has", string, object]: boolean
+     * Tests for the presence of an property value in the current feature's properties, or from
+     * another object if a second argument is provided. Example: ["has", string]: boolean ["has",
+     * string, object]: boolean
      *
-     * As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
+     * <p>As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
+     *
      * @return
      */
     public Expression lookupHas() {
@@ -91,19 +89,19 @@ public class MBLookup extends MBExpression {
                 return ff.function("has", value, object);
             }
         }
-        throw new MBFormatException("Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
+        throw new MBFormatException(
+                "Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
     }
 
     /**
-     * Gets the length of an array or string.
-     * Example:
-     *   ["length", string]: number
-     *   ["length", array]: number
+     * Gets the length of an array or string. Example: ["length", string]: number ["length", array]:
+     * number
+     *
      * @return
      */
     public Expression lookupLength() {
-        Expression e = parse.string(json,1);
-            return ff.function("mbLength", e);
+        Expression e = parse.string(json, 1);
+        return ff.function("mbLength", e);
     }
 
     @Override

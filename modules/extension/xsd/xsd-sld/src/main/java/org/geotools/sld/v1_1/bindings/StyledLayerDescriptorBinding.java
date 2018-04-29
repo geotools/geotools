@@ -17,19 +17,16 @@
 package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.sld.bindings.SLDStyledLayerDescriptorBinding;
-import org.geotools.sld.v1_1.SLD;
 import org.geotools.styling.Description;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.xml.*;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/sld:StyledLayerDescriptor.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="StyledLayerDescriptor"&gt;
@@ -51,16 +48,12 @@ import javax.xml.namespace.QName;
  *          &lt;/xsd:sequence&gt;
  *          &lt;xsd:attribute name="version" type="se:VersionType" use="required"/&gt;
  *      &lt;/xsd:complexType&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class StyledLayerDescriptorBinding extends SLDStyledLayerDescriptorBinding {
@@ -70,13 +63,15 @@ public class StyledLayerDescriptorBinding extends SLDStyledLayerDescriptorBindin
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        StyledLayerDescriptor sld =  (StyledLayerDescriptor) super.parse(instance, node, value);
+        StyledLayerDescriptor sld = (StyledLayerDescriptor) super.parse(instance, node, value);
         if (node.hasChild("Description")) {
             Description desc = (Description) node.getChildValue("Description");
             if (desc.getAbstract() != null) {
@@ -88,5 +83,4 @@ public class StyledLayerDescriptorBinding extends SLDStyledLayerDescriptorBindin
         }
         return sld;
     }
-
 }

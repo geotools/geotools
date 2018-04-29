@@ -16,18 +16,17 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDRasterSymbolizerBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:RasterSymbolizer.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="RasterSymbolizer" substitutionGroup="se:Symbolizer" type="se:RasterSymbolizerType"&gt;
@@ -37,10 +36,11 @@ import javax.xml.namespace.QName;
  *          raster/matrix-coverage data (e.g., satellite images, DEMs).
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
+ *
  * <pre>
  * &lt;xsd:complexType name="RasterSymbolizerType">
  *      &lt;xsd:complexContent>
@@ -59,12 +59,8 @@ import javax.xml.namespace.QName;
  *       &lt;/xsd:complexContent>
  *   &lt;/xsd:complexType>
  *   </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class RasterSymbolizerBinding extends SLDRasterSymbolizerBinding {
@@ -73,16 +69,13 @@ public class RasterSymbolizerBinding extends SLDRasterSymbolizerBinding {
         super(styleFactory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.RasterSymbolizer;
     }
-    
+
     @Override
     public int getExecutionMode() {
         return BEFORE;
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,9 @@
  */
 package org.geotools.gce.imagemosaic.egr;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Polygon;
+import it.geosolutions.jaiext.iterators.RandomIterFactory;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -37,25 +40,19 @@ import java.util.BitSet;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.iterator.WritableRandomIter;
-
 import org.geotools.geometry.jts.JTS;
-import org.geotools.util.logging.Logging;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Polygon;
-
 import org.geotools.util.SoftValueHashMap;
-import it.geosolutions.jaiext.iterators.RandomIterFactory;
+import org.geotools.util.logging.Logging;
 
 /**
  * A tile of the whole grid space.
  *
- * The related Raster is lazily allocated, so to skip allocation for fully covered tiles that do not need to be drawn.
+ * <p>The related Raster is lazily allocated, so to skip allocation for fully covered tiles that do
+ * not need to be drawn.
  *
  * @author Emanuele Tajariol <etj at geo-solutions.it>
  */
@@ -68,36 +65,34 @@ class Tile {
 
     static Map<String, WritableRaster> solidRasterCache = new SoftValueHashMap<>();
 
-    private static final ColorModel BINARY_COLOR_MODEL = new IndexColorModel(1, 2,
-            new byte[] { 0, FF }, new byte[] { 0, FF }, new byte[] { 0, FF });
+    private static final ColorModel BINARY_COLOR_MODEL =
+            new IndexColorModel(1, 2, new byte[] {0, FF}, new byte[] {0, FF}, new byte[] {0, FF});
 
     // the sample model used for internal "full size" tiles
-    private static MultiPixelPackedSampleModel DEFAULT_PACKED_SAMPLE_MODEL = new MultiPixelPackedSampleModel(
-            DataBuffer.TYPE_BYTE, ROIExcessGranuleRemover.DEFAULT_TILE_SIZE,
-            ROIExcessGranuleRemover.DEFAULT_TILE_SIZE, 1);
+    private static MultiPixelPackedSampleModel DEFAULT_PACKED_SAMPLE_MODEL =
+            new MultiPixelPackedSampleModel(
+                    DataBuffer.TYPE_BYTE,
+                    ROIExcessGranuleRemover.DEFAULT_TILE_SIZE,
+                    ROIExcessGranuleRemover.DEFAULT_TILE_SIZE,
+                    1);
 
     // used for border tiles
     static Map<String, MultiPixelPackedSampleModel> mpSampleModelCache = new SoftValueHashMap<>();
 
-    /**
-     * Width in pixels of this tile.
-     */
+    /** Width in pixels of this tile. */
     private final int tileWidth;
 
-    /**
-     * Height in pixels of this tile.
-     */
+    /** Height in pixels of this tile. */
     private final int tileHeight;
 
     /**
-     * Standard width in pixels of the tiles of this tileset. Tiles in last row or last column may have different size than other tiles. We need the
-     * standard size for computing the grid translation when drawing geometries.
+     * Standard width in pixels of the tiles of this tileset. Tiles in last row or last column may
+     * have different size than other tiles. We need the standard size for computing the grid
+     * translation when drawing geometries.
      */
     private final int stdTileWidth;
 
-    /**
-     * Standard height in pixels of the tiles of this tileset.
-     */
+    /** Standard height in pixels of the tiles of this tileset. */
     private final int stdTileHeight;
 
     private final int col;
@@ -123,8 +118,14 @@ class Tile {
         this(tileWidth, tileHeight, col, row, w2s, tileWidth, tileHeight);
     }
 
-    public Tile(int tileWidth, int tileHeight, int col, int row, AffineTransform w2s,
-            int stdTileWidth, int stdTileHeight) {
+    public Tile(
+            int tileWidth,
+            int tileHeight,
+            int col,
+            int row,
+            AffineTransform w2s,
+            int stdTileWidth,
+            int stdTileHeight) {
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         this.col = col;
@@ -144,7 +145,6 @@ class Tile {
             LOGGER.log(Level.SEVERE, "Error creating tile", ex);
             tileBBox = null;
         }
-
     }
 
     public int getCol() {
@@ -163,9 +163,7 @@ class Tile {
         return (tileWidth * tileHeight) == coverageCount;
     }
 
-    /**
-     * @return the bbox of this tile in world coordinates
-     */
+    /** @return the bbox of this tile in world coordinates */
     public Polygon getTileBBox() {
         return tileBBox;
     }
@@ -185,8 +183,11 @@ class Tile {
             graphics.setClip(-offset, -offset, tileWidth + (offset * 2), tileHeight + (offset * 2));
             graphics.translate(-this.col * stdTileWidth, -this.row * stdTileHeight);
 
-            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antiAliasing
-                    ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
+            graphics.setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING,
+                    antiAliasing
+                            ? RenderingHints.VALUE_ANTIALIAS_ON
+                            : RenderingHints.VALUE_ANTIALIAS_OFF);
 
             graphics.setColor(drawColor);
         }
@@ -214,8 +215,8 @@ class Tile {
 
         raster.getSampleModel();
 
-        int scanlineStride = ((MultiPixelPackedSampleModel) raster.getSampleModel())
-                .getScanlineStride();
+        int scanlineStride =
+                ((MultiPixelPackedSampleModel) raster.getSampleModel()).getScanlineStride();
         DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
         byte[] bytes = data.getData();
 
@@ -236,7 +237,6 @@ class Tile {
                 if (rowCnt >= tileWidth) {
                     rowFull.set(row);
                 }
-
             }
         }
 
@@ -254,9 +254,9 @@ class Tile {
     }
 
     /**
-     * Draws a binary image already in raster space. Updates the coverage count as a side effect, so no need to call {@link #refreshCoverageCount()}
-     * after it
-     * 
+     * Draws a binary image already in raster space. Updates the coverage count as a side effect, so
+     * no need to call {@link #refreshCoverageCount()} after it
+     *
      * @param roiImage
      * @return True if at least one pixel has been added
      */
@@ -290,9 +290,7 @@ class Tile {
         return added;
     }
 
-    /**
-     * Sets raster and sampleModel
-     */
+    /** Sets raster and sampleModel */
     private void allocateRaster(boolean inverted) {
         final int value = inverted ? 1 : 0;
         WritableRaster result;
@@ -325,8 +323,8 @@ class Tile {
         SampleModel sampleModel = getMPSampleModel(tileWidth, tileHeight);
 
         // build the raster
-        WritableRaster newRaster = RasterFactory.createWritableRaster(sampleModel,
-                new java.awt.Point(0, 0));
+        WritableRaster newRaster =
+                RasterFactory.createWritableRaster(sampleModel, new java.awt.Point(0, 0));
 
         // sanity checks
         int dataType = sampleModel.getTransferType();
@@ -362,8 +360,9 @@ class Tile {
             String key = tileWidth + "x" + tileHeight;
             sampleModel = mpSampleModelCache.get(key);
             if (sampleModel == null) {
-                sampleModel = new MultiPixelPackedSampleModel(DataBuffer.TYPE_BYTE, tileWidth,
-                        tileHeight, 1);
+                sampleModel =
+                        new MultiPixelPackedSampleModel(
+                                DataBuffer.TYPE_BYTE, tileWidth, tileHeight, 1);
                 mpSampleModelCache.put(key, (MultiPixelPackedSampleModel) sampleModel);
             }
         }
@@ -383,7 +382,8 @@ class Tile {
         graphics.fill(projectedShape);
     }
 
-    public void draw(/* another Raster here I suppose? Maybe a tile, maybe mis-aligned with this one */) {
+    public void draw(
+            /* another Raster here I suppose? Maybe a tile, maybe mis-aligned with this one */ ) {
         initRaster(false);
 
         // flip bits here, if the tile is aligned we can do int math, otherwise bit by bit...
@@ -409,5 +409,4 @@ class Tile {
     public Rectangle getTileArea() {
         return tileArea;
     }
-
 }

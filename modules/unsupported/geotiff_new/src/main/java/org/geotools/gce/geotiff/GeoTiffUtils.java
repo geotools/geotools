@@ -1,12 +1,9 @@
-/**
- * 
- */
+/** */
 package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageMetadata;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageWriterSpi;
-
 import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,19 +14,16 @@ import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.IIOException;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
-
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -44,20 +38,17 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Sparse utilities for the various classes. I use them to extract complex code
- * from other places.
- * 
- * @author Simone Giannecchini, GeoSolutions S.A.S.
- * 
+ * Sparse utilities for the various classes. I use them to extract complex code from other places.
  *
+ * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @source $URL$
  */
 public class GeoTiffUtils {
 
     /** Logger for the {@link GeoTiffUtils} class. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(GeoTiffUtils.class.toString());
-        
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(GeoTiffUtils.class.toString());
+
     public static CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
 
     static URL checkSource(Object source) throws MalformedURLException, DataSourceException {
@@ -106,21 +97,29 @@ public class GeoTiffUtils {
 
     /**
      * Checks that a {@link File} is a real file, exists and is readable.
-     * 
-     * @param file
-     *            the {@link File} instance to check. Must not be null.
-     * 
-     * @return <code>true</code> in case the file is a real file, exists and is
-     *         readable; <code>false </code> otherwise.
+     *
+     * @param file the {@link File} instance to check. Must not be null.
+     * @return <code>true</code> in case the file is a real file, exists and is readable; <code>
+     *     false </code> otherwise.
      */
     static boolean checkFileReadable(final File file) {
         if (LOGGER.isLoggable(Level.FINE)) {
             final StringBuilder builder = new StringBuilder();
             builder.append("Checking file:")
-                    .append(FilenameUtils.getFullPath(file.getAbsolutePath())).append("\n")
-                    .append("canRead:").append(file.canRead()).append("\n").append("isHidden:")
-                    .append(file.isHidden()).append("\n").append("isFile").append(file.isFile())
-                    .append("\n").append("canWrite").append(file.canWrite()).append("\n");
+                    .append(FilenameUtils.getFullPath(file.getAbsolutePath()))
+                    .append("\n")
+                    .append("canRead:")
+                    .append(file.canRead())
+                    .append("\n")
+                    .append("isHidden:")
+                    .append(file.isHidden())
+                    .append("\n")
+                    .append("isFile")
+                    .append(file.isFile())
+                    .append("\n")
+                    .append("canWrite")
+                    .append(file.canWrite())
+                    .append("\n");
             LOGGER.fine(builder.toString());
         }
         if (!file.exists() || !file.canRead() || !file.isFile()) {
@@ -129,9 +128,7 @@ public class GeoTiffUtils {
         return true;
     }
 
-    /**
-     * @throws IOException
-     */
+    /** @throws IOException */
     public static MathTransform parseWorldFile(Object source) throws IOException {
         MathTransform raster2Model = null;
 
@@ -145,8 +142,8 @@ public class GeoTiffUtils {
             filename = (i == -1) ? filename : filename.substring(0, i);
 
             // getting name and extension
-            final String base = (parentPath != null) ? parentPath + File.separator + filename
-                    : filename;
+            final String base =
+                    (parentPath != null) ? parentPath + File.separator + filename : filename;
 
             // We can now construct the baseURL from this string.
             File file2Parse = new File(base + ".wld");
@@ -221,34 +218,33 @@ public class GeoTiffUtils {
                             LOGGER.log(Level.SEVERE, e.getLocalizedMessage(), e);
                         }
                 }
-
             }
         }
         return crs;
     }
 
     /**
-     * Creates image metadata which complies to the GeoTIFFWritingUtilities
-     * specification for the given image writer, image type and
-     * GeoTIFFWritingUtilities metadata.
-     * 
-     * @param writer
-     *            the image writer, must not be null
-     * @param type
-     *            the image type, must not be null
-     * @param geoTIFFMetadata
-     *            the GeoTIFFWritingUtilities metadata, must not be null
+     * Creates image metadata which complies to the GeoTIFFWritingUtilities specification for the
+     * given image writer, image type and GeoTIFFWritingUtilities metadata.
+     *
+     * @param writer the image writer, must not be null
+     * @param type the image type, must not be null
+     * @param geoTIFFMetadata the GeoTIFFWritingUtilities metadata, must not be null
      * @param params
      * @return the image metadata, never null
-     * @throws IIOException
-     *             if the metadata cannot be created
+     * @throws IIOException if the metadata cannot be created
      */
-    final static IIOMetadata createGeoTiffIIOMetadata(ImageWriter writer, ImageTypeSpecifier type,
-            GeoTiffIIOMetadataEncoder geoTIFFMetadata, ImageWriteParam params) throws IIOException {
+    static final IIOMetadata createGeoTiffIIOMetadata(
+            ImageWriter writer,
+            ImageTypeSpecifier type,
+            GeoTiffIIOMetadataEncoder geoTIFFMetadata,
+            ImageWriteParam params)
+            throws IIOException {
         IIOMetadata imageMetadata = writer.getDefaultImageMetadata(type, params);
         imageMetadata = writer.convertImageMetadata(imageMetadata, type, params);
-        org.w3c.dom.Element w3cElement = (org.w3c.dom.Element) imageMetadata
-                .getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
+        org.w3c.dom.Element w3cElement =
+                (org.w3c.dom.Element)
+                        imageMetadata.getAsTree(GeoTiffConstants.GEOTIFF_IIO_METADATA_FORMAT_NAME);
         final Element element = new DOMBuilder().build(w3cElement);
 
         geoTIFFMetadata.assignTo(element);
@@ -260,8 +256,10 @@ public class GeoTiffUtils {
 
         try {
             final org.w3c.dom.Document w3cDoc = new DOMOutputter().output(document);
-            final IIOMetadata iioMetadata = new TIFFImageMetadata(TIFFImageMetadata.parseIFD(w3cDoc
-                    .getDocumentElement().getFirstChild()));
+            final IIOMetadata iioMetadata =
+                    new TIFFImageMetadata(
+                            TIFFImageMetadata.parseIFD(
+                                    w3cDoc.getDocumentElement().getFirstChild()));
             imageMetadata = iioMetadata;
         } catch (JDOMException e) {
             throw new IIOException("Failed to set GeoTIFFWritingUtilities specific tags.", e);
@@ -273,15 +271,13 @@ public class GeoTiffUtils {
     }
 
     /** factory for getting tiff writers. */
-    public final static TIFFImageWriterSpi TIFFWRITERFACTORY = new TIFFImageWriterSpi();
+    public static final TIFFImageWriterSpi TIFFWRITERFACTORY = new TIFFImageWriterSpi();
 
     /** SPI for creating tiff readers in ImageIO tools */
-    public final static TIFFImageReaderSpi TIFFREADERFACTORY = new TIFFImageReaderSpi();
+    public static final TIFFImageReaderSpi TIFFREADERFACTORY = new TIFFImageReaderSpi();
 
     public static final double AFFINE_IDENTITY_EPS = 1E-6;
 
-    /**
-     * A transparent color for missing data.
-     */
+    /** A transparent color for missing data. */
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 }

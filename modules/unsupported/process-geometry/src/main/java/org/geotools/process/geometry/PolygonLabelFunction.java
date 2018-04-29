@@ -1,10 +1,9 @@
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -14,13 +13,14 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *    
+ *
  */
 
 package org.geotools.process.geometry;
 
+import com.vividsolutions.jts.awt.PointShapeFactory.Point;
+import com.vividsolutions.jts.geom.Geometry;
 import java.util.List;
-
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
 import org.opengis.filter.capability.FunctionName;
@@ -29,13 +29,13 @@ import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-import com.vividsolutions.jts.awt.PointShapeFactory.Point;
-import com.vividsolutions.jts.geom.Geometry;
-
 public class PolygonLabelFunction implements Function {
-    static FunctionName NAME = new FunctionNameImpl("labelPoint", Point.class,
-            FunctionNameImpl.parameter("polygon", Geometry.class),
-            FunctionNameImpl.parameter("tolerance", double.class));
+    static FunctionName NAME =
+            new FunctionNameImpl(
+                    "labelPoint",
+                    Point.class,
+                    FunctionNameImpl.parameter("polygon", Geometry.class),
+                    FunctionNameImpl.parameter("tolerance", double.class));
 
     private final List<Expression> parameters;
 
@@ -63,7 +63,7 @@ public class PolygonLabelFunction implements Function {
 
         Expression toleranceExpression = parameters.get(1);
         double tolerance = toleranceExpression.evaluate(object, double.class);
-        
+
         Geometry point = PolyLabeller.getPolylabel(polygon, tolerance);
 
         return Converters.convert(point, context); // convert to requested format

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,10 +16,9 @@
  */
 package org.geotools.map.event;
 
-
 // J2SE dependencies
-import java.util.EventObject;
 
+import java.util.EventObject;
 
 /**
  * Event fired when some Layer property changes.
@@ -27,11 +26,8 @@ import java.util.EventObject;
  * @author Andrea Aime
  * @author Ian Turton
  * @author Martin Desruisseaux
- *
- *
  * @source $URL$
  * @version $Id$
- *
  * @see org.geotools.map.Layer
  * @see MapLayerListener
  */
@@ -77,10 +73,8 @@ public class MapLayerEvent extends EventObject {
      * @see #getReason
      */
     public static final int SELECTION_CHANGED = 6;
-    
-    /**
-     * Flag set when the layer is about to be disposed.
-     */
+
+    /** Flag set when the layer is about to be disposed. */
     public static final int PRE_DISPOSE = 7;
 
     /** The reason for the change. */
@@ -91,11 +85,9 @@ public class MapLayerEvent extends EventObject {
      *
      * @param source The source of the event change.
      * @param reason Why the event was fired.
-     *
      * @throws IllegalArgumentException If the <code>reason</code> is not a valid enum.
      */
-    public MapLayerEvent(final Object source, final int reason)
-        throws IllegalArgumentException {
+    public MapLayerEvent(final Object source, final int reason) throws IllegalArgumentException {
         super(source);
         this.reason = reason;
 

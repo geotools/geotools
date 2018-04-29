@@ -16,21 +16,15 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.gml2.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.xml.Binding;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLAbstractGeometryTypeBindingTest extends GMLTestSupport {
     public void testType() {
         assertEquals(Geometry.class, binding(GML.AbstractGeometryType).getType());
@@ -53,7 +47,8 @@ public class GMLAbstractGeometryTypeBindingTest extends GMLTestSupport {
         p.setUserData(CRS.decode("EPSG:4326", true));
 
         Document doc = encode(p, GML.Point);
-        assertEquals("http://www.opengis.net/gml/srs/epsg.xml#4326",
-            doc.getDocumentElement().getAttribute("srsName"));
+        assertEquals(
+                "http://www.opengis.net/gml/srs/epsg.xml#4326",
+                doc.getDocumentElement().getAttribute("srsName"));
     }
 }

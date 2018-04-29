@@ -22,8 +22,9 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
 /**
- * A filter visitor subclass that does not consider the env function already bound, and thus, assumes it's still variable
- * 
+ * A filter visitor subclass that does not consider the env function already bound, and thus,
+ * assumes it's still variable
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class UnboundSimplifyingFilterVisitor extends SimplifyingFilterVisitor {

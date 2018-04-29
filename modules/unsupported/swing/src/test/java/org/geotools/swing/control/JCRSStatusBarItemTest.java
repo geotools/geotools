@@ -17,26 +17,24 @@
 
 package org.geotools.swing.control;
 
-import org.geotools.map.MapContent;
-import org.geotools.swing.MapPane;
-import org.geotools.swing.testutils.GraphicsTestRunner;
-import org.geotools.swing.testutils.GraphicsTestBase;
-import org.geotools.swing.testutils.MockMapPane;
+import static org.junit.Assert.*;
 
 import org.fest.swing.edt.GuiActionRunner;
 import org.fest.swing.edt.GuiTask;
-
+import org.geotools.map.MapContent;
+import org.geotools.swing.MapPane;
+import org.geotools.swing.testutils.GraphicsTestBase;
+import org.geotools.swing.testutils.GraphicsTestRunner;
+import org.geotools.swing.testutils.MockMapPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 
 /**
  * Unit tests for JCRSStatusBarItem.
  *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
@@ -48,14 +46,15 @@ public class JCRSStatusBarItemTest extends GraphicsTestBase {
 
     @Before
     public void setup() {
-        GuiActionRunner.execute(new GuiTask() {
-            @Override
-            protected void executeInEDT() throws Throwable {
-                mapPane = new MockMapPane();
-            }
-        });
+        GuiActionRunner.execute(
+                new GuiTask() {
+                    @Override
+                    protected void executeInEDT() throws Throwable {
+                        mapPane = new MockMapPane();
+                    }
+                });
     }
-    
+
     @Test
     public void createItemWhenMapContentHasBeenSet() {
         MapContent mapContent = new MapContent();
@@ -70,12 +69,12 @@ public class JCRSStatusBarItemTest extends GraphicsTestBase {
     }
 
     private void createItemInEDT() {
-        GuiActionRunner.execute(new GuiTask() {
-            @Override
-            protected void executeInEDT() throws Throwable {
-                item = new JCRSStatusBarItem(mapPane);
-            }
-        });
+        GuiActionRunner.execute(
+                new GuiTask() {
+                    @Override
+                    protected void executeInEDT() throws Throwable {
+                        item = new JCRSStatusBarItem(mapPane);
+                    }
+                });
     }
-    
 }

@@ -14,21 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  *
- */package org.geotools.arcsde.data;
-
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.geotools.arcsde.ArcSdeException;
-import org.geotools.arcsde.session.ISession;
-import org.geotools.arcsde.session.SdeRow;
-import org.geotools.data.AttributeReader;
-import org.geotools.data.DataSourceException;
-import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
+ */ package org.geotools.arcsde.data;
 
 import com.esri.sde.sdk.client.SeException;
 import com.esri.sde.sdk.client.SeQuery;
@@ -41,15 +27,27 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.geotools.arcsde.ArcSdeException;
+import org.geotools.arcsde.session.ISession;
+import org.geotools.arcsde.session.SdeRow;
+import org.geotools.data.AttributeReader;
+import org.geotools.data.DataSourceException;
+import org.geotools.util.logging.Logging;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
 
 /**
  * Implements an attribute reader that is aware of the particulars of ArcSDE. This class sends its
  * logging to the log named "org.geotools.data".
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/ArcSDEAttributeReader.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/ArcSDEAttributeReader.java $
  * @version $Id$
  */
 final class ArcSDEAttributeReader implements AttributeReader {
@@ -65,9 +63,7 @@ final class ArcSDEAttributeReader implements AttributeReader {
     /** current sde java api row being read */
     private SdeRow currentRow;
 
-    /**
-     * the unique id of the current feature. -1 means the feature id was not retrieved
-     */
+    /** the unique id of the current feature. -1 means the feature id was not retrieved */
     private long currentFid = -1;
 
     /**
@@ -82,9 +78,7 @@ final class ArcSDEAttributeReader implements AttributeReader {
      */
     private int fidPrefixLen;
 
-    /**
-     * Strategy to read FIDs
-     */
+    /** Strategy to read FIDs */
     private FIDReader fidReader;
 
     /**
@@ -93,9 +87,7 @@ final class ArcSDEAttributeReader implements AttributeReader {
      */
     private boolean hasNextAlreadyCalled = false;
 
-    /**
-     * Declared binding for the schema's default geometry
-     */
+    /** Declared binding for the schema's default geometry */
     private final Class<? extends Geometry> schemaGeometryClass;
 
     private ISession session;
@@ -104,20 +96,18 @@ final class ArcSDEAttributeReader implements AttributeReader {
 
     /**
      * The query that defines this readers interaction with an ArcSDE instance.
-     * 
-     * @param query
-     *            the {@link SeQuery} wrapper where to fetch rows from. Must NOT be already
-     *            {@link ArcSDEQuery#execute() executed}.
-     * @param geometryFactory
-     *            the JTS GeometryFactory to use when creating Feature geometries
-     * @param session
-     *            the session the <code>query</code> is being ran over. This attribute reader will
-     *            close it only if it does not have a transaction in progress.
+     *
+     * @param query the {@link SeQuery} wrapper where to fetch rows from. Must NOT be already {@link
+     *     ArcSDEQuery#execute() executed}.
+     * @param geometryFactory the JTS GeometryFactory to use when creating Feature geometries
+     * @param session the session the <code>query</code> is being ran over. This attribute reader
+     *     will close it only if it does not have a transaction in progress.
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    public ArcSDEAttributeReader(final ArcSDEQuery query, final GeometryFactory geometryFactory,
-            final ISession session) throws IOException {
+    public ArcSDEAttributeReader(
+            final ArcSDEQuery query, final GeometryFactory geometryFactory, final ISession session)
+            throws IOException {
         this.query = query;
         this.session = session;
         this.fidReader = query.getFidReader();
@@ -140,16 +130,12 @@ final class ArcSDEAttributeReader implements AttributeReader {
         query.execute();
     }
 
-    /**
-     * 
-     */
+    /** */
     public int getAttributeCount() {
         return this.schema.getAttributeCount();
     }
 
-    /**
-     * 
-     */
+    /** */
     public AttributeDescriptor getAttributeType(int index) throws ArrayIndexOutOfBoundsException {
         return this.schema.getDescriptor(index);
     }
@@ -174,9 +160,7 @@ final class ArcSDEAttributeReader implements AttributeReader {
         }
     }
 
-    /**
-     * 
-     */
+    /** */
     public boolean hasNext() throws IOException {
         if (!this.hasNextAlreadyCalled) {
             try {
@@ -212,7 +196,7 @@ final class ArcSDEAttributeReader implements AttributeReader {
 
     /**
      * Retrieves the next row, or throws a DataSourceException if not more rows are available.
-     * 
+     *
      * @throws IOException
      */
     public void next() throws IOException {
@@ -224,13 +208,11 @@ final class ArcSDEAttributeReader implements AttributeReader {
     }
 
     /**
-     * 
      * @param index
      * @return
-     * @throws IOException
-     *             never, since the feature retrieve was done in <code>hasNext()</code>
-     * @throws ArrayIndexOutOfBoundsException
-     *             if <code>index</code> is outside the bounds of the schema attribute's count
+     * @throws IOException never, since the feature retrieve was done in <code>hasNext()</code>
+     * @throws ArrayIndexOutOfBoundsException if <code>index</code> is outside the bounds of the
+     *     schema attribute's count
      */
     public Object read(final int index) throws IOException, ArrayIndexOutOfBoundsException {
         Object value = currentRow.getObject(index);
@@ -270,12 +252,15 @@ final class ArcSDEAttributeReader implements AttributeReader {
         if (MultiPoint.class == targetType && Point.class == currentClass) {
             adapted = factory.createMultiPoint(value.getCoordinates());
         } else if (MultiLineString.class == targetType && LineString.class == currentClass) {
-            adapted = factory.createMultiLineString(new LineString[] { (LineString) value });
+            adapted = factory.createMultiLineString(new LineString[] {(LineString) value});
         } else if (MultiPolygon.class == targetType && Polygon.class == currentClass) {
-            adapted = factory.createMultiPolygon(new Polygon[] { (Polygon) value });
+            adapted = factory.createMultiPolygon(new Polygon[] {(Polygon) value});
         } else {
-            throw new IllegalArgumentException("Don't know how to adapt " + currentClass.getName()
-                    + " to " + targetType.getName());
+            throw new IllegalArgumentException(
+                    "Don't know how to adapt "
+                            + currentClass.getName()
+                            + " to "
+                            + targetType.getName());
         }
         return adapted;
     }
@@ -289,9 +274,7 @@ final class ArcSDEAttributeReader implements AttributeReader {
         return all;
     }
 
-    /**
-     * 
-     */
+    /** */
     public String readFID() throws IOException {
         if (this.currentFid == -1) {
             throw new DataSourceException("The feature id was not fetched");

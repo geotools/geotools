@@ -18,12 +18,11 @@ package org.geotools.data.arcgisrest;
 
 import static org.junit.Assert.*;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
-
-import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
@@ -31,14 +30,9 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-import jdk.nashorn.internal.ir.annotations.Ignore;
-
 public class ArcGISRestFeatureReaderTest {
 
-    private static final Logger LOGGER = Logging
-        .getLogger("org.geotools.data.arcgisrest");
+    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
 
     ArcGISRestFeatureReader reader;
     SimpleFeatureType fType;
@@ -60,18 +54,20 @@ public class ArcGISRestFeatureReaderTest {
     @Test(expected = IOException.class)
     public void emptyInputStreamHasNext() throws Exception {
 
-        this.reader = new ArcGISRestFeatureReader(this.fType,
-            new ByteArrayInputStream("".getBytes()), this.LOGGER);
+        this.reader =
+                new ArcGISRestFeatureReader(
+                        this.fType, new ByteArrayInputStream("".getBytes()), this.LOGGER);
         assertFalse(this.reader.hasNext());
     }
 
     @Test
     public void noFeaturesHasNext() throws Exception {
 
-        this.json = ArcGISRestDataStoreFactoryTest
-            .readJSONAsString("test-data/noFeatures.geo.json");
-        this.reader = new ArcGISRestFeatureReader(this.fType,
-            new ByteArrayInputStream(json.getBytes()), this.LOGGER);
+        this.json =
+                ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/noFeatures.geo.json");
+        this.reader =
+                new ArcGISRestFeatureReader(
+                        this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
 
         assertFalse(this.reader.hasNext());
     }
@@ -79,10 +75,11 @@ public class ArcGISRestFeatureReaderTest {
     @Test(expected = NoSuchElementException.class)
     public void noFeaturesNext() throws Exception {
 
-        this.json = ArcGISRestDataStoreFactoryTest
-            .readJSONAsString("test-data/noFeatures.geo.json");
-        this.reader = new ArcGISRestFeatureReader(this.fType,
-            new ByteArrayInputStream(json.getBytes()), this.LOGGER);
+        this.json =
+                ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/noFeatures.geo.json");
+        this.reader =
+                new ArcGISRestFeatureReader(
+                        this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
 
         this.reader.next();
     }
@@ -90,10 +87,11 @@ public class ArcGISRestFeatureReaderTest {
     @Test
     public void noProperties() throws Exception {
 
-        this.json = ArcGISRestDataStoreFactoryTest
-            .readJSONAsString("test-data/noProperties.geo.json");
-        this.reader = new ArcGISRestFeatureReader(this.fType,
-            new ByteArrayInputStream(json.getBytes()), this.LOGGER);
+        this.json =
+                ArcGISRestDataStoreFactoryTest.readJSONAsString("test-data/noProperties.geo.json");
+        this.reader =
+                new ArcGISRestFeatureReader(
+                        this.fType, new ByteArrayInputStream(json.getBytes()), this.LOGGER);
 
         assertTrue(this.reader.hasNext());
         SimpleFeature feat = this.reader.next();
@@ -102,7 +100,6 @@ public class ArcGISRestFeatureReaderTest {
         assertTrue(this.reader.hasNext());
         feat = this.reader.next();
         assertFalse(this.reader.hasNext());
-        assertEquals("geometry",
-            feat.getDefaultGeometryProperty().getName().getLocalPart());
+        assertEquals("geometry", feat.getDefaultGeometryProperty().getName().getLocalPart());
     }
 }

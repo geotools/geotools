@@ -6,11 +6,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.SLDTransformer;
 import org.opengis.filter.FilterFactory2;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class AbstractStyleTest {
 
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
@@ -32,5 +28,4 @@ public abstract class AbstractStyleTest {
         assertEquals(1, collector.styles.size());
         assertTrue(collector.layers.size() == 0 || collector.layers.size() == 1);
     }
-
 }

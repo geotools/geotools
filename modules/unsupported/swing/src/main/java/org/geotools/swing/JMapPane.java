@@ -25,7 +25,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.map.MapContent;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.label.LabelCacheImpl;
@@ -33,13 +32,12 @@ import org.geotools.renderer.lite.LabelCache;
 import org.geotools.renderer.lite.StreamingRenderer;
 
 /**
- * A lightweight map pane which uses a single renderer and backing image.
- * Used by {@linkplain JMapFrame} for the GeoTools tutorial applications.
+ * A lightweight map pane which uses a single renderer and backing image. Used by {@linkplain
+ * JMapFrame} for the GeoTools tutorial applications.
  *
  * @author Michael Bedward
  * @author Ian Turton
  * @since 2.6
- *
  * @source $URL$
  * @version $Id$
  */
@@ -48,19 +46,16 @@ public class JMapPane extends AbstractMapPane {
     private GTRenderer renderer;
     private BufferedImage baseImage;
     private Graphics2D baseImageGraphics;
-    
-    /**
-     * Creates a new map pane. 
-     */
+
+    /** Creates a new map pane. */
     public JMapPane() {
         this(null);
     }
-    
+
     /**
      * Creates a new map pane.
      *
-     * @param content the map content containing the layers to display
-     *     (may be {@code null})
+     * @param content the map content containing the layers to display (may be {@code null})
      */
     public JMapPane(MapContent content) {
         this(content, null, null);
@@ -77,10 +72,8 @@ public class JMapPane extends AbstractMapPane {
         super(content, executor);
         doSetRenderer(renderer);
     }
-    
-    /**
-     * {@inheritDoc}
-     */
+
+    /** {@inheritDoc} */
     @Override
     public void setMapContent(MapContent content) {
         super.setMapContent(content);
@@ -121,7 +114,7 @@ public class JMapPane extends AbstractMapPane {
             if (hints == null) {
                 hints = new HashMap<Object, Object>();
             }
-            
+
             if (newRenderer instanceof StreamingRenderer) {
                 if (hints.containsKey(StreamingRenderer.LABEL_CACHE_KEY)) {
                     labelCache = (LabelCache) hints.get(StreamingRenderer.LABEL_CACHE_KEY);
@@ -130,28 +123,26 @@ public class JMapPane extends AbstractMapPane {
                     hints.put(StreamingRenderer.LABEL_CACHE_KEY, labelCache);
                 }
             }
-            
+
             newRenderer.setRendererHints(hints);
 
             if (mapContent != null) {
                 newRenderer.setMapContent(mapContent);
             }
         }
-        
+
         renderer = newRenderer;
     }
-    
+
     /**
      * Retrieve the map pane's current base image.
-     * <p>
-     * The map pane caches the most recent rendering of map layers
-     * as an image to avoid time-consuming rendering requests whenever
-     * possible. The base image will be re-drawn whenever there is a
-     * change to map layer data, style or visibility; and it will be
-     * replaced by a new image when the pane is resized.
-     * <p>
-     * This method returns a <b>live</b> reference to the current
-     * base image. Use with caution.
+     *
+     * <p>The map pane caches the most recent rendering of map layers as an image to avoid
+     * time-consuming rendering requests whenever possible. The base image will be re-drawn whenever
+     * there is a change to map layer data, style or visibility; and it will be replaced by a new
+     * image when the pane is resized.
+     *
+     * <p>This method returns a <b>live</b> reference to the current base image. Use with caution.
      *
      * @return a live reference to the current base image
      */
@@ -184,9 +175,12 @@ public class JMapPane extends AbstractMapPane {
 
                 Rectangle r = getVisibleRect();
                 if (baseImage == null || createNewImage) {
-                    baseImage = GraphicsEnvironment.getLocalGraphicsEnvironment().
-                            getDefaultScreenDevice().getDefaultConfiguration().
-                            createCompatibleImage(r.width, r.height, Transparency.TRANSLUCENT);
+                    baseImage =
+                            GraphicsEnvironment.getLocalGraphicsEnvironment()
+                                    .getDefaultScreenDevice()
+                                    .getDefaultConfiguration()
+                                    .createCompatibleImage(
+                                            r.width, r.height, Transparency.TRANSLUCENT);
 
                     if (baseImageGraphics != null) {
                         baseImageGraphics.dispose();
@@ -201,12 +195,12 @@ public class JMapPane extends AbstractMapPane {
                 }
 
                 if (mapContent != null && !mapContent.layers().isEmpty()) {
-                    getRenderingExecutor().submit(mapContent, getRenderer(), baseImageGraphics, this);
+                    getRenderingExecutor()
+                            .submit(mapContent, getRenderer(), baseImageGraphics, this);
                 }
             }
         } finally {
             drawingLock.unlock();
         }
     }
-
 }

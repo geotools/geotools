@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@ import it.geosolutions.jaiext.piecewise.DefaultPiecewiseTransform1DElement;
 import it.geosolutions.jaiext.piecewise.PiecewiseTransform1D;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
-
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
@@ -36,11 +35,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.ROI;
-
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -65,442 +62,445 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 import org.opengis.util.InternationalString;
 
-
 /**
- * This implementations of {@link CoverageProcessingNode} takes care of the
- * {@link ContrastEnhancement} element of the SLD 1.0 spec.
- * 
+ * This implementations of {@link CoverageProcessingNode} takes care of the {@link
+ * ContrastEnhancement} element of the SLD 1.0 spec.
+ *
  * @author Simone Giannecchini, GeoSolutions
  * @authod Daniele Romagnoli, GeoSolutions
- * 
  */
 class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
-		implements StyleVisitor, CoverageProcessingNode {
+        implements StyleVisitor, CoverageProcessingNode {
 
-
-	/*
-	 * (non-Javadoc)
-	 * @see CoverageProcessingNode#getName() 
-	 */
-	public InternationalString getName() {
-		return Vocabulary.formatInternational(VocabularyKeys.CONTRAST_ENHANCEMENT);
-	}
-
-	/**
-	 * Specified the supported Histogram Enhancement algorithms.
-	 * 
-	 * @todo in the future this should be pluggable.
-	 */
-	private final static Set<String> SUPPORTED_HE_ALGORITHMS;
-
-	/**
-	 * This are the different types f histogram equalization that we support for
-	 * the moment. MOre should be added soon.
-	 * 
-	 */
-	static {
-		//load the contrast enhancement operations 
-		final HashSet<String> heAlg = new HashSet<String>(2, 1.0f);
-		heAlg.add("NORMALIZE");
-		heAlg.add("HISTOGRAM");
-		heAlg.add("LOGARITHMIC");
-		heAlg.add("EXPONENTIAL");
-		SUPPORTED_HE_ALGORITHMS = Collections.unmodifiableSet(heAlg);
-	}
-
-	/** ContrastMethod */
-	AbstractContrastMethodStrategy contrastEnhancementMethod = null;
-	
-	/** Enhancement type to use. */
-	private String type = null;
-
-	/**
-	 * Value we'll use for the gamma correction operation.
-	 */
-	private double gammaValue = Double.NaN;
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.ContrastEnhancement)
-	 */
-	public void visit(final ContrastEnhancement ce) {
-		// /////////////////////////////////////////////////////////////////////
-		//
-		// Do nothing if we don't have a valid ContrastEnhancement element. This
-		// would protect us against bad SLDs
-		//
-		// /////////////////////////////////////////////////////////////////////
-		if (ce == null){
-		    return;
-		}
-
-		// /////////////////////////////////////////////////////////////////////
-		//
-		// TYPE of the operation to perform
-		//
-		// /////////////////////////////////////////////////////////////////////
-		
-		ContrastMethod contrastMethod = ce.getMethod();
-		if (contrastMethod != null) {
-			final String type = contrastMethod.name();
-			if (type != null && !type.equalsIgnoreCase("None")) {
-				this.type = type.toUpperCase();
-				if (!SUPPORTED_HE_ALGORITHMS.contains(type.toUpperCase()))
-					throw new IllegalArgumentException(Errors.format(ErrorKeys.OPERATION_NOT_FOUND_$1, type.toUpperCase()));
-				this.contrastEnhancementMethod = parseContrastEnhancementMethod(contrastMethod, ce.getOptions());
-			}
-		}
-                
-		
-		// /////////////////////////////////////////////////////////////////////
-		//
-		// GAMMA
-		//
-		// /////////////////////////////////////////////////////////////////////
-		final Expression gamma = ce.getGammaValue();
-		if (gamma != null) {
-			final Number number = gamma.evaluate(null, Double.class);
-			if (number != null) {
-				gammaValue = number.doubleValue();
-				// check the gamma value
-				if (gammaValue < 0)
-					throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Gamma", number));
-				if (Double.isNaN(gammaValue) || Double.isInfinite(gammaValue))
-					throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Gamma", number));
-			}
-		}
-
-	}
-
-	private AbstractContrastMethodStrategy parseContrastEnhancementMethod(
-            ContrastMethod method, Map<String, Expression> options) {
-	        String name = method.name().toUpperCase();
-	        AbstractContrastMethodStrategy ceMethod = null; 
-	        if ("NORMALIZE".equals(name)) {
-	            Expression algorithm = options.get(AbstractContrastMethodStrategy.ALGORITHM);
-	            ceMethod = new NormalizeContrastMethodStrategy();
-	            if (algorithm != null) {
-	                ceMethod.setAlgorithm(algorithm);
-	            }
-	        } else if ("LOGARITHMIC".equalsIgnoreCase(name)) {
-	            ceMethod = new LogarithmicContrastMethodStrategy();
-	        } else if ("EXPONENTIAL".equalsIgnoreCase(name)) {
-	            ceMethod = new ExponentialContrastMethodStrategy();
-	        } else if ("HISTOGRAM".equalsIgnoreCase(name)) {
-	            ceMethod = new HistogramContrastMethodStrategy();
-	        } else {
-	            throw new IllegalArgumentException(
-	                    Errors.format(ErrorKeys.UNSUPPORTED_METHOD_$1, method));
-	        }
-	        ceMethod.setOptions(options);
-	        return ceMethod;
-	    }
+    /*
+     * (non-Javadoc)
+     * @see CoverageProcessingNode#getName()
+     */
+    public InternationalString getName() {
+        return Vocabulary.formatInternational(VocabularyKeys.CONTRAST_ENHANCEMENT);
+    }
 
     /**
-	 * Default constructor
-	 */
-	public ContrastEnhancementNode() {
-		this(null);
-	}
+     * Specified the supported Histogram Enhancement algorithms.
+     *
+     * @todo in the future this should be pluggable.
+     */
+    private static final Set<String> SUPPORTED_HE_ALGORITHMS;
 
-	/**
-	 * Constructor for a {@link ContrastEnhancementNode} which allows to specify
-	 * a {@link Hints} instance to control internal factory machinery.
-	 * 
-	 * @param hints
-	 *            {@link Hints} instance to control internal factory machinery.
-	 */
-	public ContrastEnhancementNode(final Hints hints) {
-		super(
-				1,
-				hints,
-				SimpleInternationalString.wrap("ContrastEnhancementNode"),
-				SimpleInternationalString
-						.wrap("Node which applies ContrastEnhancement following SLD 1.0 spec."));
-	}
+    /**
+     * This are the different types f histogram equalization that we support for the moment. MOre
+     * should be added soon.
+     */
+    static {
+        // load the contrast enhancement operations
+        final HashSet<String> heAlg = new HashSet<String>(2, 1.0f);
+        heAlg.add("NORMALIZE");
+        heAlg.add("HISTOGRAM");
+        heAlg.add("LOGARITHMIC");
+        heAlg.add("EXPONENTIAL");
+        SUPPORTED_HE_ALGORITHMS = Collections.unmodifiableSet(heAlg);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorCoverageProcessingNodeAdapter#execute()
-	 */
+    /** ContrastMethod */
+    AbstractContrastMethodStrategy contrastEnhancementMethod = null;
+
+    /** Enhancement type to use. */
+    private String type = null;
+
+    /** Value we'll use for the gamma correction operation. */
+    private double gammaValue = Double.NaN;
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorAdapter#visit(org.geotools.styling.ContrastEnhancement)
+     */
+    public void visit(final ContrastEnhancement ce) {
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Do nothing if we don't have a valid ContrastEnhancement element. This
+        // would protect us against bad SLDs
+        //
+        // /////////////////////////////////////////////////////////////////////
+        if (ce == null) {
+            return;
+        }
+
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // TYPE of the operation to perform
+        //
+        // /////////////////////////////////////////////////////////////////////
+
+        ContrastMethod contrastMethod = ce.getMethod();
+        if (contrastMethod != null) {
+            final String type = contrastMethod.name();
+            if (type != null && !type.equalsIgnoreCase("None")) {
+                this.type = type.toUpperCase();
+                if (!SUPPORTED_HE_ALGORITHMS.contains(type.toUpperCase()))
+                    throw new IllegalArgumentException(
+                            Errors.format(ErrorKeys.OPERATION_NOT_FOUND_$1, type.toUpperCase()));
+                this.contrastEnhancementMethod =
+                        parseContrastEnhancementMethod(contrastMethod, ce.getOptions());
+            }
+        }
+
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // GAMMA
+        //
+        // /////////////////////////////////////////////////////////////////////
+        final Expression gamma = ce.getGammaValue();
+        if (gamma != null) {
+            final Number number = gamma.evaluate(null, Double.class);
+            if (number != null) {
+                gammaValue = number.doubleValue();
+                // check the gamma value
+                if (gammaValue < 0)
+                    throw new IllegalArgumentException(
+                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Gamma", number));
+                if (Double.isNaN(gammaValue) || Double.isInfinite(gammaValue))
+                    throw new IllegalArgumentException(
+                            Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "Gamma", number));
+            }
+        }
+    }
+
+    private AbstractContrastMethodStrategy parseContrastEnhancementMethod(
+            ContrastMethod method, Map<String, Expression> options) {
+        String name = method.name().toUpperCase();
+        AbstractContrastMethodStrategy ceMethod = null;
+        if ("NORMALIZE".equals(name)) {
+            Expression algorithm = options.get(AbstractContrastMethodStrategy.ALGORITHM);
+            ceMethod = new NormalizeContrastMethodStrategy();
+            if (algorithm != null) {
+                ceMethod.setAlgorithm(algorithm);
+            }
+        } else if ("LOGARITHMIC".equalsIgnoreCase(name)) {
+            ceMethod = new LogarithmicContrastMethodStrategy();
+        } else if ("EXPONENTIAL".equalsIgnoreCase(name)) {
+            ceMethod = new ExponentialContrastMethodStrategy();
+        } else if ("HISTOGRAM".equalsIgnoreCase(name)) {
+            ceMethod = new HistogramContrastMethodStrategy();
+        } else {
+            throw new IllegalArgumentException(
+                    Errors.format(ErrorKeys.UNSUPPORTED_METHOD_$1, method));
+        }
+        ceMethod.setOptions(options);
+        return ceMethod;
+    }
+
+    /** Default constructor */
+    public ContrastEnhancementNode() {
+        this(null);
+    }
+
+    /**
+     * Constructor for a {@link ContrastEnhancementNode} which allows to specify a {@link Hints}
+     * instance to control internal factory machinery.
+     *
+     * @param hints {@link Hints} instance to control internal factory machinery.
+     */
+    public ContrastEnhancementNode(final Hints hints) {
+        super(
+                1,
+                hints,
+                SimpleInternationalString.wrap("ContrastEnhancementNode"),
+                SimpleInternationalString.wrap(
+                        "Node which applies ContrastEnhancement following SLD 1.0 spec."));
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.renderer.lite.gridcoverage2d.StyleVisitorCoverageProcessingNodeAdapter#execute()
+     */
     @SuppressWarnings("unchecked")
-	protected GridCoverage2D execute() {
-		final Hints hints = getHints();
+    protected GridCoverage2D execute() {
+        final Hints hints = getHints();
 
-		// /////////////////////////////////////////////////////////////////////
-		//
-		// Get the sources and see what we got to do. Note that if we have more
-		// than once source we'll use only the first one but we'll
-		//
-		// /////////////////////////////////////////////////////////////////////
-		final List<CoverageProcessingNode> sources = this.getSources();
-		if (sources != null && !sources.isEmpty()) {
-			final GridCoverage2D source = (GridCoverage2D) getSource(0).getOutput();
-			GridCoverageRendererUtilities.ensureSourceNotNull(source, this.getName().toString());
-			GridCoverage2D output;
-			if ((!Double.isNaN(gammaValue) && 
-					!Double.isInfinite(gammaValue) && 
-					!(Math.abs(gammaValue -1)<1E-6))||
-					(type != null && type.length() > 0)) {
+        // /////////////////////////////////////////////////////////////////////
+        //
+        // Get the sources and see what we got to do. Note that if we have more
+        // than once source we'll use only the first one but we'll
+        //
+        // /////////////////////////////////////////////////////////////////////
+        final List<CoverageProcessingNode> sources = this.getSources();
+        if (sources != null && !sources.isEmpty()) {
+            final GridCoverage2D source = (GridCoverage2D) getSource(0).getOutput();
+            GridCoverageRendererUtilities.ensureSourceNotNull(source, this.getName().toString());
+            GridCoverage2D output;
+            if ((!Double.isNaN(gammaValue)
+                            && !Double.isInfinite(gammaValue)
+                            && !(Math.abs(gammaValue - 1) < 1E-6))
+                    || (type != null && type.length() > 0)) {
 
-				// /////////////////////////////////////////////////////////////////////
-				//
-				// We have a valid gamma value, let's go ahead.
-				//
-				// /////////////////////////////////////////////////////////////////////
-				final RenderedImage sourceImage = source.getRenderedImage();
+                // /////////////////////////////////////////////////////////////////////
+                //
+                // We have a valid gamma value, let's go ahead.
+                //
+                // /////////////////////////////////////////////////////////////////////
+                final RenderedImage sourceImage = source.getRenderedImage();
 
+                // /////////////////////////////////////////////////////////////////////
+                //
+                // PREPARATION
+                //
+                // /////////////////////////////////////////////////////////////////////
 
-				// /////////////////////////////////////////////////////////////////////
-				//
-				// PREPARATION
-				//
-				// /////////////////////////////////////////////////////////////////////
+                // //
+                //
+                // Get the ROI and NoData from the input coverageS
+                //
+                ////
+                ROI roi = CoverageUtilities.getROIProperty(source);
+                NoDataContainer noDataContainer = CoverageUtilities.getNoDataProperty(source);
+                Range nodata = noDataContainer != null ? noDataContainer.getAsRange() : null;
 
-	                        // //
-                                //
-                                // Get the ROI and NoData from the input coverageS
-                                //
-                                ////
-				ROI roi = CoverageUtilities.getROIProperty(source);
-				NoDataContainer noDataContainer = CoverageUtilities.getNoDataProperty(source);
-                                Range nodata = noDataContainer != null ? noDataContainer.getAsRange() : null;
-				
-				// //
-				//
-				// Get the source image and if necessary convert it to use a
-				// ComponentColorModel. This way we are sure we will have a
-				// visible image most part of the time.
-				//
-				// //
-				////
-				//
-				// @todo TODO HACK we need to convert to byte the image when going to
-				// apply HISTOGRAM anyway
-				//
-				////
-                                ImageWorker worker;
-				if(type!=null&&type.equalsIgnoreCase("HISTOGRAM"))
-				{
-				        worker = 
-						new ImageWorker(sourceImage)
-					                .setROI(roi).setNoData(nodata)
-							.setRenderingHints(hints)
-							.forceComponentColorModel()
-							.rescaleToBytes();
-				}
-				else
-				{
-                                        worker =  
-						new ImageWorker(sourceImage)
-					                .setROI(roi).setNoData(nodata)
-							.setRenderingHints(hints)
-							.forceComponentColorModel();
-				}
-				final int numbands = worker.getNumBands();
+                // //
+                //
+                // Get the source image and if necessary convert it to use a
+                // ComponentColorModel. This way we are sure we will have a
+                // visible image most part of the time.
+                //
+                // //
+                ////
+                //
+                // @todo TODO HACK we need to convert to byte the image when going to
+                // apply HISTOGRAM anyway
+                //
+                ////
+                ImageWorker worker;
+                if (type != null && type.equalsIgnoreCase("HISTOGRAM")) {
+                    worker =
+                            new ImageWorker(sourceImage)
+                                    .setROI(roi)
+                                    .setNoData(nodata)
+                                    .setRenderingHints(hints)
+                                    .forceComponentColorModel()
+                                    .rescaleToBytes();
+                } else {
+                    worker =
+                            new ImageWorker(sourceImage)
+                                    .setROI(roi)
+                                    .setNoData(nodata)
+                                    .setRenderingHints(hints)
+                                    .forceComponentColorModel();
+                }
+                final int numbands = worker.getNumBands();
 
+                // //
+                //
+                // Save the alpha band if present, in order to put it back
+                // later in the loop. We are not going to use it anyway for
+                // the IHS conversion.
+                //
+                // //
+                RenderedImage alphaBand = null;
+                if (numbands % 2 == 0) {
+                    // get the alpha band
+                    alphaBand =
+                            new ImageWorker(worker.getRenderedImage())
+                                    .setRenderingHints(hints)
+                                    .retainLastBand()
+                                    .getRenderedImage();
+                    // strip the alpha band from the original image
+                    worker.setRenderingHints(hints).retainBands(numbands - 1);
+                }
 
-				// //
-				//
-				// Save the alpha band if present, in order to put it back
-				// later in the loop. We are not going to use it anyway for
-				// the IHS conversion.
-				//
-				// //
-				RenderedImage alphaBand = null;
-				if (numbands % 2 == 0) {
-					// get the alpha band
-					alphaBand = new ImageWorker(worker.getRenderedImage())
-							.setRenderingHints(hints).retainLastBand()
-							.getRenderedImage();
-					// strip the alpha band from the original image
-					        worker
-							.setRenderingHints(hints).retainBands(numbands - 1);
-				}
+                // //
+                //
+                // Get the single band to work on, which might be the
+                // intensity for RGB(A) or the GRAY channel for Gray(A)
+                //
+                // //
+                ImageWorker intensityWorker;
+                RenderedImage hChannel = null;
+                RenderedImage sChannel = null;
+                final boolean intensity;
+                RenderedImage IHS = null;
+                if (numbands > 1) {
+                    // convert the prepared image to IHS colorspace to work
+                    // on I band
+                    IHS = worker.setRenderingHints(hints).forceColorSpaceIHS().getRenderedImage();
 
-				// //
-				//
-				// Get the single band to work on, which might be the
-				// intensity for RGB(A) or the GRAY channel for Gray(A)
-				//
-				// //
-				ImageWorker intensityWorker;
-				RenderedImage hChannel = null;
-				RenderedImage sChannel = null;
-				final boolean intensity;
-				RenderedImage IHS = null;
-				if (numbands > 1) {
-					// convert the prepared image to IHS colorspace to work
-					// on I band
-					IHS = worker
-							.setRenderingHints(hints).forceColorSpaceIHS()
-							.getRenderedImage();
+                    // get the various singular bands
+                    intensityWorker = worker.setRenderingHints(hints).retainFirstBand();
+                    sChannel =
+                            new ImageWorker(IHS)
+                                    .setRenderingHints(hints)
+                                    .retainLastBand()
+                                    .getRenderedImage();
+                    hChannel =
+                            new ImageWorker(IHS)
+                                    .setRenderingHints(hints)
+                                    .retainBands(new int[] {1})
+                                    .getRenderedImage();
+                    intensity = true;
+                } else {
+                    // //
+                    //
+                    // we have only one band we don't need to go to IHS
+                    //
+                    // //
+                    intensityWorker = worker;
+                    intensity = false;
+                }
 
-					// get the various singular bands
-					intensityWorker = worker.setRenderingHints(hints).retainFirstBand();
-					sChannel = new ImageWorker(IHS).setRenderingHints(hints)
-							.retainLastBand().getRenderedImage();
-					hChannel = new ImageWorker(IHS).setRenderingHints(hints)
-							.retainBands(new int[] { 1 }).getRenderedImage();
-					intensity = true;
-				} else {
-					// //
-					//
-					// we have only one band we don't need to go to IHS
-					//
-					// //
-				        intensityWorker = worker;
-				        intensity = false;
-				}
+                // /////////////////////////////////////////////////////////////////////
+                //
+                // HISTOGRAM ENHANCEMENT
+                //
+                //
+                //
+                // /////////////////////////////////////////////////////////////////////
+                performContrastEnhancement(intensityWorker, hints);
 
-				// /////////////////////////////////////////////////////////////////////
-				//
-				// HISTOGRAM ENHANCEMENT
-				//
-				// 
-				//
-				// /////////////////////////////////////////////////////////////////////
-				performContrastEnhancement(intensityWorker, hints);	
+                // /////////////////////////////////////////////////////////////////////
+                //
+                // GAMMA CORRECTION
+                //
+                // Lookup for building the actual lut that caches the gamma
+                // correction function's values.
+                //
+                // /////////////////////////////////////////////////////////////////////
+                performGammaCorrection(intensityWorker, hints);
 
-				// /////////////////////////////////////////////////////////////////////
-				//
-				// GAMMA CORRECTION
-				//
-				// Lookup for building the actual lut that caches the gamma
-				// correction function's values.
-				//
-				// /////////////////////////////////////////////////////////////////////
-				performGammaCorrection(intensityWorker,hints);
+                // /////////////////////////////////////////////////////////////////////
+                //
+                // POSTPROCESSING
+                //
+                // Take care of the intermediated image we left back. This
+                // means, handle the fact that we might have gone to IHS and
+                // the alpha band.
+                //
+                // /////////////////////////////////////////////////////////////////////
+                if (intensity) {
 
-				// /////////////////////////////////////////////////////////////////////
-				//
-				// POSTPROCESSING
-				//
-				// Take care of the intermediated image we left back. This
-				// means, handle the fact that we might have gone to IHS and
-				// the alpha band.
-				//
-				// /////////////////////////////////////////////////////////////////////
-				if (intensity) {
+                    // //
+                    //
+                    // IHS --> RGB
+                    //
+                    // Let's merge the modified IHS image. The message on
+                    // the mailing list (see comments for this class)
+                    // mentioned that it is required to pass a RenderingHing
+                    // with a ImageLayout with the IHS color
+                    // model.
+                    //
+                    // //
+                    final ImageLayout imageLayout = new ImageLayout();
+                    imageLayout.setColorModel(IHS.getColorModel());
+                    imageLayout.setSampleModel(IHS.getSampleModel());
+                    final RenderingHints rendHints = new RenderingHints(Collections.EMPTY_MAP);
+                    rendHints.add(hints);
+                    rendHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, imageLayout));
 
-					// //
-					//
-					// IHS --> RGB
-					//
-					// Let's merge the modified IHS image. The message on
-					// the mailing list (see comments for this class)
-					// mentioned that it is required to pass a RenderingHing
-					// with a ImageLayout with the IHS color
-					// model.
-					//
-					// //
-					final ImageLayout imageLayout = new ImageLayout();
-					imageLayout.setColorModel(IHS.getColorModel());
-					imageLayout.setSampleModel(IHS.getSampleModel());
-					final RenderingHints rendHints = new RenderingHints(Collections.EMPTY_MAP);
-					rendHints.add(hints);
-					rendHints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT,imageLayout));
-					
-					// merge and go to rgb again
-					intensityWorker.setRenderingHints(rendHints).addBands(new RenderedImage[]{hChannel, sChannel}, false, null);
-					intensityWorker.setRenderingHints(hints).forceColorSpaceRGB();
-				}
+                    // merge and go to rgb again
+                    intensityWorker
+                            .setRenderingHints(rendHints)
+                            .addBands(new RenderedImage[] {hChannel, sChannel}, false, null);
+                    intensityWorker.setRenderingHints(hints).forceColorSpaceRGB();
+                }
 
-				// //
-				//
-				// ALPHA BAND
-				//
-				// Let's merge the alpha band with the image we have rebuilt.
-				//
-				// //
-				if (alphaBand != null) {
-					final ColorModel cm = new ComponentColorModel(
-							numbands >= 3 ? ColorSpace
-									.getInstance(ColorSpace.CS_sRGB)
-									: ColorSpace
-											.getInstance(ColorSpace.CS_GRAY),
-							numbands >= 3 ? new int[] { 8, 8, 8, 8 }
-									: new int[] { 8, 8 }, true, false,
-							Transparency.TRANSLUCENT, DataBuffer.TYPE_BYTE);
-					final ImageLayout imageLayout = new ImageLayout();
-					imageLayout.setColorModel(cm);
-					imageLayout.setSampleModel(cm.createCompatibleSampleModel(intensityWorker.getRenderedImage().getWidth(), intensityWorker.getRenderedImage().getHeight()));
-					// merge and go to rgb
-					intensityWorker
-							.setRenderingHints(hints)
-							.setRenderingHint(JAI.KEY_IMAGE_LAYOUT,imageLayout)
-							.addBand(alphaBand, false, true, null);
+                // //
+                //
+                // ALPHA BAND
+                //
+                // Let's merge the alpha band with the image we have rebuilt.
+                //
+                // //
+                if (alphaBand != null) {
+                    final ColorModel cm =
+                            new ComponentColorModel(
+                                    numbands >= 3
+                                            ? ColorSpace.getInstance(ColorSpace.CS_sRGB)
+                                            : ColorSpace.getInstance(ColorSpace.CS_GRAY),
+                                    numbands >= 3 ? new int[] {8, 8, 8, 8} : new int[] {8, 8},
+                                    true,
+                                    false,
+                                    Transparency.TRANSLUCENT,
+                                    DataBuffer.TYPE_BYTE);
+                    final ImageLayout imageLayout = new ImageLayout();
+                    imageLayout.setColorModel(cm);
+                    imageLayout.setSampleModel(
+                            cm.createCompatibleSampleModel(
+                                    intensityWorker.getRenderedImage().getWidth(),
+                                    intensityWorker.getRenderedImage().getHeight()));
+                    // merge and go to rgb
+                    intensityWorker
+                            .setRenderingHints(hints)
+                            .setRenderingHint(JAI.KEY_IMAGE_LAYOUT, imageLayout)
+                            .addBand(alphaBand, false, true, null);
+                }
 
-				}
-
-				// /////////////////////////////////////////////////////////////////////
-				//
-				// OUTPUT
-				//
-				// /////////////////////////////////////////////////////////////////////
-				final int numSourceBands=source.getNumSampleDimensions();
-				final RenderedImage finalImage = intensityWorker.getRenderedImage();
-				final int numActualBands= finalImage.getSampleModel().getNumBands();
-				final GridCoverageFactory factory = getCoverageFactory();
-                final HashMap<Object,Object> props = new HashMap<Object,Object>();
-                if(source.getProperties() != null) {
+                // /////////////////////////////////////////////////////////////////////
+                //
+                // OUTPUT
+                //
+                // /////////////////////////////////////////////////////////////////////
+                final int numSourceBands = source.getNumSampleDimensions();
+                final RenderedImage finalImage = intensityWorker.getRenderedImage();
+                final int numActualBands = finalImage.getSampleModel().getNumBands();
+                final GridCoverageFactory factory = getCoverageFactory();
+                final HashMap<Object, Object> props = new HashMap<Object, Object>();
+                if (source.getProperties() != null) {
                     props.putAll(source.getProperties());
                 }
                 // Setting ROI and NODATA
-                if(intensityWorker.getNoData() != null){
-                    props.put(NoDataContainer.GC_NODATA, new NoDataContainer(intensityWorker.getNoData()));
+                if (intensityWorker.getNoData() != null) {
+                    props.put(
+                            NoDataContainer.GC_NODATA,
+                            new NoDataContainer(intensityWorker.getNoData()));
                 }
-                if(intensityWorker.getROI() != null){
+                if (intensityWorker.getROI() != null) {
                     props.put("GC_ROI", intensityWorker.getROI());
                 }
-                
-                if(numActualBands==numSourceBands) {
+
+                if (numActualBands == numSourceBands) {
                     final String name = "ce_coverage" + source.getName();
-                    output = factory.create(
-					        name, 
-					        finalImage,
-					        (GridGeometry2D)source.getGridGeometry(),
-					        source.getSampleDimensions(),
-					        new GridCoverage[]{source},
-					        props);
+                    output =
+                            factory.create(
+                                    name,
+                                    finalImage,
+                                    (GridGeometry2D) source.getGridGeometry(),
+                                    source.getSampleDimensions(),
+                                    new GridCoverage[] {source},
+                                    props);
                 } else {
-					// replicate input bands
-					final GridSampleDimension sd[]= new GridSampleDimension[numActualBands];
-					for(int i=0;i<numActualBands;i++)
-						sd[i]=(GridSampleDimension) source.getSampleDimension(0);
-					output = factory.create(
-					        "ce_coverage"+source.getName().toString(), 
-					        finalImage,
-					        (GridGeometry2D)source.getGridGeometry(),
-					        sd,
-					        new GridCoverage[]{source},
-					        props);
-				}
+                    // replicate input bands
+                    final GridSampleDimension sd[] = new GridSampleDimension[numActualBands];
+                    for (int i = 0; i < numActualBands; i++)
+                        sd[i] = (GridSampleDimension) source.getSampleDimension(0);
+                    output =
+                            factory.create(
+                                    "ce_coverage" + source.getName().toString(),
+                                    finalImage,
+                                    (GridGeometry2D) source.getGridGeometry(),
+                                    sd,
+                                    new GridCoverage[] {source},
+                                    props);
+                }
 
-
-			} else
-				// /////////////////////////////////////////////////////////////////////
-				//
-				// We do not have a valid gamma value, let's try with a
-				// conservative approach that is, let's forward the source
-				// coverage intact.
-				//
-				// /////////////////////////////////////////////////////////////////////
-				output = source;
-			return output;
-
-		}
-		throw new IllegalStateException(Errors.format(
-				ErrorKeys.SOURCE_CANT_BE_NULL_$1, this.getName().toString()));
-
-	}
+            } else
+                // /////////////////////////////////////////////////////////////////////
+                //
+                // We do not have a valid gamma value, let's try with a
+                // conservative approach that is, let's forward the source
+                // coverage intact.
+                //
+                // /////////////////////////////////////////////////////////////////////
+                output = source;
+            return output;
+        }
+        throw new IllegalStateException(
+                Errors.format(ErrorKeys.SOURCE_CANT_BE_NULL_$1, this.getName().toString()));
+    }
 
     /**
-     * Performs a contrast enhancement operation on the input image. Note that not all the contrast enhancement operations have been implemented in a
-     * way that is generic enough o handle all data types.
-     * 
+     * Performs a contrast enhancement operation on the input image. Note that not all the contrast
+     * enhancement operations have been implemented in a way that is generic enough o handle all
+     * data types.
+     *
      * @param inputImage the input {@link RenderedImage} to work on.
      * @param hints {@link Hints} to control the contrast enhancement process.
      * @return a {@link RenderedImage} on which a contrast enhancement has been performed.
@@ -512,17 +512,17 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
             RenderedImage inputImage = inputWorker.getRenderedImage();
             assert inputImage.getSampleModel().getNumBands() == 1 : inputImage;
 
-            ContrastEnhancementType ceType = ContrastEnhancementType.getType(contrastEnhancementMethod);
+            ContrastEnhancementType ceType =
+                    ContrastEnhancementType.getType(contrastEnhancementMethod);
             return ceType.process(inputWorker, hints, contrastEnhancementMethod.getParameters());
         }
 
         return inputWorker.getRenderedImage();
     }
 
-
     /**
      * Performs a gamma correction operation on the input image.
-     * 
+     *
      * @param inputImage the input {@link RenderedImage} to work on.
      * @param hints {@link Hints} to control the contrast enhancement process.
      * @return a {@link RenderedImage} on which a gamma correction has been performed.
@@ -565,8 +565,9 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
                 //
                 // STEP 2 do the gamma correction by using generic piecewise
                 //
-                final PiecewiseTransform1D<DefaultPiecewiseTransform1DElement> transform = ContrastEnhancementType
-                        .generateGammaCorrectedPiecewise(minimum[0], maximum[0], gammaValue);
+                final PiecewiseTransform1D<DefaultPiecewiseTransform1DElement> transform =
+                        ContrastEnhancementType.generateGammaCorrectedPiecewise(
+                                minimum[0], maximum[0], gammaValue);
                 worker.piecewise(transform, Integer.valueOf(0));
             }
         }
@@ -574,9 +575,4 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
         assert result.getSampleModel().getNumBands() == 1 : result;
         return result;
     }
-
-   
-
-
-
 }

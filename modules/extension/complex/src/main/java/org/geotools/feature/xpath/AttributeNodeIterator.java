@@ -20,7 +20,6 @@ package org.geotools.feature.xpath;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
@@ -32,33 +31,22 @@ import org.opengis.feature.type.Name;
 
 /**
  * Special node iterator for {@link Attribute}.
- * 
+ *
  * @author Justin Deoliveira (The Open Planning Project)
  * @author Gabriel Roldan (Axios Engineering)
- * 
- *
- *
- *
- *
  * @source $URL$
  */
 public class AttributeNodeIterator implements NodeIterator {
 
-    /**
-     * The feature node pointer
-     */
+    /** The feature node pointer */
     AttributeNodePointer pointer;
 
-    /**
-     * The feature.
-     */
+    /** The feature. */
     ComplexAttribute feature;
 
     List<Property> children;
 
-    /**
-     * current position
-     */
+    /** current position */
     int position;
 
     public AttributeNodeIterator(AttributeNodePointer pointer) {
@@ -98,5 +86,4 @@ public class AttributeNodeIterator implements NodeIterator {
         QName qname = new QName(name.getNamespaceURI(), name.getLocalPart());
         return new AttributeNodePointer(pointer, attribute, qname);
     }
-
 }

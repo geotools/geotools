@@ -21,11 +21,10 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 
-
 /**
- * The expressions in this section can be used to add conditional logic to your styles. For example, the 'case'
- * expression provides basic "if/then/else" logic, and 'match' allows you to map specific values of an input
- * expression to different output expressions.
+ * The expressions in this section can be used to add conditional logic to your styles. For example,
+ * the 'case' expression provides basic "if/then/else" logic, and 'match' allows you to map specific
+ * values of an input expression to different output expressions.
  */
 public class MBDecision extends MBExpression {
 
@@ -50,6 +49,7 @@ public class MBDecision extends MBExpression {
     /**
      * Logical negation. Returns true if the input is false, and false if the input is true.
      * Example: ["!", boolean]: boolean
+     *
      * @return
      */
     private Expression decisionNot() {
@@ -63,14 +63,11 @@ public class MBDecision extends MBExpression {
         return ff.function("not", boolArg);
     }
 
-
     /**
-     * Returns true if the input values are not equal, false otherwise.
-     * The inputs must be numbers, strings, or booleans, and both of the same type.
-     * Examples:["!=", number, number]: boolean
-     *          ["!=", string, string]: boolean
-     *          ["!=", boolean, boolean]: boolean
-     *          ["!=", null, null]: boolean
+     * Returns true if the input values are not equal, false otherwise. The inputs must be numbers,
+     * strings, or booleans, and both of the same type. Examples:["!=", number, number]: boolean
+     * ["!=", string, string]: boolean ["!=", boolean, boolean]: boolean ["!=", null, null]: boolean
+     *
      * @return
      */
     private Expression decisionNotEqual() {
@@ -85,10 +82,10 @@ public class MBDecision extends MBExpression {
     }
 
     /**
-     * Returns true if the first input is strictly less than the second, false otherwise.
-     * The inputs must be numbers or strings, and both of the same type.
-     * Examples: ["<", number, number]: boolean
-     *           ["<", string, string]: boolean
+     * Returns true if the first input is strictly less than the second, false otherwise. The inputs
+     * must be numbers or strings, and both of the same type. Examples: ["<", number, number]:
+     * boolean ["<", string, string]: boolean
+     *
      * @return
      */
     private Expression decisionLessThan() {
@@ -102,10 +99,10 @@ public class MBDecision extends MBExpression {
     }
 
     /**
-     * Returns true if the first input is less than or equal to the second, false otherwise.
-     * The inputs must be numbers or strings, and both of the same type.
-     * Examples: ["<=", number, number]: boolean
-     *           ["<=", string, string]: boolean
+     * Returns true if the first input is less than or equal to the second, false otherwise. The
+     * inputs must be numbers or strings, and both of the same type. Examples: ["<=", number,
+     * number]: boolean ["<=", string, string]: boolean
+     *
      * @return
      */
     private Expression decisionLessEqualThan() {
@@ -119,12 +116,10 @@ public class MBDecision extends MBExpression {
     }
 
     /**
-     * Returns true if the input values are equal, false otherwise.
-     * The inputs must be numbers, strings, or booleans, and both of the same type.
-     * Examples: ["==", number, number]: boolean
-     *           ["==", string, string]: boolean
-     *           ["==", boolean, boolean]: boolean
-     *           ["==", null, null]: boolean
+     * Returns true if the input values are equal, false otherwise. The inputs must be numbers,
+     * strings, or booleans, and both of the same type. Examples: ["==", number, number]: boolean
+     * ["==", string, string]: boolean ["==", boolean, boolean]: boolean ["==", null, null]: boolean
+     *
      * @return
      */
     private Expression decisionEqualTo() {
@@ -139,10 +134,10 @@ public class MBDecision extends MBExpression {
     }
 
     /**
-     * Returns true if the first input is strictly greater than the second, false otherwise.
-     * The inputs must be numbers or strings, and both of the same type.
-     * Example: [">", number, number]: boolean
-     *          [">", string, string]: boolean
+     * Returns true if the first input is strictly greater than the second, false otherwise. The
+     * inputs must be numbers or strings, and both of the same type. Example: [">", number, number]:
+     * boolean [">", string, string]: boolean
+     *
      * @return
      */
     private Expression decisionGreaterThan() {
@@ -156,10 +151,10 @@ public class MBDecision extends MBExpression {
     }
 
     /**
-     * Returns true if the first input is greater than or equal to the second, false otherwise.
-     * The inputs must be numbers or strings, and both of the same type.
-     * Example: [">=", number, number]: boolean
-     *          [">=", string, string]: boolean
+     * Returns true if the first input is greater than or equal to the second, false otherwise. The
+     * inputs must be numbers or strings, and both of the same type. Example: [">=", number,
+     * number]: boolean [">=", string, string]: boolean
+     *
      * @return
      */
     private Expression decisionGreaterEqualThan() {
@@ -173,11 +168,11 @@ public class MBDecision extends MBExpression {
     }
 
     /**
-     * Returns true if all the inputs are true, false otherwise. The inputs are evaluated in order, and evaluation is
-     * short-circuiting: once an input expression evaluates to false, the result is false and no further input
-     * expressions are evaluated.
-     * Example: [""all"", boolean, boolean]: boolean
-     *          [""all"", boolean, boolean, ...]: boolean
+     * Returns true if all the inputs are true, false otherwise. The inputs are evaluated in order,
+     * and evaluation is short-circuiting: once an input expression evaluates to false, the result
+     * is false and no further input expressions are evaluated. Example: [""all"", boolean,
+     * boolean]: boolean [""all"", boolean, boolean, ...]: boolean
+     *
      * @return
      */
     private Expression decisionAll() {
@@ -185,20 +180,20 @@ public class MBDecision extends MBExpression {
         if (json.size() < 2) {
             throwInsufficientArgumentCount(ALL, 1);
         }
-        Expression[] expressions = new Expression[json.size()-1];
+        Expression[] expressions = new Expression[json.size() - 1];
         for (int i = 1; i < json.size(); ++i) {
             Expression expression = parse.string(json, i);
-            expressions[i-1] = expression;
+            expressions[i - 1] = expression;
         }
         return ff.function("all", expressions);
     }
 
     /**
-     * Returns true if any of the inputs are true, false otherwise. The inputs are evaluated in order,
-     * and evaluation is short-circuiting: once an input expression evaluates to true, the result is true and no
-     * further input expressions are evaluated.
-     * Example: [""any"", boolean, boolean]: boolean
-     *          [""any"", boolean, boolean, ...]: boolean
+     * Returns true if any of the inputs are true, false otherwise. The inputs are evaluated in
+     * order, and evaluation is short-circuiting: once an input expression evaluates to true, the
+     * result is true and no further input expressions are evaluated. Example: [""any"", boolean,
+     * boolean]: boolean [""any"", boolean, boolean, ...]: boolean
+     *
      * @return
      */
     private Expression decisionAny() {
@@ -206,19 +201,19 @@ public class MBDecision extends MBExpression {
         if (json.size() < 2) {
             throwInsufficientArgumentCount(ALL, 1);
         }
-        Expression[] expressions = new Expression[json.size()-1];
+        Expression[] expressions = new Expression[json.size() - 1];
         for (int i = 1; i < json.size(); ++i) {
             Expression expression = parse.string(json, i);
-            expressions[i-1] = expression;
+            expressions[i - 1] = expression;
         }
         return ff.function("any", expressions);
     }
 
     /**
-     * Selects the first output whose corresponding test condition evaluates to true.
-     * Example: [""case"", condition: boolean, output: OutputType,
-     *              ...condition: boolean, output: OutputType,
-     *              ...default: OutputType]: OutputType
+     * Selects the first output whose corresponding test condition evaluates to true. Example:
+     * [""case"", condition: boolean, output: OutputType, ...condition: boolean, output: OutputType,
+     * ...default: OutputType]: OutputType
+     *
      * @return
      */
     private Expression decisionCase() {
@@ -226,17 +221,18 @@ public class MBDecision extends MBExpression {
         if (json.size() < 3) {
             throwInsufficientArgumentCount(ALL, 2);
         }
-        Expression[] expressions = new Expression[json.size()-1];
+        Expression[] expressions = new Expression[json.size() - 1];
         for (int i = 1; i < json.size(); ++i) {
             Expression expression = parse.string(json, i);
-            expressions[i-1] = expression;
+            expressions[i - 1] = expression;
         }
         return ff.function("case", expressions);
     }
 
     /**
-     * Evaluates each expression in turn until the first non-null value is obtained, and returns that value.
-     * Example: ["coalesce", OutputType, OutputType, ...]: OutputType
+     * Evaluates each expression in turn until the first non-null value is obtained, and returns
+     * that value. Example: ["coalesce", OutputType, OutputType, ...]: OutputType
+     *
      * @return
      */
     private Expression decisionCoalesce() {
@@ -244,23 +240,22 @@ public class MBDecision extends MBExpression {
         if (json.size() < 2) {
             throwInsufficientArgumentCount(COALESCE, 1);
         }
-        Expression[] expressions = new Expression[json.size()-1];
+        Expression[] expressions = new Expression[json.size() - 1];
         for (int i = 1; i < json.size(); ++i) {
             Expression expression = parse.string(json, i);
-            expressions[i-1] = expression;
+            expressions[i - 1] = expression;
         }
         return ff.function("coalesce", expressions);
     }
 
     /**
-     * Selects the output whose label value matches the input value, or the fallback value if no match is found.
-     * The input can be any string or number expression (e.g. ["get", "building_type"]).
-     * Each label can either be a single literal value or an array of values.
-     * Example: ["match",
-     *              input: InputType (number or string),
-     *              label_1: InputType | [InputType, InputType, ...], output_1: OutputType,
-     *              label_n: InputType | [InputType, InputType, ...], output_n: OutputType,
-     *               ..., default: OutputType]: OutputType
+     * Selects the output whose label value matches the input value, or the fallback value if no
+     * match is found. The input can be any string or number expression (e.g. ["get",
+     * "building_type"]). Each label can either be a single literal value or an array of values.
+     * Example: ["match", input: InputType (number or string), label_1: InputType | [InputType,
+     * InputType, ...], output_1: OutputType, label_n: InputType | [InputType, InputType, ...],
+     * output_n: OutputType, ..., default: OutputType]: OutputType
+     *
      * @return
      */
     private Expression decisionMatch() {
@@ -268,16 +263,16 @@ public class MBDecision extends MBExpression {
         if (json.size() < 4) {
             throwInsufficientArgumentCount(COALESCE, 3);
         }
-        Expression[] expressions = new Expression[json.size()-1];
+        Expression[] expressions = new Expression[json.size() - 1];
         for (int i = 1; i < json.size(); ++i) {
             Expression expression = parse.string(json, i);
-            expressions[i-1] = expression;
+            expressions[i - 1] = expression;
         }
         return ff.function("match", expressions);
     }
 
     @Override
-    public Expression getExpression()throws MBFormatException {
+    public Expression getExpression() throws MBFormatException {
         switch (name) {
             case NOT:
                 return decisionNot();

@@ -20,10 +20,8 @@ import java.io.IOException;
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @author Tommaso Nolli
- *
- *
  * @source $URL$
  */
 public class TreeException extends IOException {
@@ -36,7 +34,7 @@ public class TreeException extends IOException {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @param message
      */
     public TreeException(String message) {
@@ -45,7 +43,7 @@ public class TreeException extends IOException {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @param message
      * @param cause
      */
@@ -56,7 +54,7 @@ public class TreeException extends IOException {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @param cause
      */
     public TreeException(Throwable cause) {

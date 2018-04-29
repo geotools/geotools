@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,19 +17,15 @@
  */
 package org.geotools.ysld.encode;
 
+import java.io.IOException;
+import java.io.Writer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.UomMapper;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.representer.Representer;
 
-import java.io.IOException;
-import java.io.Writer;
-
-/**
- * Encodes GeoTools style objects as Ysld.
- */
+/** Encodes GeoTools style objects as Ysld. */
 public class YsldEncoder {
 
     Writer out;
@@ -38,6 +34,7 @@ public class YsldEncoder {
 
     /**
      * Create a YSLD Encoder.
+     *
      * @param out Writer which the encoded YSLD output will be written to.
      * @param uomMapper An instance of {@link UomMapper}, used to map UOM.
      */
@@ -48,6 +45,7 @@ public class YsldEncoder {
 
     /**
      * Encode the passed {@link StyledLayerDescriptor} as YSLD.
+     *
      * @param sld
      * @throws IOException
      */

@@ -16,18 +16,13 @@
  */
 package org.geotools.kml.bindings;
 
-import org.opengis.feature.simple.SimpleFeature;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
+import org.opengis.feature.simple.SimpleFeature;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class KmlTypeBindingTest extends KMLTestSupport {
     public void testType() throws Exception {
         assertEquals(FeatureCollection.class, binding(KML.KmlType).getType());

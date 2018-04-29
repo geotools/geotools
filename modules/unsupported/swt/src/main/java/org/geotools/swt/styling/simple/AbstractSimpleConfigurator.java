@@ -17,7 +17,6 @@
 package org.geotools.swt.styling.simple;
 
 import java.awt.Color;
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -37,31 +36,29 @@ import org.geotools.styling.StyleBuilder;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * This is here to save me some typing and ensure that the simple raster and 
- * feature configurators look similar.
+ * This is here to save me some typing and ensure that the simple raster and feature configurators
+ * look similar.
+ *
  * @author mleslie
  * @since 0.6.0
- *
- *
- *
  * @source $URL$
  */
 public class AbstractSimpleConfigurator extends Dialog {
     /** <code>build</code> field */
     protected StyleBuilder build = new StyleBuilder();
+
     protected SimpleFeatureCollection featureCollection;
     protected Style style;
 
-    /**
-     * Construct <code>AbstractSimpleConfigurator</code>.
-     */
-    public AbstractSimpleConfigurator( Shell parent, SimpleFeatureCollection featureCollection, Style style ) {
+    /** Construct <code>AbstractSimpleConfigurator</code>. */
+    public AbstractSimpleConfigurator(
+            Shell parent, SimpleFeatureCollection featureCollection, Style style) {
         super(parent);
         this.featureCollection = featureCollection;
         this.style = style;
     }
 
-    protected void setLayout( Composite parent ) {
+    protected void setLayout(Composite parent) {
         RowLayout layout = new RowLayout();
         layout.pack = false;
         layout.wrap = true;
@@ -77,7 +74,7 @@ public class AbstractSimpleConfigurator extends Dialog {
 
     /**
      * Retrieves the style object from the style blackboard.
-     * 
+     *
      * @return Style
      */
     protected Style getStyle() {
@@ -99,15 +96,15 @@ public class AbstractSimpleConfigurator extends Dialog {
 
     /**
      * Construct a subpart labeled with the provided tag.
-     * <p>
-     * Creates a composite with a grid layout of the specifed columns,
-     * and a label with text from label.
-     * </p>
+     *
+     * <p>Creates a composite with a grid layout of the specifed columns, and a label with text from
+     * label.
+     *
      * @param parent
      * @param label
-     * @return Composite with one label 
+     * @return Composite with one label
      */
-    public static Composite subpart( Composite parent, String label ) {
+    public static Composite subpart(Composite parent, String label) {
         Composite subpart = new Composite(parent, SWT.NONE);
         RowLayout across = new RowLayout();
         across.type = SWT.HORIZONTAL;
@@ -129,7 +126,8 @@ public class AbstractSimpleConfigurator extends Dialog {
         gc.setFont(parent.getParent().getFont());
         FontMetrics fontMetrics = gc.getFontMetrics();
         gc.dispose();
-        int labelWidth = Dialog.convertWidthInCharsToPixels(fontMetrics, labell.getText().length() + 1);
+        int labelWidth =
+                Dialog.convertWidthInCharsToPixels(fontMetrics, labell.getText().length() + 1);
         if (labelWidth > data.width) {
             data.width = labelWidth;
         }
@@ -142,26 +140,23 @@ public class AbstractSimpleConfigurator extends Dialog {
     }
     /**
      * Morph a text ModifyEvent into a SelectionEvent as best we can.
-     * <p>
-     * This may be a bad abuse of the event system, it appears to be in
-     * use because we are too lazy to specify a new event type for style
-     * modification.
-     * </p>
-     * <p>
-     * However this does seem to be in keeping with the purpose of SelectionEvent
-     * it already isolates out code from TypedEvents by providing a summary of what
-     * changed in which widet.
-     * </p>
+     *
+     * <p>This may be a bad abuse of the event system, it appears to be in use because we are too
+     * lazy to specify a new event type for style modification.
+     *
+     * <p>However this does seem to be in keeping with the purpose of SelectionEvent it already
+     * isolates out code from TypedEvents by providing a summary of what changed in which widet.
+     *
      * @param e
      * @return A SelectionEvent based on the provided modify event
      */
-    public static SelectionEvent selectionEvent( final ModifyEvent e ) {
+    public static SelectionEvent selectionEvent(final ModifyEvent e) {
         Event event = new Event();
         event.widget = e.widget;
         event.data = e.data;
         event.display = e.display;
         event.time = e.time;
-        return new SelectionEvent(event){
+        return new SelectionEvent(event) {
             /** <code>serialVersionUID</code> field */
             private static final long serialVersionUID = 6544345585295778029L;
 

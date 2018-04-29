@@ -19,7 +19,6 @@ package org.geotools.feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
 import org.opengis.feature.Attribute;
@@ -39,17 +38,14 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * {@link FeatureFactory} that:
- * 
+ *
  * <ul>
- * <li>does not choke on null ids
- * <li>constructs containers for complex attributes with null values
+ *   <li>does not choke on null ids
+ *   <li>constructs containers for complex attributes with null values
  * </ul>
- * 
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  * @since 2.6
  */
@@ -57,9 +53,9 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
 
     /**
      * Create an attribute, even for null id.
-     * 
+     *
      * @see org.geotools.feature.AbstractFeatureFactoryImpl#createAttribute(java.lang.Object,
-     *      org.opengis.feature.type.AttributeDescriptor, java.lang.String)
+     *     org.opengis.feature.type.AttributeDescriptor, java.lang.String)
      */
     @Override
     public Attribute createAttribute(Object value, AttributeDescriptor descriptor, String id) {
@@ -68,25 +64,38 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
 
     /**
      * Create a new geometry attribute, even for null id.
-     * 
-     * @see org.geotools.feature.AbstractFeatureFactoryImpl#createGeometryAttribute(java.lang.Object,
-     *      org.opengis.feature.type.GeometryDescriptor, java.lang.String,
-     *      org.opengis.referencing.crs.CoordinateReferenceSystem)
+     *
+     * @see
+     *     org.geotools.feature.AbstractFeatureFactoryImpl#createGeometryAttribute(java.lang.Object,
+     *     org.opengis.feature.type.GeometryDescriptor, java.lang.String,
+     *     org.opengis.referencing.crs.CoordinateReferenceSystem)
      */
     @Override
-    public GeometryAttribute createGeometryAttribute(Object value, GeometryDescriptor descriptor,
-            String id, CoordinateReferenceSystem crs) {
+    public GeometryAttribute createGeometryAttribute(
+            Object value, GeometryDescriptor descriptor, String id, CoordinateReferenceSystem crs) {
         if (crs != null && !(crs.equals(descriptor.getCoordinateReferenceSystem()))) {
             // update CRS
             GeometryType origType = (GeometryType) descriptor.getType();
-            GeometryType geomType = new GeometryTypeImpl(origType.getName(), origType.getBinding(),
-                    crs, origType.isIdentified(), origType.isAbstract(),
-                    origType.getRestrictions(), origType.getSuper(), origType.getDescription());
+            GeometryType geomType =
+                    new GeometryTypeImpl(
+                            origType.getName(),
+                            origType.getBinding(),
+                            crs,
+                            origType.isIdentified(),
+                            origType.isAbstract(),
+                            origType.getRestrictions(),
+                            origType.getSuper(),
+                            origType.getDescription());
             geomType.getUserData().putAll(origType.getUserData());
 
-            descriptor = new GeometryDescriptorImpl(geomType, descriptor.getName(), descriptor
-                    .getMinOccurs(), descriptor.getMaxOccurs(), descriptor.isNillable(),
-                    ((GeometryDescriptor) descriptor).getDefaultValue());
+            descriptor =
+                    new GeometryDescriptorImpl(
+                            geomType,
+                            descriptor.getName(),
+                            descriptor.getMinOccurs(),
+                            descriptor.getMaxOccurs(),
+                            descriptor.isNillable(),
+                            ((GeometryDescriptor) descriptor).getDefaultValue());
             descriptor.getUserData().putAll(descriptor.getUserData());
         }
         return new GeometryAttributeImpl(value, descriptor, buildSafeGmlObjectId(id));
@@ -94,36 +103,38 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
 
     /**
      * Create a new complex attribute, even for null value or id.
-     * 
-     * @see org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
-     *      org.opengis.feature.type.AttributeDescriptor, java.lang.String)
+     *
+     * @see
+     *     org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
+     *     org.opengis.feature.type.AttributeDescriptor, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")
-    public ComplexAttribute createComplexAttribute(Collection value,
-            AttributeDescriptor descriptor, String id) {
-        return new ComplexAttributeImpl(buildCollectionIfNull(value), descriptor,
-                buildSafeGmlObjectId(id));
+    public ComplexAttribute createComplexAttribute(
+            Collection value, AttributeDescriptor descriptor, String id) {
+        return new ComplexAttributeImpl(
+                buildCollectionIfNull(value), descriptor, buildSafeGmlObjectId(id));
     }
 
     /**
      * Create a new complex attribute, even for null value or id.
-     * 
-     * @see org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
-     *      org.opengis.feature.type.ComplexType, java.lang.String)
+     *
+     * @see
+     *     org.geotools.feature.AbstractFeatureFactoryImpl#createComplexAttribute(java.util.Collection,
+     *     org.opengis.feature.type.ComplexType, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")
     public ComplexAttribute createComplexAttribute(Collection value, ComplexType type, String id) {
-        return new ComplexAttributeImpl(buildCollectionIfNull(value), type,
-                buildSafeGmlObjectId(id));
+        return new ComplexAttributeImpl(
+                buildCollectionIfNull(value), type, buildSafeGmlObjectId(id));
     }
 
     /**
      * Create a new feature, even for null value or id.
-     * 
+     *
      * @see org.geotools.feature.AbstractFeatureFactoryImpl#createFeature(java.util.Collection,
-     *      org.opengis.feature.type.AttributeDescriptor, java.lang.String)
+     *     org.opengis.feature.type.AttributeDescriptor, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -133,9 +144,9 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
 
     /**
      * Create a new feature, even for null value or id.
-     * 
+     *
      * @see org.geotools.feature.AbstractFeatureFactoryImpl#createFeature(java.util.Collection,
-     *      org.opengis.feature.type.FeatureType, java.lang.String)
+     *     org.opengis.feature.type.FeatureType, java.lang.String)
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -145,7 +156,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
 
     /**
      * Construct a gml object id from a string, or return null if the string is null.
-     * 
+     *
      * @param id
      * @return null if id is null
      */
@@ -159,7 +170,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
 
     /**
      * Construct a feature id, or return null if the string is null.
-     * 
+     *
      * @param id
      * @return null if id is null
      */
@@ -174,7 +185,7 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
     /**
      * If the value collection is null, construct and return a new empty collection. If value
      * collection is not null, it is returned.
-     * 
+     *
      * @param value
      * @return a non-null collection
      */
@@ -185,5 +196,4 @@ public class AppSchemaFeatureFactoryImpl extends ValidatingFeatureFactoryImpl {
             return value;
         }
     }
-
 }

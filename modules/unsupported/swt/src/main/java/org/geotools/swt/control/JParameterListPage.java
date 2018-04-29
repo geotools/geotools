@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -31,26 +30,27 @@ import org.geotools.data.Parameter;
 import org.geotools.util.Converters;
 
 /**
- * Parameters wizard page for trhe {@link JParameterListWizard parameter list wizard}. 
- * 
+ * Parameters wizard page for trhe {@link JParameterListWizard parameter list wizard}.
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class JParameterListPage extends WizardPage {
     public static final String ID = "org.geotools.swt.data.ParameterListPage";
 
-    List<Parameter< ? >> contents;
+    List<Parameter<?>> contents;
 
     /** Map of user interface ParamFields displayed to the user */
-    private Map<Parameter< ? >, ParamField> fields = new HashMap<Parameter< ? >, ParamField>();
+    private Map<Parameter<?>, ParamField> fields = new HashMap<Parameter<?>, ParamField>();
 
     /** Connection params for datastore */
     protected Map<String, Object> connectionParameters;
 
-    public JParameterListPage( String title, String description, List<Parameter< ? >> contents, Map<String, Object> params ) {
+    public JParameterListPage(
+            String title,
+            String description,
+            List<Parameter<?>> contents,
+            Map<String, Object> params) {
         super(ID);
         this.contents = contents;
         this.connectionParameters = params;
@@ -59,12 +59,12 @@ public class JParameterListPage extends WizardPage {
         setDescription(description);
     }
 
-    public void createControl( Composite parent ) {
+    public void createControl(Composite parent) {
         Composite mainComposite = new Composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout(1, false);
         mainComposite.setLayout(gridLayout);
 
-        for( Parameter< ? > param : contents ) {
+        for (Parameter<?> param : contents) {
             String txt = param.title.toString();
             if (param.required) {
                 txt += "*";
@@ -88,7 +88,7 @@ public class JParameterListPage extends WizardPage {
         setControl(mainComposite);
     }
 
-    public void setVisible( boolean visible ) {
+    public void setVisible(boolean visible) {
         if (visible) {
             preDisplayPanel();
         } else {
@@ -100,8 +100,8 @@ public class JParameterListPage extends WizardPage {
 
     private void preDisplayPanel() {
         // populate panel from params map
-        for( Entry<Parameter< ? >, ParamField> entry : fields.entrySet() ) {
-            Parameter< ? > param = entry.getKey();
+        for (Entry<Parameter<?>, ParamField> entry : fields.entrySet()) {
+            Parameter<?> param = entry.getKey();
             ParamField field = entry.getValue();
             Object value = null;
             Object object = connectionParameters.get(param.key);
@@ -121,8 +121,8 @@ public class JParameterListPage extends WizardPage {
     }
 
     private void preClosePanel() {
-        for( Entry<Parameter< ? >, ParamField> entry : fields.entrySet() ) {
-            Parameter< ? > param = entry.getKey();
+        for (Entry<Parameter<?>, ParamField> entry : fields.entrySet()) {
+            Parameter<?> param = entry.getKey();
             ParamField field = entry.getValue();
 
             Object value = field.getValue();
@@ -137,8 +137,8 @@ public class JParameterListPage extends WizardPage {
 
     public boolean isValid() {
         // populate panel
-        for( Entry<Parameter< ? >, ParamField> entry : fields.entrySet() ) {
-            Parameter< ? > param = entry.getKey();
+        for (Entry<Parameter<?>, ParamField> entry : fields.entrySet()) {
+            Parameter<?> param = entry.getKey();
             ParamField field = entry.getValue();
 
             if (!field.validate()) {
@@ -150,5 +150,4 @@ public class JParameterListPage extends WizardPage {
         }
         return true;
     }
-
 }

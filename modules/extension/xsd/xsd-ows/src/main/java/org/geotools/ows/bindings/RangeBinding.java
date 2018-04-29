@@ -1,17 +1,14 @@
 package org.geotools.ows.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.emf.ecore.EFactory;
 import org.geotools.xml.ComplexEMFBinding;
 
 /**
  * Parses rangeBinding
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class RangeBinding extends ComplexEMFBinding {
 
@@ -19,8 +16,8 @@ public class RangeBinding extends ComplexEMFBinding {
         super(factory, target);
     }
 
-    protected void setProperty(org.eclipse.emf.ecore.EObject eObject, String property,
-            Object value, boolean lax) {
+    protected void setProperty(
+            org.eclipse.emf.ecore.EObject eObject, String property, Object value, boolean lax) {
         // trick required because rangeClouser for some unfathomable reason was declared to extend
         // NMTOKENS instead of NMTOKEN (and it's this a whitespace separated list schema wise)
         if ("rangeClosure".equals(property) && value instanceof List) {

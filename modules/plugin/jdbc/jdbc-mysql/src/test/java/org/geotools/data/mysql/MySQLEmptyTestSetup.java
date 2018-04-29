@@ -18,11 +18,7 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySQLEmptyTestSetup extends JDBCEmptyTestSetup {
 
     protected MySQLEmptyTestSetup() {
@@ -31,12 +27,11 @@ public class MySQLEmptyTestSetup extends JDBCEmptyTestSetup {
 
     @Override
     protected void createEmptyTable() throws Exception {
-        run( "CREATE TABLE empty (id int, geom GEOMETRY) ");
+        run("CREATE TABLE empty (id int, geom GEOMETRY) ");
     }
 
     @Override
     protected void dropEmptyTable() throws Exception {
-        runSafe( "DROP TABLE empty" );
+        runSafe("DROP TABLE empty");
     }
-
 }

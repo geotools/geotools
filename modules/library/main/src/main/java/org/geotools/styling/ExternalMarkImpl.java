@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,17 +16,12 @@
  */
 package org.geotools.styling;
 
-
 import javax.swing.Icon;
-
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.StyleVisitor;
 
-
 /**
  * Default implementation of ExternalMark.
- * 
- *
  *
  * @source $URL$
  * @version $Id$
@@ -38,9 +33,8 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
     private int index;
     private String format;
 
-    public ExternalMarkImpl() {        
-    }
-    
+    public ExternalMarkImpl() {}
+
     public ExternalMarkImpl(Icon icon) {
         this.inlineContent = icon;
         this.index = -1;
@@ -72,7 +66,7 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
     }
 
     public Object accept(StyleVisitor visitor, Object extraData) {
-        return visitor.visit( this, extraData );
+        return visitor.visit(this, extraData);
     }
 
     public void setInlineContent(Icon inline) {
@@ -82,7 +76,7 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
     public void getInlineContent(Icon inline) {
         setInlineContent(inline);
     }
-    
+
     public void setFormat(String mimeType) {
         this.format = mimeType;
     }
@@ -94,6 +88,7 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
     public void setOnlineResource(OnLineResource resource) {
         this.onlineResource = resource;
     }
+
     static ExternalMarkImpl cast(org.opengis.style.ExternalMark mark) {
         if (mark == null) {
             return null;
@@ -101,9 +96,9 @@ public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {
             return (ExternalMarkImpl) mark;
         } else {
             ExternalMarkImpl copy = new ExternalMarkImpl();
-            copy.setFormat( mark.getFormat() );
-            copy.setMarkIndex( mark.getMarkIndex() );
-            copy.setOnlineResource( mark.getOnlineResource() );
+            copy.setFormat(mark.getFormat());
+            copy.setMarkIndex(mark.getMarkIndex());
+            copy.setOnlineResource(mark.getOnlineResource());
             return copy;
         }
     }

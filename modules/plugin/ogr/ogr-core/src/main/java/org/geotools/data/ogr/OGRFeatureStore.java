@@ -16,8 +16,8 @@
  */
 package org.geotools.data.ogr;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -33,11 +33,9 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 /**
  * FeatureStore for the OGR store, based on the {@link ContentFeatureStore} framework
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 @SuppressWarnings("rawtypes")
@@ -53,8 +51,8 @@ class OGRFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
-            int flags) throws IOException {
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
+            Query query, int flags) throws IOException {
         Object dataSource = null;
         Object layer = null;
         boolean cleanup = true;
@@ -64,11 +62,11 @@ class OGRFeatureStore extends ContentFeatureStore {
             dataSource = getDataStore().openOGRDataSource(true);
             layer = getDataStore().openOGRLayer(dataSource, typeName);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = delegate.getReaderInternal(
-                    dataSource, layer, query);
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    delegate.getReaderInternal(dataSource, layer, query);
             GeometryFactory gf = delegate.getGeometryFactory(query);
-            OGRDirectFeatureWriter result = new OGRDirectFeatureWriter(dataSource, layer, reader,
-                    getSchema(), gf, ogr);
+            OGRDirectFeatureWriter result =
+                    new OGRDirectFeatureWriter(dataSource, layer, reader, getSchema(), gf, ogr);
             cleanup = false;
             return result;
         } finally {
@@ -163,5 +161,4 @@ class OGRFeatureStore extends ContentFeatureStore {
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return delegate.handleVisitor(query, visitor);
     }
-
 }

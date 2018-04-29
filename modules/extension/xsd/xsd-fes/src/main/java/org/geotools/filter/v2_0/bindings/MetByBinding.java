@@ -17,7 +17,6 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -28,18 +27,16 @@ import org.opengis.filter.temporal.MetBy;
 
 /**
  * Binding object for the element http://www.opengis.net/fes/2.0:MetBy.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
- *  &lt;xsd:element name="MetBy" substitutionGroup="fes:temporalOps" type="fes:BinaryTemporalOpType"/&gt; 
- * 	
+ *  &lt;xsd:element name="MetBy" substitutionGroup="fes:temporalOps" type="fes:BinaryTemporalOpType"/&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
  */
 public class MetByBinding extends AbstractComplexBinding {
@@ -50,16 +47,16 @@ public class MetByBinding extends AbstractComplexBinding {
         this.filterFactory = filterFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return FES.MetBy;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -72,13 +69,14 @@ public class MetByBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] e = FESParseEncodeUtil.temporal(node, filterFactory);
         return filterFactory.metBy(e[0], e[1]);
     }
-
 }

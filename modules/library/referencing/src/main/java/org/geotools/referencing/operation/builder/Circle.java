@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@ package org.geotools.referencing.operation.builder;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.opengis.geometry.DirectPosition;
-
 
 /**
  * Simple Circle focused on Delaunays triangulation.
@@ -38,16 +37,14 @@ class Circle {
     /** Tolerance for the cotains method. */
     private double tolerance = 0.0001;
 
-    /**
-     * Creates a circle with center [0,0] and radius = 0.
-     *
-     */
+    /** Creates a circle with center [0,0] and radius = 0. */
     protected Circle() {
         this(new DirectPosition2D(0, 0), 0);
     }
 
     /**
      * Creates a circle using the specified center and radius.
+     *
      * @param center of the circle.
      * @param radius of the circle.
      */
@@ -111,14 +108,12 @@ class Circle {
     }
 
     /**
-     * The contains test whether the coordinate p is within the circle.
-     * Triangle contains coordinate if the distance  between center and p is
-     * smaller then the radius that is reduced by tolerance. This is used for
-     * triangulation when there are four points on one circle to avoid
-     * neverending loop.
+     * The contains test whether the coordinate p is within the circle. Triangle contains coordinate
+     * if the distance between center and p is smaller then the radius that is reduced by tolerance.
+     * This is used for triangulation when there are four points on one circle to avoid neverending
+     * loop.
      *
      * @param p - the point to be tested
-     *
      * @return True if the circle contais p, False if not.
      */
     protected boolean contains(DirectPosition p) {

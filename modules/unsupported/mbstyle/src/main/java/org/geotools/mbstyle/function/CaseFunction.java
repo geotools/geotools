@@ -1,14 +1,14 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
- * 
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
  *    version 2.1 of the License.
- * 
+ *
  *    This library is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -16,30 +16,31 @@
  */
 package org.geotools.mbstyle.function;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * MapBox Expression function that will return the expression evaluation result that immediately follows the first
- * condition expression that evaluates to {@link java.lang.Boolean#TRUE}. If no condition expression evaluates to
- * {@link java.lang.Boolean#TRUE}, this function will return the expression evaluation of the default expression, if
- * present. If no condition expression evaluates to {@link java.lang.Boolean#TRUE}, and either there is no default
- * expression, or the default expression evaluates to null, then a null value is returned.
- * <p>
- * Format:
- * </p>
+ * MapBox Expression function that will return the expression evaluation result that immediately
+ * follows the first condition expression that evaluates to {@link java.lang.Boolean#TRUE}. If no
+ * condition expression evaluates to {@link java.lang.Boolean#TRUE}, this function will return the
+ * expression evaluation of the default expression, if present. If no condition expression evaluates
+ * to {@link java.lang.Boolean#TRUE}, and either there is no default expression, or the default
+ * expression evaluates to null, then a null value is returned.
+ *
+ * <p>Format:
+ *
  * <pre>
  *     ["case", &lt;condition expression&gt;, &lt;output expression&gt;, &lt;condition expression&gt;, &lt;output expression&gt;, ..., &lt;default expression&gt;]
  * </pre>
+ *
+ * <p>Examples:
+ *
  * <p>
- * Examples:
- * </p>
- * <p>
+ *
  * <table border="1" cellpadding="3">
  *   <tr>
  *     <th align="center">Expression</th>
@@ -58,7 +59,6 @@ import java.util.List;
  *     <td align="center">null</td>
  *   </tr>
  * </table>
- * </p>
  */
 class CaseFunction extends FunctionExpressionImpl {
 
@@ -68,18 +68,14 @@ class CaseFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    /**
-     * @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List)
-     */
+    /** @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List) */
     @Override
     public void setParameters(List<Expression> params) {
         // set the parameters
         this.params = new ArrayList<>(params);
     }
 
-    /**
-     * @see org.geotools.filter.FunctionExpressionImpl#equals(java.lang.Object)
-     */
+    /** @see org.geotools.filter.FunctionExpressionImpl#equals(java.lang.Object) */
     @Override
     public Object evaluate(Object feature) {
         int conditionExprssionIndex = 0;
@@ -95,7 +91,8 @@ class CaseFunction extends FunctionExpressionImpl {
             conditionExprssionIndex += 2;
             outputExpressionIndex += 2;
         }
-        // if we are here, we have't found a condition that evaluated to TRUE. Return the default, if one exists.
+        // if we are here, we have't found a condition that evaluated to TRUE. Return the default,
+        // if one exists.
         if (conditionExprssionIndex < params.size()) {
             return params.get(conditionExprssionIndex).evaluate(feature);
         }

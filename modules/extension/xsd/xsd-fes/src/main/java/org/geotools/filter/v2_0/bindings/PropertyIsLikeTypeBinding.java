@@ -17,23 +17,17 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-
-import org.geotools.filter.v1_0.OGC;
 import org.geotools.filter.v1_0.OGCPropertyIsLikeTypeBinding;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:PropertyIsLikeType.
  *
  * <p>
- *      <pre>
+ *
+ * <pre>
  *       <code>
  *  &lt;xsd:complexType name="PropertyIsLikeType"&gt;
  *      &lt;xsd:complexContent&gt;
@@ -46,17 +40,16 @@ import org.opengis.filter.expression.PropertyName;
  *              &lt;xsd:attribute name="escapeChar" type="xsd:string" use="required"/&gt;
  *          &lt;/xsd:extension&gt;
  *      &lt;/xsd:complexContent&gt;
- *  &lt;/xsd:complexType&gt; 
- *              
+ *  &lt;/xsd:complexType&gt;
+ *
  *        </code>
  *       </pre>
- * </p>
  *
  * @generated
  */
 public class PropertyIsLikeTypeBinding extends OGCPropertyIsLikeTypeBinding {
     FilterFactory factory;
-    
+
     public PropertyIsLikeTypeBinding(FilterFactory factory) {
         super(factory);
         this.factory = factory;
@@ -65,17 +58,17 @@ public class PropertyIsLikeTypeBinding extends OGCPropertyIsLikeTypeBinding {
     public QName getTarget() {
         return FES.PropertyIsLikeType;
     }
-    
+
     public Object getProperty(Object object, QName name) throws Exception {
         PropertyIsLike isLike = (PropertyIsLike) object;
-    
+
         if (FES.expression.equals(name)) {
             return new Object[] {
-                    isLike.getExpression(),
-                    isLike.getLiteral() != null ? factory.literal(isLike
-                            .getLiteral()) : null };
+                isLike.getExpression(),
+                isLike.getLiteral() != null ? factory.literal(isLike.getLiteral()) : null
+            };
         }
-    
+
         return super.getProperty(object, name);
     }
 }

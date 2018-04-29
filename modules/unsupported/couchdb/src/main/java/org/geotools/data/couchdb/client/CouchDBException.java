@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,9 +19,7 @@ package org.geotools.data.couchdb.client;
 import java.io.IOException;
 
 /**
- *
  * @author Ian Schneider (OpenGeo)
- *
  * @source $URL$
  */
 public class CouchDBException extends Exception {
@@ -29,7 +27,7 @@ public class CouchDBException extends Exception {
     public CouchDBException(String string, Throwable thrwbl) {
         super(string, thrwbl);
     }
-    
+
     public IOException wrap() throws IOException {
         IOException ex = new IOException(getMessage());
         ex.setStackTrace(getStackTrace());
@@ -38,5 +36,4 @@ public class CouchDBException extends Exception {
         }
         throw ex;
     }
-    
 }

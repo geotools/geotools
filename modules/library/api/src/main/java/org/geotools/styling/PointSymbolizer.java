@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,25 +16,19 @@
  */
 package org.geotools.styling;
 
-
 /**
  * A symbolizer describes how a feature should appear on a map.
  *
- * <p>
- * The symbolizer defines not just the shape that should appear but also  such
- * graphical properties as color and opacity.
- * </p>
+ * <p>The symbolizer defines not just the shape that should appear but also such graphical
+ * properties as color and opacity.
  *
- * <p>
- * A symbolizer is obtained by specifying one of a small number of different
- * types of symbolizer and then supplying parameters to overide its default
- * behaviour.
- * </p>
+ * <p>A symbolizer is obtained by specifying one of a small number of different types of symbolizer
+ * and then supplying parameters to overide its default behaviour.
  *
- * <p>
- * The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188"> OGC
- * Styled-Layer Descriptor Report (OGC 02-070) version 1.0.0.</a>:
+ * <p>The details of this object are taken from the <a
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
+ * Report (OGC 02-070) version 1.0.0.</a>:
+ *
  * <pre><code>
  * &lt;xsd:element name="PointSymbolizer" substitutionGroup="sld:Symbolizer">
  *   &lt;xsd:annotation>
@@ -55,46 +49,30 @@ package org.geotools.styling;
  *   &lt;/xsd:complexType>
  * &lt;/xsd:element>
  * </code></pre>
- * </p>
  *
- * <p>
- * Renderers can use this information when displaying styled features, though
- * it must be remembered that not all renderers will be able to fully
- * represent strokes as set out by this interface.  For example, opacity may
- * not be supported.
- * </p>
+ * <p>Renderers can use this information when displaying styled features, though it must be
+ * remembered that not all renderers will be able to fully represent strokes as set out by this
+ * interface. For example, opacity may not be supported.
  *
- * <p>
- * Notes:
+ * <p>Notes:
  *
  * <ul>
- * <li>
- * The graphical parameters and their values are derived from SVG/CSS2
- * standards with names and semantics which are as close as possible.
- * </li>
+ *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
+ *       and semantics which are as close as possible.
  * </ul>
- * </p>
  *
  * @author James Macgill
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public interface PointSymbolizer extends org.opengis.style.PointSymbolizer, Symbolizer {
     /**
-     * Provides the graphical-symbolization parameter to use for the  point
-     * geometry.
+     * Provides the graphical-symbolization parameter to use for the point geometry.
      *
      * @return The Graphic to be used when drawing a point.
      */
     Graphic getGraphic();
 
-    /**
-     * Provides the graphical-symbolization parameter to use for the  point
-     * geometry.
-     */
+    /** Provides the graphical-symbolization parameter to use for the point geometry. */
     void setGraphic(org.opengis.style.Graphic graphic);
-
-    
 }

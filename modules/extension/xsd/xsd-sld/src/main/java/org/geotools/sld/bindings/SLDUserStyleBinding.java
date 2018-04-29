@@ -16,23 +16,21 @@
  */
 package org.geotools.sld.bindings;
 
-import org.opengis.util.InternationalString;
-import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
-
+import org.opengis.util.InternationalString;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:UserStyle.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="UserStyle"&gt;
  *      &lt;xsd:annotation&gt;
@@ -53,12 +51,8 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDUserStyleBinding extends AbstractComplexBinding {
@@ -68,14 +62,13 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
         this.styleFactory = styleFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.USERSTYLE;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -86,6 +79,7 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -96,50 +90,49 @@ public class SLDUserStyleBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Style style = styleFactory.createStyle();
 
-        //&lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
         if (node.hasChild("Name")) {
             style.setName((String) node.getChildValue("Name"));
         }
 
-        //&lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
         if (node.hasChild("Title")) {
-            style.getDescription().setTitle(
-                    (InternationalString) node.getChildValue("Title"));
+            style.getDescription().setTitle((InternationalString) node.getChildValue("Title"));
         }
 
-        //&lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
         if (node.hasChild("Abstract")) {
-            style.getDescription().setAbstract(
-                    (InternationalString) node.getChildValue("Abstract"));
+            style.getDescription()
+                    .setAbstract((InternationalString) node.getChildValue("Abstract"));
         }
 
-        //&lt;xsd:element ref="sld:IsDefault" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:IsDefault" minOccurs="0"/&gt;
         if (node.hasChild("IsDefault")) {
             style.setDefault(((Boolean) node.getChildValue("IsDefault")).booleanValue());
         }
 
-        //&lt;xsd:element ref="sld:FeatureTypeStyle" maxOccurs="unbounded"/&gt;
+        // &lt;xsd:element ref="sld:FeatureTypeStyle" maxOccurs="unbounded"/&gt;
         List fts = node.getChildValues(FeatureTypeStyle.class);
-        style.setFeatureTypeStyles((FeatureTypeStyle[]) fts.toArray(
-                new FeatureTypeStyle[fts.size()]));
+        style.setFeatureTypeStyles(
+                (FeatureTypeStyle[]) fts.toArray(new FeatureTypeStyle[fts.size()]));
 
         return style;
     }

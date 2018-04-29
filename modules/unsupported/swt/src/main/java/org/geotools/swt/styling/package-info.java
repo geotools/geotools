@@ -15,8 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Dialogs to create basic rendering styles.
- */
+/** Dialogs to create basic rendering styles. */
 package org.geotools.swt.styling;
-

@@ -31,7 +31,6 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
@@ -49,11 +48,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.type.Name;
 
-/**
- * 
- * @author Nicola Lagomarsini Geosolutions
- *
- */
+/** @author Nicola Lagomarsini Geosolutions */
 public class DefaultClassesTest {
 
     private static Map<String, Parameter<?>> emptyMap;
@@ -78,8 +73,12 @@ public class DefaultClassesTest {
 
     @Test
     public void testDefaultCoverageAccess() throws IOException {
-        DefaultCoverageAccess access = new DefaultCoverageAccess(new TestDriver(),
-                EnumSet.of(AccessType.READ_WRITE), emptyMap, connectionParams);
+        DefaultCoverageAccess access =
+                new DefaultCoverageAccess(
+                        new TestDriver(),
+                        EnumSet.of(AccessType.READ_WRITE),
+                        emptyMap,
+                        connectionParams);
         // Checks on the creation and removal of a store
         assertFalse(access.canCreate(name, connectionParams, hints, null));
         assertFalse(access.canDelete(name, connectionParams, hints));
@@ -121,10 +120,17 @@ public class DefaultClassesTest {
 
     @Test
     public void testDefaultFileDriver() {
-        DefaultFileDriver driver = new DefaultFileDriver(TestDriver.TEST_DRIVER,
-                TestDriver.TEST_DRIVER, TestDriver.TEST_DRIVER, new Hints(),
-                Collections.singletonList(".EXT"), EnumSet.of(DriverCapabilities.CONNECT,
-                        DriverCapabilities.CREATE, DriverCapabilities.DELETE));
+        DefaultFileDriver driver =
+                new DefaultFileDriver(
+                        TestDriver.TEST_DRIVER,
+                        TestDriver.TEST_DRIVER,
+                        TestDriver.TEST_DRIVER,
+                        new Hints(),
+                        Collections.singletonList(".EXT"),
+                        EnumSet.of(
+                                DriverCapabilities.CONNECT,
+                                DriverCapabilities.CREATE,
+                                DriverCapabilities.DELETE));
 
         // Various checks on the DefaultFileDriver class
         assertFalse(driver.canProcess(DriverCapabilities.CONNECT, url, connectionParams));
@@ -214,19 +220,24 @@ public class DefaultClassesTest {
     @Test
     public void testDefaultGridCoverageResponse() {
         // creation of a dummy coverage and response
-        GridCoverage2D cov = new GridCoverageFactory().create("test",
-                new float[][] { { 1.0f, 1.0f } }, new ReferencedEnvelope(0.0d, 1.0d, 0.0d, 1.0d,
-                        null));
+        GridCoverage2D cov =
+                new GridCoverageFactory()
+                        .create(
+                                "test",
+                                new float[][] {{1.0f, 1.0f}},
+                                new ReferencedEnvelope(0.0d, 1.0d, 0.0d, 1.0d, null));
         DateRange temporalExtent = new DateRange(new Date(10000), new Date(20000));
         NumberRange<Double> verticalExtent = new NumberRange<Double>(Double.class, 0.0d, 100.0d);
-        DefaultGridCoverageResponse response = new DefaultGridCoverageResponse(cov, temporalExtent,
-                verticalExtent);
+        DefaultGridCoverageResponse response =
+                new DefaultGridCoverageResponse(cov, temporalExtent, verticalExtent);
 
         // Check if the response results are equals to that of the input GridCoverage
         assertEquals(response.getNumSampleDimensions(), cov.getNumSampleDimensions());
         assertEquals(response.getNumOverviews(), cov.getNumOverviews());
-        assertTrue(CRS.equalsIgnoreMetadata(response.getCoordinateReferenceSystem(),
-                cov.getCoordinateReferenceSystem()));
+        assertTrue(
+                CRS.equalsIgnoreMetadata(
+                        response.getCoordinateReferenceSystem(),
+                        cov.getCoordinateReferenceSystem()));
         assertTrue(new ReferencedEnvelope(response.getEnvelope()).contains(cov.getEnvelope2D()));
         assertTrue(response.isDataEditable() == cov.isDataEditable());
         assertSame(response.getGridGeometry(), cov.getGridGeometry());
@@ -239,10 +250,10 @@ public class DefaultClassesTest {
         assertArrayEquals(response.getOptimalDataBlockSizes(), cov.getOptimalDataBlockSizes());
 
         // Evaluation of the same position
-        DirectPosition2D pos = new DirectPosition2D(cov.getEnvelope2D().getCenterX(), cov
-                .getEnvelope2D().getCenterY());
-        
+        DirectPosition2D pos =
+                new DirectPosition2D(
+                        cov.getEnvelope2D().getCenterX(), cov.getEnvelope2D().getCenterY());
+
         assertArrayEquals(response.evaluate(pos, new byte[1]), cov.evaluate(pos, new byte[1]));
     }
-
 }

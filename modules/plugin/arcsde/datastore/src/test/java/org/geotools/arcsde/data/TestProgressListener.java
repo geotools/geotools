@@ -23,16 +23,13 @@ import org.opengis.util.ProgressListener;
 
 /**
  * An implementation of ProgressListener to use when testing.
- * <p>
- * This implementation is good about throwing illegal state exceptions and so forth.
- * 
+ *
+ * <p>This implementation is good about throwing illegal state exceptions and so forth.
+ *
  * @author Jody
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
- *         /geotools/arcsde/data/TestProgressListener.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
+ *     /geotools/arcsde/data/TestProgressListener.java $
  */
 public class TestProgressListener implements ProgressListener {
     int progressCount;
@@ -70,8 +67,7 @@ public class TestProgressListener implements ProgressListener {
     }
 
     public void complete() {
-        if (completed)
-            throw new IllegalStateException("Cannot complete twice");
+        if (completed) throw new IllegalStateException("Cannot complete twice");
         progress = 100f;
         completed = true;
     }
@@ -101,18 +97,14 @@ public class TestProgressListener implements ProgressListener {
     }
 
     public void progress(float percent) {
-        if (!started)
-            throw new IllegalStateException("Cannot record progress unless started");
-        if (completed)
-            throw new IllegalStateException("Cannot record progress when completed");
+        if (!started) throw new IllegalStateException("Cannot record progress unless started");
+        if (completed) throw new IllegalStateException("Cannot record progress when completed");
         progress = percent;
     }
 
     public void setCanceled(boolean cancel) {
-        if (!started)
-            throw new IllegalStateException("Cannot canel unless started");
-        if (completed)
-            throw new IllegalStateException("Cannot cancel when completed");
+        if (!started) throw new IllegalStateException("Cannot canel unless started");
+        if (completed) throw new IllegalStateException("Cannot cancel when completed");
         isCanceled = cancel;
     }
 
@@ -125,13 +117,11 @@ public class TestProgressListener implements ProgressListener {
     }
 
     public void started() {
-        if (started)
-            throw new IllegalStateException("Cannot start twice");
+        if (started) throw new IllegalStateException("Cannot start twice");
         this.started = true;
     }
 
     public void warningOccurred(String source, String location, String warning) {
-        this.warning = new String[] { source, location, warning };
+        this.warning = new String[] {source, location, warning};
     }
-
 }

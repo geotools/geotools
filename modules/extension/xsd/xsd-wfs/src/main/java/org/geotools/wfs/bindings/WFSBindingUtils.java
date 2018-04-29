@@ -16,25 +16,22 @@
 package org.geotools.wfs.bindings;
 
 import java.math.BigInteger;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.geotools.xml.Node;
-
 
 /**
  * Utility class to be used by bindings.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- *
  */
 public class WFSBindingUtils {
     /**
      * Sets the service feature of the object passed in.
-     * <p>
-     * The service value is retreived as an attribute from the node, if
-     * <code>null</code>, the default "WFS" is used.
-     * </p>
+     *
+     * <p>The service value is retreived as an attribute from the node, if <code>null</code>, the
+     * default "WFS" is used.
+     *
      * @param object An object which contains a feature named "service"
      * @param node The parse node.
      */
@@ -50,10 +47,10 @@ public class WFSBindingUtils {
 
     /**
      * Sets the version feature of the object passed in.
-     * <p>
-     * The version value is retreived as an attribute from the node, if
-     * <code>null</code>, the default "1.0.0" is used.
-     * </p>
+     *
+     * <p>The version value is retreived as an attribute from the node, if <code>null</code>, the
+     * default "1.0.0" is used.
+     *
      * @param object An object which contains a feature named "version"
      * @param node The parse node.
      */
@@ -69,10 +66,10 @@ public class WFSBindingUtils {
 
     /**
      * Sets the outputFormat feature of the object passed in.
-     * <p>
-     * The outputFormat value is retreived as an attribute from the node, if
-     * <code>null</code>, the default <code>default</code> is used.
-     * </p>
+     *
+     * <p>The outputFormat value is retreived as an attribute from the node, if <code>null</code>,
+     * the default <code>default</code> is used.
+     *
      * @param object An object which contains a feature named "version"
      * @param node The parse node.
      */
@@ -96,7 +93,6 @@ public class WFSBindingUtils {
 
     /**
      * @param value A number
-     *
      * @return The number as a {@link BigInteger}.
      */
     public static BigInteger asBigInteger(Number number) {

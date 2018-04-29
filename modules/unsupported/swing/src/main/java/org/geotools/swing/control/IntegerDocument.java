@@ -22,9 +22,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- * A document class to handle integer verification and parsing for
- * {@code JIntTextField} and other classes wishing to restrict user input
- * to integer values.
+ * A document class to handle integer verification and parsing for {@code JIntTextField} and other
+ * classes wishing to restrict user input to integer values.
  *
  * @author Michael Bedward
  * @since 2.6.1
@@ -36,9 +35,7 @@ class IntegerDocument extends PlainDocument {
     private int value;
     private boolean allowNegative;
 
-    /**
-     * Creates a new document that will allow both positive and negative values
-     */
+    /** Creates a new document that will allow both positive and negative values */
     public IntegerDocument() {
         this(true);
     }
@@ -54,6 +51,7 @@ class IntegerDocument extends PlainDocument {
 
     /**
      * Get the value corresponding to the current text
+     *
      * @return the current value
      */
     public int getValue() {
@@ -69,11 +67,10 @@ class IntegerDocument extends PlainDocument {
         return allowNegative;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
-    public void insertString(int offset, String text, AttributeSet attributes) throws BadLocationException {
+    public void insertString(int offset, String text, AttributeSet attributes)
+            throws BadLocationException {
         if (text != null) {
             String newText;
 
@@ -95,15 +92,14 @@ class IntegerDocument extends PlainDocument {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void remove(int offset, int length) throws BadLocationException {
         final int curLen = getLength();
         final String currentContent = getText(0, curLen);
-        final String newText = currentContent.substring(0, offset) +
-                currentContent.substring(length + offset, curLen);
+        final String newText =
+                currentContent.substring(0, offset)
+                        + currentContent.substring(length + offset, curLen);
 
         if (allowNegative && offset == 0 && newText.equals("-")) {
             value = 0;
@@ -119,7 +115,6 @@ class IntegerDocument extends PlainDocument {
      * @param proposedText the proposed text value
      * @param offset position in the document
      * @return the parsed integer value
-     *
      * @throws BadLocationException if the string did not represent a value integer
      */
     public int checkInput(String proposedText, int offset) throws BadLocationException {

@@ -18,12 +18,9 @@ package org.geotools.styling.builder;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.geotools.styling.Symbolizer;
 
-/**
- * Base class handling options management
- */
+/** Base class handling options management */
 public abstract class SymbolizerBuilder<T extends Symbolizer> extends AbstractStyleBuilder<T> {
 
     public SymbolizerBuilder(AbstractSLDBuilder parent) {
@@ -36,6 +33,4 @@ public abstract class SymbolizerBuilder<T extends Symbolizer> extends AbstractSt
         options.put(name, value);
         return this;
     }
-
-
 }

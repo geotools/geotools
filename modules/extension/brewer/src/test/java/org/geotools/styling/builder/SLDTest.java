@@ -11,17 +11,19 @@ import org.geotools.styling.UserLayer;
 import org.junit.Test;
 import org.opengis.filter.PropertyIsGreaterThan;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDTest extends AbstractStyleTest {
 
     @Test
     public void testSimpleNamed() {
-        StyledLayerDescriptor sld = new NamedLayerBuilder().name("states").style()
-                .featureTypeStyle().rule().point().buildSLD();
+        StyledLayerDescriptor sld =
+                new NamedLayerBuilder()
+                        .name("states")
+                        .style()
+                        .featureTypeStyle()
+                        .rule()
+                        .point()
+                        .buildSLD();
         // print(sld);
 
         StyleCollector collector = new StyleCollector();
@@ -35,8 +37,8 @@ public class SLDTest extends AbstractStyleTest {
 
     @Test
     public void testNamedStyle() {
-        StyledLayerDescriptor sld = new NamedLayerBuilder().name("states").style()
-                .name("population").buildSLD();
+        StyledLayerDescriptor sld =
+                new NamedLayerBuilder().name("states").style().name("population").buildSLD();
         // print(sld);
 
         StyleCollector collector = new StyleCollector();
@@ -55,22 +57,23 @@ public class SLDTest extends AbstractStyleTest {
 
     @Test
     public void testRemoteOWS() {
-        PropertyIsGreaterThan tenMillionPeople = ff.greater(ff.property("PERSONS"), ff.literal(10000000));
+        PropertyIsGreaterThan tenMillionPeople =
+                ff.greater(ff.property("PERSONS"), ff.literal(10000000));
 
         UserLayerBuilder lb = new UserLayerBuilder();
         lb.remoteOWS("http://geoserver.org/geoserver/ows", "WFS");
-        lb.featureTypeConstraint().featureTypeName("states")
-                .filter(tenMillionPeople);
+        lb.featureTypeConstraint().featureTypeName("states").filter(tenMillionPeople);
         lb.style().featureTypeStyle().rule().polygon().fill();
         StyledLayerDescriptor sld = lb.buildSLD();
         // print(sld);
-        
+
         StyleCollector collector = new StyleCollector();
         sld.accept(collector);
         assertSimpleStyle(collector);
 
         UserLayer layer = (UserLayer) collector.layers.get(0);
-        assertEquals("http://geoserver.org/geoserver/ows", layer.getRemoteOWS().getOnlineResource());
+        assertEquals(
+                "http://geoserver.org/geoserver/ows", layer.getRemoteOWS().getOnlineResource());
         assertEquals("WFS", layer.getRemoteOWS().getService());
         FeatureTypeConstraint constraint = layer.getLayerFeatureConstraints()[0];
         assertEquals("states", constraint.getFeatureTypeName());

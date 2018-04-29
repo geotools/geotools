@@ -19,11 +19,7 @@ package org.geotools.styling.builder;
 import org.geotools.styling.LinePlacement;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
     private Expression offset;
 
@@ -85,8 +81,8 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
         if (unset) {
             return null;
         }
-        LinePlacement linePlacement = sf.linePlacement(offset, initialGap, gap, repeated, aligned,
-                generalizedLine);
+        LinePlacement linePlacement =
+                sf.linePlacement(offset, initialGap, gap, repeated, aligned, generalizedLine);
         if (parent == null) {
             reset();
         }
@@ -127,5 +123,4 @@ public class LinePlacementBuilder extends AbstractStyleBuilder<LinePlacement> {
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().text().labelText("label").linePlacement().init(this);
     }
-
 }

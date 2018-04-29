@@ -21,10 +21,7 @@ import org.geotools.tile.Tile;
 import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- * @author ian
- *
- */
+/** @author ian */
 public class WMTSTileOnLineTest extends OnlineTestCase {
 
     private Tile restTile;
@@ -33,8 +30,7 @@ public class WMTSTileOnLineTest extends OnlineTestCase {
 
     @Test
     @Ignore
-    public void testDummy() {
-    }
+    public void testDummy() {}
 
     // @Override
     // protected void setUpInternal() throws Exception {
@@ -88,5 +84,4 @@ public class WMTSTileOnLineTest extends OnlineTestCase {
 
         return "wmts";
     }
-
 }

@@ -16,6 +16,15 @@
  */
 package org.geotools.jdbc;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -36,27 +45,14 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
-
 /**
  * Excercises spatial filters
- * 
+ *
  * @author Andrea Aime - OpenGeo
- *
- *
- *
  * @source $URL$
  */
 public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
-    
+
     TestData td;
 
     protected void connect() throws Exception {
@@ -64,18 +60,18 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
         if (td == null) {
             td = new TestData(((JDBCDataStoreAPITestSetup) setup).getInitialPrimaryKeyValue());
-            
-            td.ROAD = tname( td.ROAD );
-            td.ROAD_ID = aname( td.ROAD_ID );
-            td.ROAD_GEOM = aname( td.ROAD_GEOM );
-            td.ROAD_NAME = aname( td.ROAD_NAME );
-            
-            td.RIVER = tname( td.RIVER );
-            td.RIVER_ID = aname( td.RIVER_ID );
-            td.RIVER_GEOM = aname( td.RIVER_GEOM );
-            td.RIVER_FLOW = aname( td.RIVER_FLOW );
-            td.RIVER_RIVER = aname( td.RIVER_RIVER );
-            
+
+            td.ROAD = tname(td.ROAD);
+            td.ROAD_ID = aname(td.ROAD_ID);
+            td.ROAD_GEOM = aname(td.ROAD_GEOM);
+            td.ROAD_NAME = aname(td.ROAD_NAME);
+
+            td.RIVER = tname(td.RIVER);
+            td.RIVER_ID = aname(td.RIVER_ID);
+            td.RIVER_GEOM = aname(td.RIVER_GEOM);
+            td.RIVER_FLOW = aname(td.RIVER_FLOW);
+            td.RIVER_RIVER = aname(td.RIVER_RIVER);
+
             td.build();
         }
 
@@ -91,7 +87,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(bbox);
         checkSingleResult(features, "r2");
     }
-    
+
     public void testBboxFilterDefault() throws Exception {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         // should match only "r2"
@@ -105,7 +101,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LineString ls = gf.createLineString(sf.create(new double[] { 2, 3, 4, 3 }, 2));
+        LineString ls = gf.createLineString(sf.create(new double[] {2, 3, 4, 3}, 2));
         Crosses cs = ff.crosses(ff.property(aname("geom")), ff.literal(ls));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(cs);
         checkSingleResult(features, "r2");
@@ -116,29 +112,29 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         // should match only "r1"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LineString ls = gf.createLineString(sf.create(new double[] { 2, 1, 2, 3 }, 2));
+        LineString ls = gf.createLineString(sf.create(new double[] {2, 1, 2, 3}, 2));
         Intersects is = ff.intersects(ff.property(aname("geom")), ff.literal(ls));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(is);
         checkSingleResult(features, "r1");
     }
-    
+
     public void testIntersectsRingFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r1"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LineString ls = gf.createLinearRing(sf.create(new double[] { 2, 1, 2, 3, 0, 3, 2, 1}, 2));
+        LineString ls = gf.createLinearRing(sf.create(new double[] {2, 1, 2, 3, 0, 3, 2, 1}, 2));
         Intersects is = ff.intersects(ff.property(aname("geom")), ff.literal(ls));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(is);
         checkSingleResult(features, "r1");
     }
-    
+
     public void testTouchesFilter() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         // should match only "r1"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LineString ls = gf.createLineString(sf.create(new double[] { 1, 1, 1, 3 }, 2));
+        LineString ls = gf.createLineString(sf.create(new double[] {1, 1, 1, 3}, 2));
         Touches is = ff.touches(ff.property(aname("geom")), ff.literal(ls));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(is);
         checkSingleResult(features, "r1");
@@ -149,17 +145,17 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LinearRing shell = gf.createLinearRing(sf.create(new double[] { 2, -1, 2, 5, 4, 5, 4, -1,
-                2, -1 }, 2));
+        LinearRing shell =
+                gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2));
         Polygon polygon = gf.createPolygon(shell, null);
         Contains cs = ff.contains(ff.literal(polygon), ff.property(aname("geom")));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(cs);
         checkSingleResult(features, "r2");
     }
-    
+
     /**
      * Same as contains, with roles reversed
-     * 
+     *
      * @throws Exception
      */
     public void testWithinFilter() throws Exception {
@@ -167,8 +163,8 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LinearRing shell = gf.createLinearRing(sf.create(new double[] { 2, -1, 2, 5, 4, 5, 4, -1,
-                2, -1 }, 2));
+        LinearRing shell =
+                gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2));
         Polygon polygon = gf.createPolygon(shell, null);
         Within wt = ff.within(ff.property(aname("geom")), ff.literal(polygon));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(wt);
@@ -180,8 +176,8 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
         // should match only "r2"
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LinearRing shell = gf.createLinearRing(sf.create(new double[] { 4, -1, 4, 5, 6, 5, 6, -1,
-                4, -1 }, 2));
+        LinearRing shell =
+                gf.createLinearRing(sf.create(new double[] {4, -1, 4, 5, 6, 5, 6, -1, 4, -1}, 2));
         Polygon polygon = gf.createPolygon(shell, null);
         Disjoint dj = ff.disjoint(ff.property(aname("geom")), ff.literal(polygon));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(dj);
@@ -200,7 +196,7 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 
     protected void checkSingleResult(FeatureCollection features, String name) {
         assertEquals(1, features.size());
-        try(FeatureIterator fr = features.features()) {
+        try (FeatureIterator fr = features.features()) {
             assertTrue(fr.hasNext());
             SimpleFeature f = (SimpleFeature) fr.next();
             assertNotNull(f);
@@ -208,28 +204,29 @@ public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
             assertFalse(fr.hasNext());
         }
     }
-    
-    public void testGeometryCollection() throws Exception{
-      PrecisionModel precisionModel = new PrecisionModel();
-    
-      int SRID = 4326;
-      GeometryFactory gf = new GeometryFactory(precisionModel, SRID);
-      Coordinate[] points = { new Coordinate(30, 40), new Coordinate(50, 60) };
-      LineString[] geometries = new LineString[2];
-      geometries [0] = gf.createLineString(points);
-      Coordinate[] points2 = { new Coordinate(40, 30), new Coordinate(70, 40) };
-      geometries[1] = gf.createLineString(points2);
-      GeometryFactory factory = new GeometryFactory();
-      GeometryCollection geometry = new GeometryCollection(geometries, factory );
-      
-      FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-      
-      PropertyName p = ff.property(aname("geom"));        
-      Literal collect = ff.literal(geometry);
-    
-      DWithin dwithinGeomCo  = ((FilterFactory2) ff).dwithin(p, collect, 5, "meter");
-      Query dq = new Query(tname("road"), dwithinGeomCo);
-      SimpleFeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(dq);
-      assertEquals(0, features.size());
+
+    public void testGeometryCollection() throws Exception {
+        PrecisionModel precisionModel = new PrecisionModel();
+
+        int SRID = 4326;
+        GeometryFactory gf = new GeometryFactory(precisionModel, SRID);
+        Coordinate[] points = {new Coordinate(30, 40), new Coordinate(50, 60)};
+        LineString[] geometries = new LineString[2];
+        geometries[0] = gf.createLineString(points);
+        Coordinate[] points2 = {new Coordinate(40, 30), new Coordinate(70, 40)};
+        geometries[1] = gf.createLineString(points2);
+        GeometryFactory factory = new GeometryFactory();
+        GeometryCollection geometry = new GeometryCollection(geometries, factory);
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+
+        PropertyName p = ff.property(aname("geom"));
+        Literal collect = ff.literal(geometry);
+
+        DWithin dwithinGeomCo = ((FilterFactory2) ff).dwithin(p, collect, 5, "meter");
+        Query dq = new Query(tname("road"), dwithinGeomCo);
+        SimpleFeatureCollection features =
+                dataStore.getFeatureSource(tname("road")).getFeatures(dq);
+        assertEquals(0, features.size());
     }
 }

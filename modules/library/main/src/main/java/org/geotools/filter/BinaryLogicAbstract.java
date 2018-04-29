@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,9 +21,6 @@ import java.util.List;
 
 /**
  * @author jdeolive
- *
- *
- *
  * @source $URL$
  */
 public abstract class BinaryLogicAbstract extends AbstractFilter {
@@ -32,16 +29,12 @@ public abstract class BinaryLogicAbstract extends AbstractFilter {
     protected BinaryLogicAbstract(List<org.opengis.filter.Filter> children) {
         this.children = children;
     }
-	/**
-	 * Returned list is unmodifieable.
-	 * For a cheaper access option use visitor
-	 */
-	public List<org.opengis.filter.Filter> getChildren() {
-	    return Collections.unmodifiableList(children);
-	}
-	
+    /** Returned list is unmodifieable. For a cheaper access option use visitor */
+    public List<org.opengis.filter.Filter> getChildren() {
+        return Collections.unmodifiableList(children);
+    }
+
     public void setChildren(List<org.opengis.filter.Filter> children) {
         this.children = children;
     }
-
 }

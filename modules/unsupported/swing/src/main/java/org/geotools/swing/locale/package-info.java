@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Support for localized text in GUI elements.
- */
+/** Support for localized text in GUI elements. */
 package org.geotools.swing.locale;

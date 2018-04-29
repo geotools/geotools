@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.eclipse.emf.common.CommonPlugin.Implementation;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.Loggers;
@@ -39,12 +38,12 @@ import org.geotools.xml.Parser;
 import org.xml.sax.EntityResolver;
 
 /**
- * Potential base class for {@link WFSResponseFactory} implementations. Provides support for detecting and parsing of exception reports received as
- * {@link HTTPResponse}.
- * <p>
- * Subclasses have to {@link Implementation} {@link #isValidResponseHead(StringBuilder)} and
+ * Potential base class for {@link WFSResponseFactory} implementations. Provides support for
+ * detecting and parsing of exception reports received as {@link HTTPResponse}.
+ *
+ * <p>Subclasses have to {@link Implementation} {@link #isValidResponseHead(StringBuilder)} and
  * {@link #createResponseImpl(WFSRequest, HTTPResponse, InputStream)}.
- * 
+ *
  * @author awaterme
  */
 public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
@@ -52,12 +51,13 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
     private static final Logger LOGGER = Loggers.MODULE;
 
     /**
-     * Returns either a properly parsed response object or an exception depending on what the server returned.
-     * <p>
-     * Ideally, the decision should only be taken based on the WFS response's content-type HTTP header. Truth is, some WFS implementations does not
-     * set proper HTTP response headers so a bit of an heuristic may be needed in order to identify the actual response.
-     * </p>
-     * 
+     * Returns either a properly parsed response object or an exception depending on what the server
+     * returned.
+     *
+     * <p>Ideally, the decision should only be taken based on the WFS response's content-type HTTP
+     * header. Truth is, some WFS implementations does not set proper HTTP response headers so a bit
+     * of an heuristic may be needed in order to identify the actual response.
+     *
      * @see WFSResponseFactory#createParser(WFSResponse)
      * @see FeatureCollectionParser
      * @see ExceptionReportParser
@@ -76,8 +76,8 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
         } else {
             buffSize = 512;
         }
-        PushbackInputStream pushbackIn = new PushbackInputStream(response.getResponseStream(),
-                buffSize);
+        PushbackInputStream pushbackIn =
+                new PushbackInputStream(response.getResponseStream(), buffSize);
         byte[] buff = new byte[buffSize];
         int readCount = 0;
         int r;
@@ -96,8 +96,9 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
         }
 
         StringBuilder head = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(new ByteArrayInputStream(buff), charset))) {
+        try (BufferedReader reader =
+                new BufferedReader(
+                        new InputStreamReader(new ByteArrayInputStream(buff), charset))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 head.append(line).append('\n');
@@ -120,15 +121,16 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
 
     /**
      * Has to be implemented to turn the request and response into a proper {@link WFSResponse}.
-     * 
+     *
      * @param request
      * @param response
-     * @param in The stream to read the response from. It is safe not to close this stream explicitly but to dispose the response instead.
+     * @param in The stream to read the response from. It is safe not to close this stream
+     *     explicitly but to dispose the response instead.
      * @return The actual response
      * @throws IOException
      */
-    protected abstract WFSResponse createResponseImpl(WFSRequest request, HTTPResponse response,
-            InputStream in) throws IOException;
+    protected abstract WFSResponse createResponseImpl(
+            WFSRequest request, HTTPResponse response, InputStream in) throws IOException;
 
     /**
      * @param head The first couple of characters from the response, typically the first 512
@@ -137,7 +139,6 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
     protected abstract boolean isValidResponseHead(String head);
 
     /**
-     * 
      * @param originatingRequest
      * @param inputStream
      * @return An {@link WFSException}
@@ -162,7 +163,8 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             return new WFSException("Exception parsing server exception report", e);
         }
         if (parsed instanceof net.opengis.ows10.ExceptionReportType) {
-            net.opengis.ows10.ExceptionReportType report = (net.opengis.ows10.ExceptionReportType) parsed;
+            net.opengis.ows10.ExceptionReportType report =
+                    (net.opengis.ows10.ExceptionReportType) parsed;
             @SuppressWarnings("unchecked")
             List<net.opengis.ows10.ExceptionType> exceptions = report.getException();
 
@@ -178,8 +180,9 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
                 result.addExceptionDetails(ex.getExceptionCode(), ex.getLocator(), texts);
             }
             return result;
-        } else if (parsed instanceof net.opengis.ows11.ExceptionReportType){
-            net.opengis.ows11.ExceptionReportType report = (net.opengis.ows11.ExceptionReportType) parsed;
+        } else if (parsed instanceof net.opengis.ows11.ExceptionReportType) {
+            net.opengis.ows11.ExceptionReportType report =
+                    (net.opengis.ows11.ExceptionReportType) parsed;
             @SuppressWarnings("unchecked")
             List<net.opengis.ows11.ExceptionType> exceptions = report.getException();
 
@@ -196,7 +199,8 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             }
             return result;
         } else {
-            net.opengis.ows20.ExceptionReportType report = (net.opengis.ows20.ExceptionReportType) parsed;
+            net.opengis.ows20.ExceptionReportType report =
+                    (net.opengis.ows20.ExceptionReportType) parsed;
             List<net.opengis.ows20.ExceptionType> exceptions = report.getException();
 
             StringBuilder msg = new StringBuilder("WFS returned an exception.");
@@ -207,12 +211,10 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             WFSException result = new WFSException(msg.toString());
             for (net.opengis.ows20.ExceptionType ex : exceptions) {
                 String text = ex.getExceptionText();
-                result.addExceptionDetails(ex.getExceptionCode(), ex.getLocator(), Collections.singletonList(text));
+                result.addExceptionDetails(
+                        ex.getExceptionCode(), ex.getLocator(), Collections.singletonList(text));
             }
             return result;
         }
-
-
     }
-
 }

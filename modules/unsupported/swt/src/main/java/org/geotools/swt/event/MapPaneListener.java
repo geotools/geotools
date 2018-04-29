@@ -22,9 +22,6 @@ package org.geotools.swt.event;
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public interface MapPaneListener {
@@ -51,8 +48,7 @@ public interface MapPaneListener {
     public void onResized(MapPaneEvent ev);
 
     /**
-     * Called by the map pane when its display area has been
-     * changed e.g. by zooming or panning
+     * Called by the map pane when its display area has been changed e.g. by zooming or panning
      *
      * @param ev the event
      */
@@ -60,7 +56,7 @@ public interface MapPaneListener {
 
     /**
      * Called by the map pane when it has started rendering features
-     * 
+     *
      * @param ev the event
      */
     public void onRenderingStarted(MapPaneEvent ev);
@@ -73,12 +69,10 @@ public interface MapPaneListener {
     public void onRenderingStopped(MapPaneEvent ev);
 
     /**
-     * Called by the map pane when it is rendering features. The
-     * event will be carrying data: a floating point value between
-     * 0 and 1 indicating rendering progress.
-     * 
+     * Called by the map pane when it is rendering features. The event will be carrying data: a
+     * floating point value between 0 and 1 indicating rendering progress.
+     *
      * @param ev the event
      */
     public void onRenderingProgress(MapPaneEvent ev);
-
 }

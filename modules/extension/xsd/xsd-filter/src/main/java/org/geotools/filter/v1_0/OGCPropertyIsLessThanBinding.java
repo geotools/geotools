@@ -17,31 +17,27 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.expression.Expression;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.PropertyIsLessThan;
+import org.opengis.filter.expression.Expression;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:PropertyIsLessThan.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="PropertyIsLessThan"
  *      substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/&gt;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCPropertyIsLessThanBinding extends AbstractComplexBinding {
@@ -51,14 +47,13 @@ public class OGCPropertyIsLessThanBinding extends AbstractComplexBinding {
         this.filterfactory = filterfactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.PropertyIsLessThan;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -73,13 +68,13 @@ public class OGCPropertyIsLessThanBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression e1 = (Expression) node.getChildValue(0);
         Expression e2 = (Expression) node.getChildValue(1);
 

@@ -17,24 +17,22 @@
 
 package org.geotools.filter.expression;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.geotools.factory.Hints;
-import org.opengis.feature.IllegalAttributeException;
 import org.geotools.feature.xpath.AttributeNodePointer;
 import org.geotools.feature.xpath.AttributeNodePointerFactory;
-import org.geotools.filter.expression.PropertyAccessor;
-import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -44,32 +42,23 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.xml.sax.helpers.NamespaceSupport;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Creates a namespace aware property accessor for ISO Features.
- * <p>
- * The created accessor handles a small subset of xpath expressions, a non-nested "name" which
+ *
+ * <p>The created accessor handles a small subset of xpath expressions, a non-nested "name" which
  * corresponds to a feature attribute, and "@id", corresponding to the feature id.
- * </p>
- * <p>
- * THe property accessor may be run against {@link org.geotools.feature.Feature}, or against
+ *
+ * <p>THe property accessor may be run against {@link org.geotools.feature.Feature}, or against
  * {@link org.geotools.feature.FeatureType}. In the former case the feature property value is
  * returned, in the latter a descriptor is returned (in case of "@" attributes, a Name is returned
  * or null if the attribute doesn't exist - can be used to validate an x-path!) .
- * </p>
- * 
+ *
  * @author Justin Deoliveira (The Open Planning Project)
  * @author Gabriel Roldan (Axios Engineering)
- * 
- *
- *
- *
- *
  * @source $URL$
  */
 public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
-   
+
     static {
         // unfortunatley, jxpath only works against concreate classes
         // JXPathIntrospector.registerDynamicClass(DefaultFeature.class,
@@ -84,9 +73,9 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
     static PropertyAccessor FID_ACCESS = new FidFeaturePropertyAccessor();
 
-    public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target,
-            Hints hints) {
-        
+    public PropertyAccessor createPropertyAccessor(
+            Class type, String xpath, Class target, Hints hints) {
+
         if (SimpleFeature.class.isAssignableFrom(type)) {
             /*
              * This class is not intended for use with SimpleFeature and causes problems when
@@ -96,27 +85,24 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             return null;
         }
 
-        if (xpath == null)
-            return null;
+        if (xpath == null) return null;
 
         if (!ComplexAttribute.class.isAssignableFrom(type)
                 && !ComplexType.class.isAssignableFrom(type)
-                && !AttributeDescriptor.class.isAssignableFrom(type))
-            return null;
-        if("".equals(xpath))
-        //if ("".equals(xpath) && target == Geometry.class)
+                && !AttributeDescriptor.class.isAssignableFrom(type)) return null;
+        if ("".equals(xpath))
+            // if ("".equals(xpath) && target == Geometry.class)
             return DEFAULT_GEOMETRY_ACCESS;
 
         // check for fid access
-        if (xpath.matches("@(\\w+:)?id"))
-            return FID_ACCESS;
+        if (xpath.matches("@(\\w+:)?id")) return FID_ACCESS;
 
         // check for simple property access
         // if (xpath.matches("(\\w+:)?(\\w+)")) {
         NamespaceSupport namespaces = null;
         if (hints != null) {
-            namespaces = (NamespaceSupport) hints
-                    .get(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT);
+            namespaces =
+                    (NamespaceSupport) hints.get(FeaturePropertyAccessorFactory.NAMESPACE_CONTEXT);
         }
         if (namespaces == null) {
             return ATTRIBUTE_ACCESS;
@@ -130,7 +116,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
     /**
      * Access to Feature Identifier.
-     * 
+     *
      * @author Jody Garnett (Refractions Research)
      */
     static class FidFeaturePropertyAccessor implements PropertyAccessor {
@@ -146,39 +132,37 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         }
 
         public void set(Object object, String xpath, Object value, Class target) {
-            throw new org.opengis.feature.IllegalAttributeException(null, value,
-                    "feature id is immutable");
+            throw new org.opengis.feature.IllegalAttributeException(
+                    null, value, "feature id is immutable");
         }
     }
 
     static class DefaultGeometryFeaturePropertyAccessor implements PropertyAccessor {
 
         public boolean canHandle(Object object, String xpath, Class target) {
-            if (!"".equals(xpath))
-                return false;
+            if (!"".equals(xpath)) return false;
 
-            //if (target != Geometry.class || target != GeometryAttribute.class)
+            // if (target != Geometry.class || target != GeometryAttribute.class)
             //    return false;
 
             return (object instanceof Feature || object instanceof FeatureType);
         }
 
         public Object get(Object object, String xpath, Class target) {
-            if (object instanceof Feature)
-                return ((Feature) object).getDefaultGeometryProperty();            
+            if (object instanceof Feature) return ((Feature) object).getDefaultGeometryProperty();
             if (object instanceof FeatureType) {
                 FeatureType ft = (FeatureType) object;
-                GeometryDescriptor gd = ft.getGeometryDescriptor();            
-                if ( gd == null ) {
-                    //look for any geometry descriptor
-                    for ( PropertyDescriptor pd : ft.getDescriptors() ) {
-                        if ( Geometry.class.isAssignableFrom( pd.getType().getBinding() ) ) {
+                GeometryDescriptor gd = ft.getGeometryDescriptor();
+                if (gd == null) {
+                    // look for any geometry descriptor
+                    for (PropertyDescriptor pd : ft.getDescriptors()) {
+                        if (Geometry.class.isAssignableFrom(pd.getType().getBinding())) {
                             return pd;
                         }
                     }
-                }                
+                }
                 return gd;
-            }            
+            }
             return null;
         }
 
@@ -206,36 +190,36 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
     static class FeaturePropertyAccessor implements PropertyAccessor {
         /*static {
-            // TODO: use a wrapper public class for Feature in order to
-            // support any implementation. Reason being that JXPath works
-            // over concrete classes and hence we cannot set it up over the
-            // interface
-            JXPathIntrospector.registerDynamicClass(FeatureImpl.class,
-                    AttributePropertyHandler.class);
-            JXPathIntrospector.registerDynamicClass(SimpleFeatureImpl.class,
-                    AttributePropertyHandler.class);
-            JXPathIntrospector.registerDynamicClass(ComplexAttributeImpl.class,
-                    AttributePropertyHandler.class);
-            JXPathIntrospector.registerDynamicClass(AttributeImpl.class,
-                    AttributePropertyHandler.class);
-            JXPathIntrospector.registerDynamicClass(GeometryAttributeImpl.class,
-                    AttributePropertyHandler.class);
-//            JXPathIntrospector.registerDynamicClass(BooleanAttribute.class,
-//                    AttributePropertyHandler.class);
-//            JXPathIntrospector.registerDynamicClass(NumericAttribute.class,
-//                    AttributePropertyHandler.class);
-//            JXPathIntrospector.registerDynamicClass(TemporalAttribute.class,
-//                    AttributePropertyHandler.class);
-//            JXPathIntrospector.registerDynamicClass(TextualAttribute.class,
-//                    AttributePropertyHandler.class);
+                    // TODO: use a wrapper public class for Feature in order to
+                    // support any implementation. Reason being that JXPath works
+                    // over concrete classes and hence we cannot set it up over the
+                    // interface
+                    JXPathIntrospector.registerDynamicClass(FeatureImpl.class,
+                            AttributePropertyHandler.class);
+                    JXPathIntrospector.registerDynamicClass(SimpleFeatureImpl.class,
+                            AttributePropertyHandler.class);
+                    JXPathIntrospector.registerDynamicClass(ComplexAttributeImpl.class,
+                            AttributePropertyHandler.class);
+                    JXPathIntrospector.registerDynamicClass(AttributeImpl.class,
+                            AttributePropertyHandler.class);
+                    JXPathIntrospector.registerDynamicClass(GeometryAttributeImpl.class,
+                            AttributePropertyHandler.class);
+        //            JXPathIntrospector.registerDynamicClass(BooleanAttribute.class,
+        //                    AttributePropertyHandler.class);
+        //            JXPathIntrospector.registerDynamicClass(NumericAttribute.class,
+        //                    AttributePropertyHandler.class);
+        //            JXPathIntrospector.registerDynamicClass(TemporalAttribute.class,
+        //                    AttributePropertyHandler.class);
+        //            JXPathIntrospector.registerDynamicClass(TextualAttribute.class,
+        //                    AttributePropertyHandler.class);
 
-            JXPathIntrospector.registerDynamicClass(AttributeDescriptorImpl.class,
-                    AttributeDescriptorPropertyHandler.class);
-            JXPathIntrospector.registerDynamicClass(FeatureTypeImpl.class,
-                    AttributeDescriptorPropertyHandler.class);
-            JXPathIntrospector.registerDynamicClass(UniqueNameFeatureTypeImpl.class,
-                    AttributeDescriptorPropertyHandler.class);
-        }*/
+                    JXPathIntrospector.registerDynamicClass(AttributeDescriptorImpl.class,
+                            AttributeDescriptorPropertyHandler.class);
+                    JXPathIntrospector.registerDynamicClass(FeatureTypeImpl.class,
+                            AttributeDescriptorPropertyHandler.class);
+                    JXPathIntrospector.registerDynamicClass(UniqueNameFeatureTypeImpl.class,
+                            AttributeDescriptorPropertyHandler.class);
+                }*/
 
         private NamespaceSupport namespaces;
 
@@ -248,10 +232,10 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
         }
 
         public boolean canHandle(Object object, String xpath, Class target) {
-           
-            return object instanceof Attribute || object instanceof AttributeType
-                    || object instanceof AttributeDescriptor;
 
+            return object instanceof Attribute
+                    || object instanceof AttributeType
+                    || object instanceof AttributeDescriptor;
         }
 
         public Object get(Object object, String xpath, Class target) {
@@ -263,21 +247,21 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
                 String uri = namespaces.getURI(prefix);
                 context.registerNamespace(prefix, uri);
             }
-            
+
             Iterator it = context.iteratePointers(xpath);
             List results = new ArrayList<Object>();
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 Pointer pointer = (Pointer) it.next();
                 if (pointer instanceof AttributeNodePointer) {
-                    results.add (((AttributeNodePointer) pointer).getImmediateAttribute());
+                    results.add(((AttributeNodePointer) pointer).getImmediateAttribute());
                 } else {
                     results.add(pointer.getValue());
                 }
             }
-            
-            if (results.size()==0) {
+
+            if (results.size() == 0) {
                 throw new IllegalArgumentException("x-path gives no results.");
-            } else if (results.size()==1) {
+            } else if (results.size() == 1) {
                 return results.get(0);
             } else {
                 return results;
@@ -303,5 +287,4 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             assert value == context.getValue(xpath);
         }
     }
-
 }

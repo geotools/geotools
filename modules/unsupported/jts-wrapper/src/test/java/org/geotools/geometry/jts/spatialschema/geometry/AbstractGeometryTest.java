@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -13,40 +13,34 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- */ 
+ */
 package org.geotools.geometry.jts.spatialschema.geometry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+import junit.framework.TestCase;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.GeometryFactoryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.PrimitiveFactoryImpl;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.geometry.coordinate.LineString;
 import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.PrimitiveFactory;
 import org.opengis.geometry.primitive.Ring;
-import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.geometry.primitive.Surface;
-
-import junit.framework.TestCase;
+import org.opengis.geometry.primitive.SurfaceBoundary;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CRSFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Provided test case.
- *  
+ *
  * @author Jody Garnett
  * @author Joel Skelton
- *
- *
- *
- *
  * @source $URL$
  */
 public abstract class AbstractGeometryTest extends TestCase {
@@ -58,24 +52,21 @@ public abstract class AbstractGeometryTest extends TestCase {
     private CoordinateReferenceSystem crs;
 
     private static String WGS84_WKT =
-            "GEOGCS[\"WGS84\", DATUM[\"WGS84\", SPHEROID[\"WGS84\", 6378137.0, 298.257223563]]," +
-                    "PRIMEM[\"Greenwich\", 0.0], UNIT[\"degree\",0.017453292519943295], " +
-                    "AXIS[\"Longitude\",EAST], AXIS[\"Latitude\",NORTH]]";
-
+            "GEOGCS[\"WGS84\", DATUM[\"WGS84\", SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],"
+                    + "PRIMEM[\"Greenwich\", 0.0], UNIT[\"degree\",0.017453292519943295], "
+                    + "AXIS[\"Longitude\",EAST], AXIS[\"Latitude\",NORTH]]";
 
     /**
-     * setUp
-     * Called before each test.
+     * setUp Called before each test.
      *
      * @throws FactoryException
      */
     public void setUp() throws FactoryException {
-        CRSFactory crsFact = ReferencingFactoryFinder.getCRSFactory(null);        
+        CRSFactory crsFact = ReferencingFactoryFinder.getCRSFactory(null);
         crs = crsFact.createFromWKT(WGS84_WKT);
         gFact = new GeometryFactoryImpl(crs);
         pFact = new PrimitiveFactoryImpl(crs);
     }
-
 
     protected GeometryFactory getGeometryFactory() {
         return gFact;
@@ -143,6 +134,7 @@ public abstract class AbstractGeometryTest extends TestCase {
 
     /**
      * Creates a simple polygon with no holes
+     *
      * @param points points defining the polygon (surface)
      * @return the surface created out of the points
      */
@@ -152,5 +144,4 @@ public abstract class AbstractGeometryTest extends TestCase {
         Surface surface = getPrimitiveFactory().createSurface(surfaceBoundary);
         return surface;
     }
-
 }

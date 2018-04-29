@@ -1,25 +1,22 @@
 package org.geotools.wmts.bindings;
 
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractComplexBinding;
-
+import java.util.List;
+import javax.xml.namespace.QName;
 import net.opengis.ows20.MetadataType;
 import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.TileMatrixSetType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
-
-import java.util.List;
-
-import javax.xml.namespace.QName;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.*;
+import org.geotools.xml.AbstractComplexBinding;
 
 /**
  * Binding object for the type http://www.opengis.net/wmts/1.0:ContentsType.
  *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;complexType name="ContentsType" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;complexContent&gt;
  *  			&lt;extension base="ows:ContentsBaseType"&gt;
@@ -32,11 +29,10 @@ import javax.xml.namespace.QName;
  *  				&lt;/sequence&gt;
  *  			&lt;/extension&gt;
  *  		&lt;/complexContent&gt;
- *  	&lt;/complexType&gt; 
- *		
- *	  </code>
+ *  	&lt;/complexType&gt;
+ *
+ *   </code>
  * </pre>
- * </p>
  *
  * @generated
  */
@@ -49,16 +45,16 @@ public class ContentsTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.ContentsType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -66,14 +62,16 @@ public class ContentsTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         ContentsType contents = factory.createContentsType();
-        
+
         List<Node> children = node.getChildren("Layer");
         for (Node c : children) {
             contents.getDatasetDescriptionSummary().add(c.getValue());
@@ -83,12 +81,11 @@ public class ContentsTypeBinding extends AbstractComplexBinding {
         for (Node c : children1) {
             contents.getTileMatrixSet().add((TileMatrixSetType) c.getValue());
         }
-        
+
         List<Node> children2 = node.getChildren(MetadataType.class);
         for (Node c : children2) {
             contents.getOtherSource().add(c.getValue());
         }
         return contents;
     }
-
 }

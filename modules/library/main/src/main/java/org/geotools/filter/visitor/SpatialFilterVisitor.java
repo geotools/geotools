@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -30,25 +30,24 @@ import org.opengis.filter.spatial.Within;
 
 /**
  * Filter that can be applied to determine if a Filter contains any spatial filter
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  * @since 2.7.5
  */
 public class SpatialFilterVisitor extends DefaultFilterVisitor {
 
     boolean hasSpatialFilter = false;
-    
+
     /**
      * True if the filter had a spatial filter, false otherwise
+     *
      * @return
      */
     public boolean hasSpatialFilter() {
         return hasSpatialFilter;
     }
-    
-    /**
-     * Resets this visitor so that it can be reused on another filter
-     */
+
+    /** Resets this visitor so that it can be reused on another filter */
     public void reset() {
         hasSpatialFilter = false;
     }
@@ -107,5 +106,4 @@ public class SpatialFilterVisitor extends DefaultFilterVisitor {
         hasSpatialFilter = true;
         return data;
     }
-
 }

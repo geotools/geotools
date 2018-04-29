@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,9 +19,7 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.Graphic;
 
-/**
- * Encodes a {@link Graphic} as YSLD.
- */
+/** Encodes a {@link Graphic} as YSLD. */
 public class GraphicEncoder extends YsldEncodeHandler<Graphic> {
 
     final boolean flatten;
@@ -37,8 +35,7 @@ public class GraphicEncoder extends YsldEncodeHandler<Graphic> {
 
     @Override
     protected void encode(Graphic g) {
-        if (!flatten)
-            push("graphic");
+        if (!flatten) push("graphic");
 
         inline(new AnchorPointEncoder(g.getAnchorPoint()));
         inline(new DisplacementEncoder(g.getDisplacement()));

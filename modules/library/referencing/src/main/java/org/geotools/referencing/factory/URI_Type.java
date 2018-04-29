@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2012, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -33,64 +33,59 @@ import org.opengis.util.CodeList;
  *
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- 
  * @source $URL$
  */
 final class URI_Type {
     /**
-     * List of object types. An object type is for example {@code "crs"} in
-     * <code>"urn:ogc:def:<b>crs</b>:EPSG:6.8"</code>.
-     * 
-     * <p>The canonical source for the list of type names is the
-     * <a href="http://www.opengis.net/register/ogc-na/def-type">OGC Naming Authority register of def types</a>.</p>
+     * List of object types. An object type is for example {@code "crs"} in <code>
+     * "urn:ogc:def:<b>crs</b>:EPSG:6.8"</code>.
+     *
+     * <p>The canonical source for the list of type names is the <a
+     * href="http://www.opengis.net/register/ogc-na/def-type">OGC Naming Authority register of def
+     * types</a>.
      */
     private static final URI_Type[] TYPES = {
-        new URI_Type("crs",                  CRSAuthorityFactory                .class),
-        new URI_Type("datum",                DatumAuthorityFactory              .class),
-        new URI_Type("meridian",             DatumAuthorityFactory              .class),
-        new URI_Type("ellipsoid",            DatumAuthorityFactory              .class),
-        new URI_Type("cs",                   CSAuthorityFactory                 .class),
-        new URI_Type("axis",                 CSAuthorityFactory                 .class),
-        new URI_Type("coordinateOperation",  CoordinateOperationAuthorityFactory.class), // deprecated
+        new URI_Type("crs", CRSAuthorityFactory.class),
+        new URI_Type("datum", DatumAuthorityFactory.class),
+        new URI_Type("meridian", DatumAuthorityFactory.class),
+        new URI_Type("ellipsoid", DatumAuthorityFactory.class),
+        new URI_Type("cs", CSAuthorityFactory.class),
+        new URI_Type("axis", CSAuthorityFactory.class),
+        new URI_Type(
+                "coordinateOperation", CoordinateOperationAuthorityFactory.class), // deprecated
         new URI_Type("coordinate-operation", CoordinateOperationAuthorityFactory.class),
-        new URI_Type("method",               CoordinateOperationAuthorityFactory.class),
-        new URI_Type("parameter",            CoordinateOperationAuthorityFactory.class),
-        new URI_Type("group",                CoordinateOperationAuthorityFactory.class),
-        new URI_Type("verticalDatumType",    VerticalDatumType                  .class), // deprecated
-        new URI_Type("vertical-datum-type",  VerticalDatumType                  .class),
-        new URI_Type("pixelInCell",          PixelInCell                        .class), // deprecated
-        new URI_Type("pixel-in-cell",        PixelInCell                        .class),
-        new URI_Type("rangeMeaning",         RangeMeaning                       .class), // deprecated
-        new URI_Type("range-meaning",        RangeMeaning                       .class),
-        new URI_Type("axisDirection",        AxisDirection                      .class), // deprecated
-        new URI_Type("axis-direction",       AxisDirection                      .class),
-        new URI_Type("uom",                  CSAuthorityFactory                 .class)
+        new URI_Type("method", CoordinateOperationAuthorityFactory.class),
+        new URI_Type("parameter", CoordinateOperationAuthorityFactory.class),
+        new URI_Type("group", CoordinateOperationAuthorityFactory.class),
+        new URI_Type("verticalDatumType", VerticalDatumType.class), // deprecated
+        new URI_Type("vertical-datum-type", VerticalDatumType.class),
+        new URI_Type("pixelInCell", PixelInCell.class), // deprecated
+        new URI_Type("pixel-in-cell", PixelInCell.class),
+        new URI_Type("rangeMeaning", RangeMeaning.class), // deprecated
+        new URI_Type("range-meaning", RangeMeaning.class),
+        new URI_Type("axisDirection", AxisDirection.class), // deprecated
+        new URI_Type("axis-direction", AxisDirection.class),
+        new URI_Type("uom", CSAuthorityFactory.class)
     };
 
-    /**
-     * The object type name.
-     */
+    /** The object type name. */
     public final String name;
 
     /**
-     * The factory for this type, either as a {@link AuthorityFactory} subinterface
-     * or a {@link CodeList}.
+     * The factory for this type, either as a {@link AuthorityFactory} subinterface or a {@link
+     * CodeList}.
      */
     public final Class<?> type;
 
-    /**
-     * Creates a new instance of {@code URN_Type}.
-     */
+    /** Creates a new instance of {@code URN_Type}. */
     private URI_Type(final String name, final Class<?> type) {
         this.name = name;
         this.type = type;
     }
 
-    /**
-     * Returns an instance of the specified name (case-insensitive), or {@code null} if none.
-     */
+    /** Returns an instance of the specified name (case-insensitive), or {@code null} if none. */
     public static URI_Type get(final String name) {
-        for (int i=0; i<TYPES.length; i++) {
+        for (int i = 0; i < TYPES.length; i++) {
             final URI_Type candidate = TYPES[i];
             if (name.equalsIgnoreCase(candidate.name)) {
                 return candidate;
@@ -99,19 +94,14 @@ final class URI_Type {
         return null;
     }
 
-    /**
-     * Returns {@code true} if the specified factory is an instance of this type.
-     */
+    /** Returns {@code true} if the specified factory is an instance of this type. */
     public boolean isInstance(final AuthorityFactory factory) {
         return type.isInstance(factory);
     }
 
-    /**
-     * Returns the type name, for formatting and debugging purpose.
-     */
+    /** Returns the type name, for formatting and debugging purpose. */
     @Override
     public String toString() {
         return name;
     }
-
 }

@@ -17,18 +17,18 @@
 package org.geotools.filter.v1_1;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.sort.SortOrder;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.Binding;
 import org.geotools.xml.InstanceComponent;
-
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.sort.SortOrder;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:SortOrderType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:simpleType name="SortOrderType"&gt;
  *      &lt;xsd:restriction base="xsd:string"&gt;
@@ -39,12 +39,8 @@ import org.geotools.xml.InstanceComponent;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SortOrderTypeBinding extends AbstractSimpleBinding {
@@ -54,14 +50,13 @@ public class SortOrderTypeBinding extends AbstractSimpleBinding {
         this.filterfactory = filterfactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.SortOrderType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -76,13 +71,13 @@ public class SortOrderTypeBinding extends AbstractSimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
         if ("ASC".equals(value)) {
             return SortOrder.ASCENDING;
         }

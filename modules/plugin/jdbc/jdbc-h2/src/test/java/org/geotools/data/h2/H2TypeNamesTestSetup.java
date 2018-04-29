@@ -20,21 +20,22 @@ import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
 public class H2TypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
-	protected H2TypeNamesTestSetup() {
-		super(new H2TestSetup());
-	}
+    protected H2TypeNamesTestSetup() {
+        super(new H2TestSetup());
+    }
 
-	@Override
-	protected void createTypes() throws Exception {
-		run("CREATE TABLE \"geotools\".\"ftntable\" ("
-				+ "\"id\" INT, \"name\" VARCHAR, \"geom\" GEOMETRY)");
-		run("CREATE VIEW \"geotools\".\"ftnview\" AS SELECT \"id\", \"geom\" FROM \"geotools\".\"ftntable\"");
-	}
+    @Override
+    protected void createTypes() throws Exception {
+        run(
+                "CREATE TABLE \"geotools\".\"ftntable\" ("
+                        + "\"id\" INT, \"name\" VARCHAR, \"geom\" GEOMETRY)");
+        run(
+                "CREATE VIEW \"geotools\".\"ftnview\" AS SELECT \"id\", \"geom\" FROM \"geotools\".\"ftntable\"");
+    }
 
-	@Override
-	protected void dropTypes() throws Exception {
-		runSafe("DROP VIEW \"geotools\".\"ftnview\"");
-		runSafe("DROP TABLE \"geotools\".\"ftntable\"");
-	}
-
+    @Override
+    protected void dropTypes() throws Exception {
+        runSafe("DROP VIEW \"geotools\".\"ftnview\"");
+        runSafe("DROP TABLE \"geotools\".\"ftntable\"");
+    }
 }

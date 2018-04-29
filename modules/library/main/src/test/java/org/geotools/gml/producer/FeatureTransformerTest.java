@@ -2,10 +2,10 @@ package org.geotools.gml.producer;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 
+import com.vividsolutions.jts.io.WKTReader;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.data.DataUtilities;
@@ -18,15 +18,9 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.io.WKTReader;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FeatureTransformerTest {
-    
+
     @Before
     public void setup() {
         Map<String, String> namespaces = new HashMap<String, String>();
@@ -47,8 +41,7 @@ public class FeatureTransformerTest {
         tx.transform(new FeatureCollection[0], bos);
         String result = bos.toString();
         // System.out.println(result);
-        
-        
+
         Document dom = XMLUnit.buildControlDocument(result);
         assertXpathEvaluatesTo("1", "count(//wfs:FeatureCollection)", dom);
         assertXpathEvaluatesTo("unknown", "/wfs:FeatureCollection/gml:boundedBy/gml:null", dom);
@@ -57,11 +50,15 @@ public class FeatureTransformerTest {
 
     @Test
     public void testRemoveInvalidXMLChars() throws Exception {
-        SimpleFeatureType ft = DataUtilities.createType("invalidChars",
-                "the_geom:Point,data:String");
-        SimpleFeature feature = SimpleFeatureBuilder.build(ft,
-                new Object[] { new WKTReader().read("POINT(0 0)"),
-                        "One " + ((char) 0x7) + " test" }, "123");
+        SimpleFeatureType ft =
+                DataUtilities.createType("invalidChars", "the_geom:Point,data:String");
+        SimpleFeature feature =
+                SimpleFeatureBuilder.build(
+                        ft,
+                        new Object[] {
+                            new WKTReader().read("POINT(0 0)"), "One " + ((char) 0x7) + " test"
+                        },
+                        "123");
         SimpleFeatureCollection fc = DataUtilities.collection(feature);
 
         FeatureTransformer tx = new FeatureTransformer();

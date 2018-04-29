@@ -30,9 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -42,86 +39,64 @@ public class Oblongs {
      * Creates a new {@code Oblong} object.
      *
      * @param minX the min X ordinate
-     *
      * @param minY the min Y ordinate
-     *
      * @param width the width
-     *
      * @param height the height
-     *
      * @param crs the coordinate reference system (may be {@code null})
-     *
      * @return a new {@code Oblong} object
-     *
-     * @throws IllegalArgumentException if either {@code width} or {@code height}
-     *         are {@code <=} 0
+     * @throws IllegalArgumentException if either {@code width} or {@code height} are {@code <=} 0
      */
-    public static Oblong create(double minX, double minY, double width, double height,
-            CoordinateReferenceSystem crs) {
+    public static Oblong create(
+            double minX, double minY, double width, double height, CoordinateReferenceSystem crs) {
         return new OblongImpl(minX, minY, width, height, crs);
     }
 
     /**
-     * Creates a new grid of oblongs within a bounding rectangle with grid elements
-     * represented by simple (ie. undensified) polygons.
+     * Creates a new grid of oblongs within a bounding rectangle with grid elements represented by
+     * simple (ie. undensified) polygons.
      *
      * @param bounds the bounding rectangle
-     *
      * @param width oblong width
-     *
      * @param height oblong height
-     *
-     * @param vertexSpacing maximum distance between adjacent vertices in a grid
-     *        element; if {@code <= 0} or {@code >= min(width, height) / 2.0} it
-     *        is ignored and the polygons will not be densified
-     *
+     * @param vertexSpacing maximum distance between adjacent vertices in a grid element; if {@code
+     *     <= 0} or {@code >= min(width, height) / 2.0} it is ignored and the polygons will not be
+     *     densified
      * @param gridBuilder an instance of {@code GridFeatureBuilder}
-     *
      * @return a new grid
-     *
-     * @throws IllegalArgumentException
-     *         if bounds is null or empty; or
-     *         if either width or height is {@code <=} 0; or
-     *         if the {@code CoordinateReferenceSystems}
-     *         set for the bounds and the {@code GridFeatureBuilder} are both
-     *         non-null but different
-     */
-    public static SimpleFeatureSource createGrid(ReferencedEnvelope bounds,
-            double width, double height, GridFeatureBuilder gridBuilder) {
-        return createGrid(bounds, width, height, -1.0, gridBuilder);
-    }
-    
-
-    /**
-     * Creates a new grid of oblongs within a bounding rectangle with grid elements
-     * represented by densified polygons (ie. additional vertices added to each
-     * edge).
-     *
-     * @param bounds the bounding rectangle
-     *
-     * @param width oblong width
-     *
-     * @param height oblong height
-     *
-     * @param vertexSpacing maximum distance between adjacent vertices in a grid
-     *        element; if {@code <= 0} or {@code >= min(width, height) / 2.0} it
-     *        is ignored and the polygons will not be densified
-     *
-     * @param gridFeatureBuilder an instance of {@code GridFeatureBuilder}
-     *
-     * @return the vector grid
-     *
-     * @throws IllegalArgumentException
-     *         if bounds is null or empty; or
-     *         if either width or height is {@code <=} 0; or
-     *         if the {@code CoordinateReferenceSystems}
-     *         set for the bounds and the {@code GridFeatureBuilder} are both
-     *         non-null but different
+     * @throws IllegalArgumentException if bounds is null or empty; or if either width or height is
+     *     {@code <=} 0; or if the {@code CoordinateReferenceSystems} set for the bounds and the
+     *     {@code GridFeatureBuilder} are both non-null but different
      */
     public static SimpleFeatureSource createGrid(
             ReferencedEnvelope bounds,
-            double width, double height, 
-            double vertexSpacing, GridFeatureBuilder gridFeatureBuilder) {
+            double width,
+            double height,
+            GridFeatureBuilder gridBuilder) {
+        return createGrid(bounds, width, height, -1.0, gridBuilder);
+    }
+
+    /**
+     * Creates a new grid of oblongs within a bounding rectangle with grid elements represented by
+     * densified polygons (ie. additional vertices added to each edge).
+     *
+     * @param bounds the bounding rectangle
+     * @param width oblong width
+     * @param height oblong height
+     * @param vertexSpacing maximum distance between adjacent vertices in a grid element; if {@code
+     *     <= 0} or {@code >= min(width, height) / 2.0} it is ignored and the polygons will not be
+     *     densified
+     * @param gridFeatureBuilder an instance of {@code GridFeatureBuilder}
+     * @return the vector grid
+     * @throws IllegalArgumentException if bounds is null or empty; or if either width or height is
+     *     {@code <=} 0; or if the {@code CoordinateReferenceSystems} set for the bounds and the
+     *     {@code GridFeatureBuilder} are both non-null but different
+     */
+    public static SimpleFeatureSource createGrid(
+            ReferencedEnvelope bounds,
+            double width,
+            double height,
+            double vertexSpacing,
+            GridFeatureBuilder gridFeatureBuilder) {
 
         if (bounds == null || bounds.isEmpty() || bounds.isNull()) {
             throw new IllegalArgumentException("bounds should not be null or empty");
@@ -136,10 +111,13 @@ public class Oblongs {
         }
 
         CoordinateReferenceSystem boundsCRS = bounds.getCoordinateReferenceSystem();
-        CoordinateReferenceSystem builderCRS = gridFeatureBuilder.getType().getCoordinateReferenceSystem();
-        if (boundsCRS != null && builderCRS != null &&
-                !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
-            throw new IllegalArgumentException("Different CRS set for bounds and the feature builder");
+        CoordinateReferenceSystem builderCRS =
+                gridFeatureBuilder.getType().getCoordinateReferenceSystem();
+        if (boundsCRS != null
+                && builderCRS != null
+                && !CRS.equalsIgnoreMetadata(boundsCRS, builderCRS)) {
+            throw new IllegalArgumentException(
+                    "Different CRS set for bounds and the feature builder");
         }
 
         final ListFeatureCollection fc = new ListFeatureCollection(gridFeatureBuilder.getType());
@@ -147,5 +125,4 @@ public class Oblongs {
         gridBuilder.buildGrid(gridFeatureBuilder, vertexSpacing, fc);
         return DataUtilities.source(fc);
     }
-
 }

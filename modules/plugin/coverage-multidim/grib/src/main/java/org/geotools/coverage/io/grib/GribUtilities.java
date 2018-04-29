@@ -19,29 +19,25 @@ package org.geotools.coverage.io.grib;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import ucar.nc2.grib.GribIndexCache;
 import ucar.nc2.util.DiskCache2;
 
 /**
  * Helper class used for setting a GRIB cache if defined with the JAVA argument -DGRIB_CACHE_DIR
- * 
- * @author Nicola Lagomarsini GeoSolutions S.A.S.
  *
+ * @author Nicola Lagomarsini GeoSolutions S.A.S.
  */
 public class GribUtilities {
 
     /** The LOGGER for this class. */
-    private static final Logger LOGGER = Logger.getLogger("org.geotools.coverage.io.grib.GribUtilities");
+    private static final Logger LOGGER =
+            Logger.getLogger("org.geotools.coverage.io.grib.GribUtilities");
 
     /** String associated to the grib cache directory property */
     public static final String GRIB_CACHE_DIR = "GRIB_CACHE_DIR";
 
-    /**
-     * Static initialization of the GRIB cache directory if set as JAVA argument
-     */
+    /** Static initialization of the GRIB cache directory if set as JAVA argument */
     static {
-
         final Object cacheDir = System.getProperty(GRIB_CACHE_DIR);
         if (cacheDir != null) {
             String dir = (String) cacheDir;
@@ -68,21 +64,27 @@ public class GribUtilities {
         String dir = file.getAbsolutePath();
         if (!file.exists()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("The specified path doesn't refer "
-                        + "to an existing folder. Please check the path: " + dir);
+                LOGGER.warning(
+                        "The specified path doesn't refer "
+                                + "to an existing folder. Please check the path: "
+                                + dir);
             }
             return false;
         } else if (!file.isDirectory()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("The specified path doesn't refer "
-                        + "to a directory. Please check the path: " + dir);
+                LOGGER.warning(
+                        "The specified path doesn't refer "
+                                + "to a directory. Please check the path: "
+                                + dir);
             }
             return false;
         } else if (!file.canWrite()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("The specified path refers to "
-                        + "a directory which can't be written. Please check the path and"
-                        + " the permissions for: " + dir);
+                LOGGER.warning(
+                        "The specified path refers to "
+                                + "a directory which can't be written. Please check the path and"
+                                + " the permissions for: "
+                                + dir);
             }
             return false;
         }

@@ -19,8 +19,10 @@ package org.geotools.process.vector;
 
 import static org.junit.Assert.*;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.process.vector.FeatureProcess;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -28,15 +30,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTReader;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FeatureProcessTest {
 
     @Test
@@ -44,7 +38,7 @@ public class FeatureProcessTest {
         Geometry poly = new WKTReader().read("POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))");
         CoordinateReferenceSystem utm32n = CRS.decode("EPSG:32632");
         poly.setUserData(utm32n);
-        
+
         SimpleFeatureCollection fc = new FeatureProcess().execute(poly, null, "testft");
         assertNotNull(fc);
         assertEquals(1, fc.size());

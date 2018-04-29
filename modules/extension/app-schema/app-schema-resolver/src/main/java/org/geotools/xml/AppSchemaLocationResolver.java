@@ -21,27 +21,21 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.xml.resolver.SchemaResolver;
 
 /**
- * A {@link SchemaLocationResolver} that uses {@link SchemaResolver} to locate schema resources
- * in a catalog, on the classpath, or in a cache..
- * 
+ * A {@link SchemaLocationResolver} that uses {@link SchemaResolver} to locate schema resources in a
+ * catalog, on the classpath, or in a cache..
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
  * @source $URL$
  */
 public class AppSchemaLocationResolver extends SchemaLocationResolver {
 
-    /**
-     * The resolver used to locate schemas
-     */
+    /** The resolver used to locate schemas */
     private final SchemaResolver resolver;
 
     /**
      * Constructor.
-     * 
-     * @param resolver
-     *            the resolver used to locate schemas
+     *
+     * @param resolver the resolver used to locate schemas
      */
     public AppSchemaLocationResolver(SchemaResolver resolver) {
         super(null);
@@ -50,31 +44,26 @@ public class AppSchemaLocationResolver extends SchemaLocationResolver {
 
     /**
      * Resolve imports and includes to local resources.
-     * 
-     * @param schema
-     *            the parent schema from which the import/include originates
-     * @param uri
-     *            the namespace of an import (ignored in this implementation)
-     * @param location
-     *            the URL of the import or include (may be relative)
-     * 
+     *
+     * @param schema the parent schema from which the import/include originates
+     * @param uri the namespace of an import (ignored in this implementation)
+     * @param location the URL of the import or include (may be relative)
      * @see org.geotools.xml.SchemaLocationResolver#resolveSchemaLocation(org.eclipse.xsd.XSDSchema,
-     *      java.lang.String, java.lang.String)
+     *     java.lang.String, java.lang.String)
      */
     @Override
-    public String resolveSchemaLocation(final XSDSchema schema, final String uri,
-            final String location) {
+    public String resolveSchemaLocation(
+            final XSDSchema schema, final String uri, final String location) {
         return resolver.resolve(location, schema.getSchemaLocation());
     }
 
     /**
      * We override this because the parent {@link #toString()} is horribly misleading.
-     * 
+     *
      * @see org.geotools.xml.SchemaLocationResolver#toString()
      */
     @Override
     public String toString() {
         return getClass().getCanonicalName();
     }
-
 }

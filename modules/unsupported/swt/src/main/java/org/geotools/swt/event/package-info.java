@@ -17,14 +17,14 @@
 
 /**
  * Mouse events and listener classes to work with both window and map positions.
- * <p>
- * Please keep in mind the following coordinate systems are in use at any point in time:
+ *
+ * <p>Please keep in mind the following coordinate systems are in use at any point in time:
+ *
  * <ul>
- * <li>screen coordinates: the X,Y relative to the widget</li>
- * <li>map coordinates: the position in world coordinates as defined by the MapContext CoordinateReferenceSystem
- * (for "EPSG:4326" these would be on lon/lat)</li>
- * <li>data coordinates: the position in data coordinates as defined by a single MapLayer</li>
+ *   <li>screen coordinates: the X,Y relative to the widget
+ *   <li>map coordinates: the position in world coordinates as defined by the MapContext
+ *       CoordinateReferenceSystem (for "EPSG:4326" these would be on lon/lat)
+ *   <li>data coordinates: the position in data coordinates as defined by a single MapLayer
  * </ul>
  */
 package org.geotools.swt.event;
-

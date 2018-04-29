@@ -1,14 +1,11 @@
 package com.esri.sde.sdk.pe;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PeProjectedCS extends PeCoordinateSystem {
-    
-    public PeProjectedCS(String s) throws PeProjectionException {}
-    
-    public String getName() { return null; }
 
+    public PeProjectedCS(String s) throws PeProjectionException {}
+
+    public String getName() {
+        return null;
+    }
 }

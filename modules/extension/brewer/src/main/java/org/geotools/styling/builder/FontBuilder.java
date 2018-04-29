@@ -18,15 +18,10 @@ package org.geotools.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.styling.Font;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FontBuilder extends AbstractStyleBuilder<Font> {
     boolean familiesSet = false;
 
@@ -142,5 +137,4 @@ public class FontBuilder extends AbstractStyleBuilder<Font> {
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().text().labelText("label").newFont().init(this);
     }
-
 }

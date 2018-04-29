@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -38,19 +38,18 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Everyone loves some utilities.
- * @author Ian Schneider (OpenGeo)
  *
+ * @author Ian Schneider (OpenGeo)
  * @source $URL$
  */
 public final class CouchDBUtils {
 
-    private CouchDBUtils() {
-    }
+    private CouchDBUtils() {}
 
     /**
-     * @todo this was spiked from GeoJSONUtil to allow adding the 'featureClass' property.
-     * I suppose another way to do this would be to wrap the geojson in another object
-     * and rewrite the spatial views, etc.
+     * @todo this was spiked from GeoJSONUtil to allow adding the 'featureClass' property. I suppose
+     *     another way to do this would be to wrap the geojson in another object and rewrite the
+     *     spatial views, etc.
      * @todo GeoJSONUtil could be made more efficient and flexible by using Appendable
      */
     public static String writeJSON(SimpleFeature feature, String featureClass, GeometryJSON gjson) {
@@ -58,17 +57,16 @@ public final class CouchDBUtils {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
 
-        //type
+        // type
         GeoJSONUtil.entry("type", "Feature", sb);
         sb.append(',');
         GeoJSONUtil.entry("featureClass", featureClass, sb);
         sb.append(',');
 
-
-        //crs @todo
-            /*
+        // crs @todo
+        /*
         if (encodeFeatureCRS) {
-        CoordinateReferenceSystem crs = 
+        CoordinateReferenceSystem crs =
         feature.getFeatureType().getCoordinateReferenceSystem();
         if (crs != null) {
         try {
@@ -80,8 +78,8 @@ public final class CouchDBUtils {
         }
         }
          */
-        //bounding box @todo
-            /*
+        // bounding box @todo
+        /*
         if (encodeFeatureBounds) {
         BoundingBox bbox = feature.getBounds();
         string("bbox", sb).append(":");
@@ -89,16 +87,19 @@ public final class CouchDBUtils {
         }
          */
 
-        //geometry
+        // geometry
         if (feature.getDefaultGeometry() != null) {
-            GeoJSONUtil.string("geometry", sb).append(":").append(gjson.toString((Geometry) feature.getDefaultGeometry()));
+            GeoJSONUtil.string("geometry", sb)
+                    .append(":")
+                    .append(gjson.toString((Geometry) feature.getDefaultGeometry()));
             sb.append(",");
         }
 
-        //properties
-        int gindex = featureType.getGeometryDescriptor() != null
-                ? featureType.indexOf(featureType.getGeometryDescriptor().getLocalName())
-                : -1;
+        // properties
+        int gindex =
+                featureType.getGeometryDescriptor() != null
+                        ? featureType.indexOf(featureType.getGeometryDescriptor().getLocalName())
+                        : -1;
 
         GeoJSONUtil.string("properties", sb).append(":").append("{");
         boolean attributesWritten = false;
@@ -112,7 +113,7 @@ public final class CouchDBUtils {
 
             Object value = feature.getAttribute(i);
             if (value == null) {
-                //skip
+                // skip
                 continue;
             }
 
@@ -124,7 +125,9 @@ public final class CouchDBUtils {
             } else if (value instanceof BoundingBox) {
                 GeoJSONUtil.array(ad.getLocalName(), gjson.toString((BoundingBox) value), sb);
             } else if (value instanceof Geometry) {
-                GeoJSONUtil.string(ad.getLocalName(), sb).append(":").append(gjson.toString((Geometry) value));
+                GeoJSONUtil.string(ad.getLocalName(), sb)
+                        .append(":")
+                        .append(gjson.toString((Geometry) value));
             } else {
                 GeoJSONUtil.entry(ad.getLocalName(), value, sb);
             }
@@ -136,17 +139,20 @@ public final class CouchDBUtils {
         }
         sb.append("},");
 
-        //id
+        // id
         GeoJSONUtil.entry("id", feature.getID(), sb);
 
         sb.append("}");
         return sb.toString();
     }
 
-    public static SimpleFeatureType createFeatureType(JSONObject obj, String name) throws IOException {
-        return createFeatureType(obj,new NameImpl(name));
+    public static SimpleFeatureType createFeatureType(JSONObject obj, String name)
+            throws IOException {
+        return createFeatureType(obj, new NameImpl(name));
     }
-    public static SimpleFeatureType createFeatureType(JSONObject obj, Name name) throws IOException {
+
+    public static SimpleFeatureType createFeatureType(JSONObject obj, Name name)
+            throws IOException {
 
         JSONObject props = (JSONObject) obj.get("properties");
         JSONObject geom = (JSONObject) obj.get("geometry");
@@ -161,7 +167,8 @@ public final class CouchDBUtils {
         if (clazz == null) {
             throw new IOException("Unable to parse geometry type from " + geomType);
         }
-        builder.add("geometry", clazz, (CoordinateReferenceSystem) null); // @todo find type from name?
+        builder.add(
+                "geometry", clazz, (CoordinateReferenceSystem) null); // @todo find type from name?
         return builder.buildFeatureType();
     }
 

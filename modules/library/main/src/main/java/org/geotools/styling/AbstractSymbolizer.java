@@ -2,19 +2,13 @@ package org.geotools.styling;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.measure.quantity.Length;
 import javax.measure.Unit;
-
+import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class AbstractSymbolizer implements Symbolizer {
     protected String name;
 
@@ -24,20 +18,22 @@ public abstract class AbstractSymbolizer implements Symbolizer {
 
     protected Unit<Length> unitOfMeasure;
 
-    protected Map<String,String> options;
-    
-    protected AbstractSymbolizer() {
-    }
+    protected Map<String, String> options;
 
-    public AbstractSymbolizer(String name, Description description, Expression geometry,
-            Unit<Length> unitOfMeasure) {
+    protected AbstractSymbolizer() {}
+
+    public AbstractSymbolizer(
+            String name, Description description, Expression geometry, Unit<Length> unitOfMeasure) {
         this.name = name;
         this.description = description;
         this.geometry = geometry;
         this.unitOfMeasure = unitOfMeasure;
     }
-    
-    public AbstractSymbolizer(String name, Description description, String geometryPropertyName,
+
+    public AbstractSymbolizer(
+            String name,
+            Description description,
+            String geometryPropertyName,
             Unit<Length> unitOfMeasure) {
         this.name = name;
         this.description = description;
@@ -97,14 +93,14 @@ public abstract class AbstractSymbolizer implements Symbolizer {
     public boolean hasOption(String key) {
         return options != null && options.containsKey(key);
     }
-    
+
     public Map<String, String> getOptions() {
         if (options == null) {
             options = new LinkedHashMap<String, String>();
         }
         return options;
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -119,36 +115,24 @@ public abstract class AbstractSymbolizer implements Symbolizer {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         AbstractSymbolizer other = (AbstractSymbolizer) obj;
         if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
-            return false;
+            if (other.description != null) return false;
+        } else if (!description.equals(other.description)) return false;
         if (geometry == null) {
-            if (other.geometry != null)
-                return false;
-        } else if (!geometry.equals(other.geometry))
-            return false;
+            if (other.geometry != null) return false;
+        } else if (!geometry.equals(other.geometry)) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         if (unitOfMeasure == null) {
-            if (other.unitOfMeasure != null)
-                return false;
-        } else if (!unitOfMeasure.equals(other.unitOfMeasure))
-            return false;
+            if (other.unitOfMeasure != null) return false;
+        } else if (!unitOfMeasure.equals(other.unitOfMeasure)) return false;
         if (options == null) {
-            if (other.options != null && !other.options.isEmpty())
-                return false;
+            if (other.options != null && !other.options.isEmpty()) return false;
         }
         if (options == null || options.isEmpty()) {
             // this options are NULL or empty
@@ -162,7 +146,4 @@ public abstract class AbstractSymbolizer implements Symbolizer {
         }
         return true;
     }
-    
-    
-
 }

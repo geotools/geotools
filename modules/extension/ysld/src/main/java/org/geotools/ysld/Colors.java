@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,11 +23,12 @@ import java.util.Map;
 
 /**
  * List of common color names.
- * 
+ *
  * @see http://en.wikipedia.org/wiki/X11_color_names
  */
 public class Colors {
     static Map<String, Color> colorMap = new HashMap<String, Color>();
+
     static {
         colorMap.put("aliceblue", color(240, 248, 255));
         colorMap.put("yellowgreen", color(154, 205, 50));
@@ -175,9 +176,7 @@ public class Colors {
         return new Color(r, g, b);
     }
 
-    /**
-     * Returns the color for the specified name, or <code>null</code> if no such color exists.
-     */
+    /** Returns the color for the specified name, or <code>null</code> if no such color exists. */
     public static Color get(String name) {
         return colorMap.get(name);
     }

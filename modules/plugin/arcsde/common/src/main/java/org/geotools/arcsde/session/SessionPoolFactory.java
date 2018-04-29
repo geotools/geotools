@@ -21,13 +21,11 @@ import java.io.IOException;
 
 /**
  * {@link SessionPool} factory.
- * 
+ *
  * @author Gabriel Roldan
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
- *         /java/org/geotools/arcsde/pool/SessionPoolFactory.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
+ *     /java/org/geotools/arcsde/pool/SessionPoolFactory.java $
  * @version $Id$
  */
 public class SessionPoolFactory implements ISessionPoolFactory {
@@ -35,25 +33,23 @@ public class SessionPoolFactory implements ISessionPoolFactory {
     /** singleton pool factory */
     private static final ISessionPoolFactory singleton = new SessionPoolFactory();
 
-    /**
-     * Creates a new SdeConnectionPoolFactory object.
-     */
+    /** Creates a new SdeConnectionPoolFactory object. */
     private SessionPoolFactory() {
         // intentionally blank
     }
 
     /**
      * Returns a connection pool factory instance
-     * 
+     *
      * @return the connection pool factory singleton
      */
-    public synchronized static ISessionPoolFactory getInstance() {
+    public static synchronized ISessionPoolFactory getInstance() {
         return singleton;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.arcsde.session.ISessionPoolFactory#createPool(org.geotools.arcsde.session.
      * ArcSDEConnectionConfig)
      */

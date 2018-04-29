@@ -26,55 +26,51 @@ import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Builds a graph from {@link org.geotools.feature.Feature} objects.
- * <p>
- * This graph generator decorates another graph generator which 
- * builds a graph from geometries. 
- * </p>
+ *
+ * <p>This graph generator decorates another graph generator which builds a graph from geometries.
+ *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com
- *
  * @source $URL$
  */
 public class FeatureGraphGenerator extends BasicGraphGenerator {
 
-	/**
-	 * The underling "geometry" building graph generator
-	 */
-	GraphGenerator decorated;
-	
-	public FeatureGraphGenerator( GraphGenerator decorated ) {
-		this.decorated = decorated;
-	}
-	
-	public Graph getGraph() {
-		return decorated.getGraph();
-	}
-	
-	public GraphBuilder getGraphBuilder() {
-		return decorated.getGraphBuilder();
-	}
+    /** The underling "geometry" building graph generator */
+    GraphGenerator decorated;
 
-	public GraphGenerator getDecorated() {
-            return decorated;
-        }
+    public FeatureGraphGenerator(GraphGenerator decorated) {
+        this.decorated = decorated;
+    }
 
-	public Graphable add( Object obj ) {
-		SimpleFeature feature = (SimpleFeature) obj;
-		Graphable g = decorated.add( feature.getDefaultGeometry() );
+    public Graph getGraph() {
+        return decorated.getGraph();
+    }
+
+    public GraphBuilder getGraphBuilder() {
+        return decorated.getGraphBuilder();
+    }
+
+    public GraphGenerator getDecorated() {
+        return decorated;
+    }
+
+    public Graphable add(Object obj) {
+        SimpleFeature feature = (SimpleFeature) obj;
+        Graphable g = decorated.add(feature.getDefaultGeometry());
         Geometry geom = (Geometry) g.getObject();
-        //Preserve geometry from Graphable, as it may be changed.
+        // Preserve geometry from Graphable, as it may be changed.
         feature.setDefaultGeometry(geom);
-        g.setObject( feature );
-		return g;
-	}
-	
-	public Graphable remove( Object obj ) {
-		SimpleFeature feature = (SimpleFeature) obj;
-		return decorated.remove( feature.getDefaultGeometry() );
-	}
-	
-	public Graphable get(Object obj) {
-		SimpleFeature feature = (SimpleFeature) obj;
-		return decorated.get( feature.getDefaultGeometry() );
-	}
+        g.setObject(feature);
+        return g;
+    }
+
+    public Graphable remove(Object obj) {
+        SimpleFeature feature = (SimpleFeature) obj;
+        return decorated.remove(feature.getDefaultGeometry());
+    }
+
+    public Graphable get(Object obj) {
+        SimpleFeature feature = (SimpleFeature) obj;
+        return decorated.get(feature.getDefaultGeometry());
+    }
 }

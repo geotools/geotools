@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -27,10 +27,8 @@ import java.awt.geom.Rectangle2D;
  * Decorator on top of the {@link Shape}. It extends the Shape interface to include a method
  * 'setBounds' for explicitly defining a bounding box (which is not necessarily associated with the
  * actual shape's bounds).
- * 
+ *
  * @author fmoura
- *
- *
  * @source $URL$
  */
 public class ExplicitBoundsShape implements Shape {
@@ -41,19 +39,17 @@ public class ExplicitBoundsShape implements Shape {
 
     /**
      * The Constructor
-     * 
-     * @param shape
-     *            The actual shape on top of which this decorator will stand.
+     *
+     * @param shape The actual shape on top of which this decorator will stand.
      */
     public ExplicitBoundsShape(Shape shape) {
-        if (shape == null)
-            throw new IllegalArgumentException("Shape can't be null.");
+        if (shape == null) throw new IllegalArgumentException("Shape can't be null.");
         this.shape = shape;
     }
 
     /**
      * Sets the explicitly defined bounds for this shape.
-     * 
+     *
      * @param bounds
      */
     public void setBounds(Rectangle2D bounds) {
@@ -79,27 +75,29 @@ public class ExplicitBoundsShape implements Shape {
     /**
      * Returns the explicitly defined bounds for this shape. If no bounds were explicitly set, it
      * delegates the call to the actual shape.
-     * 
+     *
      * @return the Rectangle representing the Shape's bounding box.
      * @see Shape
      */
     public Rectangle getBounds() {
         if (bounds != null)
-            return new Rectangle((int) bounds.getMinX(), (int) bounds.getMinY(), (int) bounds
-                    .getWidth(), (int) bounds.getHeight());
+            return new Rectangle(
+                    (int) bounds.getMinX(),
+                    (int) bounds.getMinY(),
+                    (int) bounds.getWidth(),
+                    (int) bounds.getHeight());
         return shape.getBounds();
     }
 
     /**
      * Returns the explicitly defined bounds for this shape. If no bounds were explicitly set, it
      * delegates the call to the actual shape.
-     * 
+     *
      * @return the Rectangle2D representing the Shape's bounding box.
      * @see Shape
      */
     public Rectangle2D getBounds2D() {
-        if (bounds != null)
-            return bounds;
+        if (bounds != null) return bounds;
         return shape.getBounds2D();
     }
 
@@ -124,24 +122,19 @@ public class ExplicitBoundsShape implements Shape {
         if (obj instanceof ExplicitBoundsShape) {
             ExplicitBoundsShape other = (ExplicitBoundsShape) obj;
             boolean result = shape.equals(other.shape);
-            if (bounds == null)
-                return result & (other.bounds == null);
+            if (bounds == null) return result & (other.bounds == null);
             return result & bounds.equals(other.bounds);
         } else if (obj instanceof Shape) {
-            if (bounds == null)
-                return shape.equals(obj);
+            if (bounds == null) return shape.equals(obj);
             return false;
         }
         return super.equals(obj);
-
     }
 
     @Override
     public int hashCode() {
         int hascode = shape.hashCode();
-        if (bounds != null)
-            hascode += hascode * 37 + bounds.hashCode();
+        if (bounds != null) hascode += hascode * 37 + bounds.hashCode();
         return hascode;
     }
-
 }

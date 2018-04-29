@@ -17,10 +17,8 @@
 package org.geotools.coverageio.gdal.ehdr;
 
 import it.geosolutions.imageio.plugins.ehdr.EsriHdrImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -29,25 +27,19 @@ import org.opengis.geometry.MismatchedDimensionException;
 
 /**
  * An implementation of {@link Format} for the Esri Hdr format.
- * 
- * @author Alexander Petkov, Fire Sciences Laboratory 
+ *
+ * @author Alexander Petkov, Fire Sciences Laboratory
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public final class EsriHdrFormat extends BaseGDALGridFormat implements Format {
-    /**
-     * Logger.
-     */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.coverageio.gdal.ehdr");
+    /** Logger. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.ehdr");
 
-    /**
-     * Creates an instance and sets the metadata.
-     */
+    /** Creates an instance and sets the metadata. */
     public EsriHdrFormat() {
         super(new EsriHdrImageReaderSpi());
 
@@ -60,16 +52,12 @@ public final class EsriHdrFormat extends BaseGDALGridFormat implements Format {
 
     private static InfoWrapper INFO = new InfoWrapper("EHdr Coverage Format", "EHdr");
 
-    /**
-     * Sets the metadata information.
-     */
+    /** Sets the metadata information. */
     protected void setInfo() {
         setInfo(INFO);
     }
 
-    /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints)
-     */
+    /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
     public EsriHdrReader getReader(Object source, Hints hints) {
         try {
             return new EsriHdrReader(source, hints);

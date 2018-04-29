@@ -2,7 +2,7 @@
  *    GeoTools - OpenSource mapping toolkit
  *    http://geotools.org
  *    (C) 2005-2006, GeoTools Project Managment Committee (PMC)
- * 
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,7 +20,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -36,12 +35,7 @@ import org.geotools.data.edigeo.EdigeoFeatureReader.Visitor;
 import org.opengis.feature.IllegalAttributeException;
 
 /**
- *
  * @author mcoudert
- *
- *
- *
- *
  * @source $URL$
  */
 public class EdigeoVEC {
@@ -79,13 +73,9 @@ public class EdigeoVEC {
     private Logger logger = Logger.getLogger("org.geotools.data.edigeo");
 
     /**
-     * <p>
      * This constructor opens an existing THF file
-     * </p>
      *
-     * @param path Full pathName of the thf file, can be specified without the
-     *        .thf extension
-     *
+     * @param path Full pathName of the thf file, can be specified without the .thf extension
      * @throws IOException If the specified thf file could not be opened
      */
     public EdigeoVEC(String path) throws IOException {
@@ -93,11 +83,9 @@ public class EdigeoVEC {
         vecFile = EdigeoFileFactory.setFile(path, VECExtension, true);
     }
 
-    /**
-     * 
-     * @param obj
-     */
-    public void readVECFile(String obj, Visitor visitor) throws IOException, IllegalAttributeException {
+    /** @param obj */
+    public void readVECFile(String obj, Visitor visitor)
+            throws IOException, IllegalAttributeException {
         EdigeoParser vecParser = new EdigeoParser(vecFile);
         String idObj = null;
         String buffer = "";
@@ -129,7 +117,7 @@ public class EdigeoVEC {
                         int nbatt = Integer.parseInt(vecParser.getValue(nbAttDesc));
                         for (int i = 0; i < nbatt; i++) {
 
-//                            String charsetBuffer = "";
+                            //                            String charsetBuffer = "";
                             while (vecParser.readLine()) {
                                 if (vecParser.line.contains(idAttDesc)) {
                                     att = vecParser.getValue(idAttDesc);
@@ -137,23 +125,30 @@ public class EdigeoVEC {
                                     continue;
                                 }
                                 if (vecParser.line.contains(valAttrDesc)) {
-//                                    if (false && charsetBuffer.equals("TEXT 06:8859-1")) {
-//                                        CharsetDecoder dec = Charset.forName("ISO-8859-1").newDecoder();
-//                                        dec.onMalformedInput(CodingErrorAction.REPORT);
-//                                        dec.onUnmappableCharacter(CodingErrorAction.REPORT);
-//                                        CharBuffer cb = dec.decode(ByteBuffer.wrap(vecParser.getValue("ATVS").getBytes()));
-//                                        value = cb.toString();
-//                                        value = new String(vecParser.getValue("ATVS").getBytes("ISO-8859-1"));
-//                                    } else {
-//                                        value = vecParser.getValue("ATVS");
-//                                    }
+                                    //                                    if (false &&
+                                    // charsetBuffer.equals("TEXT 06:8859-1")) {
+                                    //                                        CharsetDecoder dec =
+                                    // Charset.forName("ISO-8859-1").newDecoder();
+                                    //
+                                    // dec.onMalformedInput(CodingErrorAction.REPORT);
+                                    //
+                                    // dec.onUnmappableCharacter(CodingErrorAction.REPORT);
+                                    //                                        CharBuffer cb =
+                                    // dec.decode(ByteBuffer.wrap(vecParser.getValue("ATVS").getBytes()));
+                                    //                                        value = cb.toString();
+                                    //                                        value = new
+                                    // String(vecParser.getValue("ATVS").getBytes("ISO-8859-1"));
+                                    //                                    } else {
+                                    //                                        value =
+                                    // vecParser.getValue("ATVS");
+                                    //                                    }
                                     value = vecParser.getValue(valAttrDesc);
                                     value = getPrecodedValue(att, value);
 
                                     atts.put(att, value);
                                     break;
                                 }
-//                                charsetBuffer = vecParser.line;
+                                //                                charsetBuffer = vecParser.line;
                             }
                         }
                         break;
@@ -200,7 +195,6 @@ public class EdigeoVEC {
     }
 
     /**
-     * 
      * @param id
      * @throws java.io.FileNotFoundException
      */
@@ -213,22 +207,22 @@ public class EdigeoVEC {
 
         while (parser.readLine()) {
             // Parse all link description for element defined by its id
-        	if (parser.line.contains(VS + id) || buffern1.contains(VS + id)) {
-        		if (buffern1.contains(lnkDesc) && parser.line.contains(lnkDesc)) {
-        			if (buffern1.contains(VS + id)) {
+            if (parser.line.contains(VS + id) || buffern1.contains(VS + id)) {
+                if (buffern1.contains(lnkDesc) && parser.line.contains(lnkDesc)) {
+                    if (buffern1.contains(VS + id)) {
                         lnk = new String(parser.line);
                     } else {
                         lnk = new String(buffern1);
                     }
-        			// try to look for other link description (lnkDesc)
-        			while (parser.readLine()) {
-        				if (parser.line.contains(lnkDesc)) {
-        					otherLnk = getValue(parser.line,lnkDesc);
-        					List<Coordinate[]> test = getType(otherLnk.substring(otherLnk.lastIndexOf(VS) + 1));
-        					geoms.addAll(test);
-        				} else
-        					break;
-        			}
+                    // try to look for other link description (lnkDesc)
+                    while (parser.readLine()) {
+                        if (parser.line.contains(lnkDesc)) {
+                            otherLnk = getValue(parser.line, lnkDesc);
+                            List<Coordinate[]> test =
+                                    getType(otherLnk.substring(otherLnk.lastIndexOf(VS) + 1));
+                            geoms.addAll(test);
+                        } else break;
+                    }
                     lnk = getValue(lnk, lnkDesc);
                     List<Coordinate[]> list = getType(lnk.substring(lnk.lastIndexOf(VS) + 1));
                     if (!list.isEmpty()) {
@@ -249,14 +243,14 @@ public class EdigeoVEC {
 
     /**
      * Gets value of the specified descriptor
-     * 
+     *
      * @param target Descriptor
      * @return String
      */
     public String getValue(String line, String target) {
         int index = line.indexOf(target);
         int nbchar = Integer.parseInt(line.substring(index + 5, index + 7));
-        // Avoid index out of range exception 
+        // Avoid index out of range exception
         if (index + nbchar + 8 > line.length()) {
             return line.substring(index + 8, line.length());
         }
@@ -265,14 +259,13 @@ public class EdigeoVEC {
     }
 
     /**
-     * 
      * @param id
      * @param FID
      * @return List<Coordinate[]>
      * @throws java.io.IOException
      */
     protected List<Coordinate[]> getType(String id) throws IOException {
-    	EdigeoParser parser = new EdigeoParser(vecFile);
+        EdigeoParser parser = new EdigeoParser(vecFile);
         String buffern1 = "";
         String type = "";
         List<Coordinate[]> geoms = new LinkedList<Coordinate[]>();
@@ -300,7 +293,6 @@ public class EdigeoVEC {
     }
 
     /**
-     * 
      * @param parser
      * @param isNode
      * @return Coordinate[]
@@ -334,7 +326,6 @@ public class EdigeoVEC {
     }
 
     /**
-     * 
      * @param coord
      * @return Coordinate
      */
@@ -346,7 +337,6 @@ public class EdigeoVEC {
     }
 
     /**
-     * 
      * @param line
      * @return
      */
@@ -358,6 +348,7 @@ public class EdigeoVEC {
 
     /**
      * Get precoded attribute values
+     *
      * @param value
      * @return
      */
@@ -370,12 +361,14 @@ public class EdigeoVEC {
 
     /**
      * Creates geometry from a list of Coordinate array.
+     *
      * @param geo
      * @param FID
      * @return
      * @throws org.geotools.data.DataSourceException
      */
-    protected Geometry createGeometry(List<Coordinate[]> coords, String FID) throws DataSourceException {
+    protected Geometry createGeometry(List<Coordinate[]> coords, String FID)
+            throws DataSourceException {
 
         GeometryFactory geomFact = new GeometryFactory();
         Geometry geom = null;
@@ -388,19 +381,19 @@ public class EdigeoVEC {
         } else if (geoType.equals(LINESTRING)) {
             geom = (Geometry) geomFact.createLineString(coords.get(0));
         } else if (geoType.equals(POLYGON) && !topo) {
-        	// Edigeo polygon objects are handled as polygon with holes
-        	shell = geomFact.createLinearRing(coords.get(0));
-        	if (coords.size()>1) {
-        		// handle polygons with holes
-        		holes = new LinearRing[coords.size() - 1];
-        		for (int i = 1; i < coords.size(); i++) {
+            // Edigeo polygon objects are handled as polygon with holes
+            shell = geomFact.createLinearRing(coords.get(0));
+            if (coords.size() > 1) {
+                // handle polygons with holes
+                holes = new LinearRing[coords.size() - 1];
+                for (int i = 1; i < coords.size(); i++) {
                     holes[i - 1] = geomFact.createLinearRing(coords.get(i));
                 }
             }
-        	geom = (Geometry) geomFact.createPolygon(shell, holes);
-        	
+            geom = (Geometry) geomFact.createPolygon(shell, holes);
+
         } else if (geoType.equals(POLYGON) && topo) {
-        	// Constructs polygon for Edigeo topologic object (ie PARCELLE_id)
+            // Constructs polygon for Edigeo topologic object (ie PARCELLE_id)
             List<Coordinate[]> polygonCoords = getPolygonCoordinates(coords);
             shell = geomFact.createLinearRing(polygonCoords.get(0));
             holes = new LinearRing[polygonCoords.size() - 1];
@@ -410,16 +403,16 @@ public class EdigeoVEC {
             geom = (Geometry) geomFact.createPolygon(shell, holes);
 
         } else if (geoType.equals(MULTIPOLYGON)) {
-        	// Constructs multipolygon for Edigeo object (ie SECTION_id)
-        	polys = new Polygon[coords.size()];
-    		Iterator<Coordinate[]> it = coords.iterator();
-        	int cpt = 0;
-        	while (it.hasNext()) {
-        		shell = geomFact.createLinearRing(it.next());
-        		polys[cpt] = geomFact.createPolygon(shell, holes);
-        		cpt++;
-        	}
-        	geom = geomFact.createMultiPolygon(polys);
+            // Constructs multipolygon for Edigeo object (ie SECTION_id)
+            polys = new Polygon[coords.size()];
+            Iterator<Coordinate[]> it = coords.iterator();
+            int cpt = 0;
+            while (it.hasNext()) {
+                shell = geomFact.createLinearRing(it.next());
+                polys[cpt] = geomFact.createPolygon(shell, holes);
+                cpt++;
+            }
+            geom = geomFact.createMultiPolygon(polys);
         } else {
             if (logger.isLoggable(Level.SEVERE)) {
                 logger.severe("Can't handle the type " + geoType + " for fid#" + FID);
@@ -431,7 +424,6 @@ public class EdigeoVEC {
     }
 
     /**
-     * 
      * @param coordList
      * @param FID
      * @return
@@ -448,7 +440,6 @@ public class EdigeoVEC {
     }
 
     /**
-     * 
      * @param listCoord
      * @return
      */
@@ -471,7 +462,9 @@ public class EdigeoVEC {
                         aggCoords.add(currentCoordArray[i]);
                     }
                     iter.remove();
-                } else if (aggCoords.get(aggCoords.size() - 1).equals(currentCoordArray[currentCoordArray.length - 1])) {
+                } else if (aggCoords
+                        .get(aggCoords.size() - 1)
+                        .equals(currentCoordArray[currentCoordArray.length - 1])) {
                     for (int i = currentCoordArray.length - 2; i >= 0; i--) {
                         aggCoords.add(currentCoordArray[i]);
                     }

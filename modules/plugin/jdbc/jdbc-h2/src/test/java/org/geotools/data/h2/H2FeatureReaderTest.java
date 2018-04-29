@@ -19,16 +19,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCFeatureReaderOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2FeatureReaderTest extends JDBCFeatureReaderOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }
-
 }

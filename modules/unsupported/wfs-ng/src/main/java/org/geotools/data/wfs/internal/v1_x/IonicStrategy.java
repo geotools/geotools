@@ -16,10 +16,11 @@
  */
 package org.geotools.data.wfs.internal.v1_x;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.HttpMethod;
 import org.geotools.data.wfs.internal.WFSOperationType;
@@ -30,31 +31,26 @@ import org.geotools.gml2.bindings.GMLCoordinatesTypeBinding;
 import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
-
-/**
- */
+/** */
 public class IonicStrategy extends StrictWFS_1_x_Strategy {
 
-    /**
-     * A filter 1.0 configuration to encode Filters issued to Ionic
-     */
-    private static final Configuration Ionic_filter_1_0_0_Configuration = new OGCConfiguration() {
-        @Override
-        protected void registerBindings(MutablePicoContainer container) {
-            super.registerBindings(container);
-            // override the binding for GML.BoxType to use the one producing an output Ionic
-            // understands
-            container.registerComponentImplementation(GML.BoxType, IonicGML2BoxTypeBinding.class);
-        }
-    };
+    /** A filter 1.0 configuration to encode Filters issued to Ionic */
+    private static final Configuration Ionic_filter_1_0_0_Configuration =
+            new OGCConfiguration() {
+                @Override
+                protected void registerBindings(MutablePicoContainer container) {
+                    super.registerBindings(container);
+                    // override the binding for GML.BoxType to use the one producing an output Ionic
+                    // understands
+                    container.registerComponentImplementation(
+                            GML.BoxType, IonicGML2BoxTypeBinding.class);
+                }
+            };
 
     /**
      * A gml:Box binding to override the default one to adapt to the Ionic server that recognizes
      * {@code <gml:Box><gml:coordinates>} but not {@code <gml:Box><gml:coord>...}
-     * 
+     *
      * @author Gabriel Roldan
      */
     private static class IonicGML2BoxTypeBinding extends GMLBoxTypeBinding {
@@ -68,7 +64,7 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
         public Object getProperty(Object object, QName name) throws Exception {
             Envelope e = (Envelope) object;
             if (GML.coordinates.equals(name)) {
-                double[] seq = { e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY() };
+                double[] seq = {e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY()};
                 CoordinateSequence coords = new PackedCoordinateSequence.Double(seq, 2);
                 return coords;
             }
@@ -81,7 +77,7 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
      * We can't use POST at all against Ionic cause it is not a WFS 1.1 implementation and expect
      * the filters to be encoded as per Filter 1.0, and I wasn't able of creating a WFS 1.1 with
      * Filter 1.0 {@link Configuration} that works.
-     * 
+     *
      * @return false
      */
     @Override
@@ -104,9 +100,7 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
         return super.getDefaultOutputFormat(op);
     }
 
-    /**
-     * @return a Filter 1.0 configuration since Ionic expects that instead of 1.1
-     */
+    /** @return a Filter 1.0 configuration since Ionic expects that instead of 1.1 */
     @Override
     public Configuration getFilterConfiguration() {
         return Ionic_filter_1_0_0_Configuration;
@@ -128,5 +122,4 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
 
         return params;
     }
-
 }

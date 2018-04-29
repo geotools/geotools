@@ -17,18 +17,16 @@
 package org.geotools.ows.bindings;
 
 import java.util.List;
-
-import net.opengis.ows10.Ows10Factory;
 import javax.xml.namespace.QName;
 import org.geotools.ows.OWS;
 import org.geotools.xml.*;
-
 
 /**
  * Binding object for the type http://www.opengis.net/ows:PositionType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;simpleType name="PositionType"&gt;
  *      &lt;annotation&gt;
@@ -42,26 +40,20 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class PositionTypeBinding extends AbstractSimpleBinding {
-    public PositionTypeBinding() {
-    }
+    public PositionTypeBinding() {}
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OWS.PositionType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -72,17 +64,17 @@ public class PositionTypeBinding extends AbstractSimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
-        //TODO: implement and remove call to super
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
+        // TODO: implement and remove call to super
         return super.parse(instance, value);
     }
-    
+
     @Override
     public String encode(Object object, String value) throws Exception {
         List list = (List) object;
@@ -90,9 +82,7 @@ public class PositionTypeBinding extends AbstractSimpleBinding {
         for (Object o : list) {
             sb.append(o).append(" ");
         }
-        sb.setLength(sb.length()-1);
+        sb.setLength(sb.length() - 1);
         return sb.toString();
-        
     }
-    
 }

@@ -22,9 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.StyleImpl;
 import org.geotools.data.ows.WMSCapabilities;
@@ -35,11 +33,7 @@ import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.handlers.DocumentHandler;
 import org.geotools.xml.schema.Schema;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LayerInheritanceTest extends TestCase {
 
     public void testInheritCapabilities() throws Exception {
@@ -47,7 +41,7 @@ public class LayerInheritanceTest extends TestCase {
         File getCaps = TestData.file(this, "inheritCap.xml");
         URL getCapsURL = getCaps.toURI().toURL();
 
-        Map<String,Object> hints = new HashMap<>();
+        Map<String, Object> hints = new HashMap<>();
         hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
         Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
@@ -61,23 +55,23 @@ public class LayerInheritanceTest extends TestCase {
         // Get first test layer
         Layer layer = (Layer) capabilities.getLayerList().get(0);
         assertNotNull(layer);
-        assertEquals(3,layer.getDimensions().size());
-        assertEquals("ISO8601",layer.getDimension("time").getUnits());
+        assertEquals(3, layer.getDimensions().size());
+        assertEquals("ISO8601", layer.getDimension("time").getUnits());
 
         // Get next test layer, it's nested 3 deep
         List<Layer> allLayers = capabilities.getLayerList();
-        
+
         layer = (Layer) allLayers.get(2);
         assertNotNull(layer);
         assertNotNull(layer.getParent());
-        assertEquals(3,layer.getDimensions().size());
+        assertEquals(3, layer.getDimensions().size());
 
         // Should be false by default since not specified in layer or ancestors
         assertFalse(layer.isQueryable());
         assertEquals(layer.getTitle(), "Coastlines");
 
         // Should be 5 total after accumulating all ancestors
-        assertEquals(5,layer.getSrs().size());
+        assertEquals(5, layer.getSrs().size());
         assertTrue(layer.getSrs().contains("EPSG:26906"));
         assertTrue(layer.getSrs().contains("EPSG:26905"));
         assertTrue(layer.getSrs().contains("EPSG:4326"));

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,14 +18,10 @@ package org.geotools.data;
 
 import java.io.IOException;
 
-
 /**
- * Indicates a lock contention, and attempt was made to modify or aquire with
- * out Authroization.
+ * Indicates a lock contention, and attempt was made to modify or aquire with out Authroization.
  *
  * @author Jody Garnett, Refractions Research
- *
- *
  * @source $URL$
  */
 public class FeatureLockException extends IOException {

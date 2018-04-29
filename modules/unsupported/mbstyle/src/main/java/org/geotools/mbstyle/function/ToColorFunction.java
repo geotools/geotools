@@ -16,29 +16,25 @@
  */
 package org.geotools.mbstyle.function;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Takes an object as an argument and returns the color value if possible.
- * Evaluates string in the formats of:
- * "rgb(int, int, int)"
- * "rgba(int, int, int, double)"
+ * Takes an object as an argument and returns the color value if possible. Evaluates string in the
+ * formats of: "rgb(int, int, int)" "rgba(int, int, int, double)"
  *
- * And in arrays of 3 and 4 numbers for rgb and rgba colors:
- * [int, int, int]
- * [int, int, int, double]
+ * <p>And in arrays of 3 and 4 numbers for rgb and rgba colors: [int, int, int] [int, int, int,
+ * double]
  *
- * The integer values should be between 0-255, for red, green, and blue color values.
- * The double value should be between 0-1, and is converted to a 0-255 alpha value.
+ * <p>The integer values should be between 0-255, for red, green, and blue color values. The double
+ * value should be between 0-1, and is converted to a 0-255 alpha value.
  */
 class ToColorFunction extends FunctionExpressionImpl {
     MBObjectParser parse = new MBObjectParser(ToColorFunction.class);
@@ -49,9 +45,7 @@ class ToColorFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
-    /**
-     * @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List)
-     */
+    /** @see org.geotools.filter.FunctionExpressionImpl#setParameters(java.util.List) */
     @Override
     public void setParameters(List<Expression> params) {
         // set the parameters
@@ -97,6 +91,7 @@ class ToColorFunction extends FunctionExpressionImpl {
                 }
             }
         }
-        throw new IllegalArgumentException("No arguments provided to the \"toColor\" function can be converted to a Color value");
+        throw new IllegalArgumentException(
+                "No arguments provided to the \"toColor\" function can be converted to a Color value");
     }
 }

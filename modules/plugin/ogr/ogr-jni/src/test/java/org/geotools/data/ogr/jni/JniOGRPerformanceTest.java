@@ -7,5 +7,4 @@ public class JniOGRPerformanceTest extends OGRPeformanceTest {
     public JniOGRPerformanceTest() {
         super(JniOGRDataStoreFactory.class);
     }
-
 }

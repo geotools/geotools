@@ -21,5 +21,4 @@ public class RasterProcessFactory extends AnnotatedBeanProcessFactory {
     public RasterProcessFactory() {
         super(Text.text("Raster processes"), "ras", getRegistry().lookupBeanClasses());
     }
-
 }

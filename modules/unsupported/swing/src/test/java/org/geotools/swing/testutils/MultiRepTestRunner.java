@@ -27,21 +27,20 @@ import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 
 /**
- * A runner for unit tests that should be run multiple times (e.g. concurrency
- * testing). To use, annotate the test class with {@code @RunWith(MultiRepTestRunner.class)}.
- * 
+ * A runner for unit tests that should be run multiple times (e.g. concurrency testing). To use,
+ * annotate the test class with {@code @RunWith(MultiRepTestRunner.class)}.
+ *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
 public class MultiRepTestRunner extends JUnit4ClassRunner {
-    
-    // Set this to 1 for Hudson builds. Set to larger values when 
+
+    // Set this to 1 for Hudson builds. Set to larger values when
     // running the relevant tests on a local machine.
     final int N = 1;
-    
+
     int numFailures;
 
     public MultiRepTestRunner(Class<?> klass) throws InitializationError {
@@ -52,19 +51,19 @@ public class MultiRepTestRunner extends JUnit4ClassRunner {
     public void run(RunNotifier notifier) {
         Logger logger = Logging.getLogger("org.geotools.swing");
         logger.setLevel(Level.WARNING);
-        
-        notifier.addListener(new RunListener() {
-            @Override
-            public void testFailure(Failure failure) throws Exception {
-                numFailures++ ;
-            }
-        });
-        
+
+        notifier.addListener(
+                new RunListener() {
+                    @Override
+                    public void testFailure(Failure failure) throws Exception {
+                        numFailures++;
+                    }
+                });
+
         for (int i = 0; i < N; i++) {
             super.run(notifier);
         }
-        
+
         System.out.printf("%d failures in %d runs\n", numFailures, N);
     }
-    
 }

@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,18 +23,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.annotation.Nullable;
 
 /**
  * A collection of commonly used ZoomContexts
- * 
- * @author Kevin Smith, Boundless
  *
+ * @author Kevin Smith, Boundless
  */
 public class WellKnownZoomContextFinder implements ZoomContextFinder {
 
-    static private WellKnownZoomContextFinder INSTANCE = new WellKnownZoomContextFinder();
+    private static WellKnownZoomContextFinder INSTANCE = new WellKnownZoomContextFinder();
 
     public static WellKnownZoomContextFinder getInstance() {
         return INSTANCE;
@@ -69,39 +67,41 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
 
         // Note the above two contexts have identical zoom levels but are conceptually distinct due
         // to the difference in CRS.
-        
-        ZoomContext niceScales = new ListZoomContext(Arrays.asList(
-                5_000_000_000d,
-                2_000_000_000d,
-                1_000_000_000d,
-                  500_000_000d, // 0
-                  200_000_000d,
-                  100_000_000d,
-                   50_000_000d,
-                   20_000_000d,
-                   10_000_000d,
-                    5_000_000d,
-                    2_000_000d,
-                    1_000_000d,
-                      500_000d,
-                      200_000d,
-                      100_000d,
-                       50_000d,
-                       20_000d,
-                       10_000d,
-                        5_000d,
-                        2_000d,
-                        1_000d,
-                          500d,
-                          200d,
-                          100d,
-                           50d,
-                           20d,
-                           10d,
-                            5d,
-                            2d,
-                            1d
-                ), -3);
+
+        ZoomContext niceScales =
+                new ListZoomContext(
+                        Arrays.asList(
+                                5_000_000_000d,
+                                2_000_000_000d,
+                                1_000_000_000d,
+                                500_000_000d, // 0
+                                200_000_000d,
+                                100_000_000d,
+                                50_000_000d,
+                                20_000_000d,
+                                10_000_000d,
+                                5_000_000d,
+                                2_000_000d,
+                                1_000_000d,
+                                500_000d,
+                                200_000d,
+                                100_000d,
+                                50_000d,
+                                20_000d,
+                                10_000d,
+                                5_000d,
+                                2_000d,
+                                1_000d,
+                                500d,
+                                200d,
+                                100d,
+                                50d,
+                                20d,
+                                10d,
+                                5d,
+                                2d,
+                                1d),
+                        -3);
         contexts.put("NiceScales".toUpperCase(), niceScales);
         canonicalNames.add("NiceScales");
     }
@@ -124,5 +124,4 @@ public class WellKnownZoomContextFinder implements ZoomContextFinder {
     public Set<String> getCanonicalNames() {
         return Collections.unmodifiableSet(canonicalNames);
     }
-
 }

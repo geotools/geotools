@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
-
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor;
@@ -56,34 +55,30 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * {@link FilterToSQL} decorator capable of encoding filters on nested attributes.
- * 
- * <p>
- * Currently, the filters that can be translated to SQL are:
+ *
+ * <p>Currently, the filters that can be translated to SQL are:
+ *
  * <ul>
- * <li>PropertyIsEqualTo>
- * <li>PropertyIsNotEqualTo</li>
- * <li>PropertyIsLessThan</li>
- * <li>PropertyIsLessThanOrEqualTo</li>
- * <li>PropertyIsGreaterThan</li>
- * <li>PropertyIsGreaterThanOrEqualTo</li>
- * <li>PropertyIsLike</li>
- * <li>PropertyIsNull</li>
- * <li>PropertyIsBetween</li>
+ *   <li>PropertyIsEqualTo>
+ *   <li>PropertyIsNotEqualTo
+ *   <li>PropertyIsLessThan
+ *   <li>PropertyIsLessThanOrEqualTo
+ *   <li>PropertyIsGreaterThan
+ *   <li>PropertyIsGreaterThanOrEqualTo
+ *   <li>PropertyIsLike
+ *   <li>PropertyIsNull
+ *   <li>PropertyIsBetween
  * </ul>
- * </p>
- * 
- * <p>
- * Note that, in order to be successfully encoded, the filter must not involve more than one nested attribute (i.e. comparing nested attributes is not
- * supported), nor attributes that are chained via polymorphic mappings.
- * </p>
- * 
- * <p>
- * If the visited filter does not involve nested attributes, its encoding is delegated to the wrapped {@link FilterToSQL} instance.
- * </p>
- * 
+ *
+ * <p>Note that, in order to be successfully encoded, the filter must not involve more than one
+ * nested attribute (i.e. comparing nested attributes is not supported), nor attributes that are
+ * chained via polymorphic mappings.
+ *
+ * <p>If the visited filter does not involve nested attributes, its encoding is delegated to the
+ * wrapped {@link FilterToSQL} instance.
+ *
  * @author Mauro Bartolomeoli, GeoSolutions
  * @author Stefano Costa, GeoSolutions
- *
  */
 public class NestedFilterToSQL extends FilterToSQL {
     FeatureTypeMapping rootMapping;
@@ -93,7 +88,7 @@ public class NestedFilterToSQL extends FilterToSQL {
 
     /**
      * Constructor.
-     * 
+     *
      * @param rootMapping the feature type being queried
      * @param original the wrapped filter-to-SQL encoder
      */
@@ -105,8 +100,7 @@ public class NestedFilterToSQL extends FilterToSQL {
     }
 
     public void encode(Filter filter) throws FilterToSQLException {
-        if (out == null)
-            throw new FilterToSQLException("Can't encode to a null writer.");
+        if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");
         original.setWriter(out);
         if (original.getCapabilities().fullySupports(filter)) {
 
@@ -129,9 +123,11 @@ public class NestedFilterToSQL extends FilterToSQL {
     protected Object visitBinaryComparison(Filter filter, Object extraData, String xpath) {
         try {
 
-            FeatureChainedAttributeVisitor nestedMappingsExtractor = new FeatureChainedAttributeVisitor(rootMapping);
+            FeatureChainedAttributeVisitor nestedMappingsExtractor =
+                    new FeatureChainedAttributeVisitor(rootMapping);
             nestedMappingsExtractor.visit(ff.property(xpath), null);
-            List<FeatureChainedAttributeDescriptor> attributes = nestedMappingsExtractor.getFeatureChainedAttributes();
+            List<FeatureChainedAttributeDescriptor> attributes =
+                    nestedMappingsExtractor.getFeatureChainedAttributes();
             // encoding of filters on multiple nested attributes is not (yet) supported
             if (attributes.size() == 1) {
                 FeatureChainedAttributeDescriptor nestedAttrDescr = attributes.get(0);
@@ -147,10 +143,10 @@ public class NestedFilterToSQL extends FilterToSQL {
                         FeatureChainLink mappingStep = nestedAttrDescr.getLink(i);
                         if (mappingStep.hasNestedFeature()) {
                             FeatureTypeMapping parentFeature = mappingStep.getFeatureTypeMapping();
-                            JDBCDataStore store = (JDBCDataStore) parentFeature.getSource()
-                                    .getDataStore();
-                            String parentTableName = parentFeature.getSource().getSchema().getName()
-                                    .getLocalPart();
+                            JDBCDataStore store =
+                                    (JDBCDataStore) parentFeature.getSource().getDataStore();
+                            String parentTableName =
+                                    parentFeature.getSource().getSchema().getName().getLocalPart();
 
                             sql.append(" INNER JOIN ");
                             store.encodeTableName(parentTableName, sql, null);
@@ -188,8 +184,9 @@ public class NestedFilterToSQL extends FilterToSQL {
         }
     }
 
-    private void encodeJoinCondition(FeatureChainedAttributeDescriptor nestedAttrDescr, int stepIdx,
-            StringBuffer sql) throws SQLException, IOException, FilterToSQLException {
+    private void encodeJoinCondition(
+            FeatureChainedAttributeDescriptor nestedAttrDescr, int stepIdx, StringBuffer sql)
+            throws SQLException, IOException, FilterToSQLException {
         FeatureChainLink parentStep = nestedAttrDescr.getLink(stepIdx);
         FeatureChainLink nestedStep = nestedAttrDescr.getLink(stepIdx + 1);
         FeatureTypeMapping parentFeature = parentStep.getFeatureTypeMapping();
@@ -244,7 +241,6 @@ public class NestedFilterToSQL extends FilterToSQL {
             colName = col.getName();
             sqlKeys.append(",");
             encodeAliasedColumnName(store, colName, lastMappingStep.getAlias(), sqlKeys, null);
-
         }
         if (sqlKeys.length() <= 0) {
             sql.append("*");
@@ -258,17 +254,22 @@ public class NestedFilterToSQL extends FilterToSQL {
         return sql;
     }
 
-    private void createWhereClause(Filter filter, String nestedProperty,
-            FeatureChainedAttributeDescriptor nestedAttrDescr, StringBuffer sql) throws FilterToSQLException {
+    private void createWhereClause(
+            Filter filter,
+            String nestedProperty,
+            FeatureChainedAttributeDescriptor nestedAttrDescr,
+            StringBuffer sql)
+            throws FilterToSQLException {
         FeatureChainLink lastLink = nestedAttrDescr.getLastLink();
         String simpleProperty = nestedAttrDescr.getAttributePath().toString();
         FeatureTypeMapping featureMapping = lastLink.getFeatureTypeMapping();
         JDBCDataStore store = (JDBCDataStore) featureMapping.getSource().getDataStore();
-        FeatureTypeMapping featureMappingForUnrolling = nestedAttrDescr.getFeatureTypeOwningAttribute();
+        FeatureTypeMapping featureMappingForUnrolling =
+                nestedAttrDescr.getFeatureTypeOwningAttribute();
         SimpleFeatureType sourceType = (SimpleFeatureType) featureMapping.getSource().getSchema();
 
-        NamespaceAwareAttributeRenameVisitor duplicate = new NamespaceAwareAttributeRenameVisitor(nestedProperty,
-                simpleProperty);
+        NamespaceAwareAttributeRenameVisitor duplicate =
+                new NamespaceAwareAttributeRenameVisitor(nestedProperty, simpleProperty);
         Filter duplicated = (Filter) filter.accept(duplicate, null);
         Filter unrolled = unrollFilter(duplicated, featureMappingForUnrolling);
 
@@ -281,7 +282,7 @@ public class NestedFilterToSQL extends FilterToSQL {
 
     private FilterToSQL createFilterToSQL(JDBCDataStore store, SimpleFeatureType sourceType) {
         FilterToSQL filterToSQL = null;
-        if (store.getSQLDialect() instanceof PreparedStatementSQLDialect ) {
+        if (store.getSQLDialect() instanceof PreparedStatementSQLDialect) {
             PreparedFilterToSQL preparedFilterToSQL = store.createPreparedFilterToSQL(sourceType);
             // disable prepared statements to have literals actually encoded in the SQL
             preparedFilterToSQL.setPrepareEnabled(false);
@@ -292,15 +293,17 @@ public class NestedFilterToSQL extends FilterToSQL {
         return filterToSQL;
     }
 
-    private void encodeColumnName(JDBCDataStore store, String colName, String typeName,
-            StringBuffer sql, Hints hints) throws SQLException {
+    private void encodeColumnName(
+            JDBCDataStore store, String colName, String typeName, StringBuffer sql, Hints hints)
+            throws SQLException {
         store.encodeTableName(typeName, sql, hints);
         sql.append(".");
         store.dialect.encodeColumnName(colName, sql);
     }
 
-    private void encodeAliasedColumnName(JDBCDataStore store, String colName, String typeName,
-            StringBuffer sql, Hints hints) throws SQLException {
+    private void encodeAliasedColumnName(
+            JDBCDataStore store, String colName, String typeName, StringBuffer sql, Hints hints)
+            throws SQLException {
         store.dialect.encodeTableName(typeName, sql);
         sql.append(".");
         store.dialect.encodeColumnName(colName, sql);
@@ -389,13 +392,13 @@ public class NestedFilterToSQL extends FilterToSQL {
 
     /**
      * A filter is considered <em>nested</em> if it operates on at least one nested attribute.
-     * 
-     * <p>
-     * Technically, this means that at least one of the expressions in it is an instance of {@link NestedAttributeExpression}.
-     * </p>
-     * 
+     *
+     * <p>Technically, this means that at least one of the expressions in it is an instance of
+     * {@link NestedAttributeExpression}.
+     *
      * @param filter the filter to test
-     * @return <code>true</code> if the filter involves at least one nested attribute, <code>false</code> otherwise
+     * @return <code>true</code> if the filter involves at least one nested attribute, <code>false
+     *     </code> otherwise
      */
     public static boolean isNestedFilter(Filter filter) {
         FilterAttributeExtractor extractor = new FilterAttributeExtractor();
@@ -404,7 +407,7 @@ public class NestedFilterToSQL extends FilterToSQL {
     }
 
     private static boolean hasNestedAttributes(Set<PropertyName> propertyNames) {
-        for (PropertyName property: propertyNames) {
+        for (PropertyName property : propertyNames) {
             if (property instanceof NestedAttributeExpression) {
                 return true;
             }
@@ -416,17 +419,17 @@ public class NestedFilterToSQL extends FilterToSQL {
         FilterAttributeExtractor extractor = new FilterAttributeExtractor();
         filter.accept(extractor, null);
         Set<PropertyName> propertyNames = extractor.getPropertyNameSet();
-        for (PropertyName property: propertyNames) {
+        for (PropertyName property : propertyNames) {
             if (property instanceof NestedAttributeExpression) {
-                return (NestedAttributeExpression)property;
+                return (NestedAttributeExpression) property;
             }
         }
         return null;
     }
 
     private Filter unrollFilter(Filter complexFilter, FeatureTypeMapping mappings) {
-        UnmappingFilterVisitorExcludingNestedMappings visitor = new UnmappingFilterVisitorExcludingNestedMappings(
-                mappings);
+        UnmappingFilterVisitorExcludingNestedMappings visitor =
+                new UnmappingFilterVisitorExcludingNestedMappings(mappings);
         Filter unrolledFilter = (Filter) complexFilter.accept(visitor, null);
         return unrolledFilter;
     }
@@ -449,13 +452,11 @@ public class NestedFilterToSQL extends FilterToSQL {
             List<Expression> matchingMappings = mappings.findMappingsFor(simplifiedSteps, false);
 
             if (matchingMappings.size() == 0) {
-                throw new IllegalArgumentException("Can't find source expression for: "
-                        + targetXPath);
+                throw new IllegalArgumentException(
+                        "Can't find source expression for: " + targetXPath);
             }
 
             return matchingMappings;
         }
-
     }
-
 }

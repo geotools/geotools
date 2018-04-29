@@ -20,7 +20,7 @@ import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * The Geopackage Geometry BLOB Header (see Geopackage specs).
- * 
+ *
  * @author Justin Deoliveira
  * @author Niels Charlier
  */

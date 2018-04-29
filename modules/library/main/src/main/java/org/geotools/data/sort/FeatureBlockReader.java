@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,12 +18,11 @@ package org.geotools.data.sort;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Reads the features stored in the specified block of a {@link RandomAccessFile}
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class FeatureBlockReader {
@@ -72,7 +71,4 @@ class FeatureBlockReader {
         // return the feature
         return sf;
     }
-
-
-
 }

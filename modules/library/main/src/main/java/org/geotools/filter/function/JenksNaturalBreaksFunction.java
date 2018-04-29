@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
@@ -34,21 +33,21 @@ import org.opengis.filter.capability.FunctionName;
 
 /**
  * Calculate the Jenks' Natural Breaks classification for a featurecollection
- * 
+ *
  * @author Ian Turton
- *
- *
  * @source $URL$
  */
 public class JenksNaturalBreaksFunction extends ClassificationFunction {
     org.opengis.util.ProgressListener progress;
 
     private static final Logger logger = Logging.getLogger("org.geotools.filter.function");
-    
-    public static FunctionName NAME = new FunctionNameImpl("Jenks",
-            RangedClassifier.class,
-            parameter("value", Double.class),
-            parameter("classes", Integer.class));
+
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "Jenks",
+                    RangedClassifier.class,
+                    parameter("value", Double.class),
+                    parameter("classes", Integer.class));
 
     public JenksNaturalBreaksFunction() {
         super(NAME);
@@ -56,7 +55,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.filter.function.ClassificationFunction#evaluate(java.lang.Object)
      */
     public Object evaluate(Object feature) {
@@ -69,7 +68,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
     /**
      * This is based on James' GeoTools1 code which seems to be based on
      * http://lib.stat.cmu.edu/cmlib/src/cluster/fish.f
-     * 
+     *
      * @param feature
      * @return a RangedClassifier
      */
@@ -83,8 +82,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
                 logger.finest("importing " + result);
                 if (result != null) {
                     final Double e = new Double(result.toString());
-                    if (!e.isInfinite() && !e.isNaN())
-                        data.add(e);
+                    if (!e.isInfinite() && !e.isNaN()) data.add(e);
                 }
             }
         } catch (NumberFormatException e) {
@@ -94,8 +92,13 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         final int k = getClasses();
         final int m = data.size();
         if (k == m) {
-            logger.info("Number of classes (" + k + ") is equal to number of data points (" + m
-                    + ") " + "unique classification returned");
+            logger.info(
+                    "Number of classes ("
+                            + k
+                            + ") is equal to number of data points ("
+                            + m
+                            + ") "
+                            + "unique classification returned");
             Comparable[] localMin = new Comparable[k];
             Comparable[] localMax = new Comparable[k];
 
@@ -168,7 +171,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
             for (int i = 0; i < m; i++) {
                 String tmp = (i + ": " + data.get(i));
                 for (int j = 2; j <= k; j++) {
-                    tmp+=("\t" + iwork[i][j]);
+                    tmp += ("\t" + iwork[i][j]);
                 }
                 logger.finer(tmp);
             }
@@ -180,10 +183,10 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         Comparable[] localMax = new Comparable[k];
         localMax[k - 1] = data.get(ik);
         for (int j = k; j >= 2; j--) {
-            logger.finest("index "+ik + ", class" + j);
+            logger.finest("index " + ik + ", class" + j);
             int id = (int) iwork[ik][j] - 1; // subtract one as we want inclusive breaks on the
-                                             // left?
-            
+            // left?
+
             localMax[j - 2] = data.get(id);
             localMin[j - 1] = data.get(id);
             ik = (int) iwork[ik][j] - 1;
@@ -195,5 +198,4 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         features.close();
         return new RangedClassifier(localMin, localMax);
     }
-
 }

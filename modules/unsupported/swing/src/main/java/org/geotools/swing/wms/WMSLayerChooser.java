@@ -12,7 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,7 +23,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.WMSCapabilities;
 import org.geotools.data.wms.WMSUtils;
@@ -32,12 +30,8 @@ import org.geotools.data.wms.WebMapServer;
 
 /**
  * Dialog providing a chance to chose a WMSLayer.
- * <p>
- * Initially we are going to work with a JList, we will switch
- * to a JTree when we get a chance.
  *
- *
- *
+ * <p>Initially we are going to work with a JList, we will switch to a JTree when we get a chance.
  *
  * @source $URL$
  */
@@ -83,65 +77,66 @@ public class WMSLayerChooser extends JDialog implements ActionListener {
     }
 
     private void init() {
-            this.setSize(400, 200);
-            
-            // Create and initialize the buttons.
-            JButton cancelButton = new JButton("Cancel");
-            cancelButton.addActionListener(this);
-            
-            final JButton setButton = new JButton("Select");
-            setButton.setActionCommand("Select");
-            setButton.addActionListener(this);
-            getRootPane().setDefaultButton(setButton);
-            
-            model = new DefaultListModel();
-            list = new JList( model );
-            list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-            list.setLayoutOrientation(JList.VERTICAL);
-            list.setVisibleRowCount(-1);
-            list.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                        setButton.doClick(); // emulate button click
+        this.setSize(400, 200);
+
+        // Create and initialize the buttons.
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(this);
+
+        final JButton setButton = new JButton("Select");
+        setButton.setActionCommand("Select");
+        setButton.addActionListener(this);
+        getRootPane().setDefaultButton(setButton);
+
+        model = new DefaultListModel();
+        list = new JList(model);
+        list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        list.setLayoutOrientation(JList.VERTICAL);
+        list.setVisibleRowCount(-1);
+        list.addMouseListener(
+                new MouseAdapter() {
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) {
+                            setButton.doClick(); // emulate button click
+                        }
                     }
-                }
-            });
-            
-            JScrollPane listScroller = new JScrollPane(list);
-            listScroller.setPreferredSize(new Dimension(400, 280));
-            JPanel listPane = new JPanel();
-            listPane.setLayout(new BoxLayout(listPane, BoxLayout.PAGE_AXIS));
-            JLabel label = new JLabel("Layers");
-            label.setLabelFor(list);
-            listPane.add(label);
-            listPane.add(Box.createRigidArea(new Dimension(0, 5)));
-            listPane.add(listScroller);
-            listPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                });
 
-            // Lay out the buttons from left to right.
-            JPanel buttonPane = new JPanel();
-            buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
-            buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-            buttonPane.add(Box.createHorizontalGlue());
-            buttonPane.add(cancelButton);
-            buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
-            buttonPane.add(setButton);
+        JScrollPane listScroller = new JScrollPane(list);
+        listScroller.setPreferredSize(new Dimension(400, 280));
+        JPanel listPane = new JPanel();
+        listPane.setLayout(new BoxLayout(listPane, BoxLayout.PAGE_AXIS));
+        JLabel label = new JLabel("Layers");
+        label.setLabelFor(list);
+        listPane.add(label);
+        listPane.add(Box.createRigidArea(new Dimension(0, 5)));
+        listPane.add(listScroller);
+        listPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-            // Put everything together, using the content pane's BorderLayout.
-            Container contentPane = getContentPane();
-            contentPane.add(listPane, BorderLayout.CENTER);
-            contentPane.add(buttonPane, BorderLayout.PAGE_END);
+        // Lay out the buttons from left to right.
+        JPanel buttonPane = new JPanel();
+        buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+        buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        buttonPane.add(Box.createHorizontalGlue());
+        buttonPane.add(cancelButton);
+        buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
+        buttonPane.add(setButton);
+
+        // Put everything together, using the content pane's BorderLayout.
+        Container contentPane = getContentPane();
+        contentPane.add(listPane, BorderLayout.CENTER);
+        contentPane.add(buttonPane, BorderLayout.PAGE_END);
     }
 
     private void setupLayersList() {
         caps = wms.getCapabilities();
         model.clear();
-        for (Layer layer :WMSUtils.getNamedLayers( caps )) {
+        for (Layer layer : WMSUtils.getNamedLayers(caps)) {
             String title = layer.getTitle();
             if (title == null) {
                 title = layer.getName();
             }
-            model.addElement( layer );
+            model.addElement(layer);
         }
     }
 
@@ -158,8 +153,8 @@ public class WMSLayerChooser extends JDialog implements ActionListener {
 
     public ArrayList<Layer> getLayers() {
         ArrayList<Layer> layers = new ArrayList<Layer>();
-        for( Object selected : list.getSelectedValues() ){
-            layers.add( (Layer) selected );
+        for (Object selected : list.getSelectedValues()) {
+            layers.add((Layer) selected);
         }
         return layers;
     }
@@ -172,17 +167,17 @@ public class WMSLayerChooser extends JDialog implements ActionListener {
         this.wms = wms;
         setupLayersList();
     }
-    
-    public static List<Layer> showSelectLayer( WebMapServer wms) {
-        if( wms == null ){
+
+    public static List<Layer> showSelectLayer(WebMapServer wms) {
+        if (wms == null) {
             return null; // run along nothing to see here
         }
-        WMSLayerChooser prompt = new WMSLayerChooser();        
-        prompt.setWMS( wms ); // this will populate the layers list        
+        WMSLayerChooser prompt = new WMSLayerChooser();
+        prompt.setWMS(wms); // this will populate the layers list
         prompt.setModal(true);
         prompt.pack();
         prompt.setVisible(true);
- 
+
         return prompt.getLayers();
     }
 }

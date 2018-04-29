@@ -20,7 +20,6 @@ package org.geotools.swt.tool;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.feature.FeatureIterator;
@@ -33,17 +32,13 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Helper class used by {@code InfoTool} to query {@code MapLayers}
- * with raster feature data ({@code GridCoverage2D} or {@code AbstractGridCoverage2DReader}).
+ * Helper class used by {@code InfoTool} to query {@code MapLayers} with raster feature data ({@code
+ * GridCoverage2D} or {@code AbstractGridCoverage2DReader}).
  *
  * @see InfoTool
  * @see VectorLayerHelper
- *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public class GridLayerHelper extends InfoToolHelper<List<Number>> {
@@ -56,12 +51,12 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
      * @param rasterSource an instance of either
      *        {@code GridCoverage2D} or {@code AbstractGridCoverage2DReader
      */
-    public GridLayerHelper( MapContent content, Layer layer ) {
+    public GridLayerHelper(MapContent content, Layer layer) {
         super(content, null);
 
         Object rasterSource = null;
         try {
-            FeatureIterator< ? > iter = layer.getFeatureSource().getFeatures().features();
+            FeatureIterator<?> iter = layer.getFeatureSource().getFeatures().features();
             String gridAttrName = Utils.getGridAttributeName(layer);
             rasterSource = iter.next().getProperty(gridAttrName).getValue();
         } catch (Exception ex) {
@@ -89,16 +84,13 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
      * Get band values at the given position
      *
      * @param pos the location to query
-     *
      * @param params not used at present
-     *
-     * @return a {@code List} of band values; will be empty if {@code pos} was
-     *         outside the coverage bounds
-     *
+     * @return a {@code List} of band values; will be empty if {@code pos} was outside the coverage
+     *     bounds
      * @throws Exception if the grid coverage could not be queried
      */
     @Override
-    public List<Number> getInfo( DirectPosition2D pos, Object... params ) throws Exception {
+    public List<Number> getInfo(DirectPosition2D pos, Object... params) throws Exception {
 
         List<Number> list = new ArrayList<Number>();
 
@@ -110,7 +102,7 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
                 Object objArray = cov.evaluate(trPos);
                 Number[] bandValues = asNumberArray(objArray);
                 if (bandValues != null) {
-                    for( Number value : bandValues ) {
+                    for (Number value : bandValues) {
                         list.add(value);
                     }
                 }
@@ -120,49 +112,46 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
         return list;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean isValid() {
         return (getMapContent() != null && covRef != null && covRef.get() != null);
     }
 
     /**
-     * Convert the Object returned by {@linkplain GridCoverage2D#evaluate(DirectPosition)} into
-     * an array of {@code Numbers}.
+     * Convert the Object returned by {@linkplain GridCoverage2D#evaluate(DirectPosition)} into an
+     * array of {@code Numbers}.
      *
      * @param objArray an Object representing a primitive array
-     *
      * @return a new array of Numbers
      */
-    private Number[] asNumberArray( Object objArray ) {
+    private Number[] asNumberArray(Object objArray) {
         Number[] numbers = null;
 
         if (objArray instanceof byte[]) {
             byte[] values = (byte[]) objArray;
             numbers = new Number[values.length];
-            for( int i = 0; i < values.length; i++ ) {
+            for (int i = 0; i < values.length; i++) {
                 numbers[i] = ((int) values[i]) & 0xff;
             }
 
         } else if (objArray instanceof int[]) {
             int[] values = (int[]) objArray;
             numbers = new Number[values.length];
-            for( int i = 0; i < values.length; i++ ) {
+            for (int i = 0; i < values.length; i++) {
                 numbers[i] = values[i];
             }
 
         } else if (objArray instanceof float[]) {
             float[] values = (float[]) objArray;
             numbers = new Number[values.length];
-            for( int i = 0; i < values.length; i++ ) {
+            for (int i = 0; i < values.length; i++) {
                 numbers[i] = values[i];
             }
         } else if (objArray instanceof double[]) {
             double[] values = (double[]) objArray;
             numbers = new Number[values.length];
-            for( int i = 0; i < values.length; i++ ) {
+            for (int i = 0; i < values.length; i++) {
                 numbers[i] = values[i];
             }
         }
@@ -171,14 +160,13 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
     }
 
     /**
-     * Transform the query position into the coordinate reference system of the
-     * data (if different to that of the {@code MapContext}).
+     * Transform the query position into the coordinate reference system of the data (if different
+     * to that of the {@code MapContext}).
      *
      * @param pos query position in {@code MapContext} coordinates
-     *
      * @return query position in data ({@code MapLayer}) coordinates
      */
-    private DirectPosition2D getTransformed( DirectPosition2D pos ) {
+    private DirectPosition2D getTransformed(DirectPosition2D pos) {
         if (isTransformRequired()) {
             MathTransform tr = getTransform();
             if (tr == null) {
@@ -194,5 +182,4 @@ public class GridLayerHelper extends InfoToolHelper<List<Number>> {
 
         return pos;
     }
-
 }

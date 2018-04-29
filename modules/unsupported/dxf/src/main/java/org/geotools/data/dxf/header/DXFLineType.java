@@ -3,32 +3,25 @@ package org.geotools.data.dxf.header;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Vector;
-
-
-import org.geotools.data.dxf.parser.DXFParseException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFGroupCode;
 import org.geotools.data.dxf.parser.DXFLineNumberReader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.parser.DXFParseException;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFLineType {
 
     private static final Log log = LogFactory.getLog(DXFLineType.class);
     public static final String DEFAULT_NAME = "default";
-    public String _name = "DXFLineType";                       // 2
-    public String _value = "";					// 3
-    public float _length = 0;					// 40
-    public float _count = 0;					// 73
-    public Vector<Float> _spacing = new Vector<Float>();	// 49
+    public String _name = "DXFLineType"; // 2
+    public String _value = ""; // 3
+    public float _length = 0; // 40
+    public float _count = 0; // 73
+    public Vector<Float> _spacing = new Vector<Float>(); // 49
 
-    public DXFLineType() {
-    }
+    public DXFLineType() {}
 
     public DXFLineType(String nom, String value, float length, float count, Vector<Float> spacing) {
         _name = nom;
@@ -87,7 +80,6 @@ public class DXFLineType {
                 default:
                     break;
             }
-
         }
 
         log.debug(">Exit at line: " + br.getLineNumber());

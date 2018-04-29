@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
@@ -9,152 +8,112 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Extent {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("xmin")
     @Expose
     private Double xmin;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("ymin")
     @Expose
     private Double ymin;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("xmax")
     @Expose
     private Double xmax;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("ymax")
     @Expose
     private Double ymax;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("spatialReference")
     @Expose
     private SpatialReference spatialReference;
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The xmin
+     *
+     * @return The xmin
      */
     public Double getXmin() {
         return xmin;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param xmin
-     *     The xmin
+     *
+     * @param xmin The xmin
      */
     public void setXmin(Double xmin) {
         this.xmin = xmin;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The ymin
+     *
+     * @return The ymin
      */
     public Double getYmin() {
         return ymin;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param ymin
-     *     The ymin
+     *
+     * @param ymin The ymin
      */
     public void setYmin(Double ymin) {
         this.ymin = ymin;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The xmax
+     *
+     * @return The xmax
      */
     public Double getXmax() {
         return xmax;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param xmax
-     *     The xmax
+     *
+     * @param xmax The xmax
      */
     public void setXmax(Double xmax) {
         this.xmax = xmax;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The ymax
+     *
+     * @return The ymax
      */
     public Double getYmax() {
         return ymax;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param ymax
-     *     The ymax
+     *
+     * @param ymax The ymax
      */
     public void setYmax(Double ymax) {
         this.ymax = ymax;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The spatialReference
+     *
+     * @return The spatialReference
      */
     public SpatialReference getSpatialReference() {
         return spatialReference;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param spatialReference
-     *     The spatialReference
+     *
+     * @param spatialReference The spatialReference
      */
     public void setSpatialReference(SpatialReference spatialReference) {
         this.spatialReference = spatialReference;
@@ -167,7 +126,13 @@ public class Extent {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(xmin).append(ymin).append(xmax).append(ymax).append(spatialReference).toHashCode();
+        return new HashCodeBuilder()
+                .append(xmin)
+                .append(ymin)
+                .append(xmax)
+                .append(ymax)
+                .append(spatialReference)
+                .toHashCode();
     }
 
     @Override
@@ -179,7 +144,12 @@ public class Extent {
             return false;
         }
         Extent rhs = ((Extent) other);
-        return new EqualsBuilder().append(xmin, rhs.xmin).append(ymin, rhs.ymin).append(xmax, rhs.xmax).append(ymax, rhs.ymax).append(spatialReference, rhs.spatialReference).isEquals();
+        return new EqualsBuilder()
+                .append(xmin, rhs.xmin)
+                .append(ymin, rhs.ymin)
+                .append(xmax, rhs.xmax)
+                .append(ymax, rhs.ymax)
+                .append(spatialReference, rhs.spatialReference)
+                .isEquals();
     }
-
 }

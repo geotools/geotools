@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,28 +20,22 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.text.NumberFormat;
-
 import org.geotools.io.TableWriter;
-import org.opengis.referencing.operation.TransformException;
 import org.opengis.geometry.MismatchedDimensionException;
-
+import org.opengis.referencing.operation.TransformException;
 
 /**
- * A console for running test scripts. Most of the work is already done by the subclass.
- * {@code ScriptRunner} mostly add statistics about the test executed. This class is
- * used by {@link ScriptTest}. It can also be run from the command line for executing all
- * files specified in argument.
- *
- *
+ * A console for running test scripts. Most of the work is already done by the subclass. {@code
+ * ScriptRunner} mostly add statistics about the test executed. This class is used by {@link
+ * ScriptTest}. It can also be run from the command line for executing all files specified in
+ * argument.
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public final class ScriptRunner extends Console {
-    /**
-     * Number of tests run and passed. Used for displaying statistics.
-     */
+    /** Number of tests run and passed. Used for displaying statistics. */
     private int testRun, testPassed;
 
     /**
@@ -54,9 +48,7 @@ public final class ScriptRunner extends Console {
         setPrompt(null);
     }
 
-    /**
-     * Invoked automatically when the <code>target pt</code> instruction were executed.
-     */
+    /** Invoked automatically when the <code>target pt</code> instruction were executed. */
     @Override
     protected void test() throws TransformException, MismatchedDimensionException {
         testRun++;
@@ -64,9 +56,7 @@ public final class ScriptRunner extends Console {
         testPassed++;
     }
 
-    /**
-     * Prints the number of tests executed, the number of errors and the success rate.
-     */
+    /** Prints the number of tests executed, the number of errors and the success rate. */
     private void printStatistics() throws IOException {
         NumberFormat f = NumberFormat.getNumberInstance();
         final TableWriter table = new TableWriter(out, 1);
@@ -89,20 +79,18 @@ public final class ScriptRunner extends Console {
             table.write("Success rate:");
             table.nextColumn();
             table.setAlignment(TableWriter.ALIGN_RIGHT);
-            table.write(f.format((double)testPassed / (double)testRun));
+            table.write(f.format((double) testPassed / (double) testRun));
             table.nextLine();
         }
         table.writeHorizontalSeparator();
         table.flush();
     }
 
-    /**
-     * Run all tests scripts specified on the command line.
-     */
+    /** Run all tests scripts specified on the command line. */
     public static void main(final String[] args) {
         final String lineSeparator = System.getProperty("line.separator", "\r");
         try {
-            for (int i=0; i<args.length; i++) {
+            for (int i = 0; i < args.length; i++) {
                 final String filename = args[i];
                 final LineNumberReader in = new LineNumberReader(new FileReader(filename));
                 final ScriptRunner test = new ScriptRunner(in);

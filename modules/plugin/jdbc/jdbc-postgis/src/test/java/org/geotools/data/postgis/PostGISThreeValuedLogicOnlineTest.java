@@ -9,5 +9,4 @@ public class PostGISThreeValuedLogicOnlineTest extends JDBCThreeValuedLogicOnlin
     protected JDBCThreeValuedLogicTestSetup createTestSetup() {
         return new JDBCThreeValuedLogicTestSetup(new PostGISTestSetup());
     }
-
 }

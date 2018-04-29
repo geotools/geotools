@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,14 +16,12 @@
  */
 package org.geotools.styling;
 
-
-
 /**
- * LayerFeatureConstraints define what features and feature types are referenced
- * in a layer.
+ * LayerFeatureConstraints define what features and feature types are referenced in a layer.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="LayerFeatureConstraints"&gt;
  *      &lt;xsd:annotation&gt;
@@ -40,22 +38,14 @@ package org.geotools.styling;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
  * @source $URL$
  */
 public interface LayerFeatureConstraints {
-    /**
-     * @return The feature type constraints.
-     */
+    /** @return The feature type constraints. */
     FeatureTypeConstraint[] getFeatureTypeConstraints();
 
-    /**
-     * @param constraints The new feature type constraints.
-     */
+    /** @param constraints The new feature type constraints. */
     void setFeatureTypeConstraints(FeatureTypeConstraint[] constraints);
 }

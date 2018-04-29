@@ -16,30 +16,21 @@
  */
 package org.geotools.data.wmts.model;
 
+import static org.geotools.wmts.WMTSTestUtils.createCapabilities;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
-
-import org.geotools.data.ows.CRSEnvelope;
-import org.geotools.data.ows.Layer;
-import org.geotools.data.ows.OperationType;
-import org.geotools.data.wmts.request.GetTileRequest;
-import org.xml.sax.SAXException;
-
 import junit.framework.TestCase;
-import org.apache.commons.collections.CollectionUtils;
+import org.geotools.data.ows.CRSEnvelope;
+import org.geotools.data.ows.OperationType;
 import org.geotools.data.wmts.WMTSSpecification;
 import org.geotools.data.wmts.WebMapTileServer;
-import static org.geotools.wmts.WMTSTestUtils.createCapabilities;
+import org.xml.sax.SAXException;
 
-/**
- *
- *
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class WMTSCapabilitiesTest extends TestCase {
 
     protected WMTSSpecification spec;
@@ -58,16 +49,17 @@ public class WMTSCapabilitiesTest extends TestCase {
     }
 
     public void testCreateParser() throws Exception {
-        WMTSCapabilities capabilities = createCapabilities(
-                "GeoServer_2.2.x/1.0.0/GetCapabilities.xml");
+        WMTSCapabilities capabilities =
+                createCapabilities("GeoServer_2.2.x/1.0.0/GetCapabilities.xml");
         try {
             assertEquals("1.0.0", capabilities.getVersion());
             assertEquals("OGC WMTS", capabilities.getService().getName());
-            assertEquals("Web Map Tile Service - GeoWebCache",
-                    capabilities.getService().getTitle());
+            assertEquals(
+                    "Web Map Tile Service - GeoWebCache", capabilities.getService().getTitle());
 
             for (int i = 0; i < capabilities.getService().getKeywordList().length; i++) {
-                assertEquals(capabilities.getService().getKeywordList()[i],
+                assertEquals(
+                        capabilities.getService().getKeywordList()[i],
                         "OpenGIS WMS Web Map Server".split(" ")[i]);
             }
 
@@ -83,7 +75,8 @@ public class WMTSCapabilitiesTest extends TestCase {
 
             assertEquals("OML_Foreshore", l0.getTitle());
             assertNull(l0.getParent());
-            assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::4326")); // case should not matter
+            assertTrue(
+                    l0.getSrs().contains("urn:ogc:def:crs:EPSG::4326")); // case should not matter
             assertEquals(4, l0.getBoundingBoxes().size());
 
             assertEquals(2, l0.getTileMatrixLinks().size());
@@ -143,29 +136,30 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertEquals("ch.are.agglomerationen_isolierte_staedte", l0.getName());
             assertNull(l0.getParent());
             assertTrue(l0.getSrs().contains("urn:ogc:def:crs:EPSG::2056")); // case
-                                                                            // should
-                                                                            // not
-                                                                            // matter
+            // should
+            // not
+            // matter
             assertTrue(l0.getSrs().contains("EPSG:2056")); // case should not
-                                                           // matter
+            // matter
 
             assertNotNull("Missing dimensions", l0.getDimensions());
             assertEquals("Bad dimensions size", 1, l0.getDimensions().size());
             String dimName = l0.getDimensions().keySet().iterator().next();
-            assertTrue("Bad dimension name (Time!=" + dimName + ")",
-                    "Time".equalsIgnoreCase(dimName));
+            assertTrue(
+                    "Bad dimension name (Time!=" + dimName + ")", "Time".equalsIgnoreCase(dimName));
 
             assertNotNull(l0.getTileMatrixLinks());
             assertEquals(1, l0.getTileMatrixLinks().keySet().size());
             assertEquals("2056_26", l0.getTileMatrixLinks().keySet().iterator().next());
-            assertEquals("2056_26",
-                    l0.getTileMatrixLinks().values().iterator().next().getIdentifier());
+            assertEquals(
+                    "2056_26", l0.getTileMatrixLinks().values().iterator().next().getIdentifier());
             assertEquals(0, l0.getTileMatrixLinks().values().iterator().next().getLimits().size());
 
             assertEquals(12, capabilities.getMatrixSets().size());
             assertEquals("2056_17", capabilities.getMatrixSets().get(0).getIdentifier());
             assertEquals(18, capabilities.getMatrixSets().get(0).getMatrices().size());
-            assertEquals(14285750.5715,
+            assertEquals(
+                    14285750.5715,
                     capabilities.getMatrixSets().get(0).getMatrices().get(0).getDenominator());
 
             CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
@@ -215,8 +209,8 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertNotNull("Missing dimensions", l0.getDimensions());
             assertEquals("Bad dimensions size", 1, l0.getDimensions().size());
             String dimName = l0.getDimensions().keySet().iterator().next();
-            assertTrue("Bad dimension name (Time!=" + dimName + ")",
-                    "Time".equalsIgnoreCase(dimName));
+            assertTrue(
+                    "Bad dimension name (Time!=" + dimName + ")", "Time".equalsIgnoreCase(dimName));
 
             CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
@@ -243,7 +237,8 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertNotNull(matrixSets);
             assertFalse(matrixSets.isEmpty());
 
-            assertEquals("urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible",
+            assertEquals(
+                    "urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible",
                     matrixSets.get(0).getWellKnownScaleSet());
 
         } catch (Exception e) {
@@ -260,5 +255,4 @@ public class WMTSCapabilitiesTest extends TestCase {
             throws SAXException, URISyntaxException, IOException {
         return new WebMapTileServer(featureURL);
     }
-
 }

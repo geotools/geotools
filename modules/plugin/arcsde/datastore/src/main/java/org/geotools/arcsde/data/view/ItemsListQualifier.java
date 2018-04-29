@@ -21,23 +21,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.relational.ExpressionList;
 import net.sf.jsqlparser.expression.operators.relational.ItemsList;
 import net.sf.jsqlparser.expression.operators.relational.ItemsListVisitor;
 import net.sf.jsqlparser.statement.select.SubSelect;
-
 import org.geotools.arcsde.session.ISession;
 
 /**
  * Seems to visit a list and update the entries and fill in the blanks qualifying them.
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
  * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/view/ItemsListQualifier.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/view/ItemsListQualifier.java $
  * @since 2.3.x
  */
 class ItemsListQualifier implements ItemsListVisitor {
@@ -50,7 +48,7 @@ class ItemsListQualifier implements ItemsListVisitor {
 
     /**
      * Creates a new ItemsListQualifier object.
-     * 
+     *
      * @param session
      */
     public ItemsListQualifier(ISession session, Map<String, Object> tableAliases) {
@@ -58,8 +56,8 @@ class ItemsListQualifier implements ItemsListVisitor {
         this.tableAliases = tableAliases;
     }
 
-    public static ItemsList qualify(ISession session, Map<String, Object> tableAliases,
-            ItemsList items) {
+    public static ItemsList qualify(
+            ISession session, Map<String, Object> tableAliases, ItemsList items) {
         if (items == null) {
             return null;
         }
@@ -80,7 +78,7 @@ class ItemsListQualifier implements ItemsListVisitor {
         List<Expression> expressions = expressionList.getExpressions();
         List<Expression> qualifiedList = new ArrayList<Expression>(expressions.size());
 
-        for (Iterator<Expression> it = expressions.iterator(); it.hasNext();) {
+        for (Iterator<Expression> it = expressions.iterator(); it.hasNext(); ) {
             Expression exp = (Expression) it.next();
             Expression qExp = ExpressionQualifier.qualify(session, tableAliases, exp);
 

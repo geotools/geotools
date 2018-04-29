@@ -19,7 +19,6 @@ package org.geotools.filter.function.color;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
 import org.junit.Test;
@@ -46,8 +45,12 @@ public class ColorFunctionsTest {
 
     @Test
     public void testSaturateRelative() {
-        Function function = FF.function("saturate", FF.literal("#80e619"), FF.literal("10%"),
-                FF.literal("relative"));
+        Function function =
+                FF.function(
+                        "saturate",
+                        FF.literal("#80e619"),
+                        FF.literal("10%"),
+                        FF.literal("relative"));
         Color result = (Color) function.evaluate(null);
         assertEquals("#80F00F", Converters.convert(result, String.class));
     }
@@ -68,8 +71,12 @@ public class ColorFunctionsTest {
 
     @Test
     public void testDesaturateRelative() {
-        Function function = FF.function("desaturate", FF.literal("#80e619"), FF.literal("10%"),
-                FF.literal("relative"));
+        Function function =
+                FF.function(
+                        "desaturate",
+                        FF.literal("#80e619"),
+                        FF.literal("10%"),
+                        FF.literal("relative"));
         Color result = (Color) function.evaluate(null);
         assertEquals("#80DC23", Converters.convert(result, String.class));
     }
@@ -90,8 +97,8 @@ public class ColorFunctionsTest {
 
     @Test
     public void testMix() {
-        Function function = FF.function("mix", FF.literal("#ff0000"), FF.literal("#0000ff"),
-                FF.literal("50%"));
+        Function function =
+                FF.function("mix", FF.literal("#ff0000"), FF.literal("#0000ff"), FF.literal("50%"));
         Color result = (Color) function.evaluate(null);
         assertEquals("#800080", Converters.convert(result, String.class));
     }
@@ -132,49 +139,66 @@ public class ColorFunctionsTest {
         Color result = (Color) function.evaluate(null);
         assertEquals("#808080", Converters.convert(result, String.class));
     }
-    
+
     @Test
     public void testContrastNoLightDark() {
         Function function = FF.function("contrast", FF.literal("#bbbbbb"));
         Color result = (Color) function.evaluate(null);
         assertEquals("#000000", Converters.convert(result, String.class));
     }
-    
+
     @Test
     public void testContrastDarkReference() {
         Function function = FF.function("contrast", FF.literal("#222222"), FF.literal("#101010"));
         Color result = (Color) function.evaluate(null);
         assertEquals("#FFFFFF", Converters.convert(result, String.class));
     }
-    
+
     @Test
     public void testContrastDarkLigthReference() {
-        Function function = FF.function("contrast", FF.literal("#222222"), FF.literal("#101010"), FF.literal("#dddddd"));
+        Function function =
+                FF.function(
+                        "contrast",
+                        FF.literal("#222222"),
+                        FF.literal("#101010"),
+                        FF.literal("#dddddd"));
         Color result = (Color) function.evaluate(null);
         assertEquals("#DDDDDD", Converters.convert(result, String.class));
     }
-    
+
     @Test
     public void testContrastLowThreshold() {
         Color color = new HSLColor(90, 1, 0.5).toRGB();
-        Function function = FF.function("contrast", FF.literal(color), FF.literal("#000000"), FF.literal("#ffffff"), FF.literal("30%"));
+        Function function =
+                FF.function(
+                        "contrast",
+                        FF.literal(color),
+                        FF.literal("#000000"),
+                        FF.literal("#ffffff"),
+                        FF.literal("30%"));
         Color result = (Color) function.evaluate(null);
         assertEquals("#000000", Converters.convert(result, String.class));
     }
-    
+
     @Test
     public void testContrastHighThreshold() {
         Color color = new HSLColor(90, 1, 0.5).toRGB();
-        Function function = FF.function("contrast", FF.literal(color), FF.literal("#000000"), FF.literal("#ffffff"), FF.literal("80%"));
+        Function function =
+                FF.function(
+                        "contrast",
+                        FF.literal(color),
+                        FF.literal("#000000"),
+                        FF.literal("#ffffff"),
+                        FF.literal("80%"));
         Color result = (Color) function.evaluate(null);
         assertEquals("#FFFFFF", Converters.convert(result, String.class));
     }
-    
+
     @Test
     public void testHslFunction() {
-        Function function = FF.function("hsl", FF.literal(90), FF.literal("100%"), FF.literal("50%"));
+        Function function =
+                FF.function("hsl", FF.literal(90), FF.literal("100%"), FF.literal("50%"));
         Color result = (Color) function.evaluate(null);
         assertEquals("#80FF00", Converters.convert(result, String.class));
     }
-
 }

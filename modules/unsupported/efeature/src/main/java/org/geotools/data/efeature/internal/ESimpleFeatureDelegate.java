@@ -19,7 +19,6 @@ package org.geotools.data.efeature.internal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.geotools.data.Transaction;
@@ -40,63 +39,58 @@ import org.opengis.filter.identity.FeatureId;
 import org.opengis.geometry.BoundingBox;
 
 /**
- * This class implements {@link ESimpleFeature} by delegating 
- * to a {@link Feature} instance.
- * <p>
- * The references to delegate objects are weak, allowing 
- * the them to be garbage collected when needed.
- * </p>
- * 
- * @author kengu - 28. mai 2011 
+ * This class implements {@link ESimpleFeature} by delegating to a {@link Feature} instance.
  *
+ * <p>The references to delegate objects are weak, allowing the them to be garbage collected when
+ * needed.
  *
+ * @author kengu - 28. mai 2011
  * @source $URL$
  */
 public class ESimpleFeatureDelegate implements ESimpleFeature {
-    
+
     private EObject eObject;
     private SimpleFeature feature;
     private EFeatureInfo eStructure;
     private EFeatureHints eHints;
 
-
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
 
     /**
-     * This constructor creates a {@link ESimpleFeature} instance that
-     * delegates to given objects.
+     * This constructor creates a {@link ESimpleFeature} instance that delegates to given objects.
      */
-    public ESimpleFeatureDelegate(EFeatureInfo eStructure, EObject eObject, SimpleFeature feature, EFeatureHints eHints) {
+    public ESimpleFeatureDelegate(
+            EFeatureInfo eStructure, EObject eObject, SimpleFeature feature, EFeatureHints eHints) {
         this.feature = feature;
         this.eObject = eObject;
         this.eStructure = eStructure;
         this.eHints = eHints == null ? new EFeatureHints(eStructure.eHints()) : eHints;
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  ESimpleFeature implementation
     // -----------------------------------------------------
-    
+
     @Override
     public EObject eObject() {
-        if(eObject instanceof EFeatureDelegate) {
-            return ((EFeatureDelegate)eObject).eImpl;
+        if (eObject instanceof EFeatureDelegate) {
+            return ((EFeatureDelegate) eObject).eImpl;
         }
         return eObject;
     }
-    
+
     @Override
     public EFeature eFeature() {
         //
-        // Return delegate if not a EFeature implementation  
+        // Return delegate if not a EFeature implementation
         //
-        if(eObject instanceof EFeature) {
-            return (EFeature)eObject();
+        if (eObject instanceof EFeature) {
+            return (EFeature) eObject();
         }
-        return new EFeatureDelegate(eStructure, (InternalEObject)eObject, false, eHints);
-    }    
+        return new EFeatureDelegate(eStructure, (InternalEObject) eObject, false, eHints);
+    }
 
     @Override
     public boolean isDetached() {
@@ -107,20 +101,20 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
     public boolean isSingleton() {
         return eHints.eSingletonFeatures();
     }
-    
+
     @Override
     public List<Object> read() throws IllegalStateException {
         return read(Transaction.AUTO_COMMIT);
     }
-    
+
     @Override
     public List<Object> read(Transaction transaction) throws IllegalStateException {
         //
         // Decide if feature values is allowed to be updated from backing store
         //
-        if(!isDetached()) {
-            throw new IllegalStateException("ESimpleFeature " 
-                    + getType().getTypeName() + " is not detached");
+        if (!isDetached()) {
+            throw new IllegalStateException(
+                    "ESimpleFeature " + getType().getTypeName() + " is not detached");
         }
         //
         // Read values from eImpl()
@@ -129,7 +123,7 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
         //
         // Update feature values
         //
-        feature.setAttributes(eValues);        
+        feature.setAttributes(eValues);
         //
         // Finished
         //
@@ -140,15 +134,15 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
     public List<Object> write() throws IllegalStateException {
         return write(Transaction.AUTO_COMMIT);
     }
-    
+
     @Override
-    public List<Object> write(Transaction transaction) throws IllegalStateException {            
+    public List<Object> write(Transaction transaction) throws IllegalStateException {
         //
         // Decide if feature values is allowed to be updated from backing store
         //
-        if(!isDetached()) {
-            throw new IllegalStateException("ESimpleFeature " 
-                    + getType().getTypeName() + " is not detached");
+        if (!isDetached()) {
+            throw new IllegalStateException(
+                    "ESimpleFeature " + getType().getTypeName() + " is not detached");
         }
         //
         // Get feature values
@@ -161,7 +155,7 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
         //
         // Finished
         //
-        return eValues;            
+        return eValues;
     }
 
     @Override
@@ -172,11 +166,11 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
     @Override
     public void release() {
         eObject = null;
-    }    
-    // ----------------------------------------------------- 
+    }
+    // -----------------------------------------------------
     //  SimpleFeature implementation
     // -----------------------------------------------------
-    
+
     @Override
     public FeatureId getIdentifier() {
         return getFeature().getIdentifier();
@@ -337,25 +331,24 @@ public class ESimpleFeatureDelegate implements ESimpleFeature {
         getFeature().setDefaultGeometry(geometry);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Object equality implementation
     // -----------------------------------------------------
 
     @Override
     public int hashCode() {
-        return feature.hashCode();        
+        return feature.hashCode();
     }
-               
+
     @Override
     public boolean equals(Object obj) {
-        return feature.equals(obj);        
-    }    
-    // ----------------------------------------------------- 
+        return feature.equals(obj);
+    }
+    // -----------------------------------------------------
     //  Helper methods
     // -----------------------------------------------------
-    
+
     protected SimpleFeature getFeature() {
         return feature;
-    }    
-
+    }
 }

@@ -19,31 +19,23 @@ package org.geotools.validation.attributes;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.util.ResourceBundle;
-
 import org.geotools.validation.DefaultFeatureValidationBeanInfo;
-
 
 /**
  * RangeValidationBeanInfo purpose.
- * 
- * <p>
- * Description of RangeValidationBeanInfo ...
- * </p>
+ *
+ * <p>Description of RangeValidationBeanInfo ...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class RangeValidationBeanInfo extends DefaultFeatureValidationBeanInfo {
     /**
      * GazetteerNameValidationBeanInfo constructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
     public RangeValidationBeanInfo() {
         super();
@@ -51,7 +43,6 @@ public class RangeValidationBeanInfo extends DefaultFeatureValidationBeanInfo {
 
     /**
      * Implementation of getPropertyDescriptors.
-     *
      *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */
@@ -66,18 +57,14 @@ public class RangeValidationBeanInfo extends DefaultFeatureValidationBeanInfo {
         PropertyDescriptor[] pd = new PropertyDescriptor[pd2.length + 3];
         int i = 0;
 
-        for (; i < pd2.length; i++)
-            pd[i] = pd2[i];
+        for (; i < pd2.length; i++) pd[i] = pd2[i];
 
         try {
-            pd[i] = createPropertyDescriptor("attribute", RangeValidation.class,
-                    resourceBundle);
+            pd[i] = createPropertyDescriptor("attribute", RangeValidation.class, resourceBundle);
             pd[i].setExpert(false);
-            pd[i + 1] = createPropertyDescriptor("max", RangeValidation.class,
-                    resourceBundle);
+            pd[i + 1] = createPropertyDescriptor("max", RangeValidation.class, resourceBundle);
             pd[i + 1].setExpert(false);
-            pd[i + 2] = createPropertyDescriptor("min", RangeValidation.class,
-                    resourceBundle);
+            pd[i + 2] = createPropertyDescriptor("min", RangeValidation.class, resourceBundle);
             pd[i + 2].setExpert(false);
         } catch (IntrospectionException e) {
             pd = pd2;

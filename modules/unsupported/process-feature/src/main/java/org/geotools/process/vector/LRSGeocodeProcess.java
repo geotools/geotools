@@ -17,11 +17,14 @@
  */
 package org.geotools.process.vector;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.linearref.LengthIndexedLine;
 import java.util.logging.Logger;
-
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -37,17 +40,14 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.linearref.LengthIndexedLine;
-
-@DescribeProcess(title = "Geocode point in LRS", description = "Extracts points at a given measure from LRS features")
+@DescribeProcess(
+    title = "Geocode point in LRS",
+    description = "Extracts points at a given measure from LRS features"
+)
 /**
- * 
- *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java $
+ * @source $URL:
+ *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java
+ *     $
  */
 public class LRSGeocodeProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSGeocodeProcess.class);
@@ -56,7 +56,7 @@ public class LRSGeocodeProcess implements VectorProcess {
 
     /**
      * Process the input data set.
-     * 
+     *
      * @param featureCollection the data set
      * @param crs the CRS
      * @param point the given point
@@ -65,10 +65,23 @@ public class LRSGeocodeProcess implements VectorProcess {
      */
     @DescribeResult(name = "result", description = "Output feature collection")
     public FeatureCollection execute(
-            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection featureCollection,
-            @DescribeParameter(name = "from_measure_attb", description = "Attribute providing start measure of feature") String fromMeasureAttb,
-            @DescribeParameter(name = "to_measure_attb", description = "Attribute providing end measure of feature") String toMeasureAttb,
-            @DescribeParameter(name = "measure", description = "Measure of the point along the feature to be computed") Double measure)
+            @DescribeParameter(name = "features", description = "Input feature collection")
+                    FeatureCollection featureCollection,
+            @DescribeParameter(
+                        name = "from_measure_attb",
+                        description = "Attribute providing start measure of feature"
+                    )
+                    String fromMeasureAttb,
+            @DescribeParameter(
+                        name = "to_measure_attb",
+                        description = "Attribute providing end measure of feature"
+                    )
+                    String toMeasureAttb,
+            @DescribeParameter(
+                        name = "measure",
+                        description = "Measure of the point along the feature to be computed"
+                    )
+                    Double measure)
             throws ProcessException {
         DefaultFeatureCollection results = new DefaultFeatureCollection();
         try {
@@ -88,22 +101,23 @@ public class LRSGeocodeProcess implements VectorProcess {
             if (measure == null) {
                 throw new ProcessException("The measure parameter was not provided");
             }
-            SimpleFeatureType targetFeatureType = createTargetFeatureType(featureCollection
-                    .getSchema());
+            SimpleFeatureType targetFeatureType =
+                    createTargetFeatureType(featureCollection.getSchema());
 
             FeatureIterator<Feature> featureIterator = null;
             try {
                 featureIterator = featureCollection.features();
                 Feature feature = featureIterator.next();
-                Double featureFromMeasure = (Double) feature.getProperty(fromMeasureAttb)
-                        .getValue();
+                Double featureFromMeasure =
+                        (Double) feature.getProperty(fromMeasureAttb).getValue();
                 Double featureToMeasure = (Double) feature.getProperty(toMeasureAttb).getValue();
-                LengthIndexedLine lengthIndexedLine = new LengthIndexedLine((Geometry) feature
-                        .getDefaultGeometryProperty().getValue());
+                LengthIndexedLine lengthIndexedLine =
+                        new LengthIndexedLine(
+                                (Geometry) feature.getDefaultGeometryProperty().getValue());
                 double featureLength = featureToMeasure - featureFromMeasure;
                 double startOffset = measure - featureFromMeasure;
-                double calcLength = ((Geometry) feature.getDefaultGeometryProperty().getValue())
-                        .getLength();
+                double calcLength =
+                        ((Geometry) feature.getDefaultGeometryProperty().getValue()).getLength();
                 if (calcLength == 0) {
                     LOGGER.info("Edge feature has zero length");
                     return results;
@@ -112,12 +126,11 @@ public class LRSGeocodeProcess implements VectorProcess {
                     LOGGER.info("Requested feature has zero length");
                     return results;
                 }
-                Coordinate point = lengthIndexedLine.extractPoint(startOffset * calcLength
-                        / featureLength);
+                Coordinate point =
+                        lengthIndexedLine.extractPoint(startOffset * calcLength / featureLength);
                 results.add(createTargetFeature(feature, targetFeatureType, point));
             } finally {
-                if (featureIterator != null)
-                    featureIterator.close();
+                if (featureIterator != null) featureIterator.close();
             }
             return results;
         } catch (ProcessException e) {
@@ -130,7 +143,7 @@ public class LRSGeocodeProcess implements VectorProcess {
 
     /**
      * Create the modified feature type.
-     * 
+     *
      * @param sourceFeatureType the source feature type
      * @return the modified feature type
      * @throws ProcessException errror
@@ -149,8 +162,8 @@ public class LRSGeocodeProcess implements VectorProcess {
                     typeBuilder.add((AttributeDescriptor) attbType);
                 }
             }
-            typeBuilder
-                    .setDefaultGeometry(sourceFeatureType.getGeometryDescriptor().getLocalName());
+            typeBuilder.setDefaultGeometry(
+                    sourceFeatureType.getGeometryDescriptor().getLocalName());
             return typeBuilder.buildFeatureType();
         } catch (Exception e) {
             LOGGER.warning("Error creating type: " + e);
@@ -160,7 +173,7 @@ public class LRSGeocodeProcess implements VectorProcess {
 
     /**
      * Create the modified feature.
-     * 
+     *
      * @param feature the source feature
      * @param targetFeatureType the modified feature type
      * @param nearestDistance the snap distance
@@ -168,8 +181,9 @@ public class LRSGeocodeProcess implements VectorProcess {
      * @return the modified feature
      * @throws ProcessException error
      */
-    private SimpleFeature createTargetFeature(Feature feature, SimpleFeatureType targetFeatureType,
-            Coordinate geocodePoint) throws ProcessException {
+    private SimpleFeature createTargetFeature(
+            Feature feature, SimpleFeatureType targetFeatureType, Coordinate geocodePoint)
+            throws ProcessException {
         try {
             AttributeDescriptor geomAttbType = targetFeatureType.getGeometryDescriptor();
             Object[] attributes = new Object[targetFeatureType.getAttributeCount()];
@@ -183,8 +197,8 @@ public class LRSGeocodeProcess implements VectorProcess {
                     attributes[i] = feature.getProperty(attbType.getName()).getValue();
                 }
             }
-            return SimpleFeatureBuilder.build(targetFeatureType, attributes, feature
-                    .getIdentifier().getID());
+            return SimpleFeatureBuilder.build(
+                    targetFeatureType, attributes, feature.getIdentifier().getID());
         } catch (Exception e) {
             LOGGER.warning("Error creating feature: " + e);
             throw new ProcessException("Error creating feature: " + e, e);

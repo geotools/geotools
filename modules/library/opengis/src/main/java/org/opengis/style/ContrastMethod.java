@@ -4,64 +4,53 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2008, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.style;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import org.opengis.annotation.XmlElement;
 import org.opengis.util.CodeList;
 
-import org.opengis.annotation.XmlElement;
-
-
 /**
- * The ContrastEnhancement element defines contrast enhancement for a channel of a
- * false-color image or for a color image.
- * 
- * In the case of a color image, the relative grayscale brightness of a pixel color is used.
- * “Normalize” means to stretch the contrast so that the dimmest color is stretched to black
- * and the brightest color is stretched to white, with all colors in between stretched out
- * linearly. “Histogram” means to stretch the contrast based on a histogram of how many
- * colors are at each brightness level on input, with the goal of producing equal number of
- * pixels in the image at each brightness level on output. This has the effect of revealing
- * many subtle ground features.
+ * The ContrastEnhancement element defines contrast enhancement for a channel of a false-color image
+ * or for a color image.
  *
- *
+ * <p>In the case of a color image, the relative grayscale brightness of a pixel color is used.
+ * “Normalize” means to stretch the contrast so that the dimmest color is stretched to black and the
+ * brightest color is stretched to white, with all colors in between stretched out linearly.
+ * “Histogram” means to stretch the contrast based on a histogram of how many colors are at each
+ * brightness level on input, with the goal of producing equal number of pixels in the image at each
+ * brightness level on output. This has the effect of revealing many subtle ground features.
  *
  * @source $URL$
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
+ *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
  */
 @XmlElement("ContrastEnchancement:type")
 public final class ContrastMethod extends CodeList<ContrastMethod> {
-    /**
-     * Serial number for compatibility with different versions.
-     */
+    /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = -7328502367911363577L;
 
-    /**
-     * List of all enumerations of this type.
-     * Must be declared before any enum declaration.
-     */
+    /** List of all enumerations of this type. Must be declared before any enum declaration. */
     private static final List<ContrastMethod> VALUES = new ArrayList<ContrastMethod>(5);
 
     /**
-     * Normalize enchancement.
-     * “Normalize” means to stretch the contrast so that the dimmest color is stretched to black
-     * and the brightest color is stretched to white, with all colors in between stretched out
-     * linearly.
+     * Normalize enchancement. “Normalize” means to stretch the contrast so that the dimmest color
+     * is stretched to black and the brightest color is stretched to white, with all colors in
+     * between stretched out linearly.
      */
     @XmlElement("Normalize")
     public static final ContrastMethod NORMALIZE = new ContrastMethod("NORMALIZE");
 
     /**
-     * Histogram enchancement.
-     * “Histogram” means to stretch the contrast based on a histogram of how many
-     * colors are at each brightness level on input, with the goal of producing equal number of
+     * Histogram enchancement. “Histogram” means to stretch the contrast based on a histogram of how
+     * many colors are at each brightness level on input, with the goal of producing equal number of
      * pixels in the image at each brightness level on output.
      */
     @XmlElement("Histogram")
@@ -70,19 +59,15 @@ public final class ContrastMethod extends CodeList<ContrastMethod> {
     @XmlElement("Logarithmic")
     public static final ContrastMethod LOGARITHMIC = new ContrastMethod("LOGARITHMIC");
 
-
     @XmlElement("Exponential")
     public static final ContrastMethod EXPONENTIAL = new ContrastMethod("EXPONENTIAL");
 
-    /**
-     * No enchancement.
-     * this is the default value.
-     */
+    /** No enchancement. this is the default value. */
     public static final ContrastMethod NONE = new ContrastMethod("NONE");
 
     /**
-     * Constructs an enum with the given name. The new enum is
-     * automatically added to the list returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list
+     * returned by {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -101,16 +86,14 @@ public final class ContrastMethod extends CodeList<ContrastMethod> {
         }
     }
 
-    /**
-     * Returns the list of enumerations of the same kind than this enum.
-     */
+    /** Returns the list of enumerations of the same kind than this enum. */
     public ContrastMethod[] family() {
         return values();
     }
 
     /**
-     * Returns the contrast type that matches the given string, or returns a
-     * new one if none match it.
+     * Returns the contrast type that matches the given string, or returns a new one if none match
+     * it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

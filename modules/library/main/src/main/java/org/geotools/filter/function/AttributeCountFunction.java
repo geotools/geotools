@@ -17,7 +17,6 @@
 package org.geotools.filter.function;
 
 import java.util.Collection;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -25,7 +24,7 @@ import org.opengis.filter.expression.Expression;
 
 /**
  * Takes an AttributeExpression, and computes the node count for the attribute.
- * 
+ *
  * @author Rini Angreani (CSIRO Mineral Resources)
  * @source $URL$
  */
@@ -39,7 +38,7 @@ public class AttributeCountFunction extends FunctionExpressionImpl {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.filter.Expression#getValue(org.geotools.feature.Feature)
      */
     public Object evaluate(Object feature) {
@@ -53,5 +52,4 @@ public class AttributeCountFunction extends FunctionExpressionImpl {
             return 1;
         }
     }
-
 }

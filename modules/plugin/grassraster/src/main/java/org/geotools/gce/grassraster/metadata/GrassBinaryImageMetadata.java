@@ -19,13 +19,10 @@ package org.geotools.gce.grassraster.metadata;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataFormat;
 import javax.imageio.metadata.IIOMetadataNode;
-
-import org.geotools.gce.grassraster.JGrassMapEnvironment;
 import org.geotools.gce.grassraster.JGrassRegion;
 import org.geotools.gce.grassraster.core.GrassBinaryRasterReadHandler;
 import org.geotools.gce.grassraster.core.color.JGrassColorTable;
@@ -35,109 +32,75 @@ import org.w3c.dom.Node;
 
 /**
  * Represents the metadata associated with the native grass binary map.
- * <p>
- * Supported metadata entries are for now:
+ *
+ * <p>Supported metadata entries are for now:
+ *
  * <ol>
- * <li>those to create the region information:<BR>
- * <ul>
- * <li> {@linkplain GrassBinaryImageMetadata#north north}</li>
- * <li> {@linkplain GrassBinaryImageMetadata#south south}</li>
- * <li> {@linkplain GrassBinaryImageMetadata#east east}</li>
- * <li> {@linkplain GrassBinaryImageMetadata#west west}</li>
- * <li> {@linkplain GrassBinaryImageMetadata#nRows rows}</li>
- * <li> {@linkplain GrassBinaryImageMetadata#nCols cols}</li>
- * <li> {@linkplain GrassBinaryImageMetadata#xRes x resolution}</li>
- * <li> {@linkplain GrassBinaryImageMetadata#yRes y resolution}</li>
- * </ul>
- * </li>
- * <li>those to create the color table information:<BR>
- * <ul>
- * <li> {@linkplain GrassBinaryImageMetadata#colorRulesString the color rules}</li>
- * </ul>
- * </li>
- * <li>those to create the categories information:<BR>
- * <ul>
- * <li> {@linkplain GrassBinaryImageMetadata#categoriesString the categories}</li>
- * </ul>
- * </li>
- * <li>the {@linkplain GrassBinaryImageMetadata#noData novalue}</li>
+ *   <li>those to create the region information:<br>
+ *       <ul>
+ *         <li>{@linkplain GrassBinaryImageMetadata#north north}
+ *         <li>{@linkplain GrassBinaryImageMetadata#south south}
+ *         <li>{@linkplain GrassBinaryImageMetadata#east east}
+ *         <li>{@linkplain GrassBinaryImageMetadata#west west}
+ *         <li>{@linkplain GrassBinaryImageMetadata#nRows rows}
+ *         <li>{@linkplain GrassBinaryImageMetadata#nCols cols}
+ *         <li>{@linkplain GrassBinaryImageMetadata#xRes x resolution}
+ *         <li>{@linkplain GrassBinaryImageMetadata#yRes y resolution}
+ *       </ul>
+ *   <li>those to create the color table information:<br>
+ *       <ul>
+ *         <li>{@linkplain GrassBinaryImageMetadata#colorRulesString the color rules}
+ *       </ul>
+ *   <li>those to create the categories information:<br>
+ *       <ul>
+ *         <li>{@linkplain GrassBinaryImageMetadata#categoriesString the categories}
+ *       </ul>
+ *   <li>the {@linkplain GrassBinaryImageMetadata#noData novalue}
  * </ol>
- * </p>
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 3.0
  * @see {@link JGrassRegion}
  * @see {@link JGrassMapEnvironment}
- *
- *
  * @source $URL$
  */
 public final class GrassBinaryImageMetadata extends IIOMetadata {
 
-    /**
-     * the string used as separator in rules, to get them in one string.
-     */
-    public static final String RULESSPLIT = "@@split@@"; //$NON-NLS-1$
-    /**
-     * the NO_DATA key for the metadata tree.
-     */
-    public static final String NO_DATA = "NO_DATA";//$NON-NLS-1$
-    /**
-     * the NROWS key for the metadata tree.
-     */
-    public static final String NROWS = "NROWS";//$NON-NLS-1$
-    /**
-     * the NCOLS key for the metadata tree.
-     */
-    public static final String NCOLS = "NCOLS";//$NON-NLS-1$
-    /**
-     * the XRES key for the metadata tree.
-     */
-    public static final String XRES = "XRES";//$NON-NLS-1$
-    /**
-     * the YRES key for the metadata tree.
-     */
-    public static final String YRES = "YRES";//$NON-NLS-1$
-    /**
-     * the SOUTH key for the metadata tree.
-     */
-    public static final String SOUTH = "SOUTH";//$NON-NLS-1$
-    /**
-     * the WEST key for the metadata tree.
-     */
-    public static final String WEST = "WEST";//$NON-NLS-1$
-    /**
-     * the NORTH key for the metadata tree.
-     */
-    public static final String NORTH = "NORTH";//$NON-NLS-1$
-    /**
-     * the EAST key for the metadata tree.
-     */
-    public static final String EAST = "EAST";//$NON-NLS-1$
-    /**
-     * the CRS key for the metadata tree.
-     */
-    public static final String CRS = "CRS";//$NON-NLS-1$
+    /** the string used as separator in rules, to get them in one string. */
+    public static final String RULESSPLIT = "@@split@@"; // $NON-NLS-1$
+    /** the NO_DATA key for the metadata tree. */
+    public static final String NO_DATA = "NO_DATA"; // $NON-NLS-1$
+    /** the NROWS key for the metadata tree. */
+    public static final String NROWS = "NROWS"; // $NON-NLS-1$
+    /** the NCOLS key for the metadata tree. */
+    public static final String NCOLS = "NCOLS"; // $NON-NLS-1$
+    /** the XRES key for the metadata tree. */
+    public static final String XRES = "XRES"; // $NON-NLS-1$
+    /** the YRES key for the metadata tree. */
+    public static final String YRES = "YRES"; // $NON-NLS-1$
+    /** the SOUTH key for the metadata tree. */
+    public static final String SOUTH = "SOUTH"; // $NON-NLS-1$
+    /** the WEST key for the metadata tree. */
+    public static final String WEST = "WEST"; // $NON-NLS-1$
+    /** the NORTH key for the metadata tree. */
+    public static final String NORTH = "NORTH"; // $NON-NLS-1$
+    /** the EAST key for the metadata tree. */
+    public static final String EAST = "EAST"; // $NON-NLS-1$
+    /** the CRS key for the metadata tree. */
+    public static final String CRS = "CRS"; // $NON-NLS-1$
 
-    /**
-     * the CATEGORIES_DESCRIPTOR key for the metadata tree.
-     */
-    public static final String CATEGORIES_DESCRIPTOR = "categoriesDescriptor"; //$NON-NLS-1$
+    /** the CATEGORIES_DESCRIPTOR key for the metadata tree. */
+    public static final String CATEGORIES_DESCRIPTOR = "categoriesDescriptor"; // $NON-NLS-1$
 
-    /**
-     * the COLOR_RULES_DESCRIPTOR key for the metadata tree.
-     */
-    public static final String COLOR_RULES_DESCRIPTOR = "colorRulesDescriptor"; //$NON-NLS-1$
+    /** the COLOR_RULES_DESCRIPTOR key for the metadata tree. */
+    public static final String COLOR_RULES_DESCRIPTOR = "colorRulesDescriptor"; // $NON-NLS-1$
 
-    /**
-     * the REGION_DESCRIPTOR key for the metadata tree.
-     */
-    public static final String REGION_DESCRIPTOR = "regionDescriptor"; //$NON-NLS-1$
+    /** the REGION_DESCRIPTOR key for the metadata tree. */
+    public static final String REGION_DESCRIPTOR = "regionDescriptor"; // $NON-NLS-1$
 
-    /**
-     * the native metadata format name.
-     */
-    public static final String nativeMetadataFormatName = "eu.hydrologis.jgrass.grassbinary.imageio.GrassBinaryImageMetadata_1.0"; //$NON-NLS-1$
+    /** the native metadata format name. */
+    public static final String nativeMetadataFormatName =
+            "eu.hydrologis.jgrass.grassbinary.imageio.GrassBinaryImageMetadata_1.0"; // $NON-NLS-1$
 
     /**
      * the list of supported metadata format names. In this case, only the native metadata format is
@@ -147,99 +110,81 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
 
     /**
      * the value used to represent noData for an element of the raster.
-     * <p>
-     * As default set to {@link HMConstants#doubleNovalue}
-     * </p>
+     *
+     * <p>As default set to {@link HMConstants#doubleNovalue}
      */
     private double noData = Double.NaN;
 
-    /**
-     * the size of a single cell of the raster grid along X.
-     */
+    /** the size of a single cell of the raster grid along X. */
     private double xRes = Double.NaN;
 
-    /**
-     * the size of a single cell of the raster grid along Y.
-     */
+    /** the size of a single cell of the raster grid along Y. */
     private double yRes = Double.NaN;
 
-    /**
-     * the number of columns of the raster.
-     */
+    /** the number of columns of the raster. */
     private int nCols = -1;
 
-    /**
-     * the number of rows of the raster.
-     */
+    /** the number of rows of the raster. */
     private int nRows = -1;
 
-    /**
-     * The northern boundary of the raster region.
-     */
+    /** The northern boundary of the raster region. */
     private double north = Double.NaN;
 
-    /**
-     * The southern boundary of the raster region.
-     */
+    /** The southern boundary of the raster region. */
     private double south = Double.NaN;
 
-    /**
-     * The western boundary of the raster region.
-     */
+    /** The western boundary of the raster region. */
     private double west = Double.NaN;
 
-    /**
-     * The eastern boundary of the raster region.
-     */
+    /** The eastern boundary of the raster region. */
     private double east = Double.NaN;
 
     /**
      * the list of strings representing the colorrules of this raster.
-     * <p>
-     * <Color rules are described in the {@link JGrassColorTable} class.
-     * </p>
+     *
+     * <p><Color rules are described in the {@link JGrassColorTable} class.
      */
     private List<String> colorRulesString = null;
 
     /**
      * the list of strings representing the categories of this raster.
-     * <p>
-     * <b>EXAMPLE:</b> for a category of claysand referring to a value 5 on the raster we have:
+     *
+     * <p><b>EXAMPLE:</b> for a category of claysand referring to a value 5 on the raster we have:
      * <code>5.0:claysand</code>
-     * </p>
      */
     private List<String> categoriesString = null;
 
     /**
-     * the coordinate reference system for this map (may default to
-     * {@link DefaultGeographicCRS#WGS84})
+     * the coordinate reference system for this map (may default to {@link
+     * DefaultGeographicCRS#WGS84})
      */
     private CoordinateReferenceSystem crs;
 
     /**
      * Constructs the object using a {@link GrassBinaryRasterReadHandler} to initialize the metadata
      * fields.
-     * 
-     * @param rasterReader input {@link GrassBinaryRasterReadHandler} used to retrieve the metadata of the
-     *        native grass raster file.
+     *
+     * @param rasterReader input {@link GrassBinaryRasterReadHandler} used to retrieve the metadata
+     *     of the native grass raster file.
      */
-    public GrassBinaryImageMetadata( GrassBinaryRasterReadHandler rasterReader ) {
+    public GrassBinaryImageMetadata(GrassBinaryRasterReadHandler rasterReader) {
         this();
         inizializeFromRaster(rasterReader);
     }
 
-    /**
-     * Default constructor.
-     */
+    /** Default constructor. */
     public GrassBinaryImageMetadata() {
-        super(false, nativeMetadataFormatName,
-                "eu.hydrologis.jgrass.grassbinary.imageio.GrassBinaryImageMetadataFormat", null, //$NON-NLS-1$
+        super(
+                false,
+                nativeMetadataFormatName,
+                "eu.hydrologis.jgrass.grassbinary.imageio.GrassBinaryImageMetadataFormat",
+                null, // $NON-NLS-1$
                 null);
     }
 
     /**
      * Constructs the object using user supplied metadata.
-     * 
+     *
      * @param cols the number of columns.
      * @param rows the number of rows.
      * @param xRes the x size of the grid cell.
@@ -252,9 +197,18 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
      * @param colorRules the list of colorrules.
      * @param categories the list of categories.
      */
-    public GrassBinaryImageMetadata( int cols, int rows, double xRes, double yRes, double north,
-            double south, double east, double west, double inNoData, List<String> colorRules,
-            List<String> categories ) {
+    public GrassBinaryImageMetadata(
+            int cols,
+            int rows,
+            double xRes,
+            double yRes,
+            double north,
+            double south,
+            double east,
+            double west,
+            double inNoData,
+            List<String> colorRules,
+            List<String> categories) {
         this();
         nCols = cols;
         nRows = rows;
@@ -265,13 +219,11 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         this.east = east;
         this.south = south;
         noData = inNoData;
-        if (colorRules != null)
-            colorRulesString = colorRules;
-        if (categories != null)
-            categoriesString = categories;
+        if (colorRules != null) colorRulesString = colorRules;
+        if (categories != null) categoriesString = categories;
     }
 
-    public Node getAsTree( String formatName ) {
+    public Node getAsTree(String formatName) {
         if (formatName.equals(nativeMetadataFormatName)) {
             return getNativeTree();
         } else {
@@ -283,15 +235,14 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         return false;
     }
 
-    public void mergeTree( String formatName, Node root ) throws IIOInvalidTreeException {
-    }
+    public void mergeTree(String formatName, Node root) throws IIOInvalidTreeException {}
 
     public void reset() {
         xRes = yRes = north = south = east = west = Double.NaN;
         nCols = nRows = -1;
     }
 
-    public IIOMetadataFormat getMetadataFormat( String formatName ) {
+    public IIOMetadataFormat getMetadataFormat(String formatName) {
         if (formatName.equals(nativeMetadataFormatName))
             return new GrassBinaryImageMetadataFormat();
 
@@ -300,10 +251,10 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
 
     /**
      * Initializes the metadata informations from a {@linkplain GrassBinaryRasterReadHandler}.
-     * 
+     *
      * @param rasterReader the {@linkplain GrassBinaryRasterReadHandler} used to initialize fields.
      */
-    private void inizializeFromRaster( GrassBinaryRasterReadHandler rasterReader ) {
+    private void inizializeFromRaster(GrassBinaryRasterReadHandler rasterReader) {
         if (rasterReader != null) {
             JGrassRegion nativeRasterRegion = rasterReader.getNativeRasterRegion();
             nRows = nativeRasterRegion.getRows();
@@ -337,7 +288,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
     /**
      * Creates a {@linkplain Node} tree from the available metadata informations of the native
      * raster.
-     * 
+     *
      * @return the root of the tree containing the metadata of the native raster.
      */
     private Node getNativeTree() {
@@ -361,9 +312,9 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         if (colorRulesString != null) {
             node = new IIOMetadataNode(COLOR_RULES_DESCRIPTOR);
             StringBuffer sB = new StringBuffer();
-            for( int i = 0; i < colorRulesString.size(); i++ ) {
+            for (int i = 0; i < colorRulesString.size(); i++) {
                 if (i != 0) {
-                    sB.append(RULESSPLIT); //$NON-NLS-1$
+                    sB.append(RULESSPLIT); // $NON-NLS-1$
                 }
                 sB.append(colorRulesString.get(i));
             }
@@ -375,9 +326,9 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         if (categoriesString != null) {
             node = new IIOMetadataNode(CATEGORIES_DESCRIPTOR);
             StringBuffer sB = new StringBuffer();
-            for( int i = 0; i < categoriesString.size(); i++ ) {
+            for (int i = 0; i < categoriesString.size(); i++) {
                 if (i != 0) {
-                    sB.append(RULESSPLIT); //$NON-NLS-1$
+                    sB.append(RULESSPLIT); // $NON-NLS-1$
                 }
                 sB.append(categoriesString.get(i));
             }
@@ -402,11 +353,11 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         buffer.append("\n " + NROWS + " = ").append(nRows);
         buffer.append("\n " + NO_DATA + " = ").append(noData);
         buffer.append("\n\ncategoriesString = ");
-        for( String cat : categoriesString ) {
+        for (String cat : categoriesString) {
             buffer.append("\n").append(cat);
         }
         buffer.append("\n colorRulesString = ");
-        for( String colr : colorRulesString ) {
+        for (String colr : colorRulesString) {
             buffer.append("\n").append(colr);
         }
         buffer.append("]");
@@ -415,7 +366,7 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
 
     /**
      * Creates a hashtable of the metadata for easier access.
-     * 
+     *
      * @return the metadata hashtable.
      */
     public HashMap<String, String> toHashMap() {
@@ -432,17 +383,16 @@ public final class GrassBinaryImageMetadata extends IIOMetadata {
         tmp.put(CRS, crs.toWKT());
 
         StringBuffer buffer = new StringBuffer();
-        for( String cat : categoriesString ) {
+        for (String cat : categoriesString) {
             buffer.append(cat).append(RULESSPLIT);
         }
         tmp.put(CATEGORIES_DESCRIPTOR, buffer.toString());
 
         buffer = new StringBuffer();
-        for( String colr : colorRulesString ) {
+        for (String colr : colorRulesString) {
             buffer.append(colr).append(RULESSPLIT);
         }
         tmp.put(COLOR_RULES_DESCRIPTOR, buffer.toString());
         return tmp;
     }
-
 }

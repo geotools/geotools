@@ -28,19 +28,17 @@ import org.geotools.swt.utils.Messages;
 
 /**
  * A zoom-out tool for JMapPane.
- * <p>
- * For mouse clicks, the display will be zoomed-out such that the 
- * map centre is the position of the mouse click and the map
- * width and height are calculated as:
+ *
+ * <p>For mouse clicks, the display will be zoomed-out such that the map centre is the position of
+ * the mouse click and the map width and height are calculated as:
+ *
  * <pre>   {@code len = len.old * z} </pre>
+ *
  * where {@code z} is the linear zoom increment (>= 1.0)
- * 
+ *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public class ZoomOutTool extends AbstractZoomTool {
@@ -53,36 +51,32 @@ public class ZoomOutTool extends AbstractZoomTool {
     private Cursor cursor;
 
     /**
-     * Constructs a new zoom out tool. To activate the tool only on certain
-     * mouse events provide a single mask, e.g. {@link SWT#BUTTON1}, or
-     * a combination of multiple SWT-masks.
+     * Constructs a new zoom out tool. To activate the tool only on certain mouse events provide a
+     * single mask, e.g. {@link SWT#BUTTON1}, or a combination of multiple SWT-masks.
      *
-     * @param triggerButtonMask Mouse button which triggers the tool's activation
-     * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
+     * @param triggerButtonMask Mouse button which triggers the tool's activation or {@value
+     *     #ANY_BUTTON} if the tool is to be triggered by any button
      */
     public ZoomOutTool(int triggerButtonMask) {
         super(triggerButtonMask);
         cursor = CursorManager.getInstance().getZoomoutCursor();
     }
 
-    /**
-     * Constructs a new zoom out tool which is triggered by any mouse button.
-     */
+    /** Constructs a new zoom out tool which is triggered by any mouse button. */
     public ZoomOutTool() {
         this(CursorTool.ANY_BUTTON);
     }
 
     /**
-     * Zoom out by the currently set increment, with the map
-     * centred at the location (in world coords) of the mouse
-     * click
+     * Zoom out by the currently set increment, with the map centred at the location (in world
+     * coords) of the mouse click
      *
      * @param ev the mouse event
      */
     @Override
-    public void onMouseClicked( MapMouseEvent ev ) {
+    public void onMouseClicked(MapMouseEvent ev) {
 
-        if ( ! isTriggerMouseButton(ev)) {
+        if (!isTriggerMouseButton(ev)) {
             return;
         }
 
@@ -92,17 +86,17 @@ public class ZoomOutTool extends AbstractZoomTool {
         double scale = getMapPane().getWorldToScreenTransform().getScaleX();
         double newScale = scale / zoom;
 
-        DirectPosition2D corner = new DirectPosition2D(mapPos.getX() - 0.5d * paneArea.width / newScale, mapPos.getY() + 0.5d
-                * paneArea.height / newScale);
+        DirectPosition2D corner =
+                new DirectPosition2D(
+                        mapPos.getX() - 0.5d * paneArea.width / newScale,
+                        mapPos.getY() + 0.5d * paneArea.height / newScale);
 
         Envelope2D newMapArea = new Envelope2D();
         newMapArea.setFrameFromCenter(mapPos, corner);
         getMapPane().setDisplayArea(newMapArea);
     }
 
-    /**
-     * Get the mouse cursor for this tool
-     */
+    /** Get the mouse cursor for this tool */
     @Override
     public Cursor getCursor() {
         return cursor;

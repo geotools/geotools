@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,74 +16,68 @@
  */
 package org.geotools.styling;
 
-
-import javax.measure.quantity.Length;
 import javax.measure.Unit;
-
+import javax.measure.quantity.Length;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.StyleVisitor;
 import org.opengis.util.Cloneable;
 
-
 /**
- * Provides a representation of a PolygonSymbolizer in an SLD Document.  A
- * PolygonSymbolizer defines how a polygon geometry should be rendered.
+ * Provides a representation of a PolygonSymbolizer in an SLD Document. A PolygonSymbolizer defines
+ * how a polygon geometry should be rendered.
  *
  * @author James Macgill, CCG
  * @author Johann Sorel (Geomatys)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class PolygonSymbolizerImpl extends AbstractSymbolizer implements PolygonSymbolizer, Cloneable {
-    
+public class PolygonSymbolizerImpl extends AbstractSymbolizer
+        implements PolygonSymbolizer, Cloneable {
+
     private Expression offset;
     private DisplacementImpl disp;
-    
+
     private Fill fill = new FillImpl();
     private StrokeImpl stroke = new StrokeImpl();
 
-    /**
-     * Creates a new instance of DefaultPolygonStyler
-     */
+    /** Creates a new instance of DefaultPolygonStyler */
     protected PolygonSymbolizerImpl() {
-        this(null,null,null,null,null,null,null,null);
+        this(null, null, null, null, null, null, null, null);
     }
 
-    protected PolygonSymbolizerImpl(Stroke stroke, 
-            Fill fill, 
-            Displacement disp, 
-            Expression offset, 
-            Unit<Length> uom, 
-            String geom, 
-            String name, 
+    protected PolygonSymbolizerImpl(
+            Stroke stroke,
+            Fill fill,
+            Displacement disp,
+            Expression offset,
+            Unit<Length> uom,
+            String geom,
+            String name,
             Description desc) {
         super(name, desc, geom, uom);
-        this.stroke = StrokeImpl.cast( stroke );
+        this.stroke = StrokeImpl.cast(stroke);
         this.fill = fill;
-        this.disp = DisplacementImpl.cast( disp );
+        this.disp = DisplacementImpl.cast(disp);
         this.offset = offset;
     }
-    
+
     public Expression getPerpendicularOffset() {
         return offset;
     }
 
-    public void setPerpendicularOffset(Expression offset ) {
+    public void setPerpendicularOffset(Expression offset) {
         this.offset = offset;
     }
-    
+
     public Displacement getDisplacement() {
         return disp;
     }
 
     public void setDisplacement(org.opengis.style.Displacement displacement) {
-        this.disp = DisplacementImpl.cast( displacement );
+        this.disp = DisplacementImpl.cast(displacement);
     }
     /**
-     * Provides the graphical-symbolization parameter to use to fill the area
-     * of the geometry.
+     * Provides the graphical-symbolization parameter to use to fill the area of the geometry.
      *
      * @return The Fill style to use when rendering the area.
      */
@@ -92,8 +86,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
     }
 
     /**
-     * Sets the graphical-symbolization parameter to use to fill the area of
-     * the geometry.
+     * Sets the graphical-symbolization parameter to use to fill the area of the geometry.
      *
      * @param fill The Fill style to use when rendering the area.
      */
@@ -105,8 +98,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
     }
 
     /**
-     * Provides the graphical-symbolization parameter to use for the outline of
-     * the Polygon.
+     * Provides the graphical-symbolization parameter to use for the outline of the Polygon.
      *
      * @return The Stroke style to use when rendering lines.
      */
@@ -115,8 +107,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
     }
 
     /**
-     * Sets the graphical-symbolization parameter to use for the outline of the
-     * Polygon.
+     * Sets the graphical-symbolization parameter to use for the outline of the Polygon.
      *
      * @param stroke The Stroke style to use when rendering lines.
      */
@@ -124,7 +115,7 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
         if (this.stroke == stroke) {
             return;
         }
-        this.stroke = StrokeImpl.cast( stroke );
+        this.stroke = StrokeImpl.cast(stroke);
     }
 
     /**
@@ -132,20 +123,18 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
      *
      * @param visitor The visitor to accept.
      */
-    public Object accept(StyleVisitor visitor,Object data) {
-        return visitor.visit(this,data);
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
     }
 
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
-    
+
     /**
-     * Creates a deep copy clone.   TODO: Need to complete the deep copy,
-     * currently only shallow copy.
+     * Creates a deep copy clone. TODO: Need to complete the deep copy, currently only shallow copy.
      *
      * @return The deep copy clone.
-     *
      * @throws RuntimeException DOCUMENT ME!
      */
     public Object clone() {
@@ -181,61 +170,45 @@ public class PolygonSymbolizerImpl extends AbstractSymbolizer implements Polygon
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (!super.equals(obj)) return false;
+        if (getClass() != obj.getClass()) return false;
         PolygonSymbolizerImpl other = (PolygonSymbolizerImpl) obj;
         if (disp == null) {
-            if (other.disp != null)
-                return false;
-        } else if (!disp.equals(other.disp))
-            return false;
+            if (other.disp != null) return false;
+        } else if (!disp.equals(other.disp)) return false;
         if (fill == null) {
-            if (other.fill != null)
-                return false;
-        } else if (!fill.equals(other.fill))
-            return false;
+            if (other.fill != null) return false;
+        } else if (!fill.equals(other.fill)) return false;
         if (offset == null) {
-            if (other.offset != null)
-                return false;
-        } else if (!offset.equals(other.offset))
-            return false;
+            if (other.offset != null) return false;
+        } else if (!offset.equals(other.offset)) return false;
         if (stroke == null) {
-            if (other.stroke != null)
-                return false;
-        } else if (!stroke.equals(other.stroke))
-            return false;
+            if (other.stroke != null) return false;
+        } else if (!stroke.equals(other.stroke)) return false;
         return true;
     }
 
     static PolygonSymbolizerImpl cast(org.opengis.style.Symbolizer symbolizer) {
-        if( symbolizer == null ){
+        if (symbolizer == null) {
             return null;
-        }
-        else if (symbolizer instanceof PolygonSymbolizerImpl){
+        } else if (symbolizer instanceof PolygonSymbolizerImpl) {
             return (PolygonSymbolizerImpl) symbolizer;
-        }
-        else if( symbolizer instanceof org.opengis.style.PolygonSymbolizer ){
-            org.opengis.style.PolygonSymbolizer polygonSymbolizer = (org.opengis.style.PolygonSymbolizer) symbolizer;
+        } else if (symbolizer instanceof org.opengis.style.PolygonSymbolizer) {
+            org.opengis.style.PolygonSymbolizer polygonSymbolizer =
+                    (org.opengis.style.PolygonSymbolizer) symbolizer;
             PolygonSymbolizerImpl copy = new PolygonSymbolizerImpl();
-            copy.setStroke( StrokeImpl.cast(polygonSymbolizer.getStroke()));
-            copy.setDescription( polygonSymbolizer.getDescription() );
-            copy.setDisplacement( polygonSymbolizer.getDisplacement());
+            copy.setStroke(StrokeImpl.cast(polygonSymbolizer.getStroke()));
+            copy.setDescription(polygonSymbolizer.getDescription());
+            copy.setDisplacement(polygonSymbolizer.getDisplacement());
             copy.setFill(polygonSymbolizer.getFill());
-            copy.setGeometryPropertyName( polygonSymbolizer.getGeometryPropertyName());
+            copy.setGeometryPropertyName(polygonSymbolizer.getGeometryPropertyName());
             copy.setName(polygonSymbolizer.getName());
             copy.setPerpendicularOffset(polygonSymbolizer.getPerpendicularOffset());
-            copy.setUnitOfMeasure( polygonSymbolizer.getUnitOfMeasure());
+            copy.setUnitOfMeasure(polygonSymbolizer.getUnitOfMeasure());
             return copy;
-        }
-        else {
+        } else {
             return null; // not possible
         }
     }
-
-
-
 }

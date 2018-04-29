@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,20 +17,16 @@
 package org.geotools.renderer.style;
 
 // J2SE dependencies
+
 import java.awt.Composite;
 import java.awt.Paint;
 import java.awt.Stroke;
 
-import org.geotools.resources.Classes;
-
-
 /**
- * A rendered style to draw the contour of shapes  TODO: add support for Graphic rendering (that
- * is, an image painted along the contour)
+ * A rendered style to draw the contour of shapes TODO: add support for Graphic rendering (that is,
+ * an image painted along the contour)
  *
  * @author aaime
- *
- *
  * @source $URL$
  */
 public class LineStyle2D extends Style2D {
@@ -38,12 +34,12 @@ public class LineStyle2D extends Style2D {
     protected Stroke stroke;
 
     protected Composite contourComposite;
-    
+
     protected double perpendicularOffset;
 
     /** Holds value of property graphicStroke. */
     private Style2D graphicStroke;
-    
+
     /**
      * Returns the stroke for the {@linkplain org.geotools.renderer.geom.Polyline polyline} to be
      * rendered, or <code>null</code> if none.
@@ -103,46 +99,52 @@ public class LineStyle2D extends Style2D {
     public void setContourComposite(Composite contourComposite) {
         this.contourComposite = contourComposite;
     }
-    
-    /** Getter for property graphicStroke.
-     * @return Value of property graphicStroke.
+
+    /**
+     * Getter for property graphicStroke.
      *
+     * @return Value of property graphicStroke.
      */
     public Style2D getGraphicStroke() {
         return this.graphicStroke;
     }
-    
-    /** Setter for property graphicStroke.
-     * @param graphicStroke New value of property graphicStroke.
+
+    /**
+     * Setter for property graphicStroke.
      *
+     * @param graphicStroke New value of property graphicStroke.
      */
     public void setGraphicStroke(Style2D graphicStroke) {
         this.graphicStroke = graphicStroke;
     }
-    
-    /**
-     * Returns the perpendicular offset value for this style
-     */
+
+    /** Returns the perpendicular offset value for this style */
     public double getPerpendicularOffset() {
         return perpendicularOffset;
     }
 
     /**
      * Sets the perpendicular offset value for this style
+     *
      * @param perpendicularOffset The offset, positive on the left side of the line
      */
     public void setPerpendicularOffset(double perpendicularOffset) {
         this.perpendicularOffset = perpendicularOffset;
     }
 
-    /**
-     * Returns a string representation of this style.
-     */
+    /** Returns a string representation of this style. */
     @Override
     public String toString() {
-        return "LineStyle2D [contour=" + contour + ", stroke=" + stroke + ", contourComposite="
-                + contourComposite + ", perpendicularOffset=" + perpendicularOffset
-                + ", graphicStroke=" + graphicStroke + "]";
+        return "LineStyle2D [contour="
+                + contour
+                + ", stroke="
+                + stroke
+                + ", contourComposite="
+                + contourComposite
+                + ", perpendicularOffset="
+                + perpendicularOffset
+                + ", graphicStroke="
+                + graphicStroke
+                + "]";
     }
-    
 }

@@ -19,17 +19,13 @@ package org.geotools.se.v1_1.bindings;
 import org.geotools.se.v1_1.SETestSupport;
 import org.opengis.filter.expression.Function;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FormatDateBindingTest extends SETestSupport {
 
     public void testParse() throws Exception {
         SEMockData.formatDate(document, document);
         Function f = (Function) parse();
-        
+
         assertTrue(f.evaluate(null, String.class).matches("1981/06/\\d\\d"));
     }
 }

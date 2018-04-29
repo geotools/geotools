@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,41 +24,32 @@ import java.util.SortedSet;
 
 /**
  * Utility class used by feature model implementation.
- * <p>
- * This class is only for use internally and is not meant to be called by 
- * client code.
- * </p>
+ *
+ * <p>This class is only for use internally and is not meant to be called by client code.
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class FeatureImplUtils {
 
     /**
-     * Wraps a collection in an umodifiable collection based on the interface
-     * the collection implements.
-     * <p>
-     * A list will result in an umodifiable list, a set in an unmodifiable set, 
-     * etc..
-     * </p>
-     * 
+     * Wraps a collection in an umodifiable collection based on the interface the collection
+     * implements.
+     *
+     * <p>A list will result in an umodifiable list, a set in an unmodifiable set, etc..
      */
-    public static Collection unmodifiable( Collection original ) {
-        
-        if ( original instanceof Set ) {
-            if ( original instanceof SortedSet ) {
+    public static Collection unmodifiable(Collection original) {
+
+        if (original instanceof Set) {
+            if (original instanceof SortedSet) {
                 return Collections.unmodifiableSortedSet((SortedSet) original);
             }
-            
-            return Collections.unmodifiableSet((Set)original);
+
+            return Collections.unmodifiableSet((Set) original);
+        } else if (original instanceof List) {
+            return Collections.unmodifiableList((List) original);
         }
-        else if ( original instanceof List ) {
-            return Collections.unmodifiableList((List)original);
-        }
-        
+
         return Collections.unmodifiableCollection(original);
     }
 }

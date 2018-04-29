@@ -19,15 +19,13 @@ package org.geotools.geopkg.mosaic;
 import java.awt.RenderingHints.Key;
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
 /**
  * Constructs a GeoPackage Grid Format (supports the GP mosaic datastore).
- * 
- * @author Niels Charlier
  *
+ * @author Niels Charlier
  */
 public class GeoPackageFormatFactorySpi implements GridFormatFactorySpi {
 
@@ -45,5 +43,4 @@ public class GeoPackageFormatFactorySpi implements GridFormatFactorySpi {
     public AbstractGridFormat createFormat() {
         return new GeoPackageFormat();
     }
-
 }

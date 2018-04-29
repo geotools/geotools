@@ -2,28 +2,22 @@ package org.geotools.data.dxf.header;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.Vector;
 import java.util.Iterator;
-
-
-import org.geotools.data.dxf.parser.DXFColor;
-import org.geotools.data.dxf.parser.DXFParseException;
-import org.geotools.data.dxf.parser.DXFUnivers;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
-import org.geotools.data.dxf.entities.DXFEntity;
-import org.geotools.data.dxf.entities.DXFPoint;
-import org.geotools.data.dxf.entities.DXFInsert;
-import org.geotools.data.dxf.parser.DXFCodeValuePair;
-import org.geotools.data.dxf.parser.DXFConstants;
-import org.geotools.data.dxf.parser.DXFGroupCode;
+import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.entities.DXFEntity;
+import org.geotools.data.dxf.entities.DXFInsert;
+import org.geotools.data.dxf.entities.DXFPoint;
+import org.geotools.data.dxf.parser.DXFCodeValuePair;
+import org.geotools.data.dxf.parser.DXFColor;
+import org.geotools.data.dxf.parser.DXFConstants;
+import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.geotools.data.dxf.parser.DXFParseException;
+import org.geotools.data.dxf.parser.DXFUnivers;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFBlock extends DXFEntity implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFBlock.class);
@@ -33,7 +27,14 @@ public class DXFBlock extends DXFEntity implements DXFConstants {
     public int _flag;
 
     public DXFBlock(DXFBlock newBlock) {
-        this(newBlock._point.X(), newBlock._point.Y(), newBlock._flag, newBlock._name, null, newBlock.getColor(), newBlock.getRefLayer());
+        this(
+                newBlock._point.X(),
+                newBlock._point.Y(),
+                newBlock._flag,
+                newBlock._name,
+                null,
+                newBlock.getColor(),
+                newBlock.getRefLayer());
 
         // Copy entities
         Iterator iter = newBlock.theEntities.iterator();
@@ -42,7 +43,8 @@ public class DXFBlock extends DXFEntity implements DXFConstants {
         }
     }
 
-    public DXFBlock(double x, double y, int flag, String name, Vector<DXFEntity> ent, int c, DXFLayer l) {
+    public DXFBlock(
+            double x, double y, int flag, String name, Vector<DXFEntity> ent, int c, DXFLayer l) {
         super(c, l, 0, null, DXFTables.defaultThickness);
         _point = new DXFPoint(x, y, c, l, 0, 1);
         _name = name;
@@ -118,7 +120,7 @@ public class DXFBlock extends DXFEntity implements DXFConstants {
                     break;
             }
         }
-        
+
         DXFBlock e = new DXFBlock(x, y, flag, name, sEnt, DXFColor.getDefaultColorIndex(), l);
         log.debug(e.toString(x, y, flag, name, sEnt.size(), DXFColor.getDefaultColorIndex()));
         log.debug("Exit at line: " + br.getLineNumber());

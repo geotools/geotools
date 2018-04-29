@@ -16,25 +16,19 @@
  */
 package org.geotools.gml3.bindings;
 
-import org.geotools.gml3.GML;
-import org.geotools.gml3.GML3TestSupport;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import org.geotools.gml3.GML;
+import org.geotools.gml3.GML3TestSupport;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiPolygonTypeBindingTest extends GML3TestSupport {
-    
+
     public void test() throws Exception {
         GML3MockData.multiPolygon(document, document);
 
@@ -42,14 +36,14 @@ public class MultiPolygonTypeBindingTest extends GML3TestSupport {
         assertNotNull(multiPolygon);
         assertEquals(2, multiPolygon.getNumGeometries());
     }
-    
+
     public void test3D() throws Exception {
         GML3MockData.multiPolygon3D(document, document);
 
         MultiPolygon multiPolygon = (MultiPolygon) parse();
         assertNotNull(multiPolygon);
         assertEquals(2, multiPolygon.getNumGeometries());
-        
+
         Polygon polygon = (Polygon) multiPolygon.getGeometryN(0);
         LineString exterior = polygon.getExteriorRing();
         assertTrue(new Coordinate(1d, 2d, 10d).equals3D(exterior.getCoordinateN(0)));
@@ -69,5 +63,4 @@ public class MultiPolygonTypeBindingTest extends GML3TestSupport {
         assertEquals("geometry.1", getID(children.item(0)));
         assertEquals("geometry.2", getID(children.item(1)));
     }
-
 }

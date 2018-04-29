@@ -1,5 +1,6 @@
 package org.geotools.jdbc;
 
+import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -14,23 +15,17 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Polygon;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
-    
+
     protected static final String LAKESVIEW = "lakesview";
     protected static final String LAKESVIEWPK = "lakesviewpk";
     protected static final String FID = "fid";
     protected static final String ID = "id";
     protected static final String NAME = "name";
     protected static final String GEOM = "geom";
-    
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null); 
+
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     protected SimpleFeatureType lakeViewSchema;
     protected SimpleFeatureType lakeViewPkSchema;
 
@@ -40,7 +35,7 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
     @Override
     protected void connect() throws Exception {
         super.connect();
-        
+
         // we need to use the type builder because the pk has min occurs = 1 on Oracle
         AttributeTypeBuilder atb = new AttributeTypeBuilder();
         atb.setMinOccurs(isPkNillable() ? 0 : 1);
@@ -49,7 +44,7 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
         atb.setName(FID);
         atb.setBinding(Integer.class);
         AttributeDescriptor fidDescriptor = atb.buildDescriptor(FID);
-        
+
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setNamespaceURI(dataStore.getNamespaceURI());
         tb.setName(LAKESVIEW);
@@ -58,50 +53,51 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
         tb.add(GEOM, Polygon.class, (CoordinateReferenceSystem) null);
         tb.add(NAME, String.class);
         lakeViewSchema = tb.buildFeatureType();
-        
+
         lakeViewPkSchema = tb.retype(lakeViewSchema, new String[] {ID, GEOM, NAME});
     }
-    
+
     /**
-     * Whether the pk field in a view is nillable or not (it is for most databases, but not
-     * for Oracle for example).
+     * Whether the pk field in a view is nillable or not (it is for most databases, but not for
+     * Oracle for example).
+     *
      * @return
      */
     protected boolean isPkNillable() {
         return true;
     }
-    
+
     /**
      * Whether the database supports primary keys defined on views (Oracle does)
+     *
      * @return
      */
     protected boolean supportsPkOnViews() {
         return false;
     }
-    
+
     public void testSchema() throws Exception {
-        SimpleFeatureType ft =  dataStore.getSchema(tname(LAKESVIEW));
+        SimpleFeatureType ft = dataStore.getSchema(tname(LAKESVIEW));
         assertFeatureTypesEqual(lakeViewSchema, ft);
     }
-    
+
     public void testSchemaPk() throws Exception {
-        if(!supportsPkOnViews())
-            return;
-        
-        SimpleFeatureType ft =  dataStore.getSchema(tname(LAKESVIEWPK));
+        if (!supportsPkOnViews()) return;
+
+        SimpleFeatureType ft = dataStore.getSchema(tname(LAKESVIEWPK));
         assertFeatureTypesEqual(lakeViewPkSchema, ft);
     }
-    
+
     public void testReadFeatures() throws Exception {
-    	SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(LAKESVIEW)).getFeatures();
+        SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(LAKESVIEW)).getFeatures();
         assertEquals(1, fc.size());
-        try(SimpleFeatureIterator fr = fc.features()) {
+        try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
             SimpleFeature f = fr.next();
             assertFalse(fr.hasNext());
         }
     }
-    
+
     public void testGetBounds() throws Exception {
         // GEOT-2067 Make sure it's possible to compute bounds out of a view
         ReferencedEnvelope reference = dataStore.getFeatureSource(tname(LAKESVIEW)).getBounds();
@@ -110,21 +106,21 @@ public abstract class JDBCViewOnlineTest extends JDBCTestSupport {
         assertEquals(4.0, reference.getMinY());
         assertEquals(8.0, reference.getMaxY());
     }
-    
+
     /**
-     * Subclasses may want to override this in case the database has a native way, other
-     * than the pk, to identify a row
+     * Subclasses may want to override this in case the database has a native way, other than the
+     * pk, to identify a row
+     *
      * @throws Exception
      */
     public void testReadOnly() throws Exception {
-        try { 
+        try {
             dataStore.getFeatureWriter(tname(LAKESVIEW), Transaction.AUTO_COMMIT);
             fail("Should not be able to pick a writer without a pk");
-        } catch(Exception e) {
+        } catch (Exception e) {
             // ok, fine
         }
-        
+
         assertFalse(dataStore.getFeatureSource(tname(LAKESVIEW)) instanceof FeatureStore);
     }
-
 }

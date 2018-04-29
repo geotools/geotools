@@ -1,14 +1,14 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
- * 
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
  *    version 2.1 of the License.
- * 
+ *
  *    This library is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,8 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
-
+import java.util.Arrays;
+import java.util.Collection;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.json.simple.JSONObject;
@@ -32,12 +33,7 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-/**
- * Tests the MapBox Feature Data expressions.
- */
+/** Tests the MapBox Feature Data expressions. */
 public class MBFeatureDataTest extends AbstractMBExpressionTest {
 
     private SimpleFeature[] lineStringFeatures;
@@ -116,16 +112,26 @@ public class MBFeatureDataTest extends AbstractMBExpressionTest {
     @Override
     protected void setupInternal() throws Exception {
         // add some extra features as test structures
-        final SimpleFeatureType lineStringType = DataUtilities.createType("mbfeaturedata.line",
-            "lineInt:int,anotherLineInt:int,lineDoubleField:double,lineGeom:LineString,lineName:String");
-        final SimpleFeatureType polygonType = DataUtilities.createType("mbfeaturedata.polygon",
-            "polygonInt:int,anotherPolygonInt:int,polygonDouble:double,polygonGeom:Polygon,polygonName:String");
-        final SimpleFeatureType multiLineStringType = DataUtilities.createType("mbfeaturedata.multiline",
-            "multiLineInt:int,anotherMultiLineInt:int,multiLineDoubleField:double,multiLineGeom:MultiLineString,multiLineName:String");
-        final SimpleFeatureType multiPolygonType = DataUtilities.createType("mbfeaturedata.multipolygon",
-            "multiPolygonInt:int,anotherMultiPolygonInt:int,multiPolygonDouble:double,multiPolygonGeom:MultiPolygon,multiPolygonName:String");
-        final SimpleFeatureType multiPointType = DataUtilities.createType("mbfeaturedata.multipoint",
-            "multiPointInt:int,anotherMultiPointInt:int,multiPointDoubleField:double,multiPointGeom:MultiPoint,multiPointName:String");
+        final SimpleFeatureType lineStringType =
+                DataUtilities.createType(
+                        "mbfeaturedata.line",
+                        "lineInt:int,anotherLineInt:int,lineDoubleField:double,lineGeom:LineString,lineName:String");
+        final SimpleFeatureType polygonType =
+                DataUtilities.createType(
+                        "mbfeaturedata.polygon",
+                        "polygonInt:int,anotherPolygonInt:int,polygonDouble:double,polygonGeom:Polygon,polygonName:String");
+        final SimpleFeatureType multiLineStringType =
+                DataUtilities.createType(
+                        "mbfeaturedata.multiline",
+                        "multiLineInt:int,anotherMultiLineInt:int,multiLineDoubleField:double,multiLineGeom:MultiLineString,multiLineName:String");
+        final SimpleFeatureType multiPolygonType =
+                DataUtilities.createType(
+                        "mbfeaturedata.multipolygon",
+                        "multiPolygonInt:int,anotherMultiPolygonInt:int,multiPolygonDouble:double,multiPolygonGeom:MultiPolygon,multiPolygonName:String");
+        final SimpleFeatureType multiPointType =
+                DataUtilities.createType(
+                        "mbfeaturedata.multipoint",
+                        "multiPointInt:int,anotherMultiPointInt:int,multiPointDoubleField:double,multiPointGeom:MultiPoint,multiPointName:String");
         // create the feature arrays
         lineStringFeatures = new SimpleFeature[intVals.length];
         polygonFeatures = new SimpleFeature[intVals.length];
@@ -140,21 +146,33 @@ public class MBFeatureDataTest extends AbstractMBExpressionTest {
             final Double aDouble = Double.valueOf(doubleVals[i]);
             final String aName = "name_" + intVals[i];
             // build the features
-            final SimpleFeature multiPoint = SimpleFeatureBuilder.build(multiPointType,
-                new Object[]{anInt, anotherInt, aDouble, createMultiPoint(i), aName},
-                "mbmultipoint." + (i + 1));
-            final SimpleFeature line = SimpleFeatureBuilder.build(lineStringType,
-                new Object[]{anInt, anotherInt, aDouble, createLineString(i), aName},
-                "mbline." + (i + 1));
-            final SimpleFeature multiLine = SimpleFeatureBuilder.build(multiLineStringType,
-                new Object[]{anInt, anotherInt, aDouble, createMultiLineString(i), aName},
-                "mbmultiline." + (i + 1));
-            final SimpleFeature polygon = SimpleFeatureBuilder.build(polygonType,
-                new Object[]{anInt, anotherInt, aDouble, createPolygon(i), aName},
-                "mbpolygon." + (i + 1));
-            final SimpleFeature multiPolygon = SimpleFeatureBuilder.build(multiPolygonType,
-                new Object[]{anInt, anotherInt, aDouble, createMultiPolygon(i), aName},
-                "mbmultipolygon." + (i + 1));
+            final SimpleFeature multiPoint =
+                    SimpleFeatureBuilder.build(
+                            multiPointType,
+                            new Object[] {anInt, anotherInt, aDouble, createMultiPoint(i), aName},
+                            "mbmultipoint." + (i + 1));
+            final SimpleFeature line =
+                    SimpleFeatureBuilder.build(
+                            lineStringType,
+                            new Object[] {anInt, anotherInt, aDouble, createLineString(i), aName},
+                            "mbline." + (i + 1));
+            final SimpleFeature multiLine =
+                    SimpleFeatureBuilder.build(
+                            multiLineStringType,
+                            new Object[] {
+                                anInt, anotherInt, aDouble, createMultiLineString(i), aName
+                            },
+                            "mbmultiline." + (i + 1));
+            final SimpleFeature polygon =
+                    SimpleFeatureBuilder.build(
+                            polygonType,
+                            new Object[] {anInt, anotherInt, aDouble, createPolygon(i), aName},
+                            "mbpolygon." + (i + 1));
+            final SimpleFeature multiPolygon =
+                    SimpleFeatureBuilder.build(
+                            multiPolygonType,
+                            new Object[] {anInt, anotherInt, aDouble, createMultiPolygon(i), aName},
+                            "mbmultipolygon." + (i + 1));
             // add the features
             lineStringFeatures[i] = line;
             polygonFeatures[i] = polygon;
@@ -169,12 +187,24 @@ public class MBFeatureDataTest extends AbstractMBExpressionTest {
         final JSONObject j = getObjectByLayerId("featureDataId", "layout");
         // validate the feature ids
         for (int i = 0; i < intVals.length; ++i) {
-            assertEquals("mbexpression." + (i + 1), getExpressionEvaluation(j, "featureId", testFeatures[i]));
-            assertEquals("mbmultipoint." + (i + 1), getExpressionEvaluation(j, "featureId", multiPointFeatures[i]));
-            assertEquals("mbline." + (i + 1), getExpressionEvaluation(j, "featureId", lineStringFeatures[i]));
-            assertEquals("mbmultiline." + (i + 1), getExpressionEvaluation(j, "featureId", multiLineStringFeatures[i]));
-            assertEquals("mbpolygon." + (i + 1), getExpressionEvaluation(j, "featureId", polygonFeatures[i]));
-            assertEquals("mbmultipolygon." + (i + 1), getExpressionEvaluation(j, "featureId", multiPolygonFeatures[i]));
+            assertEquals(
+                    "mbexpression." + (i + 1),
+                    getExpressionEvaluation(j, "featureId", testFeatures[i]));
+            assertEquals(
+                    "mbmultipoint." + (i + 1),
+                    getExpressionEvaluation(j, "featureId", multiPointFeatures[i]));
+            assertEquals(
+                    "mbline." + (i + 1),
+                    getExpressionEvaluation(j, "featureId", lineStringFeatures[i]));
+            assertEquals(
+                    "mbmultiline." + (i + 1),
+                    getExpressionEvaluation(j, "featureId", multiLineStringFeatures[i]));
+            assertEquals(
+                    "mbpolygon." + (i + 1),
+                    getExpressionEvaluation(j, "featureId", polygonFeatures[i]));
+            assertEquals(
+                    "mbmultipolygon." + (i + 1),
+                    getExpressionEvaluation(j, "featureId", multiPolygonFeatures[i]));
         }
     }
 
@@ -184,45 +214,76 @@ public class MBFeatureDataTest extends AbstractMBExpressionTest {
         // validate the geometry types
         for (int i = 0; i < intVals.length; ++i) {
             assertEquals("Point", getExpressionEvaluation(j, "geometryType", testFeatures[i]));
-            assertEquals("LineString", getExpressionEvaluation(j, "geometryType", lineStringFeatures[i]));
+            assertEquals(
+                    "LineString",
+                    getExpressionEvaluation(j, "geometryType", lineStringFeatures[i]));
             assertEquals("Polygon", getExpressionEvaluation(j, "geometryType", polygonFeatures[i]));
-            assertEquals("MultiPoint", getExpressionEvaluation(j, "geometryType", multiPointFeatures[i]));
-            assertEquals("MultiLineString", getExpressionEvaluation(j, "geometryType", multiLineStringFeatures[i]));
-            assertEquals("MultiPolygon", getExpressionEvaluation(j, "geometryType", multiPolygonFeatures[i]));
+            assertEquals(
+                    "MultiPoint",
+                    getExpressionEvaluation(j, "geometryType", multiPointFeatures[i]));
+            assertEquals(
+                    "MultiLineString",
+                    getExpressionEvaluation(j, "geometryType", multiLineStringFeatures[i]));
+            assertEquals(
+                    "MultiPolygon",
+                    getExpressionEvaluation(j, "geometryType", multiPolygonFeatures[i]));
         }
     }
 
-    // Currently, "properties" is not implemented. When it is, the expected Exception should be removed.
+    // Currently, "properties" is not implemented. When it is, the expected Exception should be
+    // removed.
     @Test(expected = UnsupportedOperationException.class)
     public void testProperties() throws Exception {
         final JSONObject j = getObjectByLayerId("featureDataId", "layout");
         // validate the properties
         final Collection<String> pointProps =
-            Arrays.asList(
-                "anIntField", "anotherIntField", "doubleField", "geom", "name");
+                Arrays.asList("anIntField", "anotherIntField", "doubleField", "geom", "name");
         final Collection<String> lineProps =
-            Arrays.asList(
-                "lineInt", "anotherLineInt", "lineDoubleField", "lineGeom", "lineName");
+                Arrays.asList(
+                        "lineInt", "anotherLineInt", "lineDoubleField", "lineGeom", "lineName");
         final Collection<String> polygonProps =
-            Arrays.asList(
-                "polygonInt", "anotherPolygonInt", "polygonDouble", "polygonGeom", "polygonName");
+                Arrays.asList(
+                        "polygonInt",
+                        "anotherPolygonInt",
+                        "polygonDouble",
+                        "polygonGeom",
+                        "polygonName");
         final Collection<String> multiPointProps =
-            Arrays.asList(
-                "multiPointInt", "anotherMultiPointInt", "multiPointDoubleField", "multiPointGeom", "multiPointName");
+                Arrays.asList(
+                        "multiPointInt",
+                        "anotherMultiPointInt",
+                        "multiPointDoubleField",
+                        "multiPointGeom",
+                        "multiPointName");
         final Collection<String> multiLineProps =
-            Arrays.asList(
-                "multiLineInt", "anotherMultiLineInt", "multiLineDoubleField", "multiLineGeom", "multiLineName");
+                Arrays.asList(
+                        "multiLineInt",
+                        "anotherMultiLineInt",
+                        "multiLineDoubleField",
+                        "multiLineGeom",
+                        "multiLineName");
         final Collection<String> multiPolygonProps =
-            Arrays.asList(
-                "multiPolygonInt", "anotherMultiPolygonInt", "multiPolygonDouble", "multiPolygonGeom",
-                "multiPolygonName");
+                Arrays.asList(
+                        "multiPolygonInt",
+                        "anotherMultiPolygonInt",
+                        "multiPolygonDouble",
+                        "multiPolygonGeom",
+                        "multiPolygonName");
         for (int i = 0; i < intVals.length; ++i) {
             assertEquals(pointProps, getExpressionEvaluation(j, "properties", testFeatures[i]));
-            assertEquals(lineProps, getExpressionEvaluation(j, "properties", lineStringFeatures[i]));
-            assertEquals(polygonProps, getExpressionEvaluation(j, "properties", polygonFeatures[i]));
-            assertEquals(multiPointProps, getExpressionEvaluation(j, "properties", multiPointFeatures[i]));
-            assertEquals(multiLineProps, getExpressionEvaluation(j, "properties", multiLineStringFeatures[i]));
-            assertEquals(multiPolygonProps, getExpressionEvaluation(j, "properties", multiPolygonFeatures[i]));
+            assertEquals(
+                    lineProps, getExpressionEvaluation(j, "properties", lineStringFeatures[i]));
+            assertEquals(
+                    polygonProps, getExpressionEvaluation(j, "properties", polygonFeatures[i]));
+            assertEquals(
+                    multiPointProps,
+                    getExpressionEvaluation(j, "properties", multiPointFeatures[i]));
+            assertEquals(
+                    multiLineProps,
+                    getExpressionEvaluation(j, "properties", multiLineStringFeatures[i]));
+            assertEquals(
+                    multiPolygonProps,
+                    getExpressionEvaluation(j, "properties", multiPolygonFeatures[i]));
         }
     }
 }

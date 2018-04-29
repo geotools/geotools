@@ -26,8 +26,6 @@ import java.io.Serializable;
 /**
  * A class describing the layout of a Raster element of the {@link HorizontalDomain}.
  *
- *
- *
  * @source $URL$
  * @todo Extend {@link Rectangle}??
  */
@@ -74,14 +72,15 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
      * @param tileWidth the width of a tile.
      * @param tileHeight the height of a tile.
      */
-    public RasterLayout(int minX,
-                       int minY,
-                       int width,
-                       int height,
-                       int tileGridXOffset,
-                       int tileGridYOffset,
-                       int tileWidth,
-                       int tileHeight) {
+    public RasterLayout(
+            int minX,
+            int minY,
+            int width,
+            int height,
+            int tileGridXOffset,
+            int tileGridYOffset,
+            int tileWidth,
+            int tileHeight) {
         setMinX(minX);
         setMinY(minY);
         setWidth(width);
@@ -92,20 +91,15 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
         setTileHeight(tileHeight);
     }
 
-
     /**
-     * Constructs a <code>RasterLayout</code> with only the image dimension
-     * parameters set.
+     * Constructs a <code>RasterLayout</code> with only the image dimension parameters set.
      *
      * @param minX the image's minimum X coordinate.
      * @param minY the image's minimum Y coordinate.
      * @param width the image's width.
      * @param height the image's height.
      */
-    public RasterLayout(int minX,
-                       int minY,
-                       int width,
-                       int height) {
+    public RasterLayout(int minX, int minY, int width, int height) {
         setMinX(minX);
         setMinY(minY);
         setWidth(width);
@@ -113,28 +107,30 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
     }
 
     /**
-     * Constructs a <code>RasterLayout</code> with all its parameters set
-     * to equal those of a given <code>RenderedImage</code>.
+     * Constructs a <code>RasterLayout</code> with all its parameters set to equal those of a given
+     * <code>RenderedImage</code>.
      *
      * @param im a <code>RenderedImage</code> whose layout will be copied.
      */
     public RasterLayout(RenderedImage im) {
-        this(im.getMinX(),
-             im.getMinY(),
-             im.getWidth(),
-             im.getHeight(),
-             im.getTileGridXOffset(),
-             im.getTileGridYOffset(),
-             im.getTileWidth(),
-             im.getTileHeight());
+        this(
+                im.getMinX(),
+                im.getMinY(),
+                im.getWidth(),
+                im.getHeight(),
+                im.getTileGridXOffset(),
+                im.getTileGridYOffset(),
+                im.getTileWidth(),
+                im.getTileHeight());
     }
 
     /**
      * Returns the value of <code>minX</code>.
+     *
      * @return the value of minX.
      */
     public int getMinX() {
-            return minX;
+        return minX;
     }
 
     /**
@@ -148,10 +144,11 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
 
     /**
      * Returns the value of <code>minY</code>.
+     *
      * @return the value of minY.
      */
     public int getMinY() {
-            return minY;
+        return minY;
     }
 
     /**
@@ -165,10 +162,11 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
 
     /**
      * Returns the value of <code>width</code>.
+     *
      * @return the value of width.
      */
     public int getWidth() {
-    	return width;
+        return width;
     }
 
     /**
@@ -177,11 +175,11 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
      * @param width the width of the image, as an int.
      * @throws IllegalArgumentException if <code>width</code> is non-positive.
      */
-   public void setWidth(int width) {
-       if(width <= 0) {
-           throw new IllegalArgumentException("width shall be positive");
-       }
-       this.width = width;
+    public void setWidth(int width) {
+        if (width <= 0) {
+            throw new IllegalArgumentException("width shall be positive");
+        }
+        this.width = width;
     }
 
     /**
@@ -190,7 +188,7 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
      * @return the value of height.
      */
     public int getHeight() {
-            return height;
+        return height;
     }
 
     /**
@@ -200,18 +198,19 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
      * @throws IllegalArgumentException if <code>height</code> is non-positive.
      */
     public void setHeight(int height) {
-       if(height <= 0) {
-           throw new IllegalArgumentException("height shall be positive");
-       }
-       this.height = height;
+        if (height <= 0) {
+            throw new IllegalArgumentException("height shall be positive");
+        }
+        this.height = height;
     }
 
     /**
      * Returns the value of <code>tileGridXOffset</code>.
+     *
      * @return the value of tileGridXOffset.
      */
     public int getTileGridXOffset() {
-            return tileGridXOffset;
+        return tileGridXOffset;
     }
 
     /**
@@ -225,10 +224,11 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
 
     /**
      * Returns the value of <code>tileGridYOffset</code>.
+     *
      * @return the value of tileGridYOffset.
      */
     public int getTileGridYOffset() {
-            return tileGridYOffset;
+        return tileGridYOffset;
     }
 
     /**
@@ -242,83 +242,89 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
 
     /**
      * Returns the value of <code>tileWidth</code>.
+     *
      * @return the value of tileWidth.
      */
     public int getTileWidth() {
-            return tileWidth;
+        return tileWidth;
     }
 
     /**
      * Sets <code>tileWidth</code> to the supplied value.
      *
      * @param tileWidth the width of a tile, as an int.
-     * @throws IllegalArgumentException if <code>tileWidth</code> is
-     *                                  non-positive.
+     * @throws IllegalArgumentException if <code>tileWidth</code> is non-positive.
      */
     public void setTileWidth(int tileWidth) {
-       if(tileWidth <= 0) {
-           throw new IllegalArgumentException("tile width shall be positive");
-       }
-       this.tileWidth = tileWidth;
+        if (tileWidth <= 0) {
+            throw new IllegalArgumentException("tile width shall be positive");
+        }
+        this.tileWidth = tileWidth;
     }
 
     /**
      * Returns the value of tileHeight.
+     *
      * @return the appropriate value of tileHeight.
      */
     public int getTileHeight() {
-            return tileHeight;
+        return tileHeight;
     }
 
     /**
      * Sets tileHeight to the supplied value.
      *
      * @return a reference to this <code>RasterLayout</code> following the change.
-     * @throws IllegalArgumentException if <code>tileHeight</code> is
-     *                                  non-positive.
+     * @throws IllegalArgumentException if <code>tileHeight</code> is non-positive.
      */
     public void setTileHeight(int tileHeight) {
-       if(tileHeight <= 0) {
-           throw new IllegalArgumentException("tile height shall be positive");
-       }
-       this.tileHeight = tileHeight;
+        if (tileHeight <= 0) {
+            throw new IllegalArgumentException("tile height shall be positive");
+        }
+        this.tileHeight = tileHeight;
     }
-
 
     /**
      * Retrieves the bounds of this {@link RasterLayout} as a {@link Rectangle}.
-     * 
+     *
      * @return retrieves the bounds of this {@link RasterLayout} as a {@link Rectangle}.
      */
-    public Rectangle getBounds(){
-        return new Rectangle(minX,minY,width,height);
+    public Rectangle getBounds() {
+        return new Rectangle(minX, minY, width, height);
     }
 
     /** Returns a String containing the values of all valid fields. */
     public String toString() {
-        StringBuilder sb = new StringBuilder("RasterLayout[").
-            append("MIN_X=").append(minX).
-            append(", ").
-            append("MIN_Y=").append(minY).
-            append(", ").
-            append("WIDTH=").append(width).
-            append(", ").
-            append("HEIGHT=").append(height).
-            append(", ").
-            append("TILE_GRID_X_OFFSET=").append(tileGridXOffset).
-            append(", ").
-            append("TILE_GRID_Y_OFFSET=").append(tileGridYOffset).
-            append(", ").
-            append("TILE_WIDTH=").append(tileWidth).
-            append(", ").
-            append("TILE_HEIGHT=").append(tileHeight).
-            append("]");
+        StringBuilder sb =
+                new StringBuilder("RasterLayout[")
+                        .append("MIN_X=")
+                        .append(minX)
+                        .append(", ")
+                        .append("MIN_Y=")
+                        .append(minY)
+                        .append(", ")
+                        .append("WIDTH=")
+                        .append(width)
+                        .append(", ")
+                        .append("HEIGHT=")
+                        .append(height)
+                        .append(", ")
+                        .append("TILE_GRID_X_OFFSET=")
+                        .append(tileGridXOffset)
+                        .append(", ")
+                        .append("TILE_GRID_Y_OFFSET=")
+                        .append(tileGridYOffset)
+                        .append(", ")
+                        .append("TILE_WIDTH=")
+                        .append(tileWidth)
+                        .append(", ")
+                        .append("TILE_HEIGHT=")
+                        .append(tileHeight)
+                        .append("]");
         return sb.toString();
     }
 
-    /**
-     * Returns a clone of the <code>RasterLayout</code> as an Object.
-     */
+    /** Returns a clone of the <code>RasterLayout</code> as an Object. */
     public Object clone() {
         try {
             return super.clone();
@@ -329,54 +335,48 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
 
     /**
      * Serialize the <code>RasterLayout</code>.
+     *
      * @throws IOException
      */
     private void writeObject(ObjectOutputStream out) throws IOException {
         // Write the non-static and non-transient fields.
         out.defaultWriteObject();
-
     }
 
     /**
      * Deserialize the <code>RasterLayout</code>.
+     *
      * @throws IOException
      */
-    private void readObject(ObjectInputStream in)
-        throws IOException, ClassNotFoundException {
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         // Read the non-static and non-transient fields.
         in.defaultReadObject();
-
-      
     }
 
     /**
-     * Tests if the specified <code>Object</code> equals this
-     * <code>RasterLayout</code>.
+     * Tests if the specified <code>Object</code> equals this <code>RasterLayout</code>.
      *
      * @param obj the <code>Object</code> to test for equality
-     *
-     * @return <code>true</code> if the specified <code>Object</code>
-     * is an instance of <code>RasterLayout</code> and equals this
-     * <code>RasterLayout</code>; <code>false</code> otherwise.
+     * @return <code>true</code> if the specified <code>Object</code> is an instance of <code>
+     *     RasterLayout</code> and equals this <code>RasterLayout</code>; <code>false</code>
+     *     otherwise.
      */
     public boolean equals(Object obj) {
 
-	if (this == obj)
-	    return true;
+        if (this == obj) return true;
 
-	if (!(obj instanceof RasterLayout))
-	    return false;
+        if (!(obj instanceof RasterLayout)) return false;
 
-	RasterLayout il = (RasterLayout)obj;
+        RasterLayout il = (RasterLayout) obj;
 
-	return (width           == il.width          ) &&
-	       (height          == il.height         ) &&
-	       (minX            == il.minX           ) &&
-	       (minY            == il.minY           ) &&
-	       (tileHeight      == il.tileHeight     ) &&
-	       (tileWidth       == il.tileWidth      ) &&
-	       (tileGridXOffset == il.tileGridXOffset) &&
-	       (tileGridYOffset == il.tileGridYOffset) ;
+        return (width == il.width)
+                && (height == il.height)
+                && (minX == il.minX)
+                && (minY == il.minY)
+                && (tileHeight == il.tileHeight)
+                && (tileWidth == il.tileWidth)
+                && (tileGridXOffset == il.tileGridXOffset)
+                && (tileGridYOffset == il.tileGridYOffset);
     }
 
     /**
@@ -386,19 +386,19 @@ public class RasterLayout extends Object implements Cloneable, Serializable {
      */
     public int hashCode() {
 
-	int code = 0, i = 1;
+        int code = 0, i = 1;
 
-	// This implementation is quite arbitrary.
-	// hashCode's NEED not be uniqe for two "different" objects
-	code += (width           * i++);
-	code += (height          * i++);
-	code += (minX            * i++);
-	code += (minY            * i++);
-	code += (tileHeight      * i++);
-	code += (tileWidth       * i++);
-	code += (tileGridXOffset * i++);
-	code += (tileGridYOffset * i++);
+        // This implementation is quite arbitrary.
+        // hashCode's NEED not be uniqe for two "different" objects
+        code += (width * i++);
+        code += (height * i++);
+        code += (minX * i++);
+        code += (minY * i++);
+        code += (tileHeight * i++);
+        code += (tileWidth * i++);
+        code += (tileGridXOffset * i++);
+        code += (tileGridYOffset * i++);
 
-	return code;
+        return code;
     }
 }

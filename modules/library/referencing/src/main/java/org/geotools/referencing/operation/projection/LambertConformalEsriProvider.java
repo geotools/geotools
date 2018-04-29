@@ -18,16 +18,11 @@ package org.geotools.referencing.operation.projection;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.operation.MathTransformProvider;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.*;
 import org.opengis.referencing.operation.ConicProjection;
 import org.opengis.referencing.operation.MathTransform;
-
 import si.uom.NonSI;
-
 
 /**
  * A specialized version
@@ -41,42 +36,43 @@ import si.uom.NonSI;
 public class LambertConformalEsriProvider extends MapProjection.AbstractProvider {
 
     /**
-     * Override of the std parallel 1 as we downgrade from 2sp to 1sp when the two std parallels are equal
+     * Override of the std parallel 1 as we downgrade from 2sp to 1sp when the two std parallels are
+     * equal
      */
-    public static final ParameterDescriptor STANDARD_PARALLEL_1 = createOptionalDescriptor(
-            new NamedIdentifier[] {
-                    new NamedIdentifier(Citations.OGC,      "standard_parallel_1"),
-                    new NamedIdentifier(Citations.EPSG,     "Latitude of 1st standard parallel"),
-                    new NamedIdentifier(Citations.ESRI,     "Standard_Parallel_1"),
-                    new NamedIdentifier(Citations.ESRI,     "standard_parallel_1"),
-                    new NamedIdentifier(Citations.GEOTIFF,  "StdParallel1")
-            },
-            -90, 90, NonSI.DEGREE_ANGLE);
+    public static final ParameterDescriptor STANDARD_PARALLEL_1 =
+            createOptionalDescriptor(
+                    new NamedIdentifier[] {
+                        new NamedIdentifier(Citations.OGC, "standard_parallel_1"),
+                        new NamedIdentifier(Citations.EPSG, "Latitude of 1st standard parallel"),
+                        new NamedIdentifier(Citations.ESRI, "Standard_Parallel_1"),
+                        new NamedIdentifier(Citations.ESRI, "standard_parallel_1"),
+                        new NamedIdentifier(Citations.GEOTIFF, "StdParallel1")
+                    },
+                    -90,
+                    90,
+                    NonSI.DEGREE_ANGLE);
 
-    /**
-     * The parameters group.
-     */
-    static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(new NamedIdentifier[]{
-            new NamedIdentifier(Citations.ESRI, "Lambert_Conformal_Conic"),
-            new NamedIdentifier(Citations.ESRI, "Lambert_Conformal_Conic_2SP")
-    }, new ParameterDescriptor[]{
-            SEMI_MAJOR, SEMI_MINOR,
-            CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
-            STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
-            FALSE_EASTING, FALSE_NORTHING,
-            SCALE_FACTOR // This last parameter is for ESRI compatibility
-    });
+    /** The parameters group. */
+    static final ParameterDescriptorGroup PARAMETERS =
+            createDescriptorGroup(
+                    new NamedIdentifier[] {
+                        new NamedIdentifier(Citations.ESRI, "Lambert_Conformal_Conic"),
+                        new NamedIdentifier(Citations.ESRI, "Lambert_Conformal_Conic_2SP")
+                    },
+                    new ParameterDescriptor[] {
+                        SEMI_MAJOR, SEMI_MINOR,
+                        CENTRAL_MERIDIAN, LATITUDE_OF_ORIGIN,
+                        STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
+                        FALSE_EASTING, FALSE_NORTHING,
+                        SCALE_FACTOR // This last parameter is for ESRI compatibility
+                    });
 
-    /**
-     * Constructs a new provider.
-     */
+    /** Constructs a new provider. */
     public LambertConformalEsriProvider() {
         super(PARAMETERS);
     }
 
-    /**
-     * Returns the operation type for this map projection.
-     */
+    /** Returns the operation type for this map projection. */
     @Override
     public Class<ConicProjection> getOperationType() {
         return ConicProjection.class;
@@ -89,8 +85,8 @@ public class LambertConformalEsriProvider extends MapProjection.AbstractProvider
      * @return The created math transform.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
-    protected MathTransform createMathTransform(final ParameterValueGroup parameters) throws
-            ParameterNotFoundException {
+    protected MathTransform createMathTransform(final ParameterValueGroup parameters)
+            throws ParameterNotFoundException {
         boolean hasStdParallel1 = getParameter(STANDARD_PARALLEL_1, parameters) != null;
         double stdParallel1 = doubleValue(STANDARD_PARALLEL_1, parameters);
         boolean hasStdParallel2 = getParameter(STANDARD_PARALLEL_2, parameters) != null;
@@ -98,14 +94,19 @@ public class LambertConformalEsriProvider extends MapProjection.AbstractProvider
         boolean hasLatitudeOfOrigin = getParameter(LATITUDE_OF_ORIGIN, parameters) != null;
         double latitudeOfOrigin = doubleValue(LATITUDE_OF_ORIGIN, parameters);
 
-        if(!hasStdParallel1 && !hasStdParallel2 && hasLatitudeOfOrigin) {
+        if (!hasStdParallel1 && !hasStdParallel2 && hasLatitudeOfOrigin) {
             // handle the ESRI 1SP case
             return new LambertConformal1SP(parameters);
-        } else if(hasStdParallel1 && hasStdParallel2 && hasLatitudeOfOrigin && Utilities.equals(stdParallel1, stdParallel2)
+        } else if (hasStdParallel1
+                && hasStdParallel2
+                && hasLatitudeOfOrigin
+                && Utilities.equals(stdParallel1, stdParallel2)
                 && Utilities.equals(stdParallel1, latitudeOfOrigin)) {
             // handle the ESRI 1SP case
             return new LambertConformal1SP(parameters);
-        } else if(!hasStdParallel2 && hasStdParallel1 && Utilities.equals(stdParallel1, latitudeOfOrigin)) {
+        } else if (!hasStdParallel2
+                && hasStdParallel1
+                && Utilities.equals(stdParallel1, latitudeOfOrigin)) {
             // handle the ESRI 1SP case
             return new LambertConformal1SP(parameters);
         } else {
@@ -125,4 +126,3 @@ public class LambertConformalEsriProvider extends MapProjection.AbstractProvider
         }
     }
 }
-

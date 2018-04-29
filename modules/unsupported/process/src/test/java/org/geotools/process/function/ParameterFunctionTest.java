@@ -4,19 +4,14 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ParameterFunctionTest {
-    
+
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     @Test
@@ -25,11 +20,11 @@ public class ParameterFunctionTest {
         try {
             param.evaluate(null);
             fail("This should have failed with an illegal argument exception");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             // fine
         }
     }
-    
+
     @Test
     public void testContext() {
         Object context = new Object();
@@ -39,7 +34,7 @@ public class ParameterFunctionTest {
         assertEquals("argument", result.keySet().iterator().next());
         assertSame(context, result.values().iterator().next());
     }
-    
+
     @Test
     public void testOne() {
         Object value = new Object();
@@ -49,12 +44,17 @@ public class ParameterFunctionTest {
         assertEquals("argument", result.keySet().iterator().next());
         assertSame(value, result.values().iterator().next());
     }
-    
+
     @Test
     public void testMany() {
         Object value1 = new Object();
         Object value2 = new Object();
-        Function param = ff.function("parameter", ff.literal("argument"), ff.literal(value1), ff.literal(value2));
+        Function param =
+                ff.function(
+                        "parameter",
+                        ff.literal("argument"),
+                        ff.literal(value1),
+                        ff.literal(value2));
         Map<String, Object> result = (Map<String, Object>) param.evaluate(null);
         assertEquals(1, result.size());
         assertEquals("argument", result.keySet().iterator().next());

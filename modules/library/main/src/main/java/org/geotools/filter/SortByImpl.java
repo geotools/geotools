@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,11 +20,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SortByImpl implements SortBy {
 
     PropertyName propertyName;
@@ -54,7 +50,7 @@ public class SortByImpl implements SortBy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -68,39 +64,31 @@ public class SortByImpl implements SortBy {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         SortByImpl other = (SortByImpl) obj;
         if (propertyName == null) {
-            if (other.propertyName != null)
-                return false;
-        } else if (!propertyName.equals(other.propertyName))
-            return false;
+            if (other.propertyName != null) return false;
+        } else if (!propertyName.equals(other.propertyName)) return false;
         if (sortOrder == null) {
-            if (other.sortOrder != null)
-                return false;
-        } else if (!sortOrder.equals(other.sortOrder))
-            return false;
+            if (other.sortOrder != null) return false;
+        } else if (!sortOrder.equals(other.sortOrder)) return false;
         return true;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return "SortByImpl [propertyName=" + propertyName + ", sortOrder=" + sortOrder + "]";
     }
-
 }

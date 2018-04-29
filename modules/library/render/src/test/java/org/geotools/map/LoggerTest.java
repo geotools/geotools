@@ -16,16 +16,15 @@
  */
 package org.geotools.map;
 
-import org.geotools.util.logging.Logging;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
+import org.geotools.util.logging.Logging;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 public class LoggerTest {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.map");

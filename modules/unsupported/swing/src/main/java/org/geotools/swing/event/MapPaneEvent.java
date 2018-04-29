@@ -18,48 +18,33 @@
 package org.geotools.swing.event;
 
 import java.util.EventObject;
-
 import org.geotools.swing.MapPane;
 
 /**
- * An event class used by {@code MapPane} to signal changes of
- * state to listeners.
+ * An event class used by {@code MapPane} to signal changes of state to listeners.
  *
  * @see MapPaneListener
- * 
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class MapPaneEvent extends EventObject {
-    /**
-     * Type of MapPane event
-     */
+    /** Type of MapPane event */
     public static enum Type {
-        /**
-         * A new {@code MapContent} has been set for the map pane.
-         */
+        /** A new {@code MapContent} has been set for the map pane. */
         NEW_MAPCONTENT,
 
         /**
-         * The display area has been changed. This can
-         * include both changes in bounds and in the
+         * The display area has been changed. This can include both changes in bounds and in the
          * coordinate reference system.
          */
         DISPLAY_AREA_CHANGED,
 
-        /**
-         * The map pane has started rendering features.
-         */
+        /** The map pane has started rendering features. */
         RENDERING_STARTED,
 
-        /**
-         * The map pane has stopped rendering features.
-         */
+        /** The map pane has stopped rendering features. */
         RENDERING_STOPPED,
     }
 
@@ -81,8 +66,8 @@ public class MapPaneEvent extends EventObject {
     }
 
     /**
-     * Constructor for an event with associated data. The new event
-     * object takes ownership of the data object.
+     * Constructor for an event with associated data. The new event object takes ownership of the
+     * data object.
      *
      * @param source the map pane issuing this event
      * @param type the type of event
@@ -106,7 +91,8 @@ public class MapPaneEvent extends EventObject {
 
     /**
      * Get the type of this event
-     * @return event type 
+     *
+     * @return event type
      */
     public Type getType() {
         return type;
@@ -120,5 +106,4 @@ public class MapPaneEvent extends EventObject {
     public Object getData() {
         return data;
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,22 +24,15 @@ import org.opengis.temporal.RelativePosition;
 
 /**
  * A one-dimensional geometric primitive that represent extent in time.
- * 
+ *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements Period {
 
-    /**
-     * This is the TM_Instant at which this Period starts.
-     */
+    /** This is the TM_Instant at which this Period starts. */
     private Instant begining;
-    /**
-     * This is the TM_Instant at which this Period ends.
-     */
+    /** This is the TM_Instant at which this Period ends. */
     private Instant ending;
 
     public DefaultPeriod(Instant begining, Instant ending) {
@@ -50,14 +43,13 @@ public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements 
         /*if (((DefaultInstant) begining).getPosition().getDate().before(((DefaultInstant) ending).getPosition().getDate())) {
             this.begining = begining;
             this.ending = ending;
-        } */else {
-            throw new IllegalArgumentException("The temporal position of the beginning of the period must be less than (i.e. earlier than) the temporal position of the end of the period");
+        } */ else {
+            throw new IllegalArgumentException(
+                    "The temporal position of the beginning of the period must be less than (i.e. earlier than) the temporal position of the end of the period");
         }
     }
 
-    /**
-     * Links this period to the instant at which it starts.
-     */
+    /** Links this period to the instant at which it starts. */
     public Instant getBeginning() {
         return begining;
     }
@@ -70,9 +62,7 @@ public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements 
         this.begining = new DefaultInstant(new DefaultPosition(date));
     }
 
-    /**
-     * Links this period to the instant at which it ends.
-     */
+    /** Links this period to the instant at which it ends. */
     public Instant getEnding() {
         return ending;
     }
@@ -85,9 +75,7 @@ public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements 
         this.ending = new DefaultInstant(new DefaultPosition(date));
     }
 
-    /**
-     * Verify if this entry is identical to the specified object.
-     */
+    /** Verify if this entry is identical to the specified object. */
     @Override
     public boolean equals(final Object object) {
         if (object == this) {
@@ -96,32 +84,33 @@ public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements 
         if (object instanceof DefaultPeriod) {
             final DefaultPeriod that = (DefaultPeriod) object;
 
-            return Utilities.equals(this.begining, that.begining) &&
-                    Utilities.equals(this.ending, that.ending);
+            return Utilities.equals(this.begining, that.begining)
+                    && Utilities.equals(this.ending, that.ending);
         }
         return false;
     }
 
- //   /**
- //     * Verify if this entry is identical to the specified object.
- //     */
- //    public int compareTo(Object object) {
- //        if (object == this) {
- //            return 0;
- //        }
- //        if (object instanceof DefaultPeriod) {
- //            final DefaultPeriod that = (DefaultPeriod) object;
- //
- //            if (Utilities.equals(this.begining, that.begining) &&
- //                    Utilities.equals(this.ending, that.ending))
- //                return 0;
- //            else {
- //                // TODO
- //            }
- //        }
- //        
- //       throw new ClassCastException("Object of type " + object.getClass() + " cannot be compared to " + this.getClass());
- //    }
+    //   /**
+    //     * Verify if this entry is identical to the specified object.
+    //     */
+    //    public int compareTo(Object object) {
+    //        if (object == this) {
+    //            return 0;
+    //        }
+    //        if (object instanceof DefaultPeriod) {
+    //            final DefaultPeriod that = (DefaultPeriod) object;
+    //
+    //            if (Utilities.equals(this.begining, that.begining) &&
+    //                    Utilities.equals(this.ending, that.ending))
+    //                return 0;
+    //            else {
+    //                // TODO
+    //            }
+    //        }
+    //
+    //       throw new ClassCastException("Object of type " + object.getClass() + " cannot be
+    // compared to " + this.getClass());
+    //    }
 
     @Override
     public int hashCode() {

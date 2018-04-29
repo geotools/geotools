@@ -18,11 +18,7 @@ package org.geotools.renderer;
 
 import junit.framework.TestCase;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class ScreenMapTest extends TestCase {
     private int xmin;
 
@@ -53,8 +49,8 @@ public class ScreenMapTest extends TestCase {
         setAll(map, false);
     }
 
-    private void setOne(ScreenMap map, int xconst, int yconst, boolean bool,
-            boolean expectedOldValue) {
+    private void setOne(
+            ScreenMap map, int xconst, int yconst, boolean bool, boolean expectedOldValue) {
         assertEquals(expectedOldValue, map.get(xconst, yconst));
         map.set(xconst, yconst, bool);
 
@@ -121,7 +117,6 @@ public class ScreenMapTest extends TestCase {
 
         setAll(map, true);
         setAll(map, false);
-
     }
 
     public void testOutsideScreen() throws Exception {
@@ -140,7 +135,7 @@ public class ScreenMapTest extends TestCase {
         assertFalse(map.checkAndSet(20, 10));
         assertFalse(map.checkAndSet(20, -10));
         assertFalse(map.checkAndSet(20, -10));
-        
+
         // also control "get"
         assertFalse(map.get(-10, -10));
         assertFalse(map.get(-10, -10));
@@ -150,7 +145,6 @@ public class ScreenMapTest extends TestCase {
         assertFalse(map.get(20, 10));
         assertFalse(map.get(20, -10));
         assertFalse(map.get(20, -10));
-
 
         // compare with one inside
         assertFalse(map.checkAndSet(0, 0));

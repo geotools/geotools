@@ -17,79 +17,64 @@
 package org.geotools.gml3.v3_2.gss;
 
 import java.util.Set;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.gco.GCO;
 import org.opengis.feature.type.Schema;
 
 /**
- * This interface contains the qualified names of all the types,elements, and 
- * attributes in the http://www.isotc211.org/2005/gss schema.
+ * This interface contains the qualified names of all the types,elements, and attributes in the
+ * http://www.isotc211.org/2005/gss schema.
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public final class GSS extends GML.DelegatingXSD {
 
     /** singleton instance */
     private static final GSS instance = new GSS();
-    
-    /**
-     * Returns the singleton instance.
-     */
+
+    /** Returns the singleton instance. */
     public static final GSS getInstance() {
-       return instance;
+        return instance;
     }
-    
-    /**
-     * private constructor
-     */
-    private GSS() {
-    }
-    
+
+    /** private constructor */
+    private GSS() {}
+
     protected void addDependencies(Set dependencies) {
-        dependencies.add( GCO.getInstance() );
-        dependencies.add( GML.getInstance() );
+        dependencies.add(GCO.getInstance());
+        dependencies.add(GML.getInstance());
     }
-    
+
     @Override
     protected Schema buildTypeSchema() {
         return new GSSSchema();
     }
-    
-    /**
-     * Returns 'http://www.isotc211.org/2005/gss'.
-     */
+
+    /** Returns 'http://www.isotc211.org/2005/gss'. */
     public String getNamespaceURI() {
-       return NAMESPACE;
+        return NAMESPACE;
     }
-    
-    /**
-     * Returns the location of 'gss.xsd.'.
-     */
+
+    /** Returns the location of 'gss.xsd.'. */
     public String getSchemaLocation() {
-       return getClass().getResource("gss.xsd").toString();
+        return getClass().getResource("gss.xsd").toString();
     }
-    
+
     /** @generated */
     public static final String NAMESPACE = "http://www.isotc211.org/2005/gss";
-    
+
     /* Type Definitions */
     /** @generated */
-    public static final QName GM_Object_PropertyType = 
-        new QName("http://www.isotc211.org/2005/gss","GM_Object_PropertyType");
+    public static final QName GM_Object_PropertyType =
+            new QName("http://www.isotc211.org/2005/gss", "GM_Object_PropertyType");
     /** @generated */
-    public static final QName GM_Point_PropertyType = 
-        new QName("http://www.isotc211.org/2005/gss","GM_Point_PropertyType");
+    public static final QName GM_Point_PropertyType =
+            new QName("http://www.isotc211.org/2005/gss", "GM_Point_PropertyType");
 
     /* Elements */
 
     /* Attributes */
 
 }
-    

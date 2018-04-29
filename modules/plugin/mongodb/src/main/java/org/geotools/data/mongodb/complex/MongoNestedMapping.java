@@ -17,6 +17,13 @@
 package org.geotools.data.mongodb.complex;
 
 import com.mongodb.DBObject;
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
@@ -44,34 +51,48 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.NamespaceSupport;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-/**
- * MongoDB custom nested attribute mapping for app-schema.
- */
+/** MongoDB custom nested attribute mapping for app-schema. */
 public class MongoNestedMapping extends NestedAttributeMapping {
 
-    public MongoNestedMapping(Expression idExpression, Expression parentExpression,
-                              XPathUtil.StepList targetXPath, boolean isMultiValued,
-                              Map<Name, Expression> clientProperties, Expression sourceElement,
-                              XPathUtil.StepList sourcePath, NamespaceSupport namespaces) throws IOException {
-        super(idExpression, parentExpression, targetXPath, isMultiValued, clientProperties, sourceElement, sourcePath, namespaces);
+    public MongoNestedMapping(
+            Expression idExpression,
+            Expression parentExpression,
+            XPathUtil.StepList targetXPath,
+            boolean isMultiValued,
+            Map<Name, Expression> clientProperties,
+            Expression sourceElement,
+            XPathUtil.StepList sourcePath,
+            NamespaceSupport namespaces)
+            throws IOException {
+        super(
+                idExpression,
+                parentExpression,
+                targetXPath,
+                isMultiValued,
+                clientProperties,
+                sourceElement,
+                sourcePath,
+                namespaces);
     }
 
     @Override
-    public List<Feature> getFeatures(Object source, Object foreignKeyValue, List<Object> idValues, CoordinateReferenceSystem reprojection,
-                                     Object feature, List<PropertyName> selectedProperties, boolean includeMandatory, int resolveDepth,
-                                     Integer resolveTimeOut) throws IOException {
+    public List<Feature> getFeatures(
+            Object source,
+            Object foreignKeyValue,
+            List<Object> idValues,
+            CoordinateReferenceSystem reprojection,
+            Object feature,
+            List<PropertyName> selectedProperties,
+            boolean includeMandatory,
+            int resolveDepth,
+            Integer resolveTimeOut)
+            throws IOException {
         if (!(foreignKeyValue instanceof CollectionLinkFunction.LinkCollection)) {
-            throw new RuntimeException("MongoDB nesting only supports foreign keys of 'CollectionLink' type.");
+            throw new RuntimeException(
+                    "MongoDB nesting only supports foreign keys of 'CollectionLink' type.");
         }
-        CollectionLinkFunction.LinkCollection linkCollection = (CollectionLinkFunction.LinkCollection) foreignKeyValue;
+        CollectionLinkFunction.LinkCollection linkCollection =
+                (CollectionLinkFunction.LinkCollection) foreignKeyValue;
         String collectionPath = linkCollection.getCollectionPath();
         if (feature instanceof MongoCollectionFeature) {
             String parentPath = ((MongoCollectionFeature) feature).getCollectionPath();
@@ -93,7 +114,9 @@ public class MongoNestedMapping extends NestedAttributeMapping {
             FeatureIterator<Feature> iterator = fCollection.features();
             while (iterator.hasNext()) {
                 Feature nestedFeature = iterator.next();
-                String parentPath = MongoComplexUtilities.resolvePath((Feature) feature, linkCollection.getCollectionPath());
+                String parentPath =
+                        MongoComplexUtilities.resolvePath(
+                                (Feature) feature, linkCollection.getCollectionPath());
                 MongoComplexUtilities.setParentPath(nestedFeature, parentPath);
                 matchingFeatures.add(nestedFeature);
             }
@@ -102,16 +125,24 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         return matchingFeatures;
     }
 
-    private MappingFeatureSource buildMappingFeatureSource(Object feature, List<SimpleFeature> features) throws IOException {
-        MappingFeatureSource originalFeatureSource = (MappingFeatureSource) getMappingSource(feature);
+    private MappingFeatureSource buildMappingFeatureSource(
+            Object feature, List<SimpleFeature> features) throws IOException {
+        MappingFeatureSource originalFeatureSource =
+                (MappingFeatureSource) getMappingSource(feature);
         FeatureTypeMapping mapping = originalFeatureSource.getMapping();
         AppSchemaDataAccess dataAccess = (AppSchemaDataAccess) originalFeatureSource.getDataStore();
         MemoryFeatureCollection collection = new MemoryFeatureCollection(null);
         collection.addAll(features);
-        MongoStaticFeatureSource staticSource = new MongoStaticFeatureSource(collection, mapping.getSource());
-        FeatureTypeMapping staticMapping = new FeatureTypeMapping(staticSource, mapping.getTargetFeature(),
-                mapping.getDefaultGeometryXPath(), mapping.getAttributeMappings(), mapping.getNamespaces(),
-                mapping.isDenormalised());
+        MongoStaticFeatureSource staticSource =
+                new MongoStaticFeatureSource(collection, mapping.getSource());
+        FeatureTypeMapping staticMapping =
+                new FeatureTypeMapping(
+                        staticSource,
+                        mapping.getTargetFeature(),
+                        mapping.getDefaultGeometryXPath(),
+                        mapping.getAttributeMappings(),
+                        mapping.getNamespaces(),
+                        mapping.isDenormalised());
         return new MappingFeatureSource(dataAccess, staticMapping);
     }
 
@@ -122,14 +153,18 @@ public class MongoNestedMapping extends NestedAttributeMapping {
             return getSubCollection(mongoObject, collectionPath, Collections.emptyMap());
         } else if (feature instanceof MongoCollectionFeature) {
             MongoCollectionFeature collectionFeature = (MongoCollectionFeature) feature;
-            return getSubCollection(collectionFeature.getMongoFeature().getMongoObject(),
-                    collectionPath, collectionFeature.getCollectionsIndexes());
+            return getSubCollection(
+                    collectionFeature.getMongoFeature().getMongoObject(),
+                    collectionPath,
+                    collectionFeature.getCollectionsIndexes());
         }
         throw new RuntimeException("MongoDB nesting only works with MongoDB features.");
     }
 
-    private List getSubCollection(DBObject mongoObject, String collectionPath, Map<String, Integer> collectionsIndexes) {
-        Object value = MongoComplexUtilities.getValue(mongoObject, collectionsIndexes, collectionPath);
+    private List getSubCollection(
+            DBObject mongoObject, String collectionPath, Map<String, Integer> collectionsIndexes) {
+        Object value =
+                MongoComplexUtilities.getValue(mongoObject, collectionsIndexes, collectionPath);
         if (value == null) {
             return Collections.emptyList();
         }
@@ -144,7 +179,8 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         private final FeatureCollection features;
         private final FeatureSource originalFeatureSource;
 
-        public MongoStaticFeatureSource(FeatureCollection features, FeatureSource originalFeatureSource) {
+        public MongoStaticFeatureSource(
+                FeatureCollection features, FeatureSource originalFeatureSource) {
             this.features = features;
             this.originalFeatureSource = originalFeatureSource;
         }
@@ -170,12 +206,10 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         }
 
         @Override
-        public void addFeatureListener(FeatureListener listener) {
-        }
+        public void addFeatureListener(FeatureListener listener) {}
 
         @Override
-        public void removeFeatureListener(FeatureListener listener) {
-        }
+        public void removeFeatureListener(FeatureListener listener) {}
 
         @Override
         public FeatureCollection getFeatures(Filter filter) throws IOException {

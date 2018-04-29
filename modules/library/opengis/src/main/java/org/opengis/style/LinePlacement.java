@@ -4,7 +4,7 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2008, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.style;
@@ -13,15 +13,12 @@ import org.opengis.annotation.Extension;
 import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 
-
 /**
- * The "LinePlacement" specifies where and how a text label should be rendered
- * relative to a line.
- *
- *
+ * The "LinePlacement" specifies where and how a text label should be rendered relative to a line.
  *
  * @source $URL$
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
+ *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @author Ian Turton, CCG
@@ -31,10 +28,10 @@ import org.opengis.filter.expression.Expression;
 public interface LinePlacement extends LabelPlacement {
 
     /**
-     * The PerpendicularOffset element of a LinePlacement gives the perpendicular distance
-     * away from a line to draw a label.
+     * The PerpendicularOffset element of a LinePlacement gives the perpendicular distance away from
+     * a line to draw a label.
      *
-     * The distance is in uoms and is positive to the left-hand side of the line string. Negative
+     * <p>The distance is in uoms and is positive to the left-hand side of the line string. Negative
      * numbers mean right. The default offset is 0.
      *
      * @return Expression
@@ -60,9 +57,8 @@ public interface LinePlacement extends LabelPlacement {
     Expression getGap();
 
     /**
-     * If IsRepeated is "true", the label will be repeatedly drawn
-     * along the line with InitialGap and Gap defining the spaces at the
-     * beginning and between labels.
+     * If IsRepeated is "true", the label will be repeatedly drawn along the line with InitialGap
+     * and Gap defining the spaces at the beginning and between labels.
      *
      * @return boolean
      */
@@ -79,16 +75,15 @@ public interface LinePlacement extends LabelPlacement {
     boolean IsAligned();
 
     /**
-     * GeneralizeLine allows the actual geometry, be it a
-     * linestring or polygon to be generalized for label placement. This is e.g. useful for
-     * labelling polygons inside their interior when there is need for the label to resemble the
-     * shape of the polygon.
+     * GeneralizeLine allows the actual geometry, be it a linestring or polygon to be generalized
+     * for label placement. This is e.g. useful for labelling polygons inside their interior when
+     * there is need for the label to resemble the shape of the polygon.
      *
      * @return boolean
      */
     @XmlElement("GeneralizeLine")
     boolean isGeneralizeLine();
-    
+
     /**
      * calls the visit method of a StyleVisitor
      *
@@ -96,5 +91,4 @@ public interface LinePlacement extends LabelPlacement {
      */
     @Extension
     Object accept(StyleVisitor visitor, Object extraData);
-
 }

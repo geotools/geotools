@@ -20,8 +20,9 @@ package org.geotools.tile;
 /**
  * A listener for tile state change events.
  *
- * See net.refractions.uidg.project.render.Tile. Taken from <a href=
- * "https://github.com/moovida/uDig/tree/master/plugins/net.refractions.udig.project/src/net/refractions/udig/project/render" >uDig</a>.
+ * <p>See net.refractions.uidg.project.render.Tile. Taken from <a href=
+ * "https://github.com/moovida/uDig/tree/master/plugins/net.refractions.udig.project/src/net/refractions/udig/project/render"
+ * >uDig</a>.
  *
  * @author Emily Gouge (Refractions Research)
  * @since 12.0
@@ -54,5 +55,4 @@ public interface TileStateChangedListener {
      * @param tile
      */
     void validationStateChanged(Tile tile);
-
 }

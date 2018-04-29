@@ -18,14 +18,12 @@
 package org.geotools.process.raster;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.process.ProcessException;
@@ -34,34 +32,53 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import org.opengis.referencing.operation.MathTransform;
 
 /**
  * A process that build a regular cell grid where each pixel represents its effective area in the
  * envelope in square meters.
- * <p>
- * Internally the process uses a reprojection to EckertIV to ensure proper area computation. Current
- * limitations:
- * <ul>
- * <li>won't work for very large rasters since it allocates the entire grid in memory</li>
- * <li>area accuracy increases as the cell size shrinks, avoid having cells that occupy sizeable
- * chunks of the world</li>
- * </ul>
- * 
- * @author Luca Paolino - GeoSolutions
  *
+ * <p>Internally the process uses a reprojection to EckertIV to ensure proper area computation.
+ * Current limitations:
+ *
+ * <ul>
+ *   <li>won't work for very large rasters since it allocates the entire grid in memory
+ *   <li>area accuracy increases as the cell size shrinks, avoid having cells that occupy sizeable
+ *       chunks of the world
+ * </ul>
+ *
+ * @author Luca Paolino - GeoSolutions
  * @source $URL$
  */
-@DescribeProcess(title = "Area Grid", description = "Computes a raster grid of given geographic extent with cell values equal to the area the cell represents on the surface of the earth.  Area is computed using the EckertIV projection.")
+@DescribeProcess(
+    title = "Area Grid",
+    description =
+            "Computes a raster grid of given geographic extent with cell values equal to the area the cell represents on the surface of the earth.  Area is computed using the EckertIV projection."
+)
 public class AreaGridProcess implements RasterProcess {
-    private static final String targetCRSWKT = "PROJCS[\"World_Eckert_IV\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Eckert_IV\"],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]";
+    private static final String targetCRSWKT =
+            "PROJCS[\"World_Eckert_IV\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Eckert_IV\"],PARAMETER[\"Central_Meridian\",0.0],UNIT[\"Meter\",1.0]]";
 
     @DescribeResult(name = "result", description = "Output raster")
     public GridCoverage2D execute(
-            @DescribeParameter(name = "envelope", description = "Bounding box for the computed raster, in WGS84 geographic coordinates.") ReferencedEnvelope bounds,
-            @DescribeParameter(name = "width", description = "Width of the output raster in pixels", minValue = 1) int width,
-            @DescribeParameter(name = "height", description = "Height of the output raster in pixels", minValue = 1) int height)
+            @DescribeParameter(
+                        name = "envelope",
+                        description =
+                                "Bounding box for the computed raster, in WGS84 geographic coordinates."
+                    )
+                    ReferencedEnvelope bounds,
+            @DescribeParameter(
+                        name = "width",
+                        description = "Width of the output raster in pixels",
+                        minValue = 1
+                    )
+                    int width,
+            @DescribeParameter(
+                        name = "height",
+                        description = "Height of the output raster in pixels",
+                        minValue = 1
+                    )
+                    int height)
             throws ProcessException {
 
         // basic checks
@@ -75,8 +92,9 @@ public class AreaGridProcess implements RasterProcess {
         GeometryFactory geomFactory = new GeometryFactory();
         try {
             Polygon polygon = null;
-            
-            CoordinateReferenceSystem sourceCRS = org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+
+            CoordinateReferenceSystem sourceCRS =
+                    org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
             CoordinateReferenceSystem targetCRS = CRS.parseWKT(targetCRSWKT);
             MathTransform transform = CRS.findMathTransform(sourceCRS, targetCRS);
             double pX = bounds.getMinX();
@@ -94,7 +112,7 @@ public class AreaGridProcess implements RasterProcess {
                     double nX = pX + stepX;
                     double nY = pY - stepY;
 
-                    if(polygon == null) {
+                    if (polygon == null) {
                         tempCoordinates[0] = new Coordinate(pX, pY);
                         tempCoordinates[1] = new Coordinate(nX, pY);
                         tempCoordinates[2] = new Coordinate(nX, nY);
@@ -103,10 +121,14 @@ public class AreaGridProcess implements RasterProcess {
                         LinearRing linearRing = geomFactory.createLinearRing(tempCoordinates);
                         polygon = geomFactory.createPolygon(linearRing, null);
                     } else {
-                        tempCoordinates[0].x = pX; tempCoordinates[0].y = pY;  
-                        tempCoordinates[1].x = nX; tempCoordinates[1].y = pY;
-                        tempCoordinates[2].x = nX; tempCoordinates[2].y = nY;
-                        tempCoordinates[3].x = pX; tempCoordinates[3].y = nY;
+                        tempCoordinates[0].x = pX;
+                        tempCoordinates[0].y = pY;
+                        tempCoordinates[1].x = nX;
+                        tempCoordinates[1].y = pY;
+                        tempCoordinates[2].x = nX;
+                        tempCoordinates[2].y = nY;
+                        tempCoordinates[3].x = pX;
+                        tempCoordinates[3].y = nY;
                         polygon.geometryChanged();
                     }
 
@@ -130,6 +152,5 @@ public class AreaGridProcess implements RasterProcess {
         } catch (org.opengis.referencing.operation.TransformException et) {
             throw new ProcessException("Unable to tranform the coordinate system", et);
         }
-
     }
 }

@@ -18,10 +18,8 @@ package org.geotools.wfs.v2_0.bindings;
 
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs20.ValueReferenceType;
 import net.opengis.wfs20.Wfs20Factory;
-
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.util.Converters;
 import org.geotools.wfs.v2_0.WFS;
@@ -38,32 +36,30 @@ public class ValueReferenceTypeBinding extends AbstractComplexEMFBinding {
         super(Wfs20Factory.eINSTANCE, ValueReferenceType.class);
         this.namespaceContext = namespaceContext;
     }
-    
+
     public QName getTarget() {
         return WFS.PropertyType_ValueReference;
     }
-    
+
     @Override
     protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
         if ("value".equals(property)) {
             try {
                 Object qname = new XSQNameBinding(namespaceContext).parse(null, value);
                 super.setProperty(eObject, property, qname, lax);
-            } 
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            
-        }
-        else {
+
+        } else {
             super.setProperty(eObject, property, value, lax);
         }
     }
-    
+
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
-        value.setTextContent(Converters.convert(((ValueReferenceType) object).getValue(), String.class));
+        value.setTextContent(
+                Converters.convert(((ValueReferenceType) object).getValue(), String.class));
         return value;
-    }    
-
+    }
 }

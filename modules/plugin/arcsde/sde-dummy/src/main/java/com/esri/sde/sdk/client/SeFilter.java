@@ -1,12 +1,8 @@
 package com.esri.sde.sdk.client;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SeFilter extends SeServerObj {
-	
+
     public static /* GEOT-947 final*/ int METHOD_ENVP = 0;
     public static /* GEOT-947 final*/ int METHOD_PC = 0;
     public static /* GEOT-947 final*/ int METHOD_LCROSS_OR_CP = 0;

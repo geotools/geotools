@@ -18,9 +18,7 @@ package org.geotools.wfs.v2_0.bindings;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.v3_2.GML;
@@ -40,7 +38,7 @@ public class EnvelopePropertyTypeBinding extends AbstractComplexBinding {
     @Override
     public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         List l = new ArrayList();
-        l.add(new Object[]{GML.Envelope, object});
+        l.add(new Object[] {GML.Envelope, object});
         return l;
     }
 }

@@ -21,20 +21,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
-
 import javax.swing.AbstractListModel;
 
 /**
  * A generic ListModel class to support {@linkplain DnDList}.
- * <p>
- * The DnDListModel acts as a wrapper around an internal list of
- * items; providing notification as the items are changed.
- * </p>
+ *
+ * <p>The DnDListModel acts as a wrapper around an internal list of items; providing notification as
+ * the items are changed.
+ *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -43,9 +39,7 @@ public class DnDListModel<T> extends AbstractListModel {
     List<T> items;
     private boolean notify;
 
-    /**
-     * Default constructor
-     */
+    /** Default constructor */
     public DnDListModel() {
         items = new ArrayList<T>();
         notify = true;
@@ -65,8 +59,8 @@ public class DnDListModel<T> extends AbstractListModel {
 
     /**
      * Get the list item at the specified index.
-     * <p>
-     * Note: this method returns a live reference.
+     *
+     * <p>Note: this method returns a live reference.
      *
      * @throws IndexOutOfBoundsException if index is invalid
      */
@@ -75,9 +69,9 @@ public class DnDListModel<T> extends AbstractListModel {
     }
 
     /**
-     * Returns a list of the items at the specified indices. 
-     * <p>
-     * Note: The returned List contains live references.
+     * Returns a list of the items at the specified indices.
+     *
+     * <p>Note: The returned List contains live references.
      *
      * @throws IndexOutOfBoundsException if any of the indices are invalid
      */
@@ -92,8 +86,8 @@ public class DnDListModel<T> extends AbstractListModel {
 
     /**
      * Returns a list of the items at the indices specified in the Collection.
-     * <p>
-     * Note: The returned List contains live references.
+     *
+     * <p>Note: The returned List contains live references.
      *
      * @throws IndexOutOfBoundsException if any of the indices are invalid
      */
@@ -106,9 +100,7 @@ public class DnDListModel<T> extends AbstractListModel {
         return refs;
     }
 
-    /**
-     * Append a new item to the end of the list of current items
-     */
+    /** Append a new item to the end of the list of current items */
     public void addItem(T newItem) {
         int index = items.size();
         items.add(newItem);
@@ -118,9 +110,7 @@ public class DnDListModel<T> extends AbstractListModel {
         }
     }
 
-    /**
-     * Add new items to the end of the list of current items
-     */
+    /** Add new items to the end of the list of current items */
     public void addItems(T[] newItems) {
         if (newItems.length > 0) {
             int index0 = items.size();
@@ -135,9 +125,7 @@ public class DnDListModel<T> extends AbstractListModel {
         }
     }
 
-    /**
-     * Add new items to the end of the list of current items
-     */
+    /** Add new items to the end of the list of current items */
     public void addItems(Collection<T> newItems) {
         if (!newItems.isEmpty()) {
             int index0 = items.size();
@@ -154,9 +142,10 @@ public class DnDListModel<T> extends AbstractListModel {
 
     /**
      * Insert an item into the list at the specified position.
-     * @param destIndex the position of the new item: if &lt; 0 the item will
-     * be inserted at the start of the list; if &gt;= the current list size
-     * the item will be appended to the end of the list
+     *
+     * @param destIndex the position of the new item: if &lt; 0 the item will be inserted at the
+     *     start of the list; if &gt;= the current list size the item will be appended to the end of
+     *     the list
      */
     public void insertItem(int destIndex, T newItem) {
         if (destIndex < 0) {
@@ -176,9 +165,9 @@ public class DnDListModel<T> extends AbstractListModel {
     /**
      * Insert new items into the list at the specified position.
      *
-     * @param destIndex the position of the new item: if &lt; 0 the items will
-     * be inserted at the start of the list; if &gt;= the current list size
-     * the items will be appended to the end of the list
+     * @param destIndex the position of the new item: if &lt; 0 the items will be inserted at the
+     *     start of the list; if &gt;= the current list size the items will be appended to the end
+     *     of the list
      */
     public void insertItems(int destIndex, T[] newItems) {
         insertItems(destIndex, Arrays.asList(newItems));
@@ -187,9 +176,9 @@ public class DnDListModel<T> extends AbstractListModel {
     /**
      * Insert new items into the list at the specified position.
      *
-     * @param destIndex the position of the new item: if &lt; 0 the items will
-     * be inserted at the start of the list; if &gt;= the current list size
-     * the items will be appended to the end of the list
+     * @param destIndex the position of the new item: if &lt; 0 the items will be inserted at the
+     *     start of the list; if &gt;= the current list size the items will be appended to the end
+     *     of the list
      */
     public void insertItems(int destIndex, Collection<T> newItems) {
         if (destIndex < 0) {
@@ -207,9 +196,8 @@ public class DnDListModel<T> extends AbstractListModel {
     }
 
     /**
-     * Move the items currently positioned at the indices in the
-     * {@code srcIndices} array as block such that they are inserted
-     * into the list at {@code destIndex}. It is <b>assumed</b> that
+     * Move the items currently positioned at the indices in the {@code srcIndices} array as block
+     * such that they are inserted into the list at {@code destIndex}. It is <b>assumed</b> that
      * srcIndices is sorted in ascending order.
      */
     public void moveItems(int destIndex, int[] srcIndices) {
@@ -230,9 +218,7 @@ public class DnDListModel<T> extends AbstractListModel {
         }
     }
 
-    /**
-     * Remove the item at the specified index
-     */
+    /** Remove the item at the specified index */
     public void removeAt(int index) {
         items.remove(index);
         if (notify) {
@@ -240,9 +226,7 @@ public class DnDListModel<T> extends AbstractListModel {
         }
     }
 
-    /**
-     * Removes the first instance of the specified item if it is contained in the list
-     */
+    /** Removes the first instance of the specified item if it is contained in the list */
     public void removeItem(T item) {
         ListIterator<T> iter = items.listIterator();
         int index = 0;
@@ -264,9 +248,7 @@ public class DnDListModel<T> extends AbstractListModel {
         }
     }
 
-    /**
-     * Remove all items from the list
-     */
+    /** Remove all items from the list */
     public void clear() {
         int prevSize = items.size();
         items.clear();
@@ -275,9 +257,7 @@ public class DnDListModel<T> extends AbstractListModel {
         }
     }
 
-    /**
-     * Query whether this list contains the specified item
-     */
+    /** Query whether this list contains the specified item */
     public boolean contains(T item) {
         return items.contains(item);
     }
@@ -294,6 +274,6 @@ public class DnDListModel<T> extends AbstractListModel {
 
     @Override
     public String toString() {
-        return "DnD:"+items;
+        return "DnD:" + items;
     }
 }

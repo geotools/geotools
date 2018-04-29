@@ -20,17 +20,15 @@ import java.util.ResourceBundle;
 
 /**
  * i18n utility.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class Messages {
-    private static final ResourceBundle stringRes = ResourceBundle.getBundle("resources/Text"); //$NON-NLS-1$
+    private static final ResourceBundle stringRes =
+            ResourceBundle.getBundle("resources/Text"); // $NON-NLS-1$
 
-    public static String getString( String key ) {
+    public static String getString(String key) {
         String string = stringRes.getString(key);
         if (string == null) {
             string = "-nv-";

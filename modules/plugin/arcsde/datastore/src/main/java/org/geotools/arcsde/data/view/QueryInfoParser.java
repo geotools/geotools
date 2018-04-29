@@ -17,13 +17,16 @@
  */
 package org.geotools.arcsde.data.view;
 
+import com.esri.sde.sdk.client.SeColumnDefinition;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeQueryInfo;
+import com.esri.sde.sdk.client.SeSqlConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.AllColumns;
@@ -32,35 +35,28 @@ import net.sf.jsqlparser.statement.select.FromItem;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
-
 import org.geotools.arcsde.session.ISession;
-
-import com.esri.sde.sdk.client.SeColumnDefinition;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeQueryInfo;
-import com.esri.sde.sdk.client.SeSqlConstruct;
 
 /**
  * Visits a {@link net.sf.jsqlparser.statement.select.PlainSelect} SQL SELECT construct to create
  * the correspondent {@link com.esri.sde.sdk.client.SeQueryInfo} object, that can be used as an in
  * process view definition of ArcSDE Java API.
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/view/QueryInfoParser.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/view/QueryInfoParser.java $
  * @since 2.3.x
  */
 @SuppressWarnings("unchecked")
 public class QueryInfoParser {
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(QueryInfoParser.class.getPackage().getName());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(
+                    QueryInfoParser.class.getPackage().getName());
 
-    public static SeQueryInfo parse(ISession session, PlainSelect select) throws SeException,
-            IOException {
+    public static SeQueryInfo parse(ISession session, PlainSelect select)
+            throws SeException, IOException {
         String[] columns = null;
         String[] tables = null;
         String where = null;
@@ -82,8 +78,8 @@ public class QueryInfoParser {
 
         if (select.getGroupByColumnReferences() != null
                 && select.getGroupByColumnReferences().size() > 0) {
-            String gb = PlainSelect.getFormatedList(select.getGroupByColumnReferences(),
-                    " GROUP BY ");
+            String gb =
+                    PlainSelect.getFormatedList(select.getGroupByColumnReferences(), " GROUP BY ");
             orderAndOrGroupByClause = gb;
         }
         if (select.getOrderByElements() != null && select.getOrderByElements().size() > 0) {
@@ -120,7 +116,7 @@ public class QueryInfoParser {
 
         List tableNames = new ArrayList(fromItems.size());
 
-        for (Iterator it = fromItems.iterator(); it.hasNext();) {
+        for (Iterator it = fromItems.iterator(); it.hasNext(); ) {
             FromItem fromItem = (FromItem) it.next();
             String fromItemDef = fromItem.toString();
             tableNames.add(fromItemDef);
@@ -130,8 +126,8 @@ public class QueryInfoParser {
 
     /**
      * @param selectItems
-     * @return <code>null</code> if <code>selectItems</code> is null or contains only an
-     *         {@link net.sf.jsqlparser.statement.select.AllColumns}
+     * @return <code>null</code> if <code>selectItems</code> is null or contains only an {@link
+     *     net.sf.jsqlparser.statement.select.AllColumns}
      */
     private static String[] getColumns(ISession session, List selectItems) throws IOException {
         if (selectItems == null || selectItems.size() == 0) {
@@ -140,7 +136,7 @@ public class QueryInfoParser {
 
         SelectItem item;
         List colNames = new ArrayList(selectItems.size());
-        for (Iterator it = selectItems.iterator(); it.hasNext();) {
+        for (Iterator it = selectItems.iterator(); it.hasNext(); ) {
             item = (SelectItem) it.next();
             if (item instanceof AllColumns) {
                 continue;

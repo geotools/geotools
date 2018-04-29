@@ -9,5 +9,4 @@ public class OracleTemporalFilterOnlineTest extends JDBCTemporalFilterOnlineTest
     protected JDBCDateTestSetup createTestSetup() {
         return new OracleDateTestSetup(new OracleTestSetup());
     }
-
 }

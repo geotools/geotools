@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,14 +17,14 @@
  */
 package org.geotools.ysld.encode;
 
+import java.util.logging.Logger;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.util.logging.Logging;
 
-import java.util.logging.Logger;
-
 /**
- * Encodes a {@link FeatureTypeStyle} as YSLD. Delegates to {@link TransformEncoder} and {@link RuleEncoder}.
+ * Encodes a {@link FeatureTypeStyle} as YSLD. Delegates to {@link TransformEncoder} and {@link
+ * RuleEncoder}.
  */
 public class FeatureStyleEncoder extends YsldEncodeHandler<FeatureTypeStyle> {
 

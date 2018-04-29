@@ -21,11 +21,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Add;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AddBuilder implements Builder<Add> {
 
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

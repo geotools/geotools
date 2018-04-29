@@ -1,7 +1,6 @@
 package org.geotools.feature.collection;
 
 import java.io.IOException;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.sort.SortedFeatureIterator;
@@ -10,11 +9,10 @@ import org.opengis.filter.sort.SortBy;
 
 /**
  * A wrapper that will sort a feature collection using a size sensitive algorithm, in main memory
- * for small collections, using secondary memory otherwise. The threshold is defined by the
- * {@link Hints#MAX_MEMORY_SORT} feature count
- * 
+ * for small collections, using secondary memory otherwise. The threshold is defined by the {@link
+ * Hints#MAX_MEMORY_SORT} feature count
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollection {
 
@@ -38,5 +36,4 @@ public class SortedSimpleFeatureCollection extends DecoratingSimpleFeatureCollec
             throw new RuntimeException(e);
         }
     }
-
 }

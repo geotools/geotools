@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,27 +18,19 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-
 /**
  * Filtering is performed on this hasNext() method.
- * 
- * <p>
- * This implementation writes out content furing the hasNext() method. This
- * allows the implementation to "peek" ahead.
- * </p>
- * 
- * <p>
- * This FeatureWriter does not support the addition of new content.
- * </p>
+ *
+ * <p>This implementation writes out content furing the hasNext() method. This allows the
+ * implementation to "peek" ahead.
+ *
+ * <p>This FeatureWriter does not support the addition of new content.
  *
  * @author Jody Garnett, Refractions Research
- *
- *
  * @source $URL$
  */
 public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
@@ -47,7 +39,8 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
     SimpleFeature next = null; // next feature as peeked by hasNext()
     SimpleFeature current = null; // holds current Feature returned to user
 
-    public FilteringFeatureWriter(FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Filter filter) {
+    public FilteringFeatureWriter(
+            FeatureWriter<SimpleFeatureType, SimpleFeature> writer, Filter filter) {
         this.writer = writer;
         this.filter = filter;
     }
@@ -59,7 +52,7 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
     public SimpleFeature next() throws IOException {
         if (hasNext()) {
             // use hasNext() to and peek ahead
-            // 
+            //
             current = next;
             next = null;
 
@@ -68,10 +61,9 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
         if (writer == null) {
             throw new IOException("FeatureWriter has been closed");
         }
-            // FilteringFeatureWriter Does not support the creation
-            // of new content
-            throw new NoSuchElementException(
-                "FeatureWriter does not have additional content");
+        // FilteringFeatureWriter Does not support the creation
+        // of new content
+        throw new NoSuchElementException("FeatureWriter does not have additional content");
     }
 
     public void remove() throws IOException {
@@ -116,7 +108,6 @@ public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, 
      * Query if we have more content.
      *
      * @return true if writer has additional content
-     *
      * @throws IOException If writer we are filtering encounters a problem
      */
     public boolean hasNext() throws IOException {

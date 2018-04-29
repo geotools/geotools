@@ -17,14 +17,13 @@
 package org.geotools.data.geobuf;
 
 import com.vividsolutions.jts.geom.*;
-import org.geotools.geometry.jts.JTSFactoryFinder;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 
 /**
  * The GeobufGeometry class encodes and decodes geobuf geometries
@@ -86,7 +85,7 @@ public class GeobufGeometry {
         if (geometry instanceof Point) {
             Point point = (Point) geometry;
             builder.setType(Geobuf.Data.Geometry.Type.POINT);
-            addCoords(builder, new Coordinate[]{point.getCoordinate()});
+            addCoords(builder, new Coordinate[] {point.getCoordinate()});
         } else if (geometry instanceof LineString) {
             LineString line = (LineString) geometry;
             builder.setType(Geobuf.Data.Geometry.Type.LINESTRING);
@@ -202,7 +201,9 @@ public class GeobufGeometry {
                     start = end;
                 }
                 if (rings.length > 1) {
-                    polygons[p] = geometryFactory.createPolygon(rings[0], Arrays.copyOfRange(rings, 1, rings.length));
+                    polygons[p] =
+                            geometryFactory.createPolygon(
+                                    rings[0], Arrays.copyOfRange(rings, 1, rings.length));
                 } else {
                     polygons[p] = geometryFactory.createPolygon(rings[0]);
                 }
@@ -210,7 +211,7 @@ public class GeobufGeometry {
             return geometryFactory.createMultiPolygon(polygons);
         } else if (g.getType() == Geobuf.Data.Geometry.Type.GEOMETRYCOLLECTION) {
             List<Geometry> geoms = getGeometries(g);
-            return geometryFactory.createGeometryCollection(geoms.toArray(new Geometry[]{}));
+            return geometryFactory.createGeometryCollection(geoms.toArray(new Geometry[] {}));
         } else {
             return null;
         }
@@ -283,5 +284,4 @@ public class GeobufGeometry {
     protected Coordinate[] getAllCoordinates(Geobuf.Data.Geometry g) {
         return getCoordinates(g, 0, g.getCoordsCount());
     }
-
 }

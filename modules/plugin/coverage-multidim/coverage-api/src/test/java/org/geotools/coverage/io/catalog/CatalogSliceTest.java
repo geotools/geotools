@@ -16,6 +16,8 @@
  */
 package org.geotools.coverage.io.catalog;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
@@ -24,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.apache.commons.io.FileUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -50,23 +51,17 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
-
-/**
- * @author Simone Giannecchini, GeoSolutions SAS
- *
- */
-public class CatalogSliceTest extends Assert{
+/** @author Simone Giannecchini, GeoSolutions SAS */
+public class CatalogSliceTest extends Assert {
 
     private H2DataStoreFactory INTERNAL_STORE_SPI = new H2DataStoreFactory();
 
     private final FilterFactory ff = CommonFactoryFinder.getFilterFactory2();
 
-    final static PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
+    static final PrecisionModel PRECISION_MODEL = new PrecisionModel(PrecisionModel.FLOATING);
 
-    final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
-    
+    static final GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
+
     /** Default Logger * */
     private static final Logger LOGGER = Logging.getLogger(CatalogSliceTest.class);
 
@@ -89,7 +84,8 @@ public class CatalogSliceTest extends Assert{
             assertNull(typeNames);
 
             // create new schema 1
-            final String schemaDef1 = "the_geom:Polygon,coverage:String,imageindex:Integer,cloud_formations:Integer";
+            final String schemaDef1 =
+                    "the_geom:Polygon,coverage:String,imageindex:Integer,cloud_formations:Integer";
             sliceCat.createType("1", schemaDef1);
             typeNames = sliceCat.getTypeNames();
             assertNotNull(typeNames);
@@ -101,8 +97,8 @@ public class CatalogSliceTest extends Assert{
             feat.setAttribute("coverage", "a");
             feat.setAttribute("imageindex", Integer.valueOf(0));
             feat.setAttribute("cloud_formations", Integer.valueOf(3));
-            ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(-180, 180, -90, 90,
-                    DefaultGeographicCRS.WGS84);
+            ReferencedEnvelope referencedEnvelope =
+                    new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
             feat.setAttribute("the_geom", GEOM_FACTORY.toGeometry(referencedEnvelope));
             sliceCat.addGranule("1", feat, t);
 
@@ -122,7 +118,8 @@ public class CatalogSliceTest extends Assert{
             assertEquals(2, cv.getCount());
 
             // create new schema 2
-            final String schemaDef2 = "the_geom:Polygon,coverage:String,imageindex:Integer,new:Double";
+            final String schemaDef2 =
+                    "the_geom:Polygon,coverage:String,imageindex:Integer,new:Double";
             sliceCat.createType("2", schemaDef2);
             typeNames = sliceCat.getTypeNames();
             assertNotNull(typeNames);
@@ -159,17 +156,17 @@ public class CatalogSliceTest extends Assert{
             q.setFilter(Filter.INCLUDE);
             sliceCat.computeAggregateFunction(q, cv);
             assertEquals(3, cv.getCount());
-            
+
             // Get the CoverageSlices
             List<CoverageSlice> slices = sliceCat.getGranules(q);
-            double[] news = new double[]{3.22, 1.12, 1.32};
-            for(int i = 0; i < news.length; i++){
+            double[] news = new double[] {3.22, 1.12, 1.32};
+            for (int i = 0; i < news.length; i++) {
                 CoverageSlice slice = slices.get(i);
                 assertTrue(slice.getGranuleBBOX().contains(referencedEnvelope));
                 double newAttr = (double) slice.getOriginator().getAttribute("new");
                 assertEquals(newAttr, news[i], DELTA);
             }
-            
+
             // Creating a CoverageSliceCatalogSource and check if it behaves correctly
             CoverageSlicesCatalogSource src = new CoverageSlicesCatalogSource(sliceCat, "2");
             assertEquals(3, src.getCount(q));
@@ -177,8 +174,11 @@ public class CatalogSliceTest extends Assert{
             cv.reset();
             coll.accepts(cv, null);
             assertEquals(3, cv.getCount());
-            assertTrue(src.getBounds(q).contains(
-                    referencedEnvelope.toBounds(referencedEnvelope.getCoordinateReferenceSystem())));
+            assertTrue(
+                    src.getBounds(q)
+                            .contains(
+                                    referencedEnvelope.toBounds(
+                                            referencedEnvelope.getCoordinateReferenceSystem())));
             assertEquals(src.getSchema(), schema);
 
             // remove
@@ -206,7 +206,6 @@ public class CatalogSliceTest extends Assert{
 
             FileUtils.deleteDirectory(parentLocation);
         }
-
     }
 
     @Test
@@ -226,14 +225,15 @@ public class CatalogSliceTest extends Assert{
             assertNull(typeNames);
 
             // create new schema 1
-            final String schemaDef1 = "the_geom:Polygon,coverage:String,imageindex:Integer,cloud_formations:Integer";
+            final String schemaDef1 =
+                    "the_geom:Polygon,coverage:String,imageindex:Integer,cloud_formations:Integer";
             sliceCat.createType("test", schemaDef1);
             typeNames = sliceCat.getTypeNames();
             assertNotNull(typeNames);
             assertEquals(1, typeNames.length);
 
-            ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(-180, 180, -90, 90,
-                    DefaultGeographicCRS.WGS84);
+            ReferencedEnvelope referencedEnvelope =
+                    new ReferencedEnvelope(-180, 180, -90, 90, DefaultGeographicCRS.WGS84);
 
             // add features to it
             SimpleFeatureType schema = DataUtilities.createType("test", schemaDef1);
@@ -252,7 +252,7 @@ public class CatalogSliceTest extends Assert{
             // read back with property names filtering
             Query q = new Query();
             q.setTypeName(typeNames[0]);
-            String[] propertyNames = new String[] { "cloud_formations" };
+            String[] propertyNames = new String[] {"cloud_formations"};
             q.setPropertyNames(propertyNames);
             List<CoverageSlice> granules = sliceCat.getGranules(q);
 
@@ -262,8 +262,8 @@ public class CatalogSliceTest extends Assert{
             for (int i = 0; i < numGranules; i++) {
                 CoverageSlice slice = granules.get(i);
                 SimpleFeature feature = slice.getOriginator();
-                List<AttributeDescriptor> attributes = feature.getFeatureType()
-                        .getAttributeDescriptors();
+                List<AttributeDescriptor> attributes =
+                        feature.getFeatureType().getAttributeDescriptors();
 
                 // Check we are only getting the cloud_formations attribute due to propertyNames
                 assertEquals(1, attributes.size());
@@ -288,7 +288,6 @@ public class CatalogSliceTest extends Assert{
 
             FileUtils.deleteDirectory(parentLocation);
         }
-
     }
 
     @Test
@@ -297,9 +296,13 @@ public class CatalogSliceTest extends Assert{
         final Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("ScanTypeNames", Boolean.valueOf(true));
         // H2 database URLs must not be percent-encoded: see GEOT-4504
-        final URL url = new URL("file:"
-                + URLs.urlToFile(TestData.url(this,
-                        ".IASI_C_EUMP_20121120062959_31590_eps_o_l2")));
+        final URL url =
+                new URL(
+                        "file:"
+                                + URLs.urlToFile(
+                                        TestData.url(
+                                                this,
+                                                ".IASI_C_EUMP_20121120062959_31590_eps_o_l2")));
         params.put("ParentLocation", url);
         params.put("database", url + "/IASI_C_EUMP_20121120062959_31590_eps_o_l2");
         params.put("dbtype", "h2");
@@ -344,8 +347,7 @@ public class CatalogSliceTest extends Assert{
             while (it.hasNext()) {
                 final SimpleFeature feat = it.next();
 
-                assertTrue((Integer)feat.getAttribute("new")>=0);
-
+                assertTrue((Integer) feat.getAttribute("new") >= 0);
             }
 
         } finally {
@@ -357,7 +359,5 @@ public class CatalogSliceTest extends Assert{
                 it.close();
             }
         }
-
     }
-
 }

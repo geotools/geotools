@@ -18,15 +18,13 @@ package org.geotools.geojson;
 
 import java.io.IOException;
 import java.util.LinkedList;
-
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.ParseException;
 
 /**
  * Handler that records sequence of calls to be replayed layer.
- * 
- * @author Justin Deoliveira, OpenGeo
  *
+ * @author Justin Deoliveira, OpenGeo
  */
 public class RecordingHandler implements ContentHandler {
 
@@ -34,96 +32,105 @@ public class RecordingHandler implements ContentHandler {
 
     @Override
     public void startJSON() throws ParseException, IOException {
-        actions.add(new Action<Object>() {
-            @Override
-            protected void run(ContentHandler handler) throws ParseException, IOException {
-                handler.startJSON();
-            }
-        });
+        actions.add(
+                new Action<Object>() {
+                    @Override
+                    protected void run(ContentHandler handler) throws ParseException, IOException {
+                        handler.startJSON();
+                    }
+                });
     }
 
     @Override
     public boolean startObject() throws ParseException, IOException {
-        return actions.add(new Action<Object>() {
-            @Override
-            protected void run(ContentHandler handler) throws ParseException, IOException {
-                handler.startObject();
-            }
-        });
+        return actions.add(
+                new Action<Object>() {
+                    @Override
+                    protected void run(ContentHandler handler) throws ParseException, IOException {
+                        handler.startObject();
+                    }
+                });
     }
-    
+
     @Override
     public boolean startObjectEntry(String key) throws ParseException, IOException {
-        return actions.add(new Action<String>(key) {
-            @Override
-            protected void run(ContentHandler handler) throws ParseException, IOException {
-                handler.startObjectEntry(obj);
-            }
-        });
+        return actions.add(
+                new Action<String>(key) {
+                    @Override
+                    protected void run(ContentHandler handler) throws ParseException, IOException {
+                        handler.startObjectEntry(obj);
+                    }
+                });
     }
 
     @Override
     public boolean startArray() throws ParseException, IOException {
-        return actions.add(new Action<Object>() {
-            @Override
-            protected void run(ContentHandler handler) throws ParseException, IOException {
-                handler.startArray();
-            }
-        });
+        return actions.add(
+                new Action<Object>() {
+                    @Override
+                    protected void run(ContentHandler handler) throws ParseException, IOException {
+                        handler.startArray();
+                    }
+                });
     }
 
     @Override
     public boolean primitive(Object obj) throws ParseException, IOException {
-        return actions.add(new Action<Object>(obj) {
-            @Override
-            protected void run(ContentHandler handler) throws ParseException, IOException {
-                handler.primitive(obj);
-            }
-        });
+        return actions.add(
+                new Action<Object>(obj) {
+                    @Override
+                    protected void run(ContentHandler handler) throws ParseException, IOException {
+                        handler.primitive(obj);
+                    }
+                });
     }
 
     @Override
     public boolean endArray() throws ParseException, IOException {
-        return actions.add(new Action<Object>() {
-            @Override
-            protected void run(ContentHandler handler) throws ParseException, IOException {
-                handler.endArray();
-            }
-        });
+        return actions.add(
+                new Action<Object>() {
+                    @Override
+                    protected void run(ContentHandler handler) throws ParseException, IOException {
+                        handler.endArray();
+                    }
+                });
     }
 
     @Override
     public boolean endObjectEntry() throws ParseException, IOException {
-        return actions.add(new Action<Object>() {
-            @Override
-            protected void run(ContentHandler handler) throws ParseException, IOException {
-                handler.endObjectEntry();
-            }
-        });
+        return actions.add(
+                new Action<Object>() {
+                    @Override
+                    protected void run(ContentHandler handler) throws ParseException, IOException {
+                        handler.endObjectEntry();
+                    }
+                });
     }
 
     @Override
     public boolean endObject() throws ParseException, IOException {
-        return actions.add(new Action<Object>() {
-            @Override
-            protected void run(ContentHandler handler) throws ParseException, IOException {
-                handler.endObject();
-            }
-        });
+        return actions.add(
+                new Action<Object>() {
+                    @Override
+                    protected void run(ContentHandler handler) throws ParseException, IOException {
+                        handler.endObject();
+                    }
+                });
     }
 
     @Override
     public void endJSON() throws ParseException, IOException {
-        actions.add(new Action<Object>() {
-            @Override
-            protected void run(ContentHandler handler) throws ParseException, IOException {
-                handler.endJSON();
-            }
-        });
+        actions.add(
+                new Action<Object>() {
+                    @Override
+                    protected void run(ContentHandler handler) throws ParseException, IOException {
+                        handler.endJSON();
+                    }
+                });
     }
 
-    public void replay(ContentHandler handler) throws ParseException, IOException{
-        while(!actions.isEmpty()) {
+    public void replay(ContentHandler handler) throws ParseException, IOException {
+        while (!actions.isEmpty()) {
             actions.removeFirst().run(handler);
         }
     }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,12 +16,10 @@
  */
 package org.geotools.styling;
 
-
-
 /**
- * The ChannelSelection element specifies the false-color channel selection for
- * a multi-spectral raster source  (such as a multi-band satellite-imagery
- * source).  It is defined as:
+ * The ChannelSelection element specifies the false-color channel selection for a multi-spectral
+ * raster source (such as a multi-band satellite-imagery source). It is defined as:
+ *
  * <PRE>
  * &lt;xs:element name="ChannelSelection"&gt;
  * &lt;xs:complexType&gt;
@@ -40,17 +38,14 @@ package org.geotools.styling;
  * &lt;xs:element name="BlueChannel" type="sld:SelectedChannelType"/&gt;
  * &lt;xs:element name="GrayChannel" type="sld:SelectedChannelType"/&gt;
  * </PRE>
- * Either a channel may be selected to display in each of red, green, and blue,
- * or a single channel may be selected to display in grayscale.  (The spelling
- * ?gray? is used since it seems to be more common on the Web than ?grey? by a
- * ratio of about 3:1.) Contrast enhancement may be applied to each channel in
- * isolation.  Channels are identified by a system and data-dependent
- * character identifier.  Commonly, channels will be labelled as ?1?, ?2?,
- * etc.
+ *
+ * Either a channel may be selected to display in each of red, green, and blue, or a single channel
+ * may be selected to display in grayscale. (The spelling ?gray? is used since it seems to be more
+ * common on the Web than ?grey? by a ratio of about 3:1.) Contrast enhancement may be applied to
+ * each channel in isolation. Channels are identified by a system and data-dependent character
+ * identifier. Commonly, channels will be labelled as ?1?, ?2?, etc.
  *
  * @author iant
- *
- *
  * @source $URL$
  */
 public interface ChannelSelection extends org.opengis.style.ChannelSelection {
@@ -61,7 +56,8 @@ public interface ChannelSelection extends org.opengis.style.ChannelSelection {
      * @param green the green channel
      * @param blue the blue channel
      */
-    void setRGBChannels(SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
+    void setRGBChannels(
+            SelectedChannelType red, SelectedChannelType green, SelectedChannelType blue);
 
     /**
      * Set the RGB channels to be used
@@ -70,7 +66,6 @@ public interface ChannelSelection extends org.opengis.style.ChannelSelection {
      */
     void setRGBChannels(SelectedChannelType[] channels);
 
-    
     /**
      * get the RGB channels to be used
      *

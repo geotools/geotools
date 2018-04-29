@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,8 +19,7 @@
 
 package org.geotools.filter;
 
-import org.geotools.filter.capability.FunctionNameImpl;
-import org.opengis.filter.capability.FunctionName;
+import static org.geotools.filter.capability.FunctionNameImpl.*;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -29,45 +28,43 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import org.geotools.filter.capability.FunctionNameImpl;
+import org.opengis.filter.capability.FunctionName;
 
-import static org.geotools.filter.capability.FunctionNameImpl.*;
 /**
  * Area of provided geometry.
- * 
- * @author  James
  *
- *
+ * @author James
  * @source $URL$
  */
-public class AreaFunction extends FunctionExpressionImpl { 
-    
-    public static FunctionName NAME = new FunctionNameImpl("Area",
-            parameter("area",Double.class),
-            parameter("geometry",Geometry.class));
-    
+public class AreaFunction extends FunctionExpressionImpl {
+
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "Area", parameter("area", Double.class), parameter("geometry", Geometry.class));
+
     /** Creates a new instance of AreaFunction */
     public AreaFunction() {
         super(NAME);
     }
-    
+
     public Object evaluate(Object feature) {
         org.opengis.filter.expression.Expression geom;
-        geom = (org.opengis.filter.expression.Expression)getParameters().get(0);
-        Geometry g = (Geometry)geom.evaluate(feature);
-    	
-    	return new Double( getArea( g ));
+        geom = (org.opengis.filter.expression.Expression) getParameters().get(0);
+        Geometry g = (Geometry) geom.evaluate(feature);
+
+        return new Double(getArea(g));
     }
 
     /**
      * Returns the area of a GeometryCollection.
      *
-     * @param geometryCollection1 The GeometryCollection for which the
-     * area is calulated.
+     * @param geometryCollection1 The GeometryCollection for which the area is calulated.
      * @return The total area of all geometries in the collection.
      */
     protected double getArea(GeometryCollection geometryCollection1) {
         double area = 0.0d;
-        //double perimeter = 0.0d;
+        // double perimeter = 0.0d;
         int numberOfGeometries1 = geometryCollection1.getNumGeometries();
         // Go through geometryCollection1 and sum areas of component geometries
         for (int i = 0; i < numberOfGeometries1; i++) {
@@ -78,14 +75,14 @@ public class AreaFunction extends FunctionExpressionImpl {
 
     /**
      * Returns.
-     * @param geometryCollection The GeometryCollection for which the
-     * perimeter is calulated.
+     *
+     * @param geometryCollection The GeometryCollection for which the perimeter is calulated.
      * @return the perimeter of a GeometryCollection.
      */
     protected double getPerimeter(GeometryCollection geometryCollection) {
         double perimeter = 0.0d;
         int numberOfGeometries = geometryCollection.getNumGeometries();
-        // Go through geometryCollection and sum perimeters of component 
+        // Go through geometryCollection and sum perimeters of component
         // geometries
         for (int i = 0; i < numberOfGeometries; i++) {
             perimeter += getPerimeter(geometryCollection.getGeometryN(i));
@@ -93,13 +90,12 @@ public class AreaFunction extends FunctionExpressionImpl {
         return perimeter;
     }
 
-   /**
+    /**
      * Calculates and returns the area of the specified geometry.<br>
-     * For Polygons, this is the total area inside the external ring less
-     * the total of any contained by interior rings.  GeometryCollections
-     * (including MultiPolygons) are iterated through so the result is the
-     * sum of all polygons anywhere within the collection.
-     * Any geometry other than Polgyon or a collection returns 0;
+     * For Polygons, this is the total area inside the external ring less the total of any contained
+     * by interior rings. GeometryCollections (including MultiPolygons) are iterated through so the
+     * result is the sum of all polygons anywhere within the collection. Any geometry other than
+     * Polgyon or a collection returns 0;
      *
      * @param geometry The Geometry to calculate the area of.
      * @return The total area of the Geometry.
@@ -118,13 +114,12 @@ public class AreaFunction extends FunctionExpressionImpl {
         return area;
     }
 
-   /**
+    /**
      * Calculates and returns the perimeter of the specified geometry.<br>
-     * For Polygons, this is the total length of the exterior ring and all
-     * internal rings.  For LineStrings the total line length is returned.
-     * GeometryCollections are iterated through so the result is the
-     * sum of all Polygon and Line geometries anywhere within the collection.
-     * Any point geometries return a value of 0;
+     * For Polygons, this is the total length of the exterior ring and all internal rings. For
+     * LineStrings the total line length is returned. GeometryCollections are iterated through so
+     * the result is the sum of all Polygon and Line geometries anywhere within the collection. Any
+     * point geometries return a value of 0;
      *
      * @param geometry The Geometry to calculate the area of.
      * @return The total area of the Geometry.
@@ -146,9 +141,10 @@ public class AreaFunction extends FunctionExpressionImpl {
         }
         return perimeter;
     }
-    
+
     /**
      * Returns the area of a MultiPolygon.
+     *
      * @param multiPolygon the MultiPolygon for which the area is calculated.
      * @return Total area of all polygons in multiPolygon.
      */
@@ -160,11 +156,11 @@ public class AreaFunction extends FunctionExpressionImpl {
         }
         return area;
     }
-    
+
     /**
      * Returns the perimeter of a MultiPolygon.
-     * @param multiPolygon the MultiPolygon for which the perimeter is 
-     * calculated.
+     *
+     * @param multiPolygon the MultiPolygon for which the perimeter is calculated.
      * @return Total perimeter of all polygons in the multiPolygon.
      */
     protected double getperimeter(MultiPolygon multiPolygon) {
@@ -178,6 +174,7 @@ public class AreaFunction extends FunctionExpressionImpl {
 
     /**
      * Returns the area of a Polygon.
+     *
      * @param polygon the Polygon for which the area is calculated.
      * @return The area of the polygon.
      */
@@ -197,14 +194,16 @@ public class AreaFunction extends FunctionExpressionImpl {
             miny = Math.min(miny, exteriorRingCoordinates[i].y);
             maxy = Math.max(maxy, exteriorRingCoordinates[i].y);
         }
-        // Calculate area of each trapezoid formed by dropping lines from 
+        // Calculate area of each trapezoid formed by dropping lines from
         // each pair of coordinates in exteriorRingCoordinates to the x-axis.
         // x[i]<x[i-1] will contribute a negative area
         for (int i = 0; i < (numberOfExteriorRingCoordinates - 1); i++) {
-            area += (((exteriorRingCoordinates[i + 1].x - minx) - 
-                    (exteriorRingCoordinates[i].x - minx)) * 
-                    (((exteriorRingCoordinates[i + 1].y - miny) + 
-                    (exteriorRingCoordinates[i].y - miny)) / 2d));
+            area +=
+                    (((exteriorRingCoordinates[i + 1].x - minx)
+                                    - (exteriorRingCoordinates[i].x - minx))
+                            * (((exteriorRingCoordinates[i + 1].y - miny)
+                                            + (exteriorRingCoordinates[i].y - miny))
+                                    / 2d));
         }
         area = Math.abs(area);
         // Calculate area of each trapezoid formed by dropping lines
@@ -227,10 +226,12 @@ public class AreaFunction extends FunctionExpressionImpl {
                 maxy = Math.max(maxy, interiorRingCoordinates[j].y);
             }
             for (int j = 0; j < (numberOfInteriorRingCoordinates - 1); j++) {
-                interiorArea += (((interiorRingCoordinates[j + 1].x - minx) - 
-                                (interiorRingCoordinates[j].x - minx)) * 
-                                (((interiorRingCoordinates[j + 1].y - miny) + 
-                                (interiorRingCoordinates[j].y - miny)) / 2d));
+                interiorArea +=
+                        (((interiorRingCoordinates[j + 1].x - minx)
+                                        - (interiorRingCoordinates[j].x - minx))
+                                * (((interiorRingCoordinates[j + 1].y - miny)
+                                                + (interiorRingCoordinates[j].y - miny))
+                                        / 2d));
             }
             area -= Math.abs(interiorArea);
         }
@@ -239,6 +240,7 @@ public class AreaFunction extends FunctionExpressionImpl {
 
     /**
      * Returns the perimeter of a Polygon.
+     *
      * @param polygon the Polygon for which the perimeter is calculated.
      * @return The perimeter of the polygon.
      */
@@ -255,8 +257,8 @@ public class AreaFunction extends FunctionExpressionImpl {
 
     /**
      * Returns the perimeter of a MultiLineString.
-     * @param multiLineString the MultiLineString for which the perimeter is
-     * calculated.
+     *
+     * @param multiLineString the MultiLineString for which the perimeter is calculated.
      * @return the total perimter (length) of the lines in multiLineString.
      */
     protected double getPerimeter(MultiLineString multiLineString) {
@@ -270,6 +272,7 @@ public class AreaFunction extends FunctionExpressionImpl {
 
     /**
      * Returns the perimeter of a LineString.
+     *
      * @param lineString the LineString for which the perimeter is calculated.
      * @return the perimeter (length) of the lineString.
      */
@@ -282,5 +285,4 @@ public class AreaFunction extends FunctionExpressionImpl {
         }
         return perimeter;
     }
-
 }

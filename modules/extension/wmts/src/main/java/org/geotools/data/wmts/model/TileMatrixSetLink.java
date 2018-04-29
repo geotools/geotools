@@ -22,7 +22,8 @@ import java.util.List;
 /**
  * Tells which TileMatrixSet a layer is using.
  *
- * Optionally defines a row/column subrange (TileMatrixLimits) for the layer in such TileMatrixSet.
+ * <p>Optionally defines a row/column subrange (TileMatrixLimits) for the layer in such
+ * TileMatrixSet.
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
@@ -33,32 +34,22 @@ public class TileMatrixSetLink {
 
     List<TileMatrixLimits> limits = new ArrayList<>();
 
-    /**
-     * @return the identifier
-     */
+    /** @return the identifier */
     public String getIdentifier() {
         return identifier;
     }
 
-    /**
-     * @param identifier
-     *            the identifier to set
-     */
+    /** @param identifier the identifier to set */
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
 
-    /**
-     * @return the limits
-     */
+    /** @return the limits */
     public List<TileMatrixLimits> getLimits() {
         return limits;
     }
 
-    /**
-     * @param limits
-     *            the limits to set
-     */
+    /** @param limits the limits to set */
     public void setLimits(List<TileMatrixLimits> limits) {
         this.limits = limits;
     }

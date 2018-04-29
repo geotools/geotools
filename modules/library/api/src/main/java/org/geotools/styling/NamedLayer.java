@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,14 +18,13 @@ package org.geotools.styling;
 
 import java.util.List;
 
-
 /**
  * A NamedLayer is used to refer to a layer that has a name in a WMS.
  *
- * <p>
- * The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188"> OGC
- * Styled-Layer Descriptor Report (OGC 02-070) version 1.0.0.</a>:
+ * <p>The details of this object are taken from the <a
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
+ * Report (OGC 02-070) version 1.0.0.</a>:
+ *
  * <pre><code>
  * &lt;xsd:element name="NamedLayer"&gt;
  *   &lt;xsd:annotation&gt;
@@ -45,19 +44,21 @@ import java.util.List;
  *   &lt;/xsd:complexType&gt;
  * &lt;/xsd:element&gt;
  * </code></pre>
- * </p>
- *
  *
  * @source $URL$
  */
 public interface NamedLayer extends StyledLayer {
-	
-	public List<FeatureTypeConstraint> layerFeatureConstraints();
+
+    public List<FeatureTypeConstraint> layerFeatureConstraints();
+
     public FeatureTypeConstraint[] getLayerFeatureConstraints();
+
     public void setLayerFeatureConstraints(FeatureTypeConstraint[] constraints);
 
     public List<Style> styles();
+
     public Style[] getStyles();
+
     public void addStyle(Style sl);
 
     /**

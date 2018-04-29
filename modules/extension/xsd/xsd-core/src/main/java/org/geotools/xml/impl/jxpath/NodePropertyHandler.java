@@ -16,17 +16,11 @@
  */
 package org.geotools.xml.impl.jxpath;
 
-import org.apache.commons.jxpath.DynamicPropertyHandler;
 import java.util.List;
+import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.geotools.xml.Node;
-import org.geotools.xml.impl.NodeImpl;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class NodePropertyHandler implements DynamicPropertyHandler {
     public Object getProperty(Object object, String property) {
         Node node = (Node) object;
@@ -39,7 +33,7 @@ public class NodePropertyHandler implements DynamicPropertyHandler {
         List children = node.getChildren();
 
         if ((children == null) || children.isEmpty()) {
-            return new String[] {  };
+            return new String[] {};
         }
 
         String[] propertyNames = new String[children.size()];

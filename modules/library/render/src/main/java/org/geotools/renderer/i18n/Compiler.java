@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,17 +16,11 @@
  */
 package org.geotools.renderer.i18n;
 
-
 import java.io.File;
-
 import org.geotools.resources.IndexedResourceCompiler;
-
 
 /**
  * Resource compiler.
- * 
- *
- *
  *
  * @source $URL$
  * @version $Id$
@@ -34,27 +28,18 @@ import org.geotools.resources.IndexedResourceCompiler;
  */
 public final class Compiler {
     /**
-     * The base directory for {@code "java"} {@code "resources"} sub-directories.
-     * The directory structure must be consistent with Maven conventions.
+     * The base directory for {@code "java"} {@code "resources"} sub-directories. The directory
+     * structure must be consistent with Maven conventions.
      */
     private static final File SOURCE_DIRECTORY = new File("./src/main");
 
-    /**
-     * The resources to process.
-     */
-    private static final Class[] RESOURCES_TO_PROCESS = {
-        Errors.class, Vocabulary.class
-    };
+    /** The resources to process. */
+    private static final Class[] RESOURCES_TO_PROCESS = {Errors.class, Vocabulary.class};
 
-    /**
-     * Do not allows instantiation of this class.
-     */
-    private Compiler() {
-    }
+    /** Do not allows instantiation of this class. */
+    private Compiler() {}
 
-    /**
-     * Run the resource compiler.
-     */
+    /** Run the resource compiler. */
     public static void main(final String[] args) {
         IndexedResourceCompiler.main(args, SOURCE_DIRECTORY, RESOURCES_TO_PROCESS);
         System.out.println(SOURCE_DIRECTORY.getAbsolutePath());

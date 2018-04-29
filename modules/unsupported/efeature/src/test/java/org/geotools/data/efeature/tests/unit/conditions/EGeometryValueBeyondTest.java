@@ -18,31 +18,26 @@ package org.geotools.data.efeature.tests.unit.conditions;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.emf.query.conditions.Condition;
 import org.geotools.data.efeature.query.EFeatureEncoderException;
 import org.geotools.data.efeature.query.EGeometryValueBeyond;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EGeometryValueBeyondTest extends AbstractEGeometryValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EGeometryValueBeyondTest(String name) {
-        super(name,BEYOND);
+        super(name, BEYOND);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -51,16 +46,15 @@ public class EGeometryValueBeyondTest extends AbstractEGeometryValueTest {
         //
         // Get iterator
         //
-        Iterator<?> it = ((Collection<?>)filter).iterator();
+        Iterator<?> it = ((Collection<?>) filter).iterator();
         //
         // Get lower and upper values
         //
         Object anchor = it.next();
-        double distance = (Double)it.next();
+        double distance = (Double) it.next();
         //
         // Create condition
         //
         return new EGeometryValueBeyond(eAttribute, anchor, distance);
     }
-
 }

@@ -17,9 +17,7 @@
 package org.geotools.wfs.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs20.Wfs20Factory;
-
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
@@ -29,7 +27,7 @@ public class TransactionTypeBinding extends AbstractComplexEMFBinding {
     public TransactionTypeBinding() {
         super(Wfs20Factory.eINSTANCE);
     }
-    
+
     public QName getTarget() {
         return WFS.TransactionType;
     }

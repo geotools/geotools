@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -17,16 +17,14 @@
  */
 package org.geotools.data.mongodb;
 
+import com.mongodb.BasicDBList;
+import com.mongodb.DB;
 import java.io.IOException;
-import java.text.ParseException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
-
-import com.mongodb.BasicDBList;
-import com.mongodb.DB;
 
 public abstract class MongoTestSetup {
 
@@ -37,7 +35,7 @@ public abstract class MongoTestSetup {
     protected abstract Date getDateProperty(int featureIdx);
 
     public MongoDataStore createDataStore(Properties fixture) throws IOException {
-        MongoDataStore dataStore = new MongoDataStoreFactory().createDataStore((Map)fixture);
+        MongoDataStore dataStore = new MongoDataStoreFactory().createDataStore((Map) fixture);
         setUpDataStore(dataStore);
         return dataStore;
     }
@@ -57,5 +55,4 @@ public abstract class MongoTestSetup {
     protected static Date parseDate(String dateAsString) {
         return Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse(dateAsString)));
     }
-
 }

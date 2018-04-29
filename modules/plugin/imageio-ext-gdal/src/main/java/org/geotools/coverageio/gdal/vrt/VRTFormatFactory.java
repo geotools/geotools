@@ -17,28 +17,25 @@
 package org.geotools.coverageio.gdal.vrt;
 
 import it.geosolutions.imageio.plugins.vrt.VRTImageReaderSpi;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
 import org.opengis.coverage.grid.Format;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Implementation of the {@link Format} service provider interface for VRT files.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.10.x
- *
- *
  * @source $URL$
  */
 public final class VRTFormatFactory extends BaseGridFormatFactorySPI
         implements GridFormatFactorySpi {
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.coverageio.gdal.vrt");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.vrt");
 
     @Override
     public boolean isAvailable() {

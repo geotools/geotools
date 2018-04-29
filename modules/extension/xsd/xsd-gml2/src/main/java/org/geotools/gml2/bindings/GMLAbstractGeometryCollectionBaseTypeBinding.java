@@ -16,22 +16,19 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
 import javax.xml.namespace.QName;
-
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.GeometryCollection;
-
 
 /**
  * Binding object for the type http://www.opengis.net/gml:AbstractGeometryCollectionBaseType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="AbstractGeometryCollectionBaseType" abstract="true"&gt;
  *      &lt;annotation&gt;
@@ -49,24 +46,18 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
- * @source $URL$
- * JD: this binding should not longer be used
+ * @source $URL$ JD: this binding should not longer be used
  */
 public class GMLAbstractGeometryCollectionBaseTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.AbstractGeometryCollectionBaseType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -77,16 +68,16 @@ public class GMLAbstractGeometryCollectionBaseTypeBinding extends AbstractComple
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return null;
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         return GML2ParsingUtils.GeometryCollectionType_getProperty(object, name);

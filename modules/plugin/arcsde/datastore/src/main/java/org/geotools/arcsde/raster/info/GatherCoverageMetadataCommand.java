@@ -16,6 +16,20 @@
  */
 package org.geotools.arcsde.raster.info;
 
+import com.esri.sde.sdk.client.SDEPoint;
+import com.esri.sde.sdk.client.SeColumnDefinition;
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeCoordinateReference;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeExtent;
+import com.esri.sde.sdk.client.SeQuery;
+import com.esri.sde.sdk.client.SeRaster;
+import com.esri.sde.sdk.client.SeRasterAttr;
+import com.esri.sde.sdk.client.SeRasterBand;
+import com.esri.sde.sdk.client.SeRasterColumn;
+import com.esri.sde.sdk.client.SeRow;
+import com.esri.sde.sdk.client.SeSqlConstruct;
+import com.esri.sde.sdk.client.SeTable;
 import java.awt.Point;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -32,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
@@ -43,29 +56,12 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.esri.sde.sdk.client.SDEPoint;
-import com.esri.sde.sdk.client.SeColumnDefinition;
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeCoordinateReference;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeExtent;
-import com.esri.sde.sdk.client.SeQuery;
-import com.esri.sde.sdk.client.SeRaster;
-import com.esri.sde.sdk.client.SeRasterAttr;
-import com.esri.sde.sdk.client.SeRasterBand;
-import com.esri.sde.sdk.client.SeRasterColumn;
-import com.esri.sde.sdk.client.SeRow;
-import com.esri.sde.sdk.client.SeSqlConstruct;
-import com.esri.sde.sdk.client.SeTable;
-
 /**
  * Session command to gather information for an ArcSDE Raster, such as dimensions, spatial extent,
  * number of pyramid levels, etc; into a {@link RasterDatasetInfo}
- * 
+ *
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.8
- *
- *
  * @source $URL$
  */
 public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
@@ -76,23 +72,21 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
 
     private final String rasterTableName;
 
-    public GatherCoverageMetadataCommand(final String rasterTableName,
-            final boolean statisticsMandatory) {
+    public GatherCoverageMetadataCommand(
+            final String rasterTableName, final boolean statisticsMandatory) {
         this.rasterTableName = rasterTableName;
         this.statisticsMandatory = statisticsMandatory;
     }
 
     /**
-     * @throws IOException
-     *             if an exception occurs accessing the raster metadata
+     * @throws IOException if an exception occurs accessing the raster metadata
      * @throws SeException
-     * @throws IllegalArgumentException
-     *             if the raster has no CRS, contains no raster attributes, has no pyramids, no
-     *             bands or no statistics
+     * @throws IllegalArgumentException if the raster has no CRS, contains no raster attributes, has
+     *     no pyramids, no bands or no statistics
      */
     @Override
-    public RasterDatasetInfo execute(ISession session, SeConnection connection) throws SeException,
-            IOException {
+    public RasterDatasetInfo execute(ISession session, SeConnection connection)
+            throws SeException, IOException {
         LOGGER.fine("Gathering raster dataset metadata for " + rasterTableName);
         final String[] rasterColumns = getRasterColumns(connection, rasterTableName);
         final List<RasterInfo> rastersLayoutInfo = new ArrayList<RasterInfo>();
@@ -101,8 +95,8 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
             rasterAttributes = getSeRasterAttr(connection, rasterTableName, rasterColumns);
 
             if (rasterAttributes.size() == 0) {
-                throw new IllegalArgumentException("Table " + rasterTableName
-                        + " contains no raster datasets");
+                throw new IllegalArgumentException(
+                        "Table " + rasterTableName + " contains no raster datasets");
             }
 
             final CoordinateReferenceSystem coverageCrs;
@@ -128,40 +122,48 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
                 }
                 final SeCoordinateReference seCoordRef = rasterColumn.getCoordRef();
                 if (seCoordRef == null) {
-                    throw new IllegalArgumentException(rasterTableName
-                            + " has no coordinate reference system set");
+                    throw new IllegalArgumentException(
+                            rasterTableName + " has no coordinate reference system set");
                 }
                 LOGGER.finer("Looking CRS for raster column " + rasterTableName);
                 coverageCrs = ArcSDEUtils.findCompatibleCRS(seCoordRef);
                 if (DefaultEngineeringCRS.CARTESIAN_2D == coverageCrs) {
-                    LOGGER.warning("Raster " + rasterTableName
-                            + " has not CRS set, using DefaultEngineeringCRS.CARTESIAN_2D");
+                    LOGGER.warning(
+                            "Raster "
+                                    + rasterTableName
+                                    + " has not CRS set, using DefaultEngineeringCRS.CARTESIAN_2D");
                 }
                 if (sampleBand.hasColorMap()) {
                     rastersColorMaps = loadColorMaps(rasterColumnId, bitsPerSample, connection);
                 } else {
                     rastersColorMaps = Collections.emptyMap();
                 }
-
             }
             try {
                 for (SeRasterAttr rAtt : rasterAttributes) {
-                    LOGGER.fine("Gathering raster metadata for " + rasterTableName + " raster "
-                            + rAtt.getRasterId().longValue());
-                    
+                    LOGGER.fine(
+                            "Gathering raster metadata for "
+                                    + rasterTableName
+                                    + " raster "
+                                    + rAtt.getRasterId().longValue());
+
                     if (rAtt.getMaxLevel() == 0) {
                         throw new IllegalArgumentException(
                                 "Raster cotains no pyramid levels, we don't support non pyramid rasters");
                     }
                     if (rAtt.getNumBands() == 0) {
-                        throw new IllegalArgumentException("Raster "
-                                + rAtt.getRasterId().longValue() + " in " + rasterTableName
-                                + " contains no raster attribtues");
+                        throw new IllegalArgumentException(
+                                "Raster "
+                                        + rAtt.getRasterId().longValue()
+                                        + " in "
+                                        + rasterTableName
+                                        + " contains no raster attribtues");
                     }
                     if (this.statisticsMandatory && !rAtt.getBandInfo(1).hasStats()) {
-                        throw new IllegalArgumentException(rasterTableName
-                                + " has no statistics generated (or not all it's rasters have). "
-                                + "Please use sderaster -o stats to create them before use");
+                        throw new IllegalArgumentException(
+                                rasterTableName
+                                        + " has no statistics generated (or not all it's rasters have). "
+                                        + "Please use sderaster -o stats to create them before use");
                     }
 
                     RasterInfo rasterInfo = new RasterInfo(rAtt, coverageCrs);
@@ -174,10 +176,15 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
                     bands = setUpBandInfo(connection, rAtt, rastersColorMaps);
                     rasterInfo.setBands(bands);
                     if (LOGGER.isLoggable(Level.FINER)) {
-                        LOGGER.finer("Gathered metadata for " + rasterTableName + "#"
-                                + rAtt.getRasterId().longValue() + ":\n" + rasterInfo.toString());
+                        LOGGER.finer(
+                                "Gathered metadata for "
+                                        + rasterTableName
+                                        + "#"
+                                        + rAtt.getRasterId().longValue()
+                                        + ":\n"
+                                        + rasterInfo.toString());
                     }
-                    
+
                     System.out.println(rasterInfo);
                 }
             } catch (SeException e) {
@@ -202,8 +209,8 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
         try {
             cols = sTable.describe();
         } catch (SeException e) {
-            throw new ArcSdeException("Exception fetching the list of columns for table "
-                    + rasterTable, e);
+            throw new ArcSdeException(
+                    "Exception fetching the list of columns for table " + rasterTable, e);
         }
         List<String> fetchColumns = new ArrayList<String>(cols.length / 2);
         for (int i = 0; i < cols.length; i++) {
@@ -211,16 +218,17 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
                 fetchColumns.add(cols[i].getName());
         }
         if (fetchColumns.size() == 0) {
-            throw new DataSourceException("Couldn't find any TYPE_RASTER columns in ArcSDE table "
-                    + rasterTable);
+            throw new DataSourceException(
+                    "Couldn't find any TYPE_RASTER columns in ArcSDE table " + rasterTable);
         }
 
         rasterColumns = fetchColumns.toArray(new String[fetchColumns.size()]);
         return rasterColumns;
     }
 
-    private GeneralEnvelope calculateOriginalEnvelope(final SeRasterAttr rasterAttributes,
-            CoordinateReferenceSystem coverageCrs) throws IOException {
+    private GeneralEnvelope calculateOriginalEnvelope(
+            final SeRasterAttr rasterAttributes, CoordinateReferenceSystem coverageCrs)
+            throws IOException {
         SeExtent sdeExtent;
         try {
             sdeExtent = rasterAttributes.getExtent();
@@ -233,8 +241,8 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
         return originalEnvelope;
     }
 
-    private List<SeRasterAttr> getSeRasterAttr(SeConnection scon, String rasterTable,
-            String[] rasterColumns) throws IOException {
+    private List<SeRasterAttr> getSeRasterAttr(
+            SeConnection scon, String rasterTable, String[] rasterColumns) throws IOException {
 
         LOGGER.fine("Gathering raster attributes for " + rasterTable);
         SeRasterAttr rasterAttributes;
@@ -267,14 +275,14 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
     }
 
     /**
-     * 
      * @param band
      * @param scon
      * @return
      * @throws ArcSdeException
      */
-    private Map<Long, IndexColorModel> loadColorMaps(final long rasterColumnId,
-            final int bitsPerSample, SeConnection scon) throws IOException {
+    private Map<Long, IndexColorModel> loadColorMaps(
+            final long rasterColumnId, final int bitsPerSample, SeConnection scon)
+            throws IOException {
         LOGGER.fine("Reading colormap for raster column " + rasterColumnId);
 
         final String auxTableName = getAuxTableName(rasterColumnId, scon);
@@ -284,11 +292,11 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
         SeQuery query = null;
         try {
             SeSqlConstruct sqlConstruct = new SeSqlConstruct();
-            sqlConstruct.setTables(new String[] { auxTableName });
+            sqlConstruct.setTables(new String[] {auxTableName});
             String whereClause = "TYPE = 3";
             sqlConstruct.setWhere(whereClause);
 
-            query = new SeQuery(scon, new String[] { "RASTERBAND_ID", "OBJECT" }, sqlConstruct);
+            query = new SeQuery(scon, new String[] {"RASTERBAND_ID", "OBJECT"}, sqlConstruct);
             query.prepareQuery();
             query.execute();
 
@@ -310,15 +318,21 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
                 row = query.fetch();
             }
         } catch (SeException e) {
-            throw new ArcSdeException("Error fetching colormap data for column " + rasterColumnId
-                    + " from table " + auxTableName, e);
+            throw new ArcSdeException(
+                    "Error fetching colormap data for column "
+                            + rasterColumnId
+                            + " from table "
+                            + auxTableName,
+                    e);
         } finally {
             if (query != null) {
                 try {
                     query.close();
                 } catch (SeException e) {
-                    LOGGER.log(Level.INFO, "ignoring exception when closing query to "
-                            + "fetch colormap data", e);
+                    LOGGER.log(
+                            Level.INFO,
+                            "ignoring exception when closing query to " + "fetch colormap data",
+                            e);
                 }
             }
         }
@@ -349,8 +363,12 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
 
         final DataBuffer buff;
         if (buffType == SeRaster.SE_COLORMAP_DATA_BYTE) {
-            LOGGER.finest("Creating Byte data buffer for " + numBanks + " banks and " + numElems
-                    + " elements per bank");
+            LOGGER.finest(
+                    "Creating Byte data buffer for "
+                            + numBanks
+                            + " banks and "
+                            + numElems
+                            + " elements per bank");
             buff = new DataBufferByte(numElems, numBanks);
             for (int elem = 0; elem < numElems; elem++) {
                 for (int bank = 0; bank < numBanks; bank++) {
@@ -359,8 +377,12 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
                 }
             }
         } else if (buffType == SeRaster.SE_COLORMAP_DATA_SHORT) {
-            LOGGER.finest("Creating Short data buffer for " + numBanks + " banks and " + numElems
-                    + " elements per bank");
+            LOGGER.finest(
+                    "Creating Short data buffer for "
+                            + numBanks
+                            + " banks and "
+                            + numElems
+                            + " elements per bank");
             buff = new DataBufferUShort(numElems, numBanks);
             for (int elem = 0; elem < numElems; elem++) {
                 for (int bank = 0; bank < numBanks; bank++) {
@@ -369,8 +391,10 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
                 }
             }
         } else {
-            throw new IllegalStateException("Unknown databuffer type from colormap header: "
-                    + buffType + " expected one of TYPE_BYTE, TYPE_SHORT");
+            throw new IllegalStateException(
+                    "Unknown databuffer type from colormap header: "
+                            + buffType
+                            + " expected one of TYPE_BYTE, TYPE_SHORT");
         }
 
         assert dataIn.read() == -1 : "color map data should have been exausted";
@@ -389,35 +413,37 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
             sqlCons.setWhere("RASTERCOLUMN_ID = " + rasterColumnId);
 
             try {
-                query = new SeQuery(scon, new String[] { "OWNER" }, sqlCons);
+                query = new SeQuery(scon, new String[] {"OWNER"}, sqlCons);
                 query.prepareQuery();
             } catch (SeException e) {
                 // sde 9.3 calls it raster_columns, not sde_raster_columns...
                 rastersColumnsTable = dbaName + ".RASTER_COLUMNS";
                 sqlCons = new SeSqlConstruct(rastersColumnsTable);
                 sqlCons.setWhere("RASTERCOLUMN_ID = " + rasterColumnId);
-                query = new SeQuery(scon, new String[] { "OWNER" }, sqlCons);
+                query = new SeQuery(scon, new String[] {"OWNER"}, sqlCons);
                 query.prepareQuery();
             }
             query.execute();
 
             SeRow row = query.fetch();
             if (row == null) {
-                throw new IllegalArgumentException("No raster column registered with id "
-                        + rasterColumnId);
+                throw new IllegalArgumentException(
+                        "No raster column registered with id " + rasterColumnId);
             }
             owner = row.getString(0);
             query.close();
         } catch (SeException e) {
-            throw new ArcSdeException("Error getting auxiliary table for raster column "
-                    + rasterColumnId, e);
+            throw new ArcSdeException(
+                    "Error getting auxiliary table for raster column " + rasterColumnId, e);
         } finally {
             if (query != null) {
                 try {
                     query.close();
                 } catch (SeException e) {
-                    LOGGER.log(Level.INFO, "ignoring exception when closing query to "
-                            + "fetch colormap data", e);
+                    LOGGER.log(
+                            Level.INFO,
+                            "ignoring exception when closing query to " + "fetch colormap data",
+                            e);
                 }
             }
         }
@@ -427,8 +453,11 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
         return auxTableName;
     }
 
-    private List<RasterBandInfo> setUpBandInfo(SeConnection scon, SeRasterAttr rasterAttributes,
-            Map<Long, IndexColorModel> rastersColorMaps) throws IOException {
+    private List<RasterBandInfo> setUpBandInfo(
+            SeConnection scon,
+            SeRasterAttr rasterAttributes,
+            Map<Long, IndexColorModel> rastersColorMaps)
+            throws IOException {
         final int numBands;
         final SeRasterBand[] seBands;
         final RasterCellType cellType;
@@ -455,18 +484,21 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
     }
 
     /**
-     * 
      * @param numBands
      * @param bandInfo
      * @param band
      * @param scon
-     * @param bitsPerSample
-     *            only used if the band is colormapped to create the IndexColorModel
+     * @param bitsPerSample only used if the band is colormapped to create the IndexColorModel
      * @throws IOException
      */
-    private void setBandInfo(final int numBands, final RasterBandInfo bandInfo,
-            final SeRasterBand band, final SeConnection scon, int bitsPerSample,
-            final Map<Long, IndexColorModel> colorMaps) throws IOException {
+    private void setBandInfo(
+            final int numBands,
+            final RasterBandInfo bandInfo,
+            final SeRasterBand band,
+            final SeConnection scon,
+            int bitsPerSample,
+            final Map<Long, IndexColorModel> colorMaps)
+            throws IOException {
 
         bandInfo.bandId = band.getId().longValue();
         bandInfo.bandNumber = band.getBandNumber();
@@ -510,8 +542,8 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
             double statsMin = bandInfo.getStatsMin();
             double statsMax = bandInfo.getStatsMax();
             RasterCellType nativeCellType = bandInfo.getCellType();
-            bandInfo.noDataValue = RasterUtils.determineNoDataValue(numBands, statsMin, statsMax,
-                    nativeCellType);
+            bandInfo.noDataValue =
+                    RasterUtils.determineNoDataValue(numBands, statsMin, statsMax, nativeCellType);
         }
         SDEPoint tOrigin;
         try {
@@ -519,7 +551,6 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
         } catch (SeException e) {
             throw new ArcSdeException(e);
         }
-        bandInfo.tileOrigin = new Point((int)tOrigin.getX(), (int)tOrigin.getY());
+        bandInfo.tileOrigin = new Point((int) tOrigin.getX(), (int) tOrigin.getY());
     }
-
 }

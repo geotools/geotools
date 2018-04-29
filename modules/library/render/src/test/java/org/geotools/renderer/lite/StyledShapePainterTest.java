@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,16 +16,16 @@
  */
 package org.geotools.renderer.lite;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.net.URL;
-
 import javax.imageio.ImageIO;
-
 import junit.framework.TestCase;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.Decimator;
@@ -44,10 +44,6 @@ import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.operation.MathTransform;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
 public class StyledShapePainterTest extends TestCase {
 
     public void testGraphicLegendNullLegend() throws Exception {
@@ -65,38 +61,36 @@ public class StyledShapePainterTest extends TestCase {
             assertEquals("ShapePainter has been asked to paint a null legend!!", e.getMessage());
         }
     }
-    
+
     @Test
     public void testGraphicLegend() throws Exception {
-        
+
         // Load image directly from file, for comparison with painter output
         final URL imageURL = TestData.getResource(this, "icon64.png");
-        final BufferedImage testImage = ImageIO.read(imageURL);        
+        final BufferedImage testImage = ImageIO.read(imageURL);
         final int width = testImage.getWidth();
         final int height = testImage.getHeight();
-        
+
         // Get graphic legend from style
-        final Style style = RendererBaseTest.loadStyle(
-                this, "testGraphicLegend.sld");
+        final Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
         final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
-        
+
         // Paint legend using StyledShapePainter
-        final Point point = new GeometryFactory().createPoint(
-                new Coordinate(width / 2, height / 2));
+        final Point point =
+                new GeometryFactory().createPoint(new Coordinate(width / 2, height / 2));
         final LiteShape2 shape = new LiteShape2(point, null, null, false);
-        
+
         int imageType = testImage.getType();
-        if(imageType == BufferedImage.TYPE_CUSTOM) {
+        if (imageType == BufferedImage.TYPE_CUSTOM) {
             imageType = BufferedImage.TYPE_INT_RGB;
         }
-        final BufferedImage paintedImage =
-                new BufferedImage(width, height, imageType);
+        final BufferedImage paintedImage = new BufferedImage(width, height, imageType);
         final Graphics2D graphics = paintedImage.createGraphics();
         final StyledShapePainter painter = new StyledShapePainter();
         painter.paint(graphics, shape, legend, 1, false);
         graphics.dispose();
-        
+
         // Ensure painted legend matches image from file
         Assert.assertTrue(imagesIdentical(paintedImage, testImage));
     }
@@ -111,22 +105,20 @@ public class StyledShapePainterTest extends TestCase {
         final int height = testImage.getHeight();
 
         // Get graphic legend from style
-        final Style style = RendererBaseTest.loadStyle(
-                this, "testGraphicLegend.sld");
+        final Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
         final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
 
         // Paint legend using StyledShapePainter
-        final Point point = new GeometryFactory().createPoint(
-                new Coordinate(width / 2, height / 2));
+        final Point point =
+                new GeometryFactory().createPoint(new Coordinate(width / 2, height / 2));
         final LiteShape2 shape = new LiteShape2(point, null, null, false);
 
         int imageType = testImage.getType();
-        if(imageType == BufferedImage.TYPE_CUSTOM) {
+        if (imageType == BufferedImage.TYPE_CUSTOM) {
             imageType = BufferedImage.TYPE_INT_RGB;
         }
-        final BufferedImage paintedImage =
-                new BufferedImage(width, height, imageType);
+        final BufferedImage paintedImage = new BufferedImage(width, height, imageType);
         final Graphics2D graphics = paintedImage.createGraphics();
         final StyledShapePainter painter = new StyledShapePainter();
         painter.paint(graphics, shape, legend, -1, false);
@@ -139,45 +131,41 @@ public class StyledShapePainterTest extends TestCase {
     public void testGraphicLegendRotation() throws Exception {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
-        
+
         // Load image directly from file, for comparison with painter output
         final URL imageURL = TestData.getResource(this, "icon64.png");
-        final BufferedImage testImage = ImageIO.read(imageURL);        
+        final BufferedImage testImage = ImageIO.read(imageURL);
         final int width = testImage.getWidth();
         final int height = testImage.getHeight();
-        
+
         // Get graphic legend from style
-        final Style style = RendererBaseTest.loadStyle(
-                this, "testGraphicLegend.sld");
+        final Style style = RendererBaseTest.loadStyle(this, "testGraphicLegend.sld");
         final Rule rule = style.featureTypeStyles().get(0).rules().get(0);
         final GraphicLegend legend = (GraphicLegend) rule.getLegend();
-        
-        
+
         // Set rotation to 45 degrees
-        legend.setRotation( ff.literal(45.0) );
-        
+        legend.setRotation(ff.literal(45.0));
+
         // Paint legend using StyledShapePainter
         final Point point = gf.createPoint(new Coordinate(width / 2, height / 2));
         final LiteShape2 shape = new LiteShape2(point, null, null, false);
-        
+
         int imageType = testImage.getType();
-        if(imageType == BufferedImage.TYPE_CUSTOM) {
+        if (imageType == BufferedImage.TYPE_CUSTOM) {
             imageType = BufferedImage.TYPE_INT_RGB;
         }
-        final BufferedImage paintedImage =
-                new BufferedImage(width, height, imageType);
+        final BufferedImage paintedImage = new BufferedImage(width, height, imageType);
         final Graphics2D graphics = paintedImage.createGraphics();
         final StyledShapePainter painter = new StyledShapePainter();
         painter.paint(graphics, shape, legend, 1, false);
         graphics.dispose();
-        
+
         // Ensure painted legend does not match image from file
         Assert.assertFalse(imagesIdentical(paintedImage, testImage));
     }
-    
+
     /** Determines whether two buffered images are identical. */
-    private static boolean imagesIdentical(BufferedImage image1,
-                                           BufferedImage image2) {
+    private static boolean imagesIdentical(BufferedImage image1, BufferedImage image2) {
         final WritableRaster raster1 = image1.getRaster();
         final WritableRaster raster2 = image2.getRaster();
         final int numBands = raster1.getNumBands();
@@ -211,8 +199,8 @@ public class StyledShapePainterTest extends TestCase {
     public void testGraphicLegend2() throws Exception {
 
         StyledShapePainter painter = new StyledShapePainter();
-        GraphicImpl legend = new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools
-                .getDefaultHints()));
+        GraphicImpl legend =
+                new GraphicImpl(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
         legend.setRotation(0);
         legend.setOpacity(1);
         Style pStyle = RendererBaseTest.loadStyle(this, "externalGraphic.sld");
@@ -239,8 +227,8 @@ public class StyledShapePainterTest extends TestCase {
         assertEquals(0, image.getRaster().getSample(90, 30, 0));
         assertEquals(0, image.getRaster().getSample(90, 30, 1));
         assertEquals(0, image.getRaster().getSample(90, 30, 2));
-        
-        //check with a scaling factor
+
+        // check with a scaling factor
         image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
         g2 = (Graphics2D) image.getGraphics();
         painter.paint(g2, pointShape, legend, 2, false);
@@ -255,8 +243,5 @@ public class StyledShapePainterTest extends TestCase {
         assertEquals(0, image.getRaster().getSample(90, 30, 0));
         assertEquals(0, image.getRaster().getSample(90, 30, 1));
         assertEquals(0, image.getRaster().getSample(90, 30, 2));
-
-
     }
-
 }

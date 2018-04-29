@@ -16,29 +16,22 @@
  */
 package org.geotools.csw.bindings;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.csw.CSW;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
 
-
-
 public class TypeNameListTypeBinding extends AbstractSimpleBinding {
-    public TypeNameListTypeBinding() {
-    }
+    public TypeNameListTypeBinding() {}
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return CSW.TypeNameListType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -49,18 +42,18 @@ public class TypeNameListTypeBinding extends AbstractSimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
         return value;
     }
-    
+
     public String encode(Object object, String value) throws Exception {
-        //just return the value passed in, subclasses should override to provide new value
+        // just return the value passed in, subclasses should override to provide new value
         return value;
     }
 }

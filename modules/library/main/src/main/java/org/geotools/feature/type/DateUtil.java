@@ -1,44 +1,40 @@
 /*
-   Copyright (c) 2002-2004, Dennis M. Sosnoski.
-   All rights reserved.
-   Redistribution and use in source and binary forms, with or without modification,
-   are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright notice, this
-      list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice,
-      this list of conditions and the following disclaimer in the documentation
-      and/or other materials provided with the distribution.
- * Neither the name of JiBX nor the names of its contributors may be used
-      to endorse or promote products derived from this software without specific
-      prior written permission.
-   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-   DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-   ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-   LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-   ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+  Copyright (c) 2002-2004, Dennis M. Sosnoski.
+  All rights reserved.
+  Redistribution and use in source and binary forms, with or without modification,
+  are permitted provided that the following conditions are met:
+* Redistributions of source code must retain the above copyright notice, this
+     list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+* Neither the name of JiBX nor the names of its contributors may be used
+     to endorse or promote products derived from this software without specific
+     prior written permission.
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+  ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 package org.geotools.feature.type;
 
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
-
 /**
- * Utility class supplying static methods. Date serialization is based on the
- * algorithms published by Peter Baum (http://www.capecod.net/~pbaum). All
- * date handling is done according to the W3C Schema specification, which uses
- * a proleptic Gregorian calendar with no year 0. Note that this differs from
- * the Java date handling, which uses a discontinuous Gregorian calendar.
+ * Utility class supplying static methods. Date serialization is based on the algorithms published
+ * by Peter Baum (http://www.capecod.net/~pbaum). All date handling is done according to the W3C
+ * Schema specification, which uses a proleptic Gregorian calendar with no year 0. Note that this
+ * differs from the Java date handling, which uses a discontinuous Gregorian calendar.
  *
  * @author Dennis M. Sosnoski
- *
- *
  * @source $URL$
  * @version 1.0
  */
@@ -65,41 +61,40 @@ public abstract class DateUtil {
     private static final long MSPERCENTURY = (long) (MSPERDAY * 36524.25);
 
     /**
-     * Millisecond value of base time for internal representation. This gives
-     * the bias relative to January 1 of the year 1 C.E.
+     * Millisecond value of base time for internal representation. This gives the bias relative to
+     * January 1 of the year 1 C.E.
      */
-    private static final long TIME_BASE = (1969 * MSPERYEAR)
-        + (((1969 / 4) - 19 + 4) * LMSPERDAY);
+    private static final long TIME_BASE = (1969 * MSPERYEAR) + (((1969 / 4) - 19 + 4) * LMSPERDAY);
 
     /** Day number for start of month in non-leap year. */
     private static final int[] MONTHS_NONLEAP = {
-            0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
-        };
+        0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
+    };
 
     /** Day number for start of month in non-leap year. */
     private static final int[] MONTHS_LEAP = {
-            0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366
-        };
+        0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366
+    };
 
     /** Millisecond count prior to start of month in March 1-biased year. */
     private static final long[] BIAS_MONTHMS = {
-            0 * LMSPERDAY, 0 * LMSPERDAY, 0 * LMSPERDAY, 0 * LMSPERDAY,
-            31 * LMSPERDAY, 61 * LMSPERDAY, 92 * LMSPERDAY, 122 * LMSPERDAY,
-            153 * LMSPERDAY, 184 * LMSPERDAY, 214 * LMSPERDAY, 245 * LMSPERDAY,
-            275 * LMSPERDAY, 306 * LMSPERDAY, 337 * LMSPERDAY
-        };
+        0 * LMSPERDAY, 0 * LMSPERDAY, 0 * LMSPERDAY, 0 * LMSPERDAY,
+        31 * LMSPERDAY, 61 * LMSPERDAY, 92 * LMSPERDAY, 122 * LMSPERDAY,
+        153 * LMSPERDAY, 184 * LMSPERDAY, 214 * LMSPERDAY, 245 * LMSPERDAY,
+        275 * LMSPERDAY, 306 * LMSPERDAY, 337 * LMSPERDAY
+    };
 
     /** Pad character for base64 encoding. */
     private static final char PAD_CHAR = '=';
 
     /** Characters used in base64 encoding. */
     private static final char[] s_base64Chars = {
-            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-            'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
-            'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-            'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
-            '4', '5', '6', '7', '8', '9', '+', '/'
-        };
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+        'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
+        'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+        'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
+        '4', '5', '6', '7', '8', '9', '+', '/'
+    };
 
     /** Values corresponding to characters used in bas64 encoding. */
     private static final byte[] s_base64Values = new byte[128];
@@ -117,20 +112,18 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse digits in text as integer value. This internal method is used for
-     * number values embedded within lexical structures. Only decimal digits
-     * can be included in the text range parsed.
+     * Parse digits in text as integer value. This internal method is used for number values
+     * embedded within lexical structures. Only decimal digits can be included in the text range
+     * parsed.
      *
      * @param text text to be parsed
      * @param offset starting offset in text
      * @param length number of digits to be parsed
-     *
      * @return converted positive integer value
-     *
      * @throws IllegalArgumentException on parse error
      */
     private static int parseDigits(String text, int offset, int length)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         // check if overflow a potential problem
         int value = 0;
 
@@ -151,8 +144,7 @@ public abstract class DateUtil {
                 if ((chr >= '0') && (chr <= '9')) {
                     value = (value * 10) + (chr - '0');
                 } else {
-                    throw new IllegalArgumentException(
-                        "Non-digit in number value");
+                    throw new IllegalArgumentException("Non-digit in number value");
                 }
             }
         }
@@ -161,13 +153,11 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse integer value from text. Integer values are parsed with optional
-     * leading sign flag, followed by any number of digits.
+     * Parse integer value from text. Integer values are parsed with optional leading sign flag,
+     * followed by any number of digits.
      *
      * @param text text to be parsed
-     *
      * @return converted integer value
-     *
      * @throws IllegalArgumentException on parse error
      */
     public static int parseInt(String text) throws IllegalArgumentException {
@@ -219,7 +209,6 @@ public abstract class DateUtil {
      * Serialize int value to text.
      *
      * @param value int value to be serialized
-     *
      * @return text representation of value
      */
     public static String serializeInt(int value) {
@@ -227,13 +216,11 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse long value from text. Long values are parsed with optional leading
-     * sign flag, followed by any number of digits.
+     * Parse long value from text. Long values are parsed with optional leading sign flag, followed
+     * by any number of digits.
      *
      * @param text text to be parsed
-     *
      * @return converted long value
-     *
      * @throws IllegalArgumentException on parse error
      */
     public static long parseLong(String text) throws IllegalArgumentException {
@@ -284,8 +271,7 @@ public abstract class DateUtil {
                 if ((chr >= '0') && (chr <= '9')) {
                     value = (value * 10) + (chr - '0');
                 } else {
-                    throw new IllegalArgumentException(
-                        "Non-digit in number value");
+                    throw new IllegalArgumentException("Non-digit in number value");
                 }
             }
 
@@ -301,7 +287,6 @@ public abstract class DateUtil {
      * Serialize long value to text.
      *
      * @param value long value to be serialized
-     *
      * @return text representation of value
      */
     public static String serializeLong(long value) {
@@ -309,13 +294,11 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse short value from text. Short values are parsed with optional
-     * leading sign flag, followed by any number of digits.
+     * Parse short value from text. Short values are parsed with optional leading sign flag,
+     * followed by any number of digits.
      *
      * @param text text to be parsed
-     *
      * @return converted short value
-     *
      * @throws IllegalArgumentException on parse error
      */
     public static short parseShort(String text) throws IllegalArgumentException {
@@ -332,7 +315,6 @@ public abstract class DateUtil {
      * Serialize short value to text.
      *
      * @param value short value to be serialized
-     *
      * @return text representation of value
      */
     public static String serializeShort(short value) {
@@ -340,13 +322,11 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse byte value from text. Byte values are parsed with optional leading
-     * sign flag, followed by any number of digits.
+     * Parse byte value from text. Byte values are parsed with optional leading sign flag, followed
+     * by any number of digits.
      *
      * @param text text to be parsed
-     *
      * @return converted byte value
-     *
      * @throws IllegalArgumentException on parse error
      */
     public static byte parseByte(String text) throws IllegalArgumentException {
@@ -363,7 +343,6 @@ public abstract class DateUtil {
      * Serialize byte value to text.
      *
      * @param value byte value to be serialized
-     *
      * @return text representation of value
      */
     public static String serializeByte(byte value) {
@@ -371,17 +350,14 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse boolean value from text. Boolean values are parsed as either text
-     * "true" and "false", or "1" and "0" numeric equivalents.
+     * Parse boolean value from text. Boolean values are parsed as either text "true" and "false",
+     * or "1" and "0" numeric equivalents.
      *
      * @param text text to be parsed
-     *
      * @return converted boolean value
-     *
      * @throws IllegalArgumentException on parse error
      */
-    public static boolean parseBoolean(String text)
-        throws IllegalArgumentException {
+    public static boolean parseBoolean(String text) throws IllegalArgumentException {
         text = text.trim();
 
         if ("true".equals(text) || "1".equals(text)) {
@@ -394,11 +370,10 @@ public abstract class DateUtil {
     }
 
     /**
-     * Serialize boolean value to text. This serializes the value using the
-     * text representation as "true" or "false".
+     * Serialize boolean value to text. This serializes the value using the text representation as
+     * "true" or "false".
      *
      * @param value boolean value to be serialized
-     *
      * @return text representation of value
      */
     public static String serializeBoolean(boolean value) {
@@ -406,14 +381,11 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse char value from text as unsigned 16-bit integer. Char values are
-     * parsed with optional leading sign flag, followed by any number of
-     * digits.
+     * Parse char value from text as unsigned 16-bit integer. Char values are parsed with optional
+     * leading sign flag, followed by any number of digits.
      *
      * @param text text to be parsed
-     *
      * @return converted char value
-     *
      * @throws IllegalArgumentException on parse error
      */
     public static char parseChar(String text) throws IllegalArgumentException {
@@ -430,7 +402,6 @@ public abstract class DateUtil {
      * Serialize char value to text as unsigned 16-bit integer.
      *
      * @param value char value to be serialized
-     *
      * @return text representation of value
      */
     public static String serializeChar(char value) {
@@ -438,37 +409,30 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse char value from text as character value. This requires that the
-     * string must be of length one.
+     * Parse char value from text as character value. This requires that the string must be of
+     * length one.
      *
      * @param text text to be parsed
-     *
      * @return converted char value
-     *
      * @throws IllegalArgumentException on parse error
      */
-    public static char parseCharString(String text)
-        throws IllegalArgumentException {
+    public static char parseCharString(String text) throws IllegalArgumentException {
         if (text.length() == 1) {
             return text.charAt(0);
         } else {
-            throw new IllegalArgumentException(
-                "Input must be a single character");
+            throw new IllegalArgumentException("Input must be a single character");
         }
     }
 
     /**
-     * Deserialize char value from text as character value. This requires that
-     * the string must be null or of length one.
+     * Deserialize char value from text as character value. This requires that the string must be
+     * null or of length one.
      *
      * @param text text to be parsed (may be <code>null</code>)
-     *
      * @return converted char value
-     *
      * @throws IllegalArgumentException on parse error
      */
-    public static char deserializeCharString(String text)
-        throws IllegalArgumentException {
+    public static char deserializeCharString(String text) throws IllegalArgumentException {
         if (text == null) {
             return 0;
         } else {
@@ -480,7 +444,6 @@ public abstract class DateUtil {
      * Serialize char value to text as string of length one.
      *
      * @param value char value to be serialized
-     *
      * @return text representation of value
      */
     public static String serializeCharString(char value) {
@@ -488,15 +451,13 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse float value from text. This uses the W3C XML Schema format for
-     * floats, with the exception that it will accept "+NaN" and "-NaN" as
-     * valid formats. This is not in strict compliance with the specification,
-     * but is included for interoperability with other Java XML processing.
+     * Parse float value from text. This uses the W3C XML Schema format for floats, with the
+     * exception that it will accept "+NaN" and "-NaN" as valid formats. This is not in strict
+     * compliance with the specification, but is included for interoperability with other Java XML
+     * processing.
      *
      * @param text text to be parsed
-     *
      * @return converted float value
-     *
      * @throws IllegalArgumentException on parse error
      */
     public static float parseFloat(String text) throws IllegalArgumentException {
@@ -519,7 +480,6 @@ public abstract class DateUtil {
      * Serialize float value to text.
      *
      * @param value float value to be serialized
-     *
      * @return text representation of value
      */
     public static String serializeFloat(float value) {
@@ -531,19 +491,16 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse double value from text. This uses the W3C XML Schema format for
-     * doubles, with the exception that it will accept "+NaN" and "-NaN" as
-     * valid formats. This is not in strict compliance with the specification,
-     * but is included for interoperability with other Java XML processing.
+     * Parse double value from text. This uses the W3C XML Schema format for doubles, with the
+     * exception that it will accept "+NaN" and "-NaN" as valid formats. This is not in strict
+     * compliance with the specification, but is included for interoperability with other Java XML
+     * processing.
      *
      * @param text text to be parsed
-     *
      * @return converted double value
-     *
      * @throws IllegalArgumentException on parse error
      */
-    public static double parseDouble(String text)
-        throws IllegalArgumentException {
+    public static double parseDouble(String text) throws IllegalArgumentException {
         text = text.trim();
 
         if ("-INF".equals(text)) {
@@ -563,7 +520,6 @@ public abstract class DateUtil {
      * Serialize double value to text.
      *
      * @param value double value to be serialized
-     *
      * @return text representation of value
      */
     public static String serializeDouble(double value) {
@@ -575,13 +531,11 @@ public abstract class DateUtil {
     }
 
     /**
-     * Convert gYear text to Java date. Date values are expected to be in W3C
-     * XML Schema standard format as CCYY, with optional leading sign.
+     * Convert gYear text to Java date. Date values are expected to be in W3C XML Schema standard
+     * format as CCYY, with optional leading sign.
      *
      * @param text text to be parsed
-     *
      * @return start of year date as millisecond value from 1 C.E.
-     *
      * @throws IllegalArgumentException on parse error
      */
     public static long parseYear(String text) throws IllegalArgumentException {
@@ -617,24 +571,20 @@ public abstract class DateUtil {
             year--;
         }
 
-        long day = ((((long) year) * 365) + (year / 4)) - (year / 100)
-            + (year / 400);
+        long day = ((((long) year) * 365) + (year / 4)) - (year / 100) + (year / 400);
 
         return (day * MSPERDAY) - TIME_BASE;
     }
 
     /**
-     * Convert gYearMonth text to Java date. Date values are expected to be in
-     * W3C XML Schema standard format as CCYY-MM, with optional leading sign.
+     * Convert gYearMonth text to Java date. Date values are expected to be in W3C XML Schema
+     * standard format as CCYY-MM, with optional leading sign.
      *
      * @param text text to be parsed
-     *
      * @return start of month in year date as millisecond value
-     *
      * @throws IllegalArgumentException on parse error
      */
-    public static long parseYearMonth(String text)
-        throws IllegalArgumentException {
+    public static long parseYearMonth(String text) throws IllegalArgumentException {
         // start by validating the length and basic format
         text = text.trim();
 
@@ -675,28 +625,28 @@ public abstract class DateUtil {
             throw new IllegalArgumentException("Month value out of range");
         }
 
-        boolean leap = ((year % 4) == 0)
-            && !(((year % 100) == 0) && ((year % 400) != 0));
+        boolean leap = ((year % 4) == 0) && !(((year % 100) == 0) && ((year % 400) != 0));
 
         if (year > 0) {
             year--;
         }
 
-        long day = ((((long) year) * 365) + (year / 4)) - (year / 100)
-            + (year / 400) + (leap ? MONTHS_LEAP : MONTHS_NONLEAP)[month];
+        long day =
+                ((((long) year) * 365) + (year / 4))
+                        - (year / 100)
+                        + (year / 400)
+                        + (leap ? MONTHS_LEAP : MONTHS_NONLEAP)[month];
 
         return (day * MSPERDAY) - TIME_BASE;
     }
 
     /**
-     * Convert date text to Java date. Date values are expected to be in W3C
-     * XML Schema standard format as CCYY-MM-DD, with optional leading sign
-     * and trailing time zone (though the time zone is ignored in this case).
+     * Convert date text to Java date. Date values are expected to be in W3C XML Schema standard
+     * format as CCYY-MM-DD, with optional leading sign and trailing time zone (though the time zone
+     * is ignored in this case).
      *
      * @param text text to be parsed
-     *
      * @return start of day in month and year date as millisecond value
-     *
      * @throws IllegalArgumentException on parse error
      */
     public static long parseDate(String text) throws IllegalArgumentException {
@@ -739,8 +689,7 @@ public abstract class DateUtil {
         }
 
         long day = parseDigits(text, split + 4, 2) - 1;
-        boolean leap = ((year % 4) == 0)
-            && !(((year % 100) == 0) && ((year % 400) != 0));
+        boolean leap = ((year % 4) == 0) && !(((year % 100) == 0) && ((year % 400) != 0));
         int[] starts = leap ? MONTHS_LEAP : MONTHS_NONLEAP;
 
         if ((day < 0) || (day >= (starts[month + 1] - starts[month]))) {
@@ -751,27 +700,21 @@ public abstract class DateUtil {
             year--;
         }
 
-        day += (((((long) year) * 365) + (year / 4)) - (year / 100)
-        + (year / 400) + starts[month]);
+        day += (((((long) year) * 365) + (year / 4)) - (year / 100) + (year / 400) + starts[month]);
 
         return (day * MSPERDAY) - TIME_BASE;
     }
 
     /**
-     * Deserialize date from text. Date values are expected to match W3C XML
-     * Schema standard format as CCYY-MM-DD, with optional leading minus sign
-     * if necessary. This method follows standard JiBX deserializer usage
-     * requirements by accepting a <code>null</code> input.
+     * Deserialize date from text. Date values are expected to match W3C XML Schema standard format
+     * as CCYY-MM-DD, with optional leading minus sign if necessary. This method follows standard
+     * JiBX deserializer usage requirements by accepting a <code>null</code> input.
      *
      * @param text text to be parsed (may be <code>null</code>)
-     *
-     * @return converted date, or <code>null</code> if passed <code>null</code>
-     *         input
-     *
+     * @return converted date, or <code>null</code> if passed <code>null</code> input
      * @throws IllegalArgumentException on parse error
      */
-    public static Date deserializeDate(String text)
-        throws IllegalArgumentException {
+    public static Date deserializeDate(String text) throws IllegalArgumentException {
         if (text == null) {
             return null;
         } else {
@@ -780,20 +723,15 @@ public abstract class DateUtil {
     }
 
     /**
-     * Deserialize SQL date from text. Date values are expected to match W3C
-     * XML Schema standard format as CCYY-MM-DD, with optional leading minus
-     * sign if necessary. This method follows standard JiBX deserializer usage
-     * requirements by accepting a <code>null</code> input.
+     * Deserialize SQL date from text. Date values are expected to match W3C XML Schema standard
+     * format as CCYY-MM-DD, with optional leading minus sign if necessary. This method follows
+     * standard JiBX deserializer usage requirements by accepting a <code>null</code> input.
      *
      * @param text text to be parsed (may be <code>null</code>)
-     *
-     * @return converted date, or <code>null</code> if passed <code>null</code>
-     *         input
-     *
+     * @return converted date, or <code>null</code> if passed <code>null</code> input
      * @throws IllegalArgumentException on parse error
      */
-    public static java.sql.Date deserializeSqlDate(String text)
-        throws IllegalArgumentException {
+    public static java.sql.Date deserializeSqlDate(String text) throws IllegalArgumentException {
         if (text == null) {
             return null;
         } else {
@@ -806,25 +744,23 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse general time value from text. Time values are expected to be in
-     * W3C XML Schema standard format as hh:mm:ss.fff, with optional leading
-     * sign and trailing time zone.
+     * Parse general time value from text. Time values are expected to be in W3C XML Schema standard
+     * format as hh:mm:ss.fff, with optional leading sign and trailing time zone.
      *
      * @param text text to be parsed
      * @param start offset of first character of time value
      * @param length number of characters in time value
-     *
      * @return converted time as millisecond value
-     *
      * @throws IllegalArgumentException on parse error
      */
     public static long parseTime(String text, int start, int length)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         // validate time value following date
         long milli = 0;
-        boolean valid = (length > (start + 7))
-            && (text.charAt(start + 2) == ':')
-            && (text.charAt(start + 5) == ':');
+        boolean valid =
+                (length > (start + 7))
+                        && (text.charAt(start + 2) == ':')
+                        && (text.charAt(start + 5) == ':');
 
         if (valid) {
             int hour = parseDigits(text, start, 2);
@@ -867,8 +803,7 @@ public abstract class DateUtil {
 
                     // check for trailing fractional second
                     if (text.charAt(start) == '.') {
-                        double fraction = Double.parseDouble(text.substring(
-                                    start, length));
+                        double fraction = Double.parseDouble(text.substring(start, length));
                         milli += (fraction * 1000.0);
                     } else if (length > start) {
                         valid = false;
@@ -886,46 +821,36 @@ public abstract class DateUtil {
     }
 
     /**
-     * Parse general dateTime value from text. Date values are expected to be
-     * in W3C XML Schema standard format as CCYY-MM-DDThh:mm:ss.fff, with
-     * optional leading sign and trailing time zone.
+     * Parse general dateTime value from text. Date values are expected to be in W3C XML Schema
+     * standard format as CCYY-MM-DDThh:mm:ss.fff, with optional leading sign and trailing time
+     * zone.
      *
      * @param text text to be parsed
-     *
      * @return converted date as millisecond value
-     *
      * @throws IllegalArgumentException on parse error
      */
-    public static long parseDateTime(String text)
-        throws IllegalArgumentException {
+    public static long parseDateTime(String text) throws IllegalArgumentException {
         // split text to convert portions separately
         int split = text.indexOf('T');
 
         if (split < 0) {
-            throw new IllegalArgumentException(
-                "Missing 'T' separator in dateTime");
+            throw new IllegalArgumentException("Missing 'T' separator in dateTime");
         }
 
-        return parseDate(text.substring(0, split))
-        + parseTime(text, split + 1, text.length());
+        return parseDate(text.substring(0, split)) + parseTime(text, split + 1, text.length());
     }
 
     /**
-     * Deserialize date from general dateTime text. Date values are expected to
-     * match W3C XML Schema standard format as CCYY-MM-DDThh:mm:ss, with
-     * optional leading minus sign and trailing seconds decimal, as necessary.
-     * This method follows standard JiBX deserializer usage requirements by
+     * Deserialize date from general dateTime text. Date values are expected to match W3C XML Schema
+     * standard format as CCYY-MM-DDThh:mm:ss, with optional leading minus sign and trailing seconds
+     * decimal, as necessary. This method follows standard JiBX deserializer usage requirements by
      * accepting a <code>null</code> input.
      *
      * @param text text to be parsed (may be <code>null</code>)
-     *
-     * @return converted date, or <code>null</code> if passed <code>null</code>
-     *         input
-     *
+     * @return converted date, or <code>null</code> if passed <code>null</code> input
      * @throws IllegalArgumentException on parse error
      */
-    public static Date deserializeDateTime(String text)
-        throws IllegalArgumentException {
+    public static Date deserializeDateTime(String text) throws IllegalArgumentException {
         if (text == null) {
             return null;
         } else {
@@ -934,21 +859,16 @@ public abstract class DateUtil {
     }
 
     /**
-     * Deserialize timestamp from general dateTime text. Timestamp values are
-     * represented in the same way as regular dates, but allow more precision
-     * in the fractional second value (down to nanoseconds). This method
-     * follows standard JiBX deserializer usage requirements by accepting a
-     * <code>null</code> input.
+     * Deserialize timestamp from general dateTime text. Timestamp values are represented in the
+     * same way as regular dates, but allow more precision in the fractional second value (down to
+     * nanoseconds). This method follows standard JiBX deserializer usage requirements by accepting
+     * a <code>null</code> input.
      *
      * @param text text to be parsed (may be <code>null</code>)
-     *
-     * @return converted timestamp, or <code>null</code> if passed
-     *         <code>null</code> input
-     *
+     * @return converted timestamp, or <code>null</code> if passed <code>null</code> input
      * @throws IllegalArgumentException on parse error
      */
-    public static Timestamp deserializeTimestamp(String text)
-        throws IllegalArgumentException {
+    public static Timestamp deserializeTimestamp(String text) throws IllegalArgumentException {
         if (text == null) {
             return null;
         } else {
@@ -959,8 +879,7 @@ public abstract class DateUtil {
             if (split > 0) {
                 // make sure there aren't multiple decimal points
                 if (text.indexOf('.', split) > 0) {
-                    throw new IllegalArgumentException(
-                        "Not a valid dateTime value");
+                    throw new IllegalArgumentException("Not a valid dateTime value");
                 }
 
                 // scan through all digits following decimal point
@@ -1007,19 +926,15 @@ public abstract class DateUtil {
     }
 
     /**
-     * Deserialize time from text. Time values obey the rules of the time
-     * portion of a dataTime value. This method follows standard JiBX
-     * deserializer usage requirements by accepting a <code>null</code> input.
+     * Deserialize time from text. Time values obey the rules of the time portion of a dataTime
+     * value. This method follows standard JiBX deserializer usage requirements by accepting a
+     * <code>null</code> input.
      *
      * @param text text to be parsed (may be <code>null</code>)
-     *
-     * @return converted time, or <code>null</code> if passed <code>null</code>
-     *         input
-     *
+     * @return converted time, or <code>null</code> if passed <code>null</code> input
      * @throws IllegalArgumentException on parse error
      */
-    public static Time deserializeSqlTime(String text)
-        throws IllegalArgumentException {
+    public static Time deserializeSqlTime(String text) throws IllegalArgumentException {
         if (text == null) {
             return null;
         } else {
@@ -1028,9 +943,8 @@ public abstract class DateUtil {
     }
 
     /**
-     * Format year number consistent with W3C XML Schema definitions, using a
-     * minimum of four digits padded with zeros if necessary. A leading minus
-     * sign is included for years prior to 1 C.E.
+     * Format year number consistent with W3C XML Schema definitions, using a minimum of four digits
+     * padded with zeros if necessary. A leading minus sign is included for years prior to 1 C.E.
      *
      * @param year number to be formatted
      * @param buff text formatting buffer
@@ -1060,8 +974,8 @@ public abstract class DateUtil {
     }
 
     /**
-     * Format a positive number as two digits. This uses an optional leading
-     * zero digit for values less than ten.
+     * Format a positive number as two digits. This uses an optional leading zero digit for values
+     * less than ten.
      *
      * @param value number to be formatted (<code>0</code> to <code>99</code>)
      * @param buff text formatting buffer
@@ -1075,10 +989,9 @@ public abstract class DateUtil {
     }
 
     /**
-     * Format time in milliseconds to year number. The resulting year number
-     * format is consistent with W3C XML Schema definitions, using a minimum
-     * of four digits padded with zeros if necessary. A leading minus sign is
-     * included for years prior to 1 C.E.
+     * Format time in milliseconds to year number. The resulting year number format is consistent
+     * with W3C XML Schema definitions, using a minimum of four digits padded with zeros if
+     * necessary. A leading minus sign is included for years prior to 1 C.E.
      *
      * @param value time in milliseconds to be converted (from 1 C.E.)
      * @param buff text formatting buffer
@@ -1098,8 +1011,7 @@ public abstract class DateUtil {
             year--;
         }
 
-        long yms = (adjusted + (LMSPERDAY / 4))
-            - (((year * 365) + (year / 4)) * LMSPERDAY);
+        long yms = (adjusted + (LMSPERDAY / 4)) - (((year * 365) + (year / 4)) * LMSPERDAY);
         int yday = (int) (yms / LMSPERDAY); // day number in year
         int month = ((5 * yday) + 456) / 153; // (biased) month number
 
@@ -1112,14 +1024,12 @@ public abstract class DateUtil {
     }
 
     /**
-     * Format time in milliseconds to year number and month number. The
-     * resulting year number format is consistent with W3C XML Schema
-     * definitions, using a minimum of four digits for the year and exactly
-     * two digits for the month.
+     * Format time in milliseconds to year number and month number. The resulting year number format
+     * is consistent with W3C XML Schema definitions, using a minimum of four digits for the year
+     * and exactly two digits for the month.
      *
      * @param value time in milliseconds to be converted (from 1 C.E.)
      * @param buff text formatting buffer
-     *
      * @return number of milliseconds into month
      */
     protected static long formatYearMonth(long value, StringBuffer buff) {
@@ -1137,8 +1047,7 @@ public abstract class DateUtil {
             year--;
         }
 
-        long yms = (adjusted + (LMSPERDAY / 4))
-            - (((year * 365) + (year / 4)) * LMSPERDAY);
+        long yms = (adjusted + (LMSPERDAY / 4)) - (((year * 365) + (year / 4)) * LMSPERDAY);
         int yday = (int) (yms / LMSPERDAY); // day number in year
 
         if (yday == 0) { // special for negative
@@ -1177,14 +1086,12 @@ public abstract class DateUtil {
     }
 
     /**
-     * Format time in milliseconds to year number, month number, and day
-     * number. The resulting year number format is consistent with W3C XML
-     * Schema definitions, using a minimum of four digits for the year and
-     * exactly two digits each for the month and day.
+     * Format time in milliseconds to year number, month number, and day number. The resulting year
+     * number format is consistent with W3C XML Schema definitions, using a minimum of four digits
+     * for the year and exactly two digits each for the month and day.
      *
      * @param value time in milliseconds to be converted (from 1 C.E.)
      * @param buff text formatting buffer
-     *
      * @return number of milliseconds into day
      */
     protected static int formatYearMonthDay(long value, StringBuffer buff) {
@@ -1201,18 +1108,14 @@ public abstract class DateUtil {
     }
 
     /**
-     * Serialize time to general gYear text. Date values are formatted in W3C
-     * XML Schema standard format as CCYY, with optional leading sign included
-     * if necessary.
+     * Serialize time to general gYear text. Date values are formatted in W3C XML Schema standard
+     * format as CCYY, with optional leading sign included if necessary.
      *
      * @param time time to be converted, as milliseconds from January 1, 1970
-     *
      * @return converted gYear text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeYear(long time)
-        throws IllegalArgumentException {
+    public static String serializeYear(long time) throws IllegalArgumentException {
         StringBuffer buff = new StringBuffer(6);
         formatYear(time + TIME_BASE, buff);
 
@@ -1220,34 +1123,26 @@ public abstract class DateUtil {
     }
 
     /**
-     * Serialize date to general gYear text. Date values are formatted in W3C
-     * XML Schema standard format as CCYY, with optional leading sign included
-     * if necessary.
+     * Serialize date to general gYear text. Date values are formatted in W3C XML Schema standard
+     * format as CCYY, with optional leading sign included if necessary.
      *
      * @param date date to be converted
-     *
      * @return converted gYear text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeYear(Date date)
-        throws IllegalArgumentException {
+    public static String serializeYear(Date date) throws IllegalArgumentException {
         return serializeYear(date.getTime());
     }
 
     /**
-     * Serialize time to general gYearMonth text. Date values are formatted in
-     * W3C XML Schema standard format as CCYY-MM, with optional leading sign
-     * included if necessary.
+     * Serialize time to general gYearMonth text. Date values are formatted in W3C XML Schema
+     * standard format as CCYY-MM, with optional leading sign included if necessary.
      *
      * @param time time to be converted, as milliseconds from January 1, 1970
-     *
      * @return converted gYearMonth text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeYearMonth(long time)
-        throws IllegalArgumentException {
+    public static String serializeYearMonth(long time) throws IllegalArgumentException {
         StringBuffer buff = new StringBuffer(12);
         formatYearMonth(time + TIME_BASE, buff);
 
@@ -1255,34 +1150,26 @@ public abstract class DateUtil {
     }
 
     /**
-     * Serialize date to general gYearMonth text. Date values are formatted in
-     * W3C XML Schema standard format as CCYY-MM, with optional leading sign
-     * included if necessary.
+     * Serialize date to general gYearMonth text. Date values are formatted in W3C XML Schema
+     * standard format as CCYY-MM, with optional leading sign included if necessary.
      *
      * @param date date to be converted
-     *
      * @return converted gYearMonth text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeYearMonth(Date date)
-        throws IllegalArgumentException {
+    public static String serializeYearMonth(Date date) throws IllegalArgumentException {
         return serializeYearMonth(date.getTime());
     }
 
     /**
-     * Serialize time to general date text. Date values are formatted in W3C
-     * XML Schema standard format as CCYY-MM-DD, with optional leading sign
-     * included if necessary.
+     * Serialize time to general date text. Date values are formatted in W3C XML Schema standard
+     * format as CCYY-MM-DD, with optional leading sign included if necessary.
      *
      * @param time time to be converted, as milliseconds from January 1, 1970
-     *
      * @return converted date text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeDate(long time)
-        throws IllegalArgumentException {
+    public static String serializeDate(long time) throws IllegalArgumentException {
         StringBuffer buff = new StringBuffer(12);
         formatYearMonthDay(time + TIME_BASE, buff);
 
@@ -1290,52 +1177,41 @@ public abstract class DateUtil {
     }
 
     /**
-     * Serialize date to general date text. Date values are formatted in W3C
-     * XML Schema standard format as CCYY-MM-DD, with optional leading sign
-     * included if necessary.
+     * Serialize date to general date text. Date values are formatted in W3C XML Schema standard
+     * format as CCYY-MM-DD, with optional leading sign included if necessary.
      *
      * @param date date to be converted
-     *
      * @return converted date text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeDate(Date date)
-        throws IllegalArgumentException {
-        long time = date.getTime();       
+    public static String serializeDate(Date date) throws IllegalArgumentException {
+        long time = date.getTime();
         time += TimeZone.getDefault().getOffset(time);
         return serializeDate(time);
     }
 
     /**
-     * Serialize SQL date to general date text. Date values are formatted in
-     * W3C XML Schema standard format as CCYY-MM-DD, with optional leading
-     * sign included if necessary.
+     * Serialize SQL date to general date text. Date values are formatted in W3C XML Schema standard
+     * format as CCYY-MM-DD, with optional leading sign included if necessary.
      *
      * @param date date to be converted
-     *
      * @return converted date text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeSqlDate(java.sql.Date date)
-        throws IllegalArgumentException {
+    public static String serializeSqlDate(java.sql.Date date) throws IllegalArgumentException {
         return serializeDate(date);
     }
 
     /**
-     * Serialize time to general time text in buffer. Time values are formatted
-     * in W3C XML Schema standard format as hh:mm:ss, with optional trailing
-     * seconds decimal, as necessary. This form uses a supplied buffer to
-     * support flexible use, including with dateTime combination values.
+     * Serialize time to general time text in buffer. Time values are formatted in W3C XML Schema
+     * standard format as hh:mm:ss, with optional trailing seconds decimal, as necessary. This form
+     * uses a supplied buffer to support flexible use, including with dateTime combination values.
      *
      * @param time time to be converted, as milliseconds in day
      * @param buff buffer for appending time text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static void serializeTime(int time, StringBuffer buff)
-        throws IllegalArgumentException {
+    public static void serializeTime(int time, StringBuffer buff) throws IllegalArgumentException {
         // append the hour, minute, and second
         formatTwoDigits(time / MSPERHOUR, buff);
         time = time % MSPERHOUR;
@@ -1364,19 +1240,17 @@ public abstract class DateUtil {
     }
 
     /**
-     * Serialize time to general dateTime text. Date values are formatted in
-     * W3C XML Schema standard format as CCYY-MM-DDThh:mm:ss, with optional
-     * leading sign and trailing seconds decimal, as necessary.
+     * Serialize time to general dateTime text. Date values are formatted in W3C XML Schema standard
+     * format as CCYY-MM-DDThh:mm:ss, with optional leading sign and trailing seconds decimal, as
+     * necessary.
      *
      * @param time time to be converted, as milliseconds from January 1, 1970
      * @param zone flag for trailing 'Z' to be appended to indicate UTC
-     *
      * @return converted dateTime text
-     *
      * @throws IllegalArgumentException on conversion error
      */
     public static String serializeDateTime(long time, boolean zone)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         // start with the year, month, and day
         StringBuffer buff = new StringBuffer(25);
         int extra = formatYearMonthDay(time + TIME_BASE, buff);
@@ -1394,52 +1268,42 @@ public abstract class DateUtil {
     }
 
     /**
-     * Serialize time to general dateTime text. This method is provided for
-     * backward compatibility. It generates the dateTime text without the
-     * trailing 'Z' to indicate UTC.
+     * Serialize time to general dateTime text. This method is provided for backward compatibility.
+     * It generates the dateTime text without the trailing 'Z' to indicate UTC.
      *
      * @param time time to be converted, as milliseconds from January 1, 1970
-     *
      * @return converted dateTime text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeDateTime(long time)
-        throws IllegalArgumentException {
+    public static String serializeDateTime(long time) throws IllegalArgumentException {
         return serializeDateTime(time, false);
     }
 
     /**
-     * Serialize date to general dateTime text. Date values are formatted in
-     * W3C XML Schema standard format as CCYY-MM-DDThh:mm:ss, with optional
-     * leading sign and trailing seconds decimal, as necessary.
+     * Serialize date to general dateTime text. Date values are formatted in W3C XML Schema standard
+     * format as CCYY-MM-DDThh:mm:ss, with optional leading sign and trailing seconds decimal, as
+     * necessary.
      *
      * @param date date to be converted
-     *
      * @return converted dateTime text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeDateTime(Date date)
-        throws IllegalArgumentException {
-        long time = date.getTime();       
+    public static String serializeDateTime(Date date) throws IllegalArgumentException {
+        long time = date.getTime();
         time += TimeZone.getDefault().getOffset(time);
         return serializeDateTime(time, false);
     }
 
     /**
-     * Serialize timestamp to general dateTime text. Timestamp values are
-     * represented in the same way as regular dates, but allow more precision
-     * in the fractional second value (down to nanoseconds).
+     * Serialize timestamp to general dateTime text. Timestamp values are represented in the same
+     * way as regular dates, but allow more precision in the fractional second value (down to
+     * nanoseconds).
      *
      * @param stamp timestamp to be converted
-     *
      * @return converted dateTime text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeTimestamp(Timestamp stamp)
-        throws IllegalArgumentException {
+    public static String serializeTimestamp(Timestamp stamp) throws IllegalArgumentException {
         // check for nanosecond value to be included
         int nano = stamp.getNanos();
 
@@ -1472,29 +1336,24 @@ public abstract class DateUtil {
             digits.setLength(last);
 
             // finish by appending to time with decimal separator
-            return serializeDateTime(stamp.getTime(), false) + '.' + digits
-            + 'Z';
+            return serializeDateTime(stamp.getTime(), false) + '.' + digits + 'Z';
         } else {
             return serializeDateTime(stamp.getTime(), true);
         }
     }
 
     /**
-     * Serialize time to standard text. Time values are formatted in W3C XML
-     * Schema standard format as hh:mm:ss, with optional trailing seconds
-     * decimal, as necessary. The standard conversion does not append a time
-     * zone indication.
+     * Serialize time to standard text. Time values are formatted in W3C XML Schema standard format
+     * as hh:mm:ss, with optional trailing seconds decimal, as necessary. The standard conversion
+     * does not append a time zone indication.
      *
      * @param time time to be converted
-     *
      * @return converted time text
-     *
      * @throws IllegalArgumentException on conversion error
      */
-    public static String serializeSqlTime(Time time)
-        throws IllegalArgumentException {
+    public static String serializeSqlTime(Time time) throws IllegalArgumentException {
         StringBuffer buff = new StringBuffer(12);
-        long t = time.getTime();       
+        long t = time.getTime();
         t += TimeZone.getDefault().getOffset(t);
         int extra = formatYearMonthDay(t + TIME_BASE, buff);
         buff.delete(0, buff.length());
@@ -1504,38 +1363,32 @@ public abstract class DateUtil {
     }
 
     /**
-     * General object comparison method. Don't know why Sun hasn't seen fit to
-     * include this somewhere, but at least it's easy to write (over and over
-     * again).
+     * General object comparison method. Don't know why Sun hasn't seen fit to include this
+     * somewhere, but at least it's easy to write (over and over again).
      *
      * @param a first object to be compared
      * @param b second object to be compared
-     *
-     * @return <code>true</code> if both objects are <code>null</code>, or if
-     *         <code>a.equals(b)</code>; <code>false</code> otherwise
+     * @return <code>true</code> if both objects are <code>null</code>, or if <code>a.equals(b)
+     *     </code>; <code>false</code> otherwise
      */
     public static boolean isEqual(Object a, Object b) {
         return (a == null) ? (b == null) : a.equals(b);
     }
 
     /**
-     * Find text value in enumeration. This first does a binary search through
-     * an array of allowed text matches. If a separate array of corresponding
-     * values is supplied, the value at the matched position is returned;
-     * otherwise the match index is returned directly.
+     * Find text value in enumeration. This first does a binary search through an array of allowed
+     * text matches. If a separate array of corresponding values is supplied, the value at the
+     * matched position is returned; otherwise the match index is returned directly.
      *
      * @param target text to be found in enumeration
      * @param enums ordered array of texts included in enumeration
-     * @param vals array of values to be returned for corresponding text match
-     *        positions (position returned directly if this is
-     *        <code>null</code>)
-     *
+     * @param vals array of values to be returned for corresponding text match positions (position
+     *     returned directly if this is <code>null</code>)
      * @return enumeration value for target text
-     *
      * @throws IllegalArgumentException if target text not found in enumeration
      */
     public static int enumValue(String target, String[] enums, int[] vals)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         int base = 0;
         int limit = enums.length - 1;
 
@@ -1554,28 +1407,24 @@ public abstract class DateUtil {
             }
         }
 
-        throw new IllegalArgumentException("Target value \"" + target
-            + "\" not found in enumeration");
+        throw new IllegalArgumentException(
+                "Target value \"" + target + "\" not found in enumeration");
     }
 
     /**
-     * Decode a chunk of data from base64 encoding. The length of a chunk is
-     * always 4 characters in the base64 representation, but may be 1, 2, or 3
-     * bytes of data, as determined by whether there are any pad characters at
-     * the end of the base64 representation
+     * Decode a chunk of data from base64 encoding. The length of a chunk is always 4 characters in
+     * the base64 representation, but may be 1, 2, or 3 bytes of data, as determined by whether
+     * there are any pad characters at the end of the base64 representation
      *
      * @param base starting offset within base64 character array
      * @param chrs character array for base64 text representation
      * @param fill starting offset within byte data array
      * @param byts byte data array
-     *
      * @return number of decoded bytes
-     *
-     * @throws IllegalArgumentException if invalid character in base64
-     *         representation
+     * @throws IllegalArgumentException if invalid character in base64 representation
      */
     private static int decodeChunk(int base, char[] chrs, int fill, byte[] byts)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         // find the byte count to be decoded
         int length = 3;
 
@@ -1595,34 +1444,30 @@ public abstract class DateUtil {
 
         // convert and store bytes of data
         switch (length) {
-        case 3:
-            byts[fill + 2] = (byte) ((v2 << 6) | v3);
+            case 3:
+                byts[fill + 2] = (byte) ((v2 << 6) | v3);
 
-        case 2:
-            byts[fill + 1] = (byte) ((v1 << 4) | (v2 >> 2));
+            case 2:
+                byts[fill + 1] = (byte) ((v1 << 4) | (v2 >> 2));
 
-        case 1:
-            byts[fill] = (byte) ((v0 << 2) | (v1 >> 4));
+            case 1:
+                byts[fill] = (byte) ((v0 << 2) | (v1 >> 4));
 
-            break;
+                break;
         }
 
         return length;
     }
 
     /**
-     * Parse base64 data from text. This converts the base64 data into a byte
-     * array of the appopriate length. In keeping with the recommendations,
+     * Parse base64 data from text. This converts the base64 data into a byte array of the
+     * appopriate length. In keeping with the recommendations,
      *
      * @param text text to be parsed (may include extra characters)
-     *
      * @return byte array of data
-     *
-     * @throws IllegalArgumentException if invalid character in base64
-     *         representation
+     * @throws IllegalArgumentException if invalid character in base64 representation
      */
-    public static byte[] parseBase64(String text)
-        throws IllegalArgumentException {
+    public static byte[] parseBase64(String text) throws IllegalArgumentException {
         // convert raw text to base64 character array
         char[] chrs = new char[text.length()];
         int length = 0;
@@ -1637,8 +1482,7 @@ public abstract class DateUtil {
 
         // check the text length
         if ((length % 4) != 0) {
-            throw new IllegalArgumentException(
-                "Text length for base64 must be a multiple of 4");
+            throw new IllegalArgumentException("Text length for base64 must be a multiple of 4");
         } else if (length == 0) {
             return new byte[0];
         }
@@ -1663,26 +1507,21 @@ public abstract class DateUtil {
         }
 
         if (fill != blength) {
-            throw new IllegalArgumentException(
-                "Embedded padding characters in byte64 text");
+            throw new IllegalArgumentException("Embedded padding characters in byte64 text");
         }
 
         return byts;
     }
 
     /**
-     * Parse base64 data from text. This converts the base64 data into a byte
-     * array of the appopriate length. In keeping with the recommendations,
+     * Parse base64 data from text. This converts the base64 data into a byte array of the
+     * appopriate length. In keeping with the recommendations,
      *
      * @param text text to be parsed (may be null, or include extra characters)
-     *
      * @return byte array of data
-     *
-     * @throws IllegalArgumentException if invalid character in base64
-     *         representation
+     * @throws IllegalArgumentException if invalid character in base64 representation
      */
-    public static byte[] deserializeBase64(String text)
-        throws IllegalArgumentException {
+    public static byte[] deserializeBase64(String text) throws IllegalArgumentException {
         if (text == null) {
             return null;
         } else {
@@ -1691,9 +1530,9 @@ public abstract class DateUtil {
     }
 
     /**
-     * Encode a chunk of data to base64 encoding. Converts the next three bytes
-     * of data into four characters of text representation, using padding at
-     * the end of less than three bytes of data remain.
+     * Encode a chunk of data to base64 encoding. Converts the next three bytes of data into four
+     * characters of text representation, using padding at the end of less than three bytes of data
+     * remain.
      *
      * @param base starting offset within byte array
      * @param byts byte data array
@@ -1737,12 +1576,10 @@ public abstract class DateUtil {
     }
 
     /**
-     * Serialize byte array to base64 text. In keeping with the specification,
-     * this adds a line break every 76 characters in the encoded
-     * representation.
+     * Serialize byte array to base64 text. In keeping with the specification, this adds a line
+     * break every 76 characters in the encoded representation.
      *
      * @param byts byte data array
-     *
      * @return base64 encoded text
      */
     public static String serializeBase64(byte[] byts) {
@@ -1760,8 +1597,8 @@ public abstract class DateUtil {
     }
 
     /**
-     * Factory method to create a <code>java.util.ArrayList</code> as the
-     * implementation of a <code>java.util.List</code>.
+     * Factory method to create a <code>java.util.ArrayList</code> as the implementation of a <code>
+     * java.util.List</code>.
      *
      * @return new <code>java.util.ArrayList</code>
      */

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.TreeMap;
-
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AbstractLazyAttributeTypeImpl;
 import org.geotools.feature.type.AbstractLazyComplexTypeImpl;
@@ -19,16 +18,13 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.Schema;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GSRSchema extends SchemaImpl {
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;xs:complexType name="SC_CRS_PropertyType"&gt;
      *      &lt;xs:sequence minOccurs="0"&gt;
@@ -40,79 +36,114 @@ public class GSRSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
     public static final ComplexType SC_CRS_PROPERTYTYPE_TYPE = build_SC_CRS_PROPERTYTYPE_TYPE();
-    
+
     private static ComplexType build_SC_CRS_PROPERTYTYPE_TYPE() {
-        ComplexType builtType = new AbstractLazyComplexTypeImpl(
-                new NameImpl("http://www.isotc211.org/2005/gsr","SC_CRS_PropertyType"),
-                false, false, null, null) {
-            @Override
-            public AttributeType buildSuper() {
-                return XSSchema.ANYTYPE_TYPE;
-            }
-            @Override
-            public Collection<PropertyDescriptor> buildDescriptors() {
-                List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        GMLSchema.ABSTRACTCRSTYPE_TYPE,
-                        new NameImpl("http://www.opengis.net/gml/3.2","AbstractCRS"),
-                        1, 1, false, null));
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        XLINKSchema._ACTUATE_TYPE,
-                        new NameImpl("http://www.w3.org/1999/xlink","actuate"),
-                        0, 1, true, null));
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        XSSchema.ANYURI_TYPE,
-                        new NameImpl("http://www.w3.org/1999/xlink","arcrole"),
-                        0, 1, true, null));
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        XSSchema.ANYURI_TYPE,
-                        new NameImpl("http://www.w3.org/1999/xlink","href"),
-                        0, 1, true, null));
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        XSSchema.ANYURI_TYPE,
-                        new NameImpl("http://www.w3.org/1999/xlink","role"),
-                        0, 1, true, null));
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        XLINKSchema._SHOW_TYPE,
-                        new NameImpl("http://www.w3.org/1999/xlink","show"),
-                        0, 1, true, null));
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        XSSchema.STRING_TYPE,
-                        new NameImpl("http://www.w3.org/1999/xlink","title"),
-                        0, 1, true, null));
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        XSSchema.STRING_TYPE,
-                        new NameImpl("http://www.w3.org/1999/xlink","type"),
-                        0, 1, true, null));
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        XSSchema.STRING_TYPE,
-                        new NameImpl("uuidref"),
-                        0, 1, true, null));
-                descriptors.add(
-                    new AttributeDescriptorImpl(
-                        GMLSchema.NILREASONTYPE_TYPE,
-                        new NameImpl("http://www.isotc211.org/2005/gco","nilReason"),
-                        0, 1, true, null));
-                return descriptors;
-            }
-        };
+        ComplexType builtType =
+                new AbstractLazyComplexTypeImpl(
+                        new NameImpl("http://www.isotc211.org/2005/gsr", "SC_CRS_PropertyType"),
+                        false,
+                        false,
+                        null,
+                        null) {
+                    @Override
+                    public AttributeType buildSuper() {
+                        return XSSchema.ANYTYPE_TYPE;
+                    }
+
+                    @Override
+                    public Collection<PropertyDescriptor> buildDescriptors() {
+                        List<PropertyDescriptor> descriptors = new ArrayList<PropertyDescriptor>();
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        GMLSchema.ABSTRACTCRSTYPE_TYPE,
+                                        new NameImpl(
+                                                "http://www.opengis.net/gml/3.2", "AbstractCRS"),
+                                        1,
+                                        1,
+                                        false,
+                                        null));
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        XLINKSchema._ACTUATE_TYPE,
+                                        new NameImpl("http://www.w3.org/1999/xlink", "actuate"),
+                                        0,
+                                        1,
+                                        true,
+                                        null));
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        XSSchema.ANYURI_TYPE,
+                                        new NameImpl("http://www.w3.org/1999/xlink", "arcrole"),
+                                        0,
+                                        1,
+                                        true,
+                                        null));
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        XSSchema.ANYURI_TYPE,
+                                        new NameImpl("http://www.w3.org/1999/xlink", "href"),
+                                        0,
+                                        1,
+                                        true,
+                                        null));
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        XSSchema.ANYURI_TYPE,
+                                        new NameImpl("http://www.w3.org/1999/xlink", "role"),
+                                        0,
+                                        1,
+                                        true,
+                                        null));
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        XLINKSchema._SHOW_TYPE,
+                                        new NameImpl("http://www.w3.org/1999/xlink", "show"),
+                                        0,
+                                        1,
+                                        true,
+                                        null));
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        XSSchema.STRING_TYPE,
+                                        new NameImpl("http://www.w3.org/1999/xlink", "title"),
+                                        0,
+                                        1,
+                                        true,
+                                        null));
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        XSSchema.STRING_TYPE,
+                                        new NameImpl("http://www.w3.org/1999/xlink", "type"),
+                                        0,
+                                        1,
+                                        true,
+                                        null));
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        XSSchema.STRING_TYPE,
+                                        new NameImpl("uuidref"),
+                                        0,
+                                        1,
+                                        true,
+                                        null));
+                        descriptors.add(
+                                new AttributeDescriptorImpl(
+                                        GMLSchema.NILREASONTYPE_TYPE,
+                                        new NameImpl(
+                                                "http://www.isotc211.org/2005/gco", "nilReason"),
+                                        0,
+                                        1,
+                                        true,
+                                        null));
+                        return descriptors;
+                    }
+                };
         return builtType;
     }
-
 
     public GSRSchema() {
         super("http://www.isotc211.org/2005/gsr");
@@ -121,17 +152,14 @@ public class GSRSchema extends SchemaImpl {
 
     /**
      * Complete the definition of a type and store it in the schema.
-     * 
-     * <p>
-     * 
-     * This method calls {@link AttributeType#getSuper()} (and {@link ComplexType#getDescriptors()}
-     * where applicable) to ensure the construction of the type (a concrete
-     * {@link AbstractLazyAttributeTypeImpl} or {@link AbstractLazyComplexTypeImpl} sublass) is
-     * complete. This should be sufficient to avoid any nasty thread-safety surprises in code using
-     * this schema.
-     * 
-     * @param type
-     *            the type to complete and store
+     *
+     * <p>This method calls {@link AttributeType#getSuper()} (and {@link
+     * ComplexType#getDescriptors()} where applicable) to ensure the construction of the type (a
+     * concrete {@link AbstractLazyAttributeTypeImpl} or {@link AbstractLazyComplexTypeImpl}
+     * sublass) is complete. This should be sufficient to avoid any nasty thread-safety surprises in
+     * code using this schema.
+     *
+     * @param type the type to complete and store
      */
     private void put(AttributeType type) {
         type.getSuper();
@@ -141,22 +169,20 @@ public class GSRSchema extends SchemaImpl {
         put(type.getName(), type);
     }
 
-    /**
-     * Test that this class can be loaded.
-     */
+    /** Test that this class can be loaded. */
     public static void main(String[] args) {
         Schema schema = new GSRSchema();
-        for (Entry<Name, AttributeType> entry : new TreeMap<Name, AttributeType>(schema).entrySet()) {
+        for (Entry<Name, AttributeType> entry :
+                new TreeMap<Name, AttributeType>(schema).entrySet()) {
             System.out.println("Type: " + entry.getValue().getName());
             System.out.println("    Super type: " + entry.getValue().getSuper().getName());
             if (entry.getValue() instanceof ComplexType) {
-                for (PropertyDescriptor descriptor : ((ComplexType) entry.getValue())
-                        .getDescriptors()) {
+                for (PropertyDescriptor descriptor :
+                        ((ComplexType) entry.getValue()).getDescriptors()) {
                     System.out.println("    Property descriptor: " + descriptor.getName());
                     System.out.println("        Property type: " + descriptor.getType().getName());
                 }
             }
         }
     }
-
 }

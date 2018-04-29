@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@ package org.geotools.util.logging;
 
 import java.util.logging.Level;
 
-
 /**
  * A dummy implementation of {@link LoggingAdapter} class for testing purpose.
  *
@@ -28,30 +27,22 @@ import java.util.logging.Level;
  * @author Martin Desruisseaux
  */
 final class DummyLogger extends LoggerAdapter {
-    /**
-     * The level of the last logging event.
-     */
+    /** The level of the last logging event. */
     Level level;
 
-    /**
-     * The last logged message.
-     */
+    /** The last logged message. */
     String last;
 
-    /**
-     * Creates a dummy logger.
-     */
+    /** Creates a dummy logger. */
     DummyLogger() {
         super("org.geotools.util.logging");
         clear();
     }
 
-    /**
-     * Clears the logger state, for testing purpose only.
-     */
+    /** Clears the logger state, for testing purpose only. */
     public void clear() {
         level = Level.OFF;
-        last  = null;
+        last = null;
     }
 
     @Override
@@ -72,42 +63,42 @@ final class DummyLogger extends LoggerAdapter {
     @Override
     public void severe(String message) {
         level = Level.SEVERE;
-        last  = message;
+        last = message;
     }
 
     @Override
     public void warning(String message) {
         level = Level.WARNING;
-        last  = message;
+        last = message;
     }
 
     @Override
     public void info(String message) {
         level = Level.INFO;
-        last  = message;
+        last = message;
     }
 
     @Override
     public void config(String message) {
         level = Level.CONFIG;
-        last  = message;
+        last = message;
     }
 
     @Override
     public void fine(String message) {
         level = Level.FINE;
-        last  = message;
+        last = message;
     }
 
     @Override
     public void finer(String message) {
         level = Level.FINER;
-        last  = message;
+        last = message;
     }
 
     @Override
     public void finest(String message) {
         level = Level.FINEST;
-        last  = message;
+        last = message;
     }
 }

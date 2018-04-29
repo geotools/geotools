@@ -24,38 +24,32 @@ import org.geotools.graph.structure.opt.OptDirectedEdge;
 import org.geotools.graph.structure.opt.OptDirectedNode;
 
 /**
- * An implementation of GraphBuilder that builds optimized directed graph 
- * components.
- * 
+ * An implementation of GraphBuilder that builds optimized directed graph components.
+ *
  * @see org.geotools.graph.structure.opt.OptDirectedNode
  * @see org.geotools.graph.structure.opt.OptDirectedEdge
- * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
- *
  * @source $URL$
  */
 public class OptDirectedGraphBuilder extends BasicDirectedGraphBuilder {
-  
-  /**
-   * Creates an optimized directed node.
-   * 
-   * @see GraphBuilder#buildNode()
-   * @see OptDirectedNode
-   */
-  public Node buildNode() {
-    return(new OptDirectedNode());
-  }
 
-  /**
-   * Creates an optimized directed edge.
-   * 
-   * @see GraphBuilder#buildEdge()
-   * @see OptDirectedEdge
-   */
-  public Edge buildEdge(Node nodeA, Node nodeB) {
-    return(new OptDirectedEdge((OptDirectedNode)nodeA, (OptDirectedNode)nodeB));
-  }
-  
+    /**
+     * Creates an optimized directed node.
+     *
+     * @see GraphBuilder#buildNode()
+     * @see OptDirectedNode
+     */
+    public Node buildNode() {
+        return (new OptDirectedNode());
+    }
+
+    /**
+     * Creates an optimized directed edge.
+     *
+     * @see GraphBuilder#buildEdge()
+     * @see OptDirectedEdge
+     */
+    public Edge buildEdge(Node nodeA, Node nodeB) {
+        return (new OptDirectedEdge((OptDirectedNode) nodeA, (OptDirectedNode) nodeB));
+    }
 }

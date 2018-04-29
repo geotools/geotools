@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,30 +16,23 @@
  */
 package org.geotools.filter;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.util.Date;
-
 import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-
 /**
  * The Expression class is not immutable!
- * <p>
- * However we do have a need for immutable literal expressions when
- * defining our API for SLD, and any other standards based on
- * Expression.
- * </p>
+ *
+ * <p>However we do have a need for immutable literal expressions when defining our API for SLD, and
+ * any other standards based on Expression.
  *
  * @author Jody Garnett, Refractions Research
- *
- *
  * @source $URL$
  */
 @SuppressWarnings("deprecation")
@@ -62,16 +55,12 @@ public class ConstantExpression implements Literal, Cloneable {
         this.value = value;
     }
 
-    /**
-     * @deprecated use {@link #setValue(Object)}
-     */
+    /** @deprecated use {@link #setValue(Object)} */
     public final void setLiteral(Object literal) throws IllegalFilterException {
         throw new UnsupportedOperationException("Default value is immutable");
     }
 
-    /**
-     * @deprecated use {@link #evaluate(Feature)}
-     */
+    /** @deprecated use {@link #evaluate(Feature)} */
     public final Object getValue(SimpleFeature feature) {
         return evaluate(feature);
     }
@@ -100,9 +89,7 @@ public class ConstantExpression implements Literal, Cloneable {
         return type;
     }
 
-    /**
-     * @deprecated use {@link #getValue()}
-     */
+    /** @deprecated use {@link #getValue()} */
     public final Object getLiteral() {
         return getValue();
     }

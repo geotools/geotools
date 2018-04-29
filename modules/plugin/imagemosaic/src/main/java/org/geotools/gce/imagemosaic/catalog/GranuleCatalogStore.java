@@ -17,7 +17,6 @@
 package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.IOException;
-
 import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -31,9 +30,8 @@ import org.opengis.filter.Filter;
 
 /**
  * A {@link GranuleStore} implementation wrapping a {@link GranuleCatalog}.
- * 
- * @author Daniele Romagnoli, GeoSolutions SAS
  *
+ * @author Daniele Romagnoli, GeoSolutions SAS
  */
 public class GranuleCatalogStore extends GranuleCatalogSource implements GranuleStore {
 
@@ -41,7 +39,10 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
 
     private RasterManager manager;
 
-    public GranuleCatalogStore(RasterManager manager, GranuleCatalog catalog, final String typeName,
+    public GranuleCatalogStore(
+            RasterManager manager,
+            GranuleCatalog catalog,
+            final String typeName,
             final Hints hints) {
         super(catalog, typeName, hints);
         this.manager = manager;
@@ -71,12 +72,12 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
         if (transaction == null) {
             throw new IllegalArgumentException("No transaction available for this store");
         }
-
     }
 
     /**
-     * Check whether the specified feature has the same schema of the catalog where we are adding that feature.
-     * 
+     * Check whether the specified feature has the same schema of the catalog where we are adding
+     * that feature.
+     *
      * @param feature a sample SimpleFeature for compatibility check
      */
     private void checkSchemaCompatibility(final SimpleFeature feature) {
@@ -89,7 +90,6 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
             throw new RuntimeException(
                     "Exception occurred while getting the underlying catalog schema");
         }
-
     }
 
     @Override
@@ -111,7 +111,6 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
     @Override
     public void updateGranules(String[] attributeNames, Object[] attributeValues, Filter filter) {
         throw new UnsupportedOperationException("Operation not supported");
-
     }
 
     @Override
@@ -126,5 +125,4 @@ public class GranuleCatalogStore extends GranuleCatalogSource implements Granule
         }
         this.transaction = transaction;
     }
-
 }

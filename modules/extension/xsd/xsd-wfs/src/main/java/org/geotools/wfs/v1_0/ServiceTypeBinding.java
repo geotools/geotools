@@ -1,14 +1,11 @@
 package org.geotools.wfs.v1_0;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.ows10.CodeType;
 import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows10.ServiceIdentificationType;
-
 import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.AttributeInstance;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
@@ -51,9 +48,9 @@ public class ServiceTypeBinding extends AbstractComplexEMFBinding {
         CodeType serviceType = ows10Factory.createCodeType();
         serviceType.setValue(name);
         service.setServiceType(serviceType);
-        
+
         service.setServiceTypeVersion("1.0.0");
-        
+
         service.setTitle(title);
         service.setAbstract(abstract_);
         service.setAccessConstraints(accessConstraints);

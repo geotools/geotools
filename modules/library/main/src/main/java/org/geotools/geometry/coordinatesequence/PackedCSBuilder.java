@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,18 +18,12 @@
  */
 package org.geotools.geometry.coordinatesequence;
 
-
 /**
  * An implementation of a JTS CSBuilder which uses a PackedCoordinateSequence.
- * 
+ *
  * @author wolf
- * 
  * @deprecated Moved to {@link org.geotools.geometry.jts.coordinatesequence.PackedCSBuilder}.
- * 
- *
- *
  * @source $URL$
  */
-public abstract class PackedCSBuilder extends org.geotools.geometry.jts.coordinatesequence.PackedCSBuilder {
-	
-}
+public abstract class PackedCSBuilder
+        extends org.geotools.geometry.jts.coordinatesequence.PackedCSBuilder {}

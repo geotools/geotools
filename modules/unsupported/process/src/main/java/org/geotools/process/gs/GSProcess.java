@@ -19,12 +19,9 @@ package org.geotools.process.gs;
 
 /**
  * A marker interface used to lookup the processes.
- * 
- * @author Andrea Aime - OpenGeo
  *
+ * @author Andrea Aime - OpenGeo
  * @source $URL$
  * @deprecated Not longer needed.
  */
-public interface GSProcess {
-
-}
+public interface GSProcess {}

@@ -24,5 +24,4 @@ public class ListStoredQueriesRequest extends WFSRequest {
     public ListStoredQueriesRequest(WFSConfig config, WFSStrategy strategy) {
         super(LIST_STORED_QUERIES, config, strategy);
     }
-
 }

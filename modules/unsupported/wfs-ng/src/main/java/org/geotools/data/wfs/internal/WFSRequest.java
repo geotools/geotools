@@ -25,9 +25,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Properties;
 import java.util.logging.Level;
-
 import javax.xml.namespace.QName;
-
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.AbstractRequest;
 import org.geotools.data.ows.HTTPResponse;
@@ -51,8 +49,8 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
 
     private String handle;
 
-    public WFSRequest(final WFSOperationType operation, final WFSConfig config,
-            final WFSStrategy strategy) {
+    public WFSRequest(
+            final WFSOperationType operation, final WFSConfig config, final WFSStrategy strategy) {
 
         super(url(operation, config, strategy), (Properties) null);
         this.operation = operation;
@@ -61,15 +59,15 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
         this.handle = strategy.newRequestHandle(operation);
 
         switch (config.getPreferredMethod()) {
-        case HTTP_POST:
-            this.doPost = strategy.supportsOperation(operation, POST);
-            break;
-        case HTTP_GET:
-            this.doPost = !strategy.supportsOperation(operation, GET);
-            break;
-        default:
-            this.doPost = strategy.supportsOperation(operation, POST);
-            break;
+            case HTTP_POST:
+                this.doPost = strategy.supportsOperation(operation, POST);
+                break;
+            case HTTP_GET:
+                this.doPost = !strategy.supportsOperation(operation, GET);
+                break;
+            default:
+                this.doPost = strategy.supportsOperation(operation, POST);
+                break;
         }
 
         this.outputFormat = strategy.getDefaultOutputFormat(operation);
@@ -77,7 +75,6 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
         setProperty(SERVICE, "WFS");
         setProperty(VERSION, strategy.getVersion());
         setProperty(REQUEST, operation.getName());
-
     }
 
     public String getOutputFormat() {
@@ -92,10 +89,7 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
         this.handle = handle;
     }
 
-    /**
-     * @param outputFormat
-     *            the outputFormat to set
-     */
+    /** @param outputFormat the outputFormat to set */
     public void setOutputFormat(String outputFormat) {
         this.outputFormat = outputFormat;
     }
@@ -112,8 +106,8 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
         return strategy;
     }
 
-    private static URL url(final WFSOperationType operation, final WFSConfig config,
-            final WFSStrategy strategy) {
+    private static URL url(
+            final WFSOperationType operation, final WFSConfig config, final WFSStrategy strategy) {
 
         final boolean suportsGet = strategy.supportsOperation(operation, GET);
         final boolean suportsPost = strategy.supportsOperation(operation, POST);
@@ -123,13 +117,13 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
 
         HttpMethod method;
         switch (config.getPreferredMethod()) {
-        case AUTO:
-        case HTTP_POST:
-            method = suportsPost ? POST : GET;
-            break;
-        default:
-            method = suportsPost ? POST : GET;
-            break;
+            case AUTO:
+            case HTTP_POST:
+                method = suportsPost ? POST : GET;
+                break;
+            default:
+                method = suportsPost ? POST : GET;
+                break;
         }
 
         URL targetUrl = strategy.getOperationURL(operation, method);
@@ -147,16 +141,13 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
     }
 
     @Override
-    protected void initService() {
-    }
+    protected void initService() {}
 
     @Override
-    protected void initVersion() {
-    }
+    protected void initVersion() {}
 
     @Override
-    protected void initRequest() {
-    }
+    protected void initRequest() {}
 
     @Override
     public URL getFinalURL() {
@@ -171,10 +162,12 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
     @Override
     public String getPostContentType() {
         // As per WFS 1.1.0 (OGC 04-094) 6.5.1
-        // "When using the HTTP POST method, the content type for XML encoded WFS requests must be set to text/xml."
+        // "When using the HTTP POST method, the content type for XML encoded WFS requests must be
+        // set to text/xml."
         //  .. and
         // As per WFS 2.0.0 (OGC 09-025r1 and ISO/DIS 19142) Annex D.2
-        // "When using the HTTP POST method, the content type for XML encoded WFS requests shall be set to text/xml."
+        // "When using the HTTP POST method, the content type for XML encoded WFS requests shall be
+        // set to text/xml."
         return "text/xml";
     }
 
@@ -195,9 +188,11 @@ public abstract class WFSRequest extends AbstractRequest implements Request {
         final String contentType = response.getContentType();
 
         if (contentType == null) {
-            Logging.getLogger(WFSRequest.class).warning(
-                    this.getOperation() + " request returned null content type for URL "
-                            + getFinalURL());
+            Logging.getLogger(WFSRequest.class)
+                    .warning(
+                            this.getOperation()
+                                    + " request returned null content type for URL "
+                                    + getFinalURL());
         }
 
         WFSResponseFactory responseFactory;

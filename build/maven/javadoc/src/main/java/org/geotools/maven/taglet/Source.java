@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,15 +16,15 @@
  */
 package org.geotools.maven.taglet;
 
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import com.sun.javadoc.Tag;
 import com.sun.tools.doclets.Taglet;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * The <code>@source</code> tag. This tag expects an URL to the source in the SVN repository.
- * The SVN URL keyword is ignored.
+ * The <code>@source</code> tag. This tag expects an URL to the source in the SVN repository. The
+ * SVN URL keyword is ignored.
  *
  * @source $URL$
  * @version $Id$
@@ -41,40 +41,44 @@ public final class Source implements Taglet {
         final Source tag = new Source();
         tagletMap.put(tag.getName(), tag);
     }
-    /**
-     * The delimiter for SVN keywords.
-     */
+    /** The delimiter for SVN keywords. */
     static final char SVN_KEYWORD_DELIMITER = '$';
-    /**
-     * The base URL for Maven repository.
-     */
+    /** The base URL for Maven repository. */
     public static final String SVN_REPO_URL = "http://svn.osgeo.org/geotools/";
-    /**
-     * The pattern to use for fetching the URL. The bit we want is in capture group 2
-     */
-    final Pattern findURL = Pattern.compile(
-            "\\s*(\\" + SVN_KEYWORD_DELIMITER + "URL\\s*\\:)?\\s*(.+?)\\s*"
-            + "(\\" + SVN_KEYWORD_DELIMITER + "\\s*)?");
+    /** The pattern to use for fetching the URL. The bit we want is in capture group 2 */
+    final Pattern findURL =
+            Pattern.compile(
+                    "\\s*(\\"
+                            + SVN_KEYWORD_DELIMITER
+                            + "URL\\s*\\:)?\\s*(.+?)\\s*"
+                            + "(\\"
+                            + SVN_KEYWORD_DELIMITER
+                            + "\\s*)?");
+
     static final int URL_CAPTURE_GROUP = 2;
-    /**
-     * The pattern to use for fetching the module name from an URL.
-     */
+    /** The pattern to use for fetching the module name from an URL. */
     final Pattern findModule;
 
-    /**
-     * Constructs a default <code>@source</code> taglet.
-     */
+    /** Constructs a default <code>@source</code> taglet. */
     Source() {
         super();
-        findModule = Pattern.compile(
-                "https?\\Q://\\E" + // http or https
-                "[a-zA-Z\\.\\-]+" + // host e.g. svn.osgeo.org
-                "\\/geotools" + // /geotools
-                "\\/[a-z]+" + // trunk or tags or branches
-                "(\\/[a-zA-Z0-9\\-\\_\\.]+)?" + // group 1: tag or branch name or null if trunk
-                "\\/(((modules)\\/(library|plugin|extension|unsupported))|demo)" + // groups 2 - 5
-                "\\/(.+)" + // group 6: module name
-                "\\/src.*");
+        findModule =
+                Pattern.compile(
+                        "https?\\Q://\\E"
+                                + // http or https
+                                "[a-zA-Z\\.\\-]+"
+                                + // host e.g. svn.osgeo.org
+                                "\\/geotools"
+                                + // /geotools
+                                "\\/[a-z]+"
+                                + // trunk or tags or branches
+                                "(\\/[a-zA-Z0-9\\-\\_\\.]+)?"
+                                + // group 1: tag or branch name or null if trunk
+                                "\\/(((modules)\\/(library|plugin|extension|unsupported))|demo)"
+                                + // groups 2 - 5
+                                "\\/(.+)"
+                                + // group 6: module name
+                                "\\/src.*");
     }
 
     /**
@@ -105,8 +109,8 @@ public final class Source implements Taglet {
     }
 
     /**
-     * Returns {@code true} since <code>@source</code> can be used in type documentation
-     * (classes or interfaces).
+     * Returns {@code true} since <code>@source</code> can be used in type documentation (classes or
+     * interfaces).
      *
      * @return Always {@code true}.
      */
@@ -151,14 +155,14 @@ public final class Source implements Taglet {
     }
 
     /**
-     * Given the <code>Tag</code> representation of this custom tag, return its string representation.
-     * The default implementation invokes the array variant of this method.
+     * Given the <code>Tag</code> representation of this custom tag, return its string
+     * representation. The default implementation invokes the array variant of this method.
      *
      * @param tag The tag to format.
      * @return A string representation of the given tag.
      */
     public String toString(final Tag tag) {
-        return toString(new Tag[]{tag});
+        return toString(new Tag[] {tag});
     }
 
     /**

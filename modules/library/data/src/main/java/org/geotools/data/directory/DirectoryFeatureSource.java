@@ -19,7 +19,6 @@ package org.geotools.data.directory;
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.util.Set;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.Query;
@@ -33,16 +32,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DirectoryFeatureSource implements SimpleFeatureSource {
     SimpleFeatureSource fsource;
-    
-    public DirectoryFeatureSource(
-            SimpleFeatureSource delegate) {
+
+    public DirectoryFeatureSource(SimpleFeatureSource delegate) {
         this.fsource = delegate;
     }
 
@@ -67,18 +61,15 @@ public class DirectoryFeatureSource implements SimpleFeatureSource {
         return fsource.getDataStore();
     }
 
-    public SimpleFeatureCollection getFeatures()
-            throws IOException {
+    public SimpleFeatureCollection getFeatures() throws IOException {
         return fsource.getFeatures();
     }
 
-    public SimpleFeatureCollection getFeatures(
-            Filter filter) throws IOException {
+    public SimpleFeatureCollection getFeatures(Filter filter) throws IOException {
         return fsource.getFeatures(filter);
     }
 
-    public SimpleFeatureCollection getFeatures(
-            Query query) throws IOException {
+    public SimpleFeatureCollection getFeatures(Query query) throws IOException {
         return fsource.getFeatures(query);
     }
 
@@ -109,5 +100,4 @@ public class DirectoryFeatureSource implements SimpleFeatureSource {
     public SimpleFeatureSource unwrap() {
         return fsource;
     }
-    
 }

@@ -16,16 +16,15 @@
  */
 package org.geotools.data.geobuf;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GeobufDirectoryDataStore extends ContentDataStore {
 
@@ -57,7 +56,8 @@ public class GeobufDirectoryDataStore extends ContentDataStore {
         }
         File file = new File(directory, typeName);
         if (!file.exists()) {
-            throw new IOException("Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
+            throw new IOException(
+                    "Can't delete " + file.getAbsolutePath() + " because it doesn't exist!");
         }
         file.delete();
     }
@@ -69,12 +69,14 @@ public class GeobufDirectoryDataStore extends ContentDataStore {
 
     @Override
     protected List<Name> createTypeNames() throws IOException {
-        File[] files = directory.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".pbf");
-            }
-        });
+        File[] files =
+                directory.listFiles(
+                        new FilenameFilter() {
+                            @Override
+                            public boolean accept(File dir, String name) {
+                                return name.endsWith(".pbf");
+                            }
+                        });
         List<Name> names = new ArrayList<>();
         for (File file : files) {
             String name = file.getName();
@@ -89,10 +91,8 @@ public class GeobufDirectoryDataStore extends ContentDataStore {
     }
 
     @Override
-    protected ContentFeatureSource createFeatureSource(ContentEntry contentEntry) throws IOException {
+    protected ContentFeatureSource createFeatureSource(ContentEntry contentEntry)
+            throws IOException {
         return getDataStore(contentEntry.getTypeName()).createFeatureSource(contentEntry);
     }
-
-
-
 }

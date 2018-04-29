@@ -18,62 +18,58 @@ package org.geotools.util;
 
 import java.util.Arrays;
 
-
 /**
  * Sorts elements in an array while remembering their ranks. Each method in this class sort the
- * given array in the same way than {@link Arrays#sort(Object[])} does, and in addition return
- * the index that each element had in the original array prior the sorting.
- * <p>
- * Every methods are used in the same way:
+ * given array in the same way than {@link Arrays#sort(Object[])} does, and in addition return the
+ * index that each element had in the original array prior the sorting.
  *
- * <blockquote><pre>
+ * <p>Every methods are used in the same way:
+ *
+ * <blockquote>
+ *
+ * <pre>
  * int[] index = ranks(source, target);
- * </pre></blockquote>
+ * </pre>
+ *
+ * </blockquote>
  *
  * where {@code source} and {@code target} are arrays of {@link Comparable} elements or of a
- * primitive type. The {@code source} argument is the array to sort and is left untouched
- * (unless {@code target} is a reference to the same array). The {@code target} argument,
- * if non-null, is the array where to store the sorted values.
- * <p>
- * The returned {@code index} array will have the same length than the {@code source} array. Each
+ * primitive type. The {@code source} argument is the array to sort and is left untouched (unless
+ * {@code target} is a reference to the same array). The {@code target} argument, if non-null, is
+ * the array where to store the sorted values.
+ *
+ * <p>The returned {@code index} array will have the same length than the {@code source} array. Each
  * element in the returned array is an index ranging from 0 inclusive to {@code source.length}
  * exclusive, such that {@code target[i]} = {@code source[index[i]]} for all <var>i</var>.
- * <p>
- * Invoking <code>{@linkplain #ranks(double[],double[]) ranks}(source, source)</code> is equivalent
- * to invoking <code>{@linkplain Arrays#sort(double[]) Arrays.sort}(source)</code> in a less
- * efficient way. The later should always be used (cloning the source array if needed) if the
+ *
+ * <p>Invoking <code>{@linkplain #ranks(double[],double[]) ranks}(source, source)</code> is
+ * equivalent to invoking <code>{@linkplain Arrays#sort(double[]) Arrays.sort}(source)</code> in a
+ * less efficient way. The later should always be used (cloning the source array if needed) if the
  * returned ranks are not used.
  *
  * @since 2.5
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public class Ranks {
-    /**
-     * The index in the array before it has been sorted.
-     */
+    /** The index in the array before it has been sorted. */
     private final int index;
 
-    /**
-     * For inner class constructors only.
-     */
+    /** For inner class constructors only. */
     private Ranks(final int index) {
         this.index = index;
     }
 
     /**
-     * Sorts the elements in the given array and return their ranks.
-     * See class description for details.
+     * Sorts the elements in the given array and return their ranks. See class description for
+     * details.
      *
      * @param <T> The type of elements in the array to be sorted.
-     * @param  source The array of values to sort, or {@code null}.
-     * @param  target The array where to store sorted values, or {@code null} if none. May be the
-     *         same array than {@code source}, in which case the sorting will be performed in place.
+     * @param source The array of values to sort, or {@code null}.
+     * @param target The array where to store sorted values, or {@code null} if none. May be the
+     *     same array than {@code source}, in which case the sorting will be performed in place.
      * @return The value ranks, or {@code null} if {@code source} was null.
-     *
      * @see Arrays#sort(Object[])
      */
     public static <T extends Comparable<T>> int[] ranks(final T[] source, final T[] target) {
@@ -81,12 +77,12 @@ public class Ranks {
             return null;
         }
         final Any[] entries = new Any[source.length];
-        for (int i=0; i<entries.length; i++) {
+        for (int i = 0; i < entries.length; i++) {
             entries[i] = new Any<T>(i, source[i]);
         }
         final int[] ranks = ranks(entries);
         if (target != null) {
-            for (int i=Math.min(entries.length, target.length); --i>=0;) {
+            for (int i = Math.min(entries.length, target.length); --i >= 0; ) {
                 @SuppressWarnings("unchecked")
                 final Any<T> entry = (Any<T>) entries[i];
                 target[i] = entry.value;
@@ -96,14 +92,13 @@ public class Ranks {
     }
 
     /**
-     * Sorts the elements in the given array and return their ranks.
-     * See class description for details.
+     * Sorts the elements in the given array and return their ranks. See class description for
+     * details.
      *
-     * @param  source The array of values to sort, or {@code null}.
-     * @param  target The array where to store sorted values, or {@code null} if none. May be the
-     *         same array than {@code source}, in which case the sorting will be performed in place.
+     * @param source The array of values to sort, or {@code null}.
+     * @param target The array where to store sorted values, or {@code null} if none. May be the
+     *     same array than {@code source}, in which case the sorting will be performed in place.
      * @return The value ranks, or {@code null} if {@code source} was null.
-     *
      * @see Arrays#sort(double[])
      */
     public static int[] ranks(final double[] source, final double[] target) {
@@ -111,12 +106,12 @@ public class Ranks {
             return null;
         }
         final Double[] entries = new Double[source.length];
-        for (int i=0; i<entries.length; i++) {
+        for (int i = 0; i < entries.length; i++) {
             entries[i] = new Double(i, source[i]);
         }
         final int[] ranks = ranks(entries);
         if (target != null) {
-            for (int i=Math.min(entries.length, target.length); --i>=0;) {
+            for (int i = Math.min(entries.length, target.length); --i >= 0; ) {
                 target[i] = entries[i].value;
             }
         }
@@ -124,14 +119,13 @@ public class Ranks {
     }
 
     /**
-     * Sorts the elements in the given array and return their ranks.
-     * See class description for details.
+     * Sorts the elements in the given array and return their ranks. See class description for
+     * details.
      *
-     * @param  source The array of values to sort, or {@code null}.
-     * @param  target The array where to store sorted values, or {@code null} if none. May be the
-     *         same array than {@code source}, in which case the sorting will be performed in place.
+     * @param source The array of values to sort, or {@code null}.
+     * @param target The array where to store sorted values, or {@code null} if none. May be the
+     *     same array than {@code source}, in which case the sorting will be performed in place.
      * @return The value ranks, or {@code null} if {@code source} was null.
-     *
      * @see Arrays#sort(float[])
      */
     public static int[] ranks(final float[] source, final float[] target) {
@@ -139,12 +133,12 @@ public class Ranks {
             return null;
         }
         final Float[] entries = new Float[source.length];
-        for (int i=0; i<entries.length; i++) {
+        for (int i = 0; i < entries.length; i++) {
             entries[i] = new Float(i, source[i]);
         }
         final int[] ranks = ranks(entries);
         if (target != null) {
-            for (int i=Math.min(entries.length, target.length); --i>=0;) {
+            for (int i = Math.min(entries.length, target.length); --i >= 0; ) {
                 target[i] = entries[i].value;
             }
         }
@@ -152,14 +146,13 @@ public class Ranks {
     }
 
     /**
-     * Sorts the elements in the given array and return their ranks.
-     * See class description for details.
+     * Sorts the elements in the given array and return their ranks. See class description for
+     * details.
      *
-     * @param  source The array of values to sort, or {@code null}.
-     * @param  target The array where to store sorted values, or {@code null} if none. May be the
-     *         same array than {@code source}, in which case the sorting will be performed in place.
+     * @param source The array of values to sort, or {@code null}.
+     * @param target The array where to store sorted values, or {@code null} if none. May be the
+     *     same array than {@code source}, in which case the sorting will be performed in place.
      * @return The value ranks, or {@code null} if {@code source} was null.
-     *
      * @see Arrays#sort(long[])
      */
     public static int[] ranks(final long[] source, final long[] target) {
@@ -167,12 +160,12 @@ public class Ranks {
             return null;
         }
         final Long[] entries = new Long[source.length];
-        for (int i=0; i<entries.length; i++) {
+        for (int i = 0; i < entries.length; i++) {
             entries[i] = new Long(i, source[i]);
         }
         final int[] ranks = ranks(entries);
         if (target != null) {
-            for (int i=Math.min(entries.length, target.length); --i>=0;) {
+            for (int i = Math.min(entries.length, target.length); --i >= 0; ) {
                 target[i] = entries[i].value;
             }
         }
@@ -180,14 +173,13 @@ public class Ranks {
     }
 
     /**
-     * Sorts the elements in the given array and return their ranks.
-     * See class description for details.
+     * Sorts the elements in the given array and return their ranks. See class description for
+     * details.
      *
-     * @param  source The array of values to sort, or {@code null}.
-     * @param  target The array where to store sorted values, or {@code null} if none. May be the
-     *         same array than {@code source}, in which case the sorting will be performed in place.
+     * @param source The array of values to sort, or {@code null}.
+     * @param target The array where to store sorted values, or {@code null} if none. May be the
+     *     same array than {@code source}, in which case the sorting will be performed in place.
      * @return The value ranks, or {@code null} if {@code source} was null.
-     *
      * @see Arrays#sort(int[])
      */
     public static int[] ranks(final int[] source, final int[] target) {
@@ -195,12 +187,12 @@ public class Ranks {
             return null;
         }
         final Integer[] entries = new Integer[source.length];
-        for (int i=0; i<entries.length; i++) {
+        for (int i = 0; i < entries.length; i++) {
             entries[i] = new Integer(i, source[i]);
         }
         final int[] ranks = ranks(entries);
         if (target != null) {
-            for (int i=Math.min(entries.length, target.length); --i>=0;) {
+            for (int i = Math.min(entries.length, target.length); --i >= 0; ) {
                 target[i] = entries[i].value;
             }
         }
@@ -208,14 +200,13 @@ public class Ranks {
     }
 
     /**
-     * Sorts the elements in the given array and return their ranks.
-     * See class description for details.
+     * Sorts the elements in the given array and return their ranks. See class description for
+     * details.
      *
-     * @param  source The array of values to sort, or {@code null}.
-     * @param  target The array where to store sorted values, or {@code null} if none. May be the
-     *         same array than {@code source}, in which case the sorting will be performed in place.
+     * @param source The array of values to sort, or {@code null}.
+     * @param target The array where to store sorted values, or {@code null} if none. May be the
+     *     same array than {@code source}, in which case the sorting will be performed in place.
      * @return The value ranks, or {@code null} if {@code source} was null.
-     *
      * @see Arrays#sort(short[])
      */
     public static int[] ranks(final short[] source, final short[] target) {
@@ -223,12 +214,12 @@ public class Ranks {
             return null;
         }
         final Short[] entries = new Short[source.length];
-        for (int i=0; i<entries.length; i++) {
+        for (int i = 0; i < entries.length; i++) {
             entries[i] = new Short(i, source[i]);
         }
         final int[] ranks = ranks(entries);
         if (target != null) {
-            for (int i=Math.min(entries.length, target.length); --i>=0;) {
+            for (int i = Math.min(entries.length, target.length); --i >= 0; ) {
                 target[i] = entries[i].value;
             }
         }
@@ -236,14 +227,13 @@ public class Ranks {
     }
 
     /**
-     * Sorts the elements in the given array and return their ranks.
-     * See class description for details.
+     * Sorts the elements in the given array and return their ranks. See class description for
+     * details.
      *
-     * @param  source The array of values to sort, or {@code null}.
-     * @param  target The array where to store sorted values, or {@code null} if none. May be the
-     *         same array than {@code source}, in which case the sorting will be performed in place.
+     * @param source The array of values to sort, or {@code null}.
+     * @param target The array where to store sorted values, or {@code null} if none. May be the
+     *     same array than {@code source}, in which case the sorting will be performed in place.
      * @return The value ranks, or {@code null} if {@code source} was null.
-     *
      * @see Arrays#sort(byte[])
      */
     public static int[] ranks(final byte[] source, final byte[] target) {
@@ -251,32 +241,31 @@ public class Ranks {
             return null;
         }
         final Byte[] entries = new Byte[source.length];
-        for (int i=0; i<entries.length; i++) {
+        for (int i = 0; i < entries.length; i++) {
             entries[i] = new Byte(i, source[i]);
         }
         final int[] ranks = ranks(entries);
         if (target != null) {
-            for (int i=Math.min(entries.length, target.length); --i>=0;) {
+            for (int i = Math.min(entries.length, target.length); --i >= 0; ) {
                 target[i] = entries[i].value;
             }
         }
         return ranks;
     }
 
-    /**
-     * Extracts the ranks from the specified entries.
-     */
+    /** Extracts the ranks from the specified entries. */
     private static int[] ranks(final Ranks[] entries) {
         Arrays.sort(entries);
         final int[] ranks = new int[entries.length];
-        for (int i=0; i<ranks.length; i++) {
+        for (int i = 0; i < ranks.length; i++) {
             ranks[i] = entries[i].index;
         }
         return ranks;
     }
 
     /** A rank element for the {@link Comparable} type. */
-    private static final class Any<T extends Comparable<T>> extends Ranks implements Comparable<Any<T>> {
+    private static final class Any<T extends Comparable<T>> extends Ranks
+            implements Comparable<Any<T>> {
         /** The value to sort. */
         private final T value;
 

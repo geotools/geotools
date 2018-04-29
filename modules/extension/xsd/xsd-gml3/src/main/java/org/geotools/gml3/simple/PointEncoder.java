@@ -16,6 +16,8 @@
  */
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
@@ -23,12 +25,9 @@ import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Point;
-
 /**
  * Encodes a GML3 point
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
@@ -53,12 +52,11 @@ class PointEncoder extends GeometryEncoder<Point> {
         atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(point, atts);
         handler.startElement(pos, null);
-        
+
         Coordinate coordinate = geometry.getCoordinate();
         handler.position(coordinate.x, coordinate.y, coordinate.z);
-        
+
         handler.endElement(pos);
         handler.endElement(point);
     }
-    
 }

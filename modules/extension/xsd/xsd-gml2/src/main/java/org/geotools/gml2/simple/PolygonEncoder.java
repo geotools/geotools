@@ -16,15 +16,14 @@
  */
 package org.geotools.gml2.simple;
 
+import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * Encodes a GML2 polygon
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
@@ -32,11 +31,11 @@ class PolygonEncoder extends GeometryEncoder<Polygon> {
 
     static final QualifiedName POLYGON = new QualifiedName(GML.NAMESPACE, "Polygon", "gml");
 
-    static final QualifiedName OUTER_BOUNDARY = new QualifiedName(GML.NAMESPACE, "outerBoundaryIs",
-            "gml");
+    static final QualifiedName OUTER_BOUNDARY =
+            new QualifiedName(GML.NAMESPACE, "outerBoundaryIs", "gml");
 
-    static final QualifiedName INNER_BOUNDARY = new QualifiedName(GML.NAMESPACE, "innerBoundaryIs",
-            "gml");
+    static final QualifiedName INNER_BOUNDARY =
+            new QualifiedName(GML.NAMESPACE, "innerBoundaryIs", "gml");
 
     QualifiedName polygon;
 
@@ -70,5 +69,4 @@ class PolygonEncoder extends GeometryEncoder<Polygon> {
 
         handler.endElement(polygon);
     }
-
 }

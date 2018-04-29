@@ -16,6 +16,8 @@
  */
 package org.geotools.wfs.v1_0;
 
+import java.util.Iterator;
+import javax.xml.namespace.QName;
 import net.opengis.wfs.InsertResultsType;
 import net.opengis.wfs.InsertedFeatureType;
 import net.opengis.wfs.WfsFactory;
@@ -26,15 +28,12 @@ import org.geotools.xml.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.namespace.QName;
-import java.util.Iterator;
-
-
 /**
  * Binding object for the type http://www.opengis.net/wfs:InsertResultsType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="InsertResultsType"&gt;
  *      &lt;xsd:annotation&gt;
@@ -56,30 +55,25 @@ import java.util.Iterator;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class InsertResultTypeBinding extends AbstractComplexEMFBinding {
     WfsFactory wfsfactory;
-    
+
     public InsertResultTypeBinding(WfsFactory factory) {
         super(factory);
         this.wfsfactory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.InsertResultType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -88,39 +82,38 @@ public class InsertResultTypeBinding extends AbstractComplexEMFBinding {
     public Class getType() {
         return InsertResultsType.class;
     }
-    
-    public Object parse(ElementInstance instance, Node node, Object value){
-        
+
+    public Object parse(ElementInstance instance, Node node, Object value) {
+
         InsertResultsType resultType = wfsfactory.createInsertResultsType();
-        
-        for (Object featureid : node.getChildValues("FeatureId")){            
-            if (! "none".equals(featureid.toString())) {
-                InsertedFeatureType feature = wfsfactory.createInsertedFeatureType();                
+
+        for (Object featureid : node.getChildValues("FeatureId")) {
+            if (!"none".equals(featureid.toString())) {
+                InsertedFeatureType feature = wfsfactory.createInsertedFeatureType();
                 feature.getFeatureId().add(featureid);
                 resultType.getFeature().add(feature);
-            }            
+            }
         }
-        
+
         return resultType;
     }
-        
+
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         Element e = super.encode(object, document, value);
-        
+
         InsertResultsType resultType = (InsertResultsType) object;
-        
+
         Iterator it = resultType.getFeature().iterator();
         while (it.hasNext()) {
-              Iterator fidit = ((InsertedFeatureType)it.next()).getFeatureId().iterator();
-              while (fidit.hasNext()) {
-                 Element node = document.createElementNS(OGC.NAMESPACE, "FeatureId");
-                 node.setAttribute("fid", fidit.next().toString());
-                 e.appendChild(node);
-              }
+            Iterator fidit = ((InsertedFeatureType) it.next()).getFeatureId().iterator();
+            while (fidit.hasNext()) {
+                Element node = document.createElementNS(OGC.NAMESPACE, "FeatureId");
+                node.setAttribute("fid", fidit.next().toString());
+                e.appendChild(node);
+            }
         }
-        
+
         return e;
     }
-
 }

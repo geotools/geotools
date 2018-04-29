@@ -23,19 +23,16 @@ import org.geotools.swt.SwtMapPane;
 
 /**
  * Base class for map pane actions.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 2.7
- *
- *
- *
  * @source $URL$
  */
 public abstract class MapAction extends Action {
 
     protected SwtMapPane mapPane;
 
-    public MapAction( String toolName, String toolTip, Image image ) {
+    public MapAction(String toolName, String toolTip, Image image) {
         if (toolName != null) {
             setText(toolName);
         }
@@ -51,16 +48,16 @@ public abstract class MapAction extends Action {
 
     /**
      * Set the right {@link SwtMapPane map pane} to the action.
-     * 
+     *
      * @param mapPane the map pane to use.
      */
-    public void setMapPane( SwtMapPane mapPane ) {
+    public void setMapPane(SwtMapPane mapPane) {
         this.mapPane = mapPane;
     }
 
     /**
      * Getter for the current {@link SwtMapPane map pane}.
-     * 
+     *
      * @return the current map pane.
      */
     public SwtMapPane getMapPane() {

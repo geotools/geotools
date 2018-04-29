@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -24,9 +24,7 @@ import org.geotools.styling.PointPlacement;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 
-/**
- * Encodes a {@link TextSymbolizer} as YSLD.
- */
+/** Encodes a {@link TextSymbolizer} as YSLD. */
 public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
 
     TextSymbolizerEncoder(TextSymbolizer text) {
@@ -66,7 +64,6 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
                 inline(new DisplacementEncoder(pp.getDisplacement()));
                 put("rotation", nullIf(pp.getRotation(), 0));
             }
-
         }
     }
 
@@ -81,6 +78,5 @@ public class TextSymbolizerEncoder extends SymbolizerEncoder<TextSymbolizer> {
             inline(new FillEncoder(h.getFill()));
             put("radius", h.getRadius());
         }
-
     }
 }

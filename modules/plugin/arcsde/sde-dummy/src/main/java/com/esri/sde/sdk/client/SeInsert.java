@@ -1,21 +1,13 @@
 package com.esri.sde.sdk.client;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SeInsert extends SeStreamOp {
 
-    public SeInsert(SeConnection c) throws SeException {
-    }
+    public SeInsert(SeConnection c) throws SeException {}
 
-    public void intoTable(String s, String[] t) {
-    }
+    public void intoTable(String s, String[] t) {}
 
-    public void setWriteMode(boolean b) {
-    }
+    public void setWriteMode(boolean b) {}
 
     public SeRow getRowToSet() {
         return null;
@@ -24,5 +16,4 @@ public class SeInsert extends SeStreamOp {
     public SeObjectId lastInsertedRowId() {
         return null;
     }
-
 }

@@ -15,8 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * A small selection of dialogs and related utilities.
- */
+/** A small selection of dialogs and related utilities. */
 package org.geotools.swing.dialog;
-

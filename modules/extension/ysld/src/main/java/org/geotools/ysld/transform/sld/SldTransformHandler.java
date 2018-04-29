@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,36 +17,28 @@
  */
 package org.geotools.ysld.transform.sld;
 
+import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.IOException;
 
-/**
- * Handles xml parse events.
- */
+/** Handles xml parse events. */
 public class SldTransformHandler {
 
     public void document(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
-    }
+            throws XMLStreamException, IOException {}
 
     public void element(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
-    }
+            throws XMLStreamException, IOException {}
 
     public void attribute(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
-    }
+            throws XMLStreamException, IOException {}
 
     public void characters(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
-    }
+            throws XMLStreamException, IOException {}
 
     public void endElement(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
-    }
+            throws XMLStreamException, IOException {}
 
     public void endDocument(XMLStreamReader xml, SldTransformContext context)
-            throws XMLStreamException, IOException {
-    }
+            throws XMLStreamException, IOException {}
 }

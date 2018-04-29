@@ -4,34 +4,22 @@ import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureListener;
-import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
-import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ResourceInfo;
-import org.geotools.data.crs.ReprojectFeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
-import org.geotools.factory.Hints;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.collection.AdaptorFeatureCollection;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
 import org.geotools.feature.collection.MaxSimpleFeatureCollection;
@@ -45,30 +33,27 @@ import org.opengis.filter.sort.SortBy;
 
 /**
  * This is a "port" of ContentFeatureSource to work with an iterator.
- * <p>
- * To use this class please "wrap" CollectionFeatureSource around your choice of FeatureCollection.
- * 
+ *
+ * <p>To use this class please "wrap" CollectionFeatureSource around your choice of
+ * FeatureCollection.
+ *
  * <pre>
  * SimpleFeatureCollection collection = new ListFeatureCollection(schema);
  * collection.add(feature1);
  * collection.add(feature2);
  * FeatureSource source = new CollectionFeatureSource(collection);
  * </pre>
- * <p>
- * Note to implementors: If you are performing "real I/O" please use ContentFeatureSource as it
+ *
+ * <p>Note to implementors: If you are performing "real I/O" please use ContentFeatureSource as it
  * provides support for IOException.
- * 
+ *
  * @author Jody
- *
- *
  * @source $URL$
  */
 public class CollectionFeatureSource implements SimpleFeatureSource {
     protected SimpleFeatureCollection collection;
 
-    /**
-     * observers
-     */
+    /** observers */
     protected List<FeatureListener> listeners = null;
 
     private QueryCapabilities capabilities;
@@ -123,19 +108,21 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
 
     public synchronized QueryCapabilities getQueryCapabilities() {
         if (capabilities == null) {
-            capabilities = new QueryCapabilities() {
-                public boolean isOffsetSupported() {
-                    return true;
-                }
+            capabilities =
+                    new QueryCapabilities() {
+                        public boolean isOffsetSupported() {
+                            return true;
+                        }
 
-                public boolean isReliableFIDSupported() {
-                    return true;
-                }
+                        public boolean isReliableFIDSupported() {
+                            return true;
+                        }
 
-                public boolean supportsSorting(org.opengis.filter.sort.SortBy[] sortAttributes) {
-                    return true;
-                }
-            };
+                        public boolean supportsSorting(
+                                org.opengis.filter.sort.SortBy[] sortAttributes) {
+                            return true;
+                        }
+                    };
         }
         return capabilities;
     }
@@ -163,7 +150,7 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
     // Use: DataUtilities.mixQueries(this.query, query, "subCollection" ) as needed
     //
     public SimpleFeatureCollection getFeatures() throws IOException {
-        return getFeatures( Query.ALL );
+        return getFeatures(Query.ALL);
     }
 
     public SimpleFeatureCollection getFeatures(Filter filter) {
@@ -175,26 +162,28 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
         query = DataUtilities.resolvePropertyNames(query, getSchema());
         final int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
         if (offset > 0 & query.getSortBy() == null) {
-            if (!getQueryCapabilities().supportsSorting(query.getSortBy())){
-                throw new IllegalStateException("Feature source does not support this sorting "
-                        + "so there is no way a stable paging (offset/limit) can be performed");
+            if (!getQueryCapabilities().supportsSorting(query.getSortBy())) {
+                throw new IllegalStateException(
+                        "Feature source does not support this sorting "
+                                + "so there is no way a stable paging (offset/limit) can be performed");
             }
             Query copy = new Query(query);
-            copy.setSortBy(new SortBy[] { SortBy.NATURAL_ORDER });
+            copy.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
             query = copy;
         }
         SimpleFeatureCollection features = collection;
         // step one: filter
-        if( query.getFilter() != null && query.getFilter().equals(Filter.EXCLUDE)){
-            return new EmptyFeatureCollection( getSchema() );
+        if (query.getFilter() != null && query.getFilter().equals(Filter.EXCLUDE)) {
+            return new EmptyFeatureCollection(getSchema());
         }
         if (query.getFilter() != null && query.getFilter() != Filter.INCLUDE) {
             features = new FilteringSimpleFeatureCollection(features, query.getFilter());
         }
         // step two: reproject
         if (query.getCoordinateSystemReproject() != null) {
-            features = new ReprojectingFeatureCollection(features, query
-                    .getCoordinateSystemReproject());
+            features =
+                    new ReprojectingFeatureCollection(
+                            features, query.getCoordinateSystemReproject());
         }
         // step two sort! (note this makes a sorted copy)
         if (query.getSortBy() != null && query.getSortBy().length != 0) {
@@ -223,8 +212,8 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
         if (query.getPropertyNames() != Query.ALL_NAMES) {
             // rebuild the type and wrap the reader
             SimpleFeatureType schema = features.getSchema();
-            SimpleFeatureType target = SimpleFeatureTypeBuilder.retype(schema, query
-                    .getPropertyNames());
+            SimpleFeatureType target =
+                    SimpleFeatureTypeBuilder.retype(schema, query.getPropertyNames());
 
             // do an equals check because we may have needlessly retyped (that is,
             // the subclass might be able to only partially retype)
@@ -233,37 +222,39 @@ public class CollectionFeatureSource implements SimpleFeatureSource {
             }
         }
         // Wrap up the results in a method that allows subCollection
-        return new SubCollection( query, features );
+        return new SubCollection(query, features);
     }
 
     /**
      * SubCollection for CollectionFeatureSource.
-     * <p>
-     * Will route any calls refining the feature collection back to CollectionFeatureSource. This is
-     * based on the success of ContentFeatureCollection.
-     * </p>
-     * 
+     *
+     * <p>Will route any calls refining the feature collection back to CollectionFeatureSource. This
+     * is based on the success of ContentFeatureCollection.
+     *
      * @author Jody
      */
     protected class SubCollection extends DecoratingSimpleFeatureCollection {
         private Query query;
+
         protected SubCollection(Query query, SimpleFeatureCollection features) {
             super(features);
             this.query = query;
         }
+
         public SimpleFeatureCollection subCollection(Filter filter) {
             Query q = new Query(getSchema().getTypeName(), filter);
-            
-            Query subQuery = DataUtilities.mixQueries(query, q, q.getHandle() );
-            return CollectionFeatureSource.this.getFeatures( subQuery );
+
+            Query subQuery = DataUtilities.mixQueries(query, q, q.getHandle());
+            return CollectionFeatureSource.this.getFeatures(subQuery);
         }
+
         @Override
         public SimpleFeatureCollection sort(SortBy order) {
-            Query q = new Query( getSchema().getTypeName() );
-            q.setSortBy( new SortBy[]{ order } );
-            
-            Query subQuery = DataUtilities.mixQueries(query, q, q.getHandle() );
-            return CollectionFeatureSource.this.getFeatures( subQuery );
+            Query q = new Query(getSchema().getTypeName());
+            q.setSortBy(new SortBy[] {order});
+
+            Query subQuery = DataUtilities.mixQueries(query, q, q.getHandle());
+            return CollectionFeatureSource.this.getFeatures(subQuery);
         }
     }
 }

@@ -2,20 +2,18 @@ package org.geotools.process.vector;
 
 import static junit.framework.Assert.*;
 
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTReader;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.process.vector.CentroidProcess;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTReader;
 
 public class CentroidProcessTest {
 
@@ -29,9 +27,9 @@ public class CentroidProcessTest {
         tb.add("name", String.class);
         tb.setName("circles");
         SimpleFeatureType ft = tb.buildFeatureType();
-        
+
         fc = new ListFeatureCollection(ft);
-        
+
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         fb.add(reader.read("POINT(0 0)").buffer(10));
         fb.add("one");
@@ -40,7 +38,7 @@ public class CentroidProcessTest {
         fb.add("two");
         fc.add(fb.buildFeature(null));
     }
-    
+
     @Test
     public void testSchema() {
         CentroidProcess cp = new CentroidProcess();
@@ -51,7 +49,6 @@ public class CentroidProcessTest {
         assertEquals(String.class, ft.getDescriptor("name").getType().getBinding());
     }
 
-    
     @Test
     public void testResults() throws Exception {
         CentroidProcess cp = new CentroidProcess();

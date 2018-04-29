@@ -16,24 +16,21 @@
  */
 package org.geotools.data.ogr;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.FeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 /**
  * An OGR feature reader, reads data from the provided layer.<br>
  * It assumes eventual filters have already been set on it, and will extract only the
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools
- *         /data/ogr/OGRFeatureReader.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools
+ *     /data/ogr/OGRFeatureReader.java $
  */
 class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
@@ -51,8 +48,13 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
 
     OGR ogr;
 
-    public OGRFeatureReader(Object dataSource, Object layer,
-            SimpleFeatureType targetSchema, SimpleFeatureType originalSchema, GeometryFactory gf, OGR ogr) {
+    public OGRFeatureReader(
+            Object dataSource,
+            Object layer,
+            SimpleFeatureType targetSchema,
+            SimpleFeatureType originalSchema,
+            GeometryFactory gf,
+            OGR ogr) {
         this.dataSource = dataSource;
         this.layer = layer;
         this.schema = targetSchema;
@@ -110,8 +112,7 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
     }
 
     public SimpleFeature next() throws IOException, NoSuchElementException {
-        if (!hasNext())
-            throw new NoSuchElementException("There are no more Features to be read");
+        if (!hasNext()) throw new NoSuchElementException("There are no more Features to be read");
 
         SimpleFeature f = mapper.convertOgrFeature(curr);
 
@@ -121,5 +122,4 @@ class OGRFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
 
         return f;
     }
-
 }

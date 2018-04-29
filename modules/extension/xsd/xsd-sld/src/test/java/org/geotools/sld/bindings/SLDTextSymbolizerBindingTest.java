@@ -18,12 +18,7 @@ package org.geotools.sld.bindings;
 
 import org.geotools.styling.TextSymbolizer;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDTextSymbolizerBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(TextSymbolizer.class, new SLDTextSymbolizerBinding(null).getType());
@@ -41,15 +36,15 @@ public class SLDTextSymbolizerBindingTest extends SLDTestSupport {
         assertNotNull(ts.getHalo());
         assertNotNull(ts.getLabel());
     }
-    
+
     public void testWithVendorOptions() throws Exception {
         SLDMockData.textSymbolizerWithVendorOptions(document, document);
-        
+
         TextSymbolizer ts = (TextSymbolizer) parse();
         assertNotNull(ts);
-        
-        //vendorOption(document, textSymbolizer, "followLine", "true");
-        //vendorOption(document, textSymbolizer, "spaceAround", "10");
+
+        // vendorOption(document, textSymbolizer, "followLine", "true");
+        // vendorOption(document, textSymbolizer, "spaceAround", "10");
         assertEquals("true", ts.getOptions().get("followLine"));
         assertEquals("10", ts.getOptions().get("spaceAround"));
     }

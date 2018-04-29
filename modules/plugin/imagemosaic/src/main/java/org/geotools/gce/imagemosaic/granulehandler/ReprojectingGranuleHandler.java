@@ -17,8 +17,8 @@
 
 package org.geotools.gce.imagemosaic.granulehandler;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
@@ -33,24 +33,30 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.PrecisionModel;
-
-/**
- * Granule handler that reprojects envelopes of non-structured grid coverages
- */
+/** Granule handler that reprojects envelopes of non-structured grid coverages */
 public class ReprojectingGranuleHandler implements GranuleHandler {
 
     @Override
-    public void handleGranule(Object source, GridCoverage2DReader inputReader,
-            SimpleFeature targetFeature, SimpleFeatureType targetFeatureType,
-            SimpleFeature inputFeature, SimpleFeatureType inputFeatureType,
-            MosaicConfigurationBean mosaicConfiguration) throws GranuleHandlingException {
+    public void handleGranule(
+            Object source,
+            GridCoverage2DReader inputReader,
+            SimpleFeature targetFeature,
+            SimpleFeatureType targetFeatureType,
+            SimpleFeature inputFeature,
+            SimpleFeatureType inputFeatureType,
+            MosaicConfigurationBean mosaicConfiguration)
+            throws GranuleHandlingException {
 
         CoordinateReferenceSystem targetCRS = mosaicConfiguration.getCrs();
         if (inputFeature instanceof StructuredGridCoverage2DReader) {
-            handleStructuredGranule(source, inputReader, targetFeature, targetFeatureType,
-                    inputFeature, inputFeatureType, mosaicConfiguration);
+            handleStructuredGranule(
+                    source,
+                    inputReader,
+                    targetFeature,
+                    targetFeatureType,
+                    inputFeature,
+                    inputFeatureType,
+                    mosaicConfiguration);
         } else {
             GeneralEnvelope coverageEnvelope = inputReader.getOriginalEnvelope();
             CoordinateReferenceSystem coverageCRS = inputReader.getCoordinateReferenceSystem();
@@ -59,8 +65,10 @@ public class ReprojectingGranuleHandler implements GranuleHandler {
             if (!CRS.equalsIgnoreMetadata(targetCRS, coverageCRS)) {
                 try {
                     geometry = Utils.reprojectEnvelopeToGeometry(finalEnvelope, targetCRS, null);
-                    if(geometry == null) {
-                        throw new GranuleHandlingException("Reprojection of source envelope failed, got back a null one " + finalEnvelope);
+                    if (geometry == null) {
+                        throw new GranuleHandlingException(
+                                "Reprojection of source envelope failed, got back a null one "
+                                        + finalEnvelope);
                     } else if (geometry instanceof GeometryCollection) {
                         // in case of wrapping only pick the first footprint
                         geometry = geometry.getGeometryN(0);
@@ -75,9 +83,8 @@ public class ReprojectingGranuleHandler implements GranuleHandler {
                 geometry = JTS.toGeometry(finalEnvelope);
             }
 
-            targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getName(), geometry);
-
+            targetFeature.setAttribute(
+                    targetFeatureType.getGeometryDescriptor().getName(), geometry);
         }
-
     }
 }

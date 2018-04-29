@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,28 +17,20 @@
 package org.geotools.feature.collection;
 
 import java.util.NoSuchElementException;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 
-
 /**
  * Access Feature content using Feature "Id".
- * <p>
- * Many SimpleFeatureCollection classes will make use of this
- * API to avoid unnecessary caching of content. Supporting
- * this interface will allow SubCollections to occur based
- * on FeatureIds, with a suitable improvement in memory
- * consumption.
- * </p>
- * <p>
- * For an addition improvement in memory comsumption SubCollections
- * may use of a sparse reprsentation where only (beginId,endId] ranges
- * are kept in memory.
- * </p>
+ *
+ * <p>Many SimpleFeatureCollection classes will make use of this API to avoid unnecessary caching of
+ * content. Supporting this interface will allow SubCollections to occur based on FeatureIds, with a
+ * suitable improvement in memory consumption.
+ *
+ * <p>For an addition improvement in memory comsumption SubCollections may use of a sparse
+ * reprsentation where only (beginId,endId] ranges are kept in memory.
+ *
  * @author Jody Garnett, Refractions Research Inc.
- *
- *
  * @source $URL$
  */
 public interface RandomFeatureAccess extends SimpleFeatureCollection {

@@ -16,6 +16,9 @@
  */
 package org.geotools.feature.visitor;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -24,13 +27,11 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.util.ProgressListener;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 /**
- * <p>Helper class to help building a valid group by visitor.</p>
- * <p>A valid group by visitor requires an aggregate attribute, an aggregate visitor and at least one group by attribute. </p>
+ * Helper class to help building a valid group by visitor.
+ *
+ * <p>A valid group by visitor requires an aggregate attribute, an aggregate visitor and at least
+ * one group by attribute.
  */
 public final class GroupByVisitorBuilder {
 
@@ -39,12 +40,14 @@ public final class GroupByVisitorBuilder {
     private List<Expression> groupByAttributes = new ArrayList<>();
     private ProgressListener progressListener;
 
-    public GroupByVisitorBuilder withAggregateAttribute(int attributeTypeIndex, SimpleFeatureType type) {
+    public GroupByVisitorBuilder withAggregateAttribute(
+            int attributeTypeIndex, SimpleFeatureType type) {
         aggregateAttribute = toExpression(attributeTypeIndex, type);
         return this;
     }
 
-    public GroupByVisitorBuilder withAggregateAttribute(String attributeName, SimpleFeatureType type) {
+    public GroupByVisitorBuilder withAggregateAttribute(
+            String attributeName, SimpleFeatureType type) {
         aggregateAttribute = toExpression(attributeName, type);
         return this;
     }
@@ -64,17 +67,20 @@ public final class GroupByVisitorBuilder {
         return this;
     }
 
-    public GroupByVisitorBuilder withGroupByAttribute(int attributeTypeIndex, SimpleFeatureType type) {
+    public GroupByVisitorBuilder withGroupByAttribute(
+            int attributeTypeIndex, SimpleFeatureType type) {
         groupByAttributes.add(toExpression(attributeTypeIndex, type));
         return this;
     }
 
-    public GroupByVisitorBuilder withGroupByAttribute(String attributeName, SimpleFeatureType type) {
+    public GroupByVisitorBuilder withGroupByAttribute(
+            String attributeName, SimpleFeatureType type) {
         groupByAttributes.add(toExpression(attributeName, type));
         return this;
     }
 
-    public GroupByVisitorBuilder withGroupByAttributes(Collection<String> attributesNames, SimpleFeatureType type) {
+    public GroupByVisitorBuilder withGroupByAttributes(
+            Collection<String> attributesNames, SimpleFeatureType type) {
         for (String attributeName : attributesNames) {
             withGroupByAttribute(attributeName, type);
         }
@@ -95,7 +101,8 @@ public final class GroupByVisitorBuilder {
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
         AttributeDescriptor attribute = type.getDescriptor(attributeTypeIndex);
         if (attribute == null) {
-            throw new IllegalArgumentException("Attribute index '" + attributeTypeIndex + "' is not valid.");
+            throw new IllegalArgumentException(
+                    "Attribute index '" + attributeTypeIndex + "' is not valid.");
         }
         return filterFactory.property(attribute.getLocalName());
     }
@@ -127,6 +134,7 @@ public final class GroupByVisitorBuilder {
         if (progressListener == null) {
             progressListener = new NullProgressListener();
         }
-        return new GroupByVisitor(aggregateVisitor, aggregateAttribute, groupByAttributes, progressListener);
+        return new GroupByVisitor(
+                aggregateVisitor, aggregateAttribute, groupByAttributes, progressListener);
     }
 }

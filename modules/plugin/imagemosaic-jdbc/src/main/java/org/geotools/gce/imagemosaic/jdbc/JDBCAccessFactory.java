@@ -19,78 +19,78 @@ package org.geotools.gce.imagemosaic.jdbc;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.gce.imagemosaic.jdbc.custom.JDBCAccessOracleGeoRaster;
 import org.geotools.gce.imagemosaic.jdbc.custom.JDBCAccessPGRaster;
 
 /**
  * Factory for JDBCAccess Objects.
- * 
- * The following rule applies:
- * 
- * For each Config object exists exactly one JDBCAccess object !
- * 
+ *
+ * <p>The following rule applies:
+ *
+ * <p>For each Config object exists exactly one JDBCAccess object !
+ *
  * @author mcr
- * 
  */
 class JDBCAccessFactory {
-	static Map<String, JDBCAccess> JDBCAccessMap = new HashMap<String, JDBCAccess>();
+    static Map<String, JDBCAccess> JDBCAccessMap = new HashMap<String, JDBCAccess>();
 
-	/**
-	 * Factory method
-	 * 
-	 * @param config
-	 *            The Config object
-	 * @return the corresponding JDBCAccess object
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unchecked")
+    /**
+     * Factory method
+     *
+     * @param config The Config object
+     * @return the corresponding JDBCAccess object
+     * @throws Exception
+     */
+    @SuppressWarnings("unchecked")
     static synchronized JDBCAccess getJDBCAcess(Config config) throws Exception {
-		JDBCAccess jdbcAccess = JDBCAccessMap.get(config.getXmlUrl());
+        JDBCAccess jdbcAccess = JDBCAccessMap.get(config.getXmlUrl());
 
-		if (jdbcAccess != null) {
-			return jdbcAccess;
-		}
+        if (jdbcAccess != null) {
+            return jdbcAccess;
+        }
 
-		SpatialExtension type = config.getSpatialExtension();
+        SpatialExtension type = config.getSpatialExtension();
 
-		if (type == null) {
-			throw new Exception("Property <spatialExtension> missing");
-		}
+        if (type == null) {
+            throw new Exception("Property <spatialExtension> missing");
+        }
 
-		if (type == SpatialExtension.DB2) {
-			jdbcAccess = new JDBCAccessDB2(config);
-		} else if (type == SpatialExtension.POSTGIS) {
-			jdbcAccess = new JDBCAccessPostGis(config);
-		} else if (type == SpatialExtension.MYSQL) {
-			jdbcAccess = new JDBCAccessMySql(config);
-		} else if (type == SpatialExtension.UNIVERSAL) {
-			jdbcAccess = new JDBCAccessUniversal(config);
-		} else if (type == SpatialExtension.ORACLE) {
-			jdbcAccess = new JDBCAccessOracle(config);
-                } else if (type == SpatialExtension.GEORASTER) {
-                    jdbcAccess = new JDBCAccessOracleGeoRaster(config);
-                } else if (type == SpatialExtension.PGRASTER) {
-                    jdbcAccess = new JDBCAccessPGRaster(config);                    
-                } else if (type == SpatialExtension.CUSTOM) {
-                    String jdbcAccessClassName = config.getJdbcAccessClassName();
-                    Class jdbcAccessClass = Class.forName(jdbcAccessClassName);
-                    try {
-                        Constructor cons = jdbcAccessClass.getConstructor(new Class[] { Config.class });
-                        jdbcAccess = (JDBCAccess) cons.newInstance(new Object[] {config });
-                    } catch (Exception ex) {
-                        String msg = "No public Constructor with an "+config.getClass().getName()+ 
-                               " argument for class "+jdbcAccessClassName ;
-                        throw new RuntimeException(msg, ex);
-                    }
-                                        
-		} else {
-			throw new Exception("spatialExtension: " + type + " not supported");
-		}
+        if (type == SpatialExtension.DB2) {
+            jdbcAccess = new JDBCAccessDB2(config);
+        } else if (type == SpatialExtension.POSTGIS) {
+            jdbcAccess = new JDBCAccessPostGis(config);
+        } else if (type == SpatialExtension.MYSQL) {
+            jdbcAccess = new JDBCAccessMySql(config);
+        } else if (type == SpatialExtension.UNIVERSAL) {
+            jdbcAccess = new JDBCAccessUniversal(config);
+        } else if (type == SpatialExtension.ORACLE) {
+            jdbcAccess = new JDBCAccessOracle(config);
+        } else if (type == SpatialExtension.GEORASTER) {
+            jdbcAccess = new JDBCAccessOracleGeoRaster(config);
+        } else if (type == SpatialExtension.PGRASTER) {
+            jdbcAccess = new JDBCAccessPGRaster(config);
+        } else if (type == SpatialExtension.CUSTOM) {
+            String jdbcAccessClassName = config.getJdbcAccessClassName();
+            Class jdbcAccessClass = Class.forName(jdbcAccessClassName);
+            try {
+                Constructor cons = jdbcAccessClass.getConstructor(new Class[] {Config.class});
+                jdbcAccess = (JDBCAccess) cons.newInstance(new Object[] {config});
+            } catch (Exception ex) {
+                String msg =
+                        "No public Constructor with an "
+                                + config.getClass().getName()
+                                + " argument for class "
+                                + jdbcAccessClassName;
+                throw new RuntimeException(msg, ex);
+            }
 
-		jdbcAccess.initialize();
-		JDBCAccessMap.put(config.getXmlUrl(), jdbcAccess);
+        } else {
+            throw new Exception("spatialExtension: " + type + " not supported");
+        }
 
-		return jdbcAccess;
-	}
+        jdbcAccess.initialize();
+        JDBCAccessMap.put(config.getXmlUrl(), jdbcAccess);
+
+        return jdbcAccess;
+    }
 }

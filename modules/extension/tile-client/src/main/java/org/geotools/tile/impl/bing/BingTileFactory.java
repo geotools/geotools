@@ -29,8 +29,8 @@ import org.geotools.tile.impl.ZoomLevel;
  */
 class BingTileFactory extends WebMercatorTileFactory {
 
-    public Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel,
-            TileService service) {
+    public Tile findTileAtCoordinate(
+            double lon, double lat, ZoomLevel zoomLevel, TileService service) {
 
         int[] tileXY = BingTileUtil.lonLatToPixelXY(lon, lat, zoomLevel.getZoomLevel());
 
@@ -49,5 +49,4 @@ class BingTileFactory extends WebMercatorTileFactory {
     public Tile findLowerNeighbour(Tile tile, TileService service) {
         return new BingTile(tile.getTileIdentifier().getLowerNeighbour(), service);
     }
-
 }

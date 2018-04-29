@@ -17,7 +17,10 @@
  */
 package org.geotools.process.vector;
 
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -25,12 +28,10 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.property.PropertyDataStore;
@@ -40,25 +41,17 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.process.vector.IntersectionFeatureCollection;
 import org.geotools.process.vector.IntersectionFeatureCollection.IntersectionMode;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class IntersectionFeatureCollectionTest {
-    private static final Logger logger = Logger.getLogger("org.geotools.process.feature.gs.VectoralZonalStatisticalProcessTest");
+    private static final Logger logger =
+            Logger.getLogger("org.geotools.process.feature.gs.VectoralZonalStatisticalProcessTest");
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     private DataStore data;
     private SimpleFeatureCollection zonesCollection;
@@ -80,28 +73,48 @@ public class IntersectionFeatureCollectionTest {
         process = new IntersectionFeatureCollection();
     }
 
-
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testExceptionOpModeFstCollection() throws Exception {
         logger.info("Running testExceptionOpModeFstCollection ...");
         ArrayList<String> toRemoveFst = new ArrayList<String>();
         toRemoveFst.add("cat2");
         ArrayList<String> toRemoveSnd = new ArrayList<String>();
         toRemoveSnd.add("cat");
-        SimpleFeatureCollection output = process.execute(polylineCollection, featuresCollection,toRemoveFst, toRemoveSnd, IntersectionMode.INTERSECTION, true, false);
+        SimpleFeatureCollection output =
+                process.execute(
+                        polylineCollection,
+                        featuresCollection,
+                        toRemoveFst,
+                        toRemoveSnd,
+                        IntersectionMode.INTERSECTION,
+                        true,
+                        false);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testExceptionOpModeSndCollection() throws Exception {
         logger.info("Running testExceptionOpModeSndCollection ...");
         ArrayList<String> toRetainFst = new ArrayList<String>();
         toRetainFst.add("cat2");
         ArrayList<String> toRetainSnd = new ArrayList<String>();
         toRetainSnd.add("cat");
-        SimpleFeatureCollection output = process.execute(zonesCollection, polylineCollection,toRetainFst,toRetainSnd, IntersectionMode.INTERSECTION, true, false);
+        SimpleFeatureCollection output =
+                process.execute(
+                        zonesCollection,
+                        polylineCollection,
+                        toRetainFst,
+                        toRetainSnd,
+                        IntersectionMode.INTERSECTION,
+                        true,
+                        false);
     }
 
-    private Polygon createRectangularPolygonByCoords(double xMin, double xMax, double yMin, double yMax, CoordinateReferenceSystem sourceCRS){
+    private Polygon createRectangularPolygonByCoords(
+            double xMin,
+            double xMax,
+            double yMin,
+            double yMax,
+            CoordinateReferenceSystem sourceCRS) {
         GeometryFactory geomFactory = new GeometryFactory();
 
         // creates the  polygon
@@ -116,36 +129,57 @@ public class IntersectionFeatureCollectionTest {
         return polygon;
     }
 
-    // this test verifies if the Illegal argument exception is thrown when a MultiPointCollection is given as first collection
+    // this test verifies if the Illegal argument exception is thrown when a MultiPointCollection is
+    // given as first collection
     @Test(expected = IllegalArgumentException.class)
-    public void testProcessArguments1() throws IllegalArgumentException{
-                SimpleFeatureCollection output2 = process.execute(multipointCollection, featuresCollection,null,null, IntersectionMode.INTERSECTION, null, null);
+    public void testProcessArguments1() throws IllegalArgumentException {
+        SimpleFeatureCollection output2 =
+                process.execute(
+                        multipointCollection,
+                        featuresCollection,
+                        null,
+                        null,
+                        IntersectionMode.INTERSECTION,
+                        null,
+                        null);
     }
 
-        // this test verifies if the Illegal argument exception is thrown when a MultiPointCollection is given as second collection and area attributes are required
+    // this test verifies if the Illegal argument exception is thrown when a MultiPointCollection is
+    // given as second collection and area attributes are required
     @Test(expected = IllegalArgumentException.class)
-    public void testProcessArguments2() throws IllegalArgumentException{
-                SimpleFeatureCollection output2 = process.execute(featuresCollection,  multipointCollection,null,null, IntersectionMode.INTERSECTION, true, false);
+    public void testProcessArguments2() throws IllegalArgumentException {
+        SimpleFeatureCollection output2 =
+                process.execute(
+                        featuresCollection,
+                        multipointCollection,
+                        null,
+                        null,
+                        IntersectionMode.INTERSECTION,
+                        true,
+                        false);
     }
 
     @Test
-    public void testGetIntersectionAreaRate()  {
+    public void testGetIntersectionAreaRate() {
 
         logger.info("Running testGetIntersectionAreaRate ...");
-        CoordinateReferenceSystem sourceCRS = org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+        CoordinateReferenceSystem sourceCRS =
+                org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 
         // creates the world state polygon
-        Polygon worldPolygon = createRectangularPolygonByCoords(-180,180,-90, 90, sourceCRS);
+        Polygon worldPolygon = createRectangularPolygonByCoords(-180, 180, -90, 90, sourceCRS);
 
         // creates the Colorado state polygon
-        Polygon coloradoPolygon = createRectangularPolygonByCoords(-102,-109,37, 41, sourceCRS);
+        Polygon coloradoPolygon = createRectangularPolygonByCoords(-102, -109, 37, 41, sourceCRS);
 
         // calculates the estimated value
-        double calculatedRate = IntersectionFeatureCollection.getIntersectionArea(worldPolygon, sourceCRS,coloradoPolygon , sourceCRS, true);
+        double calculatedRate =
+                IntersectionFeatureCollection.getIntersectionArea(
+                        worldPolygon, sourceCRS, coloradoPolygon, sourceCRS, true);
 
         // calculates the expected value
         double expectedRate = COLORADOAREA / WORLDAREA;
-        
+
         // 0.01% error off the expected value
         assertEquals(0, (expectedRate - calculatedRate) / expectedRate, 0.01);
     }
@@ -157,9 +191,17 @@ public class IntersectionFeatureCollectionTest {
         toRetainFst.add("str1");
         ArrayList<String> toRetainSnd = new ArrayList<String>();
         toRetainSnd.add("str2");
-        SimpleFeatureCollection output2 = process.execute(zonesCollection, featuresCollection,toRetainFst,toRetainSnd, IntersectionMode.INTERSECTION, true, true);
+        SimpleFeatureCollection output2 =
+                process.execute(
+                        zonesCollection,
+                        featuresCollection,
+                        toRetainFst,
+                        toRetainSnd,
+                        IntersectionMode.INTERSECTION,
+                        true,
+                        true);
 
-        System.out.println("count "+output2.getSchema().getAttributeCount());
+        System.out.println("count " + output2.getSchema().getAttributeCount());
         assertNotNull(output2.getSchema().getDescriptor("the_geom"));
         assertNotNull(output2.getSchema().getDescriptor("zones_str1"));
         assertNotNull(output2.getSchema().getDescriptor("features_str2"));
@@ -168,7 +210,7 @@ public class IntersectionFeatureCollectionTest {
         assertNotNull(output2.getSchema().getDescriptor("areaA"));
         assertNotNull(output2.getSchema().getDescriptor("areaB"));
         assertNotNull(output2.getSchema().getDescriptor("INTERSECTION_ID"));
-        assertTrue(output2.getSchema().getAttributeCount()==8);
+        assertTrue(output2.getSchema().getAttributeCount() == 8);
         SimpleFeatureIterator sfTemp2 = output2.features();
         sfTemp2.hasNext();
         SimpleFeature sf = sfTemp2.next();
@@ -181,18 +223,25 @@ public class IntersectionFeatureCollectionTest {
         assertNotNull(sf.getAttribute("percentageB"));
         assertNotNull(sf.getAttribute("areaA"));
         assertNotNull(sf.getAttribute("areaB"));
-        assertTrue(sf.getAttributeCount()==8);
+        assertTrue(sf.getAttributeCount() == 8);
 
         // test without area and percentageAttributes
-        SimpleFeatureCollection output3 = process.execute(zonesCollection, featuresCollection,toRetainFst,toRetainSnd, IntersectionMode.INTERSECTION, false, false);
+        SimpleFeatureCollection output3 =
+                process.execute(
+                        zonesCollection,
+                        featuresCollection,
+                        toRetainFst,
+                        toRetainSnd,
+                        IntersectionMode.INTERSECTION,
+                        false,
+                        false);
         SimpleFeatureIterator sfTemp3 = output3.features();
         sfTemp3.hasNext();
         SimpleFeature sf2 = sfTemp3.next();
         assertNotNull(sf2.getAttribute("the_geom"));
         assertNotNull(sf2.getAttribute("zones_str1"));
         assertNotNull(sf2.getAttribute("features_str2"));
-        assertTrue(sf2.getAttributeCount()==4);
-
+        assertTrue(sf2.getAttributeCount() == 4);
     }
 
     @Test
@@ -207,8 +256,8 @@ public class IntersectionFeatureCollectionTest {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(tb.buildFeatureType());
 
         DefaultFeatureCollection features = new DefaultFeatureCollection(null, b.getFeatureType());
-        DefaultFeatureCollection secondFeatures = new DefaultFeatureCollection(null, b
-                .getFeatureType());
+        DefaultFeatureCollection secondFeatures =
+                new DefaultFeatureCollection(null, b.getFeatureType());
         Polygon[] firstArrayGeometry = new Polygon[1];
         Polygon[] secondArrayGeometry = new Polygon[1];
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
@@ -226,8 +275,10 @@ public class IntersectionFeatureCollectionTest {
         }
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
             Coordinate array[] = new Coordinate[5];
-            Coordinate centre = ((Polygon) features.features().next().getDefaultGeometry())
-                    .getCentroid().getCoordinate();
+            Coordinate centre =
+                    ((Polygon) features.features().next().getDefaultGeometry())
+                            .getCentroid()
+                            .getCoordinate();
             array[0] = new Coordinate(centre.x, centre.y);
             array[1] = new Coordinate(centre.x + 1, centre.y);
             array[2] = new Coordinate(centre.x + 1, centre.y + 1);
@@ -240,22 +291,24 @@ public class IntersectionFeatureCollectionTest {
             secondFeatures.add(b.buildFeature(numFeatures + ""));
         }
 
-        SimpleFeatureCollection output3 = process.execute(features,secondFeatures, null, null, null, false, false);
+        SimpleFeatureCollection output3 =
+                process.execute(features, secondFeatures, null, null, null, false, false);
 
-        assertTrue(output3.size()==1);
+        assertTrue(output3.size() == 1);
         SimpleFeatureIterator iterator = output3.features();
-
 
         GeometryCollection firstCollection = null;
         GeometryCollection secondCollection = null;
         firstCollection = new GeometryCollection(firstArrayGeometry, new GeometryFactory());
         secondCollection = new GeometryCollection(secondArrayGeometry, new GeometryFactory());
         for (int i = 0; i < firstCollection.getNumGeometries() && iterator.hasNext(); i++) {
-            Geometry expected = (Geometry) firstCollection.getGeometryN(i).intersection(
-                    secondCollection.getGeometryN(i));
+            Geometry expected =
+                    (Geometry)
+                            firstCollection
+                                    .getGeometryN(i)
+                                    .intersection(secondCollection.getGeometryN(i));
             SimpleFeature sf = iterator.next();
             assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
         }
-
-}
+    }
 }

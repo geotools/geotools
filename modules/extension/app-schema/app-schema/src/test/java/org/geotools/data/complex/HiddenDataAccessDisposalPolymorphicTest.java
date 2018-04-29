@@ -26,7 +26,6 @@ import static org.junit.Assert.assertNotNull;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataAccessFinder;
 import org.geotools.feature.NameImpl;
 import org.junit.Before;
@@ -51,9 +50,7 @@ public class HiddenDataAccessDisposalPolymorphicTest extends AbstractHiddenDataA
      */
     @Before
     public void loadDataAccesses() throws Exception {
-        /**
-         * Load artifact data access using polymorphic mappings
-         */
+        /** Load artifact data access using polymorphic mappings */
         Map dsParams = new HashMap();
         URL url = getClass().getResource(schemaBase + "artifact_mapping_recode.xml");
         assertNotNull(url);
@@ -65,9 +62,7 @@ public class HiddenDataAccessDisposalPolymorphicTest extends AbstractHiddenDataA
         assertNotNull(artifactDataAccess.getSchema(ARTIFACT));
         assertFalse(artifactDataAccess.hidden);
 
-        /**
-         * Load geologic unit data access
-         */
+        /** Load geologic unit data access */
         loadGeologicUnit();
 
         // 2 accessible data accesses + 4 hidden data accesses = 6
@@ -78,7 +73,7 @@ public class HiddenDataAccessDisposalPolymorphicTest extends AbstractHiddenDataA
     public void testAutomaticDisposalDisabledIfPolymorphic() {
         guDataAccess.dispose();
 
-        // no automatic disposal should have occurred, because of 
+        // no automatic disposal should have occurred, because of
         // polymorphic feature chaining configuration in artifact mapping file
         assertEquals(5, DataAccessRegistry.getInstance().registry.size());
     }

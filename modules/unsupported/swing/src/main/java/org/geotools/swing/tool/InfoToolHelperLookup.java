@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
-
 import org.geotools.map.Layer;
 
 /**
@@ -40,13 +39,13 @@ class InfoToolHelperLookup {
 
     public static InfoToolHelper getHelper(Layer layer) {
         loadProviders();
-        
+
         for (InfoToolHelper helper : cachedInstances) {
             try {
                 if (helper.isSupportedLayer(layer)) {
                     return helper.getClass().newInstance();
                 }
-                
+
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -55,23 +54,19 @@ class InfoToolHelperLookup {
         return null;
     }
 
-    /**
-     * Caches available classes which implement the InfoToolHelper SPI.
-     */
+    /** Caches available classes which implement the InfoToolHelper SPI. */
     private static void loadProviders() {
         List<Class> providers = null;
-        
+
         if (cachedInstances == null) {
             cachedInstances = new ArrayList<InfoToolHelper>();
-            
-            ServiceLoader<InfoToolHelper> loader = 
-                    ServiceLoader.load(InfoToolHelper.class);
-            
+
+            ServiceLoader<InfoToolHelper> loader = ServiceLoader.load(InfoToolHelper.class);
+
             Iterator<InfoToolHelper> iter = loader.iterator();
             while (iter.hasNext()) {
                 cachedInstances.add(iter.next());
             }
         }
     }
-
 }

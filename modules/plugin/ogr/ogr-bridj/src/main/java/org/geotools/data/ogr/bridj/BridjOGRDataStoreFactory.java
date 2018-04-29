@@ -9,18 +9,18 @@ import org.geotools.data.ogr.OGRDataStoreFactory;
 public class BridjOGRDataStoreFactory extends OGRDataStoreFactory {
 
     private static Boolean INIT = false;
+
     public static void init() {
         try {
             if (!INIT) {
                 GdalInit.init();
-                
+
                 // perform OGR format registration once
                 if (OGRGetDriverCount() == 0) {
                     OGRRegisterAll();
                 }
             }
-        }
-        finally {
+        } finally {
             INIT = true;
         }
     }

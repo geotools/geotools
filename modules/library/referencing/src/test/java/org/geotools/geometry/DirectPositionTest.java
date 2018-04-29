@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,18 +16,15 @@
  */
 package org.geotools.geometry;
 
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-
-import org.junit.*;
 import static org.junit.Assert.*;
 
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.*;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Tests the {@link GeneralDirectPosition} and {@link DirectPosition2D} classes.
- *
- *
  *
  * @source $URL$
  * @version $Id$
@@ -45,7 +42,8 @@ public final class DirectPositionTest {
 
         CoordinateReferenceSystem WGS84 = DefaultGeographicCRS.WGS84;
         DirectPosition p1 = new DirectPosition2D(WGS84, 48.543261561072285, -123.47009555832284);
-        GeneralDirectPosition p2 = new GeneralDirectPosition(48.543261561072285, -123.47009555832284);
+        GeneralDirectPosition p2 =
+                new GeneralDirectPosition(48.543261561072285, -123.47009555832284);
         assertFalse(p1.equals(p2));
         assertFalse(p2.equals(p1));
 

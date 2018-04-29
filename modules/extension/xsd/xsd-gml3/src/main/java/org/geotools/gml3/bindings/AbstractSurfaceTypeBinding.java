@@ -17,18 +17,17 @@
 package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
 /**
  * Binding object for the type http://www.opengis.net/gml:AbstractSurfaceType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="AbstractSurfaceType"&gt;
  *      &lt;annotation&gt;
@@ -41,23 +40,18 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class AbstractSurfaceTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.AbstractSurfaceType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -68,14 +62,14 @@ public class AbstractSurfaceTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //TODO: implement
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // TODO: implement
         return null;
     }
 }

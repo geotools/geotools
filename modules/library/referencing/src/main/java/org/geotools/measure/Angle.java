@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 1999-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,54 +20,42 @@ import java.io.Serializable;
 import java.text.Format;
 import java.text.ParseException;
 import java.util.Locale;
-
 import org.geotools.resources.ClassChanger;
 
-
 /**
- * An angle in degrees. An angle is the amount of rotation needed to bring one line or plane
- * into coincidence with another, generally measured in degrees, sexagesimal degrees or grads.
+ * An angle in degrees. An angle is the amount of rotation needed to bring one line or plane into
+ * coincidence with another, generally measured in degrees, sexagesimal degrees or grads.
  *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
- *
  * @see Latitude
  * @see Longitude
  * @see AngleFormat
  */
 public class Angle implements Comparable<Angle>, Serializable {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1158747349433104534L;
 
-    /**
-     * A shared instance of {@link AngleFormat}.
-     */
+    /** A shared instance of {@link AngleFormat}. */
     private static Format format;
 
-    /**
-     * Define how angle can be converted to {@link Number} objects.
-     */
+    /** Define how angle can be converted to {@link Number} objects. */
     static {
-        ClassChanger.register(new ClassChanger<Angle,Double>(Angle.class, Double.class) {
-            protected Double convert(final Angle o) {
-                return o.theta;
-            }
+        ClassChanger.register(
+                new ClassChanger<Angle, Double>(Angle.class, Double.class) {
+                    protected Double convert(final Angle o) {
+                        return o.theta;
+                    }
 
-            protected Angle inverseConvert(final Double value) {
-                return new Angle(value);
-            }
-        });
+                    protected Angle inverseConvert(final Double value) {
+                        return new Angle(value);
+                    }
+                });
     }
 
-    /**
-     * Angle value in degres.
-     */
+    /** Angle value in degres. */
     private final double theta;
 
     /**
@@ -80,11 +68,11 @@ public class Angle implements Comparable<Angle>, Serializable {
     }
 
     /**
-     * Constructs a newly allocated {@code Angle} object that represents the angle value
-     * represented by the string. The string should represents an angle in either fractional
-     * degrees (e.g. 45.5°) or degrees with minutes and seconds (e.g. 45°30').
+     * Constructs a newly allocated {@code Angle} object that represents the angle value represented
+     * by the string. The string should represents an angle in either fractional degrees (e.g.
+     * 45.5°) or degrees with minutes and seconds (e.g. 45°30').
      *
-     * @param  string A string to be converted to an {@code Angle}.
+     * @param string A string to be converted to an {@code Angle}.
      * @throws NumberFormatException if the string does not contain a parsable angle.
      */
     public Angle(final String string) throws NumberFormatException {
@@ -106,57 +94,46 @@ public class Angle implements Comparable<Angle>, Serializable {
         }
     }
 
-    /**
-     * Returns the angle value in degrees.
-     */
+    /** Returns the angle value in degrees. */
     public double degrees() {
         return theta;
     }
 
-    /**
-     * Returns the angle value in radians.
-     */
+    /** Returns the angle value in radians. */
     public double radians() {
         return Math.toRadians(theta);
     }
 
-    /**
-     * Returns a hash code for this {@code Angle} object.
-     */
+    /** Returns a hash code for this {@code Angle} object. */
     @Override
     public int hashCode() {
         final long code = Double.doubleToLongBits(theta);
         return (int) code ^ (int) (code >>> 32);
     }
 
-    /**
-     * Compares the specified object with this angle for equality.
-     */
+    /** Compares the specified object with this angle for equality. */
     @Override
     public boolean equals(final Object object) {
         if (object == this) {
             return true;
         }
-        if (object!=null && getClass().equals(object.getClass())) {
+        if (object != null && getClass().equals(object.getClass())) {
             final Angle that = (Angle) object;
-            return Double.doubleToLongBits(this.theta) ==
-                   Double.doubleToLongBits(that.theta);
-        }  else {
+            return Double.doubleToLongBits(this.theta) == Double.doubleToLongBits(that.theta);
+        } else {
             return false;
         }
     }
 
     /**
-     * Compares two {@code Angle} objects numerically. The comparaison
-     * is done as if by the {@link Double#compare(double,double)} method.
+     * Compares two {@code Angle} objects numerically. The comparaison is done as if by the {@link
+     * Double#compare(double,double)} method.
      */
     public int compareTo(final Angle that) {
         return Double.compare(this.theta, that.theta);
     }
 
-    /**
-     * Returns a string representation of this {@code Angle} object.
-     */
+    /** Returns a string representation of this {@code Angle} object. */
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
@@ -168,8 +145,8 @@ public class Angle implements Comparable<Angle>, Serializable {
     }
 
     /**
-     * Returns a shared instance of {@link AngleFormat}. The return type is
-     * {@link Format} in order to avoid class loading before necessary.
+     * Returns a shared instance of {@link AngleFormat}. The return type is {@link Format} in order
+     * to avoid class loading before necessary.
      */
     private static Format getAngleFormat() {
         assert Thread.holdsLock(Angle.class);

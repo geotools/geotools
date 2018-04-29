@@ -17,31 +17,24 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.PropertyIsLessThan;
-import org.opengis.filter.expression.Expression;
 import org.geotools.filter.v1_0.OGCPropertyIsLessThanBinding;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:PropertyIsLessThan.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="PropertyIsLessThan"
  *      substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/&gt;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
  * @source $URL$
  */
 public class PropertyIsLessThanBinding extends OGCPropertyIsLessThanBinding {

@@ -35,13 +35,14 @@ import org.opengis.referencing.operation.MathTransformFactory;
 public class TransverseMercatorTest {
 
     /**
-     * Tests the example provided by the EPSG guidance.
-     * See "OGP Surveying and Positioning Guidance Note number 7, part 2 – April 2018", pages 53-57
+     * Tests the example provided by the EPSG guidance. See "OGP Surveying and Positioning Guidance
+     * Note number 7, part 2 – April 2018", pages 53-57
      */
     @Test
     public void testEpsgExample() throws Exception {
         MathTransformFactory mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
-        final ParameterValueGroup parameters = mtFactory.getDefaultParameters("Transverse_Mercator");
+        final ParameterValueGroup parameters =
+                mtFactory.getDefaultParameters("Transverse_Mercator");
 
         // build the transformation using the guidance provided values
         parameter(SEMI_MAJOR, parameters).setValue(6377563.396);
@@ -54,8 +55,8 @@ public class TransverseMercatorTest {
         MathTransform transform = mtFactory.createParameterizedTransform(parameters);
 
         // results as provided by the EPSG guidance
-        final double[] point = new double[] { dmsToDegree(0, 30, 0), dmsToDegree(50, 30, 0) };
-        final double[] expected = new double[] { 577274.99, 69740.50 };
+        final double[] point = new double[] {dmsToDegree(0, 30, 0), dmsToDegree(50, 30, 0)};
+        final double[] expected = new double[] {577274.99, 69740.50};
 
         // check forward transform
         final double[] forward = new double[2];
@@ -70,16 +71,12 @@ public class TransverseMercatorTest {
         assertEquals(inverse[1], inverse[1], 1e-4);
     }
 
-    /**
-     * Extracts the {@link ParameterValue} for a certain {@link ParameterDescriptor}
-     */
+    /** Extracts the {@link ParameterValue} for a certain {@link ParameterDescriptor} */
     ParameterValue<?> parameter(ParameterDescriptor<?> param, ParameterValueGroup group) {
         return group.parameter(param.getName().getCode());
     }
 
-    /**
-     * Converts a DMS value into degrees
-     */
+    /** Converts a DMS value into degrees */
     double dmsToDegree(double degrees, double minutes, double seconds) {
         return degrees + (minutes + seconds / 60) / 60;
     }

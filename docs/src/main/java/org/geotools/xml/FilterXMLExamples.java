@@ -14,29 +14,29 @@ import org.xml.sax.helpers.XMLReaderFactory;
 @SuppressWarnings("unused")
 public class FilterXMLExamples {
 
-private void saxExample() throws Exception {
-    SimpleFeatureType featureType = null;
-    InputSource input = null;
-    // saxExample start
-    
-    class SimpleFilterHandler extends DefaultHandler implements FilterHandler {
-    public Filter filter;
-    
-    public void filter(Filter filter) {
-        this.filter = filter;
+    private void saxExample() throws Exception {
+        SimpleFeatureType featureType = null;
+        InputSource input = null;
+        // saxExample start
+
+        class SimpleFilterHandler extends DefaultHandler implements FilterHandler {
+            public Filter filter;
+
+            public void filter(Filter filter) {
+                this.filter = filter;
+            }
+        }
+
+        SimpleFilterHandler simpleFilterHandler = new SimpleFilterHandler();
+        FilterFilter filterFilter = new FilterFilter(simpleFilterHandler, featureType);
+        GMLFilterGeometry filterGeometry = new GMLFilterGeometry(filterFilter);
+        GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
+
+        // parse xml
+        XMLReader reader = XMLReaderFactory.createXMLReader();
+        reader.setContentHandler(filterDocument);
+        reader.parse(input);
+        Filter filter = simpleFilterHandler.filter;
+        // saxExample end
     }
-    }
-    
-    SimpleFilterHandler simpleFilterHandler = new SimpleFilterHandler();
-    FilterFilter filterFilter = new FilterFilter(simpleFilterHandler, featureType);
-    GMLFilterGeometry filterGeometry = new GMLFilterGeometry(filterFilter);
-    GMLFilterDocument filterDocument = new GMLFilterDocument(filterGeometry);
-    
-    // parse xml
-    XMLReader reader = XMLReaderFactory.createXMLReader();
-    reader.setContentHandler(filterDocument);
-    reader.parse(input);
-    Filter filter = simpleFilterHandler.filter;
-    // saxExample end
-}
 }

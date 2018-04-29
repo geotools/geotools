@@ -9,9 +9,7 @@
  */
 package org.geotools.po.bindings;
 
-
 import javax.xml.namespace.QName;
-
 import org.geotools.po.Items;
 import org.geotools.po.ObjectFactory;
 import org.geotools.po.PurchaseOrderType;
@@ -24,7 +22,8 @@ import org.geotools.xml.Node;
  * Binding object for the type http://www.geotools.org/po:PurchaseOrderType.
  *
  * <p>
- *    <pre>
+ *
+ * <pre>
  *     <code>
  *  &lt;xsd:complexType name="PurchaseOrderType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -34,54 +33,53 @@ import org.geotools.xml.Node;
  *          &lt;xsd:element name="items" type="Items"/&gt;
  *      &lt;/xsd:sequence&gt;
  *      &lt;xsd:attribute name="orderDate" type="xsd:date"/&gt;
- *  &lt;/xsd:complexType&gt; 
- *        
+ *  &lt;/xsd:complexType&gt;
+ *
  *      </code>
  *     </pre>
- * </p>
  *
  * @generated
  */
 public class PurchaseOrderTypeBinding extends AbstractComplexBinding {
 
-    ObjectFactory factory;        
-    public PurchaseOrderTypeBinding( ObjectFactory factory ) {
+    ObjectFactory factory;
+
+    public PurchaseOrderTypeBinding(ObjectFactory factory) {
         super();
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return PO.PurchaseOrderType;
     }
-    
+
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *    
+     *
      * @generated modifiable
-     */    
+     */
     public Class getType() {
         return PurchaseOrderType.class;
     }
-    
+
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *    
+     *
      * @generated modifiable
-     */    
+     */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         PurchaseOrderType purchaseOrder = factory.createPurchaseOrderType();
 
-        purchaseOrder.setShipTo( (USAddress) node.getChildValue( "shipTo" ) );
-        purchaseOrder.setBillTo( (USAddress) node.getChildValue( "billTo" ) );
-        purchaseOrder.setComment( (String) node.getChildValue( "comment" ) );
-        purchaseOrder.setItems( (Items) node.getChildValue( "items") );
+        purchaseOrder.setShipTo((USAddress) node.getChildValue("shipTo"));
+        purchaseOrder.setBillTo((USAddress) node.getChildValue("billTo"));
+        purchaseOrder.setComment((String) node.getChildValue("comment"));
+        purchaseOrder.setItems((Items) node.getChildValue("items"));
 
         return purchaseOrder;
     }
-
 }

@@ -1,7 +1,6 @@
 package org.geotools.tutorial.quickstart;
 
 import java.io.File;
-
 import org.geotools.data.CachingFeatureSource;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
@@ -16,8 +15,8 @@ import org.geotools.swing.data.JFileDataStoreChooser;
 
 /**
  * Example used in Quickstart workbook showing how to use a CachingFeatureSource.
- * <p>
- * This is the GeoTools Quickstart application used in documentationa and tutorials. *
+ *
+ * <p>This is the GeoTools Quickstart application used in documentationa and tutorials. *
  */
 public class QuickstartCache {
 
@@ -25,8 +24,8 @@ public class QuickstartCache {
     /**
      * This method demonstrates using a memory-based cache to speed up the display (e.g. when
      * zooming in and out).
-     * 
-     * There is just one line extra compared to the main method, where we create an instance of
+     *
+     * <p>There is just one line extra compared to the main method, where we create an instance of
      * CachingFeatureStore.
      */
     public static void main(String[] args) throws Exception {
@@ -38,7 +37,7 @@ public class QuickstartCache {
 
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         SimpleFeatureSource featureSource = store.getFeatureSource();
-        
+
         // CachingFeatureSource is deprecated as experimental (not yet production ready)
         CachingFeatureSource cache = new CachingFeatureSource(featureSource);
 

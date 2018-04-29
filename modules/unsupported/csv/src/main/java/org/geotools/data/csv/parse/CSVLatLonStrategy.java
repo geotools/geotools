@@ -42,6 +42,7 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 
+// docs start CSVLatLonStrategy
 public class CSVLatLonStrategy extends CSVStrategy {
 
     private String latField;
@@ -125,11 +126,13 @@ public class CSVLatLonStrategy extends CSVStrategy {
                 || "long".equalsIgnoreCase(s)
                 || "longitude".equalsIgnoreCase(s);
     }
+    // docs end isLongitude
 
     protected static boolean isNumeric(Class<?> clazz) {
         return clazz != null && (clazz == Double.class || clazz == Integer.class);
     }
 
+    // docs start createSchema
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         List<String> header = new ArrayList<String>();
@@ -167,7 +170,9 @@ public class CSVLatLonStrategy extends CSVStrategy {
             writer.close();
         }
     }
+    // docs end createSchema
 
+    // docs start decode
     @Override
     public SimpleFeature decode(String recordId, String[] csvRecord) {
         SimpleFeatureType featureType = getFeatureType();
@@ -209,7 +214,9 @@ public class CSVLatLonStrategy extends CSVStrategy {
         }
         return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
     }
+    // docs end decode
 
+    // docs start encode
     @Override
     public String[] encode(SimpleFeature feature) {
         List<String> csvRecord = new ArrayList<String>();
@@ -245,4 +252,5 @@ public class CSVLatLonStrategy extends CSVStrategy {
         }
         return csvRecord.toArray(new String[csvRecord.size() - 1]);
     }
+    // docs end encode
 }

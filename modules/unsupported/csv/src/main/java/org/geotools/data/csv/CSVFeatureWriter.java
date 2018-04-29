@@ -53,6 +53,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
     /** Current feature available for modification. May be null if feature removed */
     private SimpleFeature currentFeature;
 
+    // docs start CSVFeatureWriter
     public CSVFeatureWriter(CSVFileState csvFileState, CSVStrategy csvStrategy) throws IOException {
         this(csvFileState, csvStrategy, Query.ALL);
     }
@@ -70,6 +71,7 @@ public class CSVFeatureWriter implements FeatureWriter<SimpleFeatureType, Simple
         this.csvWriter = new CsvWriter(new FileWriter(this.temp), ',');
         this.csvWriter.writeRecord(this.csvFileState.getCSVHeaders());
     }
+    // docs end CSVFeatureWriter
 
     // featureType start
     @Override

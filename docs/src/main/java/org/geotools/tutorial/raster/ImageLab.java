@@ -16,11 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
-
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
@@ -74,14 +72,23 @@ public class ImageLab {
      */
     private void getLayersAndDisplay() throws Exception {
         List<Parameter<?>> list = new ArrayList<>();
-        list.add(new Parameter<>("image", File.class, "Image",
-            "GeoTiff or World+Image to display as basemap",
-            new KVP(Parameter.EXT, "tif", Parameter.EXT, "jpg")));
-        list.add(new Parameter<>("shape", File.class, "Shapefile", "Shapefile contents to display",
-            new KVP(Parameter.EXT, "shp")));
+        list.add(
+                new Parameter<>(
+                        "image",
+                        File.class,
+                        "Image",
+                        "GeoTiff or World+Image to display as basemap",
+                        new KVP(Parameter.EXT, "tif", Parameter.EXT, "jpg")));
+        list.add(
+                new Parameter<>(
+                        "shape",
+                        File.class,
+                        "Shapefile",
+                        "Shapefile contents to display",
+                        new KVP(Parameter.EXT, "shp")));
 
-        JParameterListWizard wizard = new JParameterListWizard("Image Lab",
-                "Fill in the following layers", list);
+        JParameterListWizard wizard =
+                new JParameterListWizard("Image Lab", "Fill in the following layers", list);
         int finish = wizard.showModalDialog();
 
         if (finish != JWizard.FINISH) {
@@ -97,21 +104,18 @@ public class ImageLab {
     // docs start display layers
     /**
      * Displays a GeoTIFF file overlaid with a Shapefile
-     * 
-     * @param rasterFile
-     *            the GeoTIFF file
-     * @param shpFile
-     *            the Shapefile
+     *
+     * @param rasterFile the GeoTIFF file
+     * @param shpFile the Shapefile
      */
     private void displayLayers(File rasterFile, File shpFile) throws Exception {
-        AbstractGridFormat format = GridFormatFinder.findFormat( rasterFile ); 
-        //this is a bit hacky but does make more geotiffs work
+        AbstractGridFormat format = GridFormatFinder.findFormat(rasterFile);
+        // this is a bit hacky but does make more geotiffs work
         Hints hints = new Hints();
         if (format instanceof GeoTiffFormat) {
             hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         }
         reader = format.getReader(rasterFile, hints);
-        
 
         // Initially display the raster in greyscale using the
         // data from the first image band
@@ -119,8 +123,7 @@ public class ImageLab {
 
         // Connect to the shapefile
         FileDataStore dataStore = FileDataStoreFinder.getDataStore(shpFile);
-        SimpleFeatureSource shapefileSource = dataStore
-                .getFeatureSource();
+        SimpleFeatureSource shapefileSource = dataStore.getFeatureSource();
 
         // Create a basic style with yellow lines and no fill
         Style shpStyle = SLD.createPolygonStyle(Color.YELLOW, null, 0.0f);
@@ -128,10 +131,10 @@ public class ImageLab {
         // Set up a MapContent with the two layers
         final MapContent map = new MapContent();
         map.setTitle("ImageLab");
-        
+
         Layer rasterLayer = new GridReaderLayer(reader, rasterStyle);
         map.addLayer(rasterLayer);
-        
+
         Layer shpLayer = new FeatureLayer(shapefileSource, shpStyle);
         map.addLayer(shpLayer);
 
@@ -139,7 +142,7 @@ public class ImageLab {
         frame = new JMapFrame(map);
         frame.setSize(800, 600);
         frame.enableStatusBar(true);
-        //frame.enableTool(JMapFrame.Tool.ZOOM, JMapFrame.Tool.PAN, JMapFrame.Tool.RESET);
+        // frame.enableTool(JMapFrame.Tool.ZOOM, JMapFrame.Tool.PAN, JMapFrame.Tool.RESET);
         frame.enableToolBar(true);
 
         JMenuBar menuBar = new JMenuBar();
@@ -147,37 +150,37 @@ public class ImageLab {
         JMenu menu = new JMenu("Raster");
         menuBar.add(menu);
 
-        menu.add( new SafeAction("Grayscale display") {
-            public void action(ActionEvent e) throws Throwable {
-                Style style = createGreyscaleStyle();
-                if (style != null) {
-                    ((StyleLayer) map.layers().get(0)).setStyle(style);
-                    frame.repaint();
-                }
-            }
-        });
+        menu.add(
+                new SafeAction("Grayscale display") {
+                    public void action(ActionEvent e) throws Throwable {
+                        Style style = createGreyscaleStyle();
+                        if (style != null) {
+                            ((StyleLayer) map.layers().get(0)).setStyle(style);
+                            frame.repaint();
+                        }
+                    }
+                });
 
-        menu.add( new SafeAction("RGB display") {
-            public void action(ActionEvent e) throws Throwable {
-                Style style = createRGBStyle();
-                if (style != null) {
-                    ((StyleLayer) map.layers().get(0)).setStyle(style);
-                    frame.repaint();
-                }
-           }
-        });
+        menu.add(
+                new SafeAction("RGB display") {
+                    public void action(ActionEvent e) throws Throwable {
+                        Style style = createRGBStyle();
+                        if (style != null) {
+                            ((StyleLayer) map.layers().get(0)).setStyle(style);
+                            frame.repaint();
+                        }
+                    }
+                });
         // Finally display the map frame.
         // When it is closed the app will exit.
         frame.setVisible(true);
     }
-    
-    // docs end display layers
 
+    // docs end display layers
 
     // docs start create greyscale style
     /**
-     * Create a Style to display a selected band of the GeoTIFF image
-     * as a greyscale layer
+     * Create a Style to display a selected band of the GeoTIFF image as a greyscale layer
      *
      * @return a new Style instance to render the image in greyscale
      */
@@ -190,32 +193,32 @@ public class ImageLab {
         }
         int numBands = cov.getNumSampleDimensions();
         Integer[] bandNumbers = new Integer[numBands];
-        for (int i = 0; i < numBands; i++) { bandNumbers[i] = i+1; }
-        Object selection = JOptionPane.showInputDialog(
-                frame,
-                "Band to use for greyscale display",
-                "Select an image band",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                bandNumbers,
-                1);
+        for (int i = 0; i < numBands; i++) {
+            bandNumbers[i] = i + 1;
+        }
+        Object selection =
+                JOptionPane.showInputDialog(
+                        frame,
+                        "Band to use for greyscale display",
+                        "Select an image band",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        bandNumbers,
+                        1);
         if (selection != null) {
-            int band = ((Number)selection).intValue();
+            int band = ((Number) selection).intValue();
             return createGreyscaleStyle(band);
         }
         return null;
     }
 
-
     /**
-     * Create a Style to display the specified band of the GeoTIFF image
-     * as a greyscale layer.
-     * <p>
-     * This method is a helper for createGreyScale() and is also called directly
-     * by the displayLayers() method when the application first starts.
+     * Create a Style to display the specified band of the GeoTIFF image as a greyscale layer.
+     *
+     * <p>This method is a helper for createGreyScale() and is also called directly by the
+     * displayLayers() method when the application first starts.
      *
      * @param band the image band to use for the greyscale display
-     *
      * @return a new Style instance to render the image in greyscale
      */
     private Style createGreyscaleStyle(int band) {
@@ -234,8 +237,8 @@ public class ImageLab {
     // docs start create rgb style
     /**
      * This method examines the names of the sample dimensions in the provided coverage looking for
-     * "red...", "green..." and "blue..." (case insensitive match). If these names are not found
-     * it uses bands 1, 2, and 3 for the red, green and blue channels. It then sets up a raster
+     * "red...", "green..." and "blue..." (case insensitive match). If these names are not found it
+     * uses bands 1, 2, and 3 for the red, green and blue channels. It then sets up a raster
      * symbolizer and returns this wrapped in a Style.
      *
      * @return a new Style object containing a raster symbolizer set up for RGB image
@@ -259,7 +262,7 @@ public class ImageLab {
             sampleDimensionNames[i] = dim.getDescription().toString();
         }
         final int RED = 0, GREEN = 1, BLUE = 2;
-        int[] channelNum = { -1, -1, -1 };
+        int[] channelNum = {-1, -1, -1};
         // We examine the band names looking for "red...", "green...", "blue...".
         // Note that the channel numbers we record are indexed from 1, not 0.
         for (int i = 0; i < numBands; i++) {
@@ -293,6 +296,5 @@ public class ImageLab {
 
         return SLD.wrapSymbolizers(sym);
     }
-
 }
 // docs end source

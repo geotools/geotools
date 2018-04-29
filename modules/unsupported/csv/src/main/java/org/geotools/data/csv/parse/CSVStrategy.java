@@ -28,6 +28,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
+// docs start CSVStrategy
 public abstract class CSVStrategy {
 
     protected final CSVFileState csvFileState;
@@ -39,6 +40,7 @@ public abstract class CSVStrategy {
     public CSVIterator iterator() throws IOException {
         return new CSVIterator(csvFileState, this);
     }
+    // docs end CSVStrategy
 
     protected abstract SimpleFeatureType buildFeatureType();
 
@@ -61,6 +63,7 @@ public abstract class CSVStrategy {
         return featureType;
     }
 
+    // docs start createBuilder
     /**
      * Originally in a strategy support class - giving a chance to override them to improve
      * efficiency and utilize the different strategies
@@ -146,4 +149,5 @@ public abstract class CSVStrategy {
         }
         return result;
     }
+    // docs end findMostSpecificTypesFromData
 }

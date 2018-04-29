@@ -36,6 +36,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author travis
  */
 public class CSVWriteStrategyTest {
+    // docs start attributes
     @Test
     public void Attributes() throws Exception {
         CSVFileState fileState = new CSVFileState("CITY, NUMBER, YEAR", "TEST");
@@ -60,7 +61,9 @@ public class CSVWriteStrategyTest {
             }
         }
     }
+    // docs end attributes
 
+    // docs start latlon
     @Test
     public void LatLon() throws Exception {
         CSVFileState fileState = new CSVFileState("LAT, LON, CITY, NUMBER, YEAR", "TEST");
@@ -88,7 +91,9 @@ public class CSVWriteStrategyTest {
             }
         }
     }
+    // docs end latlon
 
+    // docs start SpecifiedLatLon
     @Test
     public void SpecifiedLatLon() throws Exception {
         CSVFileState fileState = new CSVFileState("TAL, NOL, CITY, NUMBER, YEAR", "TEST");
@@ -116,6 +121,7 @@ public class CSVWriteStrategyTest {
             }
         }
     }
+    // docs end SpecifiedLatLon
 
     @Test
     public void WKT() throws Exception {

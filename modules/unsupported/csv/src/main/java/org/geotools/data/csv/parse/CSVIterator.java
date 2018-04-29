@@ -61,6 +61,7 @@ public class CSVIterator implements Iterator<SimpleFeature> {
         return next != null;
     }
 
+    // docs start readFeature
     private SimpleFeature readFeature() throws IOException {
         if (csvReader.readRecord()) {
             String[] csvRecord = csvReader.getValues();
@@ -68,6 +69,7 @@ public class CSVIterator implements Iterator<SimpleFeature> {
         }
         return null;
     }
+    // docs end readFeature
 
     @Override
     public SimpleFeature next() {

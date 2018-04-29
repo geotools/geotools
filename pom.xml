@@ -196,6 +196,27 @@
         </site>
       </distributionManagement>
     </profile>
+    <profile>
+      <id>noLocalChanges</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-scm-plugin</artifactId>
+            <version>1.9.5</version>
+            <executions>
+              <execution>
+                <id>exec1</id>
+                <phase>install</phase>
+                <goals>
+                   <goal>check-local-modification</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
 

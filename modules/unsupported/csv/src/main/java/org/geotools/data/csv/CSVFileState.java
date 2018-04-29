@@ -101,6 +101,7 @@ public class CSVFileState {
         }
     }
 
+    // docs start openCSVReader
     public CsvReader openCSVReader() throws IOException {
         Reader reader;
         if (file != null) {
@@ -114,7 +115,9 @@ public class CSVFileState {
         }
         return csvReader;
     }
+    // docs end openCSVReader
 
+    // docs start getCSVHeaders
     public String[] getCSVHeaders() {
         if (headers == null) {
             synchronized (this) {
@@ -139,4 +142,5 @@ public class CSVFileState {
             }
         }
     }
+    // docs end readCSVHeaders
 }

@@ -129,6 +129,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         return null;
     }
 
+    // doc start canProcess
     @Override
     public boolean canProcess(Map<String, Serializable> params) {
         try {
@@ -140,7 +141,9 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         }
         return false;
     }
+    // doc end canProcess
 
+    // docs start isAvailable
     @Override
     public boolean isAvailable() {
         try {
@@ -150,12 +153,14 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         }
         return true;
     }
+    // docs end isAvailable
 
     @Override
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }
 
+    // docs start createDataStoreFromFile
     public FileDataStore createDataStoreFromFile(File file) throws IOException {
         return createDataStoreFromFile(file, null);
     }
@@ -169,6 +174,7 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         Map<String, Serializable> noParams = Collections.emptyMap();
         return createDataStoreFromFile(file, namespace, noParams);
     }
+    // docs end createDataStoreFromFile
 
     @Override
     public FileDataStore createDataStore(Map<String, Serializable> params) throws IOException {
@@ -242,10 +248,12 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         return EXTENSIONS;
     }
 
+    // docs start canProcess
     @Override
     public boolean canProcess(URL url) {
         return canProcessExtension(URLs.urlToFile(url).toString());
     }
+    // docs end canProcess
 
     @Override
     public String getTypeName(URL url) throws IOException {

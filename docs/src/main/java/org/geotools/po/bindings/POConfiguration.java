@@ -21,31 +21,31 @@ public class POConfiguration extends Configuration {
 
     /**
      * Creates a new configuration.
-     * 
+     *
      * @generated
-     */     
+     */
     public POConfiguration() {
-       super(PO.getInstance());
-       
-       //TODO: add dependencies here
+        super(PO.getInstance());
+
+        // TODO: add dependencies here
     }
-    
+
     /**
      * Registers the bindings for the configuration.
      *
      * @generated
      */
-    protected final void registerBindings( MutablePicoContainer container ) {
-        //Types
-        container.registerComponentImplementation(PO.Items,ItemsBinding.class);
-        container.registerComponentImplementation(PO.PurchaseOrderType,PurchaseOrderTypeBinding.class);
-        container.registerComponentImplementation(PO.SKU,SKUBinding.class);
-        container.registerComponentImplementation(PO.USAddress,USAddressBinding.class);
-        container.registerComponentImplementation(PO.Items_item,Items_itemBinding.class);
-        
-        //Elements
-        container.registerComponentImplementation(PO.comment,CommentBinding.class);
-        container.registerComponentImplementation(PO.purchaseOrder,PurchaseOrderBinding.class);
-    
+    protected final void registerBindings(MutablePicoContainer container) {
+        // Types
+        container.registerComponentImplementation(PO.Items, ItemsBinding.class);
+        container.registerComponentImplementation(
+                PO.PurchaseOrderType, PurchaseOrderTypeBinding.class);
+        container.registerComponentImplementation(PO.SKU, SKUBinding.class);
+        container.registerComponentImplementation(PO.USAddress, USAddressBinding.class);
+        container.registerComponentImplementation(PO.Items_item, Items_itemBinding.class);
+
+        // Elements
+        container.registerComponentImplementation(PO.comment, CommentBinding.class);
+        container.registerComponentImplementation(PO.purchaseOrder, PurchaseOrderBinding.class);
     }
-} 
+}

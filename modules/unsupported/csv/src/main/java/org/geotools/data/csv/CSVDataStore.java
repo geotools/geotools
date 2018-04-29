@@ -47,6 +47,7 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
         this.csvStrategy = csvStrategy;
     }
 
+    // docs start getTypeName
     public Name getTypeName() {
         if (namespaceURI != null) {
             return new NameImpl(namespaceURI, csvFileState.getTypeName());
@@ -54,7 +55,9 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
             return new NameImpl(csvFileState.getTypeName());
         }
     }
+    // docs end getTypeName
 
+    // docs start dataStoreOperations
     @Override
     protected List<Name> createTypeNames() throws IOException {
         return Collections.singletonList(getTypeName());
@@ -115,4 +118,5 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.csvStrategy.createSchema(featureType);
     }
+    // docs end dataStoreOperations
 }

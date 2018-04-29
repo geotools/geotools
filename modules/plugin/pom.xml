@@ -61,7 +61,6 @@
     <module>imagemosaic-jdbc</module>
     <module>jdbc</module>
     <module>jp2k</module>
-    <module>ogr</module>
     <module>property</module>
     <module>referencing3D</module>
     <module>shapefile</module>

@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
@@ -226,6 +227,29 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
                     ExcessGranulePolicy.class,
                     new ExcessGranulePolicy[] {ExcessGranulePolicy.NONE, ExcessGranulePolicy.ROI},
                     ExcessGranulePolicy.NONE);
+
+    /**
+     * mask (as a polygon in native coordinates) to be applied to the produced mosaic. At the
+     * moment, it will be ignored in case of Heterogeneous CRS.
+     */
+    public static final ParameterDescriptor<Geometry> GEOMETRY_MASK =
+            new DefaultParameterDescriptor<Geometry>("GeometryMask", Geometry.class, null, null);
+
+    /** Control the Masking buffering (in raster size) */
+    public static final ParameterDescriptor<Double> MASKING_BUFFER_PIXELS =
+            new DefaultParameterDescriptor<Double>(
+                    "MaskingBufferPixels", Double.class, null, Double.valueOf(-1));
+
+    /**
+     * Control whether to set the ROI property in the output mosaic (as an instance, even when
+     * background values are set which usually results into setting a null ROI after the mosaic)
+     */
+    public static final ParameterDescriptor<Boolean> SET_ROI_PROPERTY =
+            new DefaultParameterDescriptor<Boolean>(
+                    "SetRoiProperty",
+                    Boolean.class,
+                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
+                    Boolean.FALSE);
 
     /** Creates an instance and sets the metadata. */
     public ImageMosaicFormat() {

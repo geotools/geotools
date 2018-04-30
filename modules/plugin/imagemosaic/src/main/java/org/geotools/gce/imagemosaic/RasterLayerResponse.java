@@ -513,6 +513,14 @@ public class RasterLayerResponse {
 
     private double[] virtualNativeResolution;
 
+    private Geometry geometryMask;
+
+    private double maskingBufferPixels;
+
+    private boolean setRoiProperty;
+
+    private boolean heterogeneousCRS;
+
     private double[] backgroundValues;
 
     private Hints hints;
@@ -554,6 +562,9 @@ public class RasterLayerResponse {
         defaultArtifactsFilterThreshold = request.getDefaultArtifactsFilterThreshold();
         artifactsFilterPTileThreshold = request.getArtifactsFilterPTileThreshold();
         virtualNativeResolution = request.getVirtualNativeResolution();
+        geometryMask = request.getGeometryMask();
+        maskingBufferPixels = request.getMaskingBufferPixels();
+        setRoiProperty = request.isSetRoiProperty();
     }
 
     /**
@@ -666,6 +677,7 @@ public class RasterLayerResponse {
             rasterManager.getGranuleDescriptors(query, visitor);
 
             // get those granules and create the final mosaic
+            heterogeneousCRS = visitor.heterogeneousCRS;
             MosaicOutput returnValue = visitor.produce();
 
             //
@@ -1361,6 +1373,22 @@ public class RasterLayerResponse {
 
     public ROIExcessGranuleRemover getExcessGranuleRemover() {
         return excessGranuleRemover;
+    }
+
+    public Geometry getGeometryMask() {
+        return geometryMask;
+    }
+
+    public double getMaskingBufferPixels() {
+        return maskingBufferPixels;
+    }
+
+    public boolean isSetRoiProperty() {
+        return setRoiProperty;
+    }
+
+    public boolean isHeterogeneousCRS() {
+        return heterogeneousCRS;
     }
 
     /**

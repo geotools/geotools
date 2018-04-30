@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
@@ -127,6 +128,18 @@ public class RasterLayerRequest {
     protected Filter filter;
 
     private boolean accurateResolution;
+
+    /** The geometry to be used as geometry mask on the final mosaic */
+    private Geometry geometryMask;
+
+    /**
+     * The optional buffer to be applied to the provided geometryMask. Buffer size is expressed in
+     * raster coordinates
+     */
+    private double maskingBufferPixels;
+
+    /** Flag specifying whether we need to set the ROI in any case in the output mosaic */
+    private boolean setRoiProperty;
 
     private final Map<String, List> requestedAdditionalDomains = new HashMap<String, List>();
 
@@ -500,6 +513,24 @@ public class RasterLayerRequest {
                 excessGranuleRemovalPolicy = (ExcessGranulePolicy) value;
                 return;
             }
+
+            if (name.equals(ImageMosaicFormat.GEOMETRY_MASK.getName())) {
+                if (value == null) continue;
+                geometryMask = (Geometry) value;
+                return;
+            }
+
+            if (name.equals(ImageMosaicFormat.MASKING_BUFFER_PIXELS.getName())) {
+                if (value == null) continue;
+                maskingBufferPixels = (Float) value;
+                continue;
+            }
+
+            if (name.equals(ImageMosaicFormat.SET_ROI_PROPERTY.getName())) {
+                if (value == null) continue;
+                setRoiProperty = ((Boolean) value).booleanValue();
+                continue;
+            }
         }
     }
 
@@ -825,6 +856,27 @@ public class RasterLayerRequest {
             excessGranuleRemovalPolicy = (ExcessGranulePolicy) value;
             return;
         }
+
+        if (name.equals(ImageMosaicFormat.GEOMETRY_MASK.getName())) {
+            final Object value = param.getValue();
+            if (value == null) return;
+            geometryMask = (Geometry) value;
+            return;
+        }
+
+        if (name.equals(ImageMosaicFormat.MASKING_BUFFER_PIXELS.getName())) {
+            final Object value = param.getValue();
+            if (value == null) return;
+            maskingBufferPixels = (double) param.doubleValue();
+            return;
+        }
+
+        if (name.equals(ImageMosaicFormat.SET_ROI_PROPERTY.getName())) {
+            final Object value = param.getValue();
+            if (value == null) return;
+            setRoiProperty = ((Boolean) value).booleanValue();
+            return;
+        }
     }
 
     /** @return the accurateResolution */
@@ -932,15 +984,6 @@ public class RasterLayerRequest {
         return tileDimensions;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("RasterLayerRequest description: \n");
-        builder.append(spatialRequestHelper).append("\n");
-        builder.append("\tReadType=").append(readType);
-        return builder.toString();
-    }
-
     public MergeBehavior getMergeBehavior() {
         return mergeBehavior;
     }
@@ -955,5 +998,38 @@ public class RasterLayerRequest {
 
     public int[] getBands() {
         return bands;
+    }
+
+    public Geometry getGeometryMask() {
+        return geometryMask;
+    }
+
+    public void setGeometryMask(Geometry geometryMask) {
+        this.geometryMask = geometryMask;
+    }
+
+    public double getMaskingBufferPixels() {
+        return maskingBufferPixels;
+    }
+
+    public void setMaskingBufferPixels(double maskingBufferPixels) {
+        this.maskingBufferPixels = maskingBufferPixels;
+    }
+
+    public boolean isSetRoiProperty() {
+        return setRoiProperty;
+    }
+
+    public void setSetRoiProperty(boolean setRoiProperty) {
+        this.setRoiProperty = setRoiProperty;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("RasterLayerRequest description: \n");
+        builder.append(spatialRequestHelper).append("\n");
+        builder.append("\tReadType=").append(readType);
+        return builder.toString();
     }
 }

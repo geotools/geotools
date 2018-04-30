@@ -16,12 +16,17 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.TopologyException;
+import com.vividsolutions.jts.operation.overlay.snap.GeometrySnapper;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata.MDI;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -69,6 +74,7 @@ import javax.media.jai.BorderExtender;
 import javax.media.jai.Histogram;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
+import javax.media.jai.ROI;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 import javax.media.jai.remote.SerializableRenderedImage;
@@ -97,7 +103,9 @@ import org.geotools.gce.imagemosaic.catalog.index.ObjectFactory;
 import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalogbuilder.CatalogBuilderConfiguration;
 import org.geotools.gce.imagemosaic.granulecollector.ReprojectingSubmosaicProducerFactory;
+import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
@@ -132,6 +140,8 @@ import org.opengis.referencing.operation.TransformException;
 public class Utils {
 
     public static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+
+    private static GeometryFactory GEOM_FACTORY = new GeometryFactory();
 
     private static final String DATABASE_KEY = "database";
 
@@ -177,6 +187,12 @@ public class Utils {
      */
     static final boolean OPTIMIZE_CROP;
 
+    static final double DEFAULT_LINESTRING_DECIMATION_SPAN = 0.8;
+
+    static final int DEFAULT_COORDS_DECIMATION_THRESHOLD = 200;
+
+    private static final int COORDS_DECIMATION_THRESHOLD;
+
     /** Logger. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(Utils.class.toString());
@@ -194,6 +210,10 @@ public class Utils {
         } catch (JAXBException e) {
             LOGGER.log(Level.FINER, e.getMessage(), e);
         }
+        COORDS_DECIMATION_THRESHOLD =
+                Integer.getInteger(
+                        "org.geotools.gce.imagemosaic.decimationthreshold",
+                        DEFAULT_COORDS_DECIMATION_THRESHOLD);
         CLEANUP_FILTER = initCleanUpFilter();
         MOSAIC_SUPPORT_FILES_FILTER = initMosaicSupportFilesFilter();
     }
@@ -1928,6 +1948,25 @@ public class Utils {
         }
     }
 
+    public static Hints setupJAIHints(RenderingHints inputHints) {
+        final Hints hints = new Hints();
+        if (inputHints != null) {
+
+            // TileCache
+            TileCache tc = Utils.getTileCacheHint(inputHints);
+            if (tc != null) {
+                hints.add(new RenderingHints(JAI.KEY_TILE_CACHE, tc));
+            }
+
+            // TileScheduler
+            TileScheduler tileScheduler = Utils.getTileSchedulerHint(inputHints);
+            if (tileScheduler != null) {
+                hints.add(new RenderingHints(JAI.KEY_TILE_SCHEDULER, tileScheduler));
+            }
+        }
+        return hints;
+    }
+
     /**
      * Create a Range of numbers from a couple of values.
      *
@@ -2406,5 +2445,69 @@ public class Utils {
             file = new File(rootFolder, strValue);
         }
         return file;
+    }
+
+    /**
+     * Decimate a geometry (reducing the number of vertices) for incoming buffering
+     *
+     * @param geometry
+     * @return
+     */
+    public static Geometry decimate(Geometry geometry) {
+        Coordinate[] coordinates = geometry.getCoordinates();
+        if (coordinates.length <= Utils.COORDS_DECIMATION_THRESHOLD) {
+            return geometry;
+        }
+
+        Geometry g2 = LiteCoordinateSequence.cloneGeometry(geometry, 2);
+        Decimator decimator =
+                new Decimator(
+                        DEFAULT_LINESTRING_DECIMATION_SPAN, DEFAULT_LINESTRING_DECIMATION_SPAN);
+        decimator.decimate(g2);
+        g2.geometryChanged();
+        return g2;
+    }
+
+    /**
+     * Intersects a ROI with a ROI geometry, with fallback on GeometrySnapper if a TopologyException
+     * occurs
+     *
+     * @param roi
+     * @param roiGeometry
+     * @param hints
+     * @return
+     */
+    public static ROI roiIntersect(ROI roi, ROIGeometry roiGeometry, RenderingHints hints) {
+        try {
+            roi = roi.intersect(roiGeometry);
+        } catch (TopologyException tpe) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(
+                        Level.FINE,
+                        "Topology Exception occurred while producing the intersecting ROI"
+                                + "\nTrying with a GeometrySnapper approach. "
+                                + tpe.getLocalizedMessage());
+            }
+
+            Geometry g = roiGeometry.getAsGeometry();
+            boolean isValid = g.isValid();
+            // Try intersection with a GeometrySnapper approach
+            if (!isValid) {
+                double tol = GeometrySnapper.computeOverlaySnapTolerance(g);
+                g = new GeometrySnapper(g).snapTo(g, tol).buffer(0);
+                roiGeometry = new ROIGeometry(g, setupJAIHints(hints));
+                roi = roi.intersect(roiGeometry);
+            } else if (roi instanceof ROIGeometry) {
+                g = ((ROIGeometry) roi).getAsGeometry();
+                isValid = g.isValid();
+                if (!isValid) {
+                    double tol = GeometrySnapper.computeOverlaySnapTolerance(g);
+                    g = new GeometrySnapper(g).snapTo(g, tol).buffer(0);
+                    roi = new ROIGeometry(g, setupJAIHints(hints));
+                    roi = roi.intersect(roiGeometry);
+                }
+            }
+        }
+        return roi;
     }
 }

@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
  */
 public class XSDParserDelegate implements ParserDelegate {
 
-    ParserHandler handler;
+    protected ParserHandler handler;
 
     public XSDParserDelegate(Configuration configuration) {
         handler = new ParserHandler(configuration);

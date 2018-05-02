@@ -39,6 +39,7 @@ import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
@@ -917,6 +918,50 @@ public final class CRS {
                     .equals(((AbstractIdentifiedObject) object2), false);
         }
         return object1 != null && object1.equals(object2);
+    }
+
+    /**
+     * Checks if a transformation is required to go from source to target. This method returns true
+     * if:
+     *
+     * <ul>
+     *   <li>source or target are null
+     *   <li>source or target are a wildcard CRS, see {@link DefaultEngineeringCRS#isWildcard()}
+     *   <li>source and target test positively to {@link #equalsIgnoreMetadata(Object, Object)}
+     *   <li>the transformation between source and target is nevertheless and identity, e.g., same
+     *       projected CRS based on a geographic one that has straight and flipped axis
+     * </ul>
+     *
+     * @param source The source {@link CoordinateReferenceSystem}
+     * @param target the target {@link CoordinateReferenceSystem}
+     * @return
+     */
+    public static boolean isTransformationRequired(
+            CoordinateReferenceSystem source, CoordinateReferenceSystem target)
+            throws FactoryException {
+        // null cases, no transformation possible
+        if (source == null || target == null) {
+            return false;
+        }
+
+        // wildcard cases
+        if (source instanceof DefaultEngineeringCRS
+                && ((DefaultEngineeringCRS) source).isWildcard()) {
+            return false;
+        }
+        if (target instanceof DefaultEngineeringCRS
+                && ((DefaultEngineeringCRS) target).isWildcard()) {
+            return false;
+        }
+
+        // checking equality
+        if (equalsIgnoreMetadata(source, target)) {
+            return false;
+        }
+
+        // last attempt, compute the transform and check if identity
+        MathTransform mathTransform = findMathTransform(source, target);
+        return !mathTransform.isIdentity();
     }
 
     /**

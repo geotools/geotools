@@ -171,7 +171,7 @@ class WMTSTile extends Tile {
         HashMap<String, Object> params = new HashMap<>();
         params.put("service", "WMTS");
         params.put("version", "1.0.0");
-        params.put("request", "getTile");
+        params.put("request", "GetTile");
         params.put("layer", service.getLayerName());
         params.put("style", service.getStyleName());
         params.put("format", service.getFormat());

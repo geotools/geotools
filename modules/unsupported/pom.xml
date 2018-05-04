@@ -156,12 +156,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>mongodb</id>
-			<modules>
-				<module>mongodb</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>geojsonstore</id>
 			<activation>
 				<property>
@@ -209,7 +203,6 @@
 				<module>jdbc-ng</module>
 				<module>sfs</module>
 				<module>feature-aggregate</module>
-				<module>mongodb</module>
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>

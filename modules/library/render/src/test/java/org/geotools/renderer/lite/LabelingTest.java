@@ -22,6 +22,8 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
@@ -29,7 +31,9 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.MapContext;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -188,6 +192,37 @@ public class LabelingTest extends TestCase {
         RendererBaseTest.showRender("testLineLabeling", renderer, timout, env);
     }
 
+    /**
+     * Checks we won't label a feature with a sharp U turn, when using a large font
+     *
+     * @throws Exception
+     */
+    public void testLineLabelingSharpTurn() throws Exception {
+        FeatureCollection collection = createTightUTurnLineCollection();
+        Style style = loadStyle("LineStyleLarge.sld");
+        assertNotNull(style);
+        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        map.addLayer(collection, style);
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setContext(map);
+        int boundary = 2;
+        ReferencedEnvelope env = map.getLayerBounds();
+        env =
+                new ReferencedEnvelope(
+                        env.getMinX() - boundary,
+                        env.getMaxX() + boundary,
+                        env.getMinY() - boundary,
+                        env.getMaxY() + boundary,
+                        null);
+
+        BufferedImage image = RendererBaseTest.showRender("U turn label", renderer, 1000, env);
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelSharpTurn.png";
+        // small tolerance
+        ImageAssert.assertEquals(new File(refPath), image, 100);
+    }
+
     private SimpleFeatureCollection createLineFeatureCollection() throws Exception {
         AttributeDescriptor[] types = new AttributeDescriptor[2];
 
@@ -195,8 +230,8 @@ public class LabelingTest extends TestCase {
         CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
 
         MemoryDataStore data = new MemoryDataStore();
-        data.addFeature(createLineFeature(10, 0, 0, 10, "LongLabel1", crs, geomFac, types));
-        data.addFeature(createLineFeature(10, 10, 0, 0, "LongLabel2", crs, geomFac, types));
+        data.addFeature(createLineFeature("LongLabel1", crs, geomFac, 10, 0, 0, 10));
+        data.addFeature(createLineFeature("LongLabel2", crs, geomFac, 10, 10, 0, 0));
         //        data.addFeature(createPointFeature(0,2,"LongLabel3",crs, geomFac, types));
         //        data.addFeature(createPointFeature(2,0,"Label4",crs, geomFac, types));
         //        data.addFeature(createPointFeature(0,4,"LongLabel6",crs, geomFac, types));
@@ -204,19 +239,26 @@ public class LabelingTest extends TestCase {
         return data.getFeatureSource(Rendering2DTest.LINE).getFeatures();
     }
 
+    private SimpleFeatureCollection createTightUTurnLineCollection() throws Exception {
+        GeometryFactory geomFac = new GeometryFactory();
+        CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
+
+        MemoryDataStore data = new MemoryDataStore();
+        data.addFeature(
+                createLineFeature(
+                        "TheUTurnLabel", crs, geomFac, 1, 2, 8.7, 2, 9, 2.1, 8.7, 2.2, 1, 2.2));
+
+        return data.getFeatureSource(Rendering2DTest.LINE).getFeatures();
+    }
+
     private SimpleFeature createLineFeature(
-            int startx,
-            int starty,
-            int endx,
-            int endy,
             String name,
             CoordinateReferenceSystem crs,
             GeometryFactory geomFac,
-            AttributeDescriptor[] types)
+            double... ordinates)
             throws Exception {
-        Coordinate[] c =
-                new Coordinate[] {new Coordinate(startx, starty), new Coordinate(endx, endy)};
-        LineString line = geomFac.createLineString(c);
+        LiteCoordinateSequence cs = new LiteCoordinateSequence(ordinates);
+        LineString line = geomFac.createLineString(cs);
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         if (crs != null) builder.add("line", line.getClass(), crs);
         else builder.add("centre", line.getClass());

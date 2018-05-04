@@ -20,6 +20,9 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.LineString;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 
 /**
  * Allows to move a point cursor along the path of a LineString using a curvilinear coordinate
@@ -31,6 +34,8 @@ import java.util.Arrays;
  * @source $URL$
  */
 public class LineStringCursor {
+
+    static final Logger LOGGER = Logging.getLogger(LineStringCursor.class);
 
     /** Tolerance used for angle comparisons */
     static final double ONE_DEGREE = Math.PI / 180.0;
@@ -353,9 +358,13 @@ public class LineStringCursor {
                     }
                     prevAngle = angle;
                 }
+
+                // move to next segment
+                delegate.segment++;
             } while (ordinate < endOrdinate);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.INFO, "Error occurred while computing max angle change in label", e);
+            ;
         }
 
         return maxDifference;

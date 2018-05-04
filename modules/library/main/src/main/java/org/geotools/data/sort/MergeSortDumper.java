@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -113,7 +114,10 @@ class MergeSortDumper {
         if (!canSort(schema, sortBy)) {
             throw new IllegalArgumentException(
                     "The specified reader cannot be sorted, either the "
-                            + "sorting properties are not comparable or the attributes are not serializable");
+                            + "sorting properties are not comparable or the attributes are not serializable: "
+                            + reader.getFeatureType().getTypeName()
+                            + "\n "
+                            + Arrays.toString(sortBy));
         }
 
         int count = 0;

@@ -69,6 +69,7 @@ public class DefaultSubmosaicProducerSPITest {
         assertNotNull(gc);
         Query q = new Query(gc.getTypeNames()[0], Filter.INCLUDE);
         assertEquals(2, gc.getGranules(q).size());
+        imReader.dispose();
     }
 
     @Test

@@ -219,7 +219,7 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
         if (!file.isAbsolute()) {
             file = new File(reference, strValue);
         }
-        return file.getCanonicalPath();
+        return file.getPath();
     }
 
     @Override

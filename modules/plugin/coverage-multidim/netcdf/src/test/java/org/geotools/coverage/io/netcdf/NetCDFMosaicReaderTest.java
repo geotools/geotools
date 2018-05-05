@@ -122,7 +122,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_harvest1");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -232,7 +232,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_poly_hetero");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -295,7 +295,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "polyphemus_20130301_NO2_time2.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_time2");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -319,6 +319,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
         checkCustomTimeAttribute(nc1, reader);
+        reader.dispose();
     }
 
     @Test
@@ -342,7 +343,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "polyphemus_20130301_NO2_time2.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_time2");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -378,6 +379,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         assertEquals(1, typeNames.size());
         assertTrue(typeNames.contains("NO2"));
         dataStore.dispose();
+        reader.dispose();
     }
 
     public void checkCustomTimeAttribute(File nc1, ImageMosaicReader reader) throws IOException {
@@ -449,7 +451,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_harvest4");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -564,7 +566,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc2 = TestData.file(this, "2DLatLonCoverage2.nc");
         File mosaic = new File(TestData.file(this, "."), "simpleMosaic");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -589,6 +591,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
         reader.read("L1_V2", null);
+        reader.dispose();
     }
 
     @Test
@@ -597,7 +600,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_harvest2");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -696,7 +699,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc2 = TestData.file(this, "20130108.METOPA.GOME2.NO2.DUMMY_new.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_heterogen");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -783,7 +786,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_harvest");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -896,7 +899,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_harvest3");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -999,7 +1002,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_harvestRP");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -1066,7 +1069,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "O3-NO2.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_deleteCoverage");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -1118,7 +1121,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_gome2");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -1194,7 +1197,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
         File mosaic = new File(TestData.file(this, "."), "nc_sampleimages");
         if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
+            FileUtils.forceDelete(mosaic);
         }
         assertTrue(mosaic.mkdirs());
         FileUtils.copyFileToDirectory(nc1, mosaic);
@@ -1313,6 +1316,7 @@ public class NetCDFMosaicReaderTest extends Assert {
                 reader.read(
                         name, new GeneralParameterValue[] {gg, bkg, direct, sigmaValue, dateValue});
         assertNotNull(coverage);
+        reader.dispose();
     }
 
     /**
@@ -1326,7 +1330,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         File testDir = new File("target", "multi-coverage");
         URL testUrl = URLs.fileToUrl(testDir);
         if (testDir.exists()) {
-            FileUtils.deleteDirectory(testDir);
+            FileUtils.forceDelete(testDir);
         }
         FileUtils.copyDirectory(TestData.file(this, "multi-coverage"), testDir);
         ImageMosaicReader reader = null;

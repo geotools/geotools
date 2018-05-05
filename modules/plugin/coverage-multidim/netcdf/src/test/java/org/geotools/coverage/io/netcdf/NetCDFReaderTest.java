@@ -222,6 +222,7 @@ public class NetCDFReaderTest extends Assert {
 
         NetcdfDataset.setDefaultEnhanceMode(currentEnhanceMode);
         System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, currentEnhanceMode.toString());
+        reader.dispose();
     }
 
     @Test
@@ -238,6 +239,7 @@ public class NetCDFReaderTest extends Assert {
         assertEquals(0.133045, min, 1e-3f);
         assertEquals(35.827045, max, 1e-3f);
         assertEquals(-999, nodata, 1e-3f);
+        reader.dispose();
     }
 
     @Test
@@ -1413,6 +1415,7 @@ public class NetCDFReaderTest extends Assert {
         GeneralEnvelope envelope = reader.getOriginalEnvelope();
         assertNotNull(envelope);
         assertFalse(envelope.isEmpty());
+        reader.dispose();
     }
 
     /**
@@ -1427,5 +1430,6 @@ public class NetCDFReaderTest extends Assert {
         assertNotNull(sourceUrl);
         assertEquals("file", sourceUrl.getProtocol());
         assertTrue(sourceUrl.getPath().endsWith("O3-NO2.nc"));
+        reader.dispose();
     }
 }

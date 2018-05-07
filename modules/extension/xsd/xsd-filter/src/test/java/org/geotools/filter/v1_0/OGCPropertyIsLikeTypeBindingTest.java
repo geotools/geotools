@@ -20,6 +20,7 @@ import org.geotools.xml.Binding;
 import org.opengis.filter.PropertyIsLike;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /** @source $URL$ */
 public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
@@ -78,5 +79,34 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
         assertEquals("x", e.getAttribute("wildCard"));
         assertEquals("y", e.getAttribute("singleChar"));
         assertEquals("z", e.getAttribute("escape"));
+    }
+
+    public void testEncodeWithFunctionAsFilter() throws Exception {
+        Document doc = encode(FilterMockData.propertyIsLike2(), OGC.Filter);
+        // print(doc);
+
+        NodeList property =
+                doc.getDocumentElement()
+                        .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Function.getLocalPart());
+        assertEquals(1, property.getLength());
+
+        assertNotNull(property.item(0).getChildNodes());
+        assertNotSame("", property.item(0).getNodeValue());
+        assertEquals(
+                1,
+                doc.getDocumentElement()
+                        .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
+
+        Element e = getElementByQName(doc, OGC.PropertyIsLike);
+        assertEquals("x", e.getAttribute("wildCard"));
+        assertEquals("y", e.getAttribute("singleChar"));
+        assertEquals("z", e.getAttribute("escape"));
+
+        Element p = getElementByQName(e, OGC.Function);
+        assertEquals("strToLowerCase", p.getAttribute("name"));
+        Element pn = getElementByQName(p, OGC.PropertyName);
+
+        assertEquals("foo", pn.getTextContent());
     }
 }

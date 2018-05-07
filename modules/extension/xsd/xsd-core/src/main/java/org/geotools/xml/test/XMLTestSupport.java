@@ -345,7 +345,7 @@ public abstract class XMLTestSupport extends TestCase {
         }
         
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        encoder.write(object, element, output);
+        encoder.encode(object, element, output);
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);

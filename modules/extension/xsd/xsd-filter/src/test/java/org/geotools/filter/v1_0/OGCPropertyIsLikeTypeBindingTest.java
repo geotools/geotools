@@ -83,14 +83,14 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
     }
     public void testEncodeWithFunctionAsFilter() throws Exception {
         Document doc = encode(FilterMockData.propertyIsLike2(), OGC.Filter);
-        print(doc);
+        //print(doc);
         
         NodeList property = doc.getDocumentElement()
-           .getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart());
+           .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Function.getLocalPart());
         assertEquals(1,
             property.getLength());
-        System.out.println(property.item(0).getNodeValue());
-        assertNotNull(property.item(0).getNodeValue());
+       
+        assertNotNull(property.item(0).getChildNodes());
         assertNotSame("", property.item(0).getNodeValue());
         assertEquals(1,
             doc.getDocumentElement()
@@ -101,7 +101,10 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
         assertEquals("y", e.getAttribute("singleChar"));
         assertEquals("z", e.getAttribute("escape"));
         
-        Element p = getElementByQName(doc, OGC.PropertyName);
+        Element p = getElementByQName(e, OGC.Function);
+        assertEquals("strToLowerCase", p.getAttribute("name"));
+        Element pn = getElementByQName(p, OGC.PropertyName);
         
+        assertEquals("foo", pn.getTextContent());
     }
 }

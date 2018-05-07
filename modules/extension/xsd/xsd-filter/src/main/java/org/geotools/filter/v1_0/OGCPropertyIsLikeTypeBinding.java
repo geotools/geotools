@@ -114,7 +114,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
         throws Exception {
         PropertyIsLike isLike = (PropertyIsLike) object;
 
-        if (OGC.PropertyName.equals(name)) {
+        if (OGC.expression.equals(name)) {
             return isLike.getExpression();
         }
 

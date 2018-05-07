@@ -112,6 +112,10 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
             return isLike.getExpression();
         }
 
+        if (OGC.PropertyName.equals(name)) {
+            return isLike.getExpression();
+        }
+        
         if (OGC.Literal.equals(name)) {
             return isLike.getLiteral() != null ? factory.literal(isLike.getLiteral()) : null;
         }

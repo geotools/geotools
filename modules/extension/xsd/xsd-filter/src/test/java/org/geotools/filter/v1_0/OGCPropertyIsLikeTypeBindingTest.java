@@ -24,89 +24,90 @@ import org.w3c.dom.NodeList;
 import org.opengis.filter.PropertyIsLike;
 import org.geotools.xml.Binding;
 
-
 /** @source $URL$ */
 public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
-    public void testType() {
-        assertEquals(PropertyIsLike.class, binding(OGC.PropertyIsLikeType).getType());
-    }
+  public void testType() {
+    assertEquals(PropertyIsLike.class, binding(OGC.PropertyIsLikeType).getType());
+  }
 
-    public void testExecutionMode() {
-        assertEquals(Binding.OVERRIDE, binding(OGC.PropertyIsLikeType).getExecutionMode());
-    }
+  public void testExecutionMode() {
+    assertEquals(Binding.OVERRIDE, binding(OGC.PropertyIsLikeType).getExecutionMode());
+  }
 
-    public void testParse() throws Exception {
-        FilterMockData.propertyIsLike(document, document);
+  public void testParse() throws Exception {
+    FilterMockData.propertyIsLike(document, document);
 
-        PropertyIsLike isLike = (PropertyIsLike) parse();
+    PropertyIsLike isLike = (PropertyIsLike) parse();
 
-        assertNotNull(isLike.getExpression());
-        assertNotNull(isLike.getLiteral());
+    assertNotNull(isLike.getExpression());
+    assertNotNull(isLike.getLiteral());
 
-        assertEquals("x", isLike.getWildCard());
-        assertEquals("y", isLike.getSingleChar());
-        assertEquals("z", isLike.getEscape());
-    }
+    assertEquals("x", isLike.getWildCard());
+    assertEquals("y", isLike.getSingleChar());
+    assertEquals("z", isLike.getEscape());
+  }
 
-    public void testEncode() throws Exception {
-        Document doc = encode(FilterMockData.propertyIsLike(), OGC.PropertyIsLike);
+  public void testEncode() throws Exception {
+    Document doc = encode(FilterMockData.propertyIsLike(), OGC.PropertyIsLike);
 
-        Element pn = getElementByQName(doc, OGC.PropertyName);
-        assertNotNull(pn);
-        assertEquals("foo", pn.getFirstChild().getNodeValue());
+    Element pn = getElementByQName(doc, OGC.PropertyName);
+    assertNotNull(pn);
+    assertEquals("foo", pn.getFirstChild().getNodeValue());
 
-        Element l = getElementByQName(doc, OGC.Literal);
-        assertEquals("foo", l.getFirstChild().getNodeValue());
+    Element l = getElementByQName(doc, OGC.Literal);
+    assertEquals("foo", l.getFirstChild().getNodeValue());
 
-        assertEquals("x", doc.getDocumentElement().getAttribute("wildCard"));
-        assertEquals("y", doc.getDocumentElement().getAttribute("singleChar"));
-        assertEquals("z", doc.getDocumentElement().getAttribute("escape"));
-    }
+    assertEquals("x", doc.getDocumentElement().getAttribute("wildCard"));
+    assertEquals("y", doc.getDocumentElement().getAttribute("singleChar"));
+    assertEquals("z", doc.getDocumentElement().getAttribute("escape"));
+  }
 
-    public void testEncodeAsFilter() throws Exception {
-        Document doc = encode(FilterMockData.propertyIsLike(), OGC.Filter);
-        // print(doc);
+  public void testEncodeAsFilter() throws Exception {
+    Document doc = encode(FilterMockData.propertyIsLike(), OGC.Filter);
+    // print(doc);
 
-        assertEquals(
-                1,
-                doc.getDocumentElement()
-                        .getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
-                        .getLength());
-        assertEquals(
-                1,
-                doc.getDocumentElement()
-                        .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
-                        .getLength());
+    assertEquals(
+        1,
+        doc.getDocumentElement()
+            .getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+            .getLength());
+    assertEquals(
+        1,
+        doc.getDocumentElement()
+            .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+            .getLength());
 
-        Element e = getElementByQName(doc, OGC.PropertyIsLike);
-        assertEquals("x", e.getAttribute("wildCard"));
-        assertEquals("y", e.getAttribute("singleChar"));
-        assertEquals("z", e.getAttribute("escape"));
-    }
-    public void testEncodeWithFunctionAsFilter() throws Exception {
-        Document doc = encode(FilterMockData.propertyIsLike2(), OGC.Filter);
-        //print(doc);
-        
-        NodeList property = doc.getDocumentElement()
-           .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Function.getLocalPart());
-        assertEquals(1,
-            property.getLength());
-       
-        assertNotNull(property.item(0).getChildNodes());
-        assertNotSame("", property.item(0).getNodeValue());
-        assertEquals(1,
-            doc.getDocumentElement()
-               .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+    Element e = getElementByQName(doc, OGC.PropertyIsLike);
+    assertEquals("x", e.getAttribute("wildCard"));
+    assertEquals("y", e.getAttribute("singleChar"));
+    assertEquals("z", e.getAttribute("escape"));
+  }
 
-        Element e = getElementByQName( doc, OGC.PropertyIsLike);
-        assertEquals("x", e.getAttribute("wildCard"));
-        assertEquals("y", e.getAttribute("singleChar"));
-        assertEquals("z", e.getAttribute("escape"));
-        
-        Element p = getElementByQName(e, OGC.Function);
-        assertEquals("strToLowerCase", p.getAttribute("name"));
-        Element pn = getElementByQName(p, OGC.PropertyName);
-        
-        assertEquals("foo", pn.getTextContent());
-    }
+  public void testEncodeWithFunctionAsFilter() throws Exception {
+    Document doc = encode(FilterMockData.propertyIsLike2(), OGC.Filter);
+    //print(doc);
+
+    NodeList property =
+        doc.getDocumentElement().getElementsByTagNameNS(OGC.NAMESPACE, OGC.Function.getLocalPart());
+    assertEquals(1, property.getLength());
+
+    assertNotNull(property.item(0).getChildNodes());
+    assertNotSame("", property.item(0).getNodeValue());
+    assertEquals(
+        1,
+        doc.getDocumentElement()
+            .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+            .getLength());
+
+    Element e = getElementByQName(doc, OGC.PropertyIsLike);
+    assertEquals("x", e.getAttribute("wildCard"));
+    assertEquals("y", e.getAttribute("singleChar"));
+    assertEquals("z", e.getAttribute("escape"));
+
+    Element p = getElementByQName(e, OGC.Function);
+    assertEquals("strToLowerCase", p.getAttribute("name"));
+    Element pn = getElementByQName(p, OGC.PropertyName);
+
+    assertEquals("foo", pn.getTextContent());
+  }
 }

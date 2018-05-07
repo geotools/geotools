@@ -16,12 +16,18 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKBWriter;
 import com.vividsolutions.jts.io.WKTWriter;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Transparency;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -41,12 +47,16 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.footprint.FootprintInsetPolicy;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
+import org.geotools.coverage.grid.io.footprint.WKBLoaderSPI;
+import org.geotools.coverage.grid.io.footprint.WKTLoaderSPI;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.gce.imagemosaic.catalog.MultiLevelROIGeometryOverviewsProvider;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -54,7 +64,11 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
-import org.junit.*;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -169,6 +183,107 @@ public class ImageMosaicFootprintsTest {
                         null);
         ds.dispose();
         assertItalyFootprints();
+    }
+
+    @Test
+    public void testWkbMultipleSidecars() throws Exception {
+        // For this test, we use multiple WKB overviews having polygons in raster space
+        testMultipleSidecars("footprint_wkbs", WKBLoaderSPI.class.getName(), true, "_%d");
+    }
+
+    @Test
+    public void testWktMultipleSidecars() throws Exception {
+        // For this test, we use multiple WKT overviews having polygons in model space
+        testMultipleSidecars("footprint_wkts", WKTLoaderSPI.class.getName(), false, "-%d");
+    }
+
+    @Test
+    public void testWktMultipleSidecarsAutoDetect() throws Exception {
+        testMultipleSidecars("footprint_wkts", null, false, "-%d");
+    }
+
+    private void testMultipleSidecars(
+            String testFolder,
+            String loaderClassName,
+            boolean overviewsInRasterSpace,
+            String overviewsSuffixFormat)
+            throws Exception {
+
+        TemporaryFolder folder = new TemporaryFolder();
+        folder.create();
+        File multiWkbs = folder.getRoot();
+        FileUtils.copyDirectory(TestData.file(this, testFolder), multiWkbs);
+        Properties p = new Properties();
+        p.put(
+                MultiLevelROIProviderFactory.SOURCE_PROPERTY,
+                MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
+        p.put(
+                MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_SUFFIX_FORMAT_KEY,
+                overviewsSuffixFormat);
+        p.put(
+                MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_ROI_IN_RASTER_SPACE_KEY,
+                Boolean.toString(overviewsInRasterSpace));
+        if (loaderClassName != null) {
+            p.put(MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI, loaderClassName);
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(new File(multiWkbs, "footprints.properties"));
+            p.store(fos, null);
+        } finally {
+            IOUtils.closeQuietly(fos);
+        }
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(multiWkbs);
+
+        // limit yourself to reading just a bit of it
+        final ParameterValue<GridGeometry2D> gg =
+                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim = new Dimension();
+
+        // Apply some scaling and some crop
+        final double scalingFactorX = 1 / 5d;
+        final double scalingFactorY = 1 / 5d;
+        final double spanRatioX = 8 / 9d;
+        final double spanRatioY = 5 / 6d;
+        dim.setSize(
+                reader.getOriginalGridRange().getSpan(0) * (scalingFactorX * spanRatioX),
+                reader.getOriginalGridRange().getSpan(1) * (scalingFactorY * spanRatioY));
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        double maxX = envelope.getMaximum(0);
+        double minY = envelope.getMinimum(1);
+        double minX = maxX - envelope.getSpan(0) * (spanRatioX);
+        double maxY = minY + envelope.getSpan(1) * (spanRatioY);
+
+        final GeneralEnvelope env2 =
+                new GeneralEnvelope(new double[] {minX, minY}, new double[] {maxX, maxY});
+        env2.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
+        gg.setValue(new GridGeometry2D(range, env2));
+
+        ParameterValue<String> footprintManagement =
+                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        footprintManagement.setValue(FootprintBehavior.Transparent.name());
+        GridCoverage2D coverage =
+                reader.read(new GeneralParameterValue[] {footprintManagement, gg});
+
+        byte[] pixel = new byte[4];
+
+        // Checking some pixels out of the footprint are transparent
+        coverage.evaluate(new DirectPosition2D(-89, 34), pixel);
+        assertEquals(0, pixel[3]);
+
+        coverage.evaluate(new DirectPosition2D(43, -13), pixel);
+        assertEquals(0, pixel[3]);
+
+        coverage.evaluate(new DirectPosition2D(131, 10), pixel);
+        assertEquals(0, pixel[3]);
+
+        coverage.evaluate(new DirectPosition2D(145, 0), pixel);
+        assertEquals(0, pixel[3]);
     }
 
     @Test

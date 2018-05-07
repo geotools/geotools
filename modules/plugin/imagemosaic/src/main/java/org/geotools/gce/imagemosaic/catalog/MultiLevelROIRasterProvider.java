@@ -29,7 +29,6 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIRaster;
 import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.gce.imagemosaic.Utils;
@@ -51,9 +50,6 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
     /** Logger used for logging exceptions */
     static final Logger LOGGER = Logging.getLogger(SidecarFootprintProvider.class);
 
-    /** Hints to use for avoiding to search for the imagemosaic format */
-    public static final Hints EXCLUDE_MOSAIC = new Hints(Utils.EXCLUDE_MOSAIC, true);
-
     /** Mosaic Folder used as root folder */
     private File mosaicFolder;
 
@@ -71,14 +67,15 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
         Object value = sf.getAttribute("location");
         if (value != null && value instanceof String) {
             String strValue = (String) value;
-            File file = getFile(strValue);
+            File file = Utils.getFile(strValue, mosaicFolder);
             MultiLevelROI result = null;
             if (file.exists() && file.canRead()) {
                 try {
                     // When looking for formats which may parse this file, make sure to exclude the
                     // ImageMosaicFormat as return
                     AbstractGridFormat format =
-                            (AbstractGridFormat) GridFormatFinder.findFormat(file, EXCLUDE_MOSAIC);
+                            (AbstractGridFormat)
+                                    GridFormatFinder.findFormat(file, Utils.EXCLUDE_MOSAIC_HINTS);
                     AbstractGridCoverage2DReader reader = format.getReader(file);
                     // Getting Dataset Layout
                     DatasetLayout layout = reader.getDatasetLayout();
@@ -140,15 +137,6 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
             }
             return null;
         }
-    }
-
-    /** Returns the File associated to the imagemosaic feature location */
-    private File getFile(String strValue) throws IOException {
-        File file = new File(strValue);
-        if (!file.isAbsolute()) {
-            file = new File(mosaicFolder, strValue);
-        }
-        return file;
     }
 
     @Override

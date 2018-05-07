@@ -205,7 +205,9 @@ public class FilterMockData {
     }
     
     static PropertyIsLike propertyIsLike2() {
-        return f.like(propertyNameIsFunc(), "foo", "x", "y", "z");
+        PropertyIsLike filter = f.like(propertyNameIsFunc(), "foo", "x", "y", "z");
+        
+        return filter;
     }
 
    

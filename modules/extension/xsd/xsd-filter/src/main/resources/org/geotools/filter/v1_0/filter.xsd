@@ -74,7 +74,7 @@
 		<xsd:complexContent>
 			<xsd:extension base="ogc:ComparisonOpsType">
 				<xsd:sequence>
-					<xsd:element ref="ogc:PropertyName"/>
+					<xsd:element ref="ogc:expression"/>
 					<xsd:element ref="ogc:Literal"/>
 				</xsd:sequence>
 				<xsd:attribute name="wildCard" type="xsd:string" use="required"/>

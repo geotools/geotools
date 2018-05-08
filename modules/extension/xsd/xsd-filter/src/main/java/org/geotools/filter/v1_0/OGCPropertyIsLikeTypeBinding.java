@@ -24,7 +24,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:PropertyIsLikeType.

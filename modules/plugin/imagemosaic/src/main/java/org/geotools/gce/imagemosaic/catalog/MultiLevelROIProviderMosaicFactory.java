@@ -22,9 +22,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import org.geotools.coverage.grid.io.footprint.FootprintGeometryProvider;
+import org.geotools.coverage.grid.io.footprint.FootprintLoader;
+import org.geotools.coverage.grid.io.footprint.FootprintLoaderSpi;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
 import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
+import org.geotools.factory.Hints;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.URLs;
 import org.opengis.filter.Filter;
@@ -42,6 +45,10 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
 
     private MultiLevelROIProviderMosaicFactory() {}
 
+    public static MultiLevelROIProvider createFootprintProvider(File mosaicFolder) {
+        return createFootprintProvider(mosaicFolder, (Hints) null);
+    }
+
     /**
      * Builds a footprint provider from mosaic location
      *
@@ -49,7 +56,7 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
      * @return
      * @throws Exception
      */
-    public static MultiLevelROIProvider createFootprintProvider(File mosaicFolder) {
+    public static MultiLevelROIProvider createFootprintProvider(File mosaicFolder, Hints hints) {
         File configFile = new File(mosaicFolder, "footprints.properties");
         final Properties properties = initProperties(configFile);
 
@@ -73,6 +80,8 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
         } else if (MultiLevelROIProviderFactory.TYPE_RASTER.equals(source)) {
             // Raster masking
             return new MultiLevelROIRasterProvider(mosaicFolder);
+        } else if (MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR.equals(source)) {
+            return createMultiLevelROIOverviewsProvider(mosaicFolder, properties, hints);
         } else {
             throw new IllegalArgumentException(
                     "Invalid source type, it should be a reference "
@@ -83,6 +92,73 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
 
         // Create the provider
         return createProvider(provider, properties, null);
+    }
+
+    /** Create a {@link MultiLevelROIGeometryOverviewsProvider} based on specified properties */
+    private static MultiLevelROIProvider createMultiLevelROIOverviewsProvider(
+            File mosaicFolder, Properties properties, Hints hints) {
+
+        // Getting the footprint loader SPI
+        String footprintLoaderSpi =
+                (String)
+                        properties.get(MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI);
+        if (footprintLoaderSpi == null) {
+            throw new IllegalArgumentException(
+                    MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI
+                            + " property should be specified");
+        }
+
+        // Getting the footprint loader SPI for overviews (it may be null).
+        String overviewsFootprintLoaderSpi =
+                (String)
+                        properties.get(
+                                MultiLevelROIGeometryOverviewsProvider
+                                        .OVERVIEWS_FOOTPRINT_LOADER_SPI);
+
+        // Get the overviews suffix String format
+        String overviewsSuffixFormat =
+                (String)
+                        properties.getProperty(
+                                MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_SUFFIX_FORMAT_KEY,
+                                MultiLevelROIGeometryOverviewsProvider
+                                        .DEFAULT_OVERVIEWS_SUFFIX_FORMAT);
+
+        // Whether overviewsROI are provided in raster space (or model space)
+        String overviewsRoiInRasterSpaceString =
+                (String)
+                        properties.getProperty(
+                                MultiLevelROIGeometryOverviewsProvider
+                                        .OVERVIEWS_ROI_IN_RASTER_SPACE_KEY);
+        boolean overviewsRoiInRasterSpace =
+                overviewsRoiInRasterSpaceString != null
+                        ? Boolean.parseBoolean(overviewsRoiInRasterSpaceString)
+                        : MultiLevelROIGeometryOverviewsProvider
+                                .DEFAULT_OVERVIEWS_ROI_IN_RASTER_SPACE;
+
+        FootprintLoaderSpi spi = null;
+        try {
+            spi = (FootprintLoaderSpi) Class.forName(footprintLoaderSpi).newInstance();
+            FootprintLoader footprintLoader = spi.createLoader();
+            FootprintLoader overviewsFootprintLoader = footprintLoader;
+
+            if (overviewsFootprintLoaderSpi != null) {
+                // Use dedicate LoaderSPI for overviews
+                spi = (FootprintLoaderSpi) Class.forName(overviewsFootprintLoaderSpi).newInstance();
+                overviewsFootprintLoader = spi.createLoader();
+            }
+
+            return new MultiLevelROIGeometryOverviewsProvider(
+                    mosaicFolder,
+                    overviewsSuffixFormat,
+                    MultiLevelROIGeometryOverviewsProvider.LOOK_FOR_OVERVIEWS,
+                    footprintLoader,
+                    overviewsFootprintLoader,
+                    overviewsRoiInRasterSpace,
+                    hints);
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            throw new IllegalArgumentException(
+                    "Exception occurred while creating FootprintLoader", e);
+        }
     }
 
     private static FootprintGeometryProvider buildShapefileSource(

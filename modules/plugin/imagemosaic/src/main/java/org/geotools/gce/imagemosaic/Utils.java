@@ -141,6 +141,9 @@ public class Utils {
 
     public static final Key EXCLUDE_MOSAIC = new Key(Boolean.class);
 
+    /** Hints to use for avoiding to search for the imagemosaic format */
+    public static final Hints EXCLUDE_MOSAIC_HINTS = new Hints(Utils.EXCLUDE_MOSAIC, true);
+
     public static final Key CHECK_AUXILIARY_METADATA = new Key(Boolean.class);
 
     public static final Key AUXILIARY_FILES_PATH = new Key(String.class);
@@ -2394,5 +2397,14 @@ public class Utils {
         }
         org.opengis.geometry.Envelope envelope = CRS.getEnvelope(targetCRS);
         return envelope;
+    }
+
+    /** Returns the File associated to the rootFolder if not absolute */
+    public static File getFile(String strValue, File rootFolder) throws IOException {
+        File file = new File(strValue);
+        if (!file.isAbsolute()) {
+            file = new File(rootFolder, strValue);
+        }
+        return file;
     }
 }

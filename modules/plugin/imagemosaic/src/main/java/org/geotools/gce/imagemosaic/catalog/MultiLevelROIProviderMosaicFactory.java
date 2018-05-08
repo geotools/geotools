@@ -102,11 +102,6 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
         String footprintLoaderSpi =
                 (String)
                         properties.get(MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI);
-        if (footprintLoaderSpi == null) {
-            throw new IllegalArgumentException(
-                    MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI
-                            + " property should be specified");
-        }
 
         // Getting the footprint loader SPI for overviews (it may be null).
         String overviewsFootprintLoaderSpi =
@@ -136,15 +131,21 @@ public class MultiLevelROIProviderMosaicFactory extends MultiLevelROIProviderFac
                                 .DEFAULT_OVERVIEWS_ROI_IN_RASTER_SPACE;
 
         FootprintLoaderSpi spi = null;
+        FootprintLoader footprintLoader = null;
+        FootprintLoader overviewsFootprintLoader = null;
         try {
-            spi = (FootprintLoaderSpi) Class.forName(footprintLoaderSpi).newInstance();
-            FootprintLoader footprintLoader = spi.createLoader();
-            FootprintLoader overviewsFootprintLoader = footprintLoader;
+            if (footprintLoaderSpi != null) {
+                spi = (FootprintLoaderSpi) Class.forName(footprintLoaderSpi).newInstance();
+                footprintLoader = spi.createLoader();
+                overviewsFootprintLoader = footprintLoader;
 
-            if (overviewsFootprintLoaderSpi != null) {
-                // Use dedicate LoaderSPI for overviews
-                spi = (FootprintLoaderSpi) Class.forName(overviewsFootprintLoaderSpi).newInstance();
-                overviewsFootprintLoader = spi.createLoader();
+                if (overviewsFootprintLoaderSpi != null) {
+                    // Use dedicate LoaderSPI for overviews
+                    spi =
+                            (FootprintLoaderSpi)
+                                    Class.forName(overviewsFootprintLoaderSpi).newInstance();
+                    overviewsFootprintLoader = spi.createLoader();
+                }
             }
 
             return new MultiLevelROIGeometryOverviewsProvider(

@@ -29,6 +29,7 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.footprint.FootprintLoader;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
+import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
 import org.opengis.feature.simple.SimpleFeature;
@@ -73,6 +74,8 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
     /** Footprint loader instance to load the Overviews footprints */
     private FootprintLoader overviewsFootprintLoader;
 
+    private SidecarFootprintProvider footprintProvider;
+
     private Hints hints;
 
     /**
@@ -96,6 +99,11 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
         this.numOverviews = numOverviews;
         this.overviewsRoiInRasterSpace = overviewsRoiInRasterSpace;
         this.hints = hints;
+        if (footprintLoader == null) {
+            // When footprintLoader is not specified, fallback through
+            // sidecarFootprintProvider based on SPI scan
+            footprintProvider = new SidecarFootprintProvider(baseFile);
+        }
     }
 
     @Override
@@ -120,7 +128,7 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
         List<Geometry> footprintOverviews;
         AbstractGridCoverage2DReader reader = null;
         try {
-            footprint = footprintLoader.loadFootprint(baseFullName);
+            footprint = loadFootprint(baseFullName, false);
             int nOverviews = numOverviews;
             if (numOverviews == LOOK_FOR_OVERVIEWS) {
                 // No number of overviews have been provided.
@@ -140,7 +148,8 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
             for (int i = 0; i < nOverviews; i++) {
                 // Setting up the path of the overview's footprint file
                 String pathOverview = baseFullName + String.format(overviewSuffixFormat, i + 1);
-                footprintOverviews.add(overviewsFootprintLoader.loadFootprint(pathOverview));
+                Geometry overviewFootprint = loadFootprint(pathOverview, true);
+                footprintOverviews.add(overviewFootprint);
             }
             return new MultiLevelROIGeometryOverviews(
                     footprint, footprintOverviews, overviewsRoiInRasterSpace, hints);
@@ -155,6 +164,14 @@ public class MultiLevelROIGeometryOverviewsProvider implements MultiLevelROIProv
                 }
             }
         }
+    }
+
+    private Geometry loadFootprint(String baseFullName, boolean isOverview) throws Exception {
+        FootprintLoader loader = isOverview ? footprintLoader : overviewsFootprintLoader;
+        if (loader != null) {
+            return loader.loadFootprint(baseFullName);
+        }
+        return footprintProvider.getFootprint(baseFullName);
     }
 
     @Override

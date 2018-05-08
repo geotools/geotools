@@ -188,23 +188,31 @@ public class ImageMosaicFootprintsTest {
     @Test
     public void testWkbMultipleSidecars() throws Exception {
         // For this test, we use multiple WKB overviews having polygons in raster space
-        testMultipleSidecars(WKBLoaderSPI.class.getName(), true, "_%d");
+        testMultipleSidecars("footprint_wkbs", WKBLoaderSPI.class.getName(), true, "_%d");
     }
 
     @Test
     public void testWktMultipleSidecars() throws Exception {
         // For this test, we use multiple WKT overviews having polygons in model space
-        testMultipleSidecars(WKTLoaderSPI.class.getName(), false, "-%d");
+        testMultipleSidecars("footprint_wkts", WKTLoaderSPI.class.getName(), false, "-%d");
+    }
+
+    @Test
+    public void testWktMultipleSidecarsAutoDetect() throws Exception {
+        testMultipleSidecars("footprint_wkts", null, false, "-%d");
     }
 
     private void testMultipleSidecars(
-            String loaderClassName, boolean overviewsInRasterSpace, String overviewsSuffixFormat)
+            String testFolder,
+            String loaderClassName,
+            boolean overviewsInRasterSpace,
+            String overviewsSuffixFormat)
             throws Exception {
 
         TemporaryFolder folder = new TemporaryFolder();
         folder.create();
         File multiWkbs = folder.getRoot();
-        FileUtils.copyDirectory(TestData.file(this, "footprint_wkbs"), multiWkbs);
+        FileUtils.copyDirectory(TestData.file(this, testFolder), multiWkbs);
         Properties p = new Properties();
         p.put(
                 MultiLevelROIProviderFactory.SOURCE_PROPERTY,
@@ -215,7 +223,9 @@ public class ImageMosaicFootprintsTest {
         p.put(
                 MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_ROI_IN_RASTER_SPACE_KEY,
                 Boolean.toString(overviewsInRasterSpace));
-        p.put(MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI, loaderClassName);
+        if (loaderClassName != null) {
+            p.put(MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI, loaderClassName);
+        }
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(new File(multiWkbs, "footprints.properties"));

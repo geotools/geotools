@@ -163,14 +163,12 @@ abstract class ImageMosaicWalker implements Runnable {
             if (cachedFormat == null) {
                 // When looking for formats which may parse this file, make sure to exclude the
                 // ImageMosaicFormat as return
-                format =
-                        (AbstractGridFormat)
-                                GridFormatFinder.findFormat(fileBeingProcessed, excludeMosaicHints);
+                format = GridFormatFinder.findFormat(fileBeingProcessed, excludeMosaicHints);
             } else {
                 if (cachedFormat.accepts(fileBeingProcessed)) {
                     format = cachedFormat;
                 } else {
-                    format = new UnknownFormat();
+                    format = GridFormatFinder.findFormat(fileBeingProcessed, excludeMosaicHints);
                 }
             }
             if ((format instanceof UnknownFormat) || format == null) {
@@ -186,7 +184,6 @@ abstract class ImageMosaicWalker implements Runnable {
                 }
                 return;
             }
-            cachedFormat = format;
 
             final Hints configurationHints = configHandler.getRunConfiguration().getHints();
             coverageReader =
@@ -234,21 +231,32 @@ abstract class ImageMosaicWalker implements Runnable {
 
             for (String cvName : coverageNames) {
                 boolean shouldAccept = true;
-                for (GranuleAcceptor acceptor : this.configHandler.getGranuleAcceptors()) {
-                    if (!acceptor.accepts(
-                            coverageReader, cvName, fileBeingProcessed, configHandler)) {
-                        shouldAccept = false;
-                        eventHandler.fireFileEvent(
-                                Level.FINE,
-                                fileBeingProcessed,
-                                true,
-                                "Granule acceptor  "
-                                        + acceptor.getClass().getName()
-                                        + " rejected the granule being processed"
-                                        + fileBeingProcessed,
-                                ((fileIndex + 1) * 99.0) / numFiles);
-                        break;
+                try {
+                    for (GranuleAcceptor acceptor : this.configHandler.getGranuleAcceptors()) {
+                        if (!acceptor.accepts(
+                                coverageReader, cvName, fileBeingProcessed, configHandler)) {
+                            shouldAccept = false;
+                            eventHandler.fireFileEvent(
+                                    Level.FINE,
+                                    fileBeingProcessed,
+                                    true,
+                                    "Granule acceptor  "
+                                            + acceptor.getClass().getName()
+                                            + " rejected the granule being processed"
+                                            + fileBeingProcessed,
+                                    ((fileIndex + 1) * 99.0) / numFiles);
+                            break;
+                        }
                     }
+                    // store the format only if we can accept this file, not before
+                    cachedFormat = format;
+                } catch (Exception e) {
+                    LOGGER.log(
+                            Level.FINE,
+                            "Failure during potential granule evaluation, skipping it: "
+                                    + fileBeingProcessed,
+                            e);
+                    shouldAccept = false;
                 }
 
                 if (shouldAccept) {

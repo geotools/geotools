@@ -484,6 +484,54 @@ public class FootprintExtractionProcessTest {
     }
 
     @Test
+    public void emptyPolygonExtractionTest() throws Exception {
+        GeoTiffReader reader = null;
+        FeatureIterator<SimpleFeature> iter = null;
+        GridCoverage2D cov = null;
+        try {
+            reader = new GeoTiffReader(cloudFile);
+            cov = reader.read(null);
+            BandSelectProcess select = new BandSelectProcess();
+            cov = select.execute(cov, new int[] {0}, null);
+            List<Range<Integer>> exclusionRange = new ArrayList<Range<Integer>>();
+
+            // Exclude any value so the process will not find anything
+            exclusionRange.add(new Range<Integer>(Integer.class, 0, 255));
+            SimpleFeatureCollection fc =
+                    process.execute(cov, exclusionRange, 10d, false, null, true, true, null, null);
+            assertEquals(1, fc.size());
+
+            iter = fc.features();
+
+            // Check no results are returned as an empty MultiPolygon
+            SimpleFeature feature = iter.next();
+            Object geom = feature.getDefaultGeometry();
+            assertTrue(geom instanceof MultiPolygon);
+            MultiPolygon geometry = (MultiPolygon) geom;
+            assertTrue(geometry.isEmpty());
+
+        } finally {
+            if (iter != null) {
+                iter.close();
+            }
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+
+                }
+            }
+            if (cov != null) {
+                try {
+                    cov.dispose(true);
+                } catch (Throwable t) {
+
+                }
+            }
+        }
+    }
+
+    @Test
     public void valuesEqualityTest() throws Exception {
         double p1 = 0.2;
         double p2 = 2d / 10;

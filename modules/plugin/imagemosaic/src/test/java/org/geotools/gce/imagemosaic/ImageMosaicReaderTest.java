@@ -17,6 +17,8 @@
 package org.geotools.gce.imagemosaic;
 
 import static org.geotools.util.URLs.fileToUrl;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 
@@ -110,6 +112,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
@@ -152,6 +155,7 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
@@ -201,6 +205,8 @@ public class ImageMosaicReaderTest extends Assert {
     private URL rgbAURL;
 
     private URL rgbAURLTiff;
+
+    private URL rgbaExtraURLTiff;
 
     private URL overviewURL;
 
@@ -2430,6 +2436,7 @@ public class ImageMosaicReaderTest extends Assert {
 
         imposedEnvelopeURL = TestData.url(this, "env");
         rgbAURLTiff = TestData.url(this, "tiff_rgba/");
+        rgbaExtraURLTiff = TestData.url(this, "tiff_rgba_extra/");
     }
 
     /**
@@ -5172,6 +5179,47 @@ public class ImageMosaicReaderTest extends Assert {
             assertEquals(expectedNoData, noDataContainer.getAsSingleValue(), 0d);
         } else {
             assertNull(noDataContainer);
+        }
+    }
+
+    @Test
+    public void testHarvestWithExtraNonSpatialFile() throws Exception {
+        File source = URLs.urlToFile(rgbAURLTiff);
+        File extras = URLs.urlToFile(rgbaExtraURLTiff);
+        File testDataDir = TestData.file(this, ".");
+        File directory = new File(testDataDir, "rgba_tiff_extra_test");
+        if (directory.exists()) {
+            FileUtils.deleteDirectory(directory);
+        }
+        FileUtils.copyDirectory(source, directory);
+        FileUtils.copyDirectory(extras, directory);
+
+        // ok, let's create a mosaic with a single granule and check its times
+        URL harvestSingleURL = fileToUrl(directory);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+        ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        assertNotNull(reader);
+        try {
+            // the coverage name got parsed
+            String[] names = reader.getGridCoverageNames();
+            assertEquals(1, names.length);
+            assertEquals("passA", names[0]);
+
+            // the mosaic is referenced
+            CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
+            CoordinateReferenceSystem expected = CRS.decode("EPSG:4326", true);
+            assertTrue(CRS.equalsIgnoreMetadata(expected, crs));
+
+            // there are two granules in the mosaic, the tiffs, with the expected locations
+            GranuleSource passA = reader.getGranules("passA", true);
+            UniqueVisitor visitor = new UniqueVisitor("location");
+            passA.getGranules(Query.ALL).accepts(visitor, null);
+            Set<String> locations = visitor.getUnique();
+            System.out.println(locations);
+            assertThat(locations, hasItem(equalTo("passA2006128211927.tiff")));
+            assertThat(locations, hasItem(equalTo("passA2006128194218.tiff")));
+        } finally {
+            reader.dispose();
         }
     }
 }

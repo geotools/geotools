@@ -18,7 +18,7 @@ Creating an AppSchemaDataAccess
 Like other data stores, an instance of ``AppSchemaDataAccess`` is constructed by supplying parameters to ``DataAccessFinder.getDataStore``. The parameters map must contain the following:
 
 * ``dbtype`` set to the string ``"app-schema"``
-* ``url`` set to a string containing a ``file:`` or ``jar:file:`` URL for a mapping file
+* ``url`` set to a string containing a ``file:``, ``jar:file:`` or ``ttp`` URL for a mapping file
 
 
 Resource Management
@@ -34,7 +34,7 @@ Resource Management
 Schema download
 '''''''''''''''
 
-To enable automatic schema download and caching, create a directory ``app-schema-cache`` in the same directory as the mapping file, or one of its parent directories.
+To enable automatic schema download and caching, create a directory ``app-schema-cache`` in the same directory as the mapping file, or one of its parent directories or provide an explicit location using system property ``schema.cache.dir``, e.g. ``-Dschema.cache.dir=/var/lib/app-schema-cache``.
 
 
 Example

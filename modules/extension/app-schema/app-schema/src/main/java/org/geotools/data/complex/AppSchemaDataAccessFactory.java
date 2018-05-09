@@ -17,7 +17,6 @@
 
 package org.geotools.data.complex;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
@@ -25,12 +24,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import org.geotools.data.*;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.DataAccessMap;
 import org.geotools.data.complex.config.XMLConfigDigester;
-import org.geotools.util.URLs;
+import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
@@ -47,6 +47,8 @@ import org.opengis.feature.type.FeatureType;
  * @since 2.4
  */
 public class AppSchemaDataAccessFactory implements DataAccessFactory {
+
+    private static final Logger LOGGER = Logging.getLogger(AppSchemaDataAccessFactory.class);
 
     public static final String DBTYPE_STRING = "app-schema";
 
@@ -86,18 +88,7 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         // on getCapabilities, and getFeature also shouldn't return anything etc.
         List<String> includes = config.getIncludes();
         for (Iterator<String> it = includes.iterator(); it.hasNext(); ) {
-            String parentLocation;
-            parentLocation = URLs.urlToFile(configFileUrl).getParent();
-            File includedConfig = new File(parentLocation, it.next());
-            if (!includedConfig.exists()) {
-                throw new RuntimeException(
-                        "Please check that the includedTypes location is correct: \n '"
-                                + includedConfig.getPath()
-                                + "' doesn't exist!");
-            }
-
-            URL relatedConfigURL = URLs.fileToUrl(includedConfig);
-            params.put("url", relatedConfigURL);
+            params.put("url", buildIncludeUrl(configFileUrl, it.next()));
             // this will register the related data access, to enable feature chaining;
             // sourceDataStoreMap is passed on to keep track of the already created source data
             // stores
@@ -112,6 +103,35 @@ public class AppSchemaDataAccessFactory implements DataAccessFactory {
         dataStore = new AppSchemaDataAccess(mappings, hidden);
 
         return dataStore;
+    }
+
+    /**
+     * Helper method that builds the URL that should be used to retrieve an included type. If the
+     * the include is already a valid URL then it is used has is, otherwise an URL will be used
+     * using the parent URL.
+     */
+    private String buildIncludeUrl(URL parentUrl, String include) {
+        // first check if the include is already an URL
+        String includeLowerCase = include.toLowerCase();
+        if (includeLowerCase.startsWith("http:") || includeLowerCase.startsWith("file:")) {
+            // we already have an URL, return it has is
+            return include;
+        }
+        // we need to build an URL using the parent URL as a basis
+        String url = parentUrl.toString();
+        int index = url.lastIndexOf("/");
+        if (index <= 0) {
+            // we can't handle this situation let's raise an exception
+            throw new RuntimeException(
+                    String.format(
+                            "Can't build include types '%s' URL using parent '%s' URL.",
+                            include, url));
+        }
+        // build the include types URL
+        url = url.substring(0, index + 1) + include;
+        LOGGER.fine(
+                String.format("Using URL '%s' to retrieve include types with '%s'.", url, include));
+        return url;
     }
 
     public DataStore createNewDataStore(Map params) throws IOException {

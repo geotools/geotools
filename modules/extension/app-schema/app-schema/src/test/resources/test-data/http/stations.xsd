@@ -1,0 +1,44 @@
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:gml="http://www.opengis.net/gml/3.2"
+           xmlns:st="http://www.stations.org/1.0"
+           targetNamespace="http://www.stations.org/1.0"
+           elementFormDefault="qualified">
+
+    <xs:import namespace="http://www.opengis.net/gml/3.2"
+               schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+  
+    <xs:complexType name="MeasurementType">
+        <xs:complexContent>
+            <xs:extension base="gml:AbstractFeatureType">
+                <xs:sequence>
+                    <xs:element name="name" type="xs:string"/>
+                    <xs:element name="unit" type="xs:string"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="MeasurementPropertyType">
+        <xs:sequence>
+            <xs:element ref="st:Measurement"/>
+        </xs:sequence>
+        <xs:attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </xs:complexType>
+
+    <xs:complexType name="StationType">
+        <xs:complexContent>
+            <xs:extension base="gml:AbstractFeatureType">
+                <xs:sequence>
+                    <xs:element name="name" type="string"/>
+                    <xs:element name="geometry" type="gml:GeometryPropertyType"/>
+                    <xs:element name="measurements" type="st:MeasurementPropertyType" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="Measurement" type="st:MeasurementType" substitutionGroup="gml:AbstractFeature"/>
+    <xs:element name="Station" type="st:StationType" substitutionGroup="gml:AbstractFeature"/>
+
+</xs:schema>

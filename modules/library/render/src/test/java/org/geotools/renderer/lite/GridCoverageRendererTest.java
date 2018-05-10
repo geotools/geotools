@@ -91,6 +91,7 @@ import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.gridcoverage2d.ContrastEnhancementType;
+import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelperTest;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.resources.image.ImageUtilities;
@@ -163,6 +164,7 @@ public class GridCoverageRendererTest {
 
     private GeoTiffReader sampleGribReader;
 
+    private static double DELTA = 1E-6;
     // @BeforeClass
     // public static void enableJaiExt() {
     // final String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
@@ -2108,5 +2110,40 @@ public class GridCoverageRendererTest {
         // make sure no errors and no features
         assertEquals(0, counter.errors);
         assertEquals(0, counter.features);
+    }
+
+    /**
+     * Test custom PADDING is being used when provided as Hint
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testPadding() throws Exception {
+        CoordinateReferenceSystem wgs84 = CRS.decode("EPSG:4326", true);
+        final double envWidth = 30;
+        final double envHeight = 30;
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, envWidth, 0, envHeight, wgs84);
+        Rectangle screenSize = new Rectangle((int) envWidth, (int) envHeight);
+        checkPadding(screenSize, mapExtent, 4);
+        checkPadding(screenSize, mapExtent, 12);
+    }
+
+    private void checkPadding(
+            Rectangle screenSize, ReferencedEnvelope requestedEnvelope, int padding)
+            throws FactoryException, IOException {
+        // Setup padding Hints
+        Hints hints = new Hints(GridCoverageRenderer.PADDING, padding);
+        GridCoverageReaderHelper helper =
+                new GridCoverageReaderHelper(
+                        worldReader,
+                        screenSize,
+                        requestedEnvelope,
+                        Interpolation.getInstance(Interpolation.INTERP_BILINEAR),
+                        hints);
+
+        // Get the read envelope which should have been expanded by padding
+        ReferencedEnvelope readEnvelope = helper.getReadEnvelope();
+        assertEquals(requestedEnvelope.getWidth() + padding * 2, readEnvelope.getWidth(), DELTA);
+        assertEquals(requestedEnvelope.getHeight() + padding * 2, readEnvelope.getHeight(), DELTA);
     }
 }

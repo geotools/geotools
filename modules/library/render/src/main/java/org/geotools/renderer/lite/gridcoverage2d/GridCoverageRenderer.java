@@ -68,6 +68,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.factory.Hints;
+import org.geotools.factory.Hints.Key;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -172,6 +173,9 @@ public final class GridCoverageRenderer {
 
     public static final String PARENT_COVERAGE_PROPERTY = "ParentCoverage";
 
+    /** Hint's KEY specifying a custom padding */
+    public static final Key PADDING = new Key(Integer.class);
+
     /**
      * Enables/disable map wrapping (active only when rendering off a {@link GridCoverage2DReader}
      * and when advanced projection handling has been enabled too)
@@ -211,9 +215,9 @@ public final class GridCoverageRenderer {
      *
      * @param destinationCRS the CRS of the {@link GridCoverage2D} to render.
      * @param envelope delineating the area to be rendered.
-     * @param screenSize at which we want to rendere the source {@link GridCoverage2D}.
+     * @param screenSize at which we want to render the source {@link GridCoverage2D}.
      * @param worldToScreen if not <code>null</code> and if it contains a rotation, this Affine
-     *     Tranform is used directly to convert from world coordinates to screen coordinates.
+     *     Transform is used directly to convert from world coordinates to screen coordinates.
      *     Otherwise, a standard {@link GridToEnvelopeMapper} is used to calculate the affine
      *     transform.
      * @throws TransformException
@@ -234,9 +238,9 @@ public final class GridCoverageRenderer {
      *
      * @param destinationCRS the CRS of the {@link GridCoverage2D} to render.
      * @param envelope delineating the area to be rendered.
-     * @param screenSize at which we want to rendere the source {@link GridCoverage2D}.
+     * @param screenSize at which we want to render the source {@link GridCoverage2D}.
      * @param worldToScreen if not <code>null</code> and if it contains a rotation, this Affine
-     *     Tranform is used directly to convert from world coordinates to screen coordinates.
+     *     Transform is used directly to convert from world coordinates to screen coordinates.
      *     Otherwise, a standard {@link GridToEnvelopeMapper} is used to calculate the affine
      *     transform.
      * @param newHints {@link RenderingHints} to control this rendering process.
@@ -843,7 +847,8 @@ public final class GridCoverageRenderer {
                         reader,
                         destinationSize,
                         ReferencedEnvelope.reference(destinationEnvelope),
-                        interpolation);
+                        interpolation,
+                        hints);
         // are we dealing with a remote service wrapped in a reader, one that can handle
         // reprojection
         // by itself?

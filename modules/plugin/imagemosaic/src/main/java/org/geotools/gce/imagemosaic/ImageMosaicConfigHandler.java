@@ -362,7 +362,8 @@ public class ImageMosaicConfigHandler {
                     GranuleCatalogFactory.createGranuleCatalog(
                             params, false, create, Utils.SHAPE_SPI, runConfiguration.getHints());
             MultiLevelROIProvider roi =
-                    MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
+                    MultiLevelROIProviderMosaicFactory.createFootprintProvider(
+                            parent, runConfiguration.getHints());
             catalog.setMultiScaleROIProvider(roi);
         }
 

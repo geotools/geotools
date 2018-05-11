@@ -45,6 +45,7 @@ public class MultiLevelROIProviderFactory {
     // store types
     public static final String TYPE_SIDECAR = "sidecar";
     public static final String TYPE_RASTER = "raster";
+    public static final String TYPE_MULTIPLE_SIDECAR = "multisidecar";
 
     protected MultiLevelROIProviderFactory() {}
 

@@ -17,8 +17,6 @@
 
 package org.geotools.gce.imagemosaic;
 
-import static org.geotools.gce.imagemosaic.ImageMosaicConfigHandler.LOGGER;
-
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;

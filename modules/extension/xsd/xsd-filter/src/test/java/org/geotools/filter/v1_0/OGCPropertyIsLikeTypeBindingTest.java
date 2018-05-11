@@ -180,4 +180,5 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
         assertEquals("#", e.getAttribute("singleChar"));
         assertEquals("!", e.getAttribute("escape"));
     }
+
 }

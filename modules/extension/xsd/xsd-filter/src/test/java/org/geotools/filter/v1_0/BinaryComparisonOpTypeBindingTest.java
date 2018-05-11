@@ -194,6 +194,7 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
         PropertyIsGreaterThan equalTo = FilterMockData.propertyFuncIsGreaterThan();
 
         Document dom = encode(equalTo, OGC.PropertyIsGreaterThan);
+
         assertEquals(
                 1,
                 dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())

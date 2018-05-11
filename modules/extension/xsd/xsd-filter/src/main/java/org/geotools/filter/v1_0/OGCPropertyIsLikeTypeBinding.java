@@ -25,7 +25,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:PropertyIsLikeType.
@@ -99,6 +98,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
                 name = n;
             }
         }
+
         Literal literal = (Literal) node.getChildValue(Literal.class);
 
         String wildcard = (String) node.getAttributeValue("wildCard");
@@ -120,6 +120,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
 
     public Object getProperty(Object object, QName name) throws Exception {
         PropertyIsLike isLike = (PropertyIsLike) object;
+
 
         if (OGC.expression.equals(name) && !(isLike.getExpression() instanceof Literal)) {
             return isLike.getExpression();

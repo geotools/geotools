@@ -38,6 +38,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.ReadResolutionCalculator;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.EmptyIntersectionException;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
@@ -90,18 +91,33 @@ public class GridCoverageReaderHelper {
 
     private boolean sameCRS;
 
+    private int padding;
+
     public GridCoverageReaderHelper(
             GridCoverage2DReader reader,
             Rectangle mapRasterArea,
             ReferencedEnvelope mapExtent,
             Interpolation interpolation)
             throws FactoryException, IOException {
+        this(reader, mapRasterArea, mapExtent, interpolation, null);
+    }
+
+    public GridCoverageReaderHelper(
+            GridCoverage2DReader reader,
+            Rectangle mapRasterArea,
+            ReferencedEnvelope mapExtent,
+            Interpolation interpolation,
+            Hints hints)
+            throws FactoryException, IOException {
         this.reader = reader;
         this.mapExtent = mapExtent;
         this.requestedGridGeometry =
                 new GridGeometry2D(new GridEnvelope2D(mapRasterArea), mapExtent);
         this.worldToScreen = requestedGridGeometry.getCRSToGrid2D();
-
+        this.padding = DEFAULT_PADDING;
+        if (hints != null && hints.containsKey(GridCoverageRenderer.PADDING)) {
+            padding = (int) hints.get(GridCoverageRenderer.PADDING);
+        }
         // determine if we need a reading gutter, or not, we do if we are reprojecting, or if
         // there is an interpolation to be applied, in that case we need to expand the area
         // we are going to read
@@ -171,10 +187,10 @@ public class GridCoverageReaderHelper {
 
     private void applyReadGutter(GridEnvelope2D gridRange) {
         gridRange.setBounds(
-                gridRange.x - DEFAULT_PADDING,
-                gridRange.y - DEFAULT_PADDING,
-                gridRange.width + DEFAULT_PADDING * 2,
-                gridRange.height + DEFAULT_PADDING * 2);
+                gridRange.x - padding,
+                gridRange.y - padding,
+                gridRange.width + padding * 2,
+                gridRange.height + padding * 2);
     }
 
     private GridGeometry2D applyReadGutter(GridGeometry2D gg) {

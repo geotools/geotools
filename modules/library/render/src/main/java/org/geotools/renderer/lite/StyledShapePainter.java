@@ -40,10 +40,10 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.style.GraphicStyle2D;
 import org.geotools.renderer.style.IconStyle2D;
@@ -439,7 +439,8 @@ public class StyledShapePainter {
                     iter.currentSegment(coords);
                     try {
                         BufferedImage image =
-                                ImageIO.read(graphic.getOnlineResource().getLinkage().toURL());
+                                ImageIOExt.readBufferedImage(
+                                        graphic.getOnlineResource().getLinkage().toURL());
                         if ((symbolScale > 0.0) && (symbolScale != 1.0)) {
                             int w = (int) (image.getWidth() / symbolScale);
                             int h = (int) (image.getHeight() / symbolScale);

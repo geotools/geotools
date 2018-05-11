@@ -26,13 +26,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.wmts.model.WMTSServiceType;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
@@ -230,7 +230,7 @@ class WMTSTile extends Tile {
         InputStream is = null;
         try {
             is = setupInputStream(getUrl(), headers);
-            return ImageIO.read(is);
+            return ImageIOExt.readBufferedImage(is);
         } finally {
             IOUtils.closeQuietly(is);
         }

@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.v1_0;
 
+import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -24,6 +25,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:PropertyIsLikeType.
@@ -82,8 +84,21 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
+    @SuppressWarnings("unchecked")
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Expression name = (Expression) node.getChildValue(Expression.class);
+        Expression name = null;
+        List<Expression> names = node.getChildValues(Expression.class);
+        if (names.size() == 2) { // simple pair extract PropertyName
+            name = (Expression) node.getChildValue(PropertyName.class);
+        }
+        if (name == null) { // search for a non literal Expression
+            for (Expression n : names) {
+                if (n instanceof Literal) {
+                    continue;
+                }
+                name = n;
+            }
+        }
         Literal literal = (Literal) node.getChildValue(Literal.class);
 
         String wildcard = (String) node.getAttributeValue("wildCard");
@@ -106,7 +121,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
     public Object getProperty(Object object, QName name) throws Exception {
         PropertyIsLike isLike = (PropertyIsLike) object;
 
-        if (OGC.expression.equals(name)) {
+        if (OGC.expression.equals(name) && !(isLike.getExpression() instanceof Literal)) {
             return isLike.getExpression();
         }
 

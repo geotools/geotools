@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.tile.ImageLoader;
 import org.geotools.tile.Tile;
 import org.geotools.util.logging.Logging;
@@ -67,14 +68,14 @@ public class CachedImageLoader implements ImageLoader {
                                 + "' at "
                                 + imgFile.getAbsolutePath());
             }
-            img = ImageIO.read(imgFile);
+            img = ImageIOExt.readBufferedImage(imgFile);
 
         } else {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine(
                         "Not found in cache '" + tile.getId() + "'. Loading from " + tile.getUrl());
             }
-            img = ImageIO.read(tile.getUrl());
+            img = ImageIOExt.readBufferedImage(tile.getUrl());
             ImageIO.write(img, "png", imgFile);
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Wrote to cache " + imgFile.getAbsolutePath());

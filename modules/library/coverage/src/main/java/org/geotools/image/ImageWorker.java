@@ -440,7 +440,7 @@ public class ImageWorker {
      * @throws IOException if the file can't be read.
      */
     public ImageWorker(final File input) throws IOException {
-        this(ImageIO.read(input));
+        this(ImageIOExt.read(input));
     }
 
     /**

@@ -28,13 +28,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
-import javax.imageio.ImageIO;
 import javax.measure.unit.Unit;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -352,7 +352,7 @@ public class GridCoverageBuilder {
      * @throws IOException if the image can't be read.
      */
     public void setBufferedImage(final File file) throws IOException {
-        setBufferedImage(ImageIO.read(file));
+        setBufferedImage(ImageIOExt.readBufferedImage(file));
     }
 
     /**

@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -172,7 +172,7 @@ public abstract class Tile implements ImageLoader {
     }
 
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
-        return ImageIO.read(getUrl());
+        return ImageIOExt.readBufferedImage(getUrl());
     }
 
     /**

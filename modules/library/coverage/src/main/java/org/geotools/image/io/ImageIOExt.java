@@ -17,13 +17,21 @@
 package org.geotools.image.io;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderWriterSpi;
@@ -31,8 +39,13 @@ import javax.imageio.stream.FileCacheImageOutputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
+import javax.media.jai.PlanarImage;
+import org.geotools.image.ImageWorker;
 import org.geotools.resources.Classes;
 import org.geotools.util.Utilities;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Provides an alternative source of image input and output streams that uses optimized behavior.
@@ -299,5 +312,128 @@ public class ImageIOExt {
             bits += image.getSampleModel().getSampleSize(i);
         }
         return (long) Math.ceil(bits / 8) * image.getWidth() * image.getHeight();
+    }
+
+    /**
+     * Reads an image from the given input, working around some JDK reader issues. At the time of
+     * writing, this applies a work around for PNGs with RGB (no alpha) and a transparent color
+     * configured in the header, that the JDK reader cannot handle.
+     *
+     * @param input A non null image source, like a {@link File}, {@link java.net.URL}, or {@link
+     *     java.io.InputStream}
+     * @return A image
+     * @throws IOException
+     */
+    public static RenderedImage read(Object input) throws IOException {
+        if (input == null) {
+            throw new IllegalArgumentException("input == null!");
+        }
+
+        // build an image input stream
+        ImageInputStream stream;
+        if (input instanceof ImageInputStream) {
+            stream = (ImageInputStream) input;
+        } else {
+            stream = ImageIO.createImageInputStream(input);
+        }
+        if (stream == null) {
+            throw new IOException("Can't create an ImageInputStream!");
+        }
+
+        // get the readers
+        Iterator iter = ImageIO.getImageReaders(stream);
+        if (!iter.hasNext()) {
+            return null;
+        }
+
+        ImageReader reader = (ImageReader) iter.next();
+        // work around PNG with transparent RGB color if needed
+        // we can remove it once we run on JDK 11, see
+        // https://bugs.openjdk.java.net/browse/JDK-6788458
+        boolean isJdkPNGReader =
+                "com.sun.imageio.plugins.png.PNGImageReader".equals(reader.getClass().getName());
+        // if it's the JDK PNG reader, we cannot skip the metadata, the tRNS section will be in
+        // there
+        reader.setInput(stream, true, !isJdkPNGReader);
+
+        BufferedImage bi;
+        try {
+            ImageReadParam param = reader.getDefaultReadParam();
+            bi = reader.read(0, param);
+        } finally {
+            reader.dispose();
+            stream.close();
+        }
+
+        // apply transparency in post-processing if needs be
+        if (isJdkPNGReader
+                && bi.getColorModel() instanceof ComponentColorModel
+                && !bi.getColorModel().hasAlpha()
+                && bi.getColorModel().getNumComponents() == 3) {
+            IIOMetadata imageMetadata = reader.getImageMetadata(0);
+            Node tree = imageMetadata.getAsTree(imageMetadata.getNativeMetadataFormatName());
+            Node trns_rgb = getNodeFromPath(tree, Arrays.asList("tRNS", "tRNS_RGB"));
+            if (trns_rgb != null) {
+                NamedNodeMap attributes = trns_rgb.getAttributes();
+                Integer red = getIntegerAttribute(attributes, "red");
+                Integer green = getIntegerAttribute(attributes, "green");
+                Integer blue = getIntegerAttribute(attributes, "blue");
+
+                if (red != null && green != null && blue != null) {
+                    Color color = new Color(red, green, blue);
+                    ImageWorker iw = new ImageWorker(bi);
+                    iw.makeColorTransparent(color);
+                    return iw.getRenderedImage();
+                }
+            }
+        }
+
+        return bi;
+    }
+
+    /**
+     * Same as {@link #read(Object)} but ensures the result is a {@link BufferedImage}, eventually
+     * transforming it if needs be. Callers that can deal with {@link RenderedImage} should use the
+     * other method for efficiency sake.
+     *
+     * @return A image
+     * @throws IOException
+     */
+    public static BufferedImage readBufferedImage(Object input) throws IOException {
+        RenderedImage ri = ImageIOExt.read(input);
+        if (ri == null) {
+            return null;
+        } else if (ri instanceof BufferedImage) {
+            return (BufferedImage) ri;
+        } else {
+            return PlanarImage.wrapRenderedImage(ri).getAsBufferedImage();
+        }
+    }
+
+    private static Integer getIntegerAttribute(NamedNodeMap attributes, String attributeName) {
+        return Optional.ofNullable(attributes.getNamedItem(attributeName))
+                .map(n -> n.getNodeValue())
+                .map(s -> Integer.valueOf(s))
+                .orElse(null);
+    }
+
+    /** Locates a node in the tree, by giving a list of path components */
+    private static Node getNodeFromPath(Node root, List<String> pathComponents) {
+        if (pathComponents.isEmpty()) {
+            return root;
+        }
+
+        String firstComponent = pathComponents.get(0);
+        NodeList childNodes = root.getChildNodes();
+        for (int i = 0; i < childNodes.getLength(); i++) {
+            Node child = childNodes.item(i);
+
+            if (firstComponent.equals(child.getNodeName())) {
+                return getNodeFromPath(child, pathComponents.subList(1, pathComponents.size()));
+            }
+        }
+
+        // not found
+        return null;
     }
 }

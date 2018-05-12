@@ -126,6 +126,9 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     @Override
     public void setLayer(WMTSLayer layer) {
         this.layer = layer;
+        if (styleName.isEmpty()) {
+            styleName = layer.getDefaultStyle().getName();
+        }
     }
 
     @Override

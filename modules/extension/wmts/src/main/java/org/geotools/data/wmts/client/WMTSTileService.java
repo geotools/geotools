@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ows.CRSEnvelope;
+import org.geotools.data.ows.StyleImpl;
 import org.geotools.data.wmts.model.TileMatrix;
 import org.geotools.data.wmts.model.TileMatrixSet;
 import org.geotools.data.wmts.model.TileMatrixSetLink;
@@ -120,7 +121,10 @@ public class WMTSTileService extends TileService {
         if (styleName != null && !styleName.isEmpty()) {
             setStyleName(styleName);
         } else {
-            setStyleName(layer.getDefaultStyle().getName());
+            StyleImpl defaultStyle = layer.getDefaultStyle();
+            if (defaultStyle != null) {
+                setStyleName(defaultStyle.getName());
+            }
         }
         setType(type);
         setMatrixSet(tileMatrixSet);

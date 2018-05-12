@@ -117,7 +117,11 @@ public class WMTSTileService extends TileService {
 
         setTemplateURL(templateURL);
         setLayerName(layer.getName());
-        setStyleName(styleName);
+        if (styleName != null && !styleName.isEmpty()) {
+            setStyleName(styleName);
+        } else {
+            setStyleName(layer.getDefaultStyle().getName());
+        }
         setType(type);
         setMatrixSet(tileMatrixSet);
     }

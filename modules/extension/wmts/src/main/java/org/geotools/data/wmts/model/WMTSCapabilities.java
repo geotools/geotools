@@ -45,6 +45,7 @@ import net.opengis.wmts.v_1.CapabilitiesType;
 import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.DimensionType;
 import net.opengis.wmts.v_1.LayerType;
+import net.opengis.wmts.v_1.StyleType;
 import net.opengis.wmts.v_1.TileMatrixLimitsType;
 import net.opengis.wmts.v_1.TileMatrixSetLimitsType;
 import net.opengis.wmts.v_1.TileMatrixSetLinkType;
@@ -56,12 +57,14 @@ import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Capabilities;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.OperationType;
+import org.geotools.data.ows.StyleImpl;
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wms.xml.Extent;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.SimpleInternationalString;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
@@ -356,6 +359,23 @@ public class WMTSCapabilities extends Capabilities {
         }
         layer.getFormats().addAll(layerType.getFormat());
         layer.getInfoFormats().addAll(layerType.getInfoFormat());
+        EList<StyleType> styles = layerType.getStyle();
+        List<StyleImpl> sList = new ArrayList<>();
+        for (StyleType styleType : styles) {
+            StyleImpl style = new StyleImpl();
+            style.setName(styleType.getIdentifier().getValue());
+            StringBuilder t = new StringBuilder();
+            for (Object title1 : styleType.getTitle()) {
+                t.append(title1.toString());
+            }
+            style.setTitle(new SimpleInternationalString(t.toString()));
+            style.setDefault(styleType.isIsDefault());
+            if (styleType.isIsDefault()) {
+                layer.setDefaultStyle(style);
+            }
+            sList.add(style);
+        }
+        layer.setStyles(sList);
         @SuppressWarnings("unchecked")
         EList<BoundingBoxType> bboxes = layerType.getBoundingBox();
         Map<String, CRSEnvelope> boundingBoxes = new HashMap<>();

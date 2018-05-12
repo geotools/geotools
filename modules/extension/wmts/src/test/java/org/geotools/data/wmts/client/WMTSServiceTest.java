@@ -17,7 +17,10 @@
 package org.geotools.data.wmts.client;
 
 import static org.geotools.data.wmts.client.WMTSTileFactory4326Test.createCapabilities;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -25,10 +28,12 @@ import java.net.URL;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.wmts.WebMapTileServer;
 import org.geotools.data.wmts.model.TileMatrixSet;
 import org.geotools.data.wmts.model.WMTSCapabilities;
 import org.geotools.data.wmts.model.WMTSLayer;
 import org.geotools.data.wmts.model.WMTSServiceType;
+import org.geotools.data.wmts.request.GetTileRequest;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -178,6 +183,37 @@ public class WMTSServiceTest {
                 Set<Tile> tiles = services[i].findTilesInExtent(env, scales[k], true, 100);
                 System.out.println(tiles.size());
             }
+        }
+    }
+
+    /*
+     * ESRI ArcGis Servers require that the style is named and not left blank. Sadly the WMTS specification agrees with them.
+     * See GEOT-6017
+     */
+    @Test
+    public void testDefaultStyleRequired() throws Exception {
+        URL test =
+                new URL(
+                        "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Toronto/ImageServer/WMTS/1.0.0/WMTSCapabilities.xml");
+        WebMapTileServer wmts = new WebMapTileServer(test);
+        wmts.setType(WMTSServiceType.KVP);
+        WMTSCapabilities capabilities = wmts.getCapabilities();
+        WMTSLayer wmtsLayer = capabilities.getLayer("Toronto");
+
+        TileMatrixSet matrixSet = capabilities.getMatrixSet("default028mm");
+        WMTSTileService service =
+                new WMTSTileService(
+                        test.toExternalForm(), WMTSServiceType.KVP, wmtsLayer, null, matrixSet);
+
+        GetTileRequest request = wmts.createGetTileRequest();
+        request.setLayer(wmtsLayer);
+        request.setRequestedBBox(service.getBounds());
+        request.setRequestedWidth(256);
+        request.setRequestedHeight(256);
+        request.setCRS(DefaultGeographicCRS.WGS84);
+        Set<Tile> tiles = request.getTiles();
+        for (Tile tile : tiles) {
+            assertTrue(tile.getUrl().toString().contains("style=default"));
         }
     }
 }

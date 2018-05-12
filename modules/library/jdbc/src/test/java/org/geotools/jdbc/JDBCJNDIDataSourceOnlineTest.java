@@ -45,10 +45,17 @@ public abstract class JDBCJNDIDataSourceOnlineTest extends JDBCTestSupport {
         params.put(JDBCDataStoreFactory.DBTYPE.key, dbtype);
         params.put(JDBCJNDIDataStoreFactory.JNDI_REFNAME.key, "ds");
 
-        JDBCDataStore dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
-        try (Connection con = dataStore.getDataSource().getConnection()) {
-            assertTrue(con != null);
-            assertFalse(con.isClosed());
+        JDBCDataStore dataStore = null;
+        try {
+            dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(params);
+            try (Connection con = dataStore.getDataSource().getConnection()) {
+                assertTrue(con != null);
+                assertFalse(con.isClosed());
+            }
+        } finally {
+            if (dataStore != null) {
+                dataStore.dispose();
+            }
         }
     }
 

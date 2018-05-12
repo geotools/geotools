@@ -47,24 +47,38 @@ public class H2DataStoreFactoryTest extends TestCase {
     }
 
     public void testCreateDataStore() throws Exception {
-        JDBCDataStore ds = factory.createDataStore(params);
-        assertNotNull(ds);
-        assertTrue(ds.getDataSource() instanceof ManageableDataSource);
+        JDBCDataStore ds = null;
+        try {
+            ds = factory.createDataStore(params);
+            assertNotNull(ds);
+            assertTrue(ds.getDataSource() instanceof ManageableDataSource);
+        } finally {
+            if (ds != null) {
+                ds.dispose();
+            }
+        }
     }
 
     public void testCreateDataStoreMVCC() throws Exception {
         Map clonedParams = new HashMap(params);
         clonedParams.put(H2DataStoreFactory.MVCC.key, true);
-        JDBCDataStore ds = factory.createDataStore(clonedParams);
-        assertNotNull(ds);
-        final DataSource source = ds.getDataSource();
-        assertNotNull(source);
-        final DataSource wrapped = source.unwrap(DataSource.class);
-        assertNotNull(wrapped);
-        if (wrapped instanceof BasicDataSource) {
-            final BasicDataSource basicSource = (BasicDataSource) wrapped;
-            final String url = basicSource.getUrl();
-            assertTrue(url.contains("MVCC=true"));
+        JDBCDataStore ds = null;
+        try {
+            ds = factory.createDataStore(clonedParams);
+            assertNotNull(ds);
+            final DataSource source = ds.getDataSource();
+            assertNotNull(source);
+            final DataSource wrapped = source.unwrap(DataSource.class);
+            assertNotNull(wrapped);
+            if (wrapped instanceof BasicDataSource) {
+                final BasicDataSource basicSource = (BasicDataSource) wrapped;
+                final String url = basicSource.getUrl();
+                assertTrue(url.contains("MVCC=true"));
+            }
+        } finally {
+            if (ds != null) {
+                ds.dispose();
+            }
         }
     }
 
@@ -75,11 +89,18 @@ public class H2DataStoreFactoryTest extends TestCase {
         params.put(H2DataStoreFactory.USER.key, "geotools");
         params.put(H2DataStoreFactory.PASSWD.key, "geotools");
 
-        DataStore ds = factory.createDataStore(params);
+        DataStore ds = null;
         try {
-            ds.getTypeNames();
-            fail("Should not have made a connection.");
-        } catch (Exception ok) {
+            ds = factory.createDataStore(params);
+            try {
+                ds.getTypeNames();
+                fail("Should not have made a connection.");
+            } catch (Exception ok) {
+            }
+        } finally {
+            if (ds != null) {
+                ds.dispose();
+            }
         }
 
         Server server = Server.createTcpServer(new String[] {"-baseDir", "target"});
@@ -88,9 +109,15 @@ public class H2DataStoreFactoryTest extends TestCase {
             while (!server.isRunning(false)) {
                 Thread.sleep(100);
             }
-
-            ds = factory.createDataStore(params);
-            ds.getTypeNames();
+            ds = null;
+            try {
+                ds = factory.createDataStore(params);
+                ds.getTypeNames();
+            } finally {
+                if (ds != null) {
+                    ds.dispose();
+                }
+            }
         } finally {
             server.shutdown();
         }

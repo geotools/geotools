@@ -129,7 +129,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         this.layer = layer;
         if (styleName.isEmpty()) {
             StyleImpl defaultStyle = layer.getDefaultStyle();
-            if(defaultStyle != null) {
+            if (defaultStyle != null) {
                 styleName = defaultStyle.getName();
             }
         }

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.data.ows.Layer;
+import org.geotools.data.ows.StyleImpl;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -43,6 +44,8 @@ public class WMTSLayer extends Layer {
     Map<String, String> templates = new HashMap<>();
 
     private CoordinateReferenceSystem preferredCRS = null;
+
+    private StyleImpl defaultStyle;
 
     /** @param title */
     public WMTSLayer(String title) {
@@ -117,5 +120,15 @@ public class WMTSLayer extends Layer {
     /** @param preferredCRS the preferredCRS to set */
     public void setPreferredCRS(CoordinateReferenceSystem preferredCRS) {
         this.preferredCRS = preferredCRS;
+    }
+
+    /** @param style */
+    public void setDefaultStyle(StyleImpl style) {
+        defaultStyle = style;
+    }
+
+    /** @return the defaultStyle */
+    public StyleImpl getDefaultStyle() {
+        return defaultStyle;
     }
 }

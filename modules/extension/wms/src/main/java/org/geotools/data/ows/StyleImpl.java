@@ -34,6 +34,7 @@ public class StyleImpl {
     private URL styleURL;
     private List featureStyles;
     private List graphicStyles;
+    private boolean isDefault = false;
 
     public StyleImpl() {}
 
@@ -127,5 +128,15 @@ public class StyleImpl {
             if (other.name != null) return false;
         } else if (!name.equals(other.name)) return false;
         return true;
+    }
+
+    /** @return the isDefault */
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    /** @param isDefault the isDefault to set */
+    public void setDefault(boolean isDefault) {
+        this.isDefault = isDefault;
     }
 }

@@ -31,6 +31,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
+import org.geotools.data.ows.StyleImpl;
 import org.geotools.data.wmts.client.WMTSTileFactory;
 import org.geotools.data.wmts.client.WMTSTileService;
 import org.geotools.data.wmts.model.TileMatrixLimits;
@@ -126,6 +127,12 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     @Override
     public void setLayer(WMTSLayer layer) {
         this.layer = layer;
+        if (styleName.isEmpty()) {
+            StyleImpl defaultStyle = layer.getDefaultStyle();
+            if (defaultStyle != null) {
+                styleName = defaultStyle.getName();
+            }
+        }
     }
 
     @Override

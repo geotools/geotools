@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -31,6 +30,7 @@ import org.geotools.data.wms.response.GetMapResponse;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.RendererUtilities;
@@ -287,7 +287,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
             GetMapResponse response = wms.issueRequest(mapRequest);
             try {
                 is = response.getInputStream();
-                BufferedImage image = ImageIO.read(is);
+                RenderedImage image = ImageIOExt.read(is);
                 if (image == null) {
                     throw new IOException("GetMap failed: " + mapRequest.getFinalURL());
                 }

@@ -16,17 +16,22 @@
  */
 package org.geotools.image.io;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileCacheImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.operator.ConstantDescriptor;
+import org.geotools.image.ImageWorker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,5 +101,26 @@ public class ImageIOExtTest {
             values[i] = new Byte((byte) 0);
         }
         return ConstantDescriptor.create((float) width, (float) height, values, null);
+    }
+
+    @Test
+    public void testPNGTransparency() throws Exception {
+        try (InputStream is = ImageWorker.class.getResourceAsStream("test-data/rgb_trns.png")) {
+            RenderedImage image = ImageIOExt.read(is);
+
+            // color model check
+            ColorModel colorModel = image.getColorModel();
+            assertThat(colorModel, instanceOf(ComponentColorModel.class));
+            assertEquals(4, colorModel.getNumComponents());
+            assertEquals(ColorModel.TRANSLUCENT, colorModel.getTransparency());
+
+            // transparency check, the pixel is green but transparent
+            int[] pixel = new int[4];
+            image.getData().getPixel(32, 32, pixel);
+            assertEquals(0, pixel[0]);
+            assertEquals(255, pixel[1]);
+            assertEquals(52, pixel[2]);
+            assertEquals(0, pixel[3]);
+        }
     }
 }

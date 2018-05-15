@@ -30,9 +30,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.geotools.renderer.style.ExternalGraphicFactory;
@@ -314,7 +314,7 @@ public class SpriteGraphicFactory implements ExternalGraphicFactory, GraphicCach
         if (image == null) {
             try {
                 URL spriteSheetUrl = new URL(baseUrl.toExternalForm() + ".png");
-                image = ImageIO.read(spriteSheetUrl);
+                image = ImageIOExt.readBufferedImage(spriteSheetUrl);
             } catch (Exception e) {
                 LOGGER.warning(
                         "Unable to retrieve sprite sheet from location: "

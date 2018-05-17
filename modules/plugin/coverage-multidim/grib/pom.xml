@@ -19,6 +19,16 @@
       <groupId>edu.ucar</groupId>
       <artifactId>cdm</artifactId>
       <version>${netcdf.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.protobuf</groupId>
+          <artifactId>protobuf-java</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
     </dependency>
     <dependency>
       <groupId>edu.ucar</groupId>

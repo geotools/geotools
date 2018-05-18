@@ -18,6 +18,8 @@ package org.geotools.util;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -326,5 +328,15 @@ public class TemporalConverterFactoryTest extends TestCase {
         Date expected = c.getTime();
         Date actual = converter.convert(esriFieldTypeDateVal, Date.class);
         assertEquals(expected, actual);
+    }
+
+    public void testDateToDate() throws Exception {
+        Converter converter = factory.createConverter(Date.class, java.sql.Date.class, null);
+        assertNotNull(converter);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        df.setTimeZone(TimeZone.getTimeZone("BST"));
+        Date date = df.parse("2018-05-18");
+        java.sql.Date output = (java.sql.Date) converter.convert(date, java.sql.Date.class);
+        assertEquals("2018-05-18", output.toString());
     }
 }

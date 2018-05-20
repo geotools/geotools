@@ -681,6 +681,42 @@ public class StreamingRenderer implements GTRenderer {
             if (worldToScreen == null) return;
         }
 
+        CoordinateReferenceSystem mapCRS = mapArea.getCoordinateReferenceSystem();
+        if (CRS.getAxisOrder(mapCRS) == CRS.AxisOrder.NORTH_EAST) {
+            try {
+                // sanitize, having flipped axis causes slowdowns, the rendering
+                // subsystem has to go from data to rendering to screen flipping axis order
+                // twice when advanced projection handling is enabled
+                Integer code = CRS.lookupEpsgCode(mapCRS, false);
+                if (code != null) {
+                    String srs = "EPSG:" + code;
+                    CoordinateReferenceSystem earthNorthCRS = CRS.decode(srs, true);
+                    mapArea =
+                            new ReferencedEnvelope(
+                                    mapArea.getMinY(),
+                                    mapArea.getMaxY(),
+                                    mapArea.getMinX(),
+                                    mapArea.getMaxX(),
+                                    earthNorthCRS);
+                }
+
+                // flip world to screen too
+                worldToScreen =
+                        new AffineTransform(
+                                worldToScreen.getShearX(),
+                                worldToScreen.getScaleX(),
+                                worldToScreen.getScaleY(),
+                                worldToScreen.getShearY(),
+                                worldToScreen.getTranslateX(),
+                                worldToScreen.getTranslateY());
+            } catch (Exception e) {
+                LOGGER.log(
+                        Level.FINER,
+                        "Failed to turn the requested bbox in east/north order, map rendering "
+                                + "should work anyways, but pay a performance price");
+            }
+        }
+
         // ////////////////////////////////////////////////////////////////////
         //
         // Setting base information

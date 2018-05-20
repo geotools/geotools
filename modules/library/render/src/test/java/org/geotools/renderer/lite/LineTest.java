@@ -38,6 +38,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -57,9 +58,15 @@ public class LineTest {
 
     private ContentFeatureSource fsAround;
 
+    @AfterClass
+    public static void clearClass() {
+        System.clearProperty("org.geotools.referencing.forceXY");
+        CRS.reset("all");
+    }
+
     @BeforeClass
     public static void setupClass() {
-        System.clearProperty("org.geotools.referencing.forceXY");
+        System.setProperty("org.geotools.referencing.forceXY", "true");
         CRS.reset("all");
     }
 

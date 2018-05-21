@@ -128,11 +128,16 @@ import org.opengis.filter.expression.Literal;
 public class EnvFunction extends FunctionExpressionImpl {
 
     /** Provides a lookup table that is local to each thread. */
-    private static class LocalLookup extends ThreadLocal<Map<String, Object>> {
+    private static class LocalLookup extends InheritableThreadLocal<Map<String, Object>> {
 
         @Override
         protected Map<String, Object> initialValue() {
             return new LinkedHashMap<String, Object>();
+        }
+
+        @Override
+        protected Map<String, Object> childValue(Map<String, Object> parentValue) {
+            return new LinkedHashMap<>(parentValue);
         }
 
         /**

@@ -98,6 +98,13 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
             this.method = ContrastMethod.valueOf(meth.name());
         }
         this.gamma = contrastEnhancement.getGammaValue();
+        if (contrastEnhancement instanceof ContrastEnhancement) {
+            ContrastEnhancement other = (ContrastEnhancement) contrastEnhancement;
+            if (other.getOptions() != null) {
+                this.options = new HashMap<>();
+                this.options.putAll(other.getOptions());
+            }
+        }
     }
 
     public ContrastEnhancementImpl(

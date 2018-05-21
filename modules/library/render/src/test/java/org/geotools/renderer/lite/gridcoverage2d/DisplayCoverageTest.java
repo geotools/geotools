@@ -18,21 +18,23 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import static org.junit.Assert.fail;
 
-import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.File;
+import java.io.IOException;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
+import org.geotools.image.test.ImageAssert;
+import org.geotools.map.GridCoverageLayer;
+import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.lite.RendererBaseTest;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ContrastEnhancement;
@@ -79,20 +81,56 @@ public class DisplayCoverageTest {
      * <p>The test is skipped in a headless build.
      */
     @Test
-    public void renderCoverage() {
-        System.out.println("   render grid coverage");
-        if (headless) {
-            System.out.println("      Skipping test in headless build");
-            return;
-        }
-
-        GridCoverage2D coverage = createCoverage();
+    public void renderCoverage() throws IOException {
         Style style = createCoverageStyle("1");
+        String styleName = "contrastStretchSimple";
+        testCoverageStyle(style, styleName);
+    }
 
-        MapContext context = new MapContext();
-        context.addLayer(coverage, style);
+    @Test
+    public void renderCoverageWithEnvContrastLow() throws IOException {
+        Style style = createEnvCoverageStyle("1");
+        EnvFunction.setLocalValue("gamma", "0.5");
+        try {
+            String styleName = "contrastStretchEnvLow";
+            testCoverageStyle(style, styleName);
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
+    }
+
+    @Test
+    public void renderCoverageWithEnvContrastHigh() throws IOException {
+        Style style = createEnvCoverageStyle("1");
+        EnvFunction.setLocalValue("gamma", "2");
+        try {
+            String styleName = "contrastStretchEnvHigh";
+            testCoverageStyle(style, styleName);
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
+    }
+
+    @Test
+    public void renderCoverageWithEnvMinMax() throws IOException {
+        Style style = createEnvMinMaxCoverageStyle("1");
+        EnvFunction.setLocalValue("range_min", "4");
+        EnvFunction.setLocalValue("range_max", "16");
+        try {
+            String styleName = "contrastStretchEnvMinMax";
+            testCoverageStyle(style, styleName);
+        } finally {
+            EnvFunction.clearLocalValues();
+        }
+    }
+
+    private void testCoverageStyle(Style style, String styleName) throws IOException {
+        GridCoverage2D coverage = createCoverage();
         StreamingRenderer renderer = new StreamingRenderer();
-        renderer.setContext(context);
+
+        MapContent context = new MapContent();
+        context.addLayer(new GridCoverageLayer(coverage, style));
+        renderer.setMapContent(context);
 
         RenderListener listener =
                 new RenderListener() {
@@ -103,34 +141,23 @@ public class DisplayCoverageTest {
                         fail("Failed to render coverage");
                     }
                 };
+        BufferedImage image = RendererBaseTest.renderImage(renderer, env, listener);
 
-        renderer.addRenderListener(listener);
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/gridcoverage2d/"
+                                + styleName
+                                + ".png");
 
-        BufferedImage image = new BufferedImage(WIDTH, WIDTH, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2D = image.createGraphics();
-
-        /*
-         * Turn off logging and try to render the coverage
-         */
-        Logger logger = Logger.getLogger(LOGGER_NAME);
-        final Level savedLevel = logger.getLevel();
-        logger.setLevel(Level.OFF);
-
-        try {
-            renderer.paint(g2D, bounds, env);
-        } finally {
-            context.dispose();
-            logger.setLevel(savedLevel);
-        }
+        ImageAssert.assertEquals(reference, image, 0);
     }
 
     private GridCoverage2D createCoverage() {
         GridCoverageFactory gcf = CoverageFactoryFinder.getGridCoverageFactory(null);
         float[][] matrix = new float[WIDTH][WIDTH];
-        Random rand = new Random();
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < WIDTH; j++) {
-                matrix[i][j] = rand.nextFloat() * 255;
+                matrix[i][j] = i + j;
             }
         }
 
@@ -142,6 +169,40 @@ public class DisplayCoverageTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
         ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
+        SelectedChannelType sct = sf.createSelectedChannelType(bandName, ce);
+
+        RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();
+        ChannelSelection sel = sf.channelSelection(sct);
+        sym.setChannelSelection(sel);
+
+        return SLD.wrapSymbolizers(sym);
+    }
+
+    private Style createEnvCoverageStyle(String bandName) {
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+
+        ContrastEnhancement ce =
+                sf.contrastEnhancement(
+                        ff.function("env", ff.literal("gamma"), ff.literal(1)),
+                        ContrastMethod.NORMALIZE);
+        SelectedChannelType sct = sf.createSelectedChannelType(bandName, ce);
+
+        RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();
+        ChannelSelection sel = sf.channelSelection(sct);
+        sym.setChannelSelection(sel);
+
+        return SLD.wrapSymbolizers(sym);
+    }
+
+    private Style createEnvMinMaxCoverageStyle(String bandName) {
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+
+        ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
+        ce.addOption("algorithm", ff.literal("StretchToMinimumMaximum"));
+        ce.addOption("minValue", ff.function("env", ff.literal("range_min"), ff.literal(0)));
+        ce.addOption("maxValue", ff.function("env", ff.literal("range_max"), ff.literal(220)));
         SelectedChannelType sct = sf.createSelectedChannelType(bandName, ce);
 
         RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();

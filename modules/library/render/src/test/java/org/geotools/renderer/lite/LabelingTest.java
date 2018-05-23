@@ -16,12 +16,16 @@
  */
 package org.geotools.renderer.lite;
 
+import static java.awt.RenderingHints.KEY_ANTIALIASING;
+import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +41,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.MapContext;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
@@ -64,8 +69,11 @@ public class LabelingTest extends TestCase {
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
-        //	    System.setProperty(TestData.INTERACTIVE_TEST_KEY, "true");
-        super.setUp();
+        FontCache.getDefaultInstance()
+                .registerFont(
+                        java.awt.Font.createFont(
+                                java.awt.Font.TRUETYPE_FONT,
+                                TestData.getResource(this, "Vera.ttf").openStream()));
     }
 
     /*
@@ -205,6 +213,7 @@ public class LabelingTest extends TestCase {
         map.addLayer(collection, style);
 
         StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         renderer.setContext(map);
         int boundary = 2;
         ReferencedEnvelope env = map.getLayerBounds();
@@ -219,6 +228,38 @@ public class LabelingTest extends TestCase {
         BufferedImage image = RendererBaseTest.showRender("U turn label", renderer, 1000, env);
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelSharpTurn.png";
+        // small tolerance
+        ImageAssert.assertEquals(new File(refPath), image, 100);
+    }
+
+    /**
+     * Checks we won't label a feature with a sharp U turn, when using a large font
+     *
+     * @throws Exception
+     */
+    public void testLineLabelingSharpTurn2() throws Exception {
+        FeatureCollection collection = createTightUTurnLineCollection2();
+        Style style = loadStyle("LineStyleLarge2.sld");
+        assertNotNull(style);
+        MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
+        map.addLayer(collection, style);
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        renderer.setContext(map);
+        double boundary = 2;
+        ReferencedEnvelope env = map.getLayerBounds();
+        env =
+                new ReferencedEnvelope(
+                        env.getMinX() - boundary,
+                        env.getMaxX() + boundary,
+                        env.getMinY() - boundary,
+                        env.getMaxY() + boundary,
+                        null);
+
+        BufferedImage image = RendererBaseTest.showRender("U turn label", renderer, 1000, env);
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelSharpTurn2.png";
         // small tolerance
         ImageAssert.assertEquals(new File(refPath), image, 100);
     }
@@ -247,6 +288,16 @@ public class LabelingTest extends TestCase {
         data.addFeature(
                 createLineFeature(
                         "TheUTurnLabel", crs, geomFac, 1, 2, 8.7, 2, 9, 2.1, 8.7, 2.2, 1, 2.2));
+
+        return data.getFeatureSource(Rendering2DTest.LINE).getFeatures();
+    }
+
+    private SimpleFeatureCollection createTightUTurnLineCollection2() throws Exception {
+        GeometryFactory geomFac = new GeometryFactory();
+        CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
+
+        MemoryDataStore data = new MemoryDataStore();
+        data.addFeature(createLineFeature("TheUTurnLabel", crs, geomFac, 1, 2, 9, 2, 7, 2.2));
 
         return data.getFeatureSource(Rendering2DTest.LINE).getFeatures();
     }

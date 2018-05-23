@@ -27,6 +27,7 @@ import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.h2.tools.Server;
+import org.junit.Ignore;
 
 /** @source $URL$ */
 public class H2DataStoreFactoryTest extends TestCase {
@@ -68,6 +69,7 @@ public class H2DataStoreFactoryTest extends TestCase {
         }
     }
 
+    @Ignore
     public void testTCP() throws Exception {
         HashMap params = new HashMap();
         params.put(H2DataStoreFactory.HOST.key, "localhost");

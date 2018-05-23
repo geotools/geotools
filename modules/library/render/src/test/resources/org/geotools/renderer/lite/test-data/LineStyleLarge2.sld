@@ -24,12 +24,17 @@
             <Font>
               <CssParameter name="font-family">Bitstream Vera Sans</CssParameter>
               <CssParameter name="font-weight">bold</CssParameter>
-              <CssParameter name="font-size">48</CssParameter>
+              <CssParameter name="font-size">18</CssParameter>
               <CssParameter name="font-color">#222222</CssParameter>
             </Font>
             <Fill>
               <CssParameter name="fill">#333333</CssParameter>
             </Fill>
+            <LabelPlacement>
+              <PointPlacement auto="true">
+              </PointPlacement>
+            </LabelPlacement>
+            <VendorOption name="maxDisplacement">50</VendorOption>
             <VendorOption name="followLine">true</VendorOption>
           </TextSymbolizer>
         </Rule>

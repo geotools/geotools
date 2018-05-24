@@ -43,12 +43,12 @@ public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements Gr
             available = new ENVIHdrImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                if (available) LOGGER.fine("EnviHdrFormatFactory is availaible.");
-                else LOGGER.fine("EnviHdrFormatFactory is not availaible.");
+                if (available) LOGGER.fine("EnviHdrFormatFactory is available.");
+                else LOGGER.fine("EnviHdrFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("EnviHdrFormatFactory is not availaible.");
+                LOGGER.fine("EnviHdrFormatFactory is not available.");
 
             available = false;
         }

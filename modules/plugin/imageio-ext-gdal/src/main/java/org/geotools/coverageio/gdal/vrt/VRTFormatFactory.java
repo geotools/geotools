@@ -49,14 +49,14 @@ public final class VRTFormatFactory extends BaseGridFormatFactorySPI
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 if (available) {
-                    LOGGER.fine("VRTFormatFactory is availaible.");
+                    LOGGER.fine("VRTFormatFactory is available.");
                 } else {
-                    LOGGER.fine("VRTFormatFactory is not availaible.");
+                    LOGGER.fine("VRTFormatFactory is not available.");
                 }
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("VRTFormatFactory is not availaible.");
+                LOGGER.fine("VRTFormatFactory is not available.");
             }
 
             available = false;

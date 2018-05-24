@@ -54,14 +54,14 @@ public final class MrSIDFormatFactory extends BaseGridFormatFactorySPI
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 if (available) {
-                    LOGGER.fine("MrSIDFormatFactory is availaible.");
+                    LOGGER.fine("MrSIDFormatFactory is available.");
                 } else {
-                    LOGGER.fine("MrSIDFormatFactory is not availaible.");
+                    LOGGER.fine("MrSIDFormatFactory is not available.");
                 }
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("MrSIDFormatFactory is not availaible.");
+                LOGGER.fine("MrSIDFormatFactory is not available.");
             }
 
             available = false;

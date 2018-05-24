@@ -597,7 +597,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     }
 
     /**
-     * Testing {@link ImagePyramidReader} by cropping requesting a the worst availaible resolution.
+     * Testing {@link ImagePyramidReader} by cropping requesting a the worst available resolution.
      *
      * <p>The underlying pyramid i made by 4 levels on the same area, more or less italy, with
      * resolution decreasing as a power of 2.

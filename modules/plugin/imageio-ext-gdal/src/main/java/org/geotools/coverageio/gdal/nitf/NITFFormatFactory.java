@@ -53,14 +53,14 @@ public final class NITFFormatFactory extends BaseGridFormatFactorySPI
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 if (available) {
-                    LOGGER.fine("NITFFormatFactory is availaible.");
+                    LOGGER.fine("NITFFormatFactory is available.");
                 } else {
-                    LOGGER.fine("NITFFormatFactory is not availaible.");
+                    LOGGER.fine("NITFFormatFactory is not available.");
                 }
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("NITFFormatFactory is not availaible.");
+                LOGGER.fine("NITFFormatFactory is not available.");
             }
 
             available = false;

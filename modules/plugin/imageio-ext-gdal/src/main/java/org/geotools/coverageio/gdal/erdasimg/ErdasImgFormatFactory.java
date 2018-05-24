@@ -52,12 +52,12 @@ public final class ErdasImgFormatFactory extends BaseGridFormatFactorySPI
             available = new ErdasImgImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                if (available) LOGGER.fine("ErdasImgFormatFactory is availaible.");
-                else LOGGER.fine("ErdasImgFormatFactory is not availaible.");
+                if (available) LOGGER.fine("ErdasImgFormatFactory is available.");
+                else LOGGER.fine("ErdasImgFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("ErdasImgFormatFactory is not availaible.");
+                LOGGER.fine("ErdasImgFormatFactory is not available.");
 
             available = false;
         }

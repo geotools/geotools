@@ -3679,7 +3679,7 @@ public class ImageWorker {
      * Writes outs the image contained into this {@link ImageWorker} as a GIF using the provided
      * destination, compression and compression rate.
      *
-     * <p>It is worth to point out that the only compressions algorithm availaible with the jdk
+     * <p>It is worth to point out that the only compressions algorithm available with the jdk
      * {@link GIFImageWriter} is "LZW" while the compression rates have to be confined between 0 and
      * 1. AN acceptable values is usally 0.75f.
      *

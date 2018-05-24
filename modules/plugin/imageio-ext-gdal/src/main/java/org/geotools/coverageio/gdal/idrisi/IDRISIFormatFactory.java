@@ -56,12 +56,12 @@ public final class IDRISIFormatFactory implements GridFormatFactorySpi {
             available = new IDRISIImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                if (available) LOGGER.fine("IDRISIFormatFactory is availaible.");
-                else LOGGER.fine("IDRISIFormatFactory is not availaible.");
+                if (available) LOGGER.fine("IDRISIFormatFactory is available.");
+                else LOGGER.fine("IDRISIFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("IDRISIFormatFactory is not availaible.");
+                LOGGER.fine("IDRISIFormatFactory is not available.");
 
             available = false;
         }

@@ -38,9 +38,9 @@ public final class ArcGridFormatFactory implements GridFormatFactorySpi {
             org.geotools.util.logging.Logging.getLogger("org.geotools.gce.arcgrid");
 
     /**
-     * Tells me if the coverage plugin to access Ascii grids is availaible or not.
+     * Tells me if the coverage plugin to access Ascii grids is available or not.
      *
-     * @return True if the plugin is availaible, False otherwise.
+     * @return True if the plugin is available, False otherwise.
      */
     public boolean isAvailable() {
         boolean available = true;
@@ -52,10 +52,10 @@ public final class ArcGridFormatFactory implements GridFormatFactorySpi {
             Class.forName("javax.media.jai.JAI");
             Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
             Class.forName("it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata");
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("ArcGridFormatFactory is availaible.");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("ArcGridFormatFactory is available.");
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("ArcGridFormatFactory is not availaible.");
+                LOGGER.fine("ArcGridFormatFactory is not available.");
             available = false;
         }
 

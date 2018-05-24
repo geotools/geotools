@@ -53,14 +53,14 @@ public final class JP2ECWFormatFactory extends BaseGridFormatFactorySPI
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 if (available) {
-                    LOGGER.fine("JP2ECWFormatFactory is availaible.");
+                    LOGGER.fine("JP2ECWFormatFactory is available.");
                 } else {
-                    LOGGER.fine("JP2ECWFormatFactory is not availaible.");
+                    LOGGER.fine("JP2ECWFormatFactory is not available.");
                 }
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("JP2ECWFormatFactory is not availaible.");
+                LOGGER.fine("JP2ECWFormatFactory is not available.");
             }
 
             available = false;

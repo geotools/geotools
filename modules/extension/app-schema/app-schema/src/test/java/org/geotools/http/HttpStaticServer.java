@@ -99,7 +99,8 @@ final class HttpStaticServer {
             String resource = IOUtils.toString(input);
             // substitute host and port place holders
             String relativePath =
-                    URLs.getParentUrl(this.getClass().getResource(resourcePath)).getPath();
+                    URLs.urlToFile(URLs.getParentUrl(this.getClass().getResource(resourcePath)))
+                            .getPath();
             resource = resource.replaceAll("\\{relative\\}", relativePath);
             resource = resource.replaceAll("\\{host\\}", getHost());
             resource = resource.replaceAll("\\{port\\}", String.valueOf(getPort()));

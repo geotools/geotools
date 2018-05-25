@@ -18,7 +18,7 @@ Creating an AppSchemaDataAccess
 Like other data stores, an instance of ``AppSchemaDataAccess`` is constructed by supplying parameters to ``DataAccessFinder.getDataStore``. The parameters map must contain the following:
 
 * ``dbtype`` set to the string ``"app-schema"``
-* ``url`` set to a string containing a ``file:``, ``jar:file:`` or ``ttp`` URL for a mapping file
+* ``url`` set to a string containing a ``file:``, ``jar:file:`` or ``http:`` URL for a mapping file
 
 
 Resource Management

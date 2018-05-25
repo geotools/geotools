@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Indexer>
+    <coverages>
+        <coverage>
+            <schema name="NO2">
+                <attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date,z:java.lang.Float</attributes>
+            </schema>
+            <origName>NO2</origName>
+            <name>NO2</name>
+        </coverage>
+        <coverage>
+            <schema name="O3">
+                <attributes>the_geom:Polygon,imageindex:Integer,time:java.util.Date,z:java.lang.Float</attributes>
+            </schema>
+            <origName>O3</origName>
+            <name>O3</name>
+        </coverage>
+    </coverages>
+</Indexer>

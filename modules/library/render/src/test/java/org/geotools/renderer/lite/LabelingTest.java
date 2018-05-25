@@ -261,7 +261,7 @@ public class LabelingTest extends TestCase {
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelSharpTurn2.png";
         // small tolerance
-        ImageAssert.assertEquals(new File(refPath), image, 100);
+        ImageAssert.assertEquals(new File(refPath), image, 300);
     }
 
     private SimpleFeatureCollection createLineFeatureCollection() throws Exception {

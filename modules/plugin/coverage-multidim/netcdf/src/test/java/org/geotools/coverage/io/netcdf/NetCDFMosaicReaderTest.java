@@ -69,6 +69,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
+import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
@@ -950,6 +951,39 @@ public class NetCDFMosaicReaderTest extends Assert {
             coverage = reader.read(null);
             assertNotNull(coverage);
 
+        } finally {
+            if (coverage != null) {
+                ImageUtilities.disposePlanarImageChain((PlanarImage) coverage.getRenderedImage());
+                coverage.dispose(true);
+            }
+            reader.dispose();
+        }
+    }
+
+    @Test
+    public void testNetCdfMosaicSingleVariableFiles()
+            throws IOException, NoSuchFieldException, SecurityException, IllegalArgumentException,
+                    IllegalAccessException {
+        File ncMosaic = TestData.file(this, "imagemosaic");
+        File mosaic = new File(TestData.file(this, "."), "ncmosaic");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyDirectory(ncMosaic, mosaic);
+        File auxiliaryFile = new File(mosaic, "O3-NO2.xml");
+        String auxiliaryFilePath = auxiliaryFile.getAbsolutePath();
+        Hints hints = new Hints(Utils.AUXILIARY_FILES_PATH, auxiliaryFilePath);
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = null;
+        GridCoverage2D coverage = null;
+        try {
+            reader = format.getReader(mosaic, hints);
+            coverage = reader.read("O3", null);
+            reader.dispose();
+            reader = format.getReader(mosaic, hints);
+            coverage = reader.read("NO2", null);
+            assertNotNull(coverage);
         } finally {
             if (coverage != null) {
                 ImageUtilities.disposePlanarImageChain((PlanarImage) coverage.getRenderedImage());

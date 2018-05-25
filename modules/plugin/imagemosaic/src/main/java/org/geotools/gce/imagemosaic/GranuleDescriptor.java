@@ -386,14 +386,15 @@ public class GranuleDescriptor {
                 // do not trust the index, use the reader instead (reprojection might be involved)
                 this.granuleBBOX = ReferencedEnvelope.reference(gcReader.getOriginalEnvelope());
             }
+
             //
             // get info about the raster we have to read
             //
             SpiHelper spiProvider = new SpiHelper(granuleUrl, suggestedSPI, suggestedIsSPI);
             boolean isMultidim = spiProvider.isMultidim();
-
-            GeneralEnvelope envelope = gcReader.getOriginalEnvelope();
-            this.granuleEnvelope = envelope;
+            if (!isMultidim) {
+                this.granuleEnvelope = gcReader.getOriginalEnvelope();
+            }
 
             ovrProvider = new MaskOverviewProvider(layout, granuleUrl, spiProvider);
 

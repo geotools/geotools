@@ -105,9 +105,9 @@ public final class GridFormatFinder {
      *
      * <p>It can be used toget basic information about all the available {@link GridCoverage}
      * plugins. Note that this method finds all the implemented plugins but returns only the
-     * availaible one.
+     * available one.
      *
-     * <p>A plugin could be implemented but not availaible due to missing dependencies.
+     * <p>A plugin could be implemented but not available due to missing dependencies.
      *
      * @return an array with all available {@link GridFormatFactorySpi} implementations.
      */
@@ -141,9 +141,9 @@ public final class GridFormatFinder {
      *     {@link Object} o.
      */
     public static synchronized Set<AbstractGridFormat> findFormats(Object o, Hints hints) {
-        final Set<GridFormatFactorySpi> availaibleFormats = getAvailableFormats();
+        final Set<GridFormatFactorySpi> availableFormats = getAvailableFormats();
         final Set<AbstractGridFormat> formats = new HashSet<AbstractGridFormat>();
-        final Iterator<GridFormatFactorySpi> it = availaibleFormats.iterator();
+        final Iterator<GridFormatFactorySpi> it = availableFormats.iterator();
         while (it.hasNext()) {
             // get the factory
             final GridFormatFactorySpi spi = it.next();

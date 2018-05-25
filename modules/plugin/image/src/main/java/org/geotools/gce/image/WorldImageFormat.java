@@ -305,7 +305,7 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
     }
 
     /**
-     * Always returns null since for the moment there are no {@link GeoToolsWriteParams} availaible
+     * Always returns null since for the moment there are no {@link GeoToolsWriteParams} available
      * for this format.
      *
      * @return always null.

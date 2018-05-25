@@ -52,11 +52,11 @@ public final class ECWFormatFactory extends BaseGridFormatFactorySPI
             available = new ECWImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                if (available) LOGGER.fine("ECWFormatFactory is availaible.");
-                else LOGGER.fine("ECWFormatFactory is not availaible.");
+                if (available) LOGGER.fine("ECWFormatFactory is available.");
+                else LOGGER.fine("ECWFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("ECWFormatFactory is not availaible.");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("ECWFormatFactory is not available.");
 
             available = false;
         }

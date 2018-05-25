@@ -53,14 +53,14 @@ public final class RPFTOCFormatFactory extends BaseGridFormatFactorySPI
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 if (available) {
-                    LOGGER.fine("RPFTOCFormatFactory is availaible.");
+                    LOGGER.fine("RPFTOCFormatFactory is available.");
                 } else {
-                    LOGGER.fine("RPFTOCFormatFactory is not availaible.");
+                    LOGGER.fine("RPFTOCFormatFactory is not available.");
                 }
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("RPFTOCFormatFactory is not availaible.");
+                LOGGER.fine("RPFTOCFormatFactory is not available.");
             }
 
             available = false;

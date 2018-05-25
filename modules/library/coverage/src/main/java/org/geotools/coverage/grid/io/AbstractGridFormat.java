@@ -278,7 +278,7 @@ public abstract class AbstractGridFormat implements Format {
      * Retrieves a {@link GridCoverageWriter} suitable for writing to the provided <code>destination
      * </code> with this format.
      *
-     * <p>In case no writers are availaible <code>null</code> is returned.
+     * <p>In case no writers are available <code>null</code> is returned.
      *
      * @param destination The destinatin where to write.
      * @return A {@link GridCoverageWriter} suitable for writing to the provided <code>destination

@@ -239,9 +239,9 @@ public class CoverageIO {
      *     {@link URL} url.
      */
     public static Set<Driver> findDrivers(URL url) {
-        final Set<? extends Driver> availaibleDrivers = CoverageIO.getAvailableDrivers();
+        final Set<? extends Driver> availableDrivers = CoverageIO.getAvailableDrivers();
         final Set<Driver> drivers = new HashSet<Driver>();
-        final Iterator<? extends Driver> it = availaibleDrivers.iterator();
+        final Iterator<? extends Driver> it = availableDrivers.iterator();
         while (it.hasNext()) {
             // get the factory
             final Driver spi = (Driver) it.next();

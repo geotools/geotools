@@ -53,12 +53,12 @@ public final class EsriHdrFormatFactory implements GridFormatFactorySpi {
             available = new EsriHdrImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                if (available) LOGGER.fine("EsriHdrFormatFactory is availaible.");
-                else LOGGER.fine("EsriHdrFormatFactory is not availaible.");
+                if (available) LOGGER.fine("EsriHdrFormatFactory is available.");
+                else LOGGER.fine("EsriHdrFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("EsriHdrFormatFactory is not availaible.");
+                LOGGER.fine("EsriHdrFormatFactory is not available.");
 
             available = false;
         }

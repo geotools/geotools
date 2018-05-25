@@ -56,11 +56,11 @@ public final class AIGFormatFactory implements GridFormatFactorySpi {
             available = new ArcBinaryGridImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                if (available) LOGGER.fine("AIGFormatFactory is availaible.");
-                else LOGGER.fine("AIGFormatFactory is not availaible.");
+                if (available) LOGGER.fine("AIGFormatFactory is available.");
+                else LOGGER.fine("AIGFormatFactory is not available.");
             }
         } catch (ClassNotFoundException cnf) {
-            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("AIGFormatFactory is not availaible.");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("AIGFormatFactory is not available.");
 
             available = false;
         }

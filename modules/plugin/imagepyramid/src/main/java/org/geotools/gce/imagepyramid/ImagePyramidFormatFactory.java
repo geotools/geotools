@@ -35,7 +35,7 @@ public final class ImagePyramidFormatFactory implements GridFormatFactorySpi {
      * ImageIO classes this method is suitable for understanding if such a plugin is available or
      * not, preventing users from having problems later on when trying to instantiate it.
      *
-     * @return False if this plugin is not availaible true otherwise.
+     * @return False if this plugin is not available true otherwise.
      */
     public boolean isAvailable() {
         boolean available = true;

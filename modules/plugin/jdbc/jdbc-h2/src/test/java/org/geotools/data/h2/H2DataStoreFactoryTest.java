@@ -16,25 +16,32 @@
  */
 package org.geotools.data.h2;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
-import junit.framework.TestCase;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.DataStore;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.h2.tools.Server;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 
 /** @source $URL$ */
-public class H2DataStoreFactoryTest extends TestCase {
+public class H2DataStoreFactoryTest {
     H2DataStoreFactory factory;
     HashMap params;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         factory = new H2DataStoreFactory();
         params = new HashMap();
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
@@ -42,11 +49,13 @@ public class H2DataStoreFactoryTest extends TestCase {
         params.put(JDBCDataStoreFactory.DBTYPE.key, "h2");
     }
 
+    @Test
     public void testCanProcess() throws Exception {
         assertFalse(factory.canProcess(Collections.EMPTY_MAP));
         assertTrue(factory.canProcess(params));
     }
 
+    @Test
     public void testCreateDataStore() throws Exception {
         JDBCDataStore ds = null;
         try {
@@ -60,6 +69,7 @@ public class H2DataStoreFactoryTest extends TestCase {
         }
     }
 
+    @Test
     public void testCreateDataStoreMVCC() throws Exception {
         Map clonedParams = new HashMap(params);
         clonedParams.put(H2DataStoreFactory.MVCC.key, true);
@@ -84,6 +94,7 @@ public class H2DataStoreFactoryTest extends TestCase {
     }
 
     @Ignore
+    @Test
     public void testTCP() throws Exception {
         HashMap params = new HashMap();
         params.put(H2DataStoreFactory.HOST.key, "localhost");

@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -44,9 +45,10 @@ final class HttpStaticServer {
     private final Server server;
 
     HttpStaticServer() {
-        server = new Server(new QueuedThreadPool(6));
+        server = new Server(new QueuedThreadPool(7));
         connector = new ServerConnector(server);
-        server.addConnector(connector);
+        connector.setPort(0);
+        server.setConnectors(new Connector[] {connector});
         server.setHandler(
                 new AbstractHandler() {
                     @Override

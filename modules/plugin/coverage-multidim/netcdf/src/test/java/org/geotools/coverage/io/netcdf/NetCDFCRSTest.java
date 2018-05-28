@@ -59,6 +59,8 @@ public class NetCDFCRSTest extends Assert {
 
     private static final double DELTA = 1E-6;
 
+    private static CoordinateReferenceSystem UTM32611;
+
     /** Sets up the custom definitions */
     @Before
     public void setUp() throws Exception {
@@ -66,11 +68,12 @@ public class NetCDFCRSTest extends Assert {
                 TestData.file(this, "netcdf.projections.properties").getCanonicalPath();
         System.setProperty(
                 NetCDFCRSAuthorityFactory.SYSTEM_DEFAULT_USER_PROJ_FILE, netcdfPropertiesPath);
+        UTM32611 = CRS.decode("EPSG:32611");
     }
 
     @Test
     public void testUTMDatasetSpatialRef() throws Exception {
-        final File file = TestData.file(this, "utm.nc");
+        final File file = TestData.file(this, "utm_spatial_ref.nc");
         NetCDFReader reader = null;
         try {
             reader = new NetCDFReader(file, null);
@@ -85,6 +88,8 @@ public class NetCDFCRSTest extends Assert {
             Projection projection = projectedCRS.getConversionFromBase();
             MathTransform transform = projection.getMathTransform();
             assertTrue(transform instanceof TransverseMercator);
+            MathTransform sourceToTargetTransform = CRS.findMathTransform(crs, UTM32611);
+            assertTrue(sourceToTargetTransform.isIdentity());
         } finally {
             if (reader != null) {
                 try {
@@ -118,6 +123,28 @@ public class NetCDFCRSTest extends Assert {
                     NetCDFCoordinateReferenceSystemType.NetCDFCoordinate.YX_COORDS,
                     crsType.getCoordinates());
             assertSame(NetCDFProjection.TRANSVERSE_MERCATOR, crsType.getNetCDFProjection());
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testEsriPeStringReferencing() throws Exception {
+        final File file = TestData.file(this, "utm_esri_pe_string.nc");
+        NetCDFReader reader = null;
+        try {
+            reader = new NetCDFReader(file, null);
+            String[] coverages = reader.getGridCoverageNames();
+            CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(coverages[0]);
+            assertTrue(crs instanceof ProjectedCRS);
+            MathTransform sourceToTargetTransform = CRS.findMathTransform(crs, UTM32611);
+            assertTrue(sourceToTargetTransform.isIdentity());
         } finally {
             if (reader != null) {
                 try {

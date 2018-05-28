@@ -31,9 +31,7 @@ import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -73,11 +71,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.media.jai.RenderedOp;
-import javax.swing.JFrame;
+import javax.swing.*;
 import junit.framework.JUnit4TestAdapter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -3256,7 +3256,72 @@ public class ImageMosaicReaderTest extends Assert {
     }
 
     @Test
-    public void testHarvestListSingleFile() throws Exception {
+    public void testHarvestListSingleFileRelative() throws Exception {
+        Function<File, String> expectedLocation1 = d -> "world.200402.3x5400x2700.tiff";
+        Function<File, String> expectedLocation2 =
+                d ->
+                        "../singleHarvest2/world.200405.3x5400x2700.tiff"
+                                .replace('/', File.separatorChar);
+        Consumer<File> mosaicDirSetup = (dir) -> {};
+
+        checkSingleFileHarvest(mosaicDirSetup, expectedLocation1, expectedLocation2);
+    }
+
+    @Test
+    public void testHarvestListSingleFileAbsoluteLegacy() throws Exception {
+        // setup a case with absolute paths based on "directory1"
+        Function<File, String> expectedLocation1 =
+                d -> new File(d, "world.200402.3x5400x2700.tiff").getAbsolutePath();
+        Function<File, String> expectedLocation2 =
+                d -> {
+                    File pf = d.getParentFile();
+                    return new File(pf, "singleHarvest2/world.200405.3x5400x2700.tiff")
+                            .getAbsolutePath();
+                };
+        Consumer<File> mosaicDirSetup =
+                (dir) -> {
+                    File indexer = new File(dir, "indexer.properties");
+                    try {
+                        String indexerContents = FileUtils.readFileToString(indexer);
+                        indexerContents += "AbsolutePath=true\n";
+                        FileUtils.writeStringToFile(indexer, indexerContents);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                };
+
+        checkSingleFileHarvest(mosaicDirSetup, expectedLocation1, expectedLocation2);
+    }
+
+    @Test
+    public void testHarvestListSingleFileAbsolutePathType() throws Exception {
+        // setup a case with absolute paths based on "directory1"
+        Function<File, String> expectedLocation1 =
+                d -> new File(d, "world.200402.3x5400x2700.tiff").getAbsolutePath();
+        Function<File, String> expectedLocation2 =
+                d ->
+                        new File(d.getParentFile(), "singleHarvest2/world.200405.3x5400x2700.tiff")
+                                .getAbsolutePath();
+        Consumer<File> mosaicDirSetup =
+                (dir) -> {
+                    File indexer = new File(dir, "indexer.properties");
+                    try {
+                        String indexerContents = FileUtils.readFileToString(indexer);
+                        indexerContents += "PathType=ABSOLUTE\n";
+                        FileUtils.writeStringToFile(indexer, indexerContents);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                };
+
+        checkSingleFileHarvest(mosaicDirSetup, expectedLocation1, expectedLocation2);
+    }
+
+    private void checkSingleFileHarvest(
+            Consumer<File> mosaicDirSetup,
+            Function<File, String> expectedLocation1,
+            Function<File, String> expectedLocation2)
+            throws IOException, FactoryException {
         File source = URLs.urlToFile(timeURL);
         File testDataDir = TestData.file(this, ".");
         File directory1 = new File(testDataDir, "singleHarvest1");
@@ -3276,7 +3341,7 @@ public class ImageMosaicReaderTest extends Assert {
                 FileUtils.listFiles(directory1, new RegexFileFilter("time_geotiff.*"), null)) {
             assertTrue(file.delete());
         }
-        // move month 5 to another dir, we'll harvet it later
+        // move month 5 to another dir, we'll harvest it later
         String monthFiveName = "world.200405.3x5400x2700.tiff";
         File monthFive = new File(directory1, monthFiveName);
         if (directory2.exists()) {
@@ -3286,9 +3351,12 @@ public class ImageMosaicReaderTest extends Assert {
         File renamed = new File(directory2, monthFiveName);
         assertTrue(monthFive.renameTo(renamed));
 
+        // setup the mosaic directory with extra files, if needed
+        mosaicDirSetup.accept(directory1);
+
         // Create a List of Files containing only the directory to harvest and check if the Reader
         // reads it as a Directory
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         files.add(renamed);
 
         // ok, let's create a mosaic with a single granule and check its times
@@ -3328,15 +3396,13 @@ public class ImageMosaicReaderTest extends Assert {
             try {
                 assertTrue(fi.hasNext());
                 SimpleFeature f = fi.next();
-                assertEquals("world.200402.3x5400x2700.tiff", f.getAttribute("location"));
+
+                assertEquals(expectedLocation1.apply(directory1), f.getAttribute("location"));
                 assertEquals(
                         "2004-02-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));
                 f = fi.next();
-                String expected =
-                        "../singleHarvest2/world.200405.3x5400x2700.tiff"
-                                .replace('/', File.separatorChar);
-                assertEquals(expected, f.getAttribute("location"));
+                assertEquals(expectedLocation2.apply(directory2), f.getAttribute("location"));
                 assertEquals(
                         "2004-05-01T00:00:00.000Z",
                         ConvertersHack.convert(f.getAttribute("time"), String.class));

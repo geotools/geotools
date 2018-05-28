@@ -781,11 +781,13 @@ public class ImageMosaicConfigHandler {
             CatalogBuilderConfiguration runConfiguration, final File fileBeingProcessed)
             throws IOException {
         // absolute
-        if (Boolean.valueOf(runConfiguration.getParameter(Prop.ABSOLUTE_PATH))) {
+        String pathType = runConfiguration.getParameter(Prop.PATH_TYPE);
+        String absolutePath = runConfiguration.getParameter(Prop.ABSOLUTE_PATH);
+        if (Boolean.valueOf(absolutePath) || PathType.ABSOLUTE.name().equals(pathType)) {
             return fileBeingProcessed.getAbsolutePath();
         }
 
-        // relative
+        // relative (harvesting of PathType.URL is not supported)
         String targetPath = fileBeingProcessed.getCanonicalPath();
         String basePath = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR);
         String relative =
@@ -1574,6 +1576,8 @@ public class ImageMosaicConfigHandler {
                     IndexerUtils.getParameterAsBoolean(Prop.CACHING, indexer));
             catalogConfigurationBean.setAbsolutePath(
                     IndexerUtils.getParameterAsBoolean(Prop.ABSOLUTE_PATH, indexer));
+            catalogConfigurationBean.setPathType(
+                    IndexerUtils.getParameterAsEnum(Prop.PATH_TYPE, PathType.class, indexer));
 
             catalogConfigurationBean.setLocationAttribute(
                     IndexerUtils.getParameter(Prop.LOCATION_ATTRIBUTE, indexer));

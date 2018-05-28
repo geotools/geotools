@@ -161,9 +161,19 @@ public class ImageWorker {
 
     private static final String ALGEBRIC_OP_NAME = "algebric";
 
+    public static final String SCALE_NAME = "Scale";
+
+    public static final String SCALE2_NAME = "Scale2";
+
+    public static final String SCALE_OP_NAME;
+
     public static final String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
 
+    public static final String USE_JAI_SCALE2_KEY = "it.geosolutions.jaiext.scale2";
+
     public static final boolean JAIEXT_ENABLED;
+
+    public static final boolean USE_JAI_SCALE2;
 
     public static boolean isJaiExtEnabled() {
         return JAIEXT_ENABLED;
@@ -179,6 +189,8 @@ public class ImageWorker {
     static {
         JAIEXT_ENABLED = Boolean.getBoolean(JAIEXT_ENABLED_KEY);
         JAIExt.initJAIEXT(JAIEXT_ENABLED);
+        USE_JAI_SCALE2 = Boolean.getBoolean(USE_JAI_SCALE2_KEY) && JAIEXT_ENABLED;
+        SCALE_OP_NAME = USE_JAI_SCALE2 ? SCALE2_NAME : SCALE_NAME;
     }
 
     /** JDK_JPEG_IMAGE_WRITER_SPI */
@@ -4248,14 +4260,12 @@ public class ImageWorker {
                         setNoData(nodata);
                     }
                 }
-            } else if ("Scale".equals(opName)) {
+            } else if (SCALE_NAME.equals(opName) || SCALE2_NAME.equals(opName)) {
+                boolean isScale2 = SCALE2_NAME.equals(opName);
                 ParameterBlock paramBlock = sourceParamBlock;
                 RenderedImage sSource = paramBlock.getRenderedSource(0);
 
-                float xScale = paramBlock.getFloatParameter(0);
-                float yScale = paramBlock.getFloatParameter(1);
-                float xTrans = paramBlock.getFloatParameter(2);
-                float yTrans = paramBlock.getFloatParameter(3);
+                double[] scalingParams = getScalingParams(paramBlock, isScale2);
                 Interpolation sInterp = (Interpolation) paramBlock.getObjectParameter(4);
 
                 Range nodata = null;
@@ -4272,10 +4282,7 @@ public class ImageWorker {
                             numParameters > 8 ? (double[]) paramBlock.getObjectParameter(8) : null;
                     if (r != null) {
                         try {
-                            AffineTransform sTx = AffineTransform.getScaleInstance(xScale, yScale);
-                            sTx.concatenate(AffineTransform.getTranslateInstance(xTrans, yTrans));
-                            AffineTransform inverse = sTx.createInverse();
-                            ROI newROI = this.roi != null ? this.roi.transform(inverse) : null;
+                            ROI newROI = computeScaledROI(scalingParams);
                             similarROI = newROI != null && newROI.intersects(r.getBounds());
                         } catch (NoninvertibleTransformException e) {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -4293,15 +4300,19 @@ public class ImageWorker {
                         && ((nodata == null || hasSameNodata) && (r == null || similarROI))) {
                     // we can replace it
                     AffineTransform concat = new AffineTransform(tx);
-                    concat.concatenate(new AffineTransform(xScale, 0, 0, yScale, xTrans, yTrans));
+                    concat.concatenate(
+                            new AffineTransform(
+                                    scalingParams[0],
+                                    0,
+                                    0,
+                                    scalingParams[1],
+                                    scalingParams[2],
+                                    scalingParams[3]));
                     tx = concat;
                     source = sSource;
                     if (similarROI && r != null) {
                         try {
-                            AffineTransform sTx = AffineTransform.getScaleInstance(xScale, yScale);
-                            sTx.concatenate(AffineTransform.getTranslateInstance(xTrans, yTrans));
-                            AffineTransform inverse = sTx.createInverse();
-                            ROI newROI = this.roi != null ? this.roi.transform(inverse) : null;
+                            ROI newROI = computeScaledROI(scalingParams);
                             this.roi = newROI.intersect(r);
                         } catch (NoninvertibleTransformException e) {
                             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -4346,61 +4357,22 @@ public class ImageWorker {
                 // layout
                 Hints localHints = new Hints(getRenderingHints());
                 localHints.remove(JAI.KEY_IMAGE_LAYOUT);
-                pb.set(1.0f, 0);
-                pb.set(1.0f, 1);
-                pb.set((float) Math.round(tx.getTranslateX()), 2);
-                pb.set((float) Math.round(tx.getTranslateY()), 3);
-                pb.set(interpolation, 4);
-                pb.set(roi, 5);
-                pb.set(nodata, 7);
-                if (isNoDataNeeded()) {
-                    if (background != null && background.length > 0) {
-                        pb.set(background, 8);
-                    }
-                }
-                image = JAI.create("Scale", pb, localHints);
+                double[] scalingParams =
+                        new double[] {
+                            1.0, 1.0, Math.round(tx.getTranslateX()), Math.round(tx.getTranslateY())
+                        };
+                scale(pb, scalingParams, interpolation, localHints);
                 updateNoData(background, image);
-
-                // getting the new ROI property
-                if (roi != null) {
-                    PropertyGenerator gen =
-                            getOperationDescriptor("Scale")
-                                    .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-                    Object prop = gen.getProperty("roi", image);
-                    if (prop != null && prop instanceof ROI) {
-                        setROI((ROI) prop);
-                    } else {
-                        setROI(null);
-                    }
-                }
-
+                updateROI(false, SCALE_OP_NAME);
             } else {
                 // generic scale
-                pb.set((float) tx.getScaleX(), 0);
-                pb.set((float) tx.getScaleY(), 1);
-                pb.set((float) tx.getTranslateX(), 2);
-                pb.set((float) tx.getTranslateY(), 3);
-                pb.set(interpolation, 4);
-                pb.set(roi, 5);
-                pb.set(nodata, 7);
-                if (isNoDataNeeded()) {
-                    if (background != null && background.length > 0) {
-                        pb.set(background, 8);
-                    }
-                }
-                image = JAI.create("Scale", pb, getRenderingHints());
+                double[] scalingParams =
+                        new double[] {
+                            tx.getScaleX(), tx.getScaleY(), tx.getTranslateX(), tx.getTranslateY()
+                        };
+                scale(pb, scalingParams, interpolation, getRenderingHints());
                 updateNoData(background, image);
-                if (roi != null) {
-                    PropertyGenerator gen =
-                            getOperationDescriptor("Scale")
-                                    .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-                    Object prop = gen.getProperty("roi", image);
-                    if (prop != null && prop instanceof ROI) {
-                        setROI((ROI) prop);
-                    } else {
-                        setROI(null);
-                    }
-                }
+                updateROI(false, SCALE_OP_NAME);
             }
         } else {
             pb.set(tx, 0);
@@ -4411,20 +4383,95 @@ public class ImageWorker {
             pb.set(nodata, 6);
             image = JAI.create("Affine", pb, getRenderingHints());
             updateNoData(bgValues, image);
-
-            if (roi != null) {
-                PropertyGenerator gen =
-                        getOperationDescriptor("Affine")
-                                .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-                Object prop = gen.getProperty("roi", image);
-                if (prop != null && prop instanceof ROI) {
-                    setROI((ROI) prop);
-                } else {
-                    setROI(null);
-                }
-            }
+            updateROI(false, "Affine");
         }
         return this;
+    }
+
+    /**
+     * Perform scaling
+     *
+     * @param pb
+     * @param scalingParams
+     * @param interpolation
+     * @param hints
+     */
+    private void scale(
+            ParameterBlock pb,
+            double[] scalingParams,
+            Interpolation interpolation,
+            RenderingHints hints) {
+        for (int i = 0; i < 4; i++) {
+            if (USE_JAI_SCALE2) {
+                pb.set(scalingParams[i], i);
+            } else {
+                pb.set((float) scalingParams[i], i);
+            }
+        }
+        pb.set(interpolation, 4);
+        pb.set(roi, 5);
+        pb.set(nodata, 7);
+        if (isNoDataNeeded()) {
+            if (background != null && background.length > 0) {
+                pb.set(background, 8);
+            }
+        }
+        image = JAI.create(SCALE_OP_NAME, pb, hints);
+    }
+
+    /**
+     * Update the ROI by extracting it from the current image using the underlying property
+     * generator (when specified)
+     *
+     * @param forceUpdate update the ROI no matter if the original roi was is null.
+     * @param opName if not null, get the property from the underlying property generator
+     */
+    private void updateROI(boolean forceUpdate, String opName) {
+        // getting the new ROI property
+        if (forceUpdate || roi != null) {
+            Object prop = null;
+            if (opName != null) {
+                // Extract the roi using a property generator
+                PropertyGenerator gen =
+                        getOperationDescriptor(opName)
+                                .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
+                prop = gen.getProperty("roi", image);
+            } else {
+                // extract the roi from the image
+                prop = image.getProperty("roi");
+            }
+            // Actual ROI update
+            if (prop != null && prop instanceof ROI) {
+                setROI((ROI) prop);
+            } else {
+                setROI(null);
+            }
+        }
+    }
+
+    /** Apply scaling parameter to the ROI to return the scaled version */
+    private ROI computeScaledROI(double[] scalingParams) throws NoninvertibleTransformException {
+        ROI newRoi = null;
+        if (roi != null) {
+            AffineTransform sTx =
+                    AffineTransform.getScaleInstance(scalingParams[0], scalingParams[1]);
+            sTx.concatenate(
+                    AffineTransform.getTranslateInstance(scalingParams[2], scalingParams[3]));
+            newRoi = roi.transform(sTx.createInverse());
+        }
+        return newRoi;
+    }
+
+    private double[] getScalingParams(ParameterBlock paramBlock, boolean isScale2) {
+        // Shearing is not taken into account.
+        // params are ordered like this: scaleX, scaleY, transX, transY
+        double[] scalingParams = new double[4];
+        for (int i = 0; i < 4; i++) {
+            // Use proper datatype parameter getter depending on the type of operation
+            scalingParams[i] =
+                    isScale2 ? paramBlock.getDoubleParameter(i) : paramBlock.getFloatParameter(i);
+        }
+        return scalingParams;
     }
 
     private void updateNoData(double[] bgValues, RenderedImage image) {
@@ -4851,45 +4898,20 @@ public class ImageWorker {
             }
         }
         image = JAI.create("Warp", pb, getRenderingHints());
-        Object prop = image.getProperty("roi");
-        if (prop != null && prop instanceof ROI) {
-            setROI((ROI) prop);
-        } else {
-            setROI(null);
-        }
-
+        updateROI(true, null);
         return this;
     }
 
     /** Scales the underlying raster using the provided parameters. */
     public ImageWorker scale(
-            float xScale, float yScale, float xTrans, float yTrans, Interpolation interp) {
+            double xScale, double yScale, double xTrans, double yTrans, Interpolation interp) {
         ParameterBlock pb = new ParameterBlock();
         pb.setSource(image, 0); // The source image.
-        pb.set(xScale, 0);
-        pb.set(yScale, 1);
-        pb.set(xTrans, 2);
-        pb.set(yTrans, 3);
-        pb.set(interp, 4);
-        pb.set(roi, 5);
-        pb.set(false, 6);
-        pb.set(nodata, 7);
-        if (isNoDataNeeded()) {
-            if (background != null && background.length > 0) {
-                pb.set(background, 8);
-            }
-        }
-        image = JAI.create("Scale", pb, getRenderingHints());
+        double[] scalingParams = new double[] {xScale, yScale, xTrans, yTrans};
+        scale(pb, scalingParams, interp, getRenderingHints());
+
         // getting the new ROI property
-        PropertyGenerator gen =
-                getOperationDescriptor("Scale")
-                        .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-        Object prop = gen.getProperty("roi", image);
-        if (prop != null && prop instanceof ROI) {
-            setROI((ROI) prop);
-        } else {
-            setROI(null);
-        }
+        updateROI(true, SCALE_OP_NAME);
         return this;
     }
 

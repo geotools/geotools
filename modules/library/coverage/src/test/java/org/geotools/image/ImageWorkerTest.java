@@ -1418,7 +1418,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
                                         Interpolation.getInstance(Interpolation.INTERP_NEAREST),
                                         new double[] {0})
                                 .getRenderedImage();
-        assertEquals("Scale", fullChain.getOperationName());
+        assertEquals(ImageWorker.SCALE_OP_NAME, fullChain.getOperationName());
         fullChain.getTiles();
         assertNoData(fullChain, null);
 

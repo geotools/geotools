@@ -16,7 +16,10 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import static org.junit.Assert.assertTrue;
+
 import com.google.common.io.Files;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import org.geotools.TestData;
@@ -28,6 +31,7 @@ import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -72,6 +76,70 @@ public class MultiResolutionTest {
         gc = reader.read(new ParameterValue<?>[] {pam});
         // gc would be null before bug fix
         Assert.assertNotNull(gc);
+    }
+
+    @Test
+    public void testVirtualNativeResolution() throws IOException, TransformException {
+        TemporaryFolder folder = new TemporaryFolder();
+        folder.create();
+        File file = folder.newFile("sample.tif");
+        Files.copy(TestData.file(this, "multiresolution/sample.tif"), file);
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(folder.getRoot());
+        GridEnvelope originalRange = reader.getOriginalGridRange();
+        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        AffineTransform2D at = (AffineTransform2D) g2w;
+
+        ParameterValue<double[]> virtualNativeRes =
+                ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
+
+        // Specifying a lower virtual native resolution
+        virtualNativeRes.setValue(new double[] {at.getScaleX() * 16, -at.getScaleY() * 16});
+
+        ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        pam.setValue(new GridGeometry2D(originalRange, envelope));
+
+        GridCoverage2D gc = reader.read(new ParameterValue<?>[] {virtualNativeRes, pam});
+        RenderedImage ri = gc.getRenderedImage();
+
+        // The Virtual Native Resolution resulted into getting back an image with
+        // few pixels (Very low resolution)
+        assertTrue(ri.getWidth() < 20);
+        assertTrue(ri.getHeight() < 20);
+    }
+
+    @Test
+    public void testVirtualNativeResolutionNoOverviews() throws IOException, TransformException {
+        TemporaryFolder folder = new TemporaryFolder();
+        folder.create();
+        File srtm = folder.newFile("sample_noov.tif");
+        Files.copy(TestData.file(this, "multiresolution/sample_noov.tif"), srtm);
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(folder.getRoot());
+        GridEnvelope originalRange = reader.getOriginalGridRange();
+        GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        AffineTransform2D at = (AffineTransform2D) g2w;
+
+        ParameterValue<double[]> virtualNativeRes =
+                ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
+
+        // Specifying a lower virtual native resolution
+        virtualNativeRes.setValue(new double[] {at.getScaleX() * 16, -at.getScaleY() * 16});
+
+        ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        pam.setValue(new GridGeometry2D(originalRange, envelope));
+
+        GridCoverage2D gc = reader.read(new ParameterValue<?>[] {virtualNativeRes, pam});
+        RenderedImage ri = gc.getRenderedImage();
+
+        // The Virtual Native Resolution resulted into getting back an image with
+        // few pixels (Very low resolution)
+        assertTrue(ri.getWidth() < 20);
+        assertTrue(ri.getHeight() < 20);
     }
 
     @Test

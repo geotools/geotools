@@ -293,7 +293,8 @@ public class OverviewsControllerTest extends Assert {
                             DecimationPolicy.ALLOW,
                             readParamsG1,
                             rasterManager,
-                            ovControllerG1);
+                            ovControllerG1,
+                            null);
             imageIndexG2 =
                     ReadParamsController.setReadParams(
                             requestedResolution,
@@ -301,7 +302,9 @@ public class OverviewsControllerTest extends Assert {
                             DecimationPolicy.ALLOW,
                             readParamsG2,
                             rasterManager,
-                            ovControllerG2);
+                            ovControllerG2,
+                            null);
+
             assertSame(at.ot[i].g1.imageIndex, imageIndexG1);
             assertSame(at.ot[i].g2.imageIndex, imageIndexG2);
             assertSame(at.ot[i].g1.ssx, readParamsG1.getSourceXSubsampling());

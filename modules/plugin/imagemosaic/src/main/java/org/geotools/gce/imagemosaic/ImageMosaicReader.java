@@ -1100,7 +1100,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         OverviewsController overviewsController = manager.overviewsController;
         OverviewLevel level = null;
         if (numOverviews > 0) {
-            int imageIdx = overviewsController.pickOverviewLevel(policy, requestedResolution);
+            int imageIdx = overviewsController.pickOverviewLevel(policy, requestedResolution, null);
             level = overviewsController.getLevel(imageIdx);
         } else {
             level = overviewsController.getLevel(0);

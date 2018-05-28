@@ -91,6 +91,17 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
                     Boolean.FALSE);
 
     /**
+     * This {@link GeneralParameterValue} can be provided to the {@link GeoTiffWriter}s to specify
+     * whether NoData should be written when available. Default or missing parameter means true.
+     */
+    public static final DefaultParameterDescriptor<Boolean> WRITE_NODATA =
+            new DefaultParameterDescriptor<Boolean>(
+                    "WRITE_NODATA",
+                    Boolean.class,
+                    new Boolean[] {Boolean.TRUE, Boolean.FALSE},
+                    Boolean.TRUE);
+
+    /**
      * This {@link GeneralParameterValue} can be provided to the {@link GeoTiffWriter}s in order to
      * force the writer to retain the axes order.
      */
@@ -135,6 +146,7 @@ public class GeoTiffFormat extends AbstractGridFormat implements Format {
                                 mInfo,
                                 new GeneralParameterDescriptor[] {
                                     RETAIN_AXES_ORDER,
+                                    WRITE_NODATA,
                                     AbstractGridFormat.GEOTOOLS_WRITE_PARAMS,
                                     AbstractGridFormat.PROGRESS_LISTENER
                                 }));

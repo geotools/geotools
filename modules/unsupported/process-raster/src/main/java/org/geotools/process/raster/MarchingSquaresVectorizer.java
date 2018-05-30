@@ -72,7 +72,7 @@ import org.opengis.referencing.operation.TransformException;
  * won't analyze that.
  *
  * <p>It can deal with {@link GridCoverage2D} instances, returning footprint in real world
- * coordinates, as well as with {@link RenderedImage} instances, returnin footprint in raster space
+ * coordinates, as well as with {@link RenderedImage} instances, returning footprint in raster space
  * coordinates
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
@@ -91,9 +91,9 @@ public final class MarchingSquaresVectorizer {
 
     private static final int INVALID_PIXEL_I = 255;
 
-    private static final GeometryFactory gf = new GeometryFactory();
+    private static final GeometryFactory GF = new GeometryFactory();
 
-    private static final Geometry EMPTY_GEOMETRY = gf.createGeometryCollection(new Geometry[0]);
+    private static final Geometry EMPTY_GEOMETRY = GF.createMultiPolygon(new Polygon[0]);
 
     private static final double MIN_AREA_TO_BE_SIMPLIFIED = 1000.0d;
 
@@ -664,7 +664,7 @@ public final class MarchingSquaresVectorizer {
         // Creating the final multipolygon
         Polygon[] polArray = new Polygon[geometriesList.size()];
         Polygon[] polygons = geometriesList.toArray(polArray);
-        final Geometry innerGeometry = new MultiPolygon(polygons, gf);
+        final Geometry innerGeometry = new MultiPolygon(polygons, GF);
 
         if (footprintCoordinates == FootprintCoordinates.MODEL_SPACE) {
             this.footprint = JTS.transform(innerGeometry, transform);
@@ -1048,8 +1048,8 @@ public final class MarchingSquaresVectorizer {
         coordinateArray[3] = new Coordinate(imageProperties.minX - 1, imageProperties.maxY);
         coordinateArray[4] = new Coordinate(imageProperties.minX - 1, imageProperties.minY - 1);
 
-        LinearRing linearRing = gf.createLinearRing(coordinateArray);
-        Polygon polygon = gf.createPolygon(linearRing, null);
+        LinearRing linearRing = GF.createLinearRing(coordinateArray);
+        Polygon polygon = GF.createPolygon(linearRing, null);
 
         geometriesList.add(polygon);
     }
@@ -1218,8 +1218,8 @@ public final class MarchingSquaresVectorizer {
         Coordinate[] coordinateArray =
                 (Coordinate[]) coordinateList.toArray(new Coordinate[coordinateList.size()]);
 
-        LinearRing linearRing = gf.createLinearRing(coordinateArray);
-        Polygon polygon = gf.createPolygon(linearRing, null);
+        LinearRing linearRing = GF.createLinearRing(coordinateArray);
+        Polygon polygon = GF.createPolygon(linearRing, null);
 
         return polygon;
     }
@@ -1409,7 +1409,7 @@ public final class MarchingSquaresVectorizer {
      * @return the {@link Polygon}.
      */
     public static Polygon createSimplePolygon(Coordinate[] coords) {
-        return gf.createPolygon(gf.createLinearRing(coords), null);
+        return GF.createPolygon(GF.createLinearRing(coords), null);
     }
 
     private LookupTable createLookupTableByte(List<Range<Integer>> exclusionValues, int dataType) {

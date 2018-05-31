@@ -32,7 +32,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.h2.tools.Server;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /** @source $URL$ */
@@ -93,7 +92,6 @@ public class H2DataStoreFactoryTest {
         }
     }
 
-    @Ignore
     @Test
     public void testTCP() throws Exception {
         HashMap params = new HashMap();

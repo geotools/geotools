@@ -28,6 +28,7 @@ import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.ComplexFilterSplitter;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.spi.CustomSourceDataStore;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
@@ -159,7 +160,7 @@ public class MappingFeatureIteratorFactory {
                 ((JoiningQuery) query).setRootMapping(mapping);
             }
         }
-        IMappingFeatureIterator iterator;
+        IMappingFeatureIterator iterator = null;
         if (unrolledFilter != null) {
             // unrolledFilter is set in JoiningNestedAttributeMapping
             // so this is for nested features with joining
@@ -269,9 +270,17 @@ public class MappingFeatureIteratorFactory {
             } else {
                 // non database sources e.g. property data store
                 Filter filter = query.getFilter();
-                iterator =
-                        new DataAccessMappingFeatureIterator(
-                                store, mapping, query, !Filter.INCLUDE.equals(filter), true);
+                for (CustomSourceDataStore customSourceDataStore :
+                        CustomSourceDataStore.loadExtensions()) {
+                    // extension point to allow custom data source to provide their own iterator
+                    iterator =
+                            customSourceDataStore.buildIterator(store, mapping, query, transaction);
+                }
+                if (iterator == null) {
+                    iterator =
+                            new DataAccessMappingFeatureIterator(
+                                    store, mapping, query, !Filter.INCLUDE.equals(filter), true);
+                }
                 // HACK HACK HACK
                 // experimental/temporary solution for isList subsetting by filtering
                 if (isListFilter != null) {

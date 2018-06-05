@@ -19,6 +19,8 @@ package org.geotools.filter.function.color;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.awt.Color;
+import java.util.Iterator;
+import java.util.List;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -66,4 +68,30 @@ public abstract class AbstractHSLFunction extends FunctionImpl {
     protected abstract void adjstRelative(float amount, HSLColor hsl);
 
     protected abstract void adjustAbsolute(float amount, HSLColor hsl);
+
+    /**
+     * Creates a String representation of this Function with the function name and the arguments.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName());
+        sb.append("(");
+        List<org.opengis.filter.expression.Expression> params = getParameters();
+        if (params != null) {
+            org.opengis.filter.expression.Expression exp;
+            for (Iterator<org.opengis.filter.expression.Expression> it = params.iterator();
+                    it.hasNext(); ) {
+                exp = it.next();
+                sb.append("[");
+                sb.append(exp);
+                sb.append("]");
+                if (it.hasNext()) {
+                    sb.append(", ");
+                }
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 }

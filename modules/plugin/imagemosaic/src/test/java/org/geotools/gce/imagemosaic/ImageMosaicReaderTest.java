@@ -135,13 +135,8 @@ import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -154,7 +149,6 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
@@ -237,6 +231,8 @@ public class ImageMosaicReaderTest extends Assert {
     private URL timeFormatURL;
 
     private URL oneBitURL;
+
+    @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Before
     public void setup() {
@@ -5207,16 +5203,10 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    private File setupTimeCachedMosaic()
-            throws FileNotFoundException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+    private File setupTimeCachedMosaic() throws IOException, FactoryException {
         // copy the test data
         File source = URLs.urlToFile(timeURL);
-        File testDataDir = TestData.file(this, ".");
-        File timeCached = new File(testDataDir, "timeCached");
-        if (timeCached.exists()) {
-            FileUtils.forceDelete(timeCached);
-        }
+        File timeCached = tempFolder.newFolder("timeCached");
         FileUtils.copyDirectory(source, timeCached);
         Arrays.stream(
                         timeCached.listFiles(

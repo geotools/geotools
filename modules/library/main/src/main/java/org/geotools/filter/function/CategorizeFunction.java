@@ -19,6 +19,7 @@ package org.geotools.filter.function;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
@@ -254,5 +255,31 @@ public class CategorizeFunction implements Function {
 
     public Literal getFallbackValue() {
         return fallback;
+    }
+
+    /**
+     * Creates a String representation of this Function with the function name and the arguments.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName());
+        sb.append("(");
+        List<org.opengis.filter.expression.Expression> params = getParameters();
+        if (params != null) {
+            org.opengis.filter.expression.Expression exp;
+            for (Iterator<org.opengis.filter.expression.Expression> it = params.iterator();
+                    it.hasNext(); ) {
+                exp = it.next();
+                sb.append("[");
+                sb.append(exp);
+                sb.append("]");
+                if (it.hasNext()) {
+                    sb.append(", ");
+                }
+            }
+        }
+        sb.append(")");
+        return sb.toString();
     }
 }

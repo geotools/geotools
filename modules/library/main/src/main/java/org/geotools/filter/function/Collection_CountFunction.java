@@ -48,7 +48,10 @@ public class Collection_CountFunction extends FunctionExpressionImpl {
     Object count = null;
 
     public static FunctionName NAME =
-            new FunctionNameImpl("Collection_Count", parameter("count", Object.class));
+            new FunctionNameImpl(
+                    "Collection_Count",
+                    parameter("count", Number.class),
+                    parameter("features", Object.class));
 
     /** Creates a new instance of Collection_CountFunction */
     public Collection_CountFunction() {

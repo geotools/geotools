@@ -74,8 +74,7 @@ public class SVGGraphicFactoryTest extends TestCase {
         assertNotNull(icon);
         assertEquals(20, icon.getIconHeight());
         // check caching is working
-        assertTrue(SVGGraphicFactory.glyphCache.containsKey(url.toString()));
-
+        assertTrue(RenderableSVGCache.glyphCache.containsKey(url.toString()));
         // second call, hopefully using the cached path
         icon = svg.getIcon(null, ff.literal(url), "image/svg", 20);
         assertNotNull(icon);
@@ -138,11 +137,11 @@ public class SVGGraphicFactoryTest extends TestCase {
         assertNotNull(icon);
 
         String evaluatedUrl = ff.literal(url).evaluate(null, String.class);
-        assertTrue(svg.glyphCache.containsKey(evaluatedUrl));
-        assertNotNull(svg.glyphCache.get(evaluatedUrl));
+        assertTrue(RenderableSVGCache.glyphCache.containsKey(evaluatedUrl));
+        assertNotNull(RenderableSVGCache.glyphCache.get(evaluatedUrl));
 
         ((GraphicCache) svg).clearCache();
-        assertTrue(svg.glyphCache.isEmpty());
+        assertTrue(RenderableSVGCache.glyphCache.isEmpty());
     }
 
     public void testConcurrentLoad() throws Exception {
@@ -161,8 +160,8 @@ public class SVGGraphicFactoryTest extends TestCase {
             SVGGraphicFactory svg =
                     new SVGGraphicFactory() {
                         @Override
-                        protected SVGGraphicFactory.RenderableSVG toRenderableSVG(
-                                String svgfile, URL svgUrl) throws SAXException, IOException {
+                        protected RenderableSVG toRenderableSVG(String svgfile, URL svgUrl)
+                                throws SAXException, IOException {
                             int value = counter.incrementAndGet();
                             assertEquals(1, value);
                             return super.toRenderableSVG(svgfile, svgUrl);
@@ -177,7 +176,7 @@ public class SVGGraphicFactoryTest extends TestCase {
                             Icon icon = svg.getIcon(null, expression, "image/svg", 20);
                             assertNotNull(icon);
                             assertEquals(20, icon.getIconHeight());
-                            assertTrue(SVGGraphicFactory.glyphCache.containsKey(url.toString()));
+                            assertTrue(RenderableSVGCache.glyphCache.containsKey(url.toString()));
                             return null;
                         });
             }
@@ -186,7 +185,7 @@ public class SVGGraphicFactoryTest extends TestCase {
                 future.get();
             }
             // clear the cache
-            SVGGraphicFactory.glyphCache.clear();
+            RenderableSVGCache.glyphCache.clear();
         }
     }
 }

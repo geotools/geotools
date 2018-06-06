@@ -16,8 +16,7 @@
  */
 package org.geotools.styling;
 
-import java.awt.Component;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -32,8 +31,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.data.Base64;
 import org.geotools.factory.CommonFactoryFinder;
@@ -1713,7 +1711,21 @@ public class SLDParser {
             } else if (childName.equalsIgnoreCase("WellKnownName")) {
                 if (LOGGER.isLoggable(Level.FINEST))
                     LOGGER.finest("setting mark to " + getFirstChildValue(child));
-                mark.setWellKnownName(parseCssParameter(child));
+                Expression wellKnownName = parseCssParameter(child);
+                if (wellKnownName instanceof Literal) {
+                    String expanded = wellKnownName.evaluate(null, String.class);
+                    if (expanded != null && expanded.startsWith("file://")) {
+                        URL url = onlineResourceLocator.locateResource(expanded);
+                        if (url != null) {
+                            wellKnownName = ff.literal(url.toExternalForm());
+                        } else {
+                            LOGGER.log(
+                                    Level.WARNING,
+                                    "WellKnownName file reference could not be found: " + expanded);
+                        }
+                    }
+                }
+                mark.setWellKnownName(wellKnownName);
             }
         }
 

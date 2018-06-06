@@ -16,6 +16,7 @@
  */
 package org.geotools.data.wfs.internal.v2_0;
 
+import java.lang.StringBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -32,7 +33,12 @@ import net.opengis.wfs20.WFSCapabilitiesType;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.wfs.WFSServiceInfo;
 
-/** Adapts a WFS capabilities document to {@link ServiceInfo} */
+/**
+ * Adapts a WFS capabilities document to {@link ServiceInfo}
+ * 
+ * @author unknown
+ * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
+ */
 public final class Capabilities200ServiceInfo implements WFSServiceInfo {
 
     private final WFSCapabilitiesType capabilities;
@@ -62,9 +68,18 @@ public final class Capabilities200ServiceInfo implements WFSServiceInfo {
         if (serviceIdentification == null) {
             return null;
         }
-        @SuppressWarnings("unchecked")
-        List<String> abs = serviceIdentification.getAbstract();
-        return abs == null || abs.isEmpty() ? null : abs.get(0);
+
+        // The Abstract is of Type LanguageStringType, not String.
+        StringBuilder sb = new StringBuilder();
+        for (Object line : serviceIdentification.getAbstract()) {
+            if (line instanceof LanguageStringType) {
+                sb.append(((LanguageStringType) line).getValue());
+            } else {
+                sb.append(line);
+            }
+        } // end of for
+
+        return sb.toString();
     }
 
     /**
@@ -142,7 +157,9 @@ public final class Capabilities200ServiceInfo implements WFSServiceInfo {
                 || serviceIdentification.getTitle().isEmpty()) {
             return null;
         }
-        return String.valueOf(serviceIdentification.getTitle().get(0));
+
+        return ((LanguageStringType) serviceIdentification.getTitle().get(0)).getValue();
+        // return String.valueOf(serviceIdentification.getTitle().get(0));
     }
 
     /** @see WFSServiceInfo#getVersion() */

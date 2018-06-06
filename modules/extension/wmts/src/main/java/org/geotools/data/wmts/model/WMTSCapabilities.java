@@ -18,6 +18,7 @@ package org.geotools.data.wmts.model;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import java.lang.StringBuilder;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
+ * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
  */
 public class WMTSCapabilities extends Capabilities {
 
@@ -339,6 +341,18 @@ public class WMTSCapabilities extends Capabilities {
         String title = ((LanguageStringType) layerType.getTitle().get(0)).getValue();
         WMTSLayer layer = new WMTSLayer(title);
         layer.setName(layerType.getIdentifier().getValue());
+
+        // The Abstract is of Type LanguageStringType, not String.
+        StringBuilder sb = new StringBuilder();
+        for (Object line : layerType.getAbstract()) {
+            if (line instanceof LanguageStringType) {
+                sb.append(((LanguageStringType) line).getValue());
+            } else {
+                sb.append(line);
+            }
+        } // end of for
+        layer.set_abstract(sb.toString());
+
         EList<TileMatrixSetLinkType> tmsLinks = layerType.getTileMatrixSetLink();
         for (TileMatrixSetLinkType linkType : tmsLinks) {
             TileMatrixSetLink link = new TileMatrixSetLink();

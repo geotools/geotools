@@ -159,7 +159,6 @@ public final class Capabilities200ServiceInfo implements WFSServiceInfo {
         }
 
         return ((LanguageStringType) serviceIdentification.getTitle().get(0)).getValue();
-        // return String.valueOf(serviceIdentification.getTitle().get(0));
     }
 
     /** @see WFSServiceInfo#getVersion() */

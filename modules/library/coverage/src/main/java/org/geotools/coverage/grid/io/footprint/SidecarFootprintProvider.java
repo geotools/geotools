@@ -114,7 +114,7 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
             return getFootprint(reference.getAbsolutePath());
         } else {
             Object value = feature.getAttribute(FOOTPRINT_LOCATION_ATTRIBUTE);
-            if (value != null && value instanceof String) {
+            if (value instanceof String && !((String) value).matches("^(?i)https?://.*$")) {
                 String strValue = (String) value;
                 String path = getFullPath(strValue);
                 return getFootprint(path);
@@ -219,7 +219,7 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
         if (!file.isAbsolute()) {
             file = new File(reference, strValue);
         }
-        return file.getPath();
+        return file.getCanonicalPath();
     }
 
     @Override

@@ -21,6 +21,8 @@ import static org.mockito.Mockito.when;
 
 import java.net.URL;
 import net.opengis.wfs20.WFSCapabilitiesType;
+import org.geotools.data.wfs.internal.v2_0.Capabilities200ServiceInfo;
+import net.opengis.wfs20.impl.Wfs20FactoryImpl;
 import org.eclipse.emf.common.util.ECollections;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +47,8 @@ public class Capabilities200ServiceInfoTest {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        featureType = new Capabilities200ServiceInfo("http://schemas.opengis.net/wfs/2.0/wfs.xsd", getCapsUrl, new WFSCapabilitiesTypeImpl());
+        Wfs20FactoryImpl fac = new Wfs20FactoryImpl();
+        featureType = new Capabilities200ServiceInfo("http://schemas.opengis.net/wfs/2.0/wfs.xsd", getCapsUrl, fac.createWFSCapabilitiesType());
     }
 
     // One parameter, no view params, no mappings => no parameters

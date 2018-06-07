@@ -229,6 +229,8 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
                 reader,
                 new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
                 "Time-Elevation Test");
+
+        reader.dispose();
     }
 
     /**
@@ -285,6 +287,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
             // by the delete operation.
             assertFalse(dropSuccessfull);
         }
+        reader.dispose();
     }
 
     private void setupDataStoreProperties(String folder) throws IOException, FileNotFoundException {
@@ -429,6 +432,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         elevation = sf.getAttribute("elevation");
         assertTrue(elevation instanceof Integer);
         assertNotSame(((Integer) elevation).intValue(), 0);
+        reader1.dispose();
     }
 
     @Override
@@ -591,6 +595,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
                 reader,
                 new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
                 "Time-Elevation Test");
+        reader.dispose();
     }
 
     @Override

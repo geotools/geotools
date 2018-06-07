@@ -58,6 +58,7 @@ public class NetCDFAggregationTest {
         assertEquals(2, coverageNames.size());
         assertTrue(coverageNames.contains("lflx"));
         assertTrue(coverageNames.contains("cldc"));
+        reader.dispose();
     }
 
     @Test
@@ -72,6 +73,7 @@ public class NetCDFAggregationTest {
         assertEquals(59, reader.getVariableByName("P").getDimension(0).getLength());
         assertEquals(59, reader.getVariableByName("T").getDimension(0).getLength());
         assertEquals(59, reader.getVariableByName("time").getDimension(0).getLength());
+        reader.dispose();
     }
 
     @Test
@@ -86,6 +88,7 @@ public class NetCDFAggregationTest {
         assertEquals("time", reader.getVariableByName("T").getDimension(0).getFullName());
         assertEquals(3, reader.getVariableByName("T").getDimension(0).getLength());
         assertEquals(3, reader.getVariableByName("time").getDimension(0).getLength());
+        reader.dispose();
     }
 
     @Test
@@ -99,6 +102,7 @@ public class NetCDFAggregationTest {
 
         assertEquals(3, reader.getVariableByName("runtime").getDimension(0).getLength());
         assertEquals("runtime", reader.getVariableByName("T").getDimension(0).getFullName());
+        reader.dispose();
     }
 
     @Test
@@ -120,5 +124,6 @@ public class NetCDFAggregationTest {
         assertEquals(
                 variableAdapter.getTemporalDomain().getTemporalExtent(),
                 variableAdapterReversed.getTemporalDomain().getTemporalExtent());
+        reader.dispose();
     }
 }

@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
@@ -80,12 +79,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
-import org.geotools.util.logging.Logging;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
@@ -110,7 +105,7 @@ import ucar.nc2.Variable;
  */
 public class NetCDFMosaicReaderTest extends Assert {
 
-    private static final Logger LOGGER = Logging.getLogger(NetCDFMosaicReaderTest.class.toString());
+    @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
     public static junit.framework.Test suite() {
         return new JUnit4TestAdapter(NetCDFMosaicReaderTest.class);
@@ -120,11 +115,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testHarvestAddTime() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_harvest1");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_harvest1");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
@@ -230,11 +221,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             throws IOException, InvalidParameterValueException, ParseException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_poly_hetero");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_poly_hetero");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
@@ -293,11 +280,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     @Test
     public void testCustomTimeAttribute() throws IOException {
         File nc1 = TestData.file(this, "polyphemus_20130301_NO2_time2.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_time2");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_time2");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
@@ -319,6 +302,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
         checkCustomTimeAttribute(nc1, reader);
+        reader.dispose();
     }
 
     @Test
@@ -340,11 +324,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         repository.register(new NameImpl(theStoreName), dataStore);
 
         File nc1 = TestData.file(this, "polyphemus_20130301_NO2_time2.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_time2");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_time2");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
@@ -378,6 +358,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         assertEquals(1, typeNames.size());
         assertTrue(typeNames.contains("NO2"));
         dataStore.dispose();
+        reader.dispose();
     }
 
     public void checkCustomTimeAttribute(File nc1, ImageMosaicReader reader) throws IOException {
@@ -447,11 +428,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testReHarvest() throws Exception {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_harvest4");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_harvest4");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
@@ -562,11 +539,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testHarvestHDF5Data() throws IOException {
         File nc1 = TestData.file(this, "2DLatLonCoverage.nc");
         File nc2 = TestData.file(this, "2DLatLonCoverage2.nc");
-        File mosaic = new File(TestData.file(this, "."), "simpleMosaic");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("simpleMosaic");
         FileUtils.copyFileToDirectory(nc1, mosaic);
         FileUtils.copyFileToDirectory(nc2, mosaic);
 
@@ -589,17 +562,14 @@ public class NetCDFMosaicReaderTest extends Assert {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
         reader.read("L1_V2", null);
+        reader.dispose();
     }
 
     @Test
     public void testHarvestAddVariable() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_harvest2");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_harvest2");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         // The indexer
@@ -694,11 +664,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY_new.nc");
         File nc2 = TestData.file(this, "20130108.METOPA.GOME2.NO2.DUMMY_new.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_heterogen");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_heterogen");
         FileUtils.copyFileToDirectory(nc1, mosaic);
         FileUtils.copyFileToDirectory(nc2, mosaic);
 
@@ -781,11 +747,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testHarvest3Gome() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_harvest");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_harvest");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         File xml = TestData.file(this, ".DUMMY.GOME2.NO2.PGL/GOME2.NO2.xml");
@@ -894,11 +856,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testReadCoverageGome() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_harvest3");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_harvest3");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         File xml = TestData.file(this, ".DUMMY.GOME2.NO2.PGL/GOME2.NO2.xml");
@@ -965,11 +923,7 @@ public class NetCDFMosaicReaderTest extends Assert {
             throws IOException, NoSuchFieldException, SecurityException, IllegalArgumentException,
                     IllegalAccessException {
         File ncMosaic = TestData.file(this, "imagemosaic");
-        File mosaic = new File(TestData.file(this, "."), "ncmosaic");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("ncmosaic");
         FileUtils.copyDirectory(ncMosaic, mosaic);
         File auxiliaryFile = new File(mosaic, "O3-NO2.xml");
         String auxiliaryFilePath = auxiliaryFile.getAbsolutePath();
@@ -997,11 +951,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testAuxiliaryFileHasRelativePath() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_harvestRP");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_harvestRP");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         final String auxFileName = "GOME2.NO2.xml";
@@ -1064,11 +1014,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testDeleteCoverageGome() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "O3-NO2.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_deleteCoverage");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_deleteCoverage");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         File xml = TestData.file(this, ".O3-NO2/O3-NO2.xml");
@@ -1116,11 +1062,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testReadCoverageGome2Names() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_gome2");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_gome2");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         nc1 = TestData.file(this, "20130101.METOPA.GOME2.BrO.DUMMY.nc");
@@ -1192,11 +1134,7 @@ public class NetCDFMosaicReaderTest extends Assert {
     public void testCheckDifferentSampleImages() throws IOException {
         // prepare a "mosaic" with just one NetCDF
         File nc1 = TestData.file(this, "20130101.METOPA.GOME2.NO2.DUMMY.nc");
-        File mosaic = new File(TestData.file(this, "."), "nc_sampleimages");
-        if (mosaic.exists()) {
-            FileUtils.deleteDirectory(mosaic);
-        }
-        assertTrue(mosaic.mkdirs());
+        File mosaic = tempFolder.newFolder("nc_sampleimages");
         FileUtils.copyFileToDirectory(nc1, mosaic);
 
         nc1 = TestData.file(this, "20130101.METOPA.GOME2.BrO.DUMMY.nc");
@@ -1226,10 +1164,8 @@ public class NetCDFMosaicReaderTest extends Assert {
         assertNotNull(reader);
 
         // Checking whether different sample images have been created
-        final File sampleImage1 =
-                new File(TestData.file(this, "."), "nc_sampleimages/BrOsample_image.dat");
-        final File sampleImage2 =
-                new File(TestData.file(this, "."), "nc_sampleimages/NO2sample_image.dat");
+        final File sampleImage1 = new File(mosaic, "BrOsample_image.dat");
+        final File sampleImage2 = new File(mosaic, "NO2sample_image.dat");
         assertTrue(sampleImage1.exists());
         assertTrue(sampleImage2.exists());
         reader.dispose();
@@ -1313,6 +1249,7 @@ public class NetCDFMosaicReaderTest extends Assert {
                 reader.read(
                         name, new GeneralParameterValue[] {gg, bkg, direct, sigmaValue, dateValue});
         assertNotNull(coverage);
+        reader.dispose();
     }
 
     /**
@@ -1323,11 +1260,8 @@ public class NetCDFMosaicReaderTest extends Assert {
      */
     @Test
     public void testMultiCoverage() throws Exception {
-        File testDir = new File("target", "multi-coverage");
+        File testDir = tempFolder.newFolder("multi-coverage");
         URL testUrl = URLs.fileToUrl(testDir);
-        if (testDir.exists()) {
-            FileUtils.deleteDirectory(testDir);
-        }
         FileUtils.copyDirectory(TestData.file(this, "multi-coverage"), testDir);
         ImageMosaicReader reader = null;
         try {

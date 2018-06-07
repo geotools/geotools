@@ -315,6 +315,7 @@ public class OverviewsControllerTest extends Assert {
             assertSame(at.ot[i].g2.ssx, readParamsG2.getSourceXSubsampling());
             assertSame(at.ot[i].g2.ssy, readParamsG2.getSourceYSubsampling());
         }
+        reader.dispose();
     }
 
     /** @param args */

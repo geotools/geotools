@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -46,6 +47,7 @@ public class ElasticResponse {
         this.scrollId = scrollId;
     }
 
+    @JsonIgnore
     public List<ElasticHit> getHits() {
         final List<ElasticHit> hits;
         if (results != null) {

@@ -167,8 +167,14 @@ public class ElasticFeatureSource extends ContentFeatureSource {
         }
 
         if (dataStore.isSourceFilteringEnabled()) {
-            // add source includes
-            setSourceIncludes(searchRequest);
+            if (query.getProperties() != Query.ALL_PROPERTIES) {
+                for (String property : query.getPropertyNames()) {
+                    searchRequest.addSourceInclude(property);
+                }
+            } else {
+                // add source includes
+                setSourceIncludes(searchRequest);
+            }
         }
 
         // add query and post filter

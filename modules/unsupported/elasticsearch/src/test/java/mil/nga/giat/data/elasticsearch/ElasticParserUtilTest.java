@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -423,4 +424,33 @@ public class ElasticParserUtilTest {
             
         }
     }
+
+    /**
+     * This test ensures that dots within attribute names are handled.
+     */
+    @Test
+    public void testAttributesContainingDots() {
+        properties.put("coalesceentity.name", "value");
+        List<Object> values = parserUtil.readField(properties, "coalesceentity.name");
+        Assert.assertEquals(1, values.size());
+        Assert.assertEquals(properties.get("coalesceentity.name"), values.get(0));
+    }
+
+    /**
+     * This test ensures that GeoJSON formatted values are returned correctly when dots are used within the attribute name.
+     */
+    @Test
+    public void testGeoJSONAttributesContainingDots() {
+
+        Map<String, Object> geojson = new HashMap<>();
+        geojson.put("type", "circle");
+        geojson.put("coordinates", "[1,1]");
+        geojson.put("radius", "1m");
+
+        properties.put("coalesceentity.geo", geojson);
+        List<Object> values = parserUtil.readField(properties, "coalesceentity.geo");
+        Assert.assertEquals(1, values.size());
+        Assert.assertEquals(properties.get("coalesceentity.geo"), values.get(0));
+    }
+
 }

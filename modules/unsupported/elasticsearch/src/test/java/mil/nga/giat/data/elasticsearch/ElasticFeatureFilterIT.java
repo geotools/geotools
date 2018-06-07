@@ -19,11 +19,7 @@ package mil.nga.giat.data.elasticsearch;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -31,9 +27,12 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -561,6 +560,59 @@ public class ElasticFeatureFilterIT extends ElasticTestSupport {
         for (int i=0; i<11; i++) {
             assertTrue(features.hasNext());
             features.next();
+        }
+    }
+
+    /**
+     * This test ensures that when specifying properties in a query with source filtering enabled you only get back the
+     * properties specified. If properties are not specified or Query.ALL_PROPERTIES is used then you get everything.
+     */
+    @Test
+    public void testFieldsWithSourceFiltering() throws Exception {
+        init();
+        dataStore.setSourceFilteringEnabled(true);
+
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyIsEqualTo filter = ff.equals(ff.property("modem_b"), ff.literal(true));
+
+        Query query = new Query();
+        query.setFilter(filter);
+
+        SimpleFeatureCollection features = featureSource.getFeatures(query);
+
+        try(SimpleFeatureIterator iterator = features.features()) {
+            assertTrue(iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+
+            Assert.assertTrue(feature.getProperties().size() > 2);
+        }
+
+        // Specify Columns
+        query.setPropertyNames(new String[] { "standard_ss", "security_ss" });
+
+        features = featureSource.getFeatures(query);
+
+        try(SimpleFeatureIterator iterator = features.features()) {
+            assertTrue(iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+
+            Iterator<Property> propertyIterator = feature.getProperties().iterator();
+
+            Assert.assertEquals(query.getPropertyNames().length, feature.getProperties().size());
+            Assert.assertEquals(query.getPropertyNames()[0], propertyIterator.next().getName().getLocalPart());
+            Assert.assertEquals(query.getPropertyNames()[1], propertyIterator.next().getName().getLocalPart());
+        }
+
+        // Specify All
+        query.setProperties(Query.ALL_PROPERTIES);
+
+        features = featureSource.getFeatures(query);
+
+        try(SimpleFeatureIterator iterator = features.features()) {
+            assertTrue(iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+
+            Assert.assertTrue(feature.getProperties().size() > 2);
         }
     }
 

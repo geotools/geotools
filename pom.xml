@@ -110,6 +110,7 @@
     <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
+    <fmt.action>format</fmt.action>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -195,27 +196,6 @@
           <url>file:///${java.io.tmpdir}/gtsite</url>
         </site>
       </distributionManagement>
-    </profile>
-    <profile>
-      <id>noLocalChanges</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-scm-plugin</artifactId>
-            <version>1.9.5</version>
-            <executions>
-              <execution>
-                <id>exec1</id>
-                <phase>install</phase>
-                <goals>
-                   <goal>check-local-modification</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
   </profiles>
 
@@ -1823,7 +1803,7 @@
             <executions>
                 <execution>
                     <goals>
-                        <goal>format</goal>
+                        <goal>${fmt.action}</goal>
                     </goals>
                 </execution>
             </executions>

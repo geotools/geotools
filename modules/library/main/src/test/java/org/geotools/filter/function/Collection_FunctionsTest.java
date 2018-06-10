@@ -85,6 +85,18 @@ public class Collection_FunctionsTest extends FunctionTestSupport {
         assertEquals("Nearest to 9 is 8", 8, match);
     }
 
+    public void testCountFunctionDescription() throws Exception {
+        // Create instance of function to get hold of the filter capabilities
+        PropertyName exp = ff.property("foo");
+        Function func = ff.function("Collection_Count", exp);
+
+        // Expecting one function parameter
+        assertEquals(func.getParameters().size(), 1);
+
+        // Test return parameter
+        assertEquals(func.getFunctionName().getReturn().toString(), "count:Number");
+    }
+
     /**
      * Tests a function class of org.geotools.filter.function.Collection_*Function
      *

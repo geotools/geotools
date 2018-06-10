@@ -384,6 +384,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                             if (screenMap != null) {
                                 if (screenMap.canSimplify(geometry.getEnvelopeInternal())) {
                                     if (screenMap.checkAndSet(geometry.getEnvelopeInternal())) {
+                                        builder.reset();
                                         return null;
                                     } else {
                                         value = screenMap.getSimplifiedShape(geometry);
@@ -435,6 +436,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         try {
             return builder.buildFeature(fid);
         } catch (IllegalAttributeException e) {
+            builder.reset();
             throw new RuntimeException(e);
         }
     }

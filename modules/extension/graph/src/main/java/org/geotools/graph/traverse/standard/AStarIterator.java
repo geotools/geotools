@@ -19,6 +19,8 @@ package org.geotools.graph.traverse.standard;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
@@ -124,7 +126,7 @@ public class AStarIterator extends SourceGraphIterator {
             throw new IllegalArgumentException("AStarIterator: The node is not in the open list");
         }
         currAsn.close();
-        for (Iterator itr = currdn.getRelated(); itr.hasNext(); ) {
+        for (Iterator itr = getRelated(current); itr.hasNext(); ) {
             Node next = (Node) itr.next();
             if (m_nodemap.containsKey(next)) {
                 nextAsn = (AStarNode) m_nodemap.get(next);
@@ -158,6 +160,14 @@ public class AStarIterator extends SourceGraphIterator {
     public Node getParent(Node n) {
         AStarNode asn = (AStarNode) m_nodemap.get(n);
         return (asn == null ? null : asn.getParent() == null ? null : asn.getParent().getNode());
+    }
+    
+    protected Iterator getRelated(Graphable current) {
+        if (current instanceof DirectedGraphable) {
+            return ((DirectedGraphable) current).getOutRelated();
+        } else {
+            return (current.getRelated());
+        }
     }
 
     /** Decides wich node has more priority */

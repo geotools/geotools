@@ -547,9 +547,9 @@ public class DuplicatingStyleVisitor implements StyleVisitor {
 
     protected SelectedChannelType copy(SelectedChannelType selectedChannelType) {
         if (selectedChannelType == null) return null;
-
         ContrastEnhancement enhancement = copy(selectedChannelType.getContrastEnhancement());
-        String name = selectedChannelType.getChannelName();
+        Expression name =
+                (Expression) selectedChannelType.getChannelName().accept(copyFilter, null);
         SelectedChannelType copy = sf.createSelectedChannelType(name, enhancement);
 
         return copy;

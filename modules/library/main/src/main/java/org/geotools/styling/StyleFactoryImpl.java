@@ -774,7 +774,7 @@ public class StyleFactoryImpl extends AbstractStyleFactory
     }
 
     public SelectedChannelType createSelectedChannelType(
-            String name, ContrastEnhancement enhancement) {
+            Expression name, ContrastEnhancement enhancement) {
         SelectedChannelType sct = new SelectedChannelTypeImpl(filterFactory);
         sct.setChannelName(name);
         sct.setContrastEnhancement(enhancement);
@@ -782,7 +782,13 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         return sct;
     }
 
-    public SelectedChannelType createSelectedChannelType(String name, Expression gammaValue) {
+    public SelectedChannelType createSelectedChannelType(
+            String name, ContrastEnhancement enhancement) {
+        Expression nameExp = filterFactory.literal(name);
+        return createSelectedChannelType(nameExp, enhancement);
+    }
+
+    public SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue) {
         SelectedChannelType sct = new SelectedChannelTypeImpl(filterFactory);
         sct.setChannelName(name);
         sct.setContrastEnhancement(createContrastEnhancement(gammaValue));
@@ -1049,6 +1055,11 @@ public class StyleFactoryImpl extends AbstractStyleFactory
             List<org.opengis.style.Symbolizer> symbolizers,
             Filter filter) {
         return delegate.rule(name, description, legend, min, max, symbolizers, filter);
+    }
+
+    public SelectedChannelType selectedChannelType(
+            Expression channelName, org.opengis.style.ContrastEnhancement contrastEnhancement) {
+        return delegate.selectedChannelType(channelName, contrastEnhancement);
     }
 
     public SelectedChannelType selectedChannelType(

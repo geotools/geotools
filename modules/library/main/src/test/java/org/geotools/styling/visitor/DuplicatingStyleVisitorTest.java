@@ -53,6 +53,7 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLDTransformer;
+import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
@@ -64,6 +65,7 @@ import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.styling.UserLayer;
 import org.geotools.util.Utilities;
+import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -894,5 +896,24 @@ public class DuplicatingStyleVisitorTest extends TestCase {
                 "PerpendicularOffset of LineSymbolizer has not been correctly duplicated",
                 ls.getPerpendicularOffset(),
                 copy.getPerpendicularOffset());
+    }
+
+    /**
+     * Test SelectedChannelType copy with Expression
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSelectedChannelTypeDuplication() throws Exception {
+        final String b1 = "b1";
+
+        SelectedChannelType sct =
+                sf.createSelectedChannelType(
+                        ff.function("env", ff.literal(b1), ff.literal("1")),
+                        sf.createContrastEnhancement());
+        sct.accept(visitor);
+        SelectedChannelType clone = (SelectedChannelType) visitor.getCopy();
+
+        assertEquals(sct, clone);
     }
 }

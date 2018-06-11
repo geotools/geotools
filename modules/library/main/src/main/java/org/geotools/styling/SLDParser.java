@@ -1408,9 +1408,9 @@ public class SLDParser {
             if (childName == null) {
                 childName = child.getNodeName();
             } else if (childName.equalsIgnoreCase("SourceChannelName")) {
-                if (child.getFirstChild() != null
-                        && child.getFirstChild().getNodeType() == Node.TEXT_NODE)
-                    symbol.setChannelName(getFirstChildValue(child));
+                if (child.getFirstChild() != null) {
+                    symbol.setChannelName(parseParameterValueExpression(child, true));
+                }
             } else if (childName.equalsIgnoreCase("ContrastEnhancement")) {
                 symbol.setContrastEnhancement(parseContrastEnhancement(child));
 

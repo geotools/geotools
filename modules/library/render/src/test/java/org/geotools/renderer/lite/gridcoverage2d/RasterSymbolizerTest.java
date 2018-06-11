@@ -2480,7 +2480,10 @@ public class RasterSymbolizerTest extends org.junit.Assert {
             // Assert channels number have been re-arranged
             assertTrue(
                     Integer.toString((i) + 1)
-                            .equalsIgnoreCase(postBandSelectionChannel.getChannelName()));
+                            .equalsIgnoreCase(
+                                    postBandSelectionChannel
+                                            .getChannelName()
+                                            .evaluate(null, String.class)));
             assertTrue(method.name().equalsIgnoreCase(ContrastMethod.NORMALIZE.name()));
 
             Map<String, Expression> options = cntEnh.getOptions();

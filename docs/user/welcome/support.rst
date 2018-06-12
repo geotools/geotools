@@ -54,7 +54,7 @@ If you seriously have a deadline, or find you are spending too much time reading
 please consider setting up a support contract with any of the following organisations.
 
 * `Camptocamp <http://www.camptocamp.com/en/services/support>`_
-* `GeoSolutions <http://www.geo-solutions.it/services/>`_
+* `GeoSolutions <https://www.geo-solutions.it/offer/>`_
 * `LISAsoft <http://lisasoft.com/lisasoft-support-services-software-support>`_
 * `OpenGeo <http://opengeo.org/support/>`_
 * `Astun Technology, UK <https://astuntechnology.com/services/#open-source-support>`_

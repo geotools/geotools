@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.util.logging.Logging;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -61,6 +62,9 @@ public class H2FilterToSQL extends FilterToSQL {
         caps.addType(Within.class);
         caps.addType(DWithin.class);
         caps.addType(Beyond.class);
+
+        // native filter support
+        caps.addType(NativeFilter.class);
 
         return caps;
     }

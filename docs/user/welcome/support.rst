@@ -57,6 +57,8 @@ please consider setting up a support contract with any of the following organisa
 * `GeoSolutions <http://www.geo-solutions.it/services/>`_
 * `LISAsoft <http://lisasoft.com/lisasoft-support-services-software-support>`_
 * `OpenGeo <http://opengeo.org/support/>`_
+* `Astun Technology, UK <https://astuntechnology.com/services/#open-source-support>`_
+* `Ian Turton, UK <https://ianturton.com>`_
 
 Please consider this as an option, especially if you do not have a background in Geospatial Science
 or stuck between a bug and a deadline. Remember that the documentation is constructed by volunteers,

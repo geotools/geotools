@@ -162,7 +162,20 @@ public class NetCDFMosaicReaderTest extends Assert {
                     "2013-03-01T01:00:00.000Z",
                     ConvertersHack.convert(f.getAttribute("time"), String.class));
             it.close();
+            testHarvest(reader, mosaic, source, q);
+        } finally {
+            if (it != null) {
+                it.close();
+            }
+            reader.dispose();
+        }
+    }
 
+    private void testHarvest(ImageMosaicReader reader, File mosaic, GranuleSource source, Query q)
+            throws IOException {
+        SimpleFeatureIterator it = null;
+        assertNotNull(reader);
+        try {
             // now add another netcdf and harvest it
             File nc2 = TestData.file(this, "polyphemus_20130302_test.nc");
             FileUtils.copyFileToDirectory(nc2, mosaic);
@@ -175,10 +188,10 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertEquals(1, reader.getGridCoverageNames().length);
 
             // check that we have four times now
-            granules = source.getGranules(q);
+            SimpleFeatureCollection granules = source.getGranules(q);
             assertEquals(4, granules.size());
             it = granules.features();
-            f = it.next();
+            SimpleFeature f = it.next();
             assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
             assertEquals(0, f.getAttribute("imageindex"));
             assertEquals(
@@ -204,17 +217,15 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertEquals(
                     "2013-03-02T01:00:00.000Z",
                     ConvertersHack.convert(f.getAttribute("time"), String.class));
-            it.close();
 
-            ImageLayout layout = reader.getImageLayout();
-            SampleModel sampleModel = layout.getSampleModel(null);
-            assertEquals(DataBuffer.TYPE_FLOAT, sampleModel.getDataType());
         } finally {
             if (it != null) {
                 it.close();
             }
-            reader.dispose();
         }
+        ImageLayout layout = reader.getImageLayout();
+        SampleModel sampleModel = layout.getSampleModel(null);
+        assertEquals(DataBuffer.TYPE_FLOAT, sampleModel.getDataType());
     }
 
     @Test
@@ -476,6 +487,96 @@ public class NetCDFMosaicReaderTest extends Assert {
         assertTrue(typeNames.contains(name));
         dataStore.dispose();
         assertTrue(disposed.get());
+    }
+
+    @Test
+    public void testHarvestWithSharedRepository() throws IOException {
+        // setup repository
+        ShpFileStoreFactory dialect =
+                new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+        File indexDirectory = new File("./target/repo2_idx");
+        FileUtils.deleteQuietly(indexDirectory);
+        indexDirectory.mkdir();
+        File auxiliaryDataStoreFile = new File(indexDirectory, "test.properties");
+        String theStoreName = "testStore";
+        FileUtils.writeStringToFile(
+                auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName);
+
+        DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
+        DefaultRepository repository = new DefaultRepository();
+        repository.register(new NameImpl(theStoreName), dataStore);
+
+        File nc1 = TestData.file(this, "polyphemus_20130301_test.nc");
+        File mosaic = tempFolder.newFolder("nc_repo");
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+
+        // The indexer
+        Properties indexer = new Properties();
+        indexer.put("TimeAttribute", "time");
+        indexer.put(
+                "Schema",
+                "the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date");
+        indexer.put("AuxiliaryDatastoreFile", auxiliaryDataStoreFile.getCanonicalPath());
+        final String auxiliaryFilePath =
+                mosaic.getAbsolutePath() + File.separatorChar + ".polyphemus_20130301_test";
+        final File auxiliaryFileDir = new File(auxiliaryFilePath);
+        assertTrue(auxiliaryFileDir.mkdirs());
+
+        File nc1Aux = TestData.file(this, "polyphemus_test_aux.xml");
+        FileUtils.copyFileToDirectory(nc1Aux, auxiliaryFileDir);
+
+        try (FileOutputStream fos = new FileOutputStream(new File(mosaic, "indexer.properties"))) {
+            indexer.store(fos, null);
+        }
+        File dsp = TestData.file(this, "datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader =
+                format.getReader(mosaic, new Hints(Hints.REPOSITORY, repository));
+
+        final String name = "O3";
+        NetCDFImageReader imageReader = null;
+        SimpleFeatureIterator it = null;
+        assertNotNull(reader);
+        try {
+
+            GranuleSource source = reader.getGranules(name, true);
+            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+            Query q = new Query(Query.ALL);
+            q.setSortBy(new SortBy[] {ff.sort("time", SortOrder.ASCENDING)});
+            SimpleFeatureCollection granules = source.getGranules(q);
+            assertEquals(2, granules.size());
+            it = granules.features();
+            assertTrue(it.hasNext());
+            SimpleFeature f = it.next();
+            assertEquals("polyphemus_20130301_test.nc", f.getAttribute("location"));
+
+            // now add another netcdf and harvest it
+            testHarvest(reader, mosaic, source, q);
+        } finally {
+
+            if (it != null) {
+                it.close();
+            }
+
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Exception e) {
+                    // Ignore exception on dispose
+                }
+            }
+            if (imageReader != null) {
+                try {
+                    imageReader.dispose();
+                } catch (Exception e) {
+                    // Ignore exception on dispose
+                }
+            }
+        }
+
+        dataStore.dispose();
     }
 
     public void checkCustomTimeAttribute(File nc1, ImageMosaicReader reader) throws IOException {

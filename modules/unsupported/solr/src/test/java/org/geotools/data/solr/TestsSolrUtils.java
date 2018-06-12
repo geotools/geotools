@@ -16,11 +16,18 @@
  */
 package org.geotools.data.solr;
 
+import java.io.File;
 import java.io.InputStream;
-import java.util.*;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.request.UpdateRequest;
@@ -168,7 +175,7 @@ public final class TestsSolrUtils {
      * @param client Sorl client to use, should already point to the desired core
      * @param attributes attributes of the field type to create
      */
-    private static void createFieldType(HttpSolrClient client, Map<String, Object> attributes) {
+    public static void createFieldType(HttpSolrClient client, Map<String, Object> attributes) {
         FieldTypeDefinition typeDefinition = new FieldTypeDefinition();
         typeDefinition.setAttributes(attributes);
         // try to create the field type
@@ -196,7 +203,7 @@ public final class TestsSolrUtils {
      * @param name name of the field
      * @param type field type name
      */
-    private static void createField(HttpSolrClient client, String name, String type) {
+    public static void createField(HttpSolrClient client, String name, String type) {
         Map<String, Object> field = new HashMap<>();
         field.put("name", name);
         field.put("type", type);
@@ -298,8 +305,55 @@ public final class TestsSolrUtils {
         }
     }
 
+    /**
+     * Helper method that creates a geometry field type.
+     *
+     * @param client the Solr client
+     */
+    public static void createGeometryFieldType(HttpSolrClient client) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("name", "geometry");
+        attributes.put("class", "solr.SpatialRecursivePrefixTreeFieldType");
+        attributes.put("geo", "true");
+        attributes.put("maxDistErr", "0.001");
+        attributes.put("distErrPct", "0.025");
+        attributes.put("distanceUnits", "kilometers");
+        attributes.put("spatialContextFactory", "JTS");
+        // create or replace the field type definition
+        createFieldType(client, attributes);
+    }
+
+    /**
+     * Helper method that creates a new field in the target index schema.
+     *
+     * @param client the HTTP Solr client
+     * @param name the field name
+     * @param type the field type
+     * @param multiValued TRUE if the type is multi valued, otherwise FALSE
+     */
+    public static void createField(
+            HttpSolrClient client, String name, String type, boolean multiValued) {
+        Map<String, Object> field = new HashMap<>();
+        field.put("name", name);
+        field.put("type", type);
+        field.put("multiValued", multiValued ? "true" : "false");
+        // try to create the field
+        Response addResponse = runSolrRequest(client, new SchemaRequest.AddField(field));
+        if (!addResponse.hasErrors()) {
+            // no errors, which means that the field was correctly created
+            return;
+        }
+        // something bad happen, let's assume that a field with the same name already exists
+        Response replaceResponse = runSolrRequest(client, new SchemaRequest.ReplaceField(field));
+        if (replaceResponse.hasErrors()) {
+            // trying to replace the field definition failed, let's throw an exception with all the
+            // messages errors
+            Response.throwIfNeeded(addResponse, replaceResponse);
+        }
+    }
+
     /** Helper container class for Solr responses errors messages. */
-    private static final class Response {
+    public static final class Response {
 
         private final boolean errors;
         private final String message;
@@ -365,6 +419,51 @@ public final class TestsSolrUtils {
                                 "Something bad happen when executing Solr request(s) '%s'.",
                                 errors));
             }
+        }
+    }
+
+    /** Helper method that creates a temporary directory. */
+    public static File createTempDirectory(String prefix) {
+        try {
+            return Files.createTempDirectory(prefix).toFile();
+        } catch (Exception exception) {
+            throw new RuntimeException("Error creating temporary directory.", exception);
+        }
+    }
+
+    /**
+     * Removes all the data indexed in the target Apache Solr core. If the index contains more than
+     * 25 documents the operation is aborted.
+     *
+     * @param client HTTP Apache Solr client, the client should should be already pointing at the
+     *     correct core
+     */
+    public static void cleanIndex(HttpSolrClient client) {
+        // get the number of documents indexed in the target core
+        SolrQuery query = new SolrQuery("*:*");
+        // don't return any results
+        query.setRows(0);
+        long indexed;
+        try {
+            // get the number of results that match the query
+            indexed = client.query(query).getResults().getNumFound();
+        } catch (Exception exception) {
+            throw new RuntimeException(
+                    "Error counting the number of document indexed int he Apache Solr target core.",
+                    exception);
+        }
+        if (indexed > 25) {
+            // we have problem, this doesn't looks like a test Apache Solr core
+            throw new RuntimeException(
+                    "The target core contains more than 25 documents, "
+                            + "please double check the correct core is used and manually delete all documents.");
+        }
+        try {
+            // remove all the index stations data
+            client.deleteByQuery("*:*");
+            client.commit();
+        } catch (Exception exception) {
+            throw new RuntimeException("Error removing Apache Solr indexed data.", exception);
         }
     }
 }

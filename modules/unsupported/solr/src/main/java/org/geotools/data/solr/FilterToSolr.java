@@ -705,6 +705,8 @@ public class FilterToSolr implements FilterVisitor {
         checkExpressionIsLiteral(e2);
 
         ExpressionToSolr visitor = new ExpressionToSolr();
+        // let's set the feature type so property names can be encoded based on it
+        visitor.setFeatureType(featureType);
 
         // initialize spatial strategy
         AttributeDescriptor spatialAtt = (AttributeDescriptor) e1.evaluate(featureType);

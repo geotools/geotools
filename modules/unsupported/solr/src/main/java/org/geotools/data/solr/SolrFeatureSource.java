@@ -22,8 +22,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -66,13 +68,23 @@ public class SolrFeatureSource extends ContentFeatureSource {
     static final String KEY_SOLR_TYPE = "solr_type";
 
     protected SimpleDateFormat dateFormatUTC = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+    // feature types build based ont he provided indexes configuration
+    private final Map<String, SimpleFeatureType> defaultFeatureTypes;
+
     /**
      * Creates the new SOLR feature store.
      *
      * @param entry the datastore entry.
      */
     public SolrFeatureSource(ContentEntry entry) {
+        this(entry, Collections.emptyMap());
+    }
+
+    public SolrFeatureSource(
+            ContentEntry entry, Map<String, SimpleFeatureType> defaultFeatureTypes) {
         super(entry, Query.ALL);
+        this.defaultFeatureTypes = defaultFeatureTypes;
     }
 
     @Override
@@ -268,6 +280,13 @@ public class SolrFeatureSource extends ContentFeatureSource {
             }
             if (defaultGeometryName != null) {
                 tb.setDefaultGeometry(defaultGeometryName);
+            }
+        } else {
+            // if a default feature type is available return it
+            SimpleFeatureType defaultFeatureType = defaultFeatureTypes.get(entry.getTypeName());
+            if (defaultFeatureType != null) {
+                // default feature type build based on the provided indexes configuration
+                return defaultFeatureType;
             }
         }
         final SimpleFeatureType ft = tb.buildFeatureType();

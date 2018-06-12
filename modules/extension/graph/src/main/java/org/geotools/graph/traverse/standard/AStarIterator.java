@@ -19,7 +19,6 @@ package org.geotools.graph.traverse.standard;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
@@ -161,7 +160,7 @@ public class AStarIterator extends SourceGraphIterator {
         AStarNode asn = (AStarNode) m_nodemap.get(n);
         return (asn == null ? null : asn.getParent() == null ? null : asn.getParent().getNode());
     }
-    
+
     protected Iterator getRelated(Graphable current) {
         if (current instanceof DirectedGraphable) {
             return ((DirectedGraphable) current).getOutRelated();

@@ -77,12 +77,21 @@ import org.opengis.geometry.BoundingBox;
  */
 abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
+    /**
+     * When true, the stack trace that created a store that wasn't closed is recorded and then
+     * printed out when warning the user about this.
+     */
+    protected static final Boolean TRACE_ENABLED =
+            "true".equalsIgnoreCase(System.getProperty("gt2.mosaic.index.trace"));
+
     /** Logger. */
     static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(AbstractGTDataStoreGranuleCatalog.class);
 
     static final FilterFactory2 ff =
             CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
+
+    private Throwable tracer;
 
     private String geometryPropertyName;
 
@@ -140,6 +149,10 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         } catch (Throwable e) {
             handleInitializationException(e);
             throw new IllegalArgumentException(e);
+        }
+        if (TRACE_ENABLED) {
+            this.tracer = new Throwable();
+            this.tracer.fillInStackTrace();
         }
     }
 
@@ -719,6 +732,12 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                 LOGGER.warning(
                         "This granule catalog was not properly dispose as it still points to:"
                                 + getTileIndexStore().getInfo().toString());
+                if (TRACE_ENABLED) {
+                    LOGGER.log(
+                            Level.WARNING,
+                            "The un-disposed granule catalog originated on this stack trace",
+                            tracer);
+                }
             }
             // try to dispose the underlying store if it has not been disposed yet
             this.dispose();

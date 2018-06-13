@@ -1053,6 +1053,8 @@ public class ImageMosaicConfigHandler {
 
         // fileIndex = 0;
         runConfiguration = null;
+
+        this.catalog.dispose();
     }
 
     public boolean getStop() {

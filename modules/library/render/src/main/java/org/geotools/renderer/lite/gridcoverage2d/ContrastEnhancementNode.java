@@ -575,4 +575,8 @@ class ContrastEnhancementNode extends StyleVisitorCoverageProcessingNodeAdapter
         assert result.getSampleModel().getNumBands() == 1 : result;
         return result;
     }
+
+    public String getType() {
+        return type;
+    }
 }

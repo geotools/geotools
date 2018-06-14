@@ -37,6 +37,7 @@ import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.StyleVisitor;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.coverage.grid.GridCoverage;
@@ -225,19 +226,23 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // the source node for the internal chains
         // final RootNode sourceNode = new RootNode(sourceCoverage, adopt,
         // hints);
-        final ChannelSelectionNode csNode = new ChannelSelectionNode();
-        final ColorMapNode cmNode = new ColorMapNode(this.getHints());
-        final ContrastEnhancementNode ceNode = new ContrastEnhancementNode(this.getHints());
-        setSink(ceNode);
+
+        CoverageProcessingNode currNode;
+        CoverageProcessingNode prevNode = this.getSource(0);
 
         // /////////////////////////////////////////////////////////////////////
         //
         // CHANNEL SELECTION
         //
         // /////////////////////////////////////////////////////////////////////
+
+        final ChannelSelectionNode csNode = new ChannelSelectionNode();
+        currNode = csNode;
+
+        currNode.addSource(prevNode);
+        prevNode = currNode;
+
         final ChannelSelection cs = rs.getChannelSelection();
-        csNode.addSource(this.getSource(0));
-        csNode.addSink(cmNode);
         csNode.visit(cs);
 
         // /////////////////////////////////////////////////////////////////////
@@ -245,9 +250,15 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // COLOR MAP
         //
         // /////////////////////////////////////////////////////////////////////
+
+        final ColorMapNode cmNode = new ColorMapNode(this.getHints());
+        currNode = cmNode;
+
+        currNode.addSource(prevNode);
+        prevNode.addSink(currNode);
+        prevNode = currNode;
+
         final ColorMap cm = rs.getColorMap();
-        cmNode.addSource(csNode);
-        csNode.addSink(cmNode);
         cmNode.visit(cm);
 
         // /////////////////////////////////////////////////////////////////////
@@ -255,16 +266,51 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // CONTRAST ENHANCEMENT
         //
         // /////////////////////////////////////////////////////////////////////
+
+        final ContrastEnhancementNode ceNode = new ContrastEnhancementNode(this.getHints());
+        currNode = ceNode;
+
+        currNode.addSource(prevNode);
+        prevNode.addSink(currNode);
+        prevNode = currNode;
+
         final ContrastEnhancement ce = rs.getContrastEnhancement();
-        ceNode.addSource(cmNode);
-        cmNode.addSink(ceNode);
         ceNode.visit(ce);
 
+        // /////////////////////////////////////////////////////////////////////
         //
+        // SHADED RELIEF
+        //
+        // /////////////////////////////////////////////////////////////////////
+
+        final ShadedReliefNode srNode = new ShadedReliefNode(this.getHints());
+        currNode = srNode;
+
+        // TODO: Think about ContrastEnhancement and shadedRelief conflicts
+        // signal them through an Exception
+        boolean applyShadedRelief = !Double.isNaN(srNode.getReliefFactor());
+        boolean applyContrastEnhancement = ceNode.getType() != null;
+        if (applyShadedRelief && applyContrastEnhancement) {
+            throw new IllegalArgumentException(
+                    "ContrastEnhancement and ShadedRelief can't be applied at the same time. ");
+        }
+
+        if (applyShadedRelief) {
+
+            currNode.addSource(prevNode);
+            prevNode.addSink(currNode);
+            setSink(currNode);
+
+            final ShadedRelief sr = rs.getShadedRelief();
+            srNode.visit(sr);
+        } else {
+
+            setSink(prevNode);
+        }
+
         /////////////////////////////////////////////////////////////////////
         //
         // OPACITY
-        //
         //
         /////////////////////////////////////////////////////////////////////
         final Expression op = rs.getOpacity();

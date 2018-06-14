@@ -137,11 +137,11 @@ This releases upgrades from the unofficial JSR-275 units library to the official
   .. code-block:: java 
   
     Measure<Double, Length> dist = Measure.valueOf(
-  				distance, SI.METER);
-  	System.out.println(dist.doubleValue(SI.KILOMETER)
-  				+ " Km");
-  	System.out.println(dist.doubleValue(NonSI.MILE)
-  				+ " miles");
+          distance, SI.METER);
+    System.out.println(dist.doubleValue(SI.KILOMETER)
+          + " Km");
+    System.out.println(dist.doubleValue(NonSI.MILE)
+          + " miles");
   
   You will find it no longer compiles. It should be converted to use the ``Quantity`` classes.
   
@@ -157,11 +157,11 @@ This releases upgrades from the unofficial JSR-275 units library to the official
   
   
       Quantity<Length> dist = Quantities.getQuantity(
-  				distance, SI.METRE);
-  		System.out.println(dist.to(MetricPrefix.KILO(SI.METRE)).getValue()
-  				+ " Km");
-  		System.out.println(dist.to(USCustomary.MILE)
-  				+ " miles");
+          distance, SI.METRE);
+      System.out.println(dist.to(MetricPrefix.KILO(SI.METRE)).getValue()
+          + " Km");
+      System.out.println(dist.to(USCustomary.MILE)
+          + " miles");
 
 GeoTools 19.x
 -------------

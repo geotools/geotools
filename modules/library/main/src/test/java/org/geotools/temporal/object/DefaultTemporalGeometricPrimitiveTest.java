@@ -45,9 +45,10 @@ public class DefaultTemporalGeometricPrimitiveTest {
 
         cal.set(1981, 6, 25);
         Date date = cal.getTime();
-
+        Calendar c2 = Calendar.getInstance();
+        c2.set(2018, 4, 21);
         position1 = new DefaultPosition(date);
-        position2 = new DefaultPosition(new Date());
+        position2 = new DefaultPosition(c2.getTime());
         temporalGeomericPrimitive1 = new DefaultInstant(position1);
         temporalGeomericPrimitive2 = new DefaultInstant(position2);
     }

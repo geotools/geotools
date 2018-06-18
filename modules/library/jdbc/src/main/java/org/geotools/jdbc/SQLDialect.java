@@ -59,6 +59,7 @@ import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
@@ -149,6 +150,9 @@ public abstract class SQLDialect {
                     addType(IncludeFilter.class);
                     addType(ExcludeFilter.class);
                     addType(PropertyIsLike.class);
+
+                    // native filter support
+                    addType(NativeFilter.class);
                 }
             };
 

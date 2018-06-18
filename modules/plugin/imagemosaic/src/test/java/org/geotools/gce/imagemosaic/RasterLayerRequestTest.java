@@ -67,5 +67,6 @@ public class RasterLayerRequestTest {
         // System.out.println(resolution);
         // native resolution is ~16, overviews are at 32 and 64, the request really needs 64
         assertTrue(resolution > 60);
+        reader.dispose();
     }
 }

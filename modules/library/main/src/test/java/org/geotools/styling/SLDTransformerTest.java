@@ -625,6 +625,40 @@ public class SLDTransformerTest {
     }
 
     @Test
+    public void testChannelExpressionEncodingRasterSymbolizer() throws Exception {
+        final String b1 = "B1";
+        Function envFunction = ff.function("env", ff.literal(b1), ff.literal("1"));
+        RasterSymbolizer rasterSymbolizer = sf.createRasterSymbolizer();
+        rasterSymbolizer.setChannelSelection(
+                sf.createChannelSelection(
+                        new SelectedChannelType[] {
+                            sf.createSelectedChannelType(
+                                    envFunction, sf.createContrastEnhancement())
+                        }));
+        String xmlFragment = transformer.transform(rasterSymbolizer);
+        assertNotNull(xmlFragment);
+
+        Document doc = buildTestDocument(xmlFragment);
+
+        assertXpathExists(
+                "//sld:RasterSymbolizer/sld:ChannelSelection"
+                        + "/sld:GrayChannel/sld:SourceChannelName/ogc:Function[@name='env']/ogc:Literal",
+                doc);
+
+        assertXpathEvaluatesTo(
+                "B1",
+                "//sld:RasterSymbolizer/sld:ChannelSelection"
+                        + "/sld:GrayChannel/sld:SourceChannelName/ogc:Function[@name='env']/ogc:Literal[1]",
+                doc);
+
+        assertXpathEvaluatesTo(
+                "1",
+                "//sld:RasterSymbolizer/sld:ChannelSelection"
+                        + "/sld:GrayChannel/sld:SourceChannelName/ogc:Function[@name='env']/ogc:Literal[2]",
+                doc);
+    }
+
+    @Test
     public void testUOMEncodingLineSymbolizer() throws Exception {
 
         // simple default line symbolizer

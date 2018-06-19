@@ -796,6 +796,14 @@ public class StyleFactoryImpl extends AbstractStyleFactory
         return sct;
     }
 
+    public SelectedChannelType createSelectedChannelType(String name, Expression gammaValue) {
+        SelectedChannelType sct = new SelectedChannelTypeImpl(filterFactory);
+        sct.setChannelName(name);
+        sct.setContrastEnhancement(createContrastEnhancement(gammaValue));
+
+        return sct;
+    }
+
     public StyledLayerDescriptor createStyledLayerDescriptor() {
         return new StyledLayerDescriptorImpl();
     }

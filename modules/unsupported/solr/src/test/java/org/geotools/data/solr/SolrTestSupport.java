@@ -71,6 +71,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         // add to provided Solr core the necessary data
         String coreUrl = fixture.getProperty(SolrDataStoreFactory.URL.key);
         this.solrClient = TestsSolrUtils.instantiateClient(coreUrl);
+        TestsSolrUtils.cleanIndex(solrClient);
         // make sure the needed geometry field types exist in the managed schema
         TestsSolrUtils.createWktFieldType(this.solrClient);
         TestsSolrUtils.createBboxFieldType(this.solrClient);

@@ -27,6 +27,8 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.geometry.jts.JTS;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
@@ -66,6 +68,8 @@ public class ExpressionToSolr implements ExpressionVisitor {
      */
     private Filter filter;
 
+    private SimpleFeatureType featureType;
+
     /*
      * strategy for specific solr type
      */
@@ -83,6 +87,10 @@ public class ExpressionToSolr implements ExpressionVisitor {
 
     public void setSpatialStrategy(SolrSpatialStrategy spatialStrategy) {
         this.spatialStrategy = spatialStrategy;
+    }
+
+    public void setFeatureType(SimpleFeatureType featureType) {
+        this.featureType = featureType;
     }
 
     @Override
@@ -209,8 +217,55 @@ public class ExpressionToSolr implements ExpressionVisitor {
     public Object visit(PropertyName expression, Object extraData) {
         StringBuffer temp = new StringBuffer("");
         StringWriter output = FilterToSolr.asStringWriter(extraData);
-        temp.append(expression.getPropertyName());
+        temp.append(encodePropertyName(expression));
         output.append(temp);
         return temp;
+    }
+
+    /**
+     * Helper method that searches the attribute name in the available feature type that corresponds
+     * to the provided property name expression. If no feature type is available we simple return
+     * the property name.
+     *
+     * @param expression property name expression
+     * @return the name of the attribute that corresponds to property name expression if a feature
+     *     type is available, otherwise returns the property name
+     */
+    private String encodePropertyName(PropertyName expression) {
+        if (expression == null) {
+            // the only think we can do is log an warning and move on
+            LOGGER.log(Level.WARNING, "NULL property name provided.");
+            return null;
+        }
+        if (featureType == null) {
+            // no feature type available, let's just encode the property name as is
+            return getPropertyName(expression);
+        }
+        // feature type available, let's try to retrieve the attribute for the property name
+        AttributeDescriptor attribute = (AttributeDescriptor) expression.evaluate(featureType);
+        if (attribute == null) {
+            // no attribute descriptor available, fall back on encoding the property name as is
+            return getPropertyName(expression);
+        }
+        // return the name of the attribute corresponding to the property name
+        return attribute.getLocalName();
+    }
+
+    /**
+     * Helper method that just retrieves the name of a property name expression. IF the property
+     * name is NULL an warning will be logged.
+     *
+     * @param expression property name expression
+     * @return the property name or NULL
+     */
+    private String getPropertyName(PropertyName expression) {
+        String name = expression.getPropertyName();
+        if (name == null) {
+            // the only think we can do is log an warning and move on
+            LOGGER.log(Level.WARNING, "Property name with NULL name provided.");
+            return null;
+        }
+        // return the property name
+        return name;
     }
 }

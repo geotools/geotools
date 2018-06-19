@@ -384,6 +384,9 @@ public class FeatureTypeMapping {
             if (!Expression.NIL.equals(sourceExpression)) {
                 // some filters can't handle Expression.NIL and just dies
                 expressions.add(sourceExpression);
+            } else if (!Expression.NIL.equals(mapping.getIdentifierExpression())) {
+                // this is a an ID expression
+                expressions.add(mapping.getIdentifierExpression());
             }
         }
         return expressions;

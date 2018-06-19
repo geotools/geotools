@@ -129,6 +129,40 @@ This releases upgrades from the unofficial JSR-275 units library to the official
      UnitConverter converter = Units.getConverterToAny(unit, SI.RADIAN);
      double convertedQuantity = converter.convert(3.1415);
 
+* Using units
+
+  If previously you made use of the Units in your code, to help with unit
+  conversion or simply to keep the units straight. You might have code like:
+  
+  .. code-block:: java 
+  
+    Measure<Double, Length> dist = Measure.valueOf(
+          distance, SI.METER);
+    System.out.println(dist.doubleValue(SI.KILOMETER)
+          + " Km");
+    System.out.println(dist.doubleValue(NonSI.MILE)
+          + " miles");
+  
+  You will find it no longer compiles. It should be converted to use the ``Quantity`` classes.
+  
+  .. code-block:: java
+  
+      import javax.measure.Quantity;
+      import javax.measure.quantity.Length;
+      import si.uom.SI;
+      import systems.uom.common.USCustomary;
+  
+      import tec.uom.se.quantity.Quantities;
+      import tec.uom.se.unit.MetricPrefix;
+  
+  
+      Quantity<Length> dist = Quantities.getQuantity(
+          distance, SI.METRE);
+      System.out.println(dist.to(MetricPrefix.KILO(SI.METRE)).getValue()
+          + " Km");
+      System.out.println(dist.to(USCustomary.MILE)
+          + " miles");
+
 GeoTools 19.x
 -------------
 

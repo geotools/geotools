@@ -101,8 +101,8 @@ public class URLsTest {
         assertURL(replaceSlashes("C:\\one"), "file://C:/one");
         assertURL(replaceSlashes("C:\\one\\two"), "file://C:/one/two");
         assertURL(replaceSlashes("C:\\one\\two\\and three"), "file://C:/one/two/and three");
-        assertEquals("sample", URLs.urlToFile(new URL("file:sample?query")).toString());
-        assertEquals("sample", URLs.urlToFile(new URL("file:sample#ref")).toString());
+        assertURL("sample", "file:sample?query");
+        assertURL("sample", "file:sample#ref");
         File file = File.createTempFile("hello", "world");
         handleFile(file.getAbsolutePath());
         handleFile(file.getPath());
@@ -110,10 +110,8 @@ public class URLsTest {
         URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
         File windowsShareFile = URLs.urlToFile(url);
         assertNotNull(windowsShareFile);
-        assertEquals("file café", URLs.urlToFile(new URL("file:file%20caf%C3%A9")).toString());
-        assertEquals(
-                File.separator + "file café",
-                URLs.urlToFile(new URL("file:/file%20caf%C3%A9")).toString());
-        assertEquals("file café", URLs.urlToFile(new URL("file://file%20caf%C3%A9")).toString());
+        assertURL("file café", "file:file%20caf%C3%A9");
+        assertURL("/file café", "file:/file%20caf%C3%A9");
+        assertURL("file café", "file://file%20caf%C3%A9");
     }
 }

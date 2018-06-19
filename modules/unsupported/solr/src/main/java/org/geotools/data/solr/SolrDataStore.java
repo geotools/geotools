@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -83,6 +84,25 @@ public class SolrDataStore extends ContentDataStore {
             new ConcurrentHashMap<String, SolrLayerConfiguration>();
 
     HttpSolrClient solrServer;
+
+    // feature types build using the provided indexes configuration
+    private final Map<String, SimpleFeatureType> defaultFeatureTypes = new HashMap<>();
+
+    public SolrDataStore(URL url, SolrLayerMapper layerMapper, IndexesConfig indexesConfig) {
+        this(url, layerMapper);
+        // build the feature types based on the provided indexes configuration
+        indexesConfig
+                .getIndexesNames()
+                .forEach(
+                        indexName -> {
+                            // get from Apache Solr the index schema and retrieve its attributes
+                            List<SolrAttribute> solrAttributes = getSolrAttributes(indexName);
+                            // build the feature type using the index configuration
+                            SimpleFeatureType defaultFeatureType =
+                                    indexesConfig.buildFeatureType(indexName, solrAttributes);
+                            defaultFeatureTypes.put(indexName, defaultFeatureType);
+                        });
+    }
 
     /**
      * Create the data store, using the {@link FieldLayerMapper}.
@@ -216,7 +236,7 @@ public class SolrDataStore extends ContentDataStore {
     @Override
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
         ContentEntry type = ensureEntry(entry.getName());
-        return new SolrFeatureSource(type);
+        return new SolrFeatureSource(type, defaultFeatureTypes);
     }
 
     @Override

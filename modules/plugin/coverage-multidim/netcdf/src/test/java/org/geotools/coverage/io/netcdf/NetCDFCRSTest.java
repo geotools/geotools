@@ -380,6 +380,7 @@ public class NetCDFCRSTest extends Assert {
         assertTrue(
                 CRS.equalsIgnoreMetadata(
                         reader.getCoordinateReferenceSystem("foo"), DefaultGeographicCRS.WGS84));
+        reader.dispose();
     }
 
     /** Cleanup the custom definitions */

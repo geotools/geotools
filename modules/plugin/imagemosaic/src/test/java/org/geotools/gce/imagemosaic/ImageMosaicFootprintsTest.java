@@ -1114,6 +1114,7 @@ public class ImageMosaicFootprintsTest {
         assertEquals(0, result[1]);
         assertTrue(0 != result[2]);
         assertTrue(0 != result[3]);
+        reader.dispose();
     }
 
     @Test
@@ -1158,6 +1159,8 @@ public class ImageMosaicFootprintsTest {
         assertEquals(0, result[1]);
         assertTrue(0 != result[2]);
         assertTrue(0 != result[3]);
+
+        reader.dispose();
     }
 
     @Test
@@ -1511,5 +1514,7 @@ public class ImageMosaicFootprintsTest {
 
         int numComponents = coverage.getRenderedImage().getColorModel().getNumComponents();
         assertEquals(numComponents, 4);
+
+        reader.dispose();
     }
 }

@@ -211,7 +211,6 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
             url.append(DATABASE_NAME);
             url.append(";shutdown=true;readonly=true");
             source.setDatabase(url.toString());
-            assert directory.equals(getDirectory(source)) : url;
         }
         /*
          * If the temporary directory do not exists or can't be created, lets the 'database'

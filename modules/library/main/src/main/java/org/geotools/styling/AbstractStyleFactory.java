@@ -216,7 +216,10 @@ public abstract class AbstractStyleFactory implements StyleFactory {
     public abstract ChannelSelection createChannelSelection(SelectedChannelType[] channels);
 
     public abstract SelectedChannelType createSelectedChannelType(
-            String name, Expression enhancement);
+            Expression name, Expression enhancement);
+
+    public abstract SelectedChannelType createSelectedChannelType(
+            String name, ContrastEnhancement enhancement);
 
     public abstract ColorMap createColorMap();
 

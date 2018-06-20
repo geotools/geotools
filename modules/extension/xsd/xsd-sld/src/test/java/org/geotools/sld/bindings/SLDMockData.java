@@ -223,6 +223,24 @@ public class SLDMockData {
         return channelSelection;
     }
 
+    static Element channelSelectionExpression(Document document, Node parent) {
+        Element channelSelection = element(SLD.CHANNELSELECTION, document, parent);
+
+        Element channel = element(SLD.REDCHANNEL, document, channelSelection);
+        Element sourceChannelName = element(SLD.SOURCECHANNELNAME, document, channel);
+        Element expression = envFuntionfilter(document, sourceChannelName);
+
+        channel = element(SLD.GREENCHANNEL, document, channelSelection);
+        sourceChannelName = element(SLD.SOURCECHANNELNAME, document, channel);
+        sourceChannelName.appendChild(document.createTextNode("2"));
+
+        channel = element(SLD.BLUECHANNEL, document, channelSelection);
+        sourceChannelName = element(SLD.SOURCECHANNELNAME, document, channel);
+        sourceChannelName.appendChild(document.createTextNode("3"));
+
+        return channelSelection;
+    }
+
     static Element channelSelectionGray(Document document, Node parent) {
         Element channelSelection = element(SLD.CHANNELSELECTION, document, parent);
 
@@ -371,6 +389,17 @@ public class SLDMockData {
         Element filter = element(OGC.Filter, document, parent);
         Element featureId = element(OGC.FeatureId, document, filter);
         featureId.setAttribute("fid", "someFid");
+
+        return filter;
+    }
+
+    static Element envFuntionfilter(Document document, Node parent) {
+        Element filter = element(OGC.Function, document, parent);
+        filter.setAttribute("name", "env");
+        Element lit1 = element(OGC.Literal, document, filter);
+        lit1.appendChild(document.createTextNode("B1"));
+        Element lit2 = element(OGC.Literal, document, filter);
+        lit2.appendChild(document.createTextNode("1"));
 
         return filter;
     }

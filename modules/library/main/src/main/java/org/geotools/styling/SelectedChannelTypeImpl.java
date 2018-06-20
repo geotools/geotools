@@ -19,6 +19,7 @@ package org.geotools.styling;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.StyleVisitor;
 
@@ -32,7 +33,7 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
 
     // private Expression contrastEnhancement;
     private ContrastEnhancement contrastEnhancement;
-    private String name = "channel";
+    private Expression name = Expression.NIL;
 
     public SelectedChannelTypeImpl() {
         this(CommonFactoryFinder.getFilterFactory(null));
@@ -56,7 +57,8 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         }
     }
 
-    public String getChannelName() {
+    @Override
+    public Expression getChannelName() {
         return name;
     }
 
@@ -64,8 +66,15 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         return contrastEnhancement;
     }
 
-    public void setChannelName(String name) {
+    @Override
+    public void setChannelName(Expression name) {
         this.name = name;
+    }
+
+    @Override
+    public void setChannelName(String name) {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        this.name = ff.literal(name);
     }
 
     public void setContrastEnhancement(org.opengis.style.ContrastEnhancement enhancement) {
@@ -87,6 +96,7 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         return visitor.visit(this, data);
     }
 
+    @Override
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }

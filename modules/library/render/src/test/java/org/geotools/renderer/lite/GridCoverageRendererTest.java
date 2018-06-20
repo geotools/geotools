@@ -62,6 +62,7 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Crop;
 import org.geotools.data.DataUtilities;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.filter.function.EnvFunction;
@@ -115,6 +116,7 @@ import org.junit.Test;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -1374,6 +1376,86 @@ public class GridCoverageRendererTest {
         ImageUtilities.disposeImage(image);
     }
 
+    /**
+     * Tests band selection with Env Function Expression
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testBandSelectionExpression() throws Exception {
+        // Create a solid color coverage
+        BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = bi.createGraphics();
+        graphics.setColor(Color.BLUE);
+        graphics.fillRect(0, 0, bi.getWidth(), bi.getHeight());
+        graphics.dispose();
+
+        CoordinateReferenceSystem nativeCrs = CRS.decode("EPSG:4326", true);
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(0, 90, 0, 90, nativeCrs);
+        GridCoverage2D coverage =
+                CoverageFactoryFinder.getGridCoverageFactory(null)
+                        .create("test", bi, new ReferencedEnvelope(0, 90, 0, 90, nativeCrs));
+
+        assertEquals(coverage.getNumSampleDimensions(), 3);
+
+        // Write out as a geotiff
+        File coverageFile = new File("./target/blue.tiff");
+        GeoTiffWriter writer = new GeoTiffWriter(coverageFile);
+        final GeoTiffFormat format = new GeoTiffFormat();
+        final GeoTiffWriteParams wp = new GeoTiffWriteParams();
+
+        // setting compression to LZW
+        wp.setCompressionMode(GeoTiffWriteParams.MODE_EXPLICIT);
+        wp.setCompressionType("LZW");
+        wp.setCompressionQuality(0.75F);
+
+        final ParameterValueGroup params = format.getWriteParameters();
+        List<GeneralParameterValue> paramsValues = params.values();
+        writer.write(
+                coverage, params.values().toArray(new GeneralParameterValue[paramsValues.size()]));
+
+        // Get the reader, read with band selection
+        assertTrue(coverageFile.exists());
+        GridCoverage2DReader reader = new GeoTiffReader(coverageFile);
+
+        String b1 = "B1";
+        RasterSymbolizer rasterSymb = buildEnvChannelSelectingSymbolizer(b1, 3);
+
+        // check default env value: 3
+        // Render the image selecting blue as default ENV value
+        EnvFunction.removeLocalValue(b1);
+        GridCoverageRenderer renderer =
+                new GridCoverageRenderer(nativeCrs, mapExtent, new Rectangle(0, 0, 100, 100), null);
+        RenderedImage image =
+                renderer.renderImage(
+                        reader,
+                        null,
+                        rasterSymb,
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                        Color.BLACK,
+                        256,
+                        256);
+        assertEquals(1, image.getSampleModel().getNumBands());
+        assertEquals(255, new ImageWorker(image).getMinimums()[0], 0d);
+
+        // check instanced env value B1:1
+        EnvFunction.setLocalValue(b1, "1");
+        image =
+                renderer.renderImage(
+                        reader,
+                        null,
+                        rasterSymb,
+                        Interpolation.getInstance(Interpolation.INTERP_NEAREST),
+                        Color.BLACK,
+                        256,
+                        256);
+        assertEquals(1, image.getSampleModel().getNumBands());
+        assertEquals(0, new ImageWorker(image).getMinimums()[0], 0d);
+
+        EnvFunction.removeLocalValue(b1);
+        ImageUtilities.disposeImage(image);
+    }
+
     @Test
     public void testBandSelectionSupportingReader() throws Exception {
         ReferencedEnvelope mapExtent =
@@ -1867,6 +1949,28 @@ public class GridCoverageRendererTest {
                         new SelectedChannelType[] {
                             sf.createSelectedChannelType(
                                     String.valueOf(band), (ContrastEnhancement) null)
+                        }));
+        return symbolizer;
+    }
+
+    /**
+     * Build a Symbolizer with ENV function ChannelName
+     *
+     * @param envVar
+     * @param band
+     * @return
+     */
+    private RasterSymbolizer buildEnvChannelSelectingSymbolizer(String envVar, int band) {
+        StyleBuilder sb = new StyleBuilder();
+        RasterSymbolizer symbolizer = sb.createRasterSymbolizer();
+        StyleFactory sf = sb.getStyleFactory();
+        final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
+        symbolizer.setChannelSelection(
+                sf.createChannelSelection(
+                        new SelectedChannelType[] {
+                            sf.createSelectedChannelType(
+                                    ff.function("env", ff.literal(envVar), ff.literal(band)),
+                                    (ContrastEnhancement) null)
                         }));
         return symbolizer;
     }

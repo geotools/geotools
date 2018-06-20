@@ -16,6 +16,7 @@
  */
 package org.geotools.sld.bindings;
 
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.ChannelSelection;
 
 /** @source $URL$ */
@@ -31,9 +32,40 @@ public class SLDChannelSectionBindingTest extends SLDTestSupport {
         ChannelSelection cs = (ChannelSelection) parse();
         assertNotNull(cs);
 
-        assertEquals(cs.getRGBChannels()[0].getChannelName(), "Red");
-        assertEquals(cs.getRGBChannels()[1].getChannelName(), "Green");
-        assertEquals(cs.getRGBChannels()[2].getChannelName(), "Blue");
+        assertEquals(cs.getRGBChannels()[0].getChannelName().evaluate(null, String.class), "Red");
+        assertEquals(cs.getRGBChannels()[1].getChannelName().evaluate(null, String.class), "Green");
+        assertEquals(cs.getRGBChannels()[2].getChannelName().evaluate(null, String.class), "Blue");
+    }
+
+    /**
+     * Test Expression ENV function on ChannelSelection
+     *
+     * @throws Exception
+     */
+    public void testRGBExpression() throws Exception {
+        SLDMockData.channelSelectionExpression(document, document);
+
+        ChannelSelection cs = (ChannelSelection) parse();
+        assertNotNull(cs);
+
+        // test default value: 1
+        EnvFunction.removeLocalValue("B1");
+        assertEquals(
+                cs.getRGBChannels()[0].getChannelName().evaluate(null, Integer.class).intValue(),
+                1);
+        // test ENV variable B1:20
+        EnvFunction.setLocalValue("B1", "20");
+        assertEquals(
+                cs.getRGBChannels()[0].getChannelName().evaluate(null, Integer.class).intValue(),
+                20);
+        EnvFunction.removeLocalValue("B1");
+
+        assertEquals(
+                cs.getRGBChannels()[1].getChannelName().evaluate(null, Integer.class).intValue(),
+                2);
+        assertEquals(
+                cs.getRGBChannels()[2].getChannelName().evaluate(null, Integer.class).intValue(),
+                3);
     }
 
     public void testGray() throws Exception {
@@ -42,6 +74,6 @@ public class SLDChannelSectionBindingTest extends SLDTestSupport {
         ChannelSelection cs = (ChannelSelection) parse();
         assertNotNull(cs);
 
-        assertEquals(cs.getGrayChannel().getChannelName(), "Gray");
+        assertEquals(cs.getGrayChannel().getChannelName().evaluate(null, String.class), "Gray");
     }
 }

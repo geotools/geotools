@@ -255,6 +255,10 @@ public class NetCDFUtilities {
 
     public static final String GEO_TRANSFORM = "GeoTransform";
 
+    // They are recognized from CERP NetCDF Metadata convention
+    // https://www.jem.gov/downloads/CERP%20NetCDF%20standard/CERP_NetCDF_Metadata_Conventions_1.2.pdf
+    public static final String CERP_ESRI_PE_STRING = "esri_pe_string";
+
     public static final String UNIQUE_TIME_ATTRIBUTE = "uniqueTimeAttribute";
 
     static final Set<String> EXCLUDED_ATTRIBUTES = new HashSet<String>();

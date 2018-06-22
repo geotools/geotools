@@ -40,6 +40,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_buffer;
 import org.geotools.test.TestData;
 import org.opengis.filter.Filter;
@@ -758,9 +759,9 @@ public class SLDStyleTest extends TestCase {
         SelectedChannelType blueChannel = cs.getRGBChannels()[2];
 
         // channel names
-        assertEquals("1", redChannel.getChannelName());
-        assertEquals("2", greenChannel.getChannelName());
-        assertEquals("6", blueChannel.getChannelName());
+        assertEquals("1", redChannel.getChannelName().evaluate(null, String.class));
+        assertEquals("2", greenChannel.getChannelName().evaluate(null, String.class));
+        assertEquals("6", blueChannel.getChannelName().evaluate(null, String.class));
 
         // contrast enhancement
         ContrastEnhancement rcs = redChannel.getContrastEnhancement();
@@ -788,6 +789,48 @@ public class SLDStyleTest extends TestCase {
         ContrastEnhancement ce = rs.getContrastEnhancement();
         Double v = (Double) ce.getGammaValue().evaluate(null);
         assertEquals(1.0, v.doubleValue());
+    }
+
+    /**
+     * Tests the parsing of a raster symbolizer sld with ENV function expression on SelectedChannel
+     *
+     * @throws IOException
+     */
+    public void testParseRasterChannelExpression() throws IOException {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "raster-channel-expression.xml");
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        assertEquals(1, styles[0].getFeatureTypeStyles().length);
+        assertEquals(1, styles[0].getFeatureTypeStyles()[0].getRules().length);
+
+        Rule r = styles[0].getFeatureTypeStyles()[0].getRules()[0];
+        assertEquals(1, r.getSymbolizers().length);
+
+        RasterSymbolizer rs = (RasterSymbolizer) r.getSymbolizers()[0];
+
+        // opacity
+        assertEquals(1.0, SLD.opacity(rs));
+
+        // channels
+        ChannelSelection cs = rs.getChannelSelection();
+        SelectedChannelType redChannel = cs.getRGBChannels()[0];
+        SelectedChannelType greenChannel = cs.getRGBChannels()[1];
+        SelectedChannelType blueChannel = cs.getRGBChannels()[2];
+
+        // channel names
+        // test default: 5
+        EnvFunction.removeLocalValue("B1");
+        assertEquals(5, redChannel.getChannelName().evaluate(null, Integer.class).intValue());
+        // set env variable B1:20
+        EnvFunction.setLocalValue("B1", "20");
+        assertEquals(20, redChannel.getChannelName().evaluate(null, Integer.class).intValue());
+        EnvFunction.removeLocalValue("B1");
+
+        assertEquals("2", greenChannel.getChannelName().evaluate(null, String.class));
+        assertEquals("4", blueChannel.getChannelName().evaluate(null, String.class));
     }
 
     /**

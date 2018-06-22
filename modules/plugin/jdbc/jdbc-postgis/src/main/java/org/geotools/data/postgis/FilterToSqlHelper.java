@@ -61,6 +61,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -181,6 +182,9 @@ class FilterToSqlHelper {
             // time related functions
             caps.addType(DateDifferenceFunction.class);
         }
+
+        // native filter support
+        caps.addType(NativeFilter.class);
 
         return caps;
     }

@@ -17,11 +17,12 @@
 package org.geotools.styling.builder;
 
 import org.geotools.styling.SelectedChannelType;
+import org.opengis.filter.expression.Expression;
 
 /** @source $URL$ */
 public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedChannelType> {
 
-    private String channelName;
+    private Expression channelName;
 
     private ContrastEnhancementBuilder contrastEnhancement =
             new ContrastEnhancementBuilder(this).unset();
@@ -36,6 +37,12 @@ public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedCha
     }
 
     public SelectedChannelTypeBuilder channelName(String channelName) {
+        this.unset = false;
+        this.channelName = FF.literal(channelName);
+        return this;
+    }
+
+    public SelectedChannelTypeBuilder channelName(Expression channelName) {
         this.unset = false;
         this.channelName = channelName;
         return this;

@@ -54,7 +54,7 @@ public final class HttpConfigTest {
     @BeforeClass
     public static void setup() {
         // setup schemas cache
-        System.setProperty(SchemaCache.PROVIDED_CACHE_LOCATION_KEY, "/tmp/app-schema-cache");
+        System.setProperty(SchemaCache.PROVIDED_CACHE_LOCATION_KEY, APP_SCHEMA_CACHE_DIR.getPath());
         // start HTTP static server and load the necessary resources
         HTTP_SERVER.start();
         HTTP_SERVER.putResource(

@@ -62,6 +62,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -1889,5 +1890,17 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             return null;
         }
         return geom.getCentroid().getCoordinate();
+    }
+
+    @Override
+    public Object visit(NativeFilter filter, Object data) {
+        try {
+            out.write("(" + filter.getNative() + ")");
+        } catch (Exception exception) {
+            throw new RuntimeException(
+                    String.format("Error encoding native filter '%s'.", filter.getNative()),
+                    exception);
+        }
+        return data;
     }
 }

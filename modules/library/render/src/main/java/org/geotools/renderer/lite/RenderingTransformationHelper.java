@@ -53,6 +53,7 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -104,15 +105,15 @@ public abstract class RenderingTransformationHelper {
                 if (transformation instanceof RenderingTransformation) {
                     RenderingTransformation tx = (RenderingTransformation) transformation;
                     readGG = (GridGeometry2D) tx.invertGridGeometry(renderingQuery, gridGeometry);
-                    // TODO: override the read params and force this grid geometry, or something
-                    // similar to this (like passing it as a param to readCoverage
                 }
 
                 FeatureCollection<?, ?> sample = featureSource.getFeatures();
                 Feature gridWrapper = DataUtilities.first(sample);
 
                 if (FeatureUtilities.isWrappedCoverageReader(simpleSchema)) {
-                    final Object params = PARAMS_PROPERTY_NAME.evaluate(gridWrapper);
+                    GeneralParameterValue[] params =
+                            PARAMS_PROPERTY_NAME.evaluate(
+                                    gridWrapper, GeneralParameterValue[].class);
                     final GridCoverage2DReader reader =
                             (GridCoverage2DReader) GRID_PROPERTY_NAME.evaluate(gridWrapper);
                     // don't read more than the native resolution (in case we are oversampling)
@@ -158,6 +159,10 @@ public abstract class RenderingTransformationHelper {
                                                 null);
                             }
                         }
+                    }
+                    if (transformation instanceof RenderingTransformation) {
+                        RenderingTransformation tx = (RenderingTransformation) transformation;
+                        params = tx.customizeReadParams(reader, params);
                     }
                     coverage = readCoverage(reader, params, readGG);
                 } else {

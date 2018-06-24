@@ -111,6 +111,7 @@
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
     <fmt.action>format</fmt.action>
+    <fmt.skip>false</fmt.skip>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -1797,7 +1798,7 @@
             <configuration>
                 <verbose>false</verbose>
                 <filesNamePattern>.*\.java</filesNamePattern>
-                <skip>false</skip>
+                <skip>${fmt.skip}</skip>
                 <style>aosp</style>
             </configuration>
             <executions>

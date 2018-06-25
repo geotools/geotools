@@ -185,5 +185,4 @@ public class ShadedRelief extends OperationJAI {
         return handleROINoDataProperties(
                 null, parameters.parameters, sources[0], "ShadedRelief", 0, 1, 2);
     }
-
 }

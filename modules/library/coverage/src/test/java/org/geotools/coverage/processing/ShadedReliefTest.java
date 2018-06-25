@@ -52,9 +52,7 @@ public class ShadedReliefTest extends GridProcessingTestBase {
         indexedCoverage = EXAMPLES.get(2);
     }
 
-    /**
-     * Tests the "ZEVENBERGEN_THORNE" algo
-     */
+    /** Tests the "ZEVENBERGEN_THORNE" algo */
     @Test
     public void testZT() {
 
@@ -64,9 +62,7 @@ public class ShadedReliefTest extends GridProcessingTestBase {
         applyRelief(indexedCoverage, params);
     }
 
-    /**
-     * Tests the "COMBINED" algo
-     */
+    /** Tests the "COMBINED" algo */
     @Test
     public void testCombined() {
         ParameterValueGroup params = createDefaultParams(indexedCoverage);

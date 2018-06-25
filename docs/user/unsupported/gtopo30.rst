@@ -1,7 +1,7 @@
-GTOPO30 Plugin
---------------
+GTOPO30 Unsupported Plugin
+--------------------------
 
-The gt-gtopo30 module of the plugin group provides access to the file format used by the
+The gt-gtopo30 unsupported plugin provides access to the file format used by the
 GTOPO 30 Digital Elevation Model data set created by NASA.
 
 **References**

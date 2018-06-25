@@ -210,7 +210,6 @@ gathering up the other pages.
            arcgrid
            arcsde
            geotiff
-           gtopo30
            image
            imageio
            jdbc/index
@@ -225,6 +224,7 @@ gathering up the other pages.
         .. toctree::
            :maxdepth: 1
            
+           gtopo30
            coverageio
            experiment
            geotiff_new

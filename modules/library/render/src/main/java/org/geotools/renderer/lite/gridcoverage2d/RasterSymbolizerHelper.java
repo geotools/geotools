@@ -284,6 +284,8 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
         // /////////////////////////////////////////////////////////////////////
 
         final ShadedReliefNode srNode = new ShadedReliefNode(this.getHints());
+        final ShadedRelief sr = rs.getShadedRelief();
+        srNode.visit(sr);
         currNode = srNode;
 
         // TODO: Think about ContrastEnhancement and shadedRelief conflicts
@@ -301,8 +303,6 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
             prevNode.addSink(currNode);
             setSink(currNode);
 
-            final ShadedRelief sr = rs.getShadedRelief();
-            srNode.visit(sr);
         } else {
 
             setSink(prevNode);

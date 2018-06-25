@@ -15,9 +15,9 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>plugin</artifactId>
+    <artifactId>unsupported</artifactId>
     <version>20-SNAPSHOT</version>
-  </parent>
+  </parent> 
 
 
   <!-- =========================================================== -->

@@ -2043,9 +2043,10 @@ public class StreamingRenderer implements GTRenderer {
 
                         @Override
                         protected GridCoverage2D readCoverage(
-                                GridCoverage2DReader reader, Object params, GridGeometry2D readGG)
+                                GridCoverage2DReader reader,
+                                Object readParams,
+                                GridGeometry2D readGG)
                                 throws IOException {
-                            GeneralParameterValue[] readParams = (GeneralParameterValue[]) params;
                             Interpolation interpolation = getRenderingInterpolation(layer);
                             GridCoverageReaderHelper helper;
                             try {
@@ -2056,7 +2057,7 @@ public class StreamingRenderer implements GTRenderer {
                                                 ReferencedEnvelope.reference(
                                                         readGG.getEnvelope2D()),
                                                 interpolation);
-                                return helper.readCoverage(readParams);
+                                return helper.readCoverage((GeneralParameterValue[]) readParams);
                             } catch (InvalidGridGeometryException | FactoryException e) {
                                 throw new IOException("Failure reading the coverage", e);
                             }

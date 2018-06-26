@@ -54,7 +54,6 @@ Format plugins:
    arcsde
    geotiff
    grassraster
-   gtopo30
    image
    imageio
    jdbc/index

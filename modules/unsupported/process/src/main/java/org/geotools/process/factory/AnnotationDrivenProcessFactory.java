@@ -38,8 +38,10 @@ import org.geotools.process.RenderingProcess;
 import org.geotools.util.Converters;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
+import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.feature.type.Name;
+import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
@@ -465,7 +467,8 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
         Object process = createProcessBean(name);
         if (process != null
                 && (lookupInvertGridGeometry(process, meth.getName()) != null
-                        || lookupInvertQuery(process, meth.getName()) != null)) {
+                        || lookupInvertQuery(process, meth.getName()) != null
+                        || lookupCustomizeReadParams(process, meth.getName()) != null)) {
             return new InvokeMethodRenderingProcess(meth, process);
         } else {
             return new InvokeMethodProcess(meth, process);
@@ -515,6 +518,36 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
             methodName = "invertGridGeometry";
         } else {
             methodName = methodName + "InvertGridGeometry";
+        }
+        return lookupMethod(targetObject, methodName);
+    }
+
+    /**
+     * Used to recognise {@link RenderingProcess} implementations; returns a non null method for
+     * {@link RenderingProcess#customizeReadParams(Map, GridCoverageReader,
+     * GeneralParameterValue[])}.
+     *
+     * <p>Used to look up the method to use for "customizeReadParams"; if a specific method name is
+     * not provided "customizeReadParams" will be used.
+     *
+     * <p>
+     *
+     * <ul>
+     *   <li>For {@literal null} method name "customizeReadParams" will be used.
+     *   <li>For {@literal "execute"} method name "customizeReadParams" will be used.
+     *   <li>For {@literal "buffer"} method name "customizeReadParams" will be used
+     * </ul>
+     *
+     * @param targetObject Target object; may be null for static method lookup
+     * @param methodName method to use for "invertGridGeometry"
+     * @return method to use for RenderingProcess "invertGridGeometry", or null if not a
+     *     RenderingProcess
+     */
+    protected Method lookupCustomizeReadParams(Object targetObject, String methodName) {
+        if (methodName == null || "execute".equals(methodName)) {
+            methodName = "customizeReadParams";
+        } else {
+            methodName = methodName + "CustomizeReadParams";
         }
         return lookupMethod(targetObject, methodName);
     }
@@ -779,7 +812,8 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
      * number of parameters preceding them. These parameters must be a subset of the parameters of
      * the given execution method, and they use the same annotation to describe them.
      */
-    class InvokeMethodRenderingProcess extends InvokeMethodProcess implements RenderingProcess {
+    class InvokeMethodRenderingProcess extends InvokeMethodProcess
+            implements Process, RenderingProcess {
 
         /**
          * Creates a wrapper for invoking a method as a process
@@ -835,6 +869,37 @@ public abstract class AnnotationDrivenProcessFactory implements ProcessFactory {
                 args[args.length - 1] = targetGridGeometry;
 
                 return (GridGeometry) invertGridGeometryMethod.invoke(targetObject, args);
+            } catch (IllegalAccessException e) {
+                throw new ProcessException(e);
+            } catch (InvocationTargetException e) {
+                Throwable t = e.getTargetException();
+                if (t instanceof ProcessException) {
+                    throw ((ProcessException) t);
+                } else {
+                    throw new ProcessException(t);
+                }
+            }
+        }
+
+        @Override
+        public GeneralParameterValue[] customizeReadParams(
+                Map<String, Object> input,
+                GridCoverageReader reader,
+                GeneralParameterValue[] params) {
+            Method customizeReadParamsMethod =
+                    lookupCustomizeReadParams(targetObject, this.method.getName());
+
+            if (customizeReadParamsMethod == null) {
+                return params;
+            }
+
+            try {
+                Object[] args = buildProcessArguments(customizeReadParamsMethod, input, null, true);
+                args[args.length - 2] = reader;
+                args[args.length - 1] = params;
+
+                return (GeneralParameterValue[])
+                        customizeReadParamsMethod.invoke(targetObject, args);
             } catch (IllegalAccessException e) {
                 throw new ProcessException(e);
             } catch (InvocationTargetException e) {

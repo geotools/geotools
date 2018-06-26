@@ -94,7 +94,7 @@
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
     <imageio.ext.version>1.1.24</imageio.ext.version>
-    <jaiext.version>1.0.22</jaiext.version>
+    <jaiext.version>1.0.23</jaiext.version>
     <netcdf.version>4.6.6</netcdf.version>
     <jt.version>1.4.0</jt.version>
     <java.awt.headless>true</java.awt.headless>
@@ -111,6 +111,7 @@
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
     <fmt.action>format</fmt.action>
+    <fmt.skip>false</fmt.skip>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -1797,7 +1798,7 @@
             <configuration>
                 <verbose>false</verbose>
                 <filesNamePattern>.*\.java</filesNamePattern>
-                <skip>false</skip>
+                <skip>${fmt.skip}</skip>
                 <style>aosp</style>
             </configuration>
             <executions>

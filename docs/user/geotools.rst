@@ -62,7 +62,7 @@ Supported Formats
 
 * raster formats and data access
   
-  arcsde, arcgrid, geotiff, grassraster, gtopo30, image (JPEG, TIFF, GIF, PNG), imageio-ext-gdal, 
+  arcsde, arcgrid, geotiff, grassraster, image (JPEG, TIFF, GIF, PNG), imageio-ext-gdal, 
   imagemosaic, imagepyramid, JP2K, matlab
   
 * Database "jdbc-ng" support

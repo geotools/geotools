@@ -74,7 +74,7 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
                 RenderedRegistryMode.MODE_NAME, descName, "org.geotools.gce.processing", rif);
     }
 
-    private boolean brigthnessOnly = false;
+    private boolean brightnessOnly = false;
 
     private double reliefFactor = Double.NaN;
 
@@ -101,7 +101,7 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
         // Brightness Only
         //
         // /////////////////////////////////////////////////////////////////////
-        brigthnessOnly = sr.isBrightnessOnly();
+        brightnessOnly = sr.isBrightnessOnly();
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -170,7 +170,6 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
 
             final GridCoverage2D source = (GridCoverage2D) nodeSource.getOutput();
             GridCoverageRendererUtilities.ensureSourceNotNull(source, this.getName().toString());
-            GridCoverage2D output;
 
             final RenderedImage sourceImage = source.getRenderedImage();
 
@@ -236,33 +235,27 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
                 props.put("GC_ROI", worker.getROI());
             }
 
+            final GridSampleDimension sd[];
             if (numActualBands == numSourceBands) {
-                final String name = "sr_coverage" + source.getName();
-                output =
-                        factory.create(
-                                name,
-                                finalImage,
-                                (GridGeometry2D) source.getGridGeometry(),
-                                source.getSampleDimensions(),
-                                new GridCoverage[] {source},
-                                props);
+                sd = source.getSampleDimensions();
             } else {
-                // replicate input bands
-                final GridSampleDimension sd[] = new GridSampleDimension[numActualBands];
+                sd = new GridSampleDimension[numActualBands];
                 for (int i = 0; i < numActualBands; i++)
                     sd[i] = (GridSampleDimension) source.getSampleDimension(0);
-                output =
+            }
+
+            GridCoverage2D output =
                         factory.create(
-                                "sr_coverage" + source.getName().toString(),
+                                "sr_coverage" + source.getName(),
                                 finalImage,
                                 (GridGeometry2D) source.getGridGeometry(),
                                 sd,
                                 new GridCoverage[] {source},
                                 props);
-            }
+
             if (colorMapNode != null) {
                 GridCoverage2D mapCoverage = (GridCoverage2D) colorMapNode.getOutput();
-                if (!brigthnessOnly) {
+                if (!brightnessOnly) {
                     // When brigthnessOnly is set to true I have to prepare a separated
                     // image to be applied to the rendering and return the previous source's
                     // output as output

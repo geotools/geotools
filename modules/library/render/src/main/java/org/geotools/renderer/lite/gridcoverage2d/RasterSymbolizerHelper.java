@@ -299,7 +299,7 @@ public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessi
 
         if (applyShadedRelief) {
 
-            currNode.addSource(prevNode);
+            currNode.addSource(cmNode); // not the usual prev/curr links here, since SR does not need CE processing
             prevNode.addSink(currNode);
             setSink(currNode);
 

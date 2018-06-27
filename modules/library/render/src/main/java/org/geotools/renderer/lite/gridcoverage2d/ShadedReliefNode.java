@@ -245,13 +245,13 @@ class ShadedReliefNode extends StyleVisitorCoverageProcessingNodeAdapter
             }
 
             GridCoverage2D output =
-                        factory.create(
-                                "sr_coverage" + source.getName(),
-                                finalImage,
-                                (GridGeometry2D) source.getGridGeometry(),
-                                sd,
-                                new GridCoverage[] {source},
-                                props);
+                    factory.create(
+                            "sr_coverage" + source.getName(),
+                            finalImage,
+                            (GridGeometry2D) source.getGridGeometry(),
+                            sd,
+                            new GridCoverage[] {source},
+                            props);
 
             if (colorMapNode != null) {
                 GridCoverage2D mapCoverage = (GridCoverage2D) colorMapNode.getOutput();

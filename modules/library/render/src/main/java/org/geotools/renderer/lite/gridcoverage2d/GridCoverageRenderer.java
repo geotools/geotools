@@ -1393,8 +1393,11 @@ public final class GridCoverageRenderer {
                     buf = null;
                 } else
                 // log the error
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Unable to renderer this raster, no workaround found");
+                if (LOGGER.isLoggable(Level.WARNING))
+                    LOGGER.log(
+                            Level.WARNING,
+                            "Unable to renderer this raster, no workaround found",
+                            t);
 
             } catch (Throwable t1) {
                 // if the workaround fails again, there is really nothing to do

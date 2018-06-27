@@ -15,7 +15,7 @@
 
   <parent>
     <groupId>org.geotools</groupId>
-    <artifactId>plugin</artifactId>
+    <artifactId>unsupported</artifactId>
     <version>20-SNAPSHOT</version>
   </parent>
 
@@ -24,14 +24,13 @@
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
   <groupId>org.geotools</groupId>
-  <artifactId>gt-gtopo30</artifactId>
-  <packaging>jar</packaging>
-  <name>GTopo30 datasource module</name>
+  <artifactId>gt-ogr</artifactId>
+  <packaging>pom</packaging>
+  <name>OGR DataStore Module</name>
   
 
-
   <description>
-    This datasource reads the GTOPO30 DEM format.
+    A datastore leveraging OGR for reading/writing a slew of data formats
   </description>
 
   <licenses>
@@ -41,30 +40,18 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-
+  
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
   <developers>
     <developer>
-      <name>Simone Giannecchini</name>
-      <id>simboss</id>
-      <email>simone.giannecchini@geo-solutions.it</email>
-      <organization>GeoSolutions S.A.S.</organization>
-      <organizationUrl>http://www.geo-solutions.it</organizationUrl>
-      <roles>
-        <role>Java Developer</role>
-        <role>Documentation</role>
-        <role>Module Maintainer</role>
-      </roles>
-    </developer>   
-    <developer>
       <name>Andrea Aime</name>
-      <id>iant</id>
+      <id>aaime</id>
       <email>aaime@users.sourceforge.net</email>
       <organization>University of Modena and Reggio Emilia</organization>
       <roles>
+        <role>Module Maintainer</role>
         <role>Java Developer</role>
       </roles>
     </developer>
@@ -77,17 +64,8 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-coverage</artifactId>
+      <artifactId>gt-data</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-epsg-hsql</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_imageio</artifactId>
     </dependency>
 
     <!-- Test dependencies -->
@@ -98,11 +76,22 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>javax.media</groupId>
-      <artifactId>jai_codec</artifactId>
-      <!-- The version number is specified in the parent POM. -->
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-epsg-hsql</artifactId>
+      <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-shapefile</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>  
   </dependencies>
-
+  
+  <modules>
+    <module>ogr-core</module>
+    <module>ogr-bridj</module>
+    <module>ogr-jni</module>
+  </modules>
 </project>

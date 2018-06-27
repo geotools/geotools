@@ -74,7 +74,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * version number if there is some changes related to the EPSG-HSQL plugin rather then the EPSG
      * database itself (for example additional database index).
      */
-    public static final Version VERSION = new Version("8.6.0.0");
+    public static final Version VERSION = new Version("8.6.0.1");
 
     /**
      * The key for fetching the database directory from {@linkplain System#getProperty(String)
@@ -157,7 +157,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
 
     /** Returns the directory to uses in the temporary directory folder. */
     private static File getTemporaryDirectory() {
-        File directory = new File(System.getProperty("java.io.tmpdir", "."), "Geotools");
+        File directory = new File(System.getProperty("java.io.tmpdir", "."), "GeoTools");
         if (directory.isDirectory() || directory.mkdir()) {
             directory = new File(directory, "Databases/HSQL");
             if (directory.isDirectory() || directory.mkdirs()) {

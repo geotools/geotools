@@ -24,7 +24,8 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderedImageFactory;
 import java.util.HashMap;
 import java.util.List;
-import javax.measure.Unit;
+import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptor;
 import javax.media.jai.OperationRegistry;
@@ -48,7 +49,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.util.InternationalString;
-import si.uom.SI;
 
 /**
  * This implementations of {@link CoverageProcessingNode} takes care of the {@link ShadedRelief}

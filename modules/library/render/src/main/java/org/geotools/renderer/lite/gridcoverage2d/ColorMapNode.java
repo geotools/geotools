@@ -65,6 +65,7 @@ import org.opengis.util.InternationalString;
 class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
         implements StyleVisitor, CoverageProcessingNode {
 
+    public static int TYPE_NONE = -1;
     /*
      * (non-Javadoc)
      * @see CoverageProcessingNode#getName()
@@ -84,7 +85,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
      *   <li>TYPE_VALUES, which would do single value slicing
      * </ol>
      */
-    private int type;
+    private int type = TYPE_NONE;
 
     /**
      * The {@link Domain1D} that we build while parsing the various {@link ColorMapEntry}s provided
@@ -197,7 +198,7 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
             // /////////////////////////////////////////////////////////////////////
             colorMapTransform = builder.buildLinearColorMap();
 
-        } else this.type = -1;
+        } else this.type = TYPE_NONE;
     }
 
     /**
@@ -337,5 +338,9 @@ class ColorMapNode extends StyleVisitorCoverageProcessingNodeAdapter
      */
     public boolean isExtendedColors() {
         return extendedColors;
+    }
+
+    public int getType() {
+        return type;
     }
 }

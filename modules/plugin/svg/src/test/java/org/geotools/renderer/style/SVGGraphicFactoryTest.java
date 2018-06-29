@@ -31,9 +31,11 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.swing.Icon;
 import junit.framework.TestCase;
+import org.apache.batik.bridge.TextNode;
+import org.apache.batik.gvt.CompositeGraphicsNode;
+import org.apache.batik.gvt.GraphicsNode;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
-import org.geotools.xml.NullEntityResolver;
 import org.geotools.xml.PreventLocalEntityResolver;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
@@ -89,20 +91,36 @@ public class SVGGraphicFactoryTest extends TestCase {
         SVGGraphicFactory svg = new SVGGraphicFactory(hints);
         try {
             URL url = SVGGraphicFactory.class.getResource("attack.svg");
-            Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", 20);
-            fail("expected entity resolution exception");
+            SVGGraphicFactory.SVGIcon icon =
+                    (SVGGraphicFactory.SVGIcon) svg.getIcon(null, ff.literal(url), "image/svg", 20);
+            assertEquals("", getIconText(icon));
         } catch (Exception e) {
             assertThat(e.getMessage(), containsString("passwd"));
         }
+    }
 
-        // now enable references to entity stored on local file
-        hints = new HashMap<>();
-        hints.put(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
-        svg = new SVGGraphicFactory(hints); // disable safety protection
+    private String getIconText(SVGGraphicFactory.SVGIcon icon) {
+        GraphicsNode node = icon.svg.node;
+        TextNode text = getTextNode(node);
+        assertNotNull(text);
+        return text.getText();
+    }
 
-        URL url = SVGGraphicFactory.class.getResource("attack.svg");
-        Icon icon = svg.getIcon(null, ff.literal(url), "image/svg", 20);
-        assertNotNull(icon);
+    private TextNode getTextNode(GraphicsNode node) {
+        if (node instanceof TextNode) {
+            return (TextNode) node;
+        } else if (node instanceof CompositeGraphicsNode) {
+            List children = ((CompositeGraphicsNode) node).getChildren();
+            for (Object child : children) {
+                if (child instanceof GraphicsNode) {
+                    TextNode result = getTextNode((GraphicsNode) child);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public void testNaturalSize() throws Exception {

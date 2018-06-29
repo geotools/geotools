@@ -112,6 +112,7 @@
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
     <fmt.action>format</fmt.action>
     <fmt.skip>false</fmt.skip>
+    <batik.version>1.10</batik.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -817,72 +818,77 @@
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-transcoder</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-svggen</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-awt-util</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-rasterizer</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-dom</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-bridge</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-gvt</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-svg-dom</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-util</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-css</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-parser</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-xml</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-ext</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-script</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-anim</artifactId>
+        <version>${batik.version}</version>
       </dependency>
 
       <!-- Chart -->

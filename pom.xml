@@ -97,7 +97,7 @@
     <jts.version>1.15.1-SNAPSHOT</jts.version>
     <jaiext.version>1.0-SNAPSHOT</jaiext.version>
     <netcdf.version>4.6.6</netcdf.version>
-    <jt.version>1.5-SNAPSHOT</jt.version>
+    <jt.version>1.5.0</jt.version>
     <java.awt.headless>true</java.awt.headless>
     <sun.java2d.d3d>true</sun.java2d.d3d>
     <jvm.opts></jvm.opts>

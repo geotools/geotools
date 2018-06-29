@@ -19,10 +19,10 @@ package org.geotools.geopkg.geom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 
 public class GeoPkgIOTest {
 

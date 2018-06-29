@@ -16,10 +16,6 @@
  */
 package org.geotools.gml2.bindings;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.geometry.jts.JTS;
@@ -27,6 +23,10 @@ import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:LinearRingType.

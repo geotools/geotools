@@ -17,7 +17,6 @@
 
 package org.geotools.data.shapefile.index;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -26,6 +25,7 @@ import org.geotools.data.shapefile.index.quadtree.Node;
 import org.geotools.data.shapefile.index.quadtree.QuadTree;
 import org.geotools.data.shapefile.index.quadtree.StoreException;
 import org.geotools.data.shapefile.shp.IndexFile;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * An experimental QIX in memory index cache. It loads the tree into a packed memory structure that

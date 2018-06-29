@@ -16,7 +16,6 @@
  */
 package org.geotools.filter.visitor;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +23,7 @@ import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.IdCollectorFilterVisitor;
 import org.geotools.feature.visitor.IdFinderFilterVisitor;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.FilterVisitor;

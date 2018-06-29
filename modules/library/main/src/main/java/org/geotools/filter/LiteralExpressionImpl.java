@@ -18,8 +18,8 @@ package org.geotools.filter;
 
 import static org.geotools.filter.Filters.getExpressionType;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Literal;
 

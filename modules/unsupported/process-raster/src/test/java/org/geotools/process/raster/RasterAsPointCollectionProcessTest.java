@@ -17,7 +17,6 @@
  */
 package org.geotools.process.raster;
 
-import com.vividsolutions.jts.geom.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,6 +41,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.MismatchedDimensionException;

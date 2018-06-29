@@ -17,15 +17,15 @@
  */
 package org.geotools.data.db2;
 
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.ByteArrayInStream;
-import com.vividsolutions.jts.io.ByteOrderDataInStream;
-import com.vividsolutions.jts.io.ByteOrderValues;
-import com.vividsolutions.jts.io.InStream;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKBConstants;
 import java.io.IOException;
 import org.geotools.geometry.jts.JTS;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.io.ByteArrayInStream;
+import org.locationtech.jts.io.ByteOrderDataInStream;
+import org.locationtech.jts.io.ByteOrderValues;
+import org.locationtech.jts.io.InStream;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKBConstants;
 
 /**
  * @author Christian Mueller

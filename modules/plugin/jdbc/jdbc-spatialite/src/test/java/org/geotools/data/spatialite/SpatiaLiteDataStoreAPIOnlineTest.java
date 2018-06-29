@@ -16,7 +16,6 @@
  */
 package org.geotools.data.spatialite;
 
-import com.vividsolutions.jts.geom.Point;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -28,6 +27,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

@@ -16,10 +16,10 @@
  */
 package org.geotools.gml2.simple;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Envelope;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**

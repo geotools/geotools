@@ -16,9 +16,9 @@
  */
 package org.geotools.gml;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.logging.Logger;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Creates a simple OGC box.
@@ -34,7 +34,7 @@ public class SubHandlerBox extends SubHandler {
             org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
 
     /** */
-    com.vividsolutions.jts.geom.Envelope e = new com.vividsolutions.jts.geom.Envelope();
+    org.locationtech.jts.geom.Envelope e = new org.locationtech.jts.geom.Envelope();
 
     /** Creates a new instance of GMLBoxHandler. */
     public SubHandlerBox() {
@@ -72,8 +72,8 @@ public class SubHandlerBox extends SubHandler {
      * @param geometryFactory the geometryFactory to be used to build the polygon.
      * @return the polygon.
      */
-    public com.vividsolutions.jts.geom.Geometry create(
-            com.vividsolutions.jts.geom.GeometryFactory geometryFactory) {
+    public org.locationtech.jts.geom.Geometry create(
+            org.locationtech.jts.geom.GeometryFactory geometryFactory) {
         LOGGER.entering("SubHandlerBox", "create", geometryFactory);
 
         Coordinate[] c = new Coordinate[5];
@@ -83,11 +83,11 @@ public class SubHandlerBox extends SubHandler {
         c[3] = new Coordinate(e.getMaxX(), e.getMinY());
         c[4] = new Coordinate(e.getMinX(), e.getMinY());
 
-        com.vividsolutions.jts.geom.LinearRing r = null;
+        org.locationtech.jts.geom.LinearRing r = null;
 
         try {
             r = geometryFactory.createLinearRing(c);
-        } catch (com.vividsolutions.jts.geom.TopologyException e) {
+        } catch (org.locationtech.jts.geom.TopologyException e) {
             System.err.println("Topology Exception in GMLBoxHandler");
 
             return null; // could this be handled better?

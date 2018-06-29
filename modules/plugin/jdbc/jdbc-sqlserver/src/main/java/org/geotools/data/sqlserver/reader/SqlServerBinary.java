@@ -1,7 +1,7 @@
 package org.geotools.data.sqlserver.reader;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
 
 /**
  * Represents the information from a binary sqlserver geometry

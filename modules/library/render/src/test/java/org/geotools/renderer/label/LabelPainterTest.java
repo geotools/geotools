@@ -18,8 +18,6 @@ package org.geotools.renderer.label;
 
 import static org.junit.Assert.assertEquals;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -34,6 +32,8 @@ import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.TextSymbolizer;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.mockito.Mockito;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;

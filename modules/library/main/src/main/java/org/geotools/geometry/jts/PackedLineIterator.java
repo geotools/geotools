@@ -16,11 +16,11 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence.Double;
 import java.awt.geom.AffineTransform;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequence.Double;
 
 /**
  * A path iterator for the LiteShape class, specialized to iterate over LineString object.

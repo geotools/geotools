@@ -16,7 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Provides linearization control for curved geometries

@@ -16,11 +16,6 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
-import com.vividsolutions.jts.awt.ShapeReader;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
-import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -31,6 +26,11 @@ import javax.media.jai.ROIShape;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.util.SoftValueHashMap;
+import org.locationtech.jts.awt.ShapeReader;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.util.AffineTransformation;
+import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 
 /**
  * A ROIGeometry provider that handles multi-scale ROI with some extras:
@@ -104,18 +104,18 @@ public class MultiLevelROIGeometry implements MultiLevelROI {
                 double rescaledInset = scale * inset;
                 if (rescaledInset < 1) {
                     // just apply a 1 pixel inset on the rescaled geometry
-                    Geometry cloned = (Geometry) originalFootprint.clone();
-                    cloned.apply(geometryAT);
-                    Geometry bounds = (Geometry) granuleBounds.clone();
+                    Geometry copy = originalFootprint.copy();
+                    copy.apply(geometryAT);
+                    Geometry bounds = granuleBounds.copy();
                     bounds.apply(geometryAT);
-                    rescaled = insetPolicy.applyInset(cloned, bounds, 1.5);
+                    rescaled = insetPolicy.applyInset(copy, bounds, 1.5);
                 } else {
                     // use the original footprint
-                    rescaled = (Geometry) insetFootprint.clone();
+                    rescaled = insetFootprint.copy();
                     rescaled.apply(geometryAT);
                 }
             } else {
-                rescaled = (Geometry) originalFootprint.clone();
+                rescaled = originalFootprint.copy();
                 rescaled.apply(geometryAT);
             }
 

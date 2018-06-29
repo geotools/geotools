@@ -16,7 +16,6 @@
  */
 package org.geotools.validation;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,6 +39,7 @@ import org.geotools.validation.dto.TestDTO;
 import org.geotools.validation.dto.TestSuiteDTO;
 import org.geotools.validation.xml.ValidationException;
 import org.geotools.validation.xml.XMLReader;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**

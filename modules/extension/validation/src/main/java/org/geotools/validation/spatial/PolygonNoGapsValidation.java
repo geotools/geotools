@@ -16,10 +16,10 @@
  */
 package org.geotools.validation.spatial;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.validation.DefaultFeatureValidation;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -54,7 +54,7 @@ public class PolygonNoGapsValidation extends DefaultFeatureValidation {
      * @return True if no features intersect. If they do then the validation failed.
      * @throws Exception DOCUMENT ME!
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
-     *     com.vividsolutions.jts.geom.Envelope, org.geotools.validation.ValidationResults)
+     *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
     public boolean validate(
             SimpleFeature feature, SimpleFeatureType type, ValidationResults results) {

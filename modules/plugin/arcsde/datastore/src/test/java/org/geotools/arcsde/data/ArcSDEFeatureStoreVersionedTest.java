@@ -23,8 +23,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.esri.sde.sdk.client.SeException;
 import com.esri.sde.sdk.client.SeTable;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.Serializable;
 import java.util.Map;
 import org.geotools.arcsde.ArcSdeException;
@@ -42,6 +40,8 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

@@ -203,10 +203,9 @@ public class PointArrayImpl extends NotifyingArrayList<Position>
         return this;
     }
 
-    public com.vividsolutions.jts.geom.Geometry getJTSGeometry() {
+    public org.locationtech.jts.geom.Geometry getJTSGeometry() {
         int n = super.size();
-        com.vividsolutions.jts.geom.Coordinate[] coords =
-                new com.vividsolutions.jts.geom.Coordinate[n];
+        org.locationtech.jts.geom.Coordinate[] coords = new org.locationtech.jts.geom.Coordinate[n];
         for (int i = 0; i < n; i++) {
             coords[i] = JTSUtils.directPositionToCoordinate((DirectPosition) super.get(i));
         }

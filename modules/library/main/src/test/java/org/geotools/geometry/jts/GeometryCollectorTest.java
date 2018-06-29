@@ -2,13 +2,13 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.FilterFactory2;
 
 /** @source $URL$ */
@@ -64,7 +64,7 @@ public class GeometryCollectorTest {
 
         GeometryCollection result = collector.collect();
         assertEquals(1, result.getNumGeometries());
-        Polygon p = (com.vividsolutions.jts.geom.Polygon) result.getGeometryN(0);
+        Polygon p = (org.locationtech.jts.geom.Polygon) result.getGeometryN(0);
         assertTrue(p.isValid());
     }
 

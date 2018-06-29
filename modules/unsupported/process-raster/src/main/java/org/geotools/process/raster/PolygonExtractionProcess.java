@@ -17,9 +17,6 @@
  */
 package org.geotools.process.raster;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
@@ -40,6 +37,9 @@ import org.geotools.process.factory.DescribeResult;
 import org.jaitools.media.jai.vectorize.VectorizeDescriptor;
 import org.jaitools.media.jai.vectorize.VectorizeRIF;
 import org.jaitools.numeric.Range;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.util.AffineTransformation;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.util.ProgressListener;

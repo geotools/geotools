@@ -1,8 +1,5 @@
 package org.geotools.filter.spatial;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
 import java.util.Collections;
 import java.util.List;
 import junit.framework.TestCase;
@@ -13,6 +10,9 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;

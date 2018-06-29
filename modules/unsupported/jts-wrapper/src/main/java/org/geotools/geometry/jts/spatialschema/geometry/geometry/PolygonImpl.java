@@ -62,22 +62,22 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
      * @return
      * @see com.polexis.lite.spatialschema.geometry.primitive.SurfacePatchImpl#calculateJTSPeer()
      */
-    public com.vividsolutions.jts.geom.Geometry calculateJTSPeer() {
+    public org.locationtech.jts.geom.Geometry calculateJTSPeer() {
         SurfaceBoundary boundary = getBoundary();
         Ring exterior = boundary.getExterior();
         List interiors = boundary.getInteriors();
-        com.vividsolutions.jts.geom.Geometry g = ((JTSGeometry) exterior).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry g = ((JTSGeometry) exterior).getJTSGeometry();
         int numHoles = (interiors != null) ? interiors.size() : 0;
-        com.vividsolutions.jts.geom.LinearRing jtsExterior =
+        org.locationtech.jts.geom.LinearRing jtsExterior =
                 JTSUtils.GEOMETRY_FACTORY.createLinearRing(g.getCoordinates());
-        com.vividsolutions.jts.geom.LinearRing[] jtsInterior =
-                new com.vividsolutions.jts.geom.LinearRing[numHoles];
+        org.locationtech.jts.geom.LinearRing[] jtsInterior =
+                new org.locationtech.jts.geom.LinearRing[numHoles];
         for (int i = 0; i < numHoles; i++) {
-            com.vividsolutions.jts.geom.Geometry g2 =
+            org.locationtech.jts.geom.Geometry g2 =
                     ((JTSGeometry) interiors.get(i)).getJTSGeometry();
             jtsInterior[i] = JTSUtils.GEOMETRY_FACTORY.createLinearRing(g2.getCoordinates());
         }
-        com.vividsolutions.jts.geom.Polygon result =
+        org.locationtech.jts.geom.Polygon result =
                 JTSUtils.GEOMETRY_FACTORY.createPolygon(jtsExterior, jtsInterior);
         return result;
     }
@@ -96,8 +96,8 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
     }
 
     public boolean isValid() {
-        com.vividsolutions.jts.geom.Polygon poly =
-                (com.vividsolutions.jts.geom.Polygon) this.getJTSGeometry();
+        org.locationtech.jts.geom.Polygon poly =
+                (org.locationtech.jts.geom.Polygon) this.getJTSGeometry();
         return poly.isValid();
     }
 }

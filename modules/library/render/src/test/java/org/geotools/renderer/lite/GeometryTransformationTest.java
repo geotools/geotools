@@ -3,7 +3,6 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.*;
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Point;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -28,6 +27,7 @@ import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 

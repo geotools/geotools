@@ -18,13 +18,13 @@ package org.geotools.data.geobuf;
 
 import static org.junit.Assert.assertEquals;
 
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.*;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

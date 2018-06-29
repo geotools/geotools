@@ -20,9 +20,9 @@ package org.geotools.grid.hexagon;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import org.geotools.grid.PolygonElement;
 import org.geotools.grid.TestBase;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Base class for Hexagon unit tests.

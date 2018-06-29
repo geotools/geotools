@@ -16,9 +16,9 @@
  */
 package org.geotools.geopkg;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.ArrayList;
 import java.util.List;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Tiles Entry inside a GeoPackage.

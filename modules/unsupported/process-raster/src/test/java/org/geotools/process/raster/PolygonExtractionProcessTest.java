@@ -18,9 +18,6 @@ package org.geotools.process.raster;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
@@ -48,6 +45,9 @@ import org.jaitools.numeric.Range;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**

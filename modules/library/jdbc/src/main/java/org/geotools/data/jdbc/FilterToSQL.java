@@ -18,8 +18,6 @@ package org.geotools.data.jdbc;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -50,6 +48,8 @@ import org.geotools.jdbc.PrimaryKey;
 import org.geotools.referencing.CRS;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;

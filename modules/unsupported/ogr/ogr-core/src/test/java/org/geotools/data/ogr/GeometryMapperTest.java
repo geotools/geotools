@@ -1,8 +1,8 @@
 package org.geotools.data.ogr;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.io.WKTReader;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.io.WKTReader;
 
 /** @source $URL$ */
 public abstract class GeometryMapperTest extends TestCaseSupport {

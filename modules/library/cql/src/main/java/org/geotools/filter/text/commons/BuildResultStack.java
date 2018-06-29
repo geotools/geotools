@@ -16,7 +16,6 @@
  */
 package org.geotools.filter.text.commons;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Date;
 import java.util.EmptyStackException;
 import java.util.Stack;
@@ -24,6 +23,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;

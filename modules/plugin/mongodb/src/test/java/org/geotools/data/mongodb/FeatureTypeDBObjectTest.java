@@ -25,8 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
@@ -36,6 +34,8 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.hamcrest.Matcher;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.referencing.FactoryException;

@@ -17,7 +17,7 @@
  */
 package org.geotools.process.vector;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * An affine transformation between two parallel coordinate systems, one defined by an {@link

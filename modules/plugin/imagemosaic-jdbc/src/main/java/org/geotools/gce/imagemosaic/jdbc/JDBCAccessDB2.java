@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.jdbc;
 
-import com.vividsolutions.jts.io.WKBWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,6 +25,7 @@ import java.text.MessageFormat;
 import java.util.logging.Level;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.io.WKBWriter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

@@ -16,8 +16,6 @@
  */
 package org.geotools.graph.util;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineSegment;
 import java.util.ArrayList;
 import java.util.Iterator;
 import junit.framework.TestCase;
@@ -29,6 +27,8 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineSegment;
 
 /** @source $URL$ */
 public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {

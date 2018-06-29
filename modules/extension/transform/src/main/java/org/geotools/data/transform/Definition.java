@@ -16,12 +16,12 @@
  */
 package org.geotools.data.transform;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

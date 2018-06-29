@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile.shp.xml;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Bean of idinfo element of shp.xml.

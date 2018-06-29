@@ -16,7 +16,6 @@
  */
 package org.geotools.data.shapefile.index.quadtree.fs;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,6 +30,7 @@ import org.geotools.data.shapefile.index.quadtree.Node;
 import org.geotools.data.shapefile.index.quadtree.QuadTree;
 import org.geotools.data.shapefile.index.quadtree.StoreException;
 import org.geotools.data.shapefile.shp.IndexFile;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * DOCUMENT ME!

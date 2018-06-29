@@ -16,11 +16,11 @@
  */
 package org.geotools.renderer.label;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.index.quadtree.Quadtree;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.List;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.quadtree.Quadtree;
 
 /**
  * Stores label items and helps in finding the interferering ones, either by pure overlap or within

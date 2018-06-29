@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Helper that loads a sidecar footprint file in a certain format

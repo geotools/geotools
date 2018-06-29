@@ -167,107 +167,107 @@
             <typeBindings>
                 <typeBinding>
                     <name>AbstractGeometryType</name>
-                    <binding>com.vividsolutions.jts.geom.Geometry</binding>
+                    <binding>org.locationtech.jts.jts.geom.Geometry</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>CurvePropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiLineString</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>CurveType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiLineString</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>GeometryPropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.Geometry</binding>
+                    <binding>org.locationtech.jts.jts.geom.Geometry</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>LineStringPropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.LineString</binding>
+                    <binding>org.locationtech.jts.jts.geom.LineString</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>LineStringType</name>
-                    <binding>com.vividsolutions.jts.geom.LineString</binding>
+                    <binding>org.locationtech.jts.jts.geom.LineString</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>LinearRingPropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.LinearRing</binding>
+                    <binding>org.locationtech.jts.jts.geom.LinearRing</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>LinearRingType</name>
-                    <binding>com.vividsolutions.jts.geom.LinearRing</binding>
+                    <binding>org.locationtech.jts.jts.geom.LinearRing</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiCurvePropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiLineString[]</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiLineString[]</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiCurveType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiLineString[]</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiLineString[]</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiGeometryPropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.GeometryCollection</binding>
+                    <binding>org.locationtech.jts.jts.geom.GeometryCollection</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiGeometryType</name>
-                    <binding>com.vividsolutions.jts.geom.GeometryCollection</binding>
+                    <binding>org.locationtech.jts.jts.geom.GeometryCollection</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiLineStringPropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiLineString</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiLineStringType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiLineString</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiLineString</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiPointPropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiPoint</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiPoint</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiPointType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiPoint</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiPoint</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiPolygonPropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiPolygon</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiPolygonType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiPolygon</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiSurfacePropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiPolygon</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>MultiSurfaceType</name>
-                    <binding>com.vividsolutions.jts.geom.MultiPolygon</binding>
+                    <binding>org.locationtech.jts.jts.geom.MultiPolygon</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>PointPropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.Point</binding>
+                    <binding>org.locationtech.jts.jts.geom.Point</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>PointType</name>
-                    <binding>com.vividsolutions.jts.geom.Point</binding>
+                    <binding>org.locationtech.jts.jts.geom.Point</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>PolygonPropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.Polygon</binding>
+                    <binding>org.locationtech.jts.jts.geom.Polygon</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>PolygonType</name>
-                    <binding>com.vividsolutions.jts.geom.Polygon</binding>
+                    <binding>org.locationtech.jts.jts.geom.Polygon</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>SurfacePropertyType</name>
-                    <binding>com.vividsolutions.jts.geom.Polygon</binding>
+                    <binding>org.locationtech.jts.jts.geom.Polygon</binding>
                 </typeBinding>
                 <typeBinding>
                     <name>SurfaceType</name>
-                    <binding>com.vividsolutions.jts.geom.Polygon</binding>
+                    <binding>org.locationtech.jts.jts.geom.Polygon</binding>
                 </typeBinding>
             </typeBindings>
         </configuration>

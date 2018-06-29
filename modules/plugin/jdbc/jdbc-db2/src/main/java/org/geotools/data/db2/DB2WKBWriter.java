@@ -18,14 +18,14 @@
 
 package org.geotools.data.db2;
 
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.ByteOrderValues;
-import com.vividsolutions.jts.io.OutStream;
-import com.vividsolutions.jts.io.OutputStreamOutStream;
-import com.vividsolutions.jts.io.WKBConstants;
-import com.vividsolutions.jts.io.WKBWriter;
-import com.vividsolutions.jts.util.Assert;
 import java.io.*;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.io.ByteOrderValues;
+import org.locationtech.jts.io.OutStream;
+import org.locationtech.jts.io.OutputStreamOutStream;
+import org.locationtech.jts.io.WKBConstants;
+import org.locationtech.jts.io.WKBWriter;
+import org.locationtech.jts.util.Assert;
 
 /**
  * @author Christian Mueller

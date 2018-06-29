@@ -16,13 +16,13 @@
  */
 package org.geotools.graph.build.line;
 
-import com.vividsolutions.jts.geom.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
+import org.locationtech.jts.geom.*;
 
 /**
  * Builds a graph representing a line network in which edges in the network are represented by
@@ -32,8 +32,8 @@ import org.geotools.graph.structure.Node;
  * determine when to create underlying objects. For this reason it is not recommended to modify the
  * visited flag of any graph components.
  *
- * @see com.vividsolutions.jts.geom.LineString
- * @see com.vividsolutions.jts.geom.Point
+ * @see org.locationtech.jts.geom.LineString
+ * @see org.locationtech.jts.geom.Point
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com
  * @source $URL$

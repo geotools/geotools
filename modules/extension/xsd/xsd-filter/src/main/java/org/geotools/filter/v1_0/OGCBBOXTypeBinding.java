@@ -16,7 +16,6 @@
  */
 package org.geotools.filter.v1_0;
 
-import com.vividsolutions.jts.geom.Envelope;
 import javax.xml.namespace.QName;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -26,6 +25,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;

@@ -16,11 +16,11 @@
  */
 package org.geotools.gml3.simple;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**

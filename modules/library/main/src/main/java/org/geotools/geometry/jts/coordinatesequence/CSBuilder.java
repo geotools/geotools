@@ -18,7 +18,7 @@
  */
 package org.geotools.geometry.jts.coordinatesequence;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequence;
 
 /**
  * A Builder for JTS CoordinateSequences.

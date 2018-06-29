@@ -19,7 +19,7 @@
  */
 package org.geotools.data.oracle.sdo;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequence;
 
 /**
  * Allows manipulation of a Geometry's CoordinateSequence.

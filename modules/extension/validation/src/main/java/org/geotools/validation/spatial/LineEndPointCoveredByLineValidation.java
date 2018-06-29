@@ -16,16 +16,16 @@
  */
 package org.geotools.validation.spatial;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
 import java.util.Map;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
@@ -59,7 +59,7 @@ public class LineEndPointCoveredByLineValidation extends LineLineAbstractValidat
      * @return True if no features intersect. If they do then the validation failed.
      * @throws Exception DOCUMENT ME!
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
-     *     com.vividsolutions.jts.geom.Envelope, org.geotools.validation.ValidationResults)
+     *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
     public boolean validate(Map layers, Envelope envelope, ValidationResults results)
             throws Exception {

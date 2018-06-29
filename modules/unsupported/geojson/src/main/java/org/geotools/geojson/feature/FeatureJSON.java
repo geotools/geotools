@@ -20,8 +20,6 @@ import static org.geotools.geojson.GeoJSONUtil.array;
 import static org.geotools.geojson.GeoJSONUtil.entry;
 import static org.geotools.geojson.GeoJSONUtil.string;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,6 +43,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONAware;
 import org.json.simple.JSONStreamAware;
 import org.json.simple.parser.JSONParser;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

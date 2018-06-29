@@ -18,9 +18,9 @@
  */
 package org.geotools.geometry.jts.coordinatesequence;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 /**
  * An implementation of a JTS CSBuilder which uses a PackedCoordinateSequence.
@@ -77,7 +77,7 @@ public abstract class PackedCSBuilder implements CSBuilder {
 
         /**
          * @see
-         *     org.geotools.geometry.coordinatesequence.CSBuilder#setOrdinate(com.vividsolutions.jts.geom.CoordinateSequence,
+         *     org.geotools.geometry.coordinatesequence.CSBuilder#setOrdinate(org.locationtech.jts.geom.CoordinateSequence,
          *     double, int, int)
          */
         public void setOrdinate(
@@ -116,7 +116,7 @@ public abstract class PackedCSBuilder implements CSBuilder {
 
         /**
          * @see
-         *     org.geotools.geometry.coordinatesequence.CSBuilder#setOrdinate(com.vividsolutions.jts.geom.CoordinateSequence,
+         *     org.geotools.geometry.coordinatesequence.CSBuilder#setOrdinate(org.locationtech.jts.geom.CoordinateSequence,
          *     double, int, int)
          */
         public void setOrdinate(

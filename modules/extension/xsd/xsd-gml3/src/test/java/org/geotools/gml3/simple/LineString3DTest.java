@@ -16,12 +16,12 @@
  */
 package org.geotools.gml3.simple;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
 public class LineString3DTest extends GeometryEncoderTestSupport {

@@ -17,8 +17,6 @@
 
 package org.geotools.swing.testutils;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +29,8 @@ import org.geotools.geometry.jts.Geometries;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.styling.SLD;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

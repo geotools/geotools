@@ -16,7 +16,6 @@
  */
 package org.geotools.geojson;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,6 +39,7 @@ import org.geotools.util.Converters;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.locationtech.jts.geom.Coordinate;
 
 /** @source $URL$ */
 public class GeoJSONUtil {

@@ -16,9 +16,6 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -26,6 +23,9 @@ import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:MultiSurfaceType.

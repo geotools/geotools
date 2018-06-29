@@ -16,7 +16,6 @@
  */
 package org.geotools.data.shapefile.index.quadtree;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,6 +25,7 @@ import java.util.logging.Logger;
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.shp.IndexFile;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Java porting of mapserver quadtree implementation.<br>

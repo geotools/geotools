@@ -16,8 +16,6 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.WKTReader;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -34,6 +32,8 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.wfs.PropertyValueCollection;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.w3c.dom.Document;

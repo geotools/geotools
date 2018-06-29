@@ -9,7 +9,6 @@
 package org.geotools.tutorial.csv2;
 
 import com.csvreader.CsvWriter;
-import com.vividsolutions.jts.geom.Point;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,6 +21,7 @@ import org.geotools.data.Query;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

@@ -20,14 +20,14 @@ import static org.geotools.geojson.GeoJSONUtil.addOrdinate;
 import static org.geotools.geojson.GeoJSONUtil.createCoordinate;
 import static org.geotools.geojson.GeoJSONUtil.createCoordinates;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.util.List;
 import org.geotools.geojson.HandlerBase;
 import org.geotools.geojson.IContentHandler;
 import org.json.simple.parser.ParseException;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /** @source $URL$ */
 public class GeometryHandlerBase<G extends Geometry> extends HandlerBase

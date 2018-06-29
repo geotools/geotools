@@ -16,8 +16,6 @@
  */
 package org.geotools.validation.relate;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -31,6 +29,8 @@ import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -72,7 +72,7 @@ public class OverlapsIntegrity extends RelationIntegrity {
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map, com.vividsolutions.jts.geom.Envelope, org.geotools.validation.ValidationResults)
+     * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map, org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
     public boolean validate(Map layers, ReferencedEnvelope envelope, ValidationResults results)
             throws Exception {

@@ -16,7 +16,6 @@
  */
 package org.geotools.coverageio;
 
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExtImpl;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Rectangle;
@@ -50,6 +49,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

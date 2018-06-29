@@ -16,7 +16,7 @@
  */
 package org.geotools.data.kml;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;

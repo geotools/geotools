@@ -19,8 +19,6 @@ package org.geotools.data.wfs.integration.v2_0;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -36,6 +34,8 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.referencing.CRS;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 public class GeoServerIntegrationTest extends AbstractIntegrationTest {
 

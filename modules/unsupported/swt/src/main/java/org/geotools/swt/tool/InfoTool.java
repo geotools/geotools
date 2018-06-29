@@ -17,7 +17,6 @@
 
 package org.geotools.swt.tool;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.List;
@@ -38,6 +37,7 @@ import org.geotools.swt.event.MapMouseEvent;
 import org.geotools.swt.utils.CursorManager;
 import org.geotools.swt.utils.Messages;
 import org.geotools.swt.utils.Utils;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 

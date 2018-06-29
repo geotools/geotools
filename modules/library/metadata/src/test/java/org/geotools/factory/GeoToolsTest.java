@@ -18,7 +18,6 @@ package org.geotools.factory;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,6 +30,7 @@ import org.geotools.util.Version;
 import org.geotools.xml.NullEntityResolver;
 import org.geotools.xml.PreventLocalEntityResolver;
 import org.junit.*;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 import org.xml.sax.EntityResolver;
 
@@ -134,7 +134,7 @@ public final class GeoToolsTest {
         String location;
 
         location =
-                "jar:file:/Users/jody/.m2/repository/com/vividsolutions/jts/1.14/jts-1.14.jar!/com/vividsolutions/jts/geom/Geometry.class";
+                "jar:file:/Users/jody/.m2/repository/org.locationtech/jts/1.14/jts-1.14.jar!/org.locationtech/jts/geom/Geometry.class";
         assertEquals("1.14", GeoTools.jarVersion(location));
 
         location =
@@ -162,7 +162,8 @@ public final class GeoToolsTest {
 
         version = GeoTools.getVersion(Geometry.class);
         assertNotNull(version);
-        assertEquals("1.14.0", version.toString());
+        assertEquals("SNAPSHOT", version.toString());
+        // assertEquals("1.15.0", version.toString());
     }
     /** Tests the use of system properties. */
     @Test

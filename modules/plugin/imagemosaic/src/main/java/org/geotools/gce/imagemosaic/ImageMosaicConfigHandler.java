@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.SampleModel;
@@ -100,6 +99,7 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;

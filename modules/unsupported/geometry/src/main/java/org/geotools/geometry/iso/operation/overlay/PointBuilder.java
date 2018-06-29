@@ -29,9 +29,9 @@ import org.geotools.geometry.iso.util.algorithm2D.PointLocator;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 // import java.util.*;
-// import com.vividsolutions.jts.geom.*;
-// import com.vividsolutions.jts.algorithm.*;
-// import com.vividsolutions.jts.geomgraph.*;
+// import org.locationtech.jts.geom.*;
+// import org.locationtech.jts.algorithm.*;
+// import org.locationtech.jts.geomgraph.*;
 
 /**
  * Constructs {@link org.opengis.geometry.primitive.Point}s from the nodes of an overlay graph.

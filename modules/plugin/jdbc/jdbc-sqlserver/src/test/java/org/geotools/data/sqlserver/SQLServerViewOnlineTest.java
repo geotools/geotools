@@ -1,8 +1,8 @@
 package org.geotools.data.sqlserver;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.jdbc.JDBCViewOnlineTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 

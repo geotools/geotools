@@ -22,12 +22,12 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFilter;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.capability.FunctionName;
 
 /** @source $URL$ */
@@ -58,7 +58,7 @@ public class FilterFunction_offset extends FunctionExpressionImpl
         if (offsetY == null) offsetY = 0d;
 
         if (geom != null) {
-            Geometry offseted = (Geometry) geom.clone();
+            Geometry offseted = geom.copy();
             offseted.apply(new OffsetOrdinateFilter(offsetX, offsetY));
             return offseted;
         } else {

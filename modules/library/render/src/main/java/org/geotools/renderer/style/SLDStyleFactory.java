@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.style;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Canvas;
@@ -73,6 +72,7 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;

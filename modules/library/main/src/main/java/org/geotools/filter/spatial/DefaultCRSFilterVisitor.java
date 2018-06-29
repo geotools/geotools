@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.spatial;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;

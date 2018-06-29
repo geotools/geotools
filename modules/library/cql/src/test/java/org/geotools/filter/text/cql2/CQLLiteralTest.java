@@ -20,15 +20,15 @@ package org.geotools.filter.text.cql2;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.io.WKTReader;
 import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
@@ -88,7 +88,7 @@ public class CQLLiteralTest {
         geom = (Literal) result.getExpression2();
 
         Assert.assertNotNull(geom.getValue());
-        Assert.assertTrue(geom.getValue() instanceof com.vividsolutions.jts.geom.Point);
+        Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.Point);
 
         // LineString
         result =
@@ -99,7 +99,7 @@ public class CQLLiteralTest {
         geom = (Literal) result.getExpression2();
 
         Assert.assertNotNull(geom.getValue());
-        Assert.assertTrue(geom.getValue() instanceof com.vividsolutions.jts.geom.LineString);
+        Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.LineString);
 
         // Polygon
         result =
@@ -111,7 +111,7 @@ public class CQLLiteralTest {
         geom = (Literal) result.getExpression2();
 
         Assert.assertNotNull(geom.getValue());
-        Assert.assertTrue(geom.getValue() instanceof com.vividsolutions.jts.geom.Polygon);
+        Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.Polygon);
 
         // MultiPoint
         result =
@@ -123,7 +123,7 @@ public class CQLLiteralTest {
         geom = (Literal) result.getExpression2();
 
         Assert.assertNotNull(geom.getValue());
-        Assert.assertTrue(geom.getValue() instanceof com.vividsolutions.jts.geom.MultiPoint);
+        Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.MultiPoint);
 
         // MultiLineString
         result =
@@ -135,7 +135,7 @@ public class CQLLiteralTest {
         geom = (Literal) result.getExpression2();
 
         Assert.assertNotNull(geom.getValue());
-        Assert.assertTrue(geom.getValue() instanceof com.vividsolutions.jts.geom.MultiLineString);
+        Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.MultiLineString);
 
         // MultiPolygon
         result =
@@ -147,7 +147,7 @@ public class CQLLiteralTest {
         geom = (Literal) result.getExpression2();
 
         Assert.assertNotNull(geom.getValue());
-        Assert.assertTrue(geom.getValue() instanceof com.vividsolutions.jts.geom.MultiPolygon);
+        Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.MultiPolygon);
 
         // ENVELOPE
         result =
@@ -158,7 +158,7 @@ public class CQLLiteralTest {
         geom = (Literal) result.getExpression2();
 
         Assert.assertNotNull(geom.getValue());
-        Assert.assertTrue(geom.getValue() instanceof com.vividsolutions.jts.geom.Polygon);
+        Assert.assertTrue(geom.getValue() instanceof org.locationtech.jts.geom.Polygon);
     }
 
     /**

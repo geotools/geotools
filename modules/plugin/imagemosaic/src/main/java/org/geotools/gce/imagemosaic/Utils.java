@@ -16,12 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.TopologyException;
-import com.vividsolutions.jts.operation.overlay.snap.GeometrySnapper;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand.Metadata;
@@ -119,6 +113,12 @@ import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.TopologyException;
+import org.locationtech.jts.operation.overlay.snap.GeometrySnapper;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory2;

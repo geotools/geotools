@@ -16,7 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Interface implemented by the various geometry classes of LiteGO1 that allows a user to retrieve

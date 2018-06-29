@@ -16,7 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
@@ -37,6 +36,7 @@ import org.geotools.factory.FactoryRegistry;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.util.SimpleInternationalString;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * Abstract implementation of DataStoreFactory for jdbc datastores.

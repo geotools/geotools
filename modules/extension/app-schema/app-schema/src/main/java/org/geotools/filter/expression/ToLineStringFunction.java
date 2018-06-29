@@ -16,9 +16,6 @@
  */
 package org.geotools.filter.expression;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +24,9 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultVerticalCRS;
 import org.geotools.referencing.cs.DefaultVerticalCS;
 import org.geotools.referencing.datum.DefaultVerticalDatum;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;

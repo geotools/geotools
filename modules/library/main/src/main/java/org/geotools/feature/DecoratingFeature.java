@@ -16,10 +16,10 @@
  */
 package org.geotools.feature;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;

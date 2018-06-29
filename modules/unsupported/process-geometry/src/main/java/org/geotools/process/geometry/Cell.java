@@ -17,10 +17,10 @@
  */
 package org.geotools.process.geometry;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.operation.distance.DistanceOp;
 import org.geotools.geometry.jts.GeometryBuilder;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.operation.distance.DistanceOp;
 
 /**
  * Based on Vladimir Agafonkin's Algorithm https://www.mapbox.com/blog/polygon-center/

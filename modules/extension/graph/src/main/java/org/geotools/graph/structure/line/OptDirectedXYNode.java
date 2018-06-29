@@ -16,8 +16,8 @@
  */
 package org.geotools.graph.structure.line;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import org.geotools.graph.structure.opt.OptDirectedNode;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Optimized implementation of XYNode extended from OptDirectedNode. Instead of storing an

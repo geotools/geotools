@@ -1,7 +1,7 @@
 <class-diagram version="1.0.11" icons="true" automaticImage="PNG" always-add-relationships="true" generalizations="true" 
   realizations="true" associations="true" dependencies="true" nesting-relationships="true">  
-  <class id="1" corner="BOTTOM_RIGHT" language="java" name="com.vividsolutions.jts.geom.Envelope" project="docs" 
-    file="/home/niels/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true">    
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="org.locationtech.jts.geom.Envelope" project="docs" 
+    file="/home/niels/.m2/repository/org.locationtech/jts/1.13/jts-1.13.jar" binary="true">    
     <position x="127" y="132" width="-1" height="-1"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      

@@ -16,7 +16,6 @@
  */
 package org.geotools.data.shapefile.index.quadtree;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +25,7 @@ import org.geotools.data.CloseableIterator;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.index.DataDefinition;
 import org.geotools.data.shapefile.shp.IndexFile;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Iterator that search the quad tree depth first. 32000 indices are cached at a time and each time

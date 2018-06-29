@@ -18,12 +18,12 @@ package org.geotools.data.geobuf;
 
 import static org.junit.Assert.assertEquals;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 
 public class GeobufGeometryTest {
 

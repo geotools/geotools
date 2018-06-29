@@ -20,7 +20,7 @@ import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 
 /**

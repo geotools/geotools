@@ -19,7 +19,6 @@ package org.geotools.swing.tool;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.Random;
@@ -35,6 +34,7 @@ import org.geotools.swing.testutils.TestDataUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 

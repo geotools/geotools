@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
@@ -30,6 +29,7 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;

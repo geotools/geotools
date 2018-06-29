@@ -16,9 +16,9 @@
  */
 package org.geotools.gml2.bindings;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.w3c.dom.Document;
 
 /** @source $URL$ */

@@ -18,7 +18,7 @@ package org.geotools.data.arcgisrest;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.NoSuchElementException;

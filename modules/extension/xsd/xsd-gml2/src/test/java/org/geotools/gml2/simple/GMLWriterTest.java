@@ -16,9 +16,6 @@
  */
 package org.geotools.gml2.simple;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -44,6 +41,9 @@ import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.bindings.GMLTestSupport;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 import org.xml.sax.helpers.AttributesImpl;
 

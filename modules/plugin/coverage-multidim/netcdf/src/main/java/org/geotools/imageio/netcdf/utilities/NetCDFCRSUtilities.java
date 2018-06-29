@@ -16,8 +16,6 @@
  */
 package org.geotools.imageio.netcdf.utilities;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
@@ -41,6 +39,8 @@ import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.SimpleInternationalString;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.TemporalCRS;

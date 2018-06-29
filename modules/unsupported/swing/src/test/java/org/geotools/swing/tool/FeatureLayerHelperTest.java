@@ -19,7 +19,6 @@ package org.geotools.swing.tool;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -32,6 +31,7 @@ import org.geotools.swing.testutils.MockLayer;
 import org.geotools.swing.testutils.TestDataUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**

@@ -14,7 +14,6 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import static org.junit.Assert.assertNull;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -33,6 +32,7 @@ import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;

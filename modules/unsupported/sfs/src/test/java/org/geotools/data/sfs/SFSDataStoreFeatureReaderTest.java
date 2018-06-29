@@ -17,12 +17,12 @@
 
 package org.geotools.data.sfs;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import junit.framework.TestCase;
 import org.geotools.geojson.feature.FeatureJSON;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** @source $URL$ */

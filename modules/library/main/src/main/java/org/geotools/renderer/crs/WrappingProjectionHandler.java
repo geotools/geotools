@@ -16,18 +16,18 @@
  */
 package org.geotools.renderer.crs;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -91,7 +91,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // if it's touching both datelines then don't wrap it, as it might be something
         // like antarctica
         if (datelineWrappingCheckEnabled && width > radius && width < radius * 2) {
-            final Geometry wrapped = (Geometry) geometry.clone();
+            final Geometry wrapped = geometry.copy();
             wrapped.apply(new WrappingCoordinateFilter(radius, radius * 2, mt, northEast));
             wrapped.geometryChanged();
             // did we un-wrap it?
@@ -149,7 +149,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
                 // in this case we can keep the original geometry, which is already in
             } else {
                 // in all other cases we make a copy and offset it
-                Geometry offseted = (Geometry) geometry.clone();
+                Geometry offseted = geometry.copy();
                 offseted.apply(new OffsetOrdinateFilter(northEast ? 1 : 0, offset));
                 offseted.geometryChanged();
                 geomType = accumulate(geoms, offseted, geomType);

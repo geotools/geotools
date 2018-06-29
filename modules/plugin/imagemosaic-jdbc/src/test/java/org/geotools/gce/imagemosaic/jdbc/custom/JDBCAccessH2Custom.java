@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.jdbc.custom;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -32,6 +31,7 @@ import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo;
 import org.geotools.gce.imagemosaic.jdbc.TileQueueElement;
 import org.geotools.geometry.GeneralEnvelope;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

@@ -16,13 +16,13 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 
 /** @source $URL$ */
 public class MultiCurveTypeBinding extends org.geotools.gml3.bindings.MultiCurveTypeBinding

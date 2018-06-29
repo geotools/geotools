@@ -16,9 +16,9 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.bindings.PolygonTypeBinding;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /** @source $URL$ */
 public class PolygonPatchTypeBinding extends org.geotools.gml3.bindings.PolygonPatchTypeBinding

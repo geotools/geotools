@@ -17,9 +17,6 @@
 
 package org.geotools.data;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -33,6 +30,9 @@ import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.xs.XSSchema;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;

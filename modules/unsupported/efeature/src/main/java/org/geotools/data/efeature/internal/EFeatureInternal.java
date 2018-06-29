@@ -2,7 +2,7 @@ package org.geotools.data.efeature.internal;
 
 import static org.geotools.data.efeature.internal.ESimpleFeatureAdapter.create;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.Collections;

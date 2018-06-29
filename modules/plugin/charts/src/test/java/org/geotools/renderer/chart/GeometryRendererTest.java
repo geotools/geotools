@@ -16,8 +16,6 @@
  */
 package org.geotools.renderer.chart;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
@@ -28,6 +26,8 @@ import org.geotools.test.TestData;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 
 /** @source $URL$ */
 public class GeometryRendererTest extends TestCase {

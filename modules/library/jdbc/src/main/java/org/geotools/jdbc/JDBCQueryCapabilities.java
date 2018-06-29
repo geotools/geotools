@@ -16,8 +16,8 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.QueryCapabilities;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;

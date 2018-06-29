@@ -16,7 +16,6 @@
  */
 package org.geotools.data.wmts.client;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,6 +39,7 @@ import org.geotools.tile.TileFactory;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.ScaleZoomLevelMatcher;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

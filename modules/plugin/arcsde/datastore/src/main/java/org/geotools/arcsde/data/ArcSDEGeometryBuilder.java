@@ -21,19 +21,6 @@ import com.esri.sde.sdk.client.SDEPoint;
 import com.esri.sde.sdk.client.SeCoordinateReference;
 import com.esri.sde.sdk.client.SeException;
 import com.esri.sde.sdk.client.SeShape;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +32,19 @@ import org.geotools.data.DataSourceException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Creates propper JTS Geometry objects from <code>SeShape</code> objects and viceversa.
@@ -123,9 +123,9 @@ public abstract class ArcSDEGeometryBuilder {
      * @return the type of JTS Geometry this subclass instance is specialized for or an empty
      *     geometry of the same class if <code>shape.isNil()</code>
      * @throws SeException if it occurs fetching the coordinates array from <code>shape</code>
-     * @throws DataSourceException if the <code>com.vividsolutions.jts.geom.GeometryFactory</code>
-     *     this builder is backed by can't create the <code>com.vividsolutions.jts.geom.Geometry
-     *     </code> with the <code>com.vividsolutions.jts.geom.Coordinate[]</code> provided by <code>
+     * @throws DataSourceException if the <code>org.locationtech.jts.geom.GeometryFactory</code>
+     *     this builder is backed by can't create the <code>org.locationtech.jts.geom.Geometry
+     *     </code> with the <code>org.locationtech.jts.geom.Coordinate[]</code> provided by <code>
      *     newGeometry</code>
      */
     public Geometry construct(final SeShape shape, final GeometryFactory geometryFactory)
@@ -309,7 +309,7 @@ public abstract class ArcSDEGeometryBuilder {
      *
      * @param jtsGeometryClass
      * @throws IllegalArgumentException if <code>jtsGeometryClass</code> is not a concrete JTS
-     *     <code>Geometry</code> class (like <code>com.vividsolutions.jts.geom.MultiPoint.class
+     *     <code>Geometry</code> class (like <code>org.locationtech.jts.geom.MultiPoint.class
      *     </code> i.e.)
      */
     public static ArcSDEGeometryBuilder builderFor(Class<? extends Geometry> jtsGeometryClass)

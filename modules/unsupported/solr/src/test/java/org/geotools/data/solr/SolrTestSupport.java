@@ -17,7 +17,6 @@
 
 package org.geotools.data.solr;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,6 +29,7 @@ import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.test.OnlineTestCase;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 

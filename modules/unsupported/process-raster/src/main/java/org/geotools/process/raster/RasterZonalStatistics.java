@@ -17,10 +17,6 @@
  */
 package org.geotools.process.raster;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -56,6 +52,10 @@ import org.jaitools.media.jai.zonalstats.ZonalStatsDescriptor;
 import org.jaitools.media.jai.zonalstats.ZonalStatsOpImage;
 import org.jaitools.numeric.Range;
 import org.jaitools.numeric.Statistic;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.util.AffineTransformation;
+import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

@@ -162,7 +162,7 @@ public class UniqueFIDIntegrityValidation implements IntegrityValidation {
      * <p>Description ...
      *
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
-     *     com.vividsolutions.jts.geom.Envelope, org.geotools.validation.ValidationResults)
+     *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      * @param layers
      * @param envelope
      * @param results

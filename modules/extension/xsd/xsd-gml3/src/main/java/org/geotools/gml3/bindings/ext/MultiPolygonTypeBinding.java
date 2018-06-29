@@ -16,8 +16,8 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geotools.gml3.bindings.SurfaceTypeBinding;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /** @source $URL$ */
 public class MultiPolygonTypeBinding extends org.geotools.gml3.bindings.MultiPolygonTypeBinding {

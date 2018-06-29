@@ -16,7 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -24,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.geotools.data.jdbc.FilterToSQL;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Id;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.identity.Identifier;

@@ -33,7 +33,7 @@ ReferencedEnvelope
 
 ReferencedEnvelope is all of these:
 
-* **com.vividsolutions.jts.geom.Envelope** - as defined by the JTS Topology System ( a Simple Feature for SQL concept)
+* **org.locationtech.jts.geom.Envelope** - as defined by the JTS Topology System ( a Simple Feature for SQL concept)
 * **org.opengis.geometry.BoundingBox** - 2D bounds as defined by the ISO 19107 Geometry
 * **org.opengis.geometry.Envelope** - captures 3D bounds as defined by ISO 19107 Geometry.
 

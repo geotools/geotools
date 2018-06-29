@@ -1,6 +1,6 @@
 package org.geotools.data.efeature.query;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.query.conditions.eobjects.structuralfeatures.EObjectAttributeValueCondition;
 import org.opengis.filter.expression.Literal;

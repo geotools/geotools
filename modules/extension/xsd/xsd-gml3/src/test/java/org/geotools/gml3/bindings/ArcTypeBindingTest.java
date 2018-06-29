@@ -16,9 +16,9 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.LineString;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.gml3.GML3TestSupport;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * @author Erik van de Pol

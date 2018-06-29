@@ -17,7 +17,6 @@
 package org.geotools.coverage.grid.io.footprint;
 
 import com.sun.media.jai.operator.ImageReadDescriptor;
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -39,6 +38,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**

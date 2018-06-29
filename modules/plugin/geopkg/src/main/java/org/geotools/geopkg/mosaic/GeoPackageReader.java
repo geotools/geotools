@@ -16,7 +16,6 @@
  */
 package org.geotools.geopkg.mosaic;
 
-import com.vividsolutions.jts.geom.Envelope;
 import it.geosolutions.jaiext.mosaic.MosaicRIF;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -60,6 +59,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.parameter.GeneralParameterValue;

@@ -16,9 +16,9 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import java.util.Arrays;
 import java.util.List;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Base class for unit tests of the JTS utility class.

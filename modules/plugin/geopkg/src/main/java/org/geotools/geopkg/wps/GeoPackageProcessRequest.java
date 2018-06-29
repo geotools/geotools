@@ -16,7 +16,6 @@
  */
 package org.geotools.geopkg.wps;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Color;
 import java.net.URI;
 import java.net.URL;
@@ -25,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.geopkg.TileMatrix;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.Filter;
 
 /**

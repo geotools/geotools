@@ -1,6 +1,6 @@
 package org.geotools.caching.util;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import org.geotools.caching.spatialindex.Region;
 import org.geotools.filter.spatial.BBOXImpl;
 

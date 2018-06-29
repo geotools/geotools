@@ -16,9 +16,9 @@
  */
 package org.geotools.geopkg;
 
-import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
+import org.locationtech.jts.geom.Polygon;
 
 /** @source $URL$ */
 public class GeoPkgNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {

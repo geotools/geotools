@@ -28,7 +28,6 @@ import static org.opengis.filter.sort.SortOrder.ASCENDING;
 import static org.opengis.filter.sort.SortOrder.DESCENDING;
 
 import com.esri.sde.sdk.client.SeException;
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +56,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.IllegalAttributeException;

@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.spatial;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.prep.PreparedGeometry;
-import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
 import org.geotools.filter.GeometryFilterImpl;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.prep.PreparedGeometry;
+import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 

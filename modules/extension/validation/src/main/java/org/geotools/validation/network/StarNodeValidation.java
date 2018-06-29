@@ -16,10 +16,10 @@
  */
 package org.geotools.validation.network;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.Map;
 import org.geotools.validation.DefaultIntegrityValidation;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * StarNodeValidation purpose.

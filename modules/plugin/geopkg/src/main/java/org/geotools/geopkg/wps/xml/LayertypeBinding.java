@@ -16,11 +16,11 @@
  */
 package org.geotools.geopkg.wps.xml;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.net.URI;
 import javax.xml.namespace.QName;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest;
 import org.geotools.xml.*;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Binding object for the type http://www.opengis.net/gpkg:layertype.

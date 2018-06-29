@@ -16,9 +16,6 @@
  */
 package org.geotools.swing.wizard;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.io.WKTWriter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
@@ -28,6 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import org.geotools.data.Parameter;
 import org.geotools.swing.wizard.JWizard.Controller;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
+import org.locationtech.jts.io.WKTWriter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

@@ -11,7 +11,7 @@ import java.math.BigInteger;
 import org.eclipse.emf.common.util.EList;
 import org.opengis.coverage.grid.GridEnvelope;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * <!-- begin-user-doc -->

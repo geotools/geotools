@@ -16,9 +16,6 @@
  */
 package org.geotools.gml.producer;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -38,6 +35,9 @@ import org.geotools.gml.producer.GeometryTransformer.GeometryTranslator;
 import org.geotools.referencing.CRS;
 import org.geotools.xml.XMLUtils;
 import org.geotools.xml.transform.TransformerBase;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

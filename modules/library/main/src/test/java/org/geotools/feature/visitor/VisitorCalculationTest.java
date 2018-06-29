@@ -16,7 +16,6 @@
  */
 package org.geotools.feature.visitor;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -40,6 +39,7 @@ import org.geotools.feature.visitor.MedianVisitor.MedianResult;
 import org.geotools.feature.visitor.MinVisitor.MinResult;
 import org.geotools.feature.visitor.UniqueVisitor.UniqueResult;
 import org.geotools.filter.IllegalFilterException;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;

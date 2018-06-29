@@ -2,11 +2,11 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
 import org.opengis.geometry.MismatchedReferenceSystemException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

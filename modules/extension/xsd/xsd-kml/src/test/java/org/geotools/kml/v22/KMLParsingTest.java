@@ -1,12 +1,12 @@
 package org.geotools.kml.v22;
 
-import com.vividsolutions.jts.geom.Point;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.xml.Parser;
 import org.geotools.xml.PullParser;
 import org.geotools.xml.StreamingParser;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

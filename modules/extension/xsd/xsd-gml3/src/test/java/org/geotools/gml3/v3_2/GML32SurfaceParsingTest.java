@@ -1,9 +1,9 @@
 package org.geotools.gml3.v3_2;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.xml.Parser;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 public class GML32SurfaceParsingTest extends GML32TestSupport {
 

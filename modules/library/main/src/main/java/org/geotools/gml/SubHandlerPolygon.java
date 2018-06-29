@@ -18,14 +18,15 @@ package org.geotools.gml;
 
 // Java Topology Suite dependencies
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.TopologyException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
+import org.locationtech.jts.algorithm.Orientation;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.TopologyException;
 
 /**
  * Creates a Polygon geometry.
@@ -39,9 +40,6 @@ public class SubHandlerPolygon extends SubHandler {
     /** The logger for the GML module. */
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
-
-    protected static com.vividsolutions.jts.algorithm.CGAlgorithms cga =
-            new com.vividsolutions.jts.algorithm.RobustCGAlgorithms();
 
     /** Factory for creating the Polygon geometry. */
     private GeometryFactory geometryFactory = new GeometryFactory();
@@ -90,7 +88,7 @@ public class SubHandlerPolygon extends SubHandler {
                      * anticlockwise (counter clockwise) - so we reverse the
                      * points if necessary
                      */
-                    if (cga.isCCW(points)) {
+                    if (Orientation.isCCW(points)) {
                         LOGGER.finer("good hole found");
 
                         // System.out.println("inner boundary: " + message);
@@ -121,7 +119,7 @@ public class SubHandlerPolygon extends SubHandler {
 
                     Coordinate[] points = outerBoundary.getCoordinates();
 
-                    if (cga.isCCW(points)) {
+                    if (Orientation.isCCW(points)) {
                         LOGGER.finer("bad outer ring - rebuilding");
                         //  System.out.println("rebuilding outer ring");
                         Coordinate[] newPoints = new Coordinate[points.length];

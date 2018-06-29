@@ -15,12 +15,12 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.List;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * A subclass of polygon that can host also curves and will linearize if needed
@@ -113,5 +113,10 @@ public class CurvePolygon extends Polygon implements CurvedGeometry<Polygon> {
     @Override
     public int getCoordinatesDimension() {
         return 2;
+    }
+
+    @Override
+    public CurvePolygon copyInternal() {
+        return new CurvePolygon(shell, holes, factory, tolerance);
     }
 }

@@ -16,7 +16,6 @@
  */
 package org.geotools.gml2.bindings;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -24,6 +23,7 @@ import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:PolygonPropertyType.
@@ -74,7 +74,7 @@ public class GMLPolygonPropertyTypeBinding extends AbstractComplexBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * This object returns an object of type @link com.vividsolutions.jts.geom.Polygon
+     * This object returns an object of type @link org.locationtech.jts.geom.Polygon
      * <!-- end-user-doc -->
      *
      * @generated modifiable

@@ -16,7 +16,6 @@
  */
 package org.geotools.data.wfs.internal.parsers;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.namespace.QName;
@@ -25,6 +24,7 @@ import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.PullParser;
 import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.FeatureType;
 import org.xml.sax.SAXException;

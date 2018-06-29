@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGCWithinBinding;
 import org.geotools.filter.v2_0.FES;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.FilterFactory2;
 
 /**

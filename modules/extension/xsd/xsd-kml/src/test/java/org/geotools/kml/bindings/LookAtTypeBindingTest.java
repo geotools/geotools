@@ -16,11 +16,11 @@
  */
 package org.geotools.kml.bindings;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Point;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Point;
 
 /** @source $URL$ */
 public class LookAtTypeBindingTest extends KMLTestSupport {

@@ -20,9 +20,9 @@ package org.geotools.data.mongodb;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
-import com.vividsolutions.jts.geom.Point;
 import java.util.Properties;
 import org.geotools.test.OnlineTestCase;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
 public abstract class MongoTestSupport extends OnlineTestCase {

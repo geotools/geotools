@@ -16,11 +16,11 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.ArrayList;
 import java.util.List;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 

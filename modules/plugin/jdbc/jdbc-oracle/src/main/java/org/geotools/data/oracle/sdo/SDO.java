@@ -19,22 +19,6 @@
  */
 package org.geotools.data.oracle.sdo;
 
-import com.vividsolutions.jts.algorithm.RobustCGAlgorithms;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.CoordinateSequences;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import java.lang.reflect.Array;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -48,6 +32,22 @@ import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
+import org.locationtech.jts.algorithm.Orientation;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.CoordinateSequences;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Oracle Spatial Data Object utilities functions.
@@ -72,9 +72,6 @@ public final class SDO {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger("org.geotools.data.oracle.sdo");
     public static final int SRID_NULL = -1;
-
-    /** Used to test for Counter Clockwise or Clockwise Linear Rings */
-    private static RobustCGAlgorithms clock = new RobustCGAlgorithms();
 
     //
     // Encoding Helper Functions
@@ -504,12 +501,12 @@ public final class SDO {
      *    1  simple   Point (or Points)
      *    2  simple   Line (or Lines)
      *    3           polygon ring of unknown order (discouraged update to 1003 or 2003)
-     * 1003  simple   polygon ring (1 exterior counterclockwise order)
-     * 2003  simple   polygon ring (2 interior clockwise order)
+     * 1003  simple   polygon ring (1 exterior counterOrientationwise order)
+     * 2003  simple   polygon ring (2 interior Orientationwise order)
      *    4  compound series defines a linestring
      *    5  compound series defines a polygon ring of unknown order (discouraged)
-     * 1005  compound series defines exterior polygon ring (counterclockwise order)
-     * 2005  compound series defines interior polygon ring (clockwise order)
+     * 1005  compound series defines exterior polygon ring (counterOrientationwise order)
+     * 2005  compound series defines interior polygon ring (Orientationwise order)
      * </code></pre>
      *
      * <p>Keep in mind:
@@ -1373,7 +1370,7 @@ public final class SDO {
     }
 
     /**
-     * Ensure Ring of Coordinates are in a counter clockwise order.
+     * Ensure Ring of Coordinates are in a counter Orientationwise order.
      *
      * <p>If the Coordinate need to be reversed a copy will be returned.
      *
@@ -1383,7 +1380,7 @@ public final class SDO {
      */
     public static CoordinateSequence counterClockWise(
             CoordinateSequenceFactory factory, CoordinateSequence ring) {
-        if (clock.isCCW(ring.toCoordinateArray())) {
+        if (Orientation.isCCW(ring.toCoordinateArray())) {
             return ring;
         }
 
@@ -1391,7 +1388,7 @@ public final class SDO {
     }
 
     /**
-     * Ensure Ring of Coordinates are in a clockwise order.
+     * Ensure Ring of Coordinates are in a Orientationwise order.
      *
      * <p>If the Coordinate need to be reversed a copy will be returned.
      *
@@ -1401,14 +1398,14 @@ public final class SDO {
      */
     private static CoordinateSequence clockWise(
             CoordinateSequenceFactory factory, CoordinateSequence ring) {
-        if (!clock.isCCW(ring.toCoordinateArray())) {
+        if (!Orientation.isCCW(ring.toCoordinateArray())) {
             return ring;
         }
         return Coordinates.reverse(factory, ring);
     }
 
     /**
-     * Reverse the clockwise orientation of the ring of Coordinates.
+     * Reverse the Orientationwise orientation of the ring of Coordinates.
      *
      * @param ring Ring of Coordinates
      * @return coords Copy of <code>ring</code> in reversed order
@@ -2414,19 +2411,19 @@ public final class SDO {
      *   <li>Exterior Polygon Ring: first triplet:
      *       <ul>
      *         <li>STARTING_OFFSET: position in ordinal ordinate array
-     *         <li>ETYPE: 1003 (exterior) or 3 (polygon w/ counter clockwise ordinates)
+     *         <li>ETYPE: 1003 (exterior) or 3 (polygon w/ counter Orientationwise ordinates)
      *         <li>INTERPRETATION: 1 for strait edges, 3 for rectanlge
      *       </ul>
      *   <li>Interior Polygon Ring(s): remaining triplets:
      *       <ul>
      *         <li>STARTING_OFFSET: position in ordinal ordinate array
-     *         <li>ETYPE: 2003 (interior) or 3 (polygon w/ clockWise ordinates)
+     *         <li>ETYPE: 2003 (interior) or 3 (polygon w/ OrientationWise ordinates)
      *         <li>INTERPRETATION: 1 for strait edges, 3 for rectanlge
      *       </ul>
      * </ul>
      *
-     * <p>The polygon encoding will process subsequent 2003, or 3 triples with clockwise ordering as
-     * interior holes.
+     * <p>The polygon encoding will process subsequent 2003, or 3 triples with Orientationwise
+     * ordering as interior holes.
      *
      * <p>A subsequent triplet of any other type marks the end of the polygon.
      *
@@ -2503,14 +2500,15 @@ public final class SDO {
                 int subelements = INTERPRETATION(elemInfo, i);
                 rings.add(createLinearRing(gf, GTYPE, SRID, elemInfo, i, coords));
                 i += subelements;
-            } else if (etype == ETYPE.POLYGON) { // nead to test Clockwiseness of Ring to see if it
+            } else if (etype
+                    == ETYPE.POLYGON) { // nead to test Orientationwiseness of Ring to see if it
                 // is
                 // interior or not - (use POLYGON_INTERIOR to avoid
                 // pain)
 
                 LinearRing ring = createLinearRing(gf, GTYPE, SRID, elemInfo, i, coords);
 
-                if (clock.isCCW(ring.getCoordinates())) { // it is an Interior Hole
+                if (Orientation.isCCW(ring.getCoordinates())) { // it is an Interior Hole
                     rings.add(ring);
                     i++;
                 } else { // it is the next Polygon! - get out of here

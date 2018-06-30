@@ -308,7 +308,18 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                 }
             }
         }
-        FactoryUsingHSQL factory = new FactoryUsingHSQL(hints, getDataSource());
+        FactoryUsingHSQL factory =
+                new FactoryUsingHSQL(hints, getDataSource()) {
+                    @Override
+                    protected void shutdown(boolean active) throws SQLException {
+                        // Disabled because finalizer shutdown causes concurrent EPSG lookup via
+                        // other FactoryUsingHSQL instances using the same database URL and thus
+                        // the same org.hsqldb.Database instance to fail in, for example,
+                        // GeoServer gs-main unit tests.
+                        // Note that createDataSource() opens the database with "shutdown=true"
+                        // so the database will be shutdown when the last session is closed.
+                    }
+                };
         factory.setValidationQuery("CALL NOW()");
         return factory;
     }

@@ -56,7 +56,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * SimpleFeatureCollection decorator that reprojects the default geometry.
+ * SimpleFeatureCollection decorator that reprojects all geometries of the features within the feature collection.
  * 
  * @author Justin
  *

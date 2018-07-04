@@ -7,13 +7,12 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>app-schema</artifactId>
-        <version>17-SNAPSHOT</version>
+        <version>20-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
     <artifactId>gt-app-schema-resolver</artifactId>
     <name>Application Schema Resolver</name>
-
 
     <description>
         Support for resolution of GML application schemas obtained from an OASIS Catalog,
@@ -24,18 +23,18 @@
         <developer>
             <name>Ben Caradoc-Davies</name>
             <id>bencaradocdavies</id>
-            <email>Ben.Caradoc-Davies@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering</organization>
+            <email>ben@transient.nz</email>
+            <organization>Transient Software Limited</organization>
             <roles>
                 <role>Module Maintainer</role>
                 <role>Java Developer</role>
             </roles>
-            <timezone>8</timezone>
+            <timezone>Pacific/Auckland</timezone>
         </developer>
     </developers>
 
     <dependencies>
-		<dependency>
+        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-xml</artifactId>
             <version>${project.version}</version>
@@ -49,12 +48,6 @@
             <groupId>org.apache.xml</groupId>
             <artifactId>xml-commons-resolver</artifactId>
             <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-sample-data</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.geotools.schemas</groupId>

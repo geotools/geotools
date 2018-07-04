@@ -17,30 +17,24 @@
 
 package org.geotools.swing.tool;
 
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.Layer;
 
-
 /**
  * Used by {@linkplain InfoTool} to query {@linkplain GridCoverageLayer} objects.
  *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $URL$
  */
 public class GridCoverageLayerHelper extends InfoToolHelper {
 
-    /**
-     * Creates a new helper instance.
-     */
-    public GridCoverageLayerHelper() {
-    }
+    /** Creates a new helper instance. */
+    public GridCoverageLayerHelper() {}
 
     @Override
     public void setLayer(Layer layer) {
@@ -81,5 +75,4 @@ public class GridCoverageLayerHelper extends InfoToolHelper {
 
         return result;
     }
-
 }

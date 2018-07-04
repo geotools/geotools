@@ -9,5 +9,4 @@ public class FESTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {
         return new FESConfiguration();
     }
-
 }

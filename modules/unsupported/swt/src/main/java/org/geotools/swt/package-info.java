@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Simple SWT widgets for map display.
- */
+/** Simple SWT widgets for map display. */
 package org.geotools.swt;

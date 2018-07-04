@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,28 +17,27 @@
 package org.geotools.geometry.jts;
 
 import java.util.Arrays;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateFilter;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceComparator;
-import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.GeometryFilter;
-import com.vividsolutions.jts.geom.IntersectionMatrix;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateFilter;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceComparator;
+import org.locationtech.jts.geom.CoordinateSequenceFilter;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFilter;
+import org.locationtech.jts.geom.IntersectionMatrix;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * A CircularString is a sequence of zero or more connected circular arc segments. A circular arc
  * segment is a curved segment defined by three points in a two-dimensional plane; the first point
  * cannot be the same as the third point.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class CircularString extends LineString implements SingleCurvedGeometry<LineString> {
@@ -66,16 +65,14 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         }
 
         protected abstract void visitArc(CircularArc arc);
-
     }
 
     private static final long serialVersionUID = -5796254063449438787L;
 
-    /**
-     * This sequence is used as a fake to trick the constructor
-     */
-    static final CoordinateSequence FAKE_STRING_2D = new CoordinateArraySequence(new Coordinate[] {
-            new Coordinate(0, 0), new Coordinate(1, 1) });
+    /** This sequence is used as a fake to trick the constructor */
+    static final CoordinateSequence FAKE_STRING_2D =
+            new CoordinateArraySequence(
+                    new Coordinate[] {new Coordinate(0, 0), new Coordinate(1, 1)});
 
     double[] controlPoints;
 
@@ -87,8 +84,9 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         super(FAKE_STRING_2D, factory);
         this.tolerance = tolerance;
         if (points.getDimension() != 2) {
-            throw new IllegalArgumentException("Circular strings are restricted to 2 dimensions "
-                    + "at the moment. Contributions to get ND support welcomed!");
+            throw new IllegalArgumentException(
+                    "Circular strings are restricted to 2 dimensions "
+                            + "at the moment. Contributions to get ND support welcomed!");
         }
 
         int pointCount = points.size();
@@ -113,9 +111,10 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         }
         int pointCount = length / 2;
         if ((pointCount != 0 && pointCount < 3) || (pointCount > 3 && (pointCount % 2) == 0)) {
-            throw new IllegalArgumentException("Invalid number of points, a circular string"
-                    + "is always made of an odd number of points, with a mininum of 3, "
-                    + "and adding 2 for each extra circular arc in the sequence");
+            throw new IllegalArgumentException(
+                    "Invalid number of points, a circular string"
+                            + "is always made of an odd number of points, with a mininum of 3, "
+                            + "and adding 2 for each extra circular arc in the sequence");
         }
         this.controlPoints = controlPoints;
         this.tolerance = tolerance;
@@ -150,7 +149,6 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         return linearize(this.tolerance);
     }
 
-
     public LineString linearize(double tolerance) {
         // use the cached one if we are asked for the default geometry tolerance
         boolean isDefaultTolerance = CircularArc.equals(tolerance, this.tolerance);
@@ -184,7 +182,6 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
                 }
                 arc.linearize(tolerance, gar);
             }
-
         };
 
         CoordinateSequence cs = gar.toCoordinateSequence(getFactory());
@@ -226,8 +223,12 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
 
     public Point getInteriorPoint() {
         int idx = controlPoints.length / 2;
-        return new Point(new CoordinateArraySequence(new Coordinate[] { new Coordinate(
-                controlPoints[idx], controlPoints[idx + 1]) }), getFactory());
+        return new Point(
+                new CoordinateArraySequence(
+                        new Coordinate[] {
+                            new Coordinate(controlPoints[idx], controlPoints[idx + 1])
+                        }),
+                getFactory());
     }
 
     public Geometry getEnvelope() {
@@ -246,7 +247,6 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
             protected void visitArc(CircularArc arc) {
                 arc.expandEnvelope(result);
             }
-
         };
 
         return result;
@@ -340,11 +340,11 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
 
     public String toCurvedText() {
         StringBuilder sb = new StringBuilder("CIRCULARSTRING ");
-        if(isEmpty()) {
+        if (isEmpty()) {
             sb.append("EMPTY");
         } else {
             sb.append("(");
-            for (int i = 0; i < controlPoints.length;) {
+            for (int i = 0; i < controlPoints.length; ) {
                 sb.append(controlPoints[i++] + " " + controlPoints[i++]);
                 if (i < controlPoints.length) {
                     sb.append(", ");
@@ -368,15 +368,21 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     }
 
     public Point getStartPoint() {
-        return new Point(new CoordinateArraySequence(new Coordinate[] { new Coordinate(
-                controlPoints[0], controlPoints[1]) }), getFactory());
+        return new Point(
+                new CoordinateArraySequence(
+                        new Coordinate[] {new Coordinate(controlPoints[0], controlPoints[1])}),
+                getFactory());
     }
 
     public Point getEndPoint() {
         return new Point(
-                new CoordinateArraySequence(new Coordinate[] { new Coordinate(
-                        controlPoints[controlPoints.length - 2],
-                        controlPoints[controlPoints.length - 1]) }), getFactory());
+                new CoordinateArraySequence(
+                        new Coordinate[] {
+                            new Coordinate(
+                                    controlPoints[controlPoints.length - 2],
+                                    controlPoints[controlPoints.length - 1])
+                        }),
+                getFactory());
     }
 
     /*
@@ -436,6 +442,11 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
         linearize().apply(filter);
     }
 
+    @Override
+    protected CircularString copyInternal() {
+        return new CircularString(controlPoints, factory, tolerance);
+    }
+
     public void normalize() {
         linearize().normalize();
     }
@@ -455,7 +466,6 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     public boolean isWithinDistance(Geometry geom, double distance) {
         return linearize().isWithinDistance(geom, distance);
     }
-
 
     public double getArea() {
         return linearize().getArea();
@@ -512,8 +522,6 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     public IntersectionMatrix relate(Geometry g) {
         return linearize().relate(g);
     }
-
-
 
     public Geometry buffer(double distance) {
         return linearize().buffer(distance);
@@ -572,5 +580,4 @@ public class CircularString extends LineString implements SingleCurvedGeometry<L
     public int getCoordinatesDimension() {
         return 2;
     }
-
 }

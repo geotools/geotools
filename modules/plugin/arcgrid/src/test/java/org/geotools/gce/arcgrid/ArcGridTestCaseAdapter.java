@@ -21,30 +21,20 @@ import java.io.File;
 
 /**
  * {@link ArcGridBaseTestCase} adapter.
+ *
  * @author Simone Giannecchini
  * @since 2.3.x
- *
- *
- *
- *
  * @source $URL$
  */
 public class ArcGridTestCaseAdapter extends ArcGridBaseTestCase {
 
-	/**
-	 * @param name
-	 */
-	public ArcGridTestCaseAdapter(String name) {
-		super(name);
-	
-	}
+    /** @param name */
+    public ArcGridTestCaseAdapter(String name) {
+        super(name);
+    }
 
-	/* (non-Javadoc)
-	 * @see org.geotools.gce.arcgrid.ArcGridBaseTestCase#runMe(java.io.File)
-	 */
-	public void runMe(File file) throws Exception {
-		
-
-	}
-
+    /* (non-Javadoc)
+     * @see org.geotools.gce.arcgrid.ArcGridBaseTestCase#runMe(java.io.File)
+     */
+    public void runMe(File file) throws Exception {}
 }

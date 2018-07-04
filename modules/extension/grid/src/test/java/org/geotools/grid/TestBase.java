@@ -20,21 +20,17 @@ package org.geotools.grid;
 import static org.junit.Assert.assertEquals;
 
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Base class for vector grid unit tests.
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -91,5 +87,4 @@ public class TestBase {
         tb.add("name", String.class);
         return tb.buildFeatureType();
     }
-
 }

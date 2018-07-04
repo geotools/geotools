@@ -19,19 +19,13 @@ package org.geotools.gml2.bindings;
 import org.geotools.gml2.GML;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     MutablePicoContainer container;
     ElementInstance point;
@@ -51,10 +45,17 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     }
 
     public void testParseCoordinate() throws Exception {
-        Node node = createNode(point, new ElementInstance[] { coord },
-                new Object[] { new Coordinate(12.34, 56.78) }, null, null);
+        Node node =
+                createNode(
+                        point,
+                        new ElementInstance[] {coord},
+                        new Object[] {new Coordinate(12.34, 56.78)},
+                        null,
+                        null);
 
-        GMLPointTypeBinding strategy = (GMLPointTypeBinding) container.getComponentInstanceOfType(GMLPointTypeBinding.class);
+        GMLPointTypeBinding strategy =
+                (GMLPointTypeBinding)
+                        container.getComponentInstanceOfType(GMLPointTypeBinding.class);
 
         Point p = (Point) strategy.parse(point, node, null);
         assertNotNull(p);
@@ -63,10 +64,17 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     }
 
     public void testParseCoordinates() throws Exception {
-        Node node = createNode(point, new ElementInstance[] { coords },
-                new Object[] { createCoordinateSequence(new Coordinate(12.34, 56.78)) }, null, null);
+        Node node =
+                createNode(
+                        point,
+                        new ElementInstance[] {coords},
+                        new Object[] {createCoordinateSequence(new Coordinate(12.34, 56.78))},
+                        null,
+                        null);
 
-        GMLPointTypeBinding strategy = (GMLPointTypeBinding) container.getComponentInstanceOfType(GMLPointTypeBinding.class);
+        GMLPointTypeBinding strategy =
+                (GMLPointTypeBinding)
+                        container.getComponentInstanceOfType(GMLPointTypeBinding.class);
 
         Point p = (Point) strategy.parse(point, node, null);
         assertNotNull(p);
@@ -75,19 +83,28 @@ public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     }
 
     public void testParseMultiCoordinates() throws Exception {
-        Node node = createNode(point, new ElementInstance[] { coords },
-                new Object[] {
-                    createCoordinateSequence(
-                        new Coordinate[] { new Coordinate(12.34, 56.78), new Coordinate(9.10, 11.12) })
-                }, null, null);
+        Node node =
+                createNode(
+                        point,
+                        new ElementInstance[] {coords},
+                        new Object[] {
+                            createCoordinateSequence(
+                                    new Coordinate[] {
+                                        new Coordinate(12.34, 56.78), new Coordinate(9.10, 11.12)
+                                    })
+                        },
+                        null,
+                        null);
 
-        GMLPointTypeBinding strategy = (GMLPointTypeBinding) container.getComponentInstanceOfType(GMLPointTypeBinding.class);
+        GMLPointTypeBinding strategy =
+                (GMLPointTypeBinding)
+                        container.getComponentInstanceOfType(GMLPointTypeBinding.class);
 
         try {
             Point p = (Point) strategy.parse(point, node, null);
             fail("Should have thrown an exception");
         } catch (RuntimeException e) {
-            //ok
+            // ok
         }
     }
 }

@@ -17,34 +17,28 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
-import org.opengis.filter.expression.Expression;
 import org.geotools.filter.v1_0.OGCPropertyIsGreaterThanOrEqualToBinding;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:PropertyIsGreaterThanOrEqualTo.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="PropertyIsGreaterThanOrEqualTo"
  *      substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/&gt;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
  * @source $URL$
  */
-public class PropertyIsGreaterThanOrEqualToBinding extends OGCPropertyIsGreaterThanOrEqualToBinding {
+public class PropertyIsGreaterThanOrEqualToBinding
+        extends OGCPropertyIsGreaterThanOrEqualToBinding {
 
     public PropertyIsGreaterThanOrEqualToBinding(FilterFactory filterfactory) {
         super(filterfactory);

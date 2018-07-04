@@ -21,14 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-
-/**
- * 
- *
- * @author Niels Charlier
- */
+/** @author Niels Charlier */
 public class DateExtractorSPI implements PropertiesCollectorSPI {
 
     public String getName() {

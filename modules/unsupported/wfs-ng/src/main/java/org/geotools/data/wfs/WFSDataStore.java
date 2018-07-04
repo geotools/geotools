@@ -29,13 +29,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs20.ListStoredQueriesResponseType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import net.opengis.wfs20.StoredQueryListItemType;
-
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -50,17 +47,16 @@ import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
-import org.xml.sax.EntityResolver;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 public class WFSDataStore extends ContentDataStore {
 
-    public static final String STORED_QUERY_CONFIGURATION_HINT = "WFS_NG_STORED_QUERY_CONFIGURATION";
+    public static final String STORED_QUERY_CONFIGURATION_HINT =
+            "WFS_NG_STORED_QUERY_CONFIGURATION";
 
     private final WFSClient client;
 
@@ -72,14 +68,14 @@ public class WFSDataStore extends ContentDataStore {
 
     private ListStoredQueriesResponseType remoteStoredQueries;
 
-    protected Map<String, String> configuredStoredQueries =
-            new ConcurrentHashMap<String, String>();
-    
+    protected Map<String, String> configuredStoredQueries = new ConcurrentHashMap<String, String>();
+
     public WFSDataStore(final WFSClient client) {
         this.client = client;
         this.names = new ConcurrentHashMap<Name, QName>();
         this.remoteFeatureTypes = new ConcurrentHashMap<QName, FeatureType>();
-        this.storedQueryDescriptionTypes = new ConcurrentHashMap<String, StoredQueryDescriptionType>();
+        this.storedQueryDescriptionTypes =
+                new ConcurrentHashMap<String, StoredQueryDescriptionType>();
         this.storedQueryDescriptionTypesLock = new ReentrantReadWriteLock();
         // default factories
         setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
@@ -88,22 +84,18 @@ public class WFSDataStore extends ContentDataStore {
         setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
     }
 
-    /**
-     * @see WFSDataStore#getInfo()
-     */
+    /** @see WFSDataStore#getInfo() */
     @Override
     public WFSServiceInfo getInfo() {
         return client.getInfo();
     }
-    
+
     @Override
     protected WFSContentState createContentState(ContentEntry entry) {
         return new WFSContentState(entry);
     }
 
-    /**
-     * @see org.geotools.data.store.ContentDataStore#createTypeNames()
-     */
+    /** @see org.geotools.data.store.ContentDataStore#createTypeNames() */
     @Override
     protected List<Name> createTypeNames() throws IOException {
         String namespaceURI = getNamespaceURI();
@@ -112,13 +104,16 @@ public class WFSDataStore extends ContentDataStore {
         List<Name> names = new ArrayList<Name>(remoteTypeNames.size());
         for (QName remoteTypeName : remoteTypeNames) {
             String localTypeName = client.getConfig().localTypeName(remoteTypeName);
-            Name typeName = new NameImpl(namespaceURI==null? remoteTypeName.getNamespaceURI() : namespaceURI, localTypeName);
-            
+            Name typeName =
+                    new NameImpl(
+                            namespaceURI == null ? remoteTypeName.getNamespaceURI() : namespaceURI,
+                            localTypeName);
+
             names.add(typeName);
             this.names.put(typeName, remoteTypeName);
         }
 
-        for(Entry<String, String> e : configuredStoredQueries.entrySet()) {
+        for (Entry<String, String> e : configuredStoredQueries.entrySet()) {
             String name = e.getKey();
             String storedQueryId = e.getValue();
             Name typeName = new NameImpl(namespaceURI, name);
@@ -133,10 +128,12 @@ public class WFSDataStore extends ContentDataStore {
      * @see WFSFeatureSource
      * @see WFSFeatureStore
      * @see WFSClient#supportsTransaction(QName)
-     * @see org.geotools.data.store.ContentDataStore#createFeatureSource(org.geotools.data.store.ContentEntry)
+     * @see
+     *     org.geotools.data.store.ContentDataStore#createFeatureSource(org.geotools.data.store.ContentEntry)
      */
     @Override
-    protected ContentFeatureSource createFeatureSource(final ContentEntry entry) throws IOException {
+    protected ContentFeatureSource createFeatureSource(final ContentEntry entry)
+            throws IOException {
         ContentFeatureSource source;
 
         if (!isStoredQuery(entry.getName())) {
@@ -147,7 +144,7 @@ public class WFSDataStore extends ContentDataStore {
             if (client.supportsTransaction(remoteTypeName)) {
                 source = new WFSFeatureStore((WFSFeatureSource) source);
             }
-            
+
         } else {
             String storedQueryId = configuredStoredQueries.get(entry.getName().getLocalPart());
             StoredQueryDescriptionType desc = getStoredQueryDescriptionType(storedQueryId);
@@ -175,8 +172,7 @@ public class WFSDataStore extends ContentDataStore {
 
     public ListStoredQueriesResponseType getStoredQueryListResponse() throws IOException {
 
-        synchronized(this) {
-
+        synchronized (this) {
             if (remoteStoredQueries == null) {
 
                 ListStoredQueriesRequest request = client.createListStoredQueriesRequest();
@@ -218,7 +214,8 @@ public class WFSDataStore extends ContentDataStore {
         return remoteFeatureType;
     }
 
-    public StoredQueryDescriptionType getStoredQueryDescriptionType(String storedQueryId) throws IOException {
+    public StoredQueryDescriptionType getStoredQueryDescriptionType(String storedQueryId)
+            throws IOException {
 
         StoredQueryDescriptionType desc = null;
 
@@ -235,13 +232,14 @@ public class WFSDataStore extends ContentDataStore {
             try {
                 // If desc is still null, retrieve it
                 if (desc == null) {
-                    DescribeStoredQueriesRequest request = client.createDescribeStoredQueriesRequest();
+                    DescribeStoredQueriesRequest request =
+                            client.createDescribeStoredQueriesRequest();
 
                     URI id;
                     try {
-                         id = new URI(storedQueryId);
-                    } catch(URISyntaxException use) {
-                         throw new IOException(use);
+                        id = new URI(storedQueryId);
+                    } catch (URISyntaxException use) {
+                        throw new IOException(use);
                     }
 
                     request.getStoredQueryIds().add(id);
@@ -298,7 +296,7 @@ public class WFSDataStore extends ContentDataStore {
                 return query.getReturnFeatureType().get(0);
             }
         }
-        throw new IOException("Unknown stored query "+storedQueryId);
+        throw new IOException("Unknown stored query " + storedQueryId);
     }
 
     public SimpleFeatureType getStoredQuerySchema(String storedQueryId) throws IOException {
@@ -315,9 +313,8 @@ public class WFSDataStore extends ContentDataStore {
         this.names.remove(name);
         configuredStoredQueries.remove(localName);
     }
-    
-    public URL getCapabilitiesURL() {
-       return client.getCapabilitiesURL();
-    }
 
+    public URL getCapabilitiesURL() {
+        return client.getCapabilitiesURL();
+    }
 }

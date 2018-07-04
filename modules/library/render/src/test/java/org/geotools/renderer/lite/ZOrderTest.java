@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -44,7 +43,7 @@ import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Z-order rendering test making use of FeatureTypeStyle sortBy to refine query used for styling.
- * 
+ *
  * @source $URL$
  */
 public class ZOrderTest {
@@ -131,8 +130,9 @@ public class ZOrderTest {
         runImageComparison(referenceImageName, mc);
     }
 
-    private void runRoadsTest(String styleName, String sortBy, String sortByGroup,
-            String referenceImageName) throws Exception {
+    private void runRoadsTest(
+            String styleName, String sortBy, String sortByGroup, String referenceImageName)
+            throws Exception {
         Style style = RendererBaseTest.loadStyle(this, styleName);
         forceSortBy(style, sortBy);
         forceSortByGroup(style, sortByGroup);
@@ -143,8 +143,8 @@ public class ZOrderTest {
         runImageComparison(referenceImageName, mc);
     }
 
-    private void runRoadsBuildingTest(String sortBy, String sortByGroup,
-            String referenceImageName) throws Exception {
+    private void runRoadsBuildingTest(String sortBy, String sortByGroup, String referenceImageName)
+            throws Exception {
         Style roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
         forceSortBy(roadsStyle, sortBy);
         forceSortByGroup(roadsStyle, sortByGroup);
@@ -165,25 +165,27 @@ public class ZOrderTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        renderer.addRenderListener(new RenderListener() {
+        renderer.addRenderListener(
+                new RenderListener() {
 
-            @Override
-            public void featureRenderer(SimpleFeature feature) {
-                // nothing to do
-            }
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        // nothing to do
+                    }
 
-            @Override
-            public void errorOccurred(Exception e) {
-                fail("No rendering errors expected, but got one: " + e.getMessage());
+                    @Override
+                    public void errorOccurred(Exception e) {
+                        fail("No rendering errors expected, but got one: " + e.getMessage());
+                    }
+                });
 
-            }
-        });
-
-        BufferedImage image = RendererBaseTest.showRender(referenceImageName, renderer, TIME,
-                bounds);
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/lite/test-data/zorder/"
-                        + referenceImageName + ".png");
+        BufferedImage image =
+                RendererBaseTest.showRender(referenceImageName, renderer, TIME, bounds);
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/zorder/"
+                                + referenceImageName
+                                + ".png");
         ImageAssert.assertEquals(reference, image, THRESHOLD);
         mc.dispose();
     }
@@ -203,77 +205,88 @@ public class ZOrderTest {
             }
         }
     }
-    
-    
 
     @Test
     public void testInvalidAttribute() throws Exception {
         final AtomicInteger failureCount = new AtomicInteger(0);
-        runZRoadsFailureTest("zorder/zpolygon.sld", "not-there", null, new RenderListener() {
+        runZRoadsFailureTest(
+                "zorder/zpolygon.sld",
+                "not-there",
+                null,
+                new RenderListener() {
 
-            @Override
-            public void featureRenderer(SimpleFeature feature) {
-                // nothing to do
-            }
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        // nothing to do
+                    }
 
-            @Override
-            public void errorOccurred(Exception e) {
-                failureCount.incrementAndGet();
-                assertTrue(e instanceof IllegalArgumentException);
-                assertTrue(e.getMessage().contains("not-there"));
-
-            }
-        });
+                    @Override
+                    public void errorOccurred(Exception e) {
+                        failureCount.incrementAndGet();
+                        assertTrue(e instanceof IllegalArgumentException);
+                        assertTrue(e.getMessage().contains("not-there"));
+                    }
+                });
         assertEquals(1, failureCount.get());
     }
 
     @Test
     public void testInvalidSortBySyntax() throws Exception {
         final AtomicInteger failureCount = new AtomicInteger(0);
-        runZRoadsFailureTest("zorder/zpolygon.sld", "z upsideDown", null, new RenderListener() {
+        runZRoadsFailureTest(
+                "zorder/zpolygon.sld",
+                "z upsideDown",
+                null,
+                new RenderListener() {
 
-            @Override
-            public void featureRenderer(SimpleFeature feature) {
-                // nothing to do
-            }
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        // nothing to do
+                    }
 
-            @Override
-            public void errorOccurred(Exception e) {
-                failureCount.incrementAndGet();
-                assertTrue(e instanceof IllegalArgumentException);
-                assertTrue(e.getMessage().contains("z upsideDown"));
-
-            }
-        });
+                    @Override
+                    public void errorOccurred(Exception e) {
+                        failureCount.incrementAndGet();
+                        assertTrue(e instanceof IllegalArgumentException);
+                        assertTrue(e.getMessage().contains("z upsideDown"));
+                    }
+                });
         assertEquals(1, failureCount.get());
     }
 
     @Test
     public void testNonComparable() throws Exception {
         final AtomicInteger failureCount = new AtomicInteger(0);
-        runZRoadsFailureTest("zorder/zpolygon.sld", "color", null, new RenderListener() {
+        runZRoadsFailureTest(
+                "zorder/zpolygon.sld",
+                "color",
+                null,
+                new RenderListener() {
 
-            @Override
-            public void featureRenderer(SimpleFeature feature) {
-                // nothing to do
-            }
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        // nothing to do
+                    }
 
-            @Override
-            public void errorOccurred(Exception e) {
-                failureCount.incrementAndGet();
-                assertTrue(e instanceof IllegalArgumentException);
-                assertTrue(e.getMessage().contains("color"));
-                assertTrue(e.getMessage().contains("sort"));
-
-            }
-        });
+                    @Override
+                    public void errorOccurred(Exception e) {
+                        failureCount.incrementAndGet();
+                        assertTrue(e instanceof IllegalArgumentException);
+                        assertTrue(e.getMessage().contains("color"));
+                        assertTrue(e.getMessage().contains("sort"));
+                    }
+                });
         assertEquals(1, failureCount.get());
     }
 
     @Test
     public void testIncompatibleAttributes() throws Exception {
         final AtomicInteger failureCount = new AtomicInteger(0);
-        runRoadsBuildFailureTest("zorder/zpolygon.sld", "z", "cat", "theGroup",
+        runRoadsBuildFailureTest(
+                "zorder/zpolygon.sld",
+                "z",
+                "cat",
+                "theGroup",
                 new RenderListener() {
 
                     @Override
@@ -296,7 +309,11 @@ public class ZOrderTest {
     @Test
     public void testIncompatibleDirections() throws Exception {
         final AtomicInteger failureCount = new AtomicInteger(0);
-        runRoadsBuildFailureTest("zorder/zpolygon.sld", "z A", "z D", "theGroup",
+        runRoadsBuildFailureTest(
+                "zorder/zpolygon.sld",
+                "z A",
+                "z D",
+                "theGroup",
                 new RenderListener() {
 
                     @Override
@@ -317,7 +334,11 @@ public class ZOrderTest {
     @Test
     public void testDifferentLenghts() throws Exception {
         final AtomicInteger failureCount = new AtomicInteger(0);
-        runRoadsBuildFailureTest("zorder/zpolygon.sld", "z, cat", "z", "theGroup",
+        runRoadsBuildFailureTest(
+                "zorder/zpolygon.sld",
+                "z, cat",
+                "z",
+                "theGroup",
                 new RenderListener() {
 
                     @Override
@@ -335,8 +356,8 @@ public class ZOrderTest {
         assertEquals(1, failureCount.get());
     }
 
-    private void runZRoadsFailureTest(String styleName, String sortBy, String sortByGroup,
-            RenderListener listener)
+    private void runZRoadsFailureTest(
+            String styleName, String sortBy, String sortByGroup, RenderListener listener)
             throws Exception {
         Style style = RendererBaseTest.loadStyle(this, styleName);
         forceSortBy(style, sortBy);
@@ -357,8 +378,13 @@ public class ZOrderTest {
         mc.dispose();
     }
 
-    private void runRoadsBuildFailureTest(String styleName, String sortByRoads,
-            String sortByBuildings, String sortByGroup, RenderListener listener) throws Exception {
+    private void runRoadsBuildFailureTest(
+            String styleName,
+            String sortByRoads,
+            String sortByBuildings,
+            String sortByGroup,
+            RenderListener listener)
+            throws Exception {
         Style roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
         forceSortBy(roadsStyle, sortByRoads);
         forceSortByGroup(roadsStyle, sortByGroup);
@@ -373,7 +399,7 @@ public class ZOrderTest {
 
         runFailureTest(listener, mc);
     }
-    
+
     @Test
     public void testZOrderComposite() throws Exception {
         Style roadsStyle = RendererBaseTest.loadStyle(this, "zorder/zroads.sld");
@@ -391,5 +417,4 @@ public class ZOrderTest {
 
         runImageComparison("zorder-composite.png", mc);
     }
-
 }

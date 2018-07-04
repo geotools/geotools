@@ -1,0 +1,308 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "currentVersion": {
+      "type": "number"
+    },
+    "serviceItemId": {
+      "type": "string"
+    },
+    "serviceDescription": {
+      "type": "string"
+    },
+    "hasVersionedData": {
+      "type": "boolean"
+    },
+    "supportsDisconnectedEditing": {
+      "type": "boolean"
+    },
+    "hasStaticData": {
+      "type": "boolean"
+    },
+    "maxRecordCount": {
+      "type": "integer"
+    },
+    "supportedQueryFormats": {
+      "type": "string"
+    },
+    "capabilities": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "copyrightText": {
+      "type": "string"
+    },
+    "spatialReference": {
+      "type": "object",
+      "properties": {
+        "wkid": {
+          "type": "integer"
+        },
+        "latestWkid": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "wkid",
+        "latestWkid"
+      ]
+    },
+    "initialExtent": {
+      "type": "object",
+      "properties": {
+        "xmin": {
+          "type": "number"
+        },
+        "ymin": {
+          "type": "number"
+        },
+        "xmax": {
+          "type": "number"
+        },
+        "ymax": {
+          "type": "number"
+        },
+        "spatialReference": {
+          "type": "object",
+          "properties": {
+            "wkid": {
+              "type": "integer"
+            },
+            "latestWkid": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "wkid",
+            "latestWkid"
+          ]
+        }
+      },
+      "required": [
+        "xmin",
+        "ymin",
+        "xmax",
+        "ymax",
+        "spatialReference"
+      ]
+    },
+    "fullExtent": {
+      "type": "object",
+      "properties": {
+        "xmin": {
+          "type": "number"
+        },
+        "ymin": {
+          "type": "number"
+        },
+        "xmax": {
+          "type": "number"
+        },
+        "ymax": {
+          "type": "number"
+        },
+        "spatialReference": {
+          "type": "object",
+          "properties": {
+            "wkid": {
+              "type": "integer"
+            },
+            "latestWkid": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "wkid",
+            "latestWkid"
+          ]
+        }
+      },
+      "required": [
+        "xmin",
+        "ymin",
+        "xmax",
+        "ymax",
+        "spatialReference"
+      ]
+    },
+    "allowGeometryUpdates": {
+      "type": "boolean"
+    },
+    "units": {
+      "type": "string"
+    },
+    "size": {
+      "type": "integer"
+    },
+    "syncEnabled": {
+      "type": "boolean"
+    },
+    "syncCapabilities": {
+      "type": "object",
+      "properties": {
+        "supportsAsync": {
+          "type": "boolean"
+        },
+        "supportsRegisteringExistingData": {
+          "type": "boolean"
+        },
+        "supportsSyncDirectionControl": {
+          "type": "boolean"
+        },
+        "supportsPerLayerSync": {
+          "type": "boolean"
+        },
+        "supportsPerReplicaSync": {
+          "type": "boolean"
+        },
+        "supportsSyncModelNone": {
+          "type": "boolean"
+        },
+        "supportsRollbackOnFailure": {
+          "type": "boolean"
+        },
+        "supportsAttachmentsSyncDirection": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "supportsAsync",
+        "supportsRegisteringExistingData",
+        "supportsSyncDirectionControl",
+        "supportsPerLayerSync",
+        "supportsPerReplicaSync",
+        "supportsSyncModelNone",
+        "supportsRollbackOnFailure",
+        "supportsAttachmentsSyncDirection"
+      ]
+    },
+    "supportsApplyEditsWithGlobalIds": {
+      "type": "boolean"
+    },
+    "editorTrackingInfo": {
+      "type": "object",
+      "properties": {
+        "enableEditorTracking": {
+          "type": "boolean"
+        },
+        "enableOwnershipAccessControl": {
+          "type": "boolean"
+        },
+        "allowOthersToQuery": {
+          "type": "boolean"
+        },
+        "allowOthersToUpdate": {
+          "type": "boolean"
+        },
+        "allowOthersToDelete": {
+          "type": "boolean"
+        },
+        "allowAnonymousToUpdate": {
+          "type": "boolean"
+        },
+        "allowAnonymousToDelete": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "enableEditorTracking",
+        "enableOwnershipAccessControl",
+        "allowOthersToQuery",
+        "allowOthersToUpdate",
+        "allowOthersToDelete",
+        "allowAnonymousToUpdate",
+        "allowAnonymousToDelete"
+      ]
+    },
+    "xssPreventionInfo": {
+      "type": "object",
+      "properties": {
+        "xssPreventionEnabled": {
+          "type": "boolean"
+        },
+        "xssPreventionRule": {
+          "type": "string"
+        },
+        "xssInputRule": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "xssPreventionEnabled",
+        "xssPreventionRule",
+        "xssInputRule"
+      ]
+    },
+    "layers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "parentLayerId": {
+            "type": "integer"
+          },
+          "defaultVisibility": {
+            "type": "boolean"
+          },
+          "subLayerIds": {
+            "type": "null"
+          },
+          "minScale": {
+            "type": "integer"
+          },
+          "maxScale": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "parentLayerId",
+          "defaultVisibility",
+          "subLayerIds",
+          "minScale",
+          "maxScale"
+        ]
+      }
+    },
+    "tables": {
+      "type": "array",
+      "items": {}
+    }
+  },
+  "required": [
+    "currentVersion",
+    "serviceItemId",
+    "serviceDescription",
+    "hasVersionedData",
+    "supportsDisconnectedEditing",
+    "hasStaticData",
+    "maxRecordCount",
+    "supportedQueryFormats",
+    "capabilities",
+    "description",
+    "copyrightText",
+    "spatialReference",
+    "initialExtent",
+    "fullExtent",
+    "allowGeometryUpdates",
+    "units",
+    "size",
+    "syncEnabled",
+    "syncCapabilities",
+    "supportsApplyEditsWithGlobalIds",
+    "editorTrackingInfo",
+    "xssPreventionInfo",
+    "layers",
+    "tables"
+  ]
+}

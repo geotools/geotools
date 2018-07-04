@@ -21,11 +21,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Subtract;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SubtractBuilder implements Builder<Subtract> {
 
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

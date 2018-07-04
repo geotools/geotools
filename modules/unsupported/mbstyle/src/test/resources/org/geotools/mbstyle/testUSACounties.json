@@ -1,0 +1,122 @@
+{
+    "version": 8,
+    "name": "Symbols",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -93.22737015511188,
+        40.47523833683954
+    ],
+    "zoom": 8.080869332094693,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        },
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        }
+    },
+    "sprite": "file:src/test/resources/org/geotools/mbstyle/sprite/test-data/sprite",
+    "glyphs": "mapbox://fonts/testUser/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "county-fill",
+            "type": "fill",
+            "minzoom": 0,
+            "source": "test-source",
+            "source-layer": "test-source-layer",
+
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": {
+                    "property": "POP2000",
+                    "base": 0.2,
+                    "stops": [
+                        [{"zoom": 0, "value": 30000}, "AliceBlue"],
+                        [{"zoom": 0, "value": 100000}, "MidnightBlue"],
+                        [{"zoom": 10, "value": 30000}, "Yellow"],
+                        [{"zoom": 10, "value": 100000}, "Blue"],
+                        [{"zoom": 20, "value": 30000}, "Red"],
+                        [{"zoom": 20, "value": 100000}, "Green"]]
+                },
+                "fill-opacity": 0.5
+            }
+        },
+        {
+            "id": "county-outline",
+            "type": "line",
+            "minzoom": 10,
+            "source": "test-source",
+            "source-layer": "test-source-layer",
+            "layout": {
+                "visibility": "visible",
+                "line-cap": "square",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color":  "RebeccaPurple",
+                "line-opacity": 1,
+                "line-offset": 0,
+                "line-translate": [
+                    0,
+                    0
+                ],
+                "line-width": {
+                    "type": "interval",
+                    "stops": [[0, 0.1], [10, 0.5]]
+                }
+            }
+        },
+        {
+            "id": "county-label",
+            "type": "symbol",
+            "source": "testsource",
+            "source-layer": "testsource-layer",
+            "minzoom": 10,
+            "filter": [">=", "POP2000", "50000"],
+            "layout": {
+                "symbol-placement": "line",
+                "symbol-spacing": 0,
+                "text-size": {
+                    "type": "interval",
+                    "stops": [[0, 0], [10, 10], [16, 15]]
+                },
+                "text-offset": [
+                    0,
+                    10
+                ],
+                "text-anchor": "CENTER",
+                "text-field": "{NAME}",
+                "text-font": ["Bitstream Vera Sans", "Other Test Font"],
+                "text-allow-overlap": true,
+
+            },
+            "paint": {
+                "icon-opacity": 0.5,
+                "icon-translate": [
+                    0,
+                    0
+                ],
+                "text-translate": [0, 0],
+                "text-color": "Pink",
+                "text-halo-color": "White"
+            }
+        }
+
+    ],
+    "created": "2017-02-14T16:14:54.215Z",
+    "id": "ciz5qbyd3007j2spd3flvk2uh",
+    "modified": "2017-02-14T17:56:14.670Z",
+    "owner": "testUser",
+    "visibility": "private",
+    "draft": false
+}

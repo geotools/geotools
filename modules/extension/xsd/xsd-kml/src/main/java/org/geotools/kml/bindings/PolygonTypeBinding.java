@@ -18,20 +18,20 @@ package org.geotools.kml.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.kml.KML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:PolygonType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType final="#all" name="PolygonType"&gt;
  *      &lt;complexContent&gt;
@@ -48,12 +48,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class PolygonTypeBinding extends AbstractComplexBinding {
@@ -63,14 +59,13 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
         this.geometryFactory = geometryFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.PolygonType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -81,13 +76,13 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LinearRing outer = (LinearRing) node.getChildValue("outerBoundaryIs");
         LinearRing[] inner = null;
 
@@ -98,23 +93,22 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
 
         return geometryFactory.createPolygon(outer, inner);
     }
-    
+
     public Object getProperty(Object object, QName name) throws Exception {
         Polygon p = (Polygon) object;
-        if ( "outerBoundaryIs".equals( name.getLocalPart() ) ) {
+        if ("outerBoundaryIs".equals(name.getLocalPart())) {
             return p.getExteriorRing();
-        }
-        else if ( "innerBoundaryIs".equals( name.getLocalPart() ) ) {
-            if ( p.getNumInteriorRing() > 0 ) {
+        } else if ("innerBoundaryIs".equals(name.getLocalPart())) {
+            if (p.getNumInteriorRing() > 0) {
                 LinearRing[] interior = new LinearRing[p.getNumInteriorRing()];
-                for ( int i = 0; i < interior.length; i++ ) {
+                for (int i = 0; i < interior.length; i++) {
                     interior[i] = (LinearRing) p.getInteriorRingN(i);
                 }
-                
+
                 return interior;
             }
         }
-        
+
         return null;
     }
 }

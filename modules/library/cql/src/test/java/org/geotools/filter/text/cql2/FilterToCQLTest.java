@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,11 +16,9 @@
  */
 package org.geotools.filter.text.cql2;
 
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.junit.Assert;
@@ -43,300 +41,301 @@ import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
 
-/** 
+/**
  * FilterToCQLTest
- * 
- * Unit test for {@link FilterToCQL}
- * 
+ *
+ * <p>Unit test for {@link FilterToCQL}
+ *
  * @author Johann Sorel
- *
- *
- *
  * @source $URL$
  */
-public class FilterToCQLTest{
+public class FilterToCQLTest {
 
     @Test
     public void testSample() throws Exception {
         Filter filter = CQL.toFilter(FilterCQLSample.LESS_FILTER_SAMPLE);
         FilterToCQL toCQL = new FilterToCQL();
-        
-        String output = filter.accept( toCQL, null ).toString();
-        Assert.assertNotNull( output );
-        Assert.assertEquals( FilterCQLSample.LESS_FILTER_SAMPLE, output );
+
+        String output = filter.accept(toCQL, null).toString();
+        Assert.assertNotNull(output);
+        Assert.assertEquals(FilterCQLSample.LESS_FILTER_SAMPLE, output);
     }
-    
+
     @Test
     public void testNotBetween() throws Exception {
-        cqlTest( "NOT (ATTR1 BETWEEN 10 AND 20)" );
+        cqlTest("NOT (ATTR1 BETWEEN 10 AND 20)");
     }
+
     @Test
     public void testANDOR() throws Exception {
-        cqlTest( "(ATTR1 < 10 AND ATTR2 < 2) OR ATTR3 > 10" );
+        cqlTest("(ATTR1 < 10 AND ATTR2 < 2) OR ATTR3 > 10");
     }
     /** (ATTR1 > 10 OR ATTR2 < 2) */
     @Test
     public void testOR() throws Exception {
-        cqlTest( "ATTR1 > 10 OR ATTR2 < 2" );
+        cqlTest("ATTR1 > 10 OR ATTR2 < 2");
     }
 
     @Test
     public void testLike() throws Exception {
-        cqlTest( "ATTR1 LIKE '%ABC%'" );
+        cqlTest("ATTR1 LIKE '%ABC%'");
     }
 
     @Test
-    public void testNotEqualTo() throws Exception{
+    public void testNotEqualTo() throws Exception {
         String cql = "ATTR1 <> 'foo'";
         Filter filter = CQL.toFilter(cql);
-        Assert.assertNotNull( filter );
+        Assert.assertNotNull(filter);
 
         String cql2 = "NOT (ATTR1 = 'foo')";
         String output2 = CQL.toFilter(cql2).accept(new FilterToCQL(), null).toString();
-        
+
         FilterToCQL toCQL = new FilterToCQL();
-        String output = filter.accept( toCQL, null ).toString();
-        Assert.assertEquals( output2, output );        
+        String output = filter.accept(toCQL, null).toString();
+        Assert.assertEquals(output2, output);
     }
-    
-    @Test (expected=CQLException.class)
-    public void testFailNotEqualTo() throws Exception{
-    	
-    	cqlTest( "ATTR1 != 'foo'" );
-    }
-    
-    @Test
-    public void testBbox() throws Exception {
-    	cqlTest( "BBOX(the_geom, 10.0,20.0,30.0,40.0)" );
-	}
-    
-    @Test 
-    public void testAfter() throws Exception{
-    	
-    	cqlTest("attr AFTER 2006-12-31T01:30:00+00:00");
-    }
-    
-    @Test 
-    public void testBefore() throws Exception{
-    	
-    	cqlTest("attr BEFORE 2006-12-31T01:30:00+00:00");
+
+    @Test(expected = CQLException.class)
+    public void testFailNotEqualTo() throws Exception {
+
+        cqlTest("ATTR1 != 'foo'");
     }
 
     @Test
-    public void testBeforeAndAfter() throws Exception{
-    	
-    	cqlTest("dateAttr AFTER 2006-10-10T01:30:00+00:00 AND dateAttr BEFORE 2010-12-31T01:30:00+00:00");
+    public void testBbox() throws Exception {
+        cqlTest("BBOX(the_geom, 10.0,20.0,30.0,40.0)");
     }
 
     @Test
-    public void testDuring() throws Exception{
-    	
-    	cqlTest("dateAttr DURING 2006-10-10T01:30:00+00:00/2010-12-31T01:30:00+00:00");
+    public void testAfter() throws Exception {
+
+        cqlTest("attr AFTER 2006-12-31T01:30:00+00:00");
     }
-    
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testEndedByUnsuported() throws Exception{
-    	
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	EndedBy filter = ff.endedBy(ff.property("date"), newSampleDate());
-    	
+
+    @Test
+    public void testBefore() throws Exception {
+
+        cqlTest("attr BEFORE 2006-12-31T01:30:00+00:00");
+    }
+
+    @Test
+    public void testBeforeAndAfter() throws Exception {
+
+        cqlTest(
+                "dateAttr AFTER 2006-10-10T01:30:00+00:00 AND dateAttr BEFORE 2010-12-31T01:30:00+00:00");
+    }
+
+    @Test
+    public void testDuring() throws Exception {
+
+        cqlTest("dateAttr DURING 2006-10-10T01:30:00+00:00/2010-12-31T01:30:00+00:00");
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testEndedByUnsuported() throws Exception {
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        EndedBy filter = ff.endedBy(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
     }
 
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testEndsUnsuported() throws Exception{
-    	
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	Ends filter = ff.ends(ff.property("date"), newSampleDate());
-    	
+    @Test(expected = UnsupportedOperationException.class)
+    public void testEndsUnsuported() throws Exception {
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        Ends filter = ff.ends(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
     }
 
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testMeetsUnsuported() throws Exception{
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	Meets filter = ff.meets(ff.property("date"), newSampleDate());
-    	
+    @Test(expected = UnsupportedOperationException.class)
+    public void testMeetsUnsuported() throws Exception {
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        Meets filter = ff.meets(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
     }
 
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testMetByUnsuported() throws Exception{
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	MetBy filter = ff.metBy(ff.property("date"), newSampleDate());
-    	
+    @Test(expected = UnsupportedOperationException.class)
+    public void testMetByUnsuported() throws Exception {
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        MetBy filter = ff.metBy(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
     }
 
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testOverlappedByUnsuported() throws Exception{
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	OverlappedBy filter = ff.overlappedBy(ff.property("date"), newSampleDate());
-    	
+    @Test(expected = UnsupportedOperationException.class)
+    public void testOverlappedByUnsuported() throws Exception {
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        OverlappedBy filter = ff.overlappedBy(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
     }
 
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testTContainsUnsuported() throws Exception{
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	TContains filter = ff.tcontains(ff.property("date"), newSampleDate());
-    	
+    @Test(expected = UnsupportedOperationException.class)
+    public void testTContainsUnsuported() throws Exception {
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        TContains filter = ff.tcontains(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
     }
 
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testTEqualsUnsuported() throws Exception{
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	TEquals filter = ff.tequals(ff.property("date"), newSampleDate());
-    	
+    @Test(expected = UnsupportedOperationException.class)
+    public void testTEqualsUnsuported() throws Exception {
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        TEquals filter = ff.tequals(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void testTOverlapsUnsuported() throws Exception {
 
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testTOverlapsUnsuported() throws Exception{
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	TOverlaps filter = ff.toverlaps(ff.property("date"), newSampleDate());
-    	
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        TOverlaps filter = ff.toverlaps(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
     }
 
-    protected Literal newSampleDate() throws ParseException{
+    protected Literal newSampleDate() throws ParseException {
 
-    	SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date dateTime = dateFormatter.parse("2006-11-30T01:30:00Z");
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
 
-    	return ff.literal(dateTime);
+        return ff.literal(dateTime);
     }
 
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testBeginsUnsuported() throws Exception{
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	Begins filter = ff.begins(ff.property("date"), newSampleDate());
-    	
+    @Test(expected = UnsupportedOperationException.class)
+    public void testBeginsUnsuported() throws Exception {
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        Begins filter = ff.begins(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
     }
 
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testBegunByUnsuported() throws Exception{
-    	
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	BegunBy filter = ff.begunBy(ff.property("date"), newSampleDate());
-    	
-        FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
-    }
-    
-    @Test (expected=UnsupportedOperationException.class) 
-    public void testAnyInteractsUnsuported() throws Exception{
+    @Test(expected = UnsupportedOperationException.class)
+    public void testBegunByUnsuported() throws Exception {
 
-    	FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
-    	AnyInteracts filter = ff.anyInteracts(ff.property("date"), newSampleDate());
-    	
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        BegunBy filter = ff.begunBy(ff.property("date"), newSampleDate());
+
         FilterToCQL toCQL = new FilterToCQL();
-        filter.accept( toCQL, null ).toString();
+        filter.accept(toCQL, null).toString();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testAnyInteractsUnsuported() throws Exception {
+
+        FilterFactory ff = CommonFactoryFinder.getFilterFactory((Hints) null);
+        AnyInteracts filter = ff.anyInteracts(ff.property("date"), newSampleDate());
+
+        FilterToCQL toCQL = new FilterToCQL();
+        filter.accept(toCQL, null).toString();
     }
 
     @Test
-    public void testIntersectsPoint() throws Exception{
-    	
-    	cqlTest("INTERSECTS(the_geom, POINT (1 2))");
+    public void testIntersectsPoint() throws Exception {
+
+        cqlTest("INTERSECTS(the_geom, POINT (1 2))");
     }
-    
-	@Test
-	public void testIntersects() throws Exception {
-		cqlTest("INTERSECTS(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
-	}
 
-	@Test
-	public void testOverlaps() throws Exception {
-		cqlTest("OVERLAPS(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
-	}
+    @Test
+    public void testIntersects() throws Exception {
+        cqlTest("INTERSECTS(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+    }
 
-	@Test
-	public void testCrosses() throws Exception {
-		cqlTest("CROSSES(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
-	}
+    @Test
+    public void testOverlaps() throws Exception {
+        cqlTest("OVERLAPS(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+    }
 
-	@Test
-	public void testContains() throws Exception {
-		cqlTest("CONTAINS(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
-	}
+    @Test
+    public void testCrosses() throws Exception {
+        cqlTest("CROSSES(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+    }
 
-	@Test
-	public void testTouches() throws Exception {
-		cqlTest("TOUCHES(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
-	}
-	
-    
+    @Test
+    public void testContains() throws Exception {
+        cqlTest("CONTAINS(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+    }
+
+    @Test
+    public void testTouches() throws Exception {
+        cqlTest("TOUCHES(theGeom, POLYGON ((0 0, 0 10, 10 10, 10 0, 0 0)))");
+    }
+
     @Ignore // Parser doesn't implement this
     @Test
     public void testAttributeContainsQuote() throws Exception {
         String cql = "INTERSECTS(\"the\"\"geom\", POINT (1 2))";
         Filter filter = CQL.toFilter(cql);
-        Assert.assertNotNull( filter );
-        
+        Assert.assertNotNull(filter);
+
         // double quote escaped by repeating should be unescaped to just one
-        Assert.assertEquals("the\"geom",((PropertyName)(((Intersects) filter).getExpression1())).getPropertyName());
-        
+        Assert.assertEquals(
+                "the\"geom",
+                ((PropertyName) (((Intersects) filter).getExpression1())).getPropertyName());
+
         FilterToCQL toCQL = new FilterToCQL();
-        String output = filter.accept( toCQL, null ).toString();
+        String output = filter.accept(toCQL, null).toString();
         // Should be escaped again
-        Assert.assertEquals( cql,output );
+        Assert.assertEquals(cql, output);
     }
-    
+
     @Ignore // Parser doesn't implement this
     @Test
     public void testAttributeContainsSpace() throws Exception {
         cqlTest("INTERSECTS(\"the geom\", POINT (1 2))");
     }
-    
+
     @Test
     public void testAttributeContainsOperator() throws Exception {
         cqlTest("INTERSECTS(\"the-geom\", POINT (1 2))");
     }
-    
+
     @Test
     public void testAttributeContainsComma() throws Exception {
         cqlTest("INTERSECTS(\"the,geom\", POINT (1 2))");
     }
-    
+
     @Test
     public void testAttributeIsReservedUpperCase() throws Exception {
         cqlTest("INTERSECTS(\"POINT\", POINT (1 2))");
     }
-    
+
     @Test
     public void testAttributeIsReservedLowerCase() throws Exception {
         cqlTest("INTERSECTS(\"point\", POINT (1 2))");
     }
 
-    protected void cqlTest( String cql ) throws Exception {
-        Filter filter = CQL.toFilter(cql);
-        Assert.assertNotNull( filter );
-        
-        FilterToCQL toCQL = new FilterToCQL();
-        String output = filter.accept( toCQL, null ).toString();
-        Assert.assertEquals( cql,output );        
+    @Test
+    public void testAttributeEqualsBoolean() throws Exception {
+        cqlTest("foo = true");
     }
-    
+
+    protected void cqlTest(String cql) throws Exception {
+        Filter filter = CQL.toFilter(cql);
+        Assert.assertNotNull(filter);
+
+        FilterToCQL toCQL = new FilterToCQL();
+        String output = filter.accept(toCQL, null).toString();
+        Assert.assertEquals(cql, output);
+    }
 }

@@ -20,36 +20,30 @@ import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.SampleModel;
 import java.util.Arrays;
-
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Simple builder which builds the configuration bean of a mosaic configuration.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions SAS
- * 
  */
 public class MosaicBeanBuilder {
 
     private MosaicConfigurationBean bean;
+    private Double noData;
+
+    /** Default constructor */
+    public MosaicBeanBuilder() {}
 
     /**
-     * Default constructor
-     */
-    public MosaicBeanBuilder() {
-
-    }
-
-    /**
-     * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a different {@link IndexColorModel}.
+     * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a
+     * different {@link IndexColorModel}.
      */
     private boolean expandToRGB;
 
-    /**
-     * <code>true</code> if we need to look for PAM auxiliary metadata xml files.
-     */
+    /** <code>true</code> if we need to look for PAM auxiliary metadata xml files. */
     private boolean checkAuxiliaryMetadata;
 
     /** OverviewLevel levels */
@@ -67,6 +61,9 @@ public class MosaicBeanBuilder {
     /** elevation attribute name. <code>null</code> if absent. */
     private String elevationAttribute;
 
+    /** crs attribute name. <code>null</code> if absent. */
+    private String crsAttribute;
+
     /** additional domain attributes names. <code>null</code> if absent. */
     private String additionalDomainAttributes;
 
@@ -75,8 +72,9 @@ public class MosaicBeanBuilder {
     private String auxiliaryDatastorePath;
 
     /**
-     * mosaic's dummy sample model useful to store dataType and number of bands. All the other fields shouldn't be queried since they are meaningless
-     * for the whole mosaic (width, height, ...)
+     * mosaic's dummy sample model useful to store dataType and number of bands. All the other
+     * fields shouldn't be queried since they are meaningless for the whole mosaic (width, height,
+     * ...)
      */
     private SampleModel sampleModel;
 
@@ -141,6 +139,15 @@ public class MosaicBeanBuilder {
 
     public void setTimeAttribute(final String timeAttribute) {
         this.timeAttribute = timeAttribute;
+        bean = null;
+    }
+
+    public String getCrsAttribute() {
+        return timeAttribute;
+    }
+
+    public void setCrsAttribute(final String crsAttribute) {
+        this.crsAttribute = crsAttribute;
         bean = null;
     }
 
@@ -234,10 +241,23 @@ public class MosaicBeanBuilder {
 
     @Override
     public String toString() {
-        return "MosaicConfigurationBean [expandToRGB=" + expandToRGB + ", levels="
-                + Arrays.toString(levels) + ", name=" + name + ", levelsNum=" + levelsNum
-                + ", timeAttribute=" + timeAttribute + ", elevationAttribute=" + elevationAttribute
-                + ",sampleModel=" + sampleModel + "]";
+        return "MosaicConfigurationBean [expandToRGB="
+                + expandToRGB
+                + ", levels="
+                + Arrays.toString(levels)
+                + ", name="
+                + name
+                + ", levelsNum="
+                + levelsNum
+                + ", timeAttribute="
+                + timeAttribute
+                + ", elevationAttribute="
+                + elevationAttribute
+                + ", crsAttribute="
+                + crsAttribute
+                + ",sampleModel="
+                + sampleModel
+                + "]";
     }
 
     public MosaicConfigurationBean getMosaicConfigurationBean() {
@@ -249,6 +269,7 @@ public class MosaicBeanBuilder {
             bean.setCrs(crs);
             bean.setCatalogConfigurationBean(catalogConfigurationBean);
             bean.setTimeAttribute(timeAttribute);
+            bean.setCRSAttribute(crsAttribute);
             bean.setElevationAttribute(elevationAttribute);
             bean.setAdditionalDomainAttributes(additionalDomainAttributes);
             bean.setExpandToRGB(expandToRGB);
@@ -258,7 +279,17 @@ public class MosaicBeanBuilder {
             bean.setAuxiliaryFilePath(auxiliaryFilePath);
             bean.setAuxiliaryDatastorePath(auxiliaryDatastorePath);
             bean.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
+            bean.setNoData(noData);
+            ;
         }
         return bean;
+    }
+
+    public void setNoData(Double noData) {
+        this.noData = noData;
+    }
+
+    public Double getNoData() {
+        return noData;
     }
 }

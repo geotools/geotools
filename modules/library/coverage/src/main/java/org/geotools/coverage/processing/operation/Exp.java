@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,16 +17,14 @@
 package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
+
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
-
 import java.awt.image.RenderedImage;
 import java.util.Collection;
 import java.util.Map;
-
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.ExpDescriptor;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseMathOperationJAI;
 import org.geotools.util.NumberRange;
@@ -34,15 +32,16 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.util.InternationalString;
-// Geotools dependencies
 
+// Geotools dependencies
 
 /**
  * Takes the exponential of the sample values of a coverage.
  *
- * <P><STRONG>Name:</STRONG>&nbsp;<CODE>"Exp"</CODE><BR>
- *    <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain ExpDescriptor Exp}"</CODE><BR>
- *    <STRONG>Parameters:</STRONG></P>
+ * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"Exp"</CODE><br>
+ * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain ExpDescriptor Exp}"</CODE><br>
+ * <STRONG>Parameters:</STRONG>
+ *
  * <table border='3' cellpadding='6' bgcolor='F4F8FF'>
  *   <tr bgcolor='#B9DCFF'>
  *     <th>Name</th>
@@ -61,57 +60,55 @@ import org.opengis.util.InternationalString;
  * </table>
  *
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
  * @see org.geotools.coverage.processing.Operations#exp
  * @see ExpDescriptor
  */
 public class Exp extends BaseMathOperationJAI {
     private static final String ALGEBRIC = "algebric";
     private static final String EXP = "Exp";
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 6136918309949539525L;
 
-    /**
-     * Constructs a default {@code "Exp"} operation.
-     */
+    /** Constructs a default {@code "Exp"} operation. */
     public Exp() {
-    	super(EXP, getOperationDescriptor(JAIExt.getOperationName(EXP)));
+        super(EXP, getOperationDescriptor(JAIExt.getOperationName(EXP)));
     }
-    
+
     public String getName() {
         return EXP;
     }
 
-    /**
-     * Returns the expected range of values for the resulting image.
-     */
+    /** Returns the expected range of values for the resulting image. */
     protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
         final NumberRange range = ranges[0];
         final double min = Math.exp(range.getMinimum());
         final double max = Math.exp(range.getMaximum());
         return NumberRange.create(min, max);
     }
-    
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
-        if(JAIExt.isJAIExtOperation(ALGEBRIC)){
+
+    protected void handleJAIEXTParams(
+            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+        if (JAIExt.isJAIExtOperation(ALGEBRIC)) {
             parameters.set(Operator.EXP, 0);
-            Collection<GridCoverage2D> sources = (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
-            for(GridCoverage2D source : sources){
+            Collection<GridCoverage2D> sources =
+                    (Collection<GridCoverage2D>) parameters2.parameter("sources").getValue();
+            for (GridCoverage2D source : sources) {
                 handleROINoDataInternal(parameters, source, ALGEBRIC, 1, 2);
             }
         }
     }
-    
-    protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
-            InternationalString name, MathTransform gridToCRS, GridCoverage2D[] sources,
+
+    protected Map<String, ?> getProperties(
+            RenderedImage data,
+            CoordinateReferenceSystem crs,
+            InternationalString name,
+            MathTransform gridToCRS,
+            GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(null, parameters.parameters, sources[0], ALGEBRIC, 1, 2, 3);
+        return handleROINoDataProperties(
+                null, parameters.parameters, sources[0], ALGEBRIC, 1, 2, 3);
     }
 }

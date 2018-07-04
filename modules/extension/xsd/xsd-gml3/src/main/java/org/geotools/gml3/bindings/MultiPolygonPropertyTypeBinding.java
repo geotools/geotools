@@ -19,20 +19,20 @@ package org.geotools.gml3.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:MultiPolygonPropertyType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *         <code>
  *  &lt;complexType name="MultiPolygonPropertyType"&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt;This type is deprecated with GML 3 and shall not be used. It is included for backwards compatibility with GML 2. Use MultiSurfacePropertyType instead.
- * 
+ *
  *  A property that has a collection of polygons as its value domain can either be an appropriate geometry element encapsulated in an element of this type or an XLink reference to a remote geometry element (where remote includes geometry elements located elsewhere in the same document). Either the reference or the contained element must be given, but neither both nor none.&lt;/documentation&gt;
  *      &lt;/annotation&gt;
  *      &lt;sequence minOccurs="0"&gt;
@@ -45,29 +45,23 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  *          &lt;/annotation&gt;
  *      &lt;/attributeGroup&gt;
  *  &lt;/complexType&gt;
- * 
+ *
  *          </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *         /geotools/gml3/bindings/MultiPolygonPropertyTypeBinding.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
+ *     /geotools/gml3/bindings/MultiPolygonPropertyTypeBinding.java $
  */
 public class MultiPolygonPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 
-    public MultiPolygonPropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
+    public MultiPolygonPropertyTypeBinding(
+            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
         super(encodingUtils, idRegistry);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.MultiPolygonPropertyType;
     }

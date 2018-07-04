@@ -17,23 +17,21 @@
 package org.geotools.gml2.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:PointType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="PointType"&gt;
  *      &lt;annotation&gt;
@@ -54,12 +52,8 @@ import com.vividsolutions.jts.geom.Point;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLPointTypeBinding extends AbstractComplexBinding {
@@ -73,14 +67,13 @@ public class GMLPointTypeBinding extends AbstractComplexBinding {
         return BEFORE;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.PointType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -91,13 +84,13 @@ public class GMLPointTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         if (node.getChild("coord") != null) {
             Coordinate c = (Coordinate) node.getChild("coord").getValue();
 
@@ -113,8 +106,7 @@ public class GMLPointTypeBinding extends AbstractComplexBinding {
         throw new RuntimeException("Could not find a coordinate");
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         Point point = (Point) object;
 
         if (GML.coord.equals(name)) {

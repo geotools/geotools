@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -84,19 +83,17 @@ import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
 
-/**
- * Encodes a OGC filter into a SOLR query syntax
- * 
- */
-
+/** Encodes a OGC filter into a SOLR query syntax */
 public class FilterToSolr implements FilterVisitor {
 
     /* Standard java logger */
     private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterToSolr.class);
 
     /* Lucene characters to escape on filter expressions */
-    private static final String[] LUCENE_SPECIAL_CHARACTERS = new String[] { "+", "-", "&&", "||",
-            "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", ":" };
+    private static final String[] LUCENE_SPECIAL_CHARACTERS =
+            new String[] {
+                "+", "-", "&&", "||", "!", "(", ")", "{", "}", "[", "]", "^", "\"", "~", ":"
+            };
 
     /** Filter factory */
     protected static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
@@ -122,7 +119,7 @@ public class FilterToSolr implements FilterVisitor {
 
     /**
      * A single call method to encode filter to SOLR query
-     * 
+     *
      * @param filter
      * @return a string representing the filter encoded to SOLR.
      * @throws Exception
@@ -136,14 +133,12 @@ public class FilterToSolr implements FilterVisitor {
 
     /**
      * Performs the encoding, sends the encoded SOLR string to the writer passed in.
-     * 
+     *
      * @param filter the Filter to be encoded.
-     * 
      * @throws Exception if there were io problems or unsupported filter operation
      */
     public void encode(Filter filter) throws Exception {
-        if (out == null)
-            throw new Exception("Can't encode to a null writer.");
+        if (out == null) throw new Exception("Can't encode to a null writer.");
         if (getCapabilities().fullySupports(filter)) {
             try {
                 filter.accept(this, out);
@@ -158,14 +153,11 @@ public class FilterToSolr implements FilterVisitor {
 
     /**
      * Describes the capabilities of this encoder.
-     * 
-     * <p>
-     * Performs lazy creation of capabilities.
-     * </p>
-     * 
-     * If you're subclassing this class, override createFilterCapabilities to declare which
-     * filtercapabilities you support. Don't use this method.
-     * 
+     *
+     * <p>Performs lazy creation of capabilities. If you're subclassing this class, override
+     * createFilterCapabilities to declare which filtercapabilities you support. Don't use this
+     * method.
+     *
      * @return The capabilities supported by this encoder.
      */
     public FilterCapabilities getCapabilities() {
@@ -177,7 +169,7 @@ public class FilterToSolr implements FilterVisitor {
 
     /**
      * Sets the capabilities of this filter.
-     * 
+     *
      * @return FilterCapabilities for this Filter
      */
     protected FilterCapabilities createFilterCapabilities() {
@@ -189,9 +181,9 @@ public class FilterToSolr implements FilterVisitor {
         capabilities.addType(FilterCapabilities.LIKE);
         capabilities.addType(FilterCapabilities.NULL_CHECK);
         capabilities.addType(FilterCapabilities.SPATIAL_BBOX);
-        // JD: as of solr 5 the disjoint filter no longer works directly so we disable it 
+        // JD: as of solr 5 the disjoint filter no longer works directly so we disable it
         // See https://issues.apache.org/jira/browse/LUCENE-5692
-        //capabilities.addType(FilterCapabilities.SPATIAL_DISJOINT);
+        // capabilities.addType(FilterCapabilities.SPATIAL_DISJOINT);
         capabilities.addType(FilterCapabilities.SPATIAL_WITHIN);
         capabilities.addType(FilterCapabilities.SPATIAL_INTERSECT);
         capabilities.addType(FilterCapabilities.SPATIAL_CONTAINS);
@@ -248,7 +240,7 @@ public class FilterToSolr implements FilterVisitor {
         StringWriter output = asStringWriter(extraData);
         Set<Identifier> ids = filter.getIdentifiers();
         output.append(" (");
-        for (Iterator<Identifier> i = ids.iterator(); i.hasNext();) {
+        for (Iterator<Identifier> i = ids.iterator(); i.hasNext(); ) {
             Identifier id = i.next();
             String fid = decodeFID(id.toString());
             output.write(primaryKey.getName() + ":" + "\"" + fid + "\"");
@@ -301,8 +293,8 @@ public class FilterToSolr implements FilterVisitor {
 
     @Override
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
-        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(),
-                filter.getExpression2());
+        Expression[] expr =
+                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         StringWriter output = asStringWriter(extraData);
         ExpressionToSolr visitor = new ExpressionToSolr();
         PropertyName propertyName = (PropertyName) expr[0];
@@ -315,8 +307,8 @@ public class FilterToSolr implements FilterVisitor {
 
     @Override
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
-        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(),
-                filter.getExpression2());
+        Expression[] expr =
+                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         StringWriter output = asStringWriter(extraData);
         ExpressionToSolr visitor = new ExpressionToSolr();
         PropertyName propertyName = (PropertyName) expr[0];
@@ -329,8 +321,8 @@ public class FilterToSolr implements FilterVisitor {
 
     @Override
     public Object visit(PropertyIsLessThan filter, Object extraData) {
-        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(),
-                filter.getExpression2());
+        Expression[] expr =
+                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         checkExpressionIsProperty(filter.getExpression1());
         StringWriter output = asStringWriter(extraData);
         ExpressionToSolr visitor = new ExpressionToSolr();
@@ -344,8 +336,8 @@ public class FilterToSolr implements FilterVisitor {
 
     @Override
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
-        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(),
-                filter.getExpression2());
+        Expression[] expr =
+                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         StringWriter output = asStringWriter(extraData);
         ExpressionToSolr visitor = new ExpressionToSolr();
         PropertyName propertyName = (PropertyName) expr[0];
@@ -516,26 +508,21 @@ public class FilterToSolr implements FilterVisitor {
         throw new UnsupportedOperationException("TOverlaps filter not supported");
     }
 
-    /**
-     * Sets the {@link FilterToSolr#featureTypeName}
-     */
+    /** Sets the {@link FilterToSolr#featureTypeName} */
     public void setFeatureTypeName(String featureTypeName) {
         this.featureTypeName = featureTypeName;
     }
 
-    /**
-     * Sets the {@link FilterToSolr#primaryKey}
-     */
+    /** Sets the {@link FilterToSolr#primaryKey} */
     public void setPrimaryKey(SolrAttribute primaryKey) {
         this.primaryKey = primaryKey;
     }
 
     /**
-     * Convert extraData parameter to StringWriter or create new one if not exists </p> This method
-     * is called at the start of each visit method to obtain output to write in
-     * 
+     * Convert extraData parameter to StringWriter or create new one if not exists This method is
+     * called at the start of each visit method to obtain output to write in
+     *
      * @param extraData output to write in
-     * 
      */
     protected static StringWriter asStringWriter(Object extraData) {
         if (extraData instanceof StringWriter) {
@@ -545,22 +532,20 @@ public class FilterToSolr implements FilterVisitor {
     }
 
     /**
-     * 
      * Escape with "\\" the phrase according to Lucene special characters and other characters
      * passed as input
-     * 
+     *
      * @see {@link FilterToSolr#LUCENE_SPECIAL_CHARACTERS}
-     * 
      * @param searchPhrase the phrase to escape
-     * @param otherEscapes additional parameters to escape other than
-     *        {@link FilterToSolr#LUCENE_SPECIAL_CHARACTERS}
-     * 
+     * @param otherEscapes additional parameters to escape other than {@link
+     *     FilterToSolr#LUCENE_SPECIAL_CHARACTERS}
      * @return the escaped string
      */
     protected static String escapeSpecialCharacters(String searchPhrase, String... otherEscapes) {
         for (int i = 0; i < LUCENE_SPECIAL_CHARACTERS.length; i++) {
-            searchPhrase = searchPhrase.replace(LUCENE_SPECIAL_CHARACTERS[i], "\\"
-                    + LUCENE_SPECIAL_CHARACTERS[i]);
+            searchPhrase =
+                    searchPhrase.replace(
+                            LUCENE_SPECIAL_CHARACTERS[i], "\\" + LUCENE_SPECIAL_CHARACTERS[i]);
         }
         for (String e : otherEscapes) {
             searchPhrase = searchPhrase.replace(e, "\\" + e);
@@ -588,7 +573,7 @@ public class FilterToSolr implements FilterVisitor {
 
     /*
      * Writes the SOLR query for binary comparison operator : EQUAL, NOT EQUAL
-     * 
+     *
      * @param filter binary comparison operator to encode
      */
     private Object buildComparison(BinaryComparisonOperator filter, Object extraData) {
@@ -596,8 +581,8 @@ public class FilterToSolr implements FilterVisitor {
         if (filter instanceof PropertyIsNotEqualTo) {
             output.append("-");
         }
-        Expression[] expr = binaryFilterVisitorNormalizer(filter.getExpression1(),
-                filter.getExpression2());
+        Expression[] expr =
+                binaryFilterVisitorNormalizer(filter.getExpression1(), filter.getExpression2());
         ExpressionToSolr visitor = new ExpressionToSolr();
         expr[0].accept(visitor, output);
         output.append(":");
@@ -607,20 +592,23 @@ public class FilterToSolr implements FilterVisitor {
 
     /*
      * Writes the SOLR query for binary logical operator : AND, OR
-     * 
+     *
      * @param operator the operator to use in encode
-     * 
+     *
      * @param visitor encoder to manage nested inner expressions
-     * 
+     *
      * @param filter binary logical operator to encode
      */
 
-    private Object buildBinaryLogicalOperator(final String operator, FilterVisitor visitor,
-            BinaryLogicOperator filter, Object extraData) {
+    private Object buildBinaryLogicalOperator(
+            final String operator,
+            FilterVisitor visitor,
+            BinaryLogicOperator filter,
+            Object extraData) {
         StringWriter output = asStringWriter(extraData);
         List<Filter> children = filter.getChildren();
         if (children != null) {
-            for (Iterator<Filter> i = children.iterator(); i.hasNext();) {
+            for (Iterator<Filter> i = children.iterator(); i.hasNext(); ) {
                 Filter child = i.next();
                 if (child instanceof BinaryLogicOperator) {
                     output.append("(");
@@ -640,7 +628,7 @@ public class FilterToSolr implements FilterVisitor {
     /*
      * Writes the SOLR query for temporal operator : After, Before, Begins, Ends, TEquals, BegunBy,
      * EndedBy, During, TContains
-     * 
+     *
      * @param filter temporal operator to encode
      */
     private Object visitBinaryTemporalOperator(BinaryTemporalOperator filter, Object extraData) {
@@ -706,7 +694,7 @@ public class FilterToSolr implements FilterVisitor {
     /*
      * Writes the SOLR query for spatial operator : BBOX, IsWithin, IsDisjointTo, IsWithin,
      * Intersects, Contains
-     * 
+     *
      * @param filter spatial operator to encode
      */
     private Object visitBinarySpatialOperator(BinarySpatialOperator filter, Object extraData) {
@@ -717,13 +705,15 @@ public class FilterToSolr implements FilterVisitor {
         checkExpressionIsLiteral(e2);
 
         ExpressionToSolr visitor = new ExpressionToSolr();
+        // let's set the feature type so property names can be encoded based on it
+        visitor.setFeatureType(featureType);
 
         // initialize spatial strategy
         AttributeDescriptor spatialAtt = (AttributeDescriptor) e1.evaluate(featureType);
         if (spatialAtt != null && spatialAtt instanceof GeometryDescriptor) {
-            visitor.setSpatialStrategy(SolrSpatialStrategy.createStrategy((GeometryDescriptor) spatialAtt));
-        }
-        else {
+            visitor.setSpatialStrategy(
+                    SolrSpatialStrategy.createStrategy((GeometryDescriptor) spatialAtt));
+        } else {
             LOGGER.warning("Spatial field: " + e1.toString() + " resolved to null or non-spatial");
         }
 
@@ -776,9 +766,9 @@ public class FilterToSolr implements FilterVisitor {
     /*
      * Swap the PropertyName / Literal for binary filtering to obtain the correct order: first
      * PropertyName next Literal
-     * 
+     *
      * @return an array with PropertyName as first element and Literal as second element
-     * 
+     *
      * @throws UnsupportedOperationException if the arguments are both Literal or PropertyName
      */
     private Expression[] binaryFilterVisitorNormalizer(Expression expr1, Expression expr2) {
@@ -794,7 +784,6 @@ public class FilterToSolr implements FilterVisitor {
             throw new UnsupportedOperationException(
                     "Expressions must be one PropertyName and one Literal");
         }
-        return new Expression[] { e1, e2 };
+        return new Expression[] {e1, e2};
     }
-
 }

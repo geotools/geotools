@@ -18,54 +18,41 @@ package org.geotools.validation.spatial;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.validation.DefaultFeatureValidation;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-
 /**
  * Tests to see if a geometry is valid by calling Geometry.isValid().
- * 
- * <p>
- * The geometry is first tested to see if it is null, and if it is null,  then
- * it is tested to see if it is allowed to be null by calling isNillable().
- * </p>
+ *
+ * <p>The geometry is first tested to see if it is null, and if it is null, then it is tested to see
+ * if it is allowed to be null by calling isNillable().
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class IsValidGeometryValidation extends DefaultFeatureValidation {
     /** The logger for the validation module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.validation");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
 
     /**
      * IsValidGeometryFeatureValidation constructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
-    public IsValidGeometryValidation() {
-    }
+    public IsValidGeometryValidation() {}
 
     /**
      * Override getPriority.
-     * 
-     * <p>
-     * Sets the priority level of this validation.
-     * </p>
+     *
+     * <p>Sets the priority level of this validation.
      *
      * @return A made up priority for this validation.
-     *
      * @see org.geotools.validation.Validation#getPriority()
      */
     public int getPriority() {
@@ -74,14 +61,10 @@ public class IsValidGeometryValidation extends DefaultFeatureValidation {
 
     /**
      * Override getTypeNames.
-     * 
-     * <p>
-     * Returns the TypeNames of the FeatureTypes used in this particular
-     * validation.
-     * </p>
+     *
+     * <p>Returns the TypeNames of the FeatureTypes used in this particular validation.
      *
      * @return An array of TypeNames
-     *
      * @see org.geotools.validation.Validation#getTypeRefs()
      */
     public String[] getTypeNames() {
@@ -90,45 +73,38 @@ public class IsValidGeometryValidation extends DefaultFeatureValidation {
         } else if (getTypeRef().equals("*")) {
             return new String[0]; // apply to all
         } else {
-            return new String[] { getTypeRef(), };
+            return new String[] {
+                getTypeRef(),
+            };
         }
     }
 
     /**
      * Tests to see if a geometry is valid by calling Geometry.isValid().
-     * 
-     * <p>
-     * The geometry is first tested to see if it is null, and if it is null,
-     * then it is tested to see if it is allowed to be null by calling
-     * isNillable().
-     * </p>
+     *
+     * <p>The geometry is first tested to see if it is null, and if it is null, then it is tested to
+     * see if it is allowed to be null by calling isNillable().
      *
      * @param feature The Feature to be validated
      * @param type The FeatureTypeInfo of the feature
      * @param results The storage for error messages.
-     *
      * @return True if the feature is a valid geometry.
-     *
-     * @see org.geotools.validation.FeatureValidation#validate(
-     *      org.geotools.feature.Feature,
-     *      org.geotools.feature.FeatureType,
-     *      org.geotools.validation.ValidationResults)
+     * @see org.geotools.validation.FeatureValidation#validate( org.geotools.feature.Feature,
+     *     org.geotools.feature.FeatureType, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(SimpleFeature feature, SimpleFeatureType type,
-        ValidationResults results) {
+    public boolean validate(
+            SimpleFeature feature, SimpleFeatureType type, ValidationResults results) {
         Geometry geom = (Geometry) feature.getDefaultGeometry();
 
         if (geom == null) {
             if (type.getGeometryDescriptor().isNillable()) {
-                LOGGER.log(Level.FINEST,
-                    getName() + "(" + feature.getID() + ") passed");
+                LOGGER.log(Level.FINEST, getName() + "(" + feature.getID() + ") passed");
 
                 return true;
             } else {
                 String message = "Geometry was null but is not nillable.";
                 results.error(feature, message);
-                LOGGER.log(Level.FINEST,
-                    getName() + "(" + feature.getID() + "):" + message);
+                LOGGER.log(Level.FINEST, getName() + "(" + feature.getID() + "):" + message);
 
                 return false;
             }
@@ -136,8 +112,7 @@ public class IsValidGeometryValidation extends DefaultFeatureValidation {
 
         if (!geom.isValid()) {
             String message = "Not a valid geometry. isValid() failed";
-            LOGGER.log(Level.FINEST,
-                getName() + "(" + feature.getID() + "):" + message);
+            LOGGER.log(Level.FINEST, getName() + "(" + feature.getID() + "):" + message);
             results.error(feature, message);
 
             return false;
@@ -148,4 +123,3 @@ public class IsValidGeometryValidation extends DefaultFeatureValidation {
         return true;
     }
 }
-

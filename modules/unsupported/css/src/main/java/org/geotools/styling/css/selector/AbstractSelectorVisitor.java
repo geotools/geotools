@@ -18,60 +18,59 @@ package org.geotools.styling.css.selector;
 
 /**
  * Base class for selector visitors
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class AbstractSelectorVisitor implements SelectorVisitor {
 
-	@Override
-	public Object visit(Accept accept) {
-		return null;
-	}
+    @Override
+    public Object visit(Accept accept) {
+        return null;
+    }
 
-	@Override
-	public Object visit(Reject reject) {
-		return null;
-	}
+    @Override
+    public Object visit(Reject reject) {
+        return null;
+    }
 
-	@Override
-	public Object visit(Id id) {
-		return null;
-	}
+    @Override
+    public Object visit(Id id) {
+        return null;
+    }
 
-	@Override
-	public Object visit(Data data) {
-		return null;
-	}
+    @Override
+    public Object visit(Data data) {
+        return null;
+    }
 
-	@Override
-	public Object visit(And and) {
-		for (Selector s : and.getChildren()) {
-			s.accept(this);
-		}
-		return null;
-	}
+    @Override
+    public Object visit(And and) {
+        for (Selector s : and.getChildren()) {
+            s.accept(this);
+        }
+        return null;
+    }
 
-	@Override
-	public Object visit(Or or) {
-		for (Selector s : or.getChildren()) {
-			s.accept(this);
-		}
-		return null;
-	}
+    @Override
+    public Object visit(Or or) {
+        for (Selector s : or.getChildren()) {
+            s.accept(this);
+        }
+        return null;
+    }
 
-	@Override
-	public Object visit(TypeName typeName) {
-		return null;
-	}
+    @Override
+    public Object visit(TypeName typeName) {
+        return null;
+    }
 
-	@Override
-	public Object visit(ScaleRange scaleRange) {
-		return null;
-	}
+    @Override
+    public Object visit(ScaleRange scaleRange) {
+        return null;
+    }
 
-	@Override
-	public Object visit(PseudoClass pseudoClass) {
-		return null;
-	}
-
+    @Override
+    public Object visit(PseudoClass pseudoClass) {
+        return null;
+    }
 }

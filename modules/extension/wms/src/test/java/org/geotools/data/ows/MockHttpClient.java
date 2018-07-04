@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
-
 /**
  * Helper class to test WMS cascading
- *  
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public abstract class MockHttpClient implements HTTPClient {
@@ -23,7 +20,7 @@ public abstract class MockHttpClient implements HTTPClient {
     protected int readTimeout;
 
     protected boolean tryGzip;
-    
+
     public HTTPResponse post(URL url, InputStream postContent, String postContentType)
             throws IOException {
         throw new UnsupportedOperationException(
@@ -49,26 +46,20 @@ public abstract class MockHttpClient implements HTTPClient {
 
     public void setPassword(String password) {
         this.password = password;
-
     }
 
-    
     public int getConnectTimeout() {
         return connectTimeout;
     }
 
-    
     public void setConnectTimeout(int connectTimeout) {
         this.connectTimeout = connectTimeout;
-
     }
 
-    
     public int getReadTimeout() {
         return this.readTimeout;
     }
 
-    
     public void setReadTimeout(int readTimeout) {
         this.readTimeout = readTimeout;
     }

@@ -20,16 +20,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Properties;
-
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataTestSetup extends JDBCTestSetup {
 
     protected int srid4326 = 1619;
@@ -37,30 +32,31 @@ public class TeradataTestSetup extends JDBCTestSetup {
     public int getSrid4326() {
         return srid4326;
     }
+
     @Override
     protected void initializeDatabase() throws Exception {
         super.initializeDatabase();
-        
-        //figure out the 4326 native srid
+
+        // figure out the 4326 native srid
         Connection cx = getConnection();
         try {
             Statement st = cx.createStatement();
             try {
-                ResultSet rs = st.executeQuery("SELECT srid FROM sysspatial.spatial_ref_sys " 
-                    + "WHERE auth_srid = 4326");
+                ResultSet rs =
+                        st.executeQuery(
+                                "SELECT srid FROM sysspatial.spatial_ref_sys "
+                                        + "WHERE auth_srid = 4326");
                 rs.next();
                 srid4326 = rs.getInt(1);
                 rs.close();
-            }
-            finally {
+            } finally {
                 st.close();
             }
-        }
-        finally {
+        } finally {
             cx.close();
         }
     }
-    
+
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
 
@@ -72,11 +68,12 @@ public class TeradataTestSetup extends JDBCTestSetup {
             dataStore.setDatabaseSchema(fixture.getProperty("schema"));
         }
     }
-    
+
     protected Properties createExampleFixture() {
         Properties fixture = new Properties();
         fixture.put("driver", "com.teradata.jdbc.TeraDriver");
-        fixture.put("url",
+        fixture.put(
+                "url",
                 "jdbc:teradata://localhost/DATABASE=geotools,PORT=1025,TMODE=ANSI,CHARSET=UTF8");
         fixture.put("host", "localhost");
         fixture.put("database", "geotools");
@@ -103,23 +100,29 @@ public class TeradataTestSetup extends JDBCTestSetup {
         runSafe("DROP TABLE \"ft2_geometry_idx\"");
         runSafe("DROP TABLE \"ft2\"");
 
-        run("CREATE TABLE \"ft1\"(" //
-                + "\"id\" PRIMARY KEY not null integer, " //
-                + "\"geometry\" ST_GEOMETRY, " //
-                + "\"intProperty\" int," //
-                + "\"doubleProperty\" double precision, " //
-                + "\"stringProperty\" varchar(200) casespecific)");
-        run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME," +
-            " F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('"
-                + fixture.getProperty("database") + "', '" + fixture.getProperty("schema")
-                + "', 'ft1', 'geometry', 2, " + srid4326 + ", 'POINT')");
-        run("CREATE MULTISET TABLE \"ft1_geometry_idx\""
-                + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
-        
+        run(
+                "CREATE TABLE \"ft1\"(" //
+                        + "\"id\" PRIMARY KEY not null integer, " //
+                        + "\"geometry\" ST_GEOMETRY, " //
+                        + "\"intProperty\" int," //
+                        + "\"doubleProperty\" double precision, " //
+                        + "\"stringProperty\" varchar(200) casespecific)");
+        run(
+                "INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME,"
+                        + " F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('"
+                        + fixture.getProperty("database")
+                        + "', '"
+                        + fixture.getProperty("schema")
+                        + "', 'ft1', 'geometry', 2, "
+                        + srid4326
+                        + ", 'POINT')");
+        run(
+                "CREATE MULTISET TABLE \"ft1_geometry_idx\""
+                        + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
+
         run("INSERT INTO \"ft1\" VALUES(0, 'POINT(0 0)', 0, 0.0, 'zero')");
         run("INSERT INTO \"ft1\" VALUES(1, 'POINT(1 1)', 1, 1.1, 'one')");
         run("INSERT INTO \"ft1\" VALUES(2, 'POINT(2 2)', 2, 2.2, 'two')");
-
     }
 
     protected JDBCDataStoreFactory createDataStoreFactory() {

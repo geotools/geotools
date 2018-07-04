@@ -16,13 +16,12 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.gml2.GML;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Not;
@@ -38,6 +37,7 @@ import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.Multiply;
@@ -55,18 +55,14 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.gml2.GML;
-
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Mock data class used for filter binding tests.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class FilterMockData {
@@ -85,6 +81,11 @@ public class FilterMockData {
 
     static PropertyName propertyName() {
         return propertyName("foo");
+    }
+
+    private static Expression propertyNameIsFunc() {
+
+        return f.function("strToLowerCase", propertyName("foo"));
     }
 
     static PropertyName propertyName(String property) {
@@ -150,6 +151,10 @@ public class FilterMockData {
         return f.greater(propertyName(), literal());
     }
 
+    static PropertyIsGreaterThan propertyFuncIsGreaterThan() {
+        return f.greater(propertyNameIsFunc(), literal());
+    }
+
     static Element propertyIsGreaterThanOrEqualTo(Document document, Node parent) {
         return binaryComparisonOp(document, parent, OGC.PropertyIsGreaterThanOrEqualTo);
     }
@@ -199,6 +204,12 @@ public class FilterMockData {
         return f.like(propertyName(), "foo", "x", "y", "z");
     }
 
+    static PropertyIsLike propertyIsLike2() {
+        PropertyIsLike filter = f.like(propertyNameIsFunc(), "foo", "x", "y", "z");
+
+        return filter;
+    }
+
     static Element propertyIsLike(Document document, Node parent) {
         Element isLike = element(document, parent, OGC.PropertyIsLike);
 
@@ -213,13 +224,13 @@ public class FilterMockData {
     }
 
     static Element and(Document document, Node parent) {
-        return and(document,parent,false);
+        return and(document, parent, false);
     }
-    
+
     static Element and(Document document, Node parent, boolean empty) {
         Element and = element(document, parent, OGC.And);
 
-        if( !empty ) {
+        if (!empty) {
             propertyIsEqualTo(document, and);
             propertyIsNotEqualTo(document, and);
         }
@@ -254,6 +265,10 @@ public class FilterMockData {
         return not;
     }
 
+    static Not notIsNull() {
+        return f.not(propertyIsNull());
+    }
+
     static Beyond beyond() {
         return f.beyond(f.property("the_geom"), f.literal(geometry()), 1.0d, "m");
     }
@@ -274,7 +289,7 @@ public class FilterMockData {
         Element doperator = binarySpatialOperator(document, parent, name);
         Element distance = element(document, doperator, new QName(OGC.NAMESPACE, "Distance"));
         distance.appendChild(document.createTextNode("1.0"));
-        distance.setAttribute( "units", "m" );
+        distance.setAttribute("units", "m");
         return doperator;
     }
 
@@ -343,9 +358,9 @@ public class FilterMockData {
     }
 
     static Within withinWithFunction() {
-        return f.within( f.property( "the_geom"), function() );
+        return f.within(f.property("the_geom"), function());
     }
-    
+
     static Element withinWithFunction(Document document, Node parent) {
         Element within = element(document, parent, OGC.Within);
 
@@ -354,7 +369,7 @@ public class FilterMockData {
 
         return within;
     }
-    
+
     static Element binarySpatialOperator(Document document, Node parent, QName name) {
         Element spatial = element(document, parent, name);
 

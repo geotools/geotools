@@ -19,18 +19,12 @@ package org.geotools.gml3.bindings;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xml.Configuration;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.vividsolutions.jts.geom.Point;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AbstractFeatureTypeBindingTest extends GML3TestSupport {
     protected Configuration createConfiguration() {
         return new TestConfiguration();

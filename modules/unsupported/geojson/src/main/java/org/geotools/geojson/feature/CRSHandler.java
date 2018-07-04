@@ -17,7 +17,6 @@
 package org.geotools.geojson.feature;
 
 import java.io.IOException;
-
 import org.geotools.geojson.HandlerBase;
 import org.geotools.geojson.IContentHandler;
 import org.geotools.referencing.CRS;
@@ -25,54 +24,46 @@ import org.json.simple.parser.ParseException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class CRSHandler extends HandlerBase implements IContentHandler<CoordinateReferenceSystem> {
 
     CoordinateReferenceSystem crs;
     int state = 0;
-    
+
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         if ("properties".equals(key)) {
             state = 1;
-        }
-        else if (("name".equals(key) || "code".equals(key)) && state == 1) {
+        } else if (("name".equals(key) || "code".equals(key)) && state == 1) {
             state = 2;
         }
         return true;
     }
-    
+
     public boolean primitive(Object value) throws ParseException, IOException {
         if (state == 2) {
             try {
                 try {
                     crs = CRS.decode(value.toString());
-                }
-                catch(NoSuchAuthorityCodeException e) {
-                    //try pending on EPSG
+                } catch (NoSuchAuthorityCodeException e) {
+                    // try pending on EPSG
                     try {
                         crs = CRS.decode("EPSG:" + value.toString());
-                    }
-                    catch(Exception e1) {
-                        //throw the original
+                    } catch (Exception e1) {
+                        // throw the original
                         throw e;
                     }
                 }
-            }
-            catch(Exception e) {
-                throw (IOException) new IOException("Error parsing " + value + " as crs id").initCause(e);
+            } catch (Exception e) {
+                throw (IOException)
+                        new IOException("Error parsing " + value + " as crs id").initCause(e);
             }
             state = -1;
         }
-        
+
         return true;
     }
 
     public CoordinateReferenceSystem getValue() {
         return crs;
     }
-
 }

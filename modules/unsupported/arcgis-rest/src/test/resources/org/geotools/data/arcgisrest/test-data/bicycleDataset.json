@@ -1,0 +1,323 @@
+{
+  "currentVersion": 10.51,
+  "id": 0,
+  "name": "Principal Bicycle Network",
+  "type": "Feature Layer",
+  "serviceItemId": "d9066a14ec2d4004afdd113f4a52b8bf",
+  "displayField": "NAME",
+  "description": "VicRoads Principal Bicycle Network. This network data includes attributes such as existing and proposed routes as well as being on-road and off-road. This data is in Web Mercator (Auxiliary Sphere) projection.",
+  "copyrightText": "",
+  "defaultVisibility": true,
+  "editingInfo": {
+    "lastEditDate": 1468898548179
+  },
+  "relationships": [],
+  "isDataVersioned": false,
+  "supportsAppend": true,
+  "supportsCalculate": true,
+  "supportsTruncate": true,
+  "supportsAttachmentsByUploadId": true,
+  "supportsRollbackOnFailureParameter": true,
+  "supportsStatistics": true,
+  "supportsAdvancedQueries": true,
+  "supportsValidateSql": true,
+  "supportsCoordinatesQuantization": true,
+  "supportsApplyEditsWithGlobalIds": false,
+  "supportsMultiScaleGeometry": true,
+  "advancedQueryCapabilities": {
+    "supportsPagination": true,
+    "supportsPaginationOnAggregatedQueries": true,
+    "supportsQueryRelatedPagination": true,
+    "supportsQueryWithDistance": true,
+    "supportsReturningQueryExtent": true,
+    "supportsStatistics": true,
+    "supportsOrderBy": true,
+    "supportsDistinct": true,
+    "supportsQueryWithResultType": true,
+    "supportsSqlExpression": true,
+    "supportsAdvancedQueryRelated": true,
+    "supportsReturningGeometryCentroid": false,
+    "supportsReturningGeometryProperties": true,
+    "supportsQueryWithDatumTransformation": true,
+    "supportsHavingClause": true,
+    "supportsOutFieldSQLExpression": true
+  },
+  "useStandardizedQueries": false,
+  "geometryType": "esriGeometryPolyline",
+  "minScale": 0,
+  "maxScale": 0,
+  "extent": {
+    "xmin": 2201040.0584001187,
+    "ymin": 2316916.5987966731,
+    "xmax": 2765377.4959998969,
+    "ymax": 2812464.08399754,
+    "spatialReference": {
+      "wkid": 102171,
+      "latestWkid": 3111
+    }
+  },
+  "drawingInfo": {
+    "renderer": {
+      "type": "simple",
+      "symbol": {
+        "type": "esriSLS",
+        "style": "esriSLSSolid",
+        "color": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "width": 1
+      },
+      "label": "",
+      "description": ""
+    },
+    "transparency": 0,
+    "labelingInfo": null
+  },
+  "allowGeometryUpdates": true,
+  "hasAttachments": false,
+  "htmlPopupType": "esriServerHTMLPopupTypeAsHTMLText",
+  "hasM": false,
+  "hasZ": false,
+  "objectIdField": "OBJECTID",
+  "globalIdField": "",
+  "typeIdField": "",
+  "fields": [
+    {
+      "name": "OBJECTID",
+      "type": "esriFieldTypeOID",
+      "alias": "OBJECTID",
+      "sqlType": "sqlTypeOther",
+      "nullable": false,
+      "editable": false,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "NETWORK",
+      "type": "esriFieldTypeString",
+      "alias": "NETWORK",
+      "sqlType": "sqlTypeOther",
+      "length": 20,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "TYPE",
+      "type": "esriFieldTypeString",
+      "alias": "TYPE",
+      "sqlType": "sqlTypeOther",
+      "length": 20,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "STATUS",
+      "type": "esriFieldTypeString",
+      "alias": "STATUS",
+      "sqlType": "sqlTypeOther",
+      "length": 20,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "LOCAL_NAME",
+      "type": "esriFieldTypeString",
+      "alias": "LOCAL_NAME",
+      "sqlType": "sqlTypeOther",
+      "length": 45,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "LOCAL_TYPE",
+      "type": "esriFieldTypeString",
+      "alias": "LOCAL_TYPE",
+      "sqlType": "sqlTypeOther",
+      "length": 15,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "RD_NUM",
+      "type": "esriFieldTypeInteger",
+      "alias": "RD_NUM",
+      "sqlType": "sqlTypeOther",
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "NAME",
+      "type": "esriFieldTypeString",
+      "alias": "NAME",
+      "sqlType": "sqlTypeOther",
+      "length": 75,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "SIDE",
+      "type": "esriFieldTypeString",
+      "alias": "SIDE",
+      "sqlType": "sqlTypeOther",
+      "length": 1,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "FACILITY_L",
+      "type": "esriFieldTypeString",
+      "alias": "FACILITY_L",
+      "sqlType": "sqlTypeOther",
+      "length": 3,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "SURFACE_L",
+      "type": "esriFieldTypeString",
+      "alias": "SURFACE_L",
+      "sqlType": "sqlTypeOther",
+      "length": 2,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "WIDTH_LEFT",
+      "type": "esriFieldTypeInteger",
+      "alias": "WIDTH_LEFT",
+      "sqlType": "sqlTypeOther",
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "FACILITY_R",
+      "type": "esriFieldTypeString",
+      "alias": "FACILITY_R",
+      "sqlType": "sqlTypeOther",
+      "length": 3,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "SURFACE_R",
+      "type": "esriFieldTypeString",
+      "alias": "SURFACE_R",
+      "sqlType": "sqlTypeOther",
+      "length": 2,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "WIDTH_RIGH",
+      "type": "esriFieldTypeInteger",
+      "alias": "WIDTH_RIGH",
+      "sqlType": "sqlTypeOther",
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "LIGHTING",
+      "type": "esriFieldTypeString",
+      "alias": "LIGHTING",
+      "sqlType": "sqlTypeOther",
+      "length": 2,
+      "nullable": false,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    },
+    {
+      "name": "VERI_DATE",
+      "type": "esriFieldTypeDate",
+      "alias": "VERI_DATE",
+      "sqlType": "sqlTypeOther",
+      "length": 8,
+      "nullable": true,
+      "editable": true,
+      "domain": null,
+      "defaultValue": null
+    }
+  ],
+  "indexes": [
+    {
+      "name": "PK__Principa__F4B70D8543E9FD0F",
+      "fields": "OBJECTID",
+      "isAscending": true,
+      "isUnique": true,
+      "description": "clustered, unique, primary key"
+    },
+    {
+      "name": "user_22136.Principal_Bicycle_Network_Principal_Bicycle_Network_Shape_sidx",
+      "fields": "Shape",
+      "isAscending": false,
+      "isUnique": false,
+      "description": "Shape Index"
+    }
+  ],
+  "types": [],
+  "templates": [
+    {
+      "name": "Principal Bicycle Network",
+      "description": "",
+      "drawingTool": "esriFeatureEditToolLine",
+      "prototype": {
+        "attributes": {
+          "VERI_DATE": null,
+          "NETWORK": " ",
+          "TYPE": " ",
+          "STATUS": " ",
+          "LOCAL_NAME": " ",
+          "LOCAL_TYPE": " ",
+          "RD_NUM": 0,
+          "NAME": " ",
+          "SIDE": " ",
+          "FACILITY_L": " ",
+          "SURFACE_L": " ",
+          "WIDTH_LEFT": 0,
+          "FACILITY_R": " ",
+          "SURFACE_R": " ",
+          "WIDTH_RIGH": 0,
+          "LIGHTING": " "
+        }
+      }
+    }
+  ],
+  "supportedQueryFormats": "JSON, geoJSON",
+  "hasStaticData": true,
+  "maxRecordCount": 30000,
+  "standardMaxRecordCount": 4000,
+  "tileMaxRecordCount": 4000,
+  "maxRecordCountFactor": 1,
+  "capabilities": "Query"
+}

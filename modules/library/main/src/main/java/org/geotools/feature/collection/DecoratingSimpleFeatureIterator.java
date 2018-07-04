@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,38 +16,28 @@
  */
 package org.geotools.feature.collection;
 
-import java.util.Iterator;
-
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * A feature iterator that completely delegates to a normal
- * Iterator, simply allowing Java 1.4 code to escape the caste (sic)
- * system.
- * <p>
- * This implementation is not suitable for use with collections
- * that make use of system resources. As an alterantive please
- * see ResourceFetaureIterator.
- * </p>
+ * A feature iterator that completely delegates to a normal Iterator, simply allowing Java 1.4 code
+ * to escape the caste (sic) system.
+ *
+ * <p>This implementation is not suitable for use with collections that make use of system
+ * resources. As an alterantive please see ResourceFetaureIterator.
+ *
  * @author Jody Garnett, Refractions Research, Inc.
- *
- *
  * @source $URL$
  */
-public class DecoratingSimpleFeatureIterator extends DecoratingFeatureIterator<SimpleFeature> implements SimpleFeatureIterator {
+public class DecoratingSimpleFeatureIterator extends DecoratingFeatureIterator<SimpleFeature>
+        implements SimpleFeatureIterator {
 
-	/**
-	 * Wrap the provided iterator up as a FeatureIterator.
-	 * 
-	 * @param iterator Iterator to be used as a delegate.
-	 */
-	public DecoratingSimpleFeatureIterator( SimpleFeatureIterator iterator ){
-		super( iterator );
-	}
-	
+    /**
+     * Wrap the provided iterator up as a FeatureIterator.
+     *
+     * @param iterator Iterator to be used as a delegate.
+     */
+    public DecoratingSimpleFeatureIterator(SimpleFeatureIterator iterator) {
+        super(iterator);
+    }
 }

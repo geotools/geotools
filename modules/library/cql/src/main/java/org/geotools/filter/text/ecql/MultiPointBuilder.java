@@ -18,13 +18,11 @@
 package org.geotools.filter.text.ecql;
 
 import java.util.List;
-
 import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.cql2.CQLException;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Builds a {@link MultiPoint} using the points made in previous steps of parsing processS
@@ -40,26 +38,19 @@ final class MultiPointBuilder extends GeometryBuilder {
      */
     public MultiPointBuilder(String statement, BuildResultStack resultStack) {
         super(statement, resultStack);
-
     }
 
-    /**
-     * Builds a {@link MultiPoint} using the point nodes presents in the stack of result
-     */
+    /** Builds a {@link MultiPoint} using the point nodes presents in the stack of result */
     @Override
     public Geometry build(int pointNode) throws CQLException {
 
         List<Geometry> pointList = popGeometry(pointNode);
-        
+
         int pointListSize = pointList.size();
-        Point[] arrayOfPoint = pointList.toArray(new Point[pointListSize]) ;
-        
-        MultiPoint multiPoint= getGeometryFactory().createMultiPoint(arrayOfPoint);
+        Point[] arrayOfPoint = pointList.toArray(new Point[pointListSize]);
+
+        MultiPoint multiPoint = getGeometryFactory().createMultiPoint(arrayOfPoint);
 
         return multiPoint;
-        
     }
-    
-    
-
 }

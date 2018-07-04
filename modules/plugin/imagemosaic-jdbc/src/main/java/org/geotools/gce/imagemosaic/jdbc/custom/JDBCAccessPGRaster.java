@@ -21,7 +21,6 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.sql.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,7 +34,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.ImageDecoderThread;
@@ -43,46 +41,33 @@ import org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo;
 import org.geotools.gce.imagemosaic.jdbc.TileQueueElement;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.util.logging.Logging;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKBReader;
-import com.vividsolutions.jts.io.WKBWriter;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKBReader;
+import org.locationtech.jts.io.WKBWriter;
 
 /**
  * This class is used for JDBC Access to the Postgis raster feature
- * 
+ *
  * @author Christian Mueller
- * 
- * 
- * 
- * 
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/src/main/java/org
- *         /geotools/gce/imagemosaic/jdbc/custom/JDBCAccessPGRaster.java $
- **/
-
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/src/main/java/org
+ *     /geotools/gce/imagemosaic/jdbc/custom/JDBCAccessPGRaster.java $
+ */
 public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
-    private final static Logger LOGGER = Logging.getLogger(JDBCAccessPGRaster.class.getPackage()
-            .getName());
+    private static final Logger LOGGER =
+            Logging.getLogger(JDBCAccessPGRaster.class.getPackage().getName());
 
-    /**
-     * Different sql statements needed for in-db and out-db raster data
-     */
+    /** Different sql statements needed for in-db and out-db raster data */
     protected Map<ImageLevelInfo, String> statementMap;
 
-    /**
-     * 
-     * @param config
-     *            Config from XML file passed to this class
-     * 
-     **/
+    /** @param config Config from XML file passed to this class */
 
     // Map<ImageLevelInfo,Boolean> isOutDBMap;
 
@@ -92,7 +77,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#initialize()
      */
     public void initialize() throws IOException {
@@ -111,9 +96,9 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             calculateExtentsFromDB(getConfig().getCoverageName(), con);
             calculateResolutionsFromDB(getConfig().getCoverageName(), con);
             /*
-             populate statementsMap independently of calculateResolutionsFromDB()
-             in case resolutions have been pre-set and don't need to be recalculated.
-             */
+            populate statementsMap independently of calculateResolutionsFromDB()
+            in case resolutions have been pre-set and don't need to be recalculated.
+            */
             populateStatementsMap(getConfig().getCoverageName(), con);
             /*
             TODO nat changes - GEOT-4525. I am  not sure if this is the best place for the next statement, as
@@ -125,8 +110,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             con.close();
 
             for (ImageLevelInfo levelInfo : getLevelInfos()) {
-                if (LOGGER.isLoggable(Level.INFO))
-                    LOGGER.info(levelInfo.infoString());
+                if (LOGGER.isLoggable(Level.INFO)) LOGGER.info(levelInfo.infoString());
             }
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -156,34 +140,28 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
     /**
      * startTileDecoders
-     * 
-     * @param pixelDimension
-     *            Not Used (passed as per interface requirement)
-     * 
-     * @param requestEnvelope
-     *            Geographic Envelope of request
-     * 
-     * @param info
-     *            Pyramid Level
-     * 
-     * @param tileQueue
-     *            Queue to place retrieved tile into
-     * 
-     * @param coverageFactory
-     *            not used (passed as per interface requirement)
-     * 
-     **/
+     *
+     * @param pixelDimension Not Used (passed as per interface requirement)
+     * @param requestEnvelope Geographic Envelope of request
+     * @param info Pyramid Level
+     * @param tileQueue Queue to place retrieved tile into
+     * @param coverageFactory not used (passed as per interface requirement)
+     */
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#startTileDecoders(java.awt.Rectangle,
      * org.geotools.geometry.GeneralEnvelope, org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo,
      * java.util.concurrent.LinkedBlockingQueue)
      */
-    public void startTileDecoders(Rectangle pixelDimension, GeneralEnvelope requestEnvelope,
-            ImageLevelInfo levelInfo, LinkedBlockingQueue<TileQueueElement> tileQueue,
-            GridCoverageFactory coverageFactory) throws IOException {
+    public void startTileDecoders(
+            Rectangle pixelDimension,
+            GeneralEnvelope requestEnvelope,
+            ImageLevelInfo levelInfo,
+            LinkedBlockingQueue<TileQueueElement> tileQueue,
+            GridCoverageFactory coverageFactory)
+            throws IOException {
         Date start = new Date();
         Connection con = null;
         List<ImageDecoderThread> threads = new ArrayList<ImageDecoderThread>();
@@ -215,15 +193,23 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                     throw new IOException(e);
                 }
                 Envelope env = g.getEnvelopeInternal();
-                Rectangle2D tmp = new Rectangle2D.Double(env.getMinX(), env.getMinY(),
-                        env.getWidth(), env.getHeight());
+                Rectangle2D tmp =
+                        new Rectangle2D.Double(
+                                env.getMinX(), env.getMinY(), env.getWidth(), env.getHeight());
                 GeneralEnvelope tileGeneralEnvelope = new GeneralEnvelope(tmp);
-                tileGeneralEnvelope.setCoordinateReferenceSystem(requestEnvelope
-                        .getCoordinateReferenceSystem());
+                tileGeneralEnvelope.setCoordinateReferenceSystem(
+                        requestEnvelope.getCoordinateReferenceSystem());
 
-                ImageDecoderThread thread = new ImageDecoderThread(tileBytes, "",
-                        tileGeneralEnvelope, pixelDimension, requestEnvelope, levelInfo, tileQueue,
-                        getConfig());
+                ImageDecoderThread thread =
+                        new ImageDecoderThread(
+                                tileBytes,
+                                "",
+                                tileGeneralEnvelope,
+                                pixelDimension,
+                                requestEnvelope,
+                                levelInfo,
+                                tileQueue,
+                                getConfig());
                 // thread.start();
                 threads.add(thread);
                 pool.execute(thread);
@@ -244,8 +230,12 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         }
 
         if (LOGGER.isLoggable(Level.INFO))
-            LOGGER.info("Getting " + threads.size() + " Tiles needs "
-                    + ((new Date()).getTime() - start.getTime()) + " millisecs");
+            LOGGER.info(
+                    "Getting "
+                            + threads.size()
+                            + " Tiles needs "
+                            + ((new Date()).getTime() - start.getTime())
+                            + " millisecs");
 
         // wait for all threads dto finish and write end marker
         pool.shutdown();
@@ -258,21 +248,24 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         tileQueue.add(TileQueueElement.ENDELEMENT);
 
         if (LOGGER.isLoggable(Level.INFO))
-            LOGGER.info("Getting and decoding  " + threads.size() + " Tiles needs "
-                    + ((new Date()).getTime() - start.getTime()) + " millisecs");
+            LOGGER.info(
+                    "Getting and decoding  "
+                            + threads.size()
+                            + " Tiles needs "
+                            + ((new Date()).getTime() - start.getTime())
+                            + " millisecs");
     }
 
     /**
      * Step 1 of the bootstrapping process. Read meta table.
-     * 
-     * @param coverageName
-     *            the coverage name stored in the sql meta table
-     * @param con
-     *            jdbc connection
+     *
+     * @param coverageName the coverage name stored in the sql meta table
+     * @param con jdbc connection
      * @throws SQLException
      * @throws IOException
      */
-    protected void initFromDB(String coverageName, Connection con) throws SQLException, IOException {
+    protected void initFromDB(String coverageName, Connection con)
+            throws SQLException, IOException {
         PreparedStatement s = null;
         ResultSet res = null;
 
@@ -285,32 +278,32 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             while (res.next()) {
                 ImageLevelInfo imageLevelInfo = new ImageLevelInfo();
                 imageLevelInfo.setCoverageName(coverageName);
-                imageLevelInfo.setTileTableName((res.getString(getConfig()
-                        .getTileTableNameAtribute())));
+                imageLevelInfo.setTileTableName(
+                        (res.getString(getConfig().getTileTableNameAtribute())));
 
-                imageLevelInfo.setExtentMaxX(new Double(res.getDouble(getConfig()
-                        .getMaxXAttribute())));
+                imageLevelInfo.setExtentMaxX(
+                        new Double(res.getDouble(getConfig().getMaxXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMaxX(null);
                 }
 
-                imageLevelInfo.setExtentMaxY(new Double(res.getDouble(getConfig()
-                        .getMaxYAttribute())));
+                imageLevelInfo.setExtentMaxY(
+                        new Double(res.getDouble(getConfig().getMaxYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMaxY(null);
                 }
 
-                imageLevelInfo.setExtentMinX(new Double(res.getDouble(getConfig()
-                        .getMinXAttribute())));
+                imageLevelInfo.setExtentMinX(
+                        new Double(res.getDouble(getConfig().getMinXAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMinX(null);
                 }
 
-                imageLevelInfo.setExtentMinY(new Double(res.getDouble(getConfig()
-                        .getMinYAttribute())));
+                imageLevelInfo.setExtentMinY(
+                        new Double(res.getDouble(getConfig().getMinYAttribute())));
 
                 if (res.wasNull()) {
                     imageLevelInfo.setExtentMinY(null);
@@ -334,7 +327,11 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                 Please note: alternatively this value could be loaded from mosaic config file,
                 we could add an optional element/attribute to specify this value.
                 */
-                Number noDataValue = getNoDataValue(imageLevelInfo.getTileTableName(), getConfig().getBlobAttributeNameInTileTable(), con);
+                Number noDataValue =
+                        getNoDataValue(
+                                imageLevelInfo.getTileTableName(),
+                                getConfig().getBlobAttributeNameInTileTable(),
+                                con);
                 imageLevelInfo.setNoDataValue(noDataValue);
 
                 getLevelInfos().add(imageLevelInfo);
@@ -363,14 +360,21 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
     }
 
     /*
-     extract noDataValues for each overview from overview raster tables
-     */
-    private Number getNoDataValue(String coverageTableName, String blobAttributeName, Connection con) throws SQLException {
+    extract noDataValues for each overview from overview raster tables
+    */
+    private Number getNoDataValue(
+            String coverageTableName, String blobAttributeName, Connection con)
+            throws SQLException {
         PreparedStatement s = null;
         ResultSet res = null;
 
         try {
-            String stmt = "select ST_BandNoDataValue(" + blobAttributeName + ") from " + coverageTableName + " limit 1";
+            String stmt =
+                    "select ST_BandNoDataValue("
+                            + blobAttributeName
+                            + ") from "
+                            + coverageTableName
+                            + " limit 1";
             s = con.prepareStatement(stmt);
             res = s.executeQuery();
 
@@ -384,7 +388,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                 }
             }
             return null;
-        }  finally {
+        } finally {
             if (res != null) {
                 res.close();
             }
@@ -396,20 +400,18 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
     /**
      * Step 2 of the bootstrapping process.
-     * 
-     * Calculating the the extent for each image level (original + pyramids). This calculation is
+     *
+     * <p>Calculating the the extent for each image level (original + pyramids). This calculation is
      * only done if the extent info in the master table is SQL NULL. After calculation the meta
      * table is updated with the result to avoid this operation in the future.
-     * 
-     * @param coverageName
-     *            The coverage name in the sql meta table
-     * @param con
-     *            JDBC connection
+     *
+     * @param coverageName The coverage name in the sql meta table
+     * @param con JDBC connection
      * @throws SQLException
      * @throws IOException
      */
-    void calculateExtentsFromDB(String coverageName, Connection con) throws SQLException,
-            IOException {
+    void calculateExtentsFromDB(String coverageName, Connection con)
+            throws SQLException, IOException {
 
         PreparedStatement stmt = con.prepareStatement(getConfig().getSqlUpdateMosaicStatement());
 
@@ -425,13 +427,15 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             }
 
             Date start = new Date();
-            if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info("Calculate extent for " + li.toString());
+            if (LOGGER.isLoggable(Level.INFO)) LOGGER.info("Calculate extent for " + li.toString());
 
             final String rasterAttr = getConfig().getBlobAttributeNameInTileTable();
-            String envSelect = "with envelopes as ( select st_envelope(" + rasterAttr
-                    + " ) as env from " + li.getTileTableName()
-                    + " ) select st_asbinary(st_extent(env)) from envelopes";
+            String envSelect =
+                    "with envelopes as ( select st_envelope("
+                            + rasterAttr
+                            + " ) as env from "
+                            + li.getTileTableName()
+                            + " ) select st_asbinary(st_extent(env)) from envelopes";
 
             Envelope envelope = null;
             PreparedStatement s = con.prepareStatement(envSelect);
@@ -485,8 +489,8 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             long msecs = (new Date()).getTime() - start.getTime();
 
             if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info("Calculate extent for " + li.toString() + " finished in " + msecs
-                        + " ms ");
+                LOGGER.info(
+                        "Calculate extent for " + li.toString() + " finished in " + msecs + " ms ");
         }
 
         getLevelInfos().removeAll(toBeRemoved);
@@ -497,22 +501,19 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
     }
 
     /**
-     * 
      * Step 3 of the bootstrapping process.
-     * 
-     * Calculating the the resolution for each image level (original + pyramids). This calculation
-     * is only done if the resoltion info in the master table is SQL NULL. After calculation the
-     * meta table is updated with the result to avoid this operation in the future.
-     * 
-     * @param coverageName
-     *            The coverage name in the sql meta table
-     * @param con
-     *            JDBC Connection
+     *
+     * <p>Calculating the the resolution for each image level (original + pyramids). This
+     * calculation is only done if the resoltion info in the master table is SQL NULL. After
+     * calculation the meta table is updated with the result to avoid this operation in the future.
+     *
+     * @param coverageName The coverage name in the sql meta table
+     * @param con JDBC Connection
      * @throws SQLException
      * @throws IOException
      */
-    void calculateResolutionsFromDB(String coverageName, Connection con) throws SQLException,
-            IOException {
+    void calculateResolutionsFromDB(String coverageName, Connection con)
+            throws SQLException, IOException {
         PreparedStatement stmt = null;
 
         // isOutDBMap = new HashMap<ImageLevelInfo, Boolean>();
@@ -532,17 +533,26 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             if (LOGGER.isLoggable(Level.INFO))
                 LOGGER.info("Calculate resolutions for " + li.toString());
 
-            String select = "select " + "st_scalex("
-                    + getConfig().getBlobAttributeNameInTileTable() + ")," + "st_scaley("
-                    + getConfig().getBlobAttributeNameInTileTable() + ")," + "st_srid("
-                    + getConfig().getBlobAttributeNameInTileTable() + ") " + " from "
-                    + li.getTileTableName() + " LIMIT 1";
+            String select =
+                    "select "
+                            + "st_scalex("
+                            + getConfig().getBlobAttributeNameInTileTable()
+                            + "),"
+                            + "st_scaley("
+                            + getConfig().getBlobAttributeNameInTileTable()
+                            + "),"
+                            + "st_srid("
+                            + getConfig().getBlobAttributeNameInTileTable()
+                            + ") "
+                            + " from "
+                            + li.getTileTableName()
+                            + " LIMIT 1";
 
             double resolutions[] = null;
             PreparedStatement ps = con.prepareStatement(select);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                resolutions = new double[] { rs.getDouble(1), rs.getDouble(2) };
+                resolutions = new double[] {rs.getDouble(1), rs.getDouble(2)};
                 li.setSrsId(rs.getInt(3));
             }
             rs.close();
@@ -555,19 +565,17 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                 continue;
             }
 
-            if (resolutions[0] < 0)
-                resolutions[0] *= -1;
-            if (resolutions[1] < 0)
-                resolutions[1] *= -1;
+            if (resolutions[0] < 0) resolutions[0] *= -1;
+            if (resolutions[1] < 0) resolutions[1] *= -1;
             li.setResX(resolutions[0]);
             li.setResY(resolutions[1]);
             if (LOGGER.isLoggable(Level.INFO))
                 LOGGER.info("ResX: " + li.getResX() + " ResY: " + li.getResY());
 
             /*
-             moved code from here into method 'populateStatementsMap' below
-             which is called at initialisation. Otherwise this code was skipped in line #496
-             */
+            moved code from here into method 'populateStatementsMap' below
+            which is called at initialisation. Otherwise this code was skipped in line #496
+            */
             stmt.setDouble(1, li.getResX().doubleValue());
             stmt.setDouble(2, li.getResY().doubleValue());
             stmt.setString(3, li.getCoverageName());
@@ -577,9 +585,12 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
             long msecs = (new Date()).getTime() - start.getTime();
 
             if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.info("Calculate resolutions for " + li.toString() + " finished in " + msecs
-                        + " ms ");
-
+                LOGGER.info(
+                        "Calculate resolutions for "
+                                + li.toString()
+                                + " finished in "
+                                + msecs
+                                + " ms ");
         }
 
         getLevelInfos().removeAll(toBeRemoved);
@@ -597,23 +608,38 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
                 continue;
             }
 
-            String select = "select (ST_BandMetaData(" + getConfig().getBlobAttributeNameInTileTable()
-                    + ")).isoutdb " + " from " + li.getTileTableName() + " LIMIT 1";
+            String select =
+                    "select (ST_BandMetaData("
+                            + getConfig().getBlobAttributeNameInTileTable()
+                            + ")).isoutdb "
+                            + " from "
+                            + li.getTileTableName()
+                            + " LIMIT 1";
             PreparedStatement ps = con.prepareStatement(select);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Boolean isOut = (Boolean) rs.getObject("isoutdb");
-                String gridStatement = isOut ? "SELECT st_asbinary(st_envelope ("
-                        + getConfig().getBlobAttributeNameInTileTable() + ")),"
-                        + getConfig().getBlobAttributeNameInTileTable() + " from "
-                        + li.getTileTableName() + " where st_intersects("
-                        + getConfig().getBlobAttributeNameInTileTable() + " ,ST_GeomFromWKB(?,?))"
-                        : "SELECT st_asbinary(st_envelope ("
-                        + getConfig().getBlobAttributeNameInTileTable() + ")),st_astiff("
-                        + getConfig().getBlobAttributeNameInTileTable() + ") " + " from "
-                        + li.getTileTableName() + " where st_intersects("
-                        + getConfig().getBlobAttributeNameInTileTable()
-                        + " ,ST_GeomFromWKB(?,?))";
+                String gridStatement =
+                        isOut
+                                ? "SELECT st_asbinary(st_envelope ("
+                                        + getConfig().getBlobAttributeNameInTileTable()
+                                        + ")),"
+                                        + getConfig().getBlobAttributeNameInTileTable()
+                                        + " from "
+                                        + li.getTileTableName()
+                                        + " where st_intersects("
+                                        + getConfig().getBlobAttributeNameInTileTable()
+                                        + " ,ST_GeomFromWKB(?,?))"
+                                : "SELECT st_asbinary(st_envelope ("
+                                        + getConfig().getBlobAttributeNameInTileTable()
+                                        + ")),st_astiff("
+                                        + getConfig().getBlobAttributeNameInTileTable()
+                                        + ") "
+                                        + " from "
+                                        + li.getTileTableName()
+                                        + " where st_intersects("
+                                        + getConfig().getBlobAttributeNameInTileTable()
+                                        + " ,ST_GeomFromWKB(?,?))";
 
                 statementMap.put(li, gridStatement);
             }
@@ -623,26 +649,27 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
     }
 
     /**
-     * @param env
-     *            GeneralEnvelope
+     * @param env GeneralEnvelope
      * @return Polygon object with the same boundary as env
      */
     protected Polygon polyFromEnvelope(GeneralEnvelope env) {
         GeometryFactory factory = new GeometryFactory();
 
-        Coordinate[] coords = new Coordinate[] {
-                new Coordinate(env.getMinimum(0), env.getMinimum(1)),
-                new Coordinate(env.getMinimum(0), env.getMaximum(1)),
-                new Coordinate(env.getMaximum(0), env.getMaximum(1)),
-                new Coordinate(env.getMaximum(0), env.getMinimum(1)),
-                new Coordinate(env.getMinimum(0), env.getMinimum(1)) };
+        Coordinate[] coords =
+                new Coordinate[] {
+                    new Coordinate(env.getMinimum(0), env.getMinimum(1)),
+                    new Coordinate(env.getMinimum(0), env.getMaximum(1)),
+                    new Coordinate(env.getMaximum(0), env.getMaximum(1)),
+                    new Coordinate(env.getMaximum(0), env.getMinimum(1)),
+                    new Coordinate(env.getMinimum(0), env.getMinimum(1))
+                };
 
         return factory.createPolygon(factory.createLinearRing(coords), new LinearRing[0]);
     }
 
     /**
      * creates a thread pool
-     * 
+     *
      * @return
      */
     public ExecutorService getExecutorServivicePool() {
@@ -653,15 +680,14 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
     /**
      * List the formats supported by the used gdal library
-     * 
-     * Check from the command line with <code>gdalinfo --formats</code>
-     * 
+     *
+     * <p>Check from the command line with <code>gdalinfo --formats</code>
+     *
      * @param con
      * @throws SQLException
      */
     public void listGDALFormats(Connection con) throws SQLException {
-        if (LOGGER.isLoggable(Level.INFO) == false)
-            return;
+        if (LOGGER.isLoggable(Level.INFO) == false) return;
 
         String statement = "SELECT short_name, long_name FROM st_gdaldrivers() ORDER BY short_name";
         PreparedStatement ps = con.prepareStatement(statement);
@@ -680,7 +706,7 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         rs.close();
         ps.close();
     }
-    
+
     /*
     Extract srs Id from xml configuration file
      */
@@ -696,6 +722,4 @@ public class JDBCAccessPGRaster extends JDBCAccessCustom {
         }
         return null;
     }
-
-
 }

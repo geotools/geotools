@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,24 +16,20 @@
  */
 package org.geotools.data.couchdb;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFactory;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geojson.geom.GeometryHandler;
-import org.geotools.geojson.geom.GeometryJSON;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Handle CouchDB results.
+ *
  * @author Ian Schneider (OpenGeo)
  */
 class CouchDBFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
@@ -65,9 +61,10 @@ class CouchDBFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
     public void close() throws IOException {
         // do nothing
     }
-    
+
     @Override
-    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         JSONObject row = (JSONObject) features.get(index++);
         JSONObject feature = (JSONObject) row.get("value");
         JSONObject props = (JSONObject) feature.get("properties");
@@ -78,14 +75,14 @@ class CouchDBFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
         try {
             builder.set("geometry", read(geom));
         } catch (Exception ex) {
-            throw new IOException("Error handling geometry",ex);
+            throw new IOException("Error handling geometry", ex);
         }
         return builder.buildFeature(row.get("id").toString());
     }
 
     private Object read(JSONObject geom) throws Exception {
         handler.startJSON();
-        visit(geom,handler);
+        visit(geom, handler);
         handler.endJSON();
         return handler.getValue();
     }
@@ -103,16 +100,16 @@ class CouchDBFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFea
     private void visit(JSONArray arr, GeometryHandler handler) throws Exception {
         handler.startArray();
         for (int i = 0; i < arr.size(); i++) {
-            visit(arr.get(i),handler);
+            visit(arr.get(i), handler);
         }
         handler.endArray();
     }
-    
+
     private void visit(JSONObject obj, GeometryHandler handler) throws Exception {
         handler.startObject();
         for (Object k : obj.keySet()) {
             handler.startObjectEntry(k.toString());
-            visit(obj.get(k),handler);
+            visit(obj.get(k), handler);
         }
         handler.endObject();
     }

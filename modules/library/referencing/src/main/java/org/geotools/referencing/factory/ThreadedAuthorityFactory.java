@@ -19,94 +19,81 @@
  */
 package org.geotools.referencing.factory;
 
-import java.util.Map;
-import java.util.Set;
-import java.util.Iterator;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.WeakHashMap;
-import java.util.logging.LogRecord;
 import java.util.logging.Level;
-import javax.measure.unit.Unit;
-
-import org.opengis.metadata.extent.Extent;
+import java.util.logging.LogRecord;
+import javax.measure.Unit;
+import org.geotools.factory.BufferedFactory;
+import org.geotools.factory.Hints;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.i18n.LoggingKeys;
+import org.geotools.resources.i18n.Loggings;
+import org.geotools.util.Utilities;
 import org.opengis.metadata.citation.Citation;
+import org.opengis.metadata.extent.Extent;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.*;
+import org.opengis.referencing.cs.*;
 import org.opengis.referencing.datum.*;
 import org.opengis.referencing.operation.*;
 import org.opengis.util.InternationalString;
 
-import org.geotools.factory.Hints;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.util.Utilities;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Loggings;
-import org.geotools.resources.i18n.LoggingKeys;
-
-
 /**
- * An authority factory that caches all objects created by an other factory. All
- * {@code createFoo(String)} methods first looks if a previously created object
- * exists for the given code. If such an object exists, it is returned. Otherwise,
- * the object creation is delegated to the {@linkplain AbstractAuthorityFactory authority factory}
- * specified at creation time, and the result is cached in this buffered factory.
- * <p>
- * Objects are cached by strong references, up to the amount of objects specified at
- * construction time. If a greater amount of objects are cached, the oldest ones will
- * be retained through a {@linkplain java.lang.ref.WeakReference weak reference} instead
- * of a strong one. This means that this buffered factory will continue to returns them
- * as long as they are in use somewhere else in the Java virtual machine, but will be
- * discarted (and recreated on the fly if needed) otherwise.
+ * An authority factory that caches all objects created by an other factory. All {@code
+ * createFoo(String)} methods first looks if a previously created object exists for the given code.
+ * If such an object exists, it is returned. Otherwise, the object creation is delegated to the
+ * {@linkplain AbstractAuthorityFactory authority factory} specified at creation time, and the
+ * result is cached in this buffered factory.
+ *
+ * <p>Objects are cached by strong references, up to the amount of objects specified at construction
+ * time. If a greater amount of objects are cached, the oldest ones will be retained through a
+ * {@linkplain java.lang.ref.WeakReference weak reference} instead of a strong one. This means that
+ * this buffered factory will continue to returns them as long as they are in use somewhere else in
+ * the Java virtual machine, but will be discarted (and recreated on the fly if needed) otherwise.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implements BufferedFactory {
-    /**
-     * The default value for {@link #maxStrongReferences}.
-     */
+    /** The default value for {@link #maxStrongReferences}. */
     static final int DEFAULT_MAX = 20;
 
     /**
-     * The underlying authority factory. This field may be {@code null} if this object was
-     * created by the {@linkplain #ThreadedAuthorityFactory(AbstractAuthorityFactory,int)
-     * package protected constructor}. In this case, the subclass is responsible for creating
-     * the backing store when {@link DeferredAuthorityFactory#createBackingStore} is invoked.
+     * The underlying authority factory. This field may be {@code null} if this object was created
+     * by the {@linkplain #ThreadedAuthorityFactory(AbstractAuthorityFactory,int) package protected
+     * constructor}. In this case, the subclass is responsible for creating the backing store when
+     * {@link DeferredAuthorityFactory#createBackingStore} is invoked.
      *
      * @see #getBackingStore
      * @see DeferredAuthorityFactory#createBackingStore
      */
     AbstractAuthorityFactory backingStore;
 
-    /**
-     * The cache for referencing objects.
-     */
+    /** The cache for referencing objects. */
     private final OldReferencingObjectCache objectCache;
 
-    /**
-     * The pool of objects identified by {@link find}.
-     */
-    private final Map<IdentifiedObject,IdentifiedObject> findPool =
-            new WeakHashMap<IdentifiedObject,IdentifiedObject>();
-
+    /** The pool of objects identified by {@link find}. */
+    private final Map<IdentifiedObject, IdentifiedObject> findPool =
+            new WeakHashMap<IdentifiedObject, IdentifiedObject>();
 
     /**
-     * Constructs an instance wrapping the specified factory with a default number
-     * of entries to keep by strong reference.
-     * <p>
-     * This constructor is protected because subclasses must declare which of the
-     * {@link DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory}
-     * and {@link CoordinateOperationAuthorityFactory} interfaces they choose to implement.
+     * Constructs an instance wrapping the specified factory with a default number of entries to
+     * keep by strong reference.
+     *
+     * <p>This constructor is protected because subclasses must declare which of the {@link
+     * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
+     * CoordinateOperationAuthorityFactory} interfaces they choose to implement.
      *
      * @param factory The factory to cache. Can not be {@code null}.
      */
@@ -117,19 +104,18 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     /**
      * Constructs an instance wrapping the specified factory. The {@code maxStrongReferences}
      * argument specify the maximum number of objects to keep by strong reference. If a greater
-     * amount of objects are created, then the strong references for the oldest ones are replaced
-     * by weak references.
-     * <p>
-     * This constructor is protected because subclasses must declare which of the
-     * {@link DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory}
-     * and {@link CoordinateOperationAuthorityFactory} interfaces they choose to implement.
+     * amount of objects are created, then the strong references for the oldest ones are replaced by
+     * weak references.
+     *
+     * <p>This constructor is protected because subclasses must declare which of the {@link
+     * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
+     * CoordinateOperationAuthorityFactory} interfaces they choose to implement.
      *
      * @param factory The factory to cache. Can not be {@code null}.
      * @param maxStrongReferences The maximum number of objects to keep by strong reference.
      */
-    protected ThreadedAuthorityFactory(AbstractAuthorityFactory factory,
-                                       final int maxStrongReferences)
-    {
+    protected ThreadedAuthorityFactory(
+            AbstractAuthorityFactory factory, final int maxStrongReferences) {
         super(factory.getPriority());
         while (factory instanceof ThreadedAuthorityFactory) {
             factory = ((ThreadedAuthorityFactory) factory).backingStore;
@@ -141,14 +127,12 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /**
      * Constructs an instance without initial backing store. This constructor is for subclass
-     * constructors only. Subclasses are responsible for creating an appropriate backing store
-     * when the {@link DeferredAuthorityFactory#createBackingStore} method is invoked.
+     * constructors only. Subclasses are responsible for creating an appropriate backing store when
+     * the {@link DeferredAuthorityFactory#createBackingStore} method is invoked.
      *
-     * @param priority The priority for this factory, as a number between
-     *        {@link #MINIMUM_PRIORITY MINIMUM_PRIORITY} and
-     *        {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
+     * @param priority The priority for this factory, as a number between {@link #MINIMUM_PRIORITY
+     *     MINIMUM_PRIORITY} and {@link #MAXIMUM_PRIORITY MAXIMUM_PRIORITY} inclusive.
      * @param maxStrongReferences The maximum number of objects to keep by strong reference.
-     *
      * @see DeferredAuthorityFactory#createBackingStore
      */
     ThreadedAuthorityFactory(final int priority, final int maxStrongReferences) {
@@ -158,16 +142,16 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     }
 
     /**
-     * Completes the set of hints according the value currently set in this object. This method
-     * is invoked by {@code BufferedAuthorityFactory} or by {@code DeferredAuthorityFactory} at
-     * backing store creation time.
-     * <p>
-     * The backing store is of course an important dependency. This method gives a chance
-     * to {@link org.geotools.factory.FactoryRegistry} to compare the user-requested hints
-     * (especially {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER}) against the backing store
-     * hints, by following the dependency declared there.
-     * <p>
-     * DON'T FORGET to set those hints to {@code null} when {@link DeferredAuthorityFactory}
+     * Completes the set of hints according the value currently set in this object. This method is
+     * invoked by {@code BufferedAuthorityFactory} or by {@code DeferredAuthorityFactory} at backing
+     * store creation time.
+     *
+     * <p>The backing store is of course an important dependency. This method gives a chance to
+     * {@link org.geotools.factory.FactoryRegistry} to compare the user-requested hints (especially
+     * {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER}) against the backing store hints, by following
+     * the dependency declared there.
+     *
+     * <p>DON'T FORGET to set those hints to {@code null} when {@link DeferredAuthorityFactory}
      * dispose the backing store.
      */
     final void completeHints() {
@@ -186,8 +170,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     }
 
     /**
-     * Returns the direct dependencies. The returned list contains the backing store
-     * specified at construction time, or the exception if it can't be obtained.
+     * Returns the direct dependencies. The returned list contains the backing store specified at
+     * construction time, or the exception if it can't be obtained.
      */
     @Override
     Collection<? super AuthorityFactory> dependencies() {
@@ -214,9 +198,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     }
 
     /**
-     * Returns {@code true} if this factory is available. The default implementation returns
-     * {@code false} if no backing store were setup and
-     * {@link DeferredAuthorityFactory#createBackingStore} throws an exception.
+     * Returns {@code true} if this factory is available. The default implementation returns {@code
+     * false} if no backing store were setup and {@link DeferredAuthorityFactory#createBackingStore}
+     * throws an exception.
      */
     @Override
     boolean isAvailable() {
@@ -235,11 +219,11 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
              * The factory creation failed for an other reason, which may be more
              * serious. Now it is time to log a warning with a stack trace.
              */
-            final Citation   citation = getAuthority();
-            final Collection   titles = citation.getAlternateTitles();
+            final Citation citation = getAuthority();
+            final Collection titles = citation.getAlternateTitles();
             InternationalString title = citation.getTitle();
             if (titles != null) {
-                for (final Iterator it=titles.iterator(); it.hasNext();) {
+                for (final Iterator it = titles.iterator(); it.hasNext(); ) {
                     /*
                      * Uses the longuest title instead of the main one. In Geotools
                      * implementation, the alternate title may contains usefull informations
@@ -247,12 +231,13 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
                      */
                     final InternationalString candidate = (InternationalString) it.next();
                     if (candidate.length() > title.length()) {
-                        title  = candidate;
+                        title = candidate;
                     }
                 }
             }
-            final LogRecord record = Loggings.format(Level.WARNING,
-                    LoggingKeys.UNAVAILABLE_AUTHORITY_FACTORY_$1, title);
+            final LogRecord record =
+                    Loggings.format(
+                            Level.WARNING, LoggingKeys.UNAVAILABLE_AUTHORITY_FACTORY_$1, title);
             record.setSourceClassName(getClass().getName());
             record.setSourceMethodName("isAvailable");
             record.setThrown(exception);
@@ -264,9 +249,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
 
     /**
      * If this factory is a wrapper for the specified factory that do not add any additional
-     * {@linkplain #getAuthorityCodes authority codes}, returns {@code true}. This method is
-     * for {@link FallbackAuthorityFactory} internal use only and should not be public. A
-     * cheap test without {@link #getBackingStore} invocation is suffisient for our needs.
+     * {@linkplain #getAuthorityCodes authority codes}, returns {@code true}. This method is for
+     * {@link FallbackAuthorityFactory} internal use only and should not be public. A cheap test
+     * without {@link #getBackingStore} invocation is suffisient for our needs.
      */
     @Override
     boolean sameAuthorityCodes(final AuthorityFactory factory) {
@@ -277,12 +262,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return super.sameAuthorityCodes(factory);
     }
 
-    /**
-     * Returns the vendor responsible for creating the underlying factory implementation.
-     */
+    /** Returns the vendor responsible for creating the underlying factory implementation. */
     @Override
     public Citation getVendor() {
-        return (backingStore!=null) ? backingStore.getVendor() : super.getVendor();
+        return (backingStore != null) ? backingStore.getVendor() : super.getVendor();
     }
 
     /**
@@ -290,12 +273,12 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      * underlying database.
      */
     public Citation getAuthority() {
-        return (backingStore!=null) ? backingStore.getAuthority() : null;
+        return (backingStore != null) ? backingStore.getAuthority() : null;
     }
 
     /**
-     * Returns a description of the underlying backing store, or {@code null} if unknow.
-     * This is for example the database software used for storing the data.
+     * Returns a description of the underlying backing store, or {@code null} if unknow. This is for
+     * example the database software used for storing the data.
      *
      * @throws FactoryException if a failure occured while fetching the engine description.
      */
@@ -305,43 +288,35 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     }
 
     /**
-     * Returns the set of authority codes of the given type. The {@code type}
-     * argument specify the base class.
+     * Returns the set of authority codes of the given type. The {@code type} argument specify the
+     * base class.
      *
-     * @param  type The spatial reference objects type.
-     * @return The set of authority codes for spatial reference objects of the given type.
-     *         If this factory doesn't contains any object of the given type, then this method
-     *         returns an {@linkplain java.util.Collections#EMPTY_SET empty set}.
+     * @param type The spatial reference objects type.
+     * @return The set of authority codes for spatial reference objects of the given type. If this
+     *     factory doesn't contains any object of the given type, then this method returns an
+     *     {@linkplain java.util.Collections#EMPTY_SET empty set}.
      * @throws FactoryException if access to the underlying database failed.
      */
-    public Set<String> getAuthorityCodes(final Class type)
-            throws FactoryException
-    {
+    public Set<String> getAuthorityCodes(final Class type) throws FactoryException {
         return getBackingStore().getAuthorityCodes(type);
     }
 
     /**
      * Gets a description of the object corresponding to a code.
      *
-     * @param  code Value allocated by authority.
-     * @return A description of the object, or {@code null} if the object
-     *         corresponding to the specified {@code code} has no description.
+     * @param code Value allocated by authority.
+     * @return A description of the object, or {@code null} if the object corresponding to the
+     *     specified {@code code} has no description.
      * @throws NoSuchAuthorityCodeException if the specified {@code code} was not found.
      * @throws FactoryException if the query failed for some other reason.
      */
-    public InternationalString getDescriptionText(final String code)
-            throws FactoryException
-    {
+    public InternationalString getDescriptionText(final String code) throws FactoryException {
         return getBackingStore().getDescriptionText(code);
     }
 
-    /**
-     * Returns an arbitrary object from a code.
-     */
+    /** Returns an arbitrary object from a code. */
     @Override
-    public synchronized IdentifiedObject createObject(final String code)
-            throws FactoryException
-    {
+    public synchronized IdentifiedObject createObject(final String code) throws FactoryException {
         final IdentifiedObject object;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -354,13 +329,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return object;
     }
 
-    /**
-     * Returns an arbitrary datum from a code.
-     */
+    /** Returns an arbitrary datum from a code. */
     @Override
-    public synchronized Datum createDatum(final String code)
-            throws FactoryException
-    {
+    public synchronized Datum createDatum(final String code) throws FactoryException {
         final Datum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -373,13 +344,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return datum;
     }
 
-    /**
-     * Returns an engineering datum from a code.
-     */
+    /** Returns an engineering datum from a code. */
     @Override
     public synchronized EngineeringDatum createEngineeringDatum(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final EngineeringDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -392,13 +360,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return datum;
     }
 
-    /**
-     * Returns an image datum from a code.
-     */
+    /** Returns an image datum from a code. */
     @Override
-    public synchronized ImageDatum createImageDatum(final String code)
-            throws FactoryException
-    {
+    public synchronized ImageDatum createImageDatum(final String code) throws FactoryException {
         final ImageDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -411,13 +375,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return datum;
     }
 
-    /**
-     * Returns a vertical datum from a code.
-     */
+    /** Returns a vertical datum from a code. */
     @Override
     public synchronized VerticalDatum createVerticalDatum(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final VerticalDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -430,13 +391,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return datum;
     }
 
-    /**
-     * Returns a temporal datum from a code.
-     */
+    /** Returns a temporal datum from a code. */
     @Override
     public synchronized TemporalDatum createTemporalDatum(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final TemporalDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -449,13 +407,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return datum;
     }
 
-    /**
-     * Returns a geodetic datum from a code.
-     */
+    /** Returns a geodetic datum from a code. */
     @Override
     public synchronized GeodeticDatum createGeodeticDatum(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final GeodeticDatum datum;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -468,13 +423,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return datum;
     }
 
-    /**
-     * Returns an ellipsoid from a code.
-     */
+    /** Returns an ellipsoid from a code. */
     @Override
-    public synchronized Ellipsoid createEllipsoid(final String code)
-            throws FactoryException
-    {
+    public synchronized Ellipsoid createEllipsoid(final String code) throws FactoryException {
         final Ellipsoid ellipsoid;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -487,13 +438,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return ellipsoid;
     }
 
-    /**
-     * Returns a prime meridian from a code.
-     */
+    /** Returns a prime meridian from a code. */
     @Override
     public synchronized PrimeMeridian createPrimeMeridian(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final PrimeMeridian meridian;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -506,13 +454,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return meridian;
     }
 
-    /**
-     * Returns an extent (usually an area of validity) from a code.
-     */
+    /** Returns an extent (usually an area of validity) from a code. */
     @Override
-    public synchronized Extent createExtent(final String code)
-            throws FactoryException
-    {
+    public synchronized Extent createExtent(final String code) throws FactoryException {
         final Extent extent;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -525,13 +469,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return extent;
     }
 
-    /**
-     * Returns an arbitrary coordinate system from a code.
-     */
+    /** Returns an arbitrary coordinate system from a code. */
     @Override
     public synchronized CoordinateSystem createCoordinateSystem(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final CoordinateSystem cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -544,13 +485,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return cs;
     }
 
-    /**
-     * Returns a cartesian coordinate system from a code.
-     */
+    /** Returns a cartesian coordinate system from a code. */
     @Override
-    public synchronized CartesianCS createCartesianCS(final String code)
-            throws FactoryException
-    {
+    public synchronized CartesianCS createCartesianCS(final String code) throws FactoryException {
         final CartesianCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -563,13 +500,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return cs;
     }
 
-    /**
-     * Returns a polar coordinate system from a code.
-     */
+    /** Returns a polar coordinate system from a code. */
     @Override
-    public synchronized PolarCS createPolarCS(final String code)
-            throws FactoryException
-    {
+    public synchronized PolarCS createPolarCS(final String code) throws FactoryException {
         final PolarCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -582,13 +515,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return cs;
     }
 
-    /**
-     * Returns a cylindrical coordinate system from a code.
-     */
+    /** Returns a cylindrical coordinate system from a code. */
     @Override
     public synchronized CylindricalCS createCylindricalCS(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final CylindricalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -601,13 +531,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return cs;
     }
 
-    /**
-     * Returns a spherical coordinate system from a code.
-     */
+    /** Returns a spherical coordinate system from a code. */
     @Override
-    public synchronized SphericalCS createSphericalCS(final String code)
-            throws FactoryException
-    {
+    public synchronized SphericalCS createSphericalCS(final String code) throws FactoryException {
         final SphericalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -620,13 +546,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return cs;
     }
 
-    /**
-     * Returns an ellipsoidal coordinate system from a code.
-     */
+    /** Returns an ellipsoidal coordinate system from a code. */
     @Override
     public synchronized EllipsoidalCS createEllipsoidalCS(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final EllipsoidalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -639,13 +562,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return cs;
     }
 
-    /**
-     * Returns a vertical coordinate system from a code.
-     */
+    /** Returns a vertical coordinate system from a code. */
     @Override
-    public synchronized VerticalCS createVerticalCS(final String code)
-            throws FactoryException
-    {
+    public synchronized VerticalCS createVerticalCS(final String code) throws FactoryException {
         final VerticalCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -658,13 +577,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return cs;
     }
 
-    /**
-     * Returns a temporal coordinate system from a code.
-     */
+    /** Returns a temporal coordinate system from a code. */
     @Override
-    public synchronized TimeCS createTimeCS(final String code)
-            throws FactoryException
-    {
+    public synchronized TimeCS createTimeCS(final String code) throws FactoryException {
         final TimeCS cs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -677,13 +592,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return cs;
     }
 
-    /**
-     * Returns a coordinate system axis from a code.
-     */
+    /** Returns a coordinate system axis from a code. */
     @Override
     public synchronized CoordinateSystemAxis createCoordinateSystemAxis(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final CoordinateSystemAxis axis;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -696,13 +608,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return axis;
     }
 
-    /**
-     * Returns an unit from a code.
-     */
+    /** Returns an unit from a code. */
     @Override
-    public synchronized Unit<?> createUnit(final String code)
-            throws FactoryException
-    {
+    public synchronized Unit<?> createUnit(final String code) throws FactoryException {
         final Unit<?> unit;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -715,13 +623,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return unit;
     }
 
-    /**
-     * Returns an arbitrary coordinate reference system from a code.
-     */
+    /** Returns an arbitrary coordinate reference system from a code. */
     @Override
     public synchronized CoordinateReferenceSystem createCoordinateReferenceSystem(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final CoordinateReferenceSystem crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -734,13 +639,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns a 3D coordinate reference system from a code.
-     */
+    /** Returns a 3D coordinate reference system from a code. */
     @Override
-    public synchronized CompoundCRS createCompoundCRS(final String code)
-            throws FactoryException
-    {
+    public synchronized CompoundCRS createCompoundCRS(final String code) throws FactoryException {
         final CompoundCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -753,13 +654,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns a derived coordinate reference system from a code.
-     */
+    /** Returns a derived coordinate reference system from a code. */
     @Override
-    public synchronized DerivedCRS createDerivedCRS(final String code)
-            throws FactoryException
-    {
+    public synchronized DerivedCRS createDerivedCRS(final String code) throws FactoryException {
         final DerivedCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -772,13 +669,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns an engineering coordinate reference system from a code.
-     */
+    /** Returns an engineering coordinate reference system from a code. */
     @Override
     public synchronized EngineeringCRS createEngineeringCRS(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final EngineeringCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -791,13 +685,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns a geographic coordinate reference system from a code.
-     */
+    /** Returns a geographic coordinate reference system from a code. */
     @Override
     public synchronized GeographicCRS createGeographicCRS(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final GeographicCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -810,13 +701,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns a geocentric coordinate reference system from a code.
-     */
+    /** Returns a geocentric coordinate reference system from a code. */
     @Override
     public synchronized GeocentricCRS createGeocentricCRS(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final GeocentricCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -829,13 +717,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns an image coordinate reference system from a code.
-     */
+    /** Returns an image coordinate reference system from a code. */
     @Override
-    public synchronized ImageCRS createImageCRS(final String code)
-            throws FactoryException
-    {
+    public synchronized ImageCRS createImageCRS(final String code) throws FactoryException {
         final ImageCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -848,13 +732,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns a projected coordinate reference system from a code.
-     */
+    /** Returns a projected coordinate reference system from a code. */
     @Override
-    public synchronized ProjectedCRS createProjectedCRS(final String code)
-            throws FactoryException
-    {
+    public synchronized ProjectedCRS createProjectedCRS(final String code) throws FactoryException {
         final ProjectedCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -867,13 +747,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns a temporal coordinate reference system from a code.
-     */
+    /** Returns a temporal coordinate reference system from a code. */
     @Override
-    public synchronized TemporalCRS createTemporalCRS(final String code)
-            throws FactoryException
-    {
+    public synchronized TemporalCRS createTemporalCRS(final String code) throws FactoryException {
         final TemporalCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -886,13 +762,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns a vertical coordinate reference system from a code.
-     */
+    /** Returns a vertical coordinate reference system from a code. */
     @Override
-    public synchronized VerticalCRS createVerticalCRS(final String code)
-            throws FactoryException
-    {
+    public synchronized VerticalCRS createVerticalCRS(final String code) throws FactoryException {
         final VerticalCRS crs;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -905,13 +777,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return crs;
     }
 
-    /**
-     * Returns a parameter descriptor from a code.
-     */
+    /** Returns a parameter descriptor from a code. */
     @Override
     public synchronized ParameterDescriptor createParameterDescriptor(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final ParameterDescriptor parameter;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -924,13 +793,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return parameter;
     }
 
-    /**
-     * Returns an operation method from a code.
-     */
+    /** Returns an operation method from a code. */
     @Override
     public synchronized OperationMethod createOperationMethod(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final OperationMethod method;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -943,13 +809,10 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return method;
     }
 
-    /**
-     * Returns an operation from a single operation code.
-     */
+    /** Returns an operation from a single operation code. */
     @Override
     public synchronized CoordinateOperation createCoordinateOperation(final String code)
-            throws FactoryException
-    {
+            throws FactoryException {
         final CoordinateOperation operation;
         final String key = trimAuthority(code);
         final Object cached = objectCache.get(key);
@@ -962,30 +825,29 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         return operation;
     }
 
-    /**
-     * Returns an operation from coordinate reference system codes.
-     */
+    /** Returns an operation from coordinate reference system codes. */
     @Override
     public synchronized Set<CoordinateOperation> createFromCoordinateReferenceSystemCodes(
-                        final String sourceCode, final String targetCode)
-            throws FactoryException
-    {
+            final String sourceCode, final String targetCode) throws FactoryException {
         final Set<CoordinateOperation> operations;
         final CodePair key = new CodePair(trimAuthority(sourceCode), trimAuthority(targetCode));
         final Object cached = objectCache.get(key);
         if (cached instanceof CoordinateOperation) {
             operations = (Set<CoordinateOperation>) cached;
         } else {
-            operations = Collections.unmodifiableSet(getBackingStore()
-                         .createFromCoordinateReferenceSystemCodes(sourceCode, targetCode));
+            operations =
+                    Collections.unmodifiableSet(
+                            getBackingStore()
+                                    .createFromCoordinateReferenceSystemCodes(
+                                            sourceCode, targetCode));
         }
         objectCache.put(key, operations);
         return operations;
     }
 
     /**
-     * A pair of codes for operations to cache with
-     * {@link #createFromCoordinateReferenceSystemCodes}.
+     * A pair of codes for operations to cache with {@link
+     * #createFromCoordinateReferenceSystemCodes}.
      */
     private static final class CodePair {
         private final String source, target;
@@ -998,8 +860,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         @Override
         public int hashCode() {
             int code = 0;
-            if (source!=null) code  = source.hashCode();
-            if (target!=null) code += target.hashCode() * 37;
+            if (source != null) code = source.hashCode();
+            if (target != null) code += target.hashCode() * 37;
             return code;
         }
 
@@ -1007,8 +869,8 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         public boolean equals(final Object other) {
             if (other instanceof CodePair) {
                 final CodePair that = (CodePair) other;
-                return Utilities.equals(this.source, that.source) &&
-                       Utilities.equals(this.target, that.target);
+                return Utilities.equals(this.source, that.source)
+                        && Utilities.equals(this.target, that.target);
             }
             return false;
         }
@@ -1020,38 +882,34 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
     }
 
     /**
-     * Returns a finder which can be used for looking up unidentified objects.
-     * The default implementation delegates lookup to the underlying backing
-     * store and caches the result.
+     * Returns a finder which can be used for looking up unidentified objects. The default
+     * implementation delegates lookup to the underlying backing store and caches the result.
      */
     @Override
     public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class<? extends IdentifiedObject> type) throws FactoryException
-    {
+            final Class<? extends IdentifiedObject> type) throws FactoryException {
         return new Finder(getBackingStore().getIdentifiedObjectFinder(type));
     }
 
     /**
-     * An implementation of {@link IdentifiedObjectFinder} which delegates
-     * the work to the underlying backing store and caches the result.
-     * <p>
-     * <b>Implementation note:</b> we will create objects using directly the underlying backing
-     * store, not using the cache. This is because hundred of objects may be created during a
-     * scan while only one will be typically retained. We don't want to overload the cache with
-     * every false candidates that we encounter during the scan.
+     * An implementation of {@link IdentifiedObjectFinder} which delegates the work to the
+     * underlying backing store and caches the result.
+     *
+     * <p><b>Implementation note:</b> we will create objects using directly the underlying backing
+     * store, not using the cache. This is because hundred of objects may be created during a scan
+     * while only one will be typically retained. We don't want to overload the cache with every
+     * false candidates that we encounter during the scan.
      */
     private final class Finder extends IdentifiedObjectFinder.Adapter {
-        /**
-         * Creates a finder for the underlying backing store.
-         */
+        /** Creates a finder for the underlying backing store. */
         Finder(final IdentifiedObjectFinder finder) {
             super(finder);
         }
 
         /**
-         * Looks up an object from this authority factory which is equals, ignoring metadata,
-         * to the specified object. The default implementation performs the same lookup than
-         * the backing store and caches the result.
+         * Looks up an object from this authority factory which is equals, ignoring metadata, to the
+         * specified object. The default implementation performs the same lookup than the backing
+         * store and caches the result.
          */
         @Override
         public IdentifiedObject find(final IdentifiedObject object) throws FactoryException {
@@ -1081,9 +939,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
             return candidate;
         }
 
-        /**
-         * Returns the identifier for the specified object.
-         */
+        /** Returns the identifier for the specified object. */
         @Override
         public String findIdentifier(final IdentifiedObject object) throws FactoryException {
             IdentifiedObject candidate;
@@ -1099,9 +955,7 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
         }
     }
 
-    /**
-     * Releases resources immediately instead of waiting for the garbage collector.
-     */
+    /** Releases resources immediately instead of waiting for the garbage collector. */
     @Override
     public synchronized void dispose() throws FactoryException {
         if (backingStore != null) {

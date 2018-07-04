@@ -16,16 +16,12 @@
  */
 package org.geotools.resources.i18n;
 
-
 /**
  * Portuguese language resource.
  *
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
-public class Vocabulary_pt extends Vocabulary {
-}
+public class Vocabulary_pt extends Vocabulary {}

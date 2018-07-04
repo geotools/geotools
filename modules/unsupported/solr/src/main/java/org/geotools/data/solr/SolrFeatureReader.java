@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,29 +24,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.params.CursorMarkParams;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
 import org.opengis.feature.type.Name;
 
-/**
- * Reader for SOLR datastore
- */
-
+/** Reader for SOLR datastore */
 public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     private Iterator<SolrDocument> solrDocIterator;
@@ -71,13 +66,13 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
 
     private long counter;
 
-    private Map<Name,SolrSpatialStrategy> geometryReaders;
+    private Map<Name, SolrSpatialStrategy> geometryReaders;
 
     /**
      * Creates the feature reader for SOLR store <br>
      * The feature reader use SOLR CURSOR to paginate request, so multiple SOLR query will be
      * executed
-     * 
+     *
      * @param featureType the feature type to query
      * @param solrUrl the URL of SOLR server
      * @param solrQuery the SOLR query to execute
@@ -85,8 +80,12 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * @throws SolrServerException
      * @throws java.io.IOException
      */
-    public SolrFeatureReader(SimpleFeatureType featureType, HttpSolrClient server,
-            SolrQuery solrQuery, SolrDataStore solrDataStore) throws SolrServerException, IOException {
+    public SolrFeatureReader(
+            SimpleFeatureType featureType,
+            HttpSolrClient server,
+            SolrQuery solrQuery,
+            SolrDataStore solrDataStore)
+            throws SolrServerException, IOException {
         this.featureType = featureType;
         this.solrQuery = solrQuery;
         this.solrDataStore = solrDataStore;
@@ -110,8 +109,9 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, cursorMark);
         QueryResponse rsp = server.query(solrQuery);
         if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
-            this.solrDataStore.getLogger().log(Level.FINE,
-                    "SOLR query done: " + solrQuery.toString());
+            this.solrDataStore
+                    .getLogger()
+                    .log(Level.FINE, "SOLR query done: " + solrQuery.toString());
         }
         this.solrDocIterator = rsp.getResults().iterator();
         nextCursorMark = rsp.getNextCursorMark();
@@ -121,7 +121,8 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         geometryReaders = new HashMap<>();
         for (AttributeDescriptor att : featureType.getAttributeDescriptors()) {
             if (att instanceof GeometryDescriptor) {
-                SolrSpatialStrategy spatialStrategy = SolrSpatialStrategy.createStrategy((GeometryDescriptor)att);
+                SolrSpatialStrategy spatialStrategy =
+                        SolrSpatialStrategy.createStrategy((GeometryDescriptor) att);
                 geometryReaders.put(att.getName(), spatialStrategy);
             }
         }
@@ -139,8 +140,9 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         solrQuery.set(CursorMarkParams.CURSOR_MARK_PARAM, CursorMarkParams.CURSOR_MARK_START);
         QueryResponse rsp = server.query(solrQuery);
         if (this.solrDataStore.getLogger().isLoggable(Level.FINE)) {
-            this.solrDataStore.getLogger().log(Level.FINE,
-                    "SOLR query done: " + solrQuery.toString());
+            this.solrDataStore
+                    .getLogger()
+                    .log(Level.FINE, "SOLR query done: " + solrQuery.toString());
         }
         String nextC = rsp.getNextCursorMark();
         solrQuery.setRows(prevRows);
@@ -157,8 +159,8 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
      * separated by ";"
      */
     @Override
-    public SimpleFeature next() throws IOException, IllegalArgumentException,
-            NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         String fid = "";
         try {
             if (!hasNext()) {
@@ -244,5 +246,4 @@ public class SolrFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     public void close() throws IOException {
         // nothing to do
     }
-
 }

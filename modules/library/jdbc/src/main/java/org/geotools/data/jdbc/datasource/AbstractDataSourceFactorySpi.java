@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,22 +19,16 @@ package org.geotools.data.jdbc.datasource;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.data.DataAccessFactory.Param;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class AbstractDataSourceFactorySpi implements DataSourceFactorySpi {
 
     /**
      * Default Implementation abuses the naming convention.
-     * <p>
-     * Will return <code>Foo</code> for <code>org.geotools.data.foo.FooFactory</code>.
-     * </p>
-     * 
+     *
+     * <p>Will return <code>Foo</code> for <code>org.geotools.data.foo.FooFactory</code>.
+     *
      * @return return display name based on class name
      */
     public String getDisplayName() {
@@ -85,10 +79,8 @@ public abstract class AbstractDataSourceFactorySpi implements DataSourceFactoryS
         }
         return true;
     }
-    
-    /**
-     * Returns the implementation hints. The default implementation returns en empty map.
-     */
+
+    /** Returns the implementation hints. The default implementation returns en empty map. */
     public Map getImplementationHints() {
         return Collections.EMPTY_MAP;
     }

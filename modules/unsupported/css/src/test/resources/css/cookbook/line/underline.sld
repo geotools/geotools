@@ -17,7 +17,7 @@
             <sld:Fill>
               <sld:CssParameter name="fill">#000000</sld:CssParameter>
             </sld:Fill>
-            <sld:VendorOption name="underlineText">false</sld:VendorOption>
+            <sld:VendorOption name="underlineText">true</sld:VendorOption>
           </sld:TextSymbolizer>
         </sld:Rule>
         <sld:VendorOption name="ruleEvaluation">first</sld:VendorOption>

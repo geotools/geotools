@@ -17,20 +17,24 @@
 package org.geotools.processing.jai;
 
 import java.awt.image.RenderedImage;
-
 import javax.media.jai.ROI;
-
 import org.geotools.process.classify.ClassificationMethod;
 import org.geotools.process.raster.classify.Classification;
 
-/**
- * Classification op for the equal interval method.
- */
+/** Classification op for the equal interval method. */
 public class EqualIntervalBreaksOpImage extends ClassBreaksOpImage {
 
-    public EqualIntervalBreaksOpImage(RenderedImage image, Integer numClasses, Double[][] extrema,
-            ROI roi, Integer[] bands, Integer xStart, Integer yStart, Integer xPeriod,
-            Integer yPeriod, Double noData) {
+    public EqualIntervalBreaksOpImage(
+            RenderedImage image,
+            Integer numClasses,
+            Double[][] extrema,
+            ROI roi,
+            Integer[] bands,
+            Integer xStart,
+            Integer yStart,
+            Integer xPeriod,
+            Integer yPeriod,
+            Double noData) {
 
         super(image, numClasses, extrema, roi, bands, xStart, yStart, xPeriod, yPeriod, noData);
     }

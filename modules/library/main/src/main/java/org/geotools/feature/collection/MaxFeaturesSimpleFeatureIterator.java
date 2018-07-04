@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,14 +20,13 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
- * SimpleFeatureIterator wrapper which can use a start and end bounds to
- * cap the number of returned features.
- * 
- * @author Justin Deoliveira, The Open Planning Project
+ * SimpleFeatureIterator wrapper which can use a start and end bounds to cap the number of returned
+ * features.
  *
+ * @author Justin Deoliveira, The Open Planning Project
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *         data/store/MaxFeaturesIterator.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
+ *     data/store/MaxFeaturesIterator.java $
  */
 public class MaxFeaturesSimpleFeatureIterator implements SimpleFeatureIterator {
 
@@ -38,7 +37,7 @@ public class MaxFeaturesSimpleFeatureIterator implements SimpleFeatureIterator {
     long counter;
 
     public MaxFeaturesSimpleFeatureIterator(SimpleFeatureIterator iterator, long max) {
-        this( iterator, 0, max);
+        this(iterator, 0, max);
     }
 
     public MaxFeaturesSimpleFeatureIterator(SimpleFeatureIterator delegate, long start, long max) {
@@ -60,7 +59,7 @@ public class MaxFeaturesSimpleFeatureIterator implements SimpleFeatureIterator {
         return delegate.hasNext() && counter < end;
     }
 
-    public SimpleFeature  next() {
+    public SimpleFeature next() {
         if (counter < start) {
             // skip to just before start if needed
             skip();

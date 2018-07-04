@@ -17,32 +17,27 @@
 package org.geotools.graph.structure.line;
 
 import org.geotools.graph.structure.Node;
-
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
- * Represents a node in a line network. A node in a line graph has a coordinate
- * associated with it.
- * 
+ * Represents a node in a line network. A node in a line graph has a coordinate associated with it.
+ *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
- *
  * @source $URL$
  */
 public interface XYNode extends Node {
-  
-  /**
-   * Returns the coordinate associated with the node.
-   * 
-   * @return A coordinate.
-   */
-  public Coordinate getCoordinate();
-  
-  /**
-   * Sets the coordinate associated with the node.
-   * 
-   * @param c A coordinate.
-   */
-  public void setCoordinate(Coordinate c);
+
+    /**
+     * Returns the coordinate associated with the node.
+     *
+     * @return A coordinate.
+     */
+    public Coordinate getCoordinate();
+
+    /**
+     * Sets the coordinate associated with the node.
+     *
+     * @param c A coordinate.
+     */
+    public void setCoordinate(Coordinate c);
 }

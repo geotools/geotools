@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  * 	  (c) 2014 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
@@ -17,21 +17,20 @@
  */
 package org.geotools.data.csv.parse;
 
+import com.csvreader.CsvWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
-
-import com.csvreader.CsvWriter;
 
 public class CSVAttributesOnlyStrategy extends CSVStrategy {
 
@@ -48,22 +47,21 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         List<String> header = new ArrayList<String>();
-        
+        this.featureType = featureType;
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {
-            if (descriptor instanceof GeometryDescriptor)
-                continue;
+            if (descriptor instanceof GeometryDescriptor) continue;
             header.add(descriptor.getLocalName());
         }
+
         // Write out header, producing an empty file of the correct type
-        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()),',');
+        CsvWriter writer = new CsvWriter(new FileWriter(this.csvFileState.getFile()), ',');
         try {
-            writer.writeRecord( header.toArray(new String[header.size()]));
-        }
-        finally {
+            writer.writeRecord(header.toArray(new String[header.size()]));
+        } finally {
             writer.close();
         }
     }
-    
+
     @Override
     public String[] encode(SimpleFeature feature) {
         List<String> csvRecord = new ArrayList<String>();
@@ -71,14 +69,16 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
             Object value = property.getValue();
             if (value == null) {
                 csvRecord.add("");
+            } else if (Geometry.class.isAssignableFrom(value.getClass())) {
+                // skip geometries
             } else {
                 String txt = value.toString();
                 csvRecord.add(txt);
             }
         }
-        return csvRecord.toArray(new String[csvRecord.size()-1]);
+        return csvRecord.toArray(new String[csvRecord.size() - 1]);
     }
-    
+
     @Override
     public SimpleFeature decode(String recordId, String[] csvRecord) {
         SimpleFeatureType featureType = getFeatureType();
@@ -97,5 +97,4 @@ public class CSVAttributesOnlyStrategy extends CSVStrategy {
         }
         return builder.buildFeature(csvFileState.getTypeName() + "-" + recordId);
     }
-
 }

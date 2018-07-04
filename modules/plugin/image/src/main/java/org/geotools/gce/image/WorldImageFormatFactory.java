@@ -19,44 +19,37 @@ package org.geotools.gce.image;
 
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
 /**
  * DOCUMENT ME!
- * 
- * @author rgould TODO To change the template for this generated type comment go
- *         to Window - Preferences - Java - Code Style - Code Templates
  *
- *
+ * @author rgould TODO To change the template for this generated type comment go to Window -
+ *     Preferences - Java - Code Style - Code Templates
  * @source $URL$
  */
 public final class WorldImageFormatFactory implements GridFormatFactorySpi {
-	public WorldImageFormat createFormat() {
-		return new WorldImageFormat();
-	}
+    public WorldImageFormat createFormat() {
+        return new WorldImageFormat();
+    }
 
-	public boolean isAvailable() {
-		boolean available = true;
+    public boolean isAvailable() {
+        boolean available = true;
 
-		// if these classes are here, then the runtine environment has
-		// access to JAI and the JAI ImageI/O toolbox.
-		try {
-			Class.forName("javax.media.jai.JAI");
-			Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
-		} catch (ClassNotFoundException cnf) {
-			available = false;
-		}
+        // if these classes are here, then the runtine environment has
+        // access to JAI and the JAI ImageI/O toolbox.
+        try {
+            Class.forName("javax.media.jai.JAI");
+            Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
+        } catch (ClassNotFoundException cnf) {
+            available = false;
+        }
 
-		return available;
-	}
+        return available;
+    }
 
-	/**
-	 * Returns the implementation hints. The default implementation returns en
-	 * empty map.
-	 * 
-	 */
-	public Map getImplementationHints() {
-		return Collections.EMPTY_MAP;
-	}
+    /** Returns the implementation hints. The default implementation returns en empty map. */
+    public Map getImplementationHints() {
+        return Collections.EMPTY_MAP;
+    }
 }

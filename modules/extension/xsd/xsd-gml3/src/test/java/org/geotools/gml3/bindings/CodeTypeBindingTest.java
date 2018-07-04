@@ -22,11 +22,7 @@ import org.geotools.gml3.GML;
 import org.opengis.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class CodeTypeBindingTest extends ComplexAttributeTestSupport {
 
     private static String TEST_NAME_VALUE = "Test name";
@@ -36,11 +32,10 @@ public class CodeTypeBindingTest extends ComplexAttributeTestSupport {
     public void testEncode() throws Exception {
         ComplexAttribute myCode = gmlCodeType(GML.name, TEST_NAME_VALUE, TEST_NAME_CODESPACE);
         Document dom = encode(myCode, GML.name);
-        print(dom);
+        // print(dom);
         assertEquals("gml:name", dom.getDocumentElement().getNodeName());
         assertEquals(TEST_NAME_VALUE, dom.getDocumentElement().getFirstChild().getNodeValue());
         assertNotNull(dom.getDocumentElement().getAttribute("codeSpace"));
         assertEquals(TEST_NAME_CODESPACE, dom.getDocumentElement().getAttribute("codeSpace"));
     }
-
 }

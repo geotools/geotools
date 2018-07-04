@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.ResourceInfo;
@@ -36,6 +35,7 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -45,8 +45,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.FactoryException;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 public class TransformFeatureSourceTest extends AbstractTransformTest {
 
@@ -120,8 +118,9 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     @Test
     public void testBoundsWithSelectNoGeom() throws Exception {
         SimpleFeatureSource transformed = transformWithSelection();
-        ReferencedEnvelope re = transformed.getBounds(new Query("states_mini", Filter.INCLUDE,
-                new String[] { "state_name" }));
+        ReferencedEnvelope re =
+                transformed.getBounds(
+                        new Query("states_mini", Filter.INCLUDE, new String[] {"state_name"}));
         assertNull(re);
     }
 
@@ -133,8 +132,9 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         assertEquals(expected, actual);
 
         actual = STATES.getCount(new Query("states", CQL.toFilter("state_name = 'Illinois'")));
-        expected = transformed.getCount(new Query("states_mini", CQL
-                .toFilter("state_name = 'Illinois'")));
+        expected =
+                transformed.getCount(
+                        new Query("states_mini", CQL.toFilter("state_name = 'Illinois'")));
 
         assertEquals(expected, actual);
     }
@@ -178,7 +178,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     public void testSortFeaturesWithSelect() throws Exception {
         SimpleFeatureSource transformed = transformWithSelection();
 
-        SortBy[] sortBy = new SortBy[] { FF.sort("state_name", SortOrder.DESCENDING) };
+        SortBy[] sortBy = new SortBy[] {FF.sort("state_name", SortOrder.DESCENDING)};
 
         // check we can sort
         assertTrue(transformed.getQueryCapabilities().supportsSorting(sortBy));
@@ -284,7 +284,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     public void testSortFeaturesWithRename() throws Exception {
         SimpleFeatureSource transformed = transformWithRename();
 
-        SortBy[] sortBy = new SortBy[] { FF.sort("name", SortOrder.DESCENDING) };
+        SortBy[] sortBy = new SortBy[] {FF.sort("name", SortOrder.DESCENDING)};
 
         // check we can sort
         assertTrue(transformed.getQueryCapabilities().supportsSorting(sortBy));
@@ -322,7 +322,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         SimpleFeatureSource transformed = transformWithExpressions();
         checkTransfomedSchemaWithExpressions(transformed);
     }
-    
+
     @Test
     public void testSchemaTransformFromEmptySource() throws Exception {
         SimpleFeatureSource transformed = transformWithExpressionsWithEmptySource();
@@ -375,8 +375,13 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         SimpleFeatureCollection fc = transformed.getFeatures();
         assertEquals(transformed.getSchema(), fc.getSchema());
         assertEquals(transformed.getCount(Query.ALL), fc.size());
-        ReferencedEnvelope bufferedStateBounds = new ReferencedEnvelope(-110.04782099895442,
-                -74.04752638847438, 34.98970859966714, 43.50933565139621, WGS84);
+        ReferencedEnvelope bufferedStateBounds =
+                new ReferencedEnvelope(
+                        -110.04782099895442,
+                        -74.04752638847438,
+                        34.98970859966714,
+                        43.50933565139621,
+                        WGS84);
         assertEquals(bufferedStateBounds, fc.getBounds());
 
         // and now with a specific one, here the property feature source will return null values
@@ -384,8 +389,13 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         fc = transformed.getFeatures(q);
         assertEquals(transformed.getSchema(), fc.getSchema());
         assertEquals(1, fc.size());
-        ReferencedEnvelope bufferedDelawareBounds = new ReferencedEnvelope(-76.78885040499915,
-                -74.05085782368926, 37.450389376543036, 40.82235239392104, WGS84);
+        ReferencedEnvelope bufferedDelawareBounds =
+                new ReferencedEnvelope(
+                        -76.78885040499915,
+                        -74.05085782368926,
+                        37.450389376543036,
+                        40.82235239392104,
+                        WGS84);
         assertEquals(bufferedDelawareBounds, fc.getBounds());
 
         // and now read for good
@@ -411,7 +421,7 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
     public void testSortFeaturesWithTransform() throws Exception {
         SimpleFeatureSource transformed = transformWithExpressions();
 
-        SortBy[] sortBy = new SortBy[] { FF.sort("total", SortOrder.DESCENDING) };
+        SortBy[] sortBy = new SortBy[] {FF.sort("total", SortOrder.DESCENDING)};
 
         // check we can sort
         assertTrue(transformed.getQueryCapabilities().supportsSorting(sortBy));
@@ -480,5 +490,4 @@ public class TransformFeatureSourceTest extends AbstractTransformTest {
         assertEquals(et.getSuper(), et.getSuper());
         assertEquals(et.getUserData(), et.getUserData());
     }
-
 }

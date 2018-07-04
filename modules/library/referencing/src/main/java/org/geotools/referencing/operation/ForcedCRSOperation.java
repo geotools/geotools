@@ -2,7 +2,6 @@ package org.geotools.referencing.operation;
 
 import java.util.Collection;
 import java.util.Set;
-
 import org.opengis.metadata.extent.Extent;
 import org.opengis.metadata.quality.PositionalAccuracy;
 import org.opengis.referencing.ReferenceIdentifier;
@@ -18,7 +17,7 @@ import org.opengis.util.InternationalString;
  * happens, for example, when trying to work against a projected CRS with a wrapped geographic CRS
  * axis in lon/lat order, and with the database providing an operation that uses the same projected
  * CRS around a geographic CRS with axis in lat/lon order
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class ForcedCRSOperation implements CoordinateOperation {
@@ -29,7 +28,9 @@ class ForcedCRSOperation implements CoordinateOperation {
 
     CoordinateReferenceSystem targetCRS;
 
-    public ForcedCRSOperation(CoordinateOperation delegate, CoordinateReferenceSystem sourceCRS,
+    public ForcedCRSOperation(
+            CoordinateOperation delegate,
+            CoordinateReferenceSystem sourceCRS,
             CoordinateReferenceSystem targetCRS) {
         this.delegate = delegate;
         this.sourceCRS = sourceCRS;
@@ -83,5 +84,4 @@ class ForcedCRSOperation implements CoordinateOperation {
     public MathTransform getMathTransform() {
         return delegate.getMathTransform();
     }
-
 }

@@ -17,7 +17,6 @@ package org.geotools.swt.styling.simple;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -45,8 +44,10 @@ import org.opengis.filter.expression.Expression;
 
 /**
  * Allows editing/viewing of a Style Layer Descriptor "TextSymbolizer".
- * <p>
- * Here is the pretty picture: <pre><code>
+ *
+ * <p>Here is the pretty picture:
+ *
+ * <pre><code>
  *          +-+ +------------+ +------+ +------+
  *   Label: |x| |     title\/| | Font | |Offset|
  *          +-+ +------------+ +------+ +------+
@@ -55,28 +56,26 @@ import org.opengis.filter.expression.Expression;
  *   Label: |x| |     title\/| | Font | |VAlign| |HAlign| |Rotation|
  *          +-+ +------------+ +------+ +------+ +------+ +--------+
  * </code></pre>
- * </p>
- * <p>
- * Workflow:
+ *
+ * <p>Workflow:
+ *
  * <ol>
- * <li>createControl( parent ) - set up controls
- * <li>set( SimpleFeatureType, TextSymbolizer, Mode ) - provide content from SimpleStyleConfigurator
- *    <ol>
- *    <li> Symbolizer values copied into fields based on mode
- *    <li> fields copied into controls
- *    <li> controls enabled based on mode & fields
- *    </ol>
- * <li>Listener.widgetSelected/modifyText - User performs an "edit"
- * <li>Listener.sync( SelectionEvent ) - update fields with values of controls
- * <li>fire( SelectionSevent ) - notify SimpleStyleConfigurator of change
- * <li>get( StyleBuilder ) - construct based on fields
+ *   <li>createControl( parent ) - set up controls
+ *   <li>set( SimpleFeatureType, TextSymbolizer, Mode ) - provide content from
+ *       SimpleStyleConfigurator
+ *       <ol>
+ *         <li>Symbolizer values copied into fields based on mode
+ *         <li>fields copied into controls
+ *         <li>controls enabled based on mode & fields
+ *       </ol>
+ *   <li>Listener.widgetSelected/modifyText - User performs an "edit"
+ *   <li>Listener.sync( SelectionEvent ) - update fields with values of controls
+ *   <li>fire( SelectionSevent ) - notify SimpleStyleConfigurator of change
+ *   <li>get( StyleBuilder ) - construct based on fields
  * </ul>
- * </p>  
+ *
  * @author Jody Garnett
  * @since 1.0.0
- *
- *
- *
  * @source $URL$
  */
 public class LabelViewer {
@@ -86,10 +85,9 @@ public class LabelViewer {
     FontData[] font;
     Color colour;
 
-    /**
-     * Use PointPlacement or LinePlacement?
-     */
+    /** Use PointPlacement or LinePlacement? */
     boolean pointPlacement = true;
+
     LabelPlacement labelPlacement = null;
 
     Button on;
@@ -104,16 +102,19 @@ public class LabelViewer {
     Combo place3;
 
     private class Listener implements SelectionListener, ModifyListener {
-        public void widgetSelected( SelectionEvent e ) {
+        public void widgetSelected(SelectionEvent e) {
             sync(e);
         };
-        public void widgetDefaultSelected( SelectionEvent e ) {
+
+        public void widgetDefaultSelected(SelectionEvent e) {
             sync(e);
         };
-        public void modifyText( final ModifyEvent e ) {
+
+        public void modifyText(final ModifyEvent e) {
             sync(AbstractSimpleConfigurator.selectionEvent(e));
         };
-        private void sync( SelectionEvent selectionEvent ) {
+
+        private void sync(SelectionEvent selectionEvent) {
             try {
                 LabelViewer.this.enabled = LabelViewer.this.on.getSelection();
                 LabelViewer.this.colour = LabelViewer.this.fonter.getAWTColor();
@@ -139,46 +140,47 @@ public class LabelViewer {
             fire(selectionEvent);
         }
     };
+
     Listener sync = new Listener();
 
     private SelectionListener listener;
 
     /**
      * Accepts a listener that will be notified when content changes.
-     * @param listener1 
+     *
+     * @param listener1
      */
-    public void addListener( SelectionListener listener1 ) {
+    public void addListener(SelectionListener listener1) {
         this.listener = listener1;
     }
 
     /**
      * Remove listener.
-     * @param listener1 
+     *
+     * @param listener1
      */
-    public void removeListener( SelectionListener listener1 ) {
-        if (this.listener == listener1)
-            this.listener = null;
+    public void removeListener(SelectionListener listener1) {
+        if (this.listener == listener1) this.listener = null;
     }
 
-    protected void fire( SelectionEvent event ) {
-        if (this.listener == null)
-            return;
+    protected void fire(SelectionEvent event) {
+        if (this.listener == null) return;
         this.listener.widgetSelected(event);
     }
     /**
      * Constructs a TextSymbolizer from the inputs
-     * @param build 
-     * 
+     *
+     * @param build
      * @return TextSymbolizer defined by this model
      */
-    public TextSymbolizer get( StyleBuilder build ) {
+    public TextSymbolizer get(StyleBuilder build) {
         if (!this.enabled) {
             return null;
         }
         if (this.font == null || this.font.length == 0) {
             return null;
         }
-        if (this.labelType == null || "".equals(this.labelType)) { //$NON-NLS-1$
+        if (this.labelType == null || "".equals(this.labelType)) { // $NON-NLS-1$
             return null;
         }
 
@@ -194,20 +196,20 @@ public class LabelViewer {
             // PointPlacement
             double horiz;
             if (this.place.getSelectionIndex() < 3) {
-                switch( this.place.getSelectionIndex() ) {
-                case 0:
-                    horiz = SLDs.ALIGN_LEFT;
-                    break;
-                case 1:
-                    horiz = SLDs.ALIGN_CENTER;
-                    break;
-                case 2:
-                    horiz = SLDs.ALIGN_RIGHT;
-                    break;
+                switch (this.place.getSelectionIndex()) {
+                    case 0:
+                        horiz = SLDs.ALIGN_LEFT;
+                        break;
+                    case 1:
+                        horiz = SLDs.ALIGN_CENTER;
+                        break;
+                    case 2:
+                        horiz = SLDs.ALIGN_RIGHT;
+                        break;
 
-                default:
-                    horiz = SLDs.ALIGN_CENTER;
-                    break;
+                    default:
+                        horiz = SLDs.ALIGN_CENTER;
+                        break;
                 }
             } else { // custom value
                 horiz = Double.parseDouble(this.place.getText());
@@ -215,20 +217,20 @@ public class LabelViewer {
 
             double vert;
             if (this.place2.getSelectionIndex() < 3) {
-                switch( this.place2.getSelectionIndex() ) {
-                case 0:
-                    vert = SLDs.ALIGN_BOTTOM;
-                    break;
-                case 1:
-                    vert = SLDs.ALIGN_MIDDLE;
-                    break;
-                case 2:
-                    vert = SLDs.ALIGN_TOP;
-                    break;
+                switch (this.place2.getSelectionIndex()) {
+                    case 0:
+                        vert = SLDs.ALIGN_BOTTOM;
+                        break;
+                    case 1:
+                        vert = SLDs.ALIGN_MIDDLE;
+                        break;
+                    case 2:
+                        vert = SLDs.ALIGN_TOP;
+                        break;
 
-                default:
-                    vert = SLDs.ALIGN_MIDDLE;
-                    break;
+                    default:
+                        vert = SLDs.ALIGN_MIDDLE;
+                        break;
                 }
             } else { // custom value
                 vert = Double.parseDouble(this.place2.getText());
@@ -244,23 +246,27 @@ public class LabelViewer {
         }
         this.labelPlacement = placement;
 
-        Expression exp = (Expression) CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()).property(this.labelType);
-        TextSymbolizer text = build.createTextSymbolizer(fill, new Font[]{gtFont}, null, exp, placement, null);
+        Expression exp =
+                (Expression)
+                        CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints())
+                                .property(this.labelType);
+        TextSymbolizer text =
+                build.createTextSymbolizer(fill, new Font[] {gtFont}, null, exp, placement, null);
         if (SLDs.isLine(this.schema)) {
-            text.getOptions().put("group", "yes"); //$NON-NLS-1$ //$NON-NLS-2$
+            text.getOptions().put("group", "yes"); // $NON-NLS-1$ //$NON-NLS-2$
         }
-        text.getOptions().put("spaceAround", "2"); //$NON-NLS-1$ //$NON-NLS-2$
+        text.getOptions().put("spaceAround", "2"); // $NON-NLS-1$ //$NON-NLS-2$
         return text;
     }
 
     /**
      * Start editing the provided symbolizer.
-     * 
+     *
      * @param schema
      * @param sym
-     * @param mode 
+     * @param mode
      */
-    public void set( SimpleFeatureType schema, TextSymbolizer sym, Mode mode ) {
+    public void set(SimpleFeatureType schema, TextSymbolizer sym, Mode mode) {
         listen(false);
         try {
             this.schema = schema;
@@ -268,7 +274,7 @@ public class LabelViewer {
 
             this.font = SLDs.textFont(sym);
             if (this.font == null || this.font.length == 0) {
-                this.font = new FontData[]{new FontData("Arial", 12, SWT.NORMAL)}; //$NON-NLS-1$
+                this.font = new FontData[] {new FontData("Arial", 12, SWT.NORMAL)}; // $NON-NLS-1$
             }
             this.labelType = SLDs.textLabelString(sym);
             this.colour = SLDs.textFontFill(sym);
@@ -281,10 +287,11 @@ public class LabelViewer {
             this.fonter.setFontList(this.font);
 
             if (schema != null) {
-                AttributeDescriptor[] attrs = schema.getAttributeDescriptors().toArray(new AttributeDescriptor[0]);
+                AttributeDescriptor[] attrs =
+                        schema.getAttributeDescriptors().toArray(new AttributeDescriptor[0]);
                 List<String> list = new ArrayList<String>();
-                for( int i = 0; i < attrs.length; i++ ) {
-                    Class< ? > cls = attrs[i].getType().getBinding();
+                for (int i = 0; i < attrs.length; i++) {
+                    Class<?> cls = attrs[i].getType().getBinding();
                     if (String.class.isAssignableFrom(cls)) {
                         list.add(attrs[i].getName().getLocalPart());
                     } else if (Number.class.isAssignableFrom(cls)) {
@@ -317,7 +324,8 @@ public class LabelViewer {
                 // PointPlacement
                 this.place2.setEnabled(this.enabled);
                 this.place3.setEnabled(this.enabled);
-                if (this.labelPlacement == null || !(this.labelPlacement instanceof PointPlacement)) {
+                if (this.labelPlacement == null
+                        || !(this.labelPlacement instanceof PointPlacement)) {
                     // defaults
                     if (mode == Mode.POINT) {
                         // don't cover the point!
@@ -356,21 +364,22 @@ public class LabelViewer {
                 }
             } else {
                 // LinePlacement
-                if (this.labelPlacement == null || !(this.labelPlacement instanceof LinePlacement)) {
+                if (this.labelPlacement == null
+                        || !(this.labelPlacement instanceof LinePlacement)) {
                     // defaults
                     this.place.setText("0");
                 } else {
-                    String offset = ((LinePlacement) labelPlacement).getPerpendicularOffset().toString();
+                    String offset =
+                            ((LinePlacement) labelPlacement).getPerpendicularOffset().toString();
                     this.place.setText(offset);
                 }
             }
         } finally {
             listen(true);
         }
-
     }
 
-    public void listen( boolean listen ) {
+    public void listen(boolean listen) {
         if (listen) {
             this.on.addSelectionListener(this.sync);
             this.field.addSelectionListener(this.sync);
@@ -408,8 +417,10 @@ public class LabelViewer {
         }
     }
 
-    public Composite createControl( Composite parent, KeyListener klisten ) {
-        this.part = AbstractSimpleConfigurator.subpart(parent, Messages.getString("SimpleStyleConfigurator_label_label"));
+    public Composite createControl(Composite parent, KeyListener klisten) {
+        this.part =
+                AbstractSimpleConfigurator.subpart(
+                        parent, Messages.getString("SimpleStyleConfigurator_label_label"));
         this.klisten = klisten;
 
         this.on = new Button(part, SWT.CHECK);
@@ -419,7 +430,7 @@ public class LabelViewer {
         if (this.schema != null) {
             List<AttributeDescriptor> types = this.schema.getAttributeDescriptors();
             List<String> typeStrings = new ArrayList<String>();
-            for( AttributeDescriptor attributeDescriptor : types ) {
+            for (AttributeDescriptor attributeDescriptor : types) {
                 typeStrings.add(attributeDescriptor.getLocalName());
             }
             this.field.setItems(typeStrings.toArray(new String[0]));
@@ -456,7 +467,10 @@ public class LabelViewer {
         }
         this.place.setToolTipText(Messages.getString("LabelViewer_offset"));
 
-        String[] itemsO = new String[]{"0", "5", "10", "15", "20"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        String[] itemsO =
+                new String[] {
+                    "0", "5", "10", "15", "20"
+                }; // $NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
         this.place.setItems(itemsO);
 
         if (this.place2 != null) {
@@ -468,11 +482,23 @@ public class LabelViewer {
     }
 
     private void initPlacementContentsPoint() {
-        String[] itemsH = new String[]{Messages.getString("LabelViewer_left"), Messages.getString("LabelViewer_center"),
-                Messages.getString("LabelViewer_right")};
-        String[] itemsV = new String[]{Messages.getString("LabelViewer_bottom"), Messages.getString("LabelViewer_middle"),
-                Messages.getString("LabelViewer_top")};
-        String[] itemsR = new String[]{"0", "45", "90", "135", "180", "225", "270", "315", "360"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+        String[] itemsH =
+                new String[] {
+                    Messages.getString("LabelViewer_left"),
+                    Messages.getString("LabelViewer_center"),
+                    Messages.getString("LabelViewer_right")
+                };
+        String[] itemsV =
+                new String[] {
+                    Messages.getString("LabelViewer_bottom"),
+                    Messages.getString("LabelViewer_middle"),
+                    Messages.getString("LabelViewer_top")
+                };
+        String[] itemsR =
+                new String[] {
+                    "0", "45", "90", "135", "180", "225", "270", "315", "360"
+                }; // $NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        // //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 
         if (this.place == null) {
             this.place = new Combo(part, SWT.DROP_DOWN);
@@ -497,5 +523,4 @@ public class LabelViewer {
         this.place3.setItems(itemsR);
         this.place3.setVisible(true);
     }
-
 }

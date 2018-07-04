@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,48 +16,41 @@
  */
 package org.geotools.geometry.xml;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.geotools.geometry.GeometryBuilder;
+import org.geotools.geometry.iso.PrecisionModel;
+import org.geotools.geometry.text.WKTParser;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.PrecisionType;
 import org.opengis.geometry.coordinate.GeometryFactory;
 import org.opengis.geometry.primitive.PrimitiveFactory;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
-import org.xml.sax.SAXException;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
-import org.geotools.geometry.GeometryBuilder;
-import org.geotools.geometry.text.WKTParser;
-import org.geotools.geometry.iso.PrecisionModel;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-
+import org.xml.sax.SAXException;
 
 /**
  * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
- *
- *
- *
- *
  * @source $URL$
  */
 public class GeometryTestParser {
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");
 
     private DocumentBuilderFactory documentBuilderFactory;
     private DocumentBuilder documentBuilder;
     private WKTParser wktFactory;
 
-    /**
-     * Constructor
-     */
+    /** Constructor */
     public GeometryTestParser() {
         documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
@@ -69,7 +62,7 @@ public class GeometryTestParser {
         GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
         GeometryFactory geomFact = builder.getGeometryFactory();
         PrimitiveFactory primFact = builder.getPrimitiveFactory();
-        wktFactory = new WKTParser( geomFact, primFact, null, builder.getAggregateFactory() );
+        wktFactory = new WKTParser(geomFact, primFact, null, builder.getAggregateFactory());
     }
 
     /**
@@ -81,13 +74,12 @@ public class GeometryTestParser {
         try {
             doc = documentBuilder.parse(inputSource);
         } catch (SAXException e) {
-            LOGGER.log( Level.FINE, e.getMessage(), e);
+            LOGGER.log(Level.FINE, e.getMessage(), e);
             throw new RuntimeException("", e);
 
         } catch (IOException e) {
-            LOGGER.log( Level.FINE, e.getMessage(), e);
+            LOGGER.log(Level.FINE, e.getMessage(), e);
             throw new RuntimeException("", e);
-
         }
 
         Element element = doc.getDocumentElement();
@@ -95,9 +87,8 @@ public class GeometryTestParser {
         try {
             test = processRootNode(element);
         } catch (ParseException e) {
-            LOGGER.log( Level.FINE, e.getMessage(), e);
+            LOGGER.log(Level.FINE, e.getMessage(), e);
             throw new RuntimeException("", e);
-
         }
 
         return test;
@@ -105,14 +96,14 @@ public class GeometryTestParser {
 
     /**
      * Processes the root "run" node
+     *
      * @param node
      * @return GeometryTestContainer
      * @throws ParseException
      */
     public GeometryTestContainer processRootNode(Node node) throws ParseException {
         if (!node.getNodeName().equalsIgnoreCase("run")) {
-            throw new ParseException("Expected run tag, found " +
-                    node.getNodeName(), 0);
+            throw new ParseException("Expected run tag, found " + node.getNodeName(), 0);
         }
         GeometryTestContainer test = new GeometryTestContainer();
         Node child = node.getFirstChild();
@@ -139,10 +130,8 @@ public class GeometryTestParser {
     /**
      * parse a single test case
      *
-     * From looking at various JTS test cases and seeing how their
-     * testbuilder program works, I think its safe to assume that
-     * there will always be just one or two objects, named a and
-     * b.
+     * <p>From looking at various JTS test cases and seeing how their testbuilder program works, I
+     * think its safe to assume that there will always be just one or two objects, named a and b.
      *
      * @param testCaseNode
      * @return GeometryTestCase
@@ -174,9 +163,9 @@ public class GeometryTestParser {
     }
 
     /**
-     * Loads a test operation. Assumes that there _must_ be a name attribute,
-     * and looks for arg1, arg2, and arg3. The value of the text subnode is
-     * the value of the expected result
+     * Loads a test operation. Assumes that there _must_ be a name attribute, and looks for arg1,
+     * arg2, and arg3. The value of the text subnode is the value of the expected result
+     *
      * @param testNode a test node from the xml file
      * @return GeometryTestOperation
      */
@@ -202,7 +191,7 @@ public class GeometryTestParser {
             try {
                 expectedResult = wktFactory.parse(expectedString);
             } catch (ParseException e) {
-                LOGGER.log( Level.FINE, "Couldn't parse [" + expectedString + "]", e);
+                LOGGER.log(Level.FINE, "Couldn't parse [" + expectedString + "]", e);
                 throw new RuntimeException("Couldn't parse [" + expectedString + "]", e);
             }
         }
@@ -210,34 +199,30 @@ public class GeometryTestParser {
         return new GeometryTestOperation(operation, arg1, arg2, arg3, expectedResult);
     }
 
-
     private Geometry loadTestGeometry(Node node) {
         String wktString = getNodeText(node);
         Geometry geom = null;
         try {
             geom = wktFactory.parse(wktString);
         } catch (ParseException e) {
-            LOGGER.log( Level.FINE, "Can't parse [" + wktString + "]", e);            
+            LOGGER.log(Level.FINE, "Can't parse [" + wktString + "]", e);
             throw new RuntimeException("Can't parse [" + wktString + "]", e);
         }
         return geom;
     }
 
-
     private PrecisionType getPrecisionModel(Node child) {
         String val = getNodeAttribute(child, "type");
         if (val == "") {
-        	// if scale is 1.0 then set the precision to type FIXED
-        	String scale = getNodeAttribute(child, "scale");
-        	if (scale.equalsIgnoreCase("1.0")) return PrecisionType.FIXED;
-        }
-        else if (val.equalsIgnoreCase("DOUBLE")) {
-        	return PrecisionType.DOUBLE;
+            // if scale is 1.0 then set the precision to type FIXED
+            String scale = getNodeAttribute(child, "scale");
+            if (scale.equalsIgnoreCase("1.0")) return PrecisionType.FIXED;
+        } else if (val.equalsIgnoreCase("DOUBLE")) {
+            return PrecisionType.DOUBLE;
         }
         // default
         return PrecisionType.FLOAT;
     }
-
 
     private String getNodeAttribute(Node node, String attrName) {
         String emptyString = "";
@@ -253,7 +238,6 @@ public class GeometryTestParser {
         return attrNode.getNodeValue();
     }
 
-
     private String getNodeText(Node node) {
         Node child = node.getFirstChild();
         while (child != null) {
@@ -263,7 +247,6 @@ public class GeometryTestParser {
         }
         return "";
     }
-
 
     private Node getNamedChild(Node node, String name) {
         Node child = node.getFirstChild();
@@ -275,5 +258,4 @@ public class GeometryTestParser {
         }
         return null;
     }
-
 }

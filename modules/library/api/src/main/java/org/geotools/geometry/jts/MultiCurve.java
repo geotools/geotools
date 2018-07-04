@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,15 +17,14 @@
 package org.geotools.geometry.jts;
 
 import java.util.List;
-
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * A subclass of multi line string that can host also curves and will linearize if needed
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class MultiCurve extends MultiLineString implements MultiCurvedGeometry<MultiLineString> {
@@ -95,5 +94,4 @@ public class MultiCurve extends MultiLineString implements MultiCurvedGeometry<M
     public int getCoordinatesDimension() {
         return 2;
     }
-
 }

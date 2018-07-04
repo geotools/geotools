@@ -19,16 +19,11 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCFeatureReaderOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SpatiaLiteFeatureReaderOnlineTest extends JDBCFeatureReaderOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new SpatiaLiteTestSetup();
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,15 +20,10 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
 
-/**
- * An iterator backed by some resource that needs closing when done using it
- */
+/** An iterator backed by some resource that needs closing when done using it */
 public interface CloseableIterator<T> extends Iterator<T>, Closeable {
 
-    /**
-     * @throws IOException if an I/O error occurs
-     */
+    /** @throws IOException if an I/O error occurs */
     @Override
     public void close() throws IOException;
-
 }

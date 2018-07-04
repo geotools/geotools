@@ -28,9 +28,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Parses XML into a namespace aware dom.
- * 
- * @author Justin Deoliveira, OpenGeo
  *
+ * @author Justin Deoliveira, OpenGeo
  */
 public class ConvertToDomHandler extends DefaultHandler {
 
@@ -49,15 +48,16 @@ public class ConvertToDomHandler extends DefaultHandler {
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attrs) throws SAXException {
-        //start a new namespace context and declare prefixes from this node
+    public void startElement(String uri, String localName, String qName, Attributes attrs)
+            throws SAXException {
+        // start a new namespace context and declare prefixes from this node
         nsContext.pushContext();
 
-        //look for any namespace declarations
-        for ( int i = 0; i < attrs.getLength(); ++i ) {
+        // look for any namespace declarations
+        for (int i = 0; i < attrs.getLength(); ++i) {
             String attQName = attrs.getQName(i);
             if (attQName.startsWith("xmlns")) {
-                String prefix = attQName.length() > 5 ? attQName.substring(6) : ""; 
+                String prefix = attQName.length() > 5 ? attQName.substring(6) : "";
                 nsContext.declarePrefix(prefix, attrs.getValue(i));
             }
         }
@@ -66,28 +66,28 @@ public class ConvertToDomHandler extends DefaultHandler {
 
         // Create the element.
         Element e = doc.createElementNS(uri, qName);
-        
+
         // Add each attribute.
-        for ( int i = 0; i < attrs.getLength(); ++i ) {
+        for (int i = 0; i < attrs.getLength(); ++i) {
             String attQName = attrs.getQName(i);
             if (attQName.startsWith("xmlns")) {
                 continue;
             }
-            
+
             String attUri = namespace(attQName);
 
             Attr a = doc.createAttributeNS(attUri, attQName);
             a.setValue(attrs.getValue(i));
             e.setAttributeNodeNS(a);
         }
-        
+
         // Actually add it in the tree, and adjust the right place.
         node.appendChild(e);
         node = e;
     }
 
     public void characters(char[] ch, int start, int length) throws SAXException {
-        String str  = new String(ch, start, length);
+        String str = new String(ch, start, length);
         Text text = doc.createTextNode(str);
         node.appendChild(text);
     }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,32 +24,28 @@ import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
 import java.util.List;
-
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeocentricCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-
 /**
  * Unit tests for the JTS utility class.
- * 
+ *
  * @author Michael Bedward
- *
- *
  * @source $URL$
  * @version $Id$
  * @since 2.8
@@ -77,12 +73,12 @@ public class JTSTest extends JTSTestBase {
     @Test
     public void toGeometry_Shape_Line() {
         GeneralPath path = new GeneralPath();
-        
+
         path.moveTo(XPOINTS[0], YPOINTS[0]);
         for (int i = 1; i < NPOINTS; i++) {
             path.lineTo(XPOINTS[i], YPOINTS[i]);
         }
-                
+
         Geometry geom = JTS.toGeometry(path);
         assertTrue(geom instanceof LineString);
 
@@ -100,15 +96,14 @@ public class JTSTest extends JTSTestBase {
 
     @Test
     public void getEnvelope2D() {
-        ReferencedEnvelope refEnv = new ReferencedEnvelope(
-                -10, 10, -5, 5, DefaultGeographicCRS.WGS84);
-        
+        ReferencedEnvelope refEnv =
+                new ReferencedEnvelope(-10, 10, -5, 5, DefaultGeographicCRS.WGS84);
+
         Envelope2D env2D = JTS.getEnvelope2D(refEnv, refEnv.getCoordinateReferenceSystem());
-        
+
         CRS.equalsIgnoreMetadata(
-                refEnv.getCoordinateReferenceSystem(),
-                env2D.getCoordinateReferenceSystem());
-        
+                refEnv.getCoordinateReferenceSystem(), env2D.getCoordinateReferenceSystem());
+
         assertTrue(env2D.boundsEquals(refEnv, 0, 1, TOL));
     }
 
@@ -116,21 +111,8 @@ public class JTSTest extends JTSTestBase {
     public void toGeometry_Envelope() {
         Envelope refEnv = new Envelope(-10, 10, -5, 5);
         Geometry geom = JTS.toGeometry(refEnv);
-        assertTrue(geom instanceof com.vividsolutions.jts.geom.Polygon);
-        
-        Envelope geomEnv = geom.getEnvelopeInternal();
-        assertEquals(-10.0, geomEnv.getMinX(), TOL);
-        assertEquals(10.0, geomEnv.getMaxX(), TOL);
-        assertEquals(-5.0, geomEnv.getMinY(), TOL);
-        assertEquals(5.0, geomEnv.getMaxY(), TOL);
-    }
-    
-    @Test
-    public void toGeometry_ReferencedEnvelope() {
-        ReferencedEnvelope refEnv = new ReferencedEnvelope(-10, 10, -5, 5, DefaultGeographicCRS.WGS84);
-        Geometry geom = JTS.toGeometry(refEnv);
-        assertTrue(geom instanceof com.vividsolutions.jts.geom.Polygon);
-        
+        assertTrue(geom instanceof org.locationtech.jts.geom.Polygon);
+
         Envelope geomEnv = geom.getEnvelopeInternal();
         assertEquals(-10.0, geomEnv.getMinX(), TOL);
         assertEquals(10.0, geomEnv.getMaxX(), TOL);
@@ -138,45 +120,58 @@ public class JTSTest extends JTSTestBase {
         assertEquals(5.0, geomEnv.getMaxY(), TOL);
     }
 
+    @Test
+    public void toGeometry_ReferencedEnvelope() {
+        ReferencedEnvelope refEnv =
+                new ReferencedEnvelope(-10, 10, -5, 5, DefaultGeographicCRS.WGS84);
+        Geometry geom = JTS.toGeometry(refEnv);
+        assertTrue(geom instanceof org.locationtech.jts.geom.Polygon);
+
+        Envelope geomEnv = geom.getEnvelopeInternal();
+        assertEquals(-10.0, geomEnv.getMinX(), TOL);
+        assertEquals(10.0, geomEnv.getMaxX(), TOL);
+        assertEquals(-5.0, geomEnv.getMinY(), TOL);
+        assertEquals(5.0, geomEnv.getMaxY(), TOL);
+    }
 
     @Test
     public void toEnvelope() {
         Coordinate[] coords = getPolyCoords();
         GeometryFactory gf = new GeometryFactory();
         Geometry geom = gf.createPolygon(gf.createLinearRing(coords), null);
-        
+
         ReferencedEnvelope refEnv = JTS.toEnvelope(geom);
         assertTrue(geom.getEnvelopeInternal().equals(refEnv));
     }
-    
+
     @Test
     public void toDirectPosition() {
-        Coordinate c = new Coordinate(40,40);
-        DirectPosition wrapper = JTS.toDirectPosition(c, DefaultGeographicCRS.WGS84 );
-        
-        GeneralDirectPosition expected = new GeneralDirectPosition( DefaultGeographicCRS.WGS84);
-        expected.setOrdinate(0,40);
-        expected.setOrdinate(1,40);
-        
-        assertEquals( expected, wrapper );
+        Coordinate c = new Coordinate(40, 40);
+        DirectPosition wrapper = JTS.toDirectPosition(c, DefaultGeographicCRS.WGS84);
+
+        GeneralDirectPosition expected = new GeneralDirectPosition(DefaultGeographicCRS.WGS84);
+        expected.setOrdinate(0, 40);
+        expected.setOrdinate(1, 40);
+
+        assertEquals(expected, wrapper);
     }
+
     @Test
     public void toGeometry_BoundingBox() {
         BoundingBox bbox = new ReferencedEnvelope(-10, 10, -5, 5, null);
         Geometry geom = JTS.toGeometry(bbox);
-        assertTrue(geom instanceof com.vividsolutions.jts.geom.Polygon);
-        
+        assertTrue(geom instanceof org.locationtech.jts.geom.Polygon);
+
         Envelope geomEnv = geom.getEnvelopeInternal();
         assertEquals(-10.0, geomEnv.getMinX(), TOL);
         assertEquals(10.0, geomEnv.getMaxX(), TOL);
         assertEquals(-5.0, geomEnv.getMinY(), TOL);
         assertEquals(5.0, geomEnv.getMaxY(), TOL);
     }
- 
-    
+
     /**
-     * Added this test after a bug was reported in JTS.transform for converting
-     * between WGS84 (2D) and DefaultGeocentric.CARTESIAN (3D).
+     * Added this test after a bug was reported in JTS.transform for converting between WGS84 (2D)
+     * and DefaultGeocentric.CARTESIAN (3D).
      */
     @Test
     public void transformCoordinate2DCRSTo3D() throws Exception {
@@ -196,75 +191,97 @@ public class JTSTest extends JTSTestBase {
         assertEquals(dest0.y, dest180.y, TOL);
         assertEquals(dest0.z, dest180.z, TOL);
     }
-    
+
     @Test
     public void testTransformToWGS84() throws Exception {
-        String wkt = "GEOGCS[\"GDA94\","
-                + " DATUM[\"Geocentric Datum of Australia 1994\","
-                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
-                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
-                + " AUTHORITY[\"EPSG\",\"6283\"]], "
-                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-                + " UNIT[\"degree\", 0.017453292519943295], "
-                + " AXIS[\"Geodetic longitude\", EAST], " + " AXIS[\"Geodetic latitude\", NORTH], "
-                + " AXIS[\"Ellipsoidal height\", UP], " + " AUTHORITY[\"EPSG\",\"4939\"]]";
+        String wkt =
+                "GEOGCS[\"GDA94\","
+                        + " DATUM[\"Geocentric Datum of Australia 1994\","
+                        + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                        + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                        + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                        + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                        + " UNIT[\"degree\", 0.017453292519943295], "
+                        + " AXIS[\"Geodetic longitude\", EAST], "
+                        + " AXIS[\"Geodetic latitude\", NORTH], "
+                        + " AXIS[\"Ellipsoidal height\", UP], "
+                        + " AUTHORITY[\"EPSG\",\"4939\"]]";
 
         CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
-        ReferencedEnvelope bounds = new ReferencedEnvelope3D(130.875825803896, 130.898939990319,
-                -16.4491956225999, -16.4338185791628, 0.0, 0.0, gda94 );
+        ReferencedEnvelope bounds =
+                new ReferencedEnvelope3D(
+                        130.875825803896,
+                        130.898939990319,
+                        -16.4491956225999,
+                        -16.4338185791628,
+                        0.0,
+                        0.0,
+                        gda94);
 
-        ReferencedEnvelope worldBounds = JTS.toGeographic( bounds );
-        assertEquals( DefaultGeographicCRS.WGS84, worldBounds.getCoordinateReferenceSystem() );
-        
-        Envelope envelope = new Envelope(130.875825803896, 130.898939990319,
-                -16.4491956225999, -16.4338185791628);
-        
-        Envelope worldBounds2 = JTS.toGeographic( envelope, gda94 );
-        if( worldBounds2 instanceof BoundingBox){
-            assertEquals( DefaultGeographicCRS.WGS84, ((BoundingBox)worldBounds2).getCoordinateReferenceSystem() );
+        ReferencedEnvelope worldBounds = JTS.toGeographic(bounds);
+        assertEquals(DefaultGeographicCRS.WGS84, worldBounds.getCoordinateReferenceSystem());
+
+        Envelope envelope =
+                new Envelope(
+                        130.875825803896, 130.898939990319, -16.4491956225999, -16.4338185791628);
+
+        Envelope worldBounds2 = JTS.toGeographic(envelope, gda94);
+        if (worldBounds2 instanceof BoundingBox) {
+            assertEquals(
+                    DefaultGeographicCRS.WGS84,
+                    ((BoundingBox) worldBounds2).getCoordinateReferenceSystem());
         }
     }
-    
+
     @Test
     public void testToGeographic() throws Exception {
-        String wkt = "GEOGCS[\"GDA94\","
-                + " DATUM[\"Geocentric Datum of Australia 1994\","
-                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
-                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
-                + " AUTHORITY[\"EPSG\",\"6283\"]], "
-                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-                + " UNIT[\"degree\", 0.017453292519943295], "
-                + " AXIS[\"Geodetic longitude\", EAST], " + " AXIS[\"Geodetic latitude\", NORTH], "
-                + " AXIS[\"Ellipsoidal height\", UP], " + " AUTHORITY[\"EPSG\",\"4939\"]]";
+        String wkt =
+                "GEOGCS[\"GDA94\","
+                        + " DATUM[\"Geocentric Datum of Australia 1994\","
+                        + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                        + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                        + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                        + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                        + " UNIT[\"degree\", 0.017453292519943295], "
+                        + " AXIS[\"Geodetic longitude\", EAST], "
+                        + " AXIS[\"Geodetic latitude\", NORTH], "
+                        + " AXIS[\"Ellipsoidal height\", UP], "
+                        + " AUTHORITY[\"EPSG\",\"4939\"]]";
 
         CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
         GeometryFactory gf = new GeometryFactory();
-        Point point = gf.createPoint( new Coordinate( 130.875825803896, -16.4491956225999, 0.0 ) );
-        
-        Geometry worldPoint = JTS.toGeographic( point,  gda94 );
-        assertTrue( worldPoint instanceof Point );
-        assertEquals( point.getX(), worldPoint.getCoordinate().x,0.00000001);
+        Point point = gf.createPoint(new Coordinate(130.875825803896, -16.4491956225999, 0.0));
+
+        Geometry worldPoint = JTS.toGeographic(point, gda94);
+        assertTrue(worldPoint instanceof Point);
+        assertEquals(point.getX(), worldPoint.getCoordinate().x, 0.00000001);
     }
+
     @Test
     public void testToGeographicGeometry() throws Exception {
         // This time we are in north / east order
-        String wkt = "GEOGCS[\"GDA94\","
-                + " DATUM[\"Geocentric Datum of Australia 1994\","
-                + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
-                + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
-                + " AUTHORITY[\"EPSG\",\"6283\"]], "
-                + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-                + " UNIT[\"degree\", 0.017453292519943295], "
-                + " AXIS[\"Geodetic latitude\", NORTH], " + " AXIS[\"Geodetic longitude\", EAST], "
-                + " AXIS[\"Ellipsoidal height\", UP], " + " AUTHORITY[\"EPSG\",\"4939\"]]";
+        String wkt =
+                "GEOGCS[\"GDA94\","
+                        + " DATUM[\"Geocentric Datum of Australia 1994\","
+                        + "  SPHEROID[\"GRS 1980\", 6378137.0, 298.257222101, AUTHORITY[\"EPSG\",\"7019\"]],"
+                        + "  TOWGS84[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "
+                        + " AUTHORITY[\"EPSG\",\"6283\"]], "
+                        + " PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                        + " UNIT[\"degree\", 0.017453292519943295], "
+                        + " AXIS[\"Geodetic latitude\", NORTH], "
+                        + " AXIS[\"Geodetic longitude\", EAST], "
+                        + " AXIS[\"Ellipsoidal height\", UP], "
+                        + " AUTHORITY[\"EPSG\",\"4939\"]]";
         CoordinateReferenceSystem gda94 = CRS.parseWKT(wkt);
-        
+
         GeometryFactory gf = new GeometryFactory();
-        Point point = gf.createPoint( new Coordinate( -16.4463909341494,130.882672103999, 97.009018073082));
-        
-        Point world = (Point) JTS.toGeographic( point, gda94 );
-        assertEquals( point.getX(), world.getY(), 0.00000005 );
-        assertEquals( point.getY(), world.getX(), 0.00000005 );
+        Point point =
+                gf.createPoint(
+                        new Coordinate(-16.4463909341494, 130.882672103999, 97.009018073082));
+
+        Point world = (Point) JTS.toGeographic(point, gda94);
+        assertEquals(point.getX(), world.getY(), 0.00000005);
+        assertEquals(point.getY(), world.getX(), 0.00000005);
     }
 
     @Test
@@ -315,8 +332,8 @@ public class JTSTest extends JTSTestBase {
         // *----*----*
         //      |    |
         //      *----*
-        // 
-        // Will be split into 2 separate polygons through the makeValid method 
+        //
+        // Will be split into 2 separate polygons through the makeValid method
         final int[] xPoints = {0, 5, 5, 5, 10, 10, 5, 0};
         final int[] yPoints = {0, 0, 5, 10, 10, 5, 5, 5};
         final int nPoints = xPoints.length;
@@ -324,14 +341,14 @@ public class JTSTest extends JTSTestBase {
         final Shape shape = new java.awt.Polygon(xPoints, yPoints, nPoints);
         final LinearRing geom = (LinearRing) JTS.toGeometry(shape);
         final GeometryFactory factory = new GeometryFactory();
-        final com.vividsolutions.jts.geom.Polygon polygon = factory.createPolygon(geom);
+        final org.locationtech.jts.geom.Polygon polygon = factory.createPolygon(geom);
         assertFalse(polygon.isValid());
 
-        final List<com.vividsolutions.jts.geom.Polygon> validPols = JTS.makeValid(polygon, false);
+        final List<org.locationtech.jts.geom.Polygon> validPols = JTS.makeValid(polygon, false);
 
         assertEquals(2, validPols.size());
-        com.vividsolutions.jts.geom.Polygon polygon1 = validPols.get(0);
-        com.vividsolutions.jts.geom.Polygon polygon2 = validPols.get(1);
+        org.locationtech.jts.geom.Polygon polygon1 = validPols.get(0);
+        org.locationtech.jts.geom.Polygon polygon2 = validPols.get(1);
         assertEquals(5, polygon1.getNumPoints());
         assertEquals(5, polygon2.getNumPoints());
     }

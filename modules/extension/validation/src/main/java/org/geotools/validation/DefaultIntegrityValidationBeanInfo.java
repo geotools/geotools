@@ -18,28 +18,21 @@ package org.geotools.validation;
 
 import java.beans.PropertyDescriptor;
 
-
 /**
  * DefaultFeatureValidationBeanInfo purpose.
- * 
- * <p>
- * Description of DefaultFeatureValidationBeanInfo ...
- * </p>
+ *
+ * <p>Description of DefaultFeatureValidationBeanInfo ...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class DefaultIntegrityValidationBeanInfo extends ValidationBeanInfo {
     /**
      * DefaultFeatureValidationBeanInfo constructor.
-     * 
-     * <p>
-     * super
-     * </p>
+     *
+     * <p>super
      */
     public DefaultIntegrityValidationBeanInfo() {
         super();

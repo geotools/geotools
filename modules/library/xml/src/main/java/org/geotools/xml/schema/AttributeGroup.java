@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,60 +18,34 @@ package org.geotools.xml.schema;
 
 import java.net.URI;
 
-
 /**
- * <p>
- * This interface is intended to represent an XML Schema AttributeGroup. In
- * many cases AttributeGroups may be optimized within complexTypes to remove
- * the level of indirection. AttributeGroups remain in the interface set as
- * there are publicly defined (externally visible) AttributeGroups defined in
- * XML Schemas.
- * </p>
+ * This interface is intended to represent an XML Schema AttributeGroup. In many cases
+ * AttributeGroups may be optimized within complexTypes to remove the level of indirection.
+ * AttributeGroups remain in the interface set as there are publicly defined (externally visible)
+ * AttributeGroups defined in XML Schemas.
  *
  * @author dzwiers www.refractions.net
- *
- *
  * @source $URL$
  */
 public interface AttributeGroup {
     /**
-     * <p>
-     * Represents the Namespace attribute of an AnyAttribute child occuring
-     * within this attributeGroup.
-     * </p>
-     *
+     * Represents the Namespace attribute of an AnyAttribute child occuring within this
+     * attributeGroup.
      */
     public String getAnyAttributeNameSpace();
 
     /**
-     * <p>
-     * The list of attribute declared within this attributeGroup. Although we
-     * encourage the order of this list to follow the order the attributes
-     * were declared in, there is no such requirement.
-     * </p>
-     *
+     * The list of attribute declared within this attributeGroup. Although we encourage the order of
+     * this list to follow the order the attributes were declared in, there is no such requirement.
      */
     public Attribute[] getAttributes();
 
-    /**
-     * <p>
-     * The Schema ID for this attributeGroup definition.
-     * </p>
-     *
-     */
+    /** The Schema ID for this attributeGroup definition. */
     public String getId();
 
-    /**
-     * <p>
-     * The name of this Attribute Group declaration within the XML Schema
-     * </p>
-     *
-     */
+    /** The name of this Attribute Group declaration within the XML Schema */
     public String getName();
 
-    /**
-     * DOCUMENT ME!
-     *
-     */
+    /** DOCUMENT ME! */
     public URI getNamespace();
 }

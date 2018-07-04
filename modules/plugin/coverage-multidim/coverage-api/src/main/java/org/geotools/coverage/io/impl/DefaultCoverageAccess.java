@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.CoverageStore;
@@ -39,28 +38,28 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Default implementation of {@link CoverageAccess}.
- * 
+ *
  * @author Simone Giannecchini, GeoSolutions SAS
- * 
  * @source $URL$
  */
 public class DefaultCoverageAccess implements CoverageAccess {
 
-    /**
-     * Driver used to create this CoverageAccess.
-     */
+    /** Driver used to create this CoverageAccess. */
     protected final Driver driver;
-    
-    protected final EnumSet<AccessType> allowedAccessTypes;
-   
-    protected final Map<String, Parameter< ? >> accessParameters=new HashMap<String, Parameter<?>>();
 
-    protected final Map<String, Serializable> connectionParameters=new HashMap<String, Serializable>();
-    
+    protected final EnumSet<AccessType> allowedAccessTypes;
+
+    protected final Map<String, Parameter<?>> accessParameters =
+            new HashMap<String, Parameter<?>>();
+
+    protected final Map<String, Serializable> connectionParameters =
+            new HashMap<String, Serializable>();
+
     protected List<Name> names = null;
 
     public DefaultCoverageAccess(
-            Driver driver,EnumSet<AccessType> allowedAccessTypes, 
+            Driver driver,
+            EnumSet<AccessType> allowedAccessTypes,
             Map<String, Parameter<?>> accessParams,
             Map<String, Serializable> connectionParameters) {
         this.driver = driver;
@@ -70,16 +69,22 @@ public class DefaultCoverageAccess implements CoverageAccess {
             this.connectionParameters.putAll(connectionParameters);
         }
     }
-    
+
     @Override
-    public CoverageSource access(Name name, Map<String, Serializable> params,
-            AccessType accessType, Hints hints, ProgressListener listener) throws IOException {
+    public CoverageSource access(
+            Name name,
+            Map<String, Serializable> params,
+            AccessType accessType,
+            Hints hints,
+            ProgressListener listener)
+            throws IOException {
         throw new UnsupportedOperationException("Operation not implemented");
     }
-    
+
     @Override
-    public boolean canCreate(Name name, Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    public boolean canCreate(
+            Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         return false;
     }
 
@@ -89,8 +94,9 @@ public class DefaultCoverageAccess implements CoverageAccess {
     }
 
     @Override
-    public CoverageStore create(Name name, Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    public CoverageStore create(
+            Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         throw new UnsupportedOperationException("Operation not implemented");
     }
 
@@ -112,15 +118,13 @@ public class DefaultCoverageAccess implements CoverageAccess {
 
     @Override
     public int getCoveragesNumber(ProgressListener listener) {
-        if (listener == null)
-            listener = new NullProgressListener();
+        if (listener == null) listener = new NullProgressListener();
         listener.started();
         try {
             return names.size();
         } finally {
             listener.complete();
         }
-
     }
 
     @Override
@@ -130,7 +134,7 @@ public class DefaultCoverageAccess implements CoverageAccess {
 
     @Override
     public List<Name> getNames(ProgressListener listener) {
-        if (listener == null){
+        if (listener == null) {
             listener = new NullProgressListener();
         }
         listener.started();
@@ -172,7 +176,5 @@ public class DefaultCoverageAccess implements CoverageAccess {
     }
 
     @Override
-    public void dispose() {
-    }
-
+    public void dispose() {}
 }

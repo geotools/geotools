@@ -1,0 +1,56 @@
+{
+    "version": 8,
+    "name": "Light",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "default",
+        "mapbox:groups": {}
+    },
+    "center": [
+        -71.0570795111714,
+        42.3554363160855
+    ],
+    "zoom": 16.108319309609715,
+    "bearing": 0,
+    "pitch": 45,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/vickdw/cj13x711q001e2rpprv2twrac",
+    "glyphs": "mapbox://fonts/vickdw/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "background",
+            "type": "background",
+            "layout": {},
+            "paint": {
+                "background-color": "hsl(55, 11%, 96%)"
+            }
+        },
+        {
+            "id": "building",
+            "type": "fill-extrusion",
+            "source": "composite",
+            "source-layer": "building",
+            "layout": {},
+            "paint": {
+                "fill-extrusion-color": "#aaa",
+                "fill-extrusion-height": {
+                    "type": "identity",
+                    "property": "Height"
+                },
+                "fill-extrusion-base": 0,
+                "fill-extrusion-opacity": 0.6
+            }
+        }
+    ],
+    "created": "2017-04-04T19:10:54.060Z",
+    "id": "cj13x711q001e2rpprv2twrac",
+    "modified": "2017-04-04T20:02:35.053Z",
+    "owner": "vickdw",
+    "visibility": "private",
+    "draft": false
+}

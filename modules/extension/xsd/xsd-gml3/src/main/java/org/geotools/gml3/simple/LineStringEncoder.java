@@ -21,13 +21,12 @@ import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.LineString;
 import org.xml.sax.helpers.AttributesImpl;
-
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * Encodes a GML3 line string
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
@@ -46,8 +45,9 @@ class LineStringEncoder extends GeometryEncoder<LineString> {
         this.element = element;
     }
 
-    public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler)
+    public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
+        atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(element, atts);
         handler.posList(geometry.getCoordinateSequence());
         handler.endElement(element);

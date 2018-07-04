@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
 
 
@@ -205,13 +205,13 @@
      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.vividsolutions</groupId>
-      <artifactId>jts</artifactId>
+      <groupId>org.locationtech.jts</groupId>
+      <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
       <groupId>org.jdom</groupId>
-      <artifactId>jdom</artifactId>
+      <artifactId>jdom2</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
@@ -236,7 +236,17 @@
        <artifactId>xmlunit</artifactId>
        <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-standalone</artifactId>
+      <version>2.1.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-library</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 

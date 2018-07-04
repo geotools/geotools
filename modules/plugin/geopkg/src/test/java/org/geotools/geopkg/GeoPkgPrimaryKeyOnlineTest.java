@@ -19,26 +19,21 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeoPkgPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override
     protected JDBCPrimaryKeyTestSetup createTestSetup() {
         return new GeoPkgPrimaryKeyTestSetup();
     }
-    
+
     @Override
     public void testSequencedPrimaryKey() throws Exception {
-        //SQLite does not do sequences
+        // SQLite does not do sequences
     }
 
     @Override
     public void testMultiColumnPrimaryKey() throws Exception {
-       //TODO: find out why this multikey only has one column when queried
+        // TODO: find out why this multikey only has one column when queried
     }
-    
 }

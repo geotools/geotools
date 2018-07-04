@@ -17,17 +17,6 @@
  */
 package org.geotools.arcsde.data;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geotools.arcsde.ArcSdeException;
-import org.geotools.arcsde.session.Command;
-import org.geotools.arcsde.session.ISession;
-import org.geotools.arcsde.session.SdeRow;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-
 import com.esri.sde.sdk.client.SeColumnDefinition;
 import com.esri.sde.sdk.client.SeConnection;
 import com.esri.sde.sdk.client.SeException;
@@ -35,26 +24,34 @@ import com.esri.sde.sdk.client.SeLayer;
 import com.esri.sde.sdk.client.SeRegistration;
 import com.esri.sde.sdk.client.SeShape;
 import com.esri.sde.sdk.client.SeTable;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import org.geotools.arcsde.ArcSdeException;
+import org.geotools.arcsde.session.Command;
+import org.geotools.arcsde.session.ISession;
+import org.geotools.arcsde.session.SdeRow;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 
 /**
  * Strategy object used to manage the different ways an ArcSDE server handles row identity.
- * <p>
- * The supported strategies are:
+ *
+ * <p>The supported strategies are:
+ *
  * <ul>
- * <li>SDE managed mode: a column is assigned by the sde engine to be the feature id (it uses to be
- * called OBJECTID)
- * <li>User managed: a user specified row is used as the fid column.
- * <li>Shape fid: if none of the above, the fid happens to be the identifier of the geometry column
+ *   <li>SDE managed mode: a column is assigned by the sde engine to be the feature id (it uses to
+ *       be called OBJECTID)
+ *   <li>User managed: a user specified row is used as the fid column.
+ *   <li>Shape fid: if none of the above, the fid happens to be the identifier of the geometry
+ *       column
  * </ul>
- * </p>
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/FIDReader.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/FIDReader.java $
  */
 public abstract class FIDReader {
 
@@ -67,9 +64,8 @@ public abstract class FIDReader {
 
     /**
      * Creates a new FIDStrategy object.
-     * 
+     *
      * @param fidColumns
-     * 
      */
     private FIDReader(String layerName, String fidColumn) {
         this.layerName = layerName;
@@ -95,15 +91,13 @@ public abstract class FIDReader {
 
     /**
      * Returns the attribute names of the FeatureType passed to the constructor.
-     * 
-     * @param the
-     *            feature type containing the properties the client code is interested in. May well
-     *            be a subset of the full set of attributes in the SeLayer
+     *
+     * @param the feature type containing the properties the client code is interested in. May well
+     *     be a subset of the full set of attributes in the SeLayer
      * @return the list of property names to actually fetch for a given feature type, taking into
-     *         account the ones that possibly need to be fetched to generate the feature id, even if
-     *         they're not part of the schema.
-     * @throws IOException
-     *             if an arcsde exception is thrown somehow.
+     *     account the ones that possibly need to be fetched to generate the feature id, even if
+     *     they're not part of the schema.
+     * @throws IOException if an arcsde exception is thrown somehow.
      */
     public String[] getPropertiesToFetch(SimpleFeatureType schema) throws IOException {
 
@@ -128,30 +122,36 @@ public abstract class FIDReader {
 
     /**
      * Returns a FID strategy appropriate for the given SeLayer
-     * 
+     *
      * @param session
      * @param tableName
      * @return
      * @throws IOException
      */
-    public static FIDReader getFidReader(final ISession session, final SeTable table,
-            final SeLayer layer, final SeRegistration reg) throws IOException {
-        return session.issue(new Command<FIDReader>() {
-            @Override
-            public FIDReader execute(final ISession session, final SeConnection connection)
-                    throws SeException, IOException {
-                return getFidReaderInternal(session, table, layer, reg);
-            }
-        });
+    public static FIDReader getFidReader(
+            final ISession session,
+            final SeTable table,
+            final SeLayer layer,
+            final SeRegistration reg)
+            throws IOException {
+        return session.issue(
+                new Command<FIDReader>() {
+                    @Override
+                    public FIDReader execute(final ISession session, final SeConnection connection)
+                            throws SeException, IOException {
+                        return getFidReaderInternal(session, table, layer, reg);
+                    }
+                });
     }
 
     /**
      * Only to be called from inside a command
-     * 
+     *
      * @see #getFidReader(ISession, SeTable, SeLayer, SeRegistration)
      */
-    private static FIDReader getFidReaderInternal(ISession session, SeTable table, SeLayer layer,
-            SeRegistration reg) throws IOException, ArcSdeException {
+    private static FIDReader getFidReaderInternal(
+            ISession session, SeTable table, SeLayer layer, SeRegistration reg)
+            throws IOException, ArcSdeException {
         FIDReader fidReader = null;
         final String tableName = reg.getTableName();
         try {
@@ -180,8 +180,11 @@ public abstract class FIDReader {
             } else {
                 // may have been returned 0, meaning there is no registered
                 // column id
-                throw new IllegalStateException("Unknown ArcSDE row ID registration type: "
-                        + rowIdColumnType + " for layer " + tableName);
+                throw new IllegalStateException(
+                        "Unknown ArcSDE row ID registration type: "
+                                + rowIdColumnType
+                                + " for layer "
+                                + tableName);
             }
             fidReader.setColumnIndex(rowIdColumnIndex);
             return fidReader;
@@ -191,19 +194,14 @@ public abstract class FIDReader {
     }
 
     public static class ShapeFidReader extends FIDReader {
-        /**
-         * Name of the Shape, populated as a side effect of getPropertiesToFetch()
-         */
-
+        /** Name of the Shape, populated as a side effect of getPropertiesToFetch() */
         private final String shapeColName;
 
-        /**
-         * Index of the Shape, populated as a side effect of getPropertiesToFetch()
-         */
+        /** Index of the Shape, populated as a side effect of getPropertiesToFetch() */
         private int shapeIndex;
 
-        public ShapeFidReader(final String layerName, final String shapeColName,
-                final String shapeIdColName) {
+        public ShapeFidReader(
+                final String layerName, final String shapeColName, final String shapeIdColName) {
             super(layerName, shapeIdColName);
             this.shapeColName = shapeColName;
             this.shapeIndex = -1;
@@ -218,8 +216,10 @@ public abstract class FIDReader {
                 try {
                     SeShape shape = row.getShape(shapeIndex);
                     if (shape == null) {
-                        throw new NullPointerException("Can't get FID from " + layerName
-                                + " as it has SHAPE fid reading strategy and got a null shape");
+                        throw new NullPointerException(
+                                "Can't get FID from "
+                                        + layerName
+                                        + " as it has SHAPE fid reading strategy and got a null shape");
                     }
                     longFid = shape.getFeatureId().longValue();
                 } catch (SeException e) {
@@ -259,7 +259,6 @@ public abstract class FIDReader {
             }
             return attNames.toArray(new String[attNames.size()]);
         }
-
     }
 
     public static class SdeManagedFidReader extends FIDReader {
@@ -276,10 +275,11 @@ public abstract class FIDReader {
         }
     }
 
-    public static final FIDReader NULL_READER = new FIDReader(null, null) {
-        @Override
-        public long readFid(SdeRow row) throws IOException {
-            return (long) (10000 * Math.random());
-        }
-    };
+    public static final FIDReader NULL_READER =
+            new FIDReader(null, null) {
+                @Override
+                public long readFid(SdeRow row) throws IOException {
+                    return (long) (10000 * Math.random());
+                }
+            };
 }

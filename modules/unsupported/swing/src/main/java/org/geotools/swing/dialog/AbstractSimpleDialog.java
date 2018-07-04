@@ -20,23 +20,19 @@ package org.geotools.swing.dialog;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import net.miginfocom.swing.MigLayout;
 
 /**
- * An abstract base class for simple dialogs with a single control panel
- * (supplied by the sub-class) together with OK and Cancel buttons.
- * The sub-class must implement the {@linkplain #createControlPanel()}
- * and {@linkplain #onOK()} methods.
+ * An abstract base class for simple dialogs with a single control panel (supplied by the sub-class)
+ * together with OK and Cancel buttons. The sub-class must implement the {@linkplain
+ * #createControlPanel()} and {@linkplain #onOK()} methods.
  *
  * @author Michael Bedward
  * @since 2.7
- *
  * @source $URL$
  * @version $Id$
  */
@@ -80,8 +76,7 @@ public abstract class AbstractSimpleDialog extends JDialog {
      * @param modal whether to make the dialog application modal
      * @param resizable whether to make the dialog resizable
      */
-    public AbstractSimpleDialog(JFrame parent, String title,
-            boolean modal, boolean resizable) {
+    public AbstractSimpleDialog(JFrame parent, String title, boolean modal, boolean resizable) {
 
         super(parent, title);
         commonInit(modal, resizable);
@@ -95,8 +90,7 @@ public abstract class AbstractSimpleDialog extends JDialog {
      * @param modal whether to make the dialog application modal
      * @param resizable whether to make the dialog resizable
      */
-    public AbstractSimpleDialog(JDialog parent, String title,
-            boolean modal, boolean resizable) {
+    public AbstractSimpleDialog(JDialog parent, String title, boolean modal, boolean resizable) {
 
         super(parent, title);
         commonInit(modal, resizable);
@@ -112,9 +106,7 @@ public abstract class AbstractSimpleDialog extends JDialog {
         setResizable(resizable);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setVisible(boolean b) {
         if (b && !initialized) {
@@ -126,10 +118,9 @@ public abstract class AbstractSimpleDialog extends JDialog {
     }
 
     /**
-     * Creates the main control panel and components. This must be called
-     * by the sub-class. We do this to give sub-classes the chance to initialize
-     * fields which can be used within {@linkplain #createControlPanel()}
-     * (called as part of this method).
+     * Creates the main control panel and components. This must be called by the sub-class. We do
+     * this to give sub-classes the chance to initialize fields which can be used within {@linkplain
+     * #createControlPanel()} (called as part of this method).
      */
     protected void initComponents() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -150,22 +141,18 @@ public abstract class AbstractSimpleDialog extends JDialog {
      */
     public abstract JPanel createControlPanel();
 
-    /**
-     * Implemented by the sub-class to respond to the OK button.
-     */
+    /** Implemented by the sub-class to respond to the OK button. */
     public abstract void onOK();
 
     /**
-     * Called when the cancel button is pressed. The base implementation
-     * simply closes (disposes) the dialog.
+     * Called when the cancel button is pressed. The base implementation simply closes (disposes)
+     * the dialog.
      */
     public void onCancel() {
         closeDialog();
     }
 
-    /**
-     * Close the dialog using a call to {@linkplain JDialog#dispose()}.
-     */
+    /** Close the dialog using a call to {@linkplain JDialog#dispose()}. */
     public void closeDialog() {
         dispose();
     }
@@ -179,21 +166,23 @@ public abstract class AbstractSimpleDialog extends JDialog {
         JPanel panel = new JPanel(new MigLayout());
 
         JButton okBtn = new JButton("OK");
-        okBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+        okBtn.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        onOK();
+                    }
+                });
         panel.add(okBtn, "align center");
 
         JButton cancelBtn = new JButton("Cancel");
-        cancelBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        cancelBtn.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        onCancel();
+                    }
+                });
         panel.add(cancelBtn);
 
         return panel;

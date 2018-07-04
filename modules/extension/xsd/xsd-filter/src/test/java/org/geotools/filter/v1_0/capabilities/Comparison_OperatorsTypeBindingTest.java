@@ -16,17 +16,12 @@
  */
 package org.geotools.filter.v1_0.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.ComparisonOperators;
 import org.geotools.xml.Binding;
+import org.opengis.filter.capability.ComparisonOperators;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class Comparison_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(ComparisonOperators.class, binding(OGC.Comparison_OperatorsType).getType());
@@ -69,16 +64,22 @@ public class Comparison_OperatorsTypeBindingTest extends FilterCapabilitiesTestS
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.comparison(),
-                new QName(OGC.NAMESPACE, "Comparison_Operators"), OGC.Comparison_OperatorsType);
+        Document dom =
+                encode(
+                        FilterMockData.comparison(),
+                        new QName(OGC.NAMESPACE, "Comparison_Operators"),
+                        OGC.Comparison_OperatorsType);
 
         assertNotNull(getElementByQName(dom, OGC.Simple_Comparisons));
         assertNotNull(getElementByQName(dom, OGC.Like));
         assertNotNull(getElementByQName(dom, OGC.Between));
         assertNotNull(getElementByQName(dom, OGC.NullCheck));
 
-        dom = encode(FilterMockData.comparison(false),
-                new QName(OGC.NAMESPACE, "Comparison_Operators"), OGC.Comparison_OperatorsType);
+        dom =
+                encode(
+                        FilterMockData.comparison(false),
+                        new QName(OGC.NAMESPACE, "Comparison_Operators"),
+                        OGC.Comparison_OperatorsType);
         assertNull(getElementByQName(dom, OGC.Simple_Arithmetic));
         assertNotNull(getElementByQName(dom, OGC.Like));
         assertNotNull(getElementByQName(dom, OGC.Between));

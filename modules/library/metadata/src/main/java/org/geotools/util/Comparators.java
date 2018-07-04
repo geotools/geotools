@@ -16,30 +16,24 @@
  */
 package org.geotools.util;
 
-import java.util.List;
-import java.util.Iterator;
-import java.util.SortedSet;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
-import java.io.Serializable;
-
+import java.util.Iterator;
+import java.util.List;
+import java.util.SortedSet;
 
 /**
  * General purpose comparators.
  *
  * @since 2.5
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class Comparators {
-    /**
-     * Do not allows instantiation of this class.
-     */
-    private Comparators() {
-    }
+    /** Do not allows instantiation of this class. */
+    private Comparators() {}
 
     /**
      * The comparator to be returned by {@link #forLists} and {@linkplain #forSet}. Can not be
@@ -52,15 +46,12 @@ public final class Comparators {
      * The {@link #COLLECTIONS} classes explicitly named (rather than anonymous) for avoiding
      * serialization issues.
      */
-    private static final class Collections implements Comparator<Collection<Comparable>>, Serializable {
-        /**
-         * For cross-version compatibility.
-         */
+    private static final class Collections
+            implements Comparator<Collection<Comparable>>, Serializable {
+        /** For cross-version compatibility. */
         private static final long serialVersionUID = -8926770873102046405L;
 
-        /**
-         * Compares to collections of comparable objects.
-         */
+        /** Compares to collections of comparable objects. */
         public int compare(final Collection<Comparable> c1, final Collection<Comparable> c2) {
             final Iterator<Comparable> i1 = c1.iterator();
             final Iterator<Comparable> i2 = c2.iterator();
@@ -81,15 +72,15 @@ public final class Comparators {
     };
 
     /**
-     * Returns a comparator for lists of comparable elements. The first element of each list
-     * are {@linkplain Comparable#compareTo compared}. If one is <cite>greater than</cite> or
-     * <cite>less than</cite> the other, the result of that comparaison is returned. Otherwise
-     * the second element are compared, and so on until either non-equal elements are found,
-     * or end-of-list are reached. In the later case, the shortest list is considered
-     * <cite>less than</cite> the longuest one.
-     * <p>
-     * If both lists have the same length and equal elements in the sense of
-     * {@link Comparable#compareTo}, then the comparator returns 0.
+     * Returns a comparator for lists of comparable elements. The first element of each list are
+     * {@linkplain Comparable#compareTo compared}. If one is <cite>greater than</cite> or <cite>less
+     * than</cite> the other, the result of that comparaison is returned. Otherwise the second
+     * element are compared, and so on until either non-equal elements are found, or end-of-list are
+     * reached. In the later case, the shortest list is considered <cite>less than</cite> the
+     * longuest one.
+     *
+     * <p>If both lists have the same length and equal elements in the sense of {@link
+     * Comparable#compareTo}, then the comparator returns 0.
      *
      * @param <T> The type of elements in both lists.
      * @return The ordering between two lists.
@@ -113,10 +104,10 @@ public final class Comparators {
 
     /**
      * Returns a comparator for arbitrary collections of comparable elements. The elements are
-     * compared in iteration order as {@linkplain #forLists for lists}. <strong>This comparator
-     * make sense only for collections having determinist order</strong> like
-     * {@link java.util.TreeSet}, {@link java.util.LinkedHashSet} or queues.
-     * Do <strong>not</strong> use it with {@link java.util.HashSet}.
+     * compared in iteration order as {@linkplain #forLists for lists}. <strong>This comparator make
+     * sense only for collections having determinist order</strong> like {@link java.util.TreeSet},
+     * {@link java.util.LinkedHashSet} or queues. Do <strong>not</strong> use it with {@link
+     * java.util.HashSet}.
      *
      * @param <T> The type of elements in both collections.
      * @return The ordering between two collections.

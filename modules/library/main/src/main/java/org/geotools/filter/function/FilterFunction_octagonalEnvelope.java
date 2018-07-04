@@ -3,9 +3,9 @@ package org.geotools.filter.function;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,33 +16,36 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.capability.FunctionName;
 
 /**
  * A FilterFunction that expects a Geometry and returns it's octagonal envelope.
- * @author Jared Erickson
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_octagonalEnvelope.java $
+ * @author Jared Erickson
+ * @source $URL:
+ *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_octagonalEnvelope.java
+ *     $
  */
 public class FilterFunction_octagonalEnvelope extends FunctionExpressionImpl {
-    
-    public static FunctionName NAME = new FunctionNameImpl("octagonalenvelope", Geometry.class,
-            parameter("geometry", Geometry.class));
 
-    /**
-     * Create a new FilterFunction_octagonalEnvelope instance
-     */
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "octagonalenvelope", Geometry.class, parameter("geometry", Geometry.class));
+
+    /** Create a new FilterFunction_octagonalEnvelope instance */
     public FilterFunction_octagonalEnvelope() {
         super(NAME);
     }
 
     /**
      * Calculate the Geometry's octagonal envelope.
+     *
      * @param feature The feature should be a Geometry
      * @return The octagonal envelope Geometry
      * @throws IllegalArgumentException if the feature is not a Geometry

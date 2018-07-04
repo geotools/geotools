@@ -17,22 +17,20 @@
 package org.geotools.gml2.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:MultiLineStringPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="MultiLineStringPropertyType"&gt;
  *      &lt;annotation&gt;
@@ -53,23 +51,18 @@ import com.vividsolutions.jts.geom.MultiLineString;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLMultiLineStringPropertyTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.MULTILINESTRINGPROPERTYTYPE;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -80,24 +73,24 @@ public class GMLMultiLineStringPropertyTypeBinding extends AbstractComplexBindin
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(MultiLineString.class);
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        return GML2EncodingUtils.GeometryPropertyType_getProperty((MultiLineString)object,name,false);
+        return GML2EncodingUtils.GeometryPropertyType_getProperty(
+                (MultiLineString) object, name, false);
     }
-    
+
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
-        return GML2EncodingUtils.GeometryPropertyType_getProperties((MultiLineString)object);
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+        return GML2EncodingUtils.GeometryPropertyType_getProperties((MultiLineString) object);
     }
 }

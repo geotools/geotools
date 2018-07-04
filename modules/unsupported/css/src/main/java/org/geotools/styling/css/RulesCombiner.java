@@ -1,10 +1,26 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+
 package org.geotools.styling.css;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
@@ -29,8 +45,8 @@ class RulesCombiner {
         // apply cascading on properties
         Map<PseudoClass, Map<String, Property>> properties = new LinkedHashMap<>();
         for (CssRule cssRule : rules) {
-            for (Map.Entry<PseudoClass, List<Property>> entry : cssRule.getProperties()
-                    .entrySet()) {
+            for (Map.Entry<PseudoClass, List<Property>> entry :
+                    cssRule.getProperties().entrySet()) {
                 PseudoClass ps = entry.getKey();
                 Map<String, Property> psProperties = properties.get(ps);
                 if (psProperties == null) {
@@ -44,8 +60,8 @@ class RulesCombiner {
                     // we also have to fill values for the pseudo classes owned by this one
                     for (PseudoClass containedClass : properties.keySet()) {
                         if (ps.contains(containedClass)) {
-                            Map<String, Property> containedProperties = properties
-                                    .get(containedClass);
+                            Map<String, Property> containedProperties =
+                                    properties.get(containedClass);
                             for (Property p : entry.getValue()) {
                                 containedProperties.put(p.getName(), p);
                             }
@@ -85,7 +101,7 @@ class RulesCombiner {
     }
 
     Selector combineSelectors(List<CssRule> rules) {
-        if (rules == lastCombinedSelector) {
+        if (rules == lastRuleSet) {
             return lastCombinedSelector;
         }
         Selector s;
@@ -102,5 +118,4 @@ class RulesCombiner {
         this.lastCombinedSelector = s;
         return s;
     }
-
 }

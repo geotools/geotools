@@ -16,6 +16,8 @@
  */
 package org.geotools.data.oracle;
 
+import java.io.IOException;
+import java.util.List;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
@@ -23,14 +25,7 @@ import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SequencedPrimaryKeyColumn;
 
-import java.io.IOException;
-import java.util.List;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override
@@ -38,7 +33,6 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         return new OracleDataStoreAPITestSetup(new OracleTestSetup());
     }
 
-    
     @Override
     public void testGetFeatureWriterConcurrency() throws Exception {
         // skip, does not work with Oracle
@@ -55,5 +49,20 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         assertTrue(pk instanceof SequencedPrimaryKeyColumn);
         SequencedPrimaryKeyColumn seqPk = (SequencedPrimaryKeyColumn) pk;
         assertEquals("ROAD_FID_SEQ", seqPk.getSequenceName());
+    }
+
+    /**
+     * Test if tables that should be hidden are absent in the list of type names.
+     *
+     * @throws IOException if any
+     * @see org.geotools.data.oracle.OracleDialect#includeTable(String, String, java.sql.Connection)
+     */
+    public void testHiddenTables() throws IOException {
+        String[] typenames = dataStore.getTypeNames();
+        for (String name : typenames) {
+            assertFalse("Name should not end with 'MDXT_'", name.startsWith("MDXT_"));
+            assertFalse("Name should not end with '$_BKTS'", name.endsWith("$_BKTS"));
+            assertFalse("Name should not end with '$'", name.endsWith("$"));
+        }
     }
 }

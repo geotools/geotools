@@ -21,21 +21,15 @@ import static junit.framework.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.junit.After;
 import org.junit.Test;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class IndexedFidWriterTest extends FIDTestCase {
     private IndexFile indexFile;
     private IndexedFidWriter writer;
 
-    
     private void initWriter() throws IOException, MalformedURLException {
         close();
         indexFile = new IndexFile(shpFiles, false);
@@ -65,7 +59,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
         FidIndexer.generate(backshp.toURI().toURL());
         initWriter();
 
-        for( int i = 1, j = indexFile.getRecordCount(); i < j; i++ ) {
+        for (int i = 1, j = indexFile.getRecordCount(); i < j; i++) {
             assertTrue(i + "th record", writer.hasNext());
             assertEquals((long) i, writer.next());
         }
@@ -81,7 +75,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
         writer.next();
         writer.remove();
 
-        for( int i = 2, j = indexFile.getRecordCount(); i < j; i++ ) {
+        for (int i = 2, j = indexFile.getRecordCount(); i < j; i++) {
             assertTrue(writer.hasNext());
             assertEquals((long) i, writer.next());
         }
@@ -91,7 +85,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
 
         initWriter();
 
-        for( int i = 1, j = indexFile.getRecordCount() - 1; i < j; i++ ) {
+        for (int i = 1, j = indexFile.getRecordCount() - 1; i < j; i++) {
             assertTrue(writer.hasNext());
             assertEquals((long) i + 1, writer.next());
         }
@@ -108,7 +102,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
         writer.next();
         writer.remove();
 
-        while( writer.hasNext() ) {
+        while (writer.hasNext()) {
             writer.next();
             writer.write();
         }
@@ -133,7 +127,7 @@ public class IndexedFidWriterTest extends FIDTestCase {
         writer.next();
         writer.next();
         writer.remove();
-        while( writer.hasNext() ) {
+        while (writer.hasNext()) {
             writer.next();
             writer.write();
         }
@@ -146,7 +140,6 @@ public class IndexedFidWriterTest extends FIDTestCase {
         } finally {
             reader.close();
         }
-
     }
 
     /*
@@ -156,16 +149,15 @@ public class IndexedFidWriterTest extends FIDTestCase {
     public void testWrite() throws IOException {
         initWriter();
 
-        for( int i = 0; i < 5; i++ ) {
+        for (int i = 0; i < 5; i++) {
             writer.next();
             writer.write();
         }
 
         initWriter();
-        for( int i = 1; i <= 5; i++ ) {
+        for (int i = 1; i <= 5; i++) {
             assertTrue(writer.hasNext());
             assertEquals((long) i, writer.next());
         }
     }
-
 }

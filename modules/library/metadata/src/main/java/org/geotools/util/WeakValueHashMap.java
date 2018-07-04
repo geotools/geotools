@@ -25,91 +25,68 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
 import org.geotools.util.logging.Logging;
 
-
 /**
- * A hashtable-based {@link Map} implementation with <em>weak values</em>. An entry in a
- * {@code WeakValueHashMap} will automatically be removed when its value is no longer
- * in ordinary use. This class is similar to the standard {@link java.util.WeakHashMap}
- * class provided in J2SE, except that weak references are hold on values instead of keys.
- * <p>
- * The {@code WeakValueHashMap} class is thread-safe.
+ * A hashtable-based {@link Map} implementation with <em>weak values</em>. An entry in a {@code
+ * WeakValueHashMap} will automatically be removed when its value is no longer in ordinary use. This
+ * class is similar to the standard {@link java.util.WeakHashMap} class provided in J2SE, except
+ * that weak references are hold on values instead of keys.
+ *
+ * <p>The {@code WeakValueHashMap} class is thread-safe.
  *
  * @param <K> The class of key elements.
  * @param <V> The class of value elements.
- *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
  * @see java.util.WeakHashMap
  * @see WeakHashSet
  */
-public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
-    /**
-     * Minimal capacity for {@link #table}.
-     */
+public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
+    /** Minimal capacity for {@link #table}. */
     private static final int MIN_CAPACITY = 7;
 
-    /**
-     * Load factor. Control the moment
-     * where {@link #table} must be rebuild.
-     */
+    /** Load factor. Control the moment where {@link #table} must be rebuild. */
     private static final float LOAD_FACTOR = 0.75f;
 
     /**
-     * An entry in the {@link WeakValueHashMap}. This is a weak reference
-     * to a value together with a strong reference to a key.
+     * An entry in the {@link WeakValueHashMap}. This is a weak reference to a value together with a
+     * strong reference to a key.
      */
-    private final class Entry extends WeakReference<V> implements Map.Entry<K,V> {
-        /**
-         * The key.
-         */
+    private final class Entry extends WeakReference<V> implements Map.Entry<K, V> {
+        /** The key. */
         K key;
 
-        /**
-         * The next entry, or {@code null} if there is none.
-         */
+        /** The next entry, or {@code null} if there is none. */
         Entry next;
 
         /**
-         * Index for this element in {@link #table}. This index
-         * must be updated at every {@link #rehash} call.
+         * Index for this element in {@link #table}. This index must be updated at every {@link
+         * #rehash} call.
          */
         int index;
 
-        /**
-         * Constructs a new weak reference.
-         */
+        /** Constructs a new weak reference. */
         Entry(final K key, final V value, final Entry next, final int index) {
             super(value, WeakCollectionCleaner.DEFAULT.referenceQueue);
-            this.key   = key;
-            this.next  = next;
+            this.key = key;
+            this.next = next;
             this.index = index;
         }
 
-        /**
-         * Returns the key corresponding to this entry.
-         */
+        /** Returns the key corresponding to this entry. */
         public K getKey() {
             return key;
         }
 
-        /**
-         * Returns the value corresponding to this entry.
-         */
+        /** Returns the value corresponding to this entry. */
         public V getValue() {
             return get();
         }
 
-        /**
-         * Replaces the value corresponding to this entry with the specified value.
-         */
+        /** Replaces the value corresponding to this entry with the specified value. */
         public V setValue(final V value) {
             if (value != null) {
                 throw new UnsupportedOperationException();
@@ -130,64 +107,49 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
             key = null;
         }
 
-        /**
-         * Compares the specified object with this entry for equality.
-         */
+        /** Compares the specified object with this entry for equality. */
         @Override
         public boolean equals(final Object other) {
             if (other instanceof Map.Entry) {
                 final Map.Entry that = (Map.Entry) other;
-                return Utilities.equals(this.getKey(),   that.getKey()) &&
-                       Utilities.equals(this.getValue(), that.getValue());
+                return Utilities.equals(this.getKey(), that.getKey())
+                        && Utilities.equals(this.getValue(), that.getValue());
             }
             return false;
         }
 
-        /**
-         * Returns the hash code value for this map entry.
-         */
+        /** Returns the hash code value for this map entry. */
         @Override
         public int hashCode() {
             final Object val = get();
-            return (key==null ? 0 : key.hashCode()) ^
-                   (val==null ? 0 : val.hashCode());
+            return (key == null ? 0 : key.hashCode()) ^ (val == null ? 0 : val.hashCode());
         }
     }
 
-    /**
-     * Table of weak references.
-     */
+    /** Table of weak references. */
     private Entry[] table;
 
-    /**
-     * Number of non-nul elements in {@link #table}.
-     */
+    /** Number of non-nul elements in {@link #table}. */
     private int count;
 
     /**
-     * The next size value at which to resize. This value should
-     * be <code>{@link #table}.length*{@link #loadFactor}</code>.
+     * The next size value at which to resize. This value should be <code>
+     * {@link #table}.length*{@link #loadFactor}</code>.
      */
     private int threshold;
 
     /**
-     * The timestamp when {@link #table} was last rehashed. This information
-     * is used to avoid too early table reduction. When the garbage collector
-     * collected a lot of elements, we will wait at least 20 seconds before
-     * rehashing {@link #table}. Too early table reduction leads to many cycles
-     * like "reduce", "expand", "reduce", "expand", etc.
+     * The timestamp when {@link #table} was last rehashed. This information is used to avoid too
+     * early table reduction. When the garbage collector collected a lot of elements, we will wait
+     * at least 20 seconds before rehashing {@link #table}. Too early table reduction leads to many
+     * cycles like "reduce", "expand", "reduce", "expand", etc.
      */
     private long lastRehashTime;
 
-    /**
-     * Number of millisecond to wait before to rehash
-     * the table for reducing its size.
-     */
-    private static final long HOLD_TIME = 20*1000L;
+    /** Number of millisecond to wait before to rehash the table for reducing its size. */
+    private static final long HOLD_TIME = 20 * 1000L;
 
-    /**
-     * Creates a {@code WeakValueHashMap}.
-     */
+    /** Creates a {@code WeakValueHashMap}. */
     public WeakValueHashMap() {
         this(MIN_CAPACITY);
     }
@@ -209,7 +171,7 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
      * @todo Use the commented line instead if a future Java version supports generic arrays.
      */
     private void newEntryTable(final int size) {
-//      table = new Entry[size];
+        //      table = new Entry[size];
         table = (Entry[]) Array.newInstance(Entry.class, size);
     }
 
@@ -218,15 +180,14 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
      *
      * @param map Initial contents of the {@code WeakValueHashMap}.
      */
-    public WeakValueHashMap(final Map<K,V> map) {
+    public WeakValueHashMap(final Map<K, V> map) {
         this(Math.round(map.size() / LOAD_FACTOR) + 1);
         putAll(map);
     }
 
     /**
-     * Invoked by {@link Entry} when an element has been collected
-     * by the garbage collector. This method will remove the weak reference
-     * from {@link #table}.
+     * Invoked by {@link Entry} when an element has been collected by the garbage collector. This
+     * method will remove the weak reference from {@link #table}.
      */
     private synchronized void removeEntry(final Entry toRemove) {
         assert valid() : count;
@@ -248,7 +209,7 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
 
                     // If the number of elements has dimunished
                     // significatively, rehash the table.
-                    if (count <= threshold/4) {
+                    if (count <= threshold / 4) {
                         rehash(false);
                     }
                     // We must not continue the loop, since
@@ -270,33 +231,32 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
     /**
      * Rehashs {@link #table}.
      *
-     * @param augmentation {@code true} if this method is invoked
-     *        for augmenting {@link #table}, or {@code false} if
-     *        it is invoked for making the table smaller.
+     * @param augmentation {@code true} if this method is invoked for augmenting {@link #table}, or
+     *     {@code false} if it is invoked for making the table smaller.
      */
     private void rehash(final boolean augmentation) {
         assert Thread.holdsLock(this);
         assert valid();
         final long currentTime = System.currentTimeMillis();
-        final int capacity = Math.max(Math.round(count/(LOAD_FACTOR/2)), count+MIN_CAPACITY);
-        if (augmentation ? (capacity<=table.length) :
-                           (capacity>=table.length || currentTime-lastRehashTime<HOLD_TIME))
-        {
+        final int capacity = Math.max(Math.round(count / (LOAD_FACTOR / 2)), count + MIN_CAPACITY);
+        if (augmentation
+                ? (capacity <= table.length)
+                : (capacity >= table.length || currentTime - lastRehashTime < HOLD_TIME)) {
             return;
         }
         lastRehashTime = currentTime;
         final Entry[] oldTable = table;
         newEntryTable(capacity);
-        threshold = Math.round(capacity*LOAD_FACTOR);
-        for (int i=0; i<oldTable.length; i++) {
-            for (Entry old=oldTable[i]; old!=null;) {
-                final Entry e=old;
+        threshold = Math.round(capacity * LOAD_FACTOR);
+        for (int i = 0; i < oldTable.length; i++) {
+            for (Entry old = oldTable[i]; old != null; ) {
+                final Entry e = old;
                 old = old.next; // On retient 'next' tout de suite car sa valeur va changer...
                 final Object key = e.key;
                 if (key != null) {
-                    final int index=(key.hashCode() & 0x7FFFFFFF) % table.length;
+                    final int index = (key.hashCode() & 0x7FFFFFFF) % table.length;
                     e.index = index;
-                    e.next  = table[index];
+                    e.next = table[index];
                     table[index] = e;
                 } else {
                     count--;
@@ -304,10 +264,10 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
             }
         }
         final Logger logger = Logging.getLogger("org.geotools.util");
-        final Level   level = Level.FINEST;
+        final Level level = Level.FINEST;
         if (logger.isLoggable(level)) {
-            final LogRecord record = new LogRecord(level,
-                    "Rehash from " + oldTable.length + " to " + table.length);
+            final LogRecord record =
+                    new LogRecord(level, "Rehash from " + oldTable.length + " to " + table.length);
             record.setSourceMethodName(augmentation ? "unique" : "remove");
             record.setSourceClassName(WeakValueHashMap.class.getName());
             record.setLoggerName(logger.getName());
@@ -317,21 +277,20 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
     }
 
     /**
-     * Checks if this {@code WeakValueHashMap} is valid. This method counts the
-     * number of elements and compare it to {@link #count}. If the check fails,
-     * the number of elements is corrected (if we didn't, an {@link AssertionError}
-     * would be thrown for every operations after the first error,  which make
-     * debugging more difficult). The set is otherwise unchanged, which should
+     * Checks if this {@code WeakValueHashMap} is valid. This method counts the number of elements
+     * and compare it to {@link #count}. If the check fails, the number of elements is corrected (if
+     * we didn't, an {@link AssertionError} would be thrown for every operations after the first
+     * error, which make debugging more difficult). The set is otherwise unchanged, which should
      * help to get similar behaviour as if assertions hasn't been turned on.
      */
     private boolean valid() {
-        int n=0;
-        for (int i=0; i<table.length; i++) {
-            for (Entry e=table[i]; e!=null; e=e.next) {
+        int n = 0;
+        for (int i = 0; i < table.length; i++) {
+            for (Entry e = table[i]; e != null; e = e.next) {
                 n++;
             }
         }
-        if (n!=count) {
+        if (n != count) {
             count = n;
             return false;
         } else {
@@ -339,9 +298,7 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
         }
     }
 
-    /**
-     * Returns the number of key-value mappings in this map.
-     */
+    /** Returns the number of key-value mappings in this map. */
     @Override
     public synchronized int size() {
         assert valid();
@@ -372,10 +329,10 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
     }
 
     /**
-     * Returns the value to which this map maps the specified key. Returns
-     * {@code null} if the map contains no mapping for this key.
+     * Returns the value to which this map maps the specified key. Returns {@code null} if the map
+     * contains no mapping for this key.
      *
-     * @param  key Key whose associated value is to be returned.
+     * @param key Key whose associated value is to be returned.
      * @return The value to which this map maps the specified key.
      * @throws NullPointerException if the key is {@code null}.
      */
@@ -384,7 +341,7 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
         assert WeakCollectionCleaner.DEFAULT.isAlive();
         assert valid() : count;
         final int index = (key.hashCode() & 0x7FFFFFFF) % table.length;
-        for (Entry e=table[index]; e!=null; e=e.next) {
+        for (Entry e = table[index]; e != null; e = e.next) {
             if (key.equals(e.key)) {
                 return e.get();
             }
@@ -392,9 +349,7 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
         return null;
     }
 
-    /**
-     * Implementation of {@link #put} and {@link #remove} operations.
-     */
+    /** Implementation of {@link #put} and {@link #remove} operations. */
     private synchronized V intern(final K key, final V value) {
         assert WeakCollectionCleaner.DEFAULT.isAlive();
         assert valid() : count;
@@ -405,7 +360,7 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
         V oldValue = null;
         final int hash = key.hashCode() & 0x7FFFFFFF;
         int index = hash % table.length;
-        for (Entry e=table[index]; e!=null; e=e.next) {
+        for (Entry e = table[index]; e != null; e = e.next) {
             if (key.equals(e.key)) {
                 oldValue = e.get();
                 e.clear();
@@ -424,14 +379,13 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
     }
 
     /**
-     * Associates the specified value with the specified key in this map.
-     * The value is associated using a {@link WeakReference}.
+     * Associates the specified value with the specified key in this map. The value is associated
+     * using a {@link WeakReference}.
      *
-     * @param  key key with which the specified value is to be associated.
-     * @param  value value to be associated with the specified key.
-     * @return previous value associated with specified key, or {@code null}
-     *	       if there was no mapping for key.
-     *
+     * @param key key with which the specified value is to be associated.
+     * @param value value to be associated with the specified key.
+     * @return previous value associated with specified key, or {@code null} if there was no mapping
+     *     for key.
      * @throws NullPointerException if the key or the value is {@code null}.
      */
     @Override
@@ -447,8 +401,8 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
      * Removes the mapping for this key from this map if present.
      *
      * @param key key whose mapping is to be removed from the map.
-     * @return previous value associated with specified key, or {@code null}
-     *	       if there was no entry for key.
+     * @return previous value associated with specified key, or {@code null} if there was no entry
+     *     for key.
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -456,9 +410,7 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
         return intern((K) key, null);
     }
 
-    /**
-     * Removes all of the elements from this map.
-     */
+    /** Removes all of the elements from this map. */
     @Override
     public synchronized void clear() {
         Arrays.fill(table, null);
@@ -466,14 +418,14 @@ public class WeakValueHashMap<K,V> extends AbstractMap<K,V> {
     }
 
     /**
-     * Returns a set view of the mappings contained in this map.
-     * Each element in this set is a {@link java.util.Map.Entry}.
-     * The current implementation thrown {@link UnsupportedOperationException}.
+     * Returns a set view of the mappings contained in this map. Each element in this set is a
+     * {@link java.util.Map.Entry}. The current implementation thrown {@link
+     * UnsupportedOperationException}.
      *
      * @return a set view of the mappings contained in this map.
      */
     @Override
-    public Set<Map.Entry<K,V>> entrySet() {
+    public Set<Map.Entry<K, V>> entrySet() {
         throw new UnsupportedOperationException();
     }
 }

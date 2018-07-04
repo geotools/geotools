@@ -9,13 +9,12 @@
     <version>1.0.0-1</version>
     <name>XLink 1999 schema</name>
 
-
     <developers>
         <developer>
             <name>Rini Angreani</name>
             <id>riniangreani</id>
             <email>Rini.Angreani@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering </organization>
+            <organization>CSIRO Earth Science and Resource Engineering</organization>
             <roles>
                 <role>Schema Packager</role>
             </roles>
@@ -24,13 +23,15 @@
     </developers>
 
     <build>
-<extensions>
-         <extension>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-webdav-jackrabbit</artifactId>
-            <version>1.0-beta-7</version>
-         </extension>
-     </extensions>
+
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav-jackrabbit</artifactId>
+                <version>1.0-beta-7</version>
+            </extension>
+        </extensions>
+
         <plugins>
 
             <plugin>
@@ -48,11 +49,11 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <tasks>
-                                <property name="srcdir" value="http://www.w3.org/1999" />
+                                <property name="srcdir" value="http://www.w3.org/1999"/>
                                 <property name="destdir"
-                                    value="${project.build.outputDirectory}/org/w3/www/1999" />
-                                <mkdir dir="${destdir}" />
-                                <get src="${srcdir}/xlink.xsd" dest="${destdir}/xlink.xsd" />
+                                    value="${project.build.outputDirectory}/org/w3/www/1999"/>
+                                <mkdir dir="${destdir}"/>
+                                <get src="${srcdir}/xlink.xsd" dest="${destdir}/xlink.xsd"/>
                             </tasks>
                         </configuration>
                         <goals>

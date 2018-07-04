@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,9 +16,8 @@
  */
 package org.geotools.data;
 
-import java.util.List;
 import java.util.ArrayList;
-
+import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -33,37 +32,38 @@ import org.opengis.filter.identity.Identifier;
 
 /**
  * Provide batch notification on Commit / Rollback.
- * <p>
- * This is used by FeatureListenerManager to report a bit more detail
- * on transaction commit() and rollback(). Previously these changes
- * were represented as an change event with no known bounds.
- * 
- * @author Jody Garnett
  *
+ * <p>This is used by FeatureListenerManager to report a bit more detail on transaction commit() and
+ * rollback(). Previously these changes were represented as an change event with no known bounds.
+ *
+ * @author Jody Garnett
  * @source $URL$
  */
 public class BatchFeatureEvent extends FeatureEvent {
     private static final long serialVersionUID = 3154238322369916486L;
 
-    public BatchFeatureEvent(FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
+    public BatchFeatureEvent(
+            FeatureSource<? extends FeatureType, ? extends Feature> featureSource) {
         this(featureSource, new ReferencedEnvelope(), Filter.EXCLUDE);
     }
 
-    public BatchFeatureEvent(FeatureSource<? extends FeatureType, ? extends Feature> featureSource,
-            ReferencedEnvelope bounds, Filter filter) {
+    public BatchFeatureEvent(
+            FeatureSource<? extends FeatureType, ? extends Feature> featureSource,
+            ReferencedEnvelope bounds,
+            Filter filter) {
         super(featureSource, Type.COMMIT, bounds, filter);
     }
 
     /**
-     * This is a weak hash set as we don't need to track
-     * changes on FeatureIds that are not being used
-     * by the client to track selection.
+     * This is a weak hash set as we don't need to track changes on FeatureIds that are not being
+     * used by the client to track selection.
      */
     @SuppressWarnings("unchecked")
-	protected WeakHashSet<Identifier> fids = new WeakHashSet<Identifier>(Identifier.class);
+    protected WeakHashSet<Identifier> fids = new WeakHashSet<Identifier>(Identifier.class);
 
     /**
      * Used to change this into a COMMIT or ROLLBACK if needed.
+     *
      * @param type
      */
     public void setType(Type type) {
@@ -71,14 +71,13 @@ public class BatchFeatureEvent extends FeatureEvent {
     }
     /**
      * Indicate a change being batched.
-     * <p>
-     * Will be use to update internal state of bounds and filter; in 
-     * the special case of Features being added we will record
-     * the FeatureIds in case we need to update them later (this
-     * is only required for a *commit* event).
+     *
+     * <p>Will be use to update internal state of bounds and filter; in the special case of Features
+     * being added we will record the FeatureIds in case we need to update them later (this is only
+     * required for a *commit* event).
      */
-    public void add( FeatureEvent change ){    	
-    	if (change.getType() == Type.ADDED) {
+    public void add(FeatureEvent change) {
+        if (change.getType() == Type.ADDED) {
             if (change.getFilter() instanceof Id) {
                 // store these feature Ids for later
                 Id newFeatureIds = (Id) change.getFilter();
@@ -88,8 +87,8 @@ public class BatchFeatureEvent extends FeatureEvent {
                 // what you are adding?
             }
         }
-    	
-    	if (filter == Filter.INCLUDE || bounds == ReferencedEnvelope.EVERYTHING) {
+
+        if (filter == Filter.INCLUDE || bounds == ReferencedEnvelope.EVERYTHING) {
             // someone already gave as "generic" something has changed event
             // so we are never going to be able to be more specific
             return;
@@ -118,9 +117,7 @@ public class BatchFeatureEvent extends FeatureEvent {
         }
     }
 
-    /**
-     * Used to update any FeatureId during a commit.
-     */
+    /** Used to update any FeatureId during a commit. */
     public void replaceFid(String tempFid, String actualFid) {
         for (Identifier id : fids) {
             if (tempFid.equals(id.getID())) {
@@ -133,19 +130,18 @@ public class BatchFeatureEvent extends FeatureEvent {
             }
         }
     }
-    
+
     /**
-     * This is the set of Identifiers that have been created
-     * over the course of this operation.
-     * <p>
-     * Please note that this is only the set of identifiers that is *still in use*;
-     * if no client code is holding on to these Identifiers waiting to see what
-     * the final value will be we are not going to hold onto these for you.
-     * 
+     * This is the set of Identifiers that have been created over the course of this operation.
+     *
+     * <p>Please note that this is only the set of identifiers that is *still in use*; if no client
+     * code is holding on to these Identifiers waiting to see what the final value will be we are
+     * not going to hold onto these for you.
+     *
      * @return Set of Identifiers created during this commit
      */
     @SuppressWarnings("unchecked")
     public WeakHashSet<Identifier> getCreatedFeatureIds() {
-    	return fids;
+        return fids;
     }
 }

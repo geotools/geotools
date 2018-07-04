@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,15 +19,27 @@ package org.geotools.renderer;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
- * A RenderListener is notified each time a feature is rendered and each time
- * an error occurs during rendering.  Therefore <b>VERY LITTLE WORK</b> should be done in the listener!!!
- * 
+ * A RenderListener is notified each time a feature is rendered and each time an error occurs during
+ * rendering. Therefore <b>VERY LITTLE WORK</b> should be done in the listener!!!
+ *
  * @author jeichar
- *
- *
  * @source $URL$
  */
 public interface RenderListener {
-    public void featureRenderer( SimpleFeature feature );
-    public void errorOccurred( Exception e);
+
+    /**
+     * Reports that a specific feature has been rendered. The same feature might be reported
+     * multiple times, if
+     *
+     * @param feature
+     */
+    public void featureRenderer(SimpleFeature feature);
+
+    /**
+     * Reports a rendering error. The rendering is not normally stopped on it, a listener that wants
+     * to stop it can call {@link GTRenderer#stopRendering()}
+     *
+     * @param e
+     */
+    public void errorOccurred(Exception e);
 }

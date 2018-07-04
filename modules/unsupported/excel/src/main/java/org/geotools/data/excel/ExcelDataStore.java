@@ -19,17 +19,17 @@ package org.geotools.data.excel;
 
 /**
  * A datastore based on Excel workbooks.
- * 
- * @author iant 
- * 
+ *
+ * @author iant
  */
+
+import org.locationtech.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -48,8 +48,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 public class ExcelDataStore extends ContentDataStore {
     String name = "";
 
@@ -59,7 +57,7 @@ public class ExcelDataStore extends ContentDataStore {
 
     /** the workbook object */
     org.apache.poi.ss.usermodel.Workbook workbook;
-    
+
     /** The sheet that holds the data */
     org.apache.poi.ss.usermodel.Sheet sheet;
 
@@ -75,15 +73,21 @@ public class ExcelDataStore extends ContentDataStore {
 
     private static final Logger logger = Logging.getLogger("org.geotools.excel");
 
-    public ExcelDataStore(URL url, String sheet2, int headerRow, String latCol,
-            String longCol, String projectionString) throws IOException {
+    public ExcelDataStore(
+            URL url,
+            String sheet2,
+            int headerRow,
+            String latCol,
+            String longCol,
+            String projectionString)
+            throws IOException {
         super();
-        
+
         name = url.getFile();
         InputStream is = url.openStream();
         try {
             workbook = WorkbookFactory.create(is);
-            
+
         } catch (InvalidFormatException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -92,7 +96,7 @@ public class ExcelDataStore extends ContentDataStore {
         headerRowIndex = headerRow;
         latColumnIndex = lookupColumn(latCol);
         lonColumnIndex = lookupColumn(longCol);
-        
+
         try {
             setProjection(CRS.decode(projectionString));
         } catch (NoSuchAuthorityCodeException e) {
@@ -106,7 +110,8 @@ public class ExcelDataStore extends ContentDataStore {
 
     /**
      * Look up a column name and return it's index
-     * @param columnName 
+     *
+     * @param columnName
      * @return the index of the column
      */
     private int lookupColumn(String columnName) {
@@ -119,8 +124,6 @@ public class ExcelDataStore extends ContentDataStore {
         }
         return -1;
     }
-
-    
 
     public int getLatColumnIndex() {
         return latColumnIndex;
@@ -148,7 +151,6 @@ public class ExcelDataStore extends ContentDataStore {
 
     protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
         return new ExcelFeatureSource(entry, Query.ALL);
-
     }
 
     protected List<Name> createTypeNames() throws IOException {
@@ -182,10 +184,7 @@ public class ExcelDataStore extends ContentDataStore {
     }
 
     @Override
-    /**
-     * Provide a geometry factory 
-     * if none has been set then a JTS GeometeryFactory is returned.
-     */
+    /** Provide a geometry factory if none has been set then a JTS GeometeryFactory is returned. */
     public GeometryFactory getGeometryFactory() {
 
         GeometryFactory fac = super.getGeometryFactory();
@@ -195,5 +194,4 @@ public class ExcelDataStore extends ContentDataStore {
         }
         return fac;
     }
-
 }

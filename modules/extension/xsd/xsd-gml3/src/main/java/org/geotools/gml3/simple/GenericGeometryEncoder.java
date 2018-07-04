@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *   (C) 2016, Open Source Geospatial Foundation (OSGeo). 
+ *   (C) 2016, Open Source Geospatial Foundation (OSGeo).
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,15 +16,6 @@
  */
 package org.geotools.gml3.simple;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
@@ -33,12 +24,20 @@ import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Helper class that encodes the geometries within GeometryCollection
- * 
- * @author 
+ *
+ * @author
  */
 public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
 
@@ -51,7 +50,6 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
     }
 
     /**
-     *
      * @param encoder
      * @param gmlPrefix
      */
@@ -63,34 +61,38 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
     }
 
     @Override
-    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
-        
+    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler, String parentId)
+            throws Exception {
+
         if (geometry instanceof LineString) {
-            LineStringEncoder lineString = new LineStringEncoder(encoder,
-                LineStringEncoder.LINE_STRING);
-            lineString.encode((LineString) geometry, atts, handler);
+            LineStringEncoder lineString =
+                    new LineStringEncoder(encoder, LineStringEncoder.LINE_STRING);
+            lineString.encode((LineString) geometry, atts, handler, parentId);
         } else if (geometry instanceof Point) {
             PointEncoder pt = new PointEncoder(encoder, gmlPrefix, gmlUri);
-            pt.encode((Point) geometry, atts, handler);
+            pt.encode((Point) geometry, atts, handler, parentId);
         } else if (geometry instanceof Polygon) {
             PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix, gmlUri);
-            polygon.encode((Polygon) geometry, atts, handler);
+            polygon.encode((Polygon) geometry, atts, handler, parentId);
         } else if (geometry instanceof MultiLineString) {
-            MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true);
-            multiLineString.encode((MultiLineString) geometry, atts, handler);
+            MultiLineStringEncoder multiLineString =
+                    new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true);
+            multiLineString.encode((MultiLineString) geometry, atts, handler, parentId);
         } else if (geometry instanceof MultiPoint) {
             MultiPointEncoder multiPoint = new MultiPointEncoder(encoder, gmlPrefix, gmlUri);
-            multiPoint.encode((MultiPoint) geometry, atts, handler);
+            multiPoint.encode((MultiPoint) geometry, atts, handler, parentId);
         } else if (geometry instanceof MultiPolygon) {
             MultiPolygonEncoder multiPolygon = new MultiPolygonEncoder(encoder, gmlPrefix, gmlUri);
-            multiPolygon.encode((MultiPolygon) geometry, atts, handler);
+            multiPolygon.encode((MultiPolygon) geometry, atts, handler, parentId);
         } else if (geometry instanceof LinearRing) {
             LinearRingEncoder linearRing = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
-            linearRing.encode((LinearRing) geometry, atts, handler);
-        } else if (geometry instanceof CircularString || geometry instanceof CompoundCurve
-                        || geometry instanceof CircularRing || geometry instanceof CompoundRing) {
+            linearRing.encode((LinearRing) geometry, atts, handler, parentId);
+        } else if (geometry instanceof CircularString
+                || geometry instanceof CompoundCurve
+                || geometry instanceof CircularRing
+                || geometry instanceof CompoundRing) {
             CurveEncoder curve = new CurveEncoder(encoder, gmlPrefix, gmlUri);
-            curve.encode((LineString) geometry, atts, handler);
+            curve.encode((LineString) geometry, atts, handler, parentId);
         } else {
             throw new Exception("Unsupported geometry " + geometry.toString());
         }

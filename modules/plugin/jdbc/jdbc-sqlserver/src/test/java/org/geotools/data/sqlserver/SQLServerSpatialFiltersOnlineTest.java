@@ -17,23 +17,17 @@
 package org.geotools.data.sqlserver;
 
 import java.io.IOException;
-
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.DWithin;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SQLServerSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
     @Override
@@ -45,8 +39,9 @@ public class SQLServerSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineT
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         Geometry point = new WKTReader().read("POINT(180000 0)");
         DWithin filter = ff.dwithin(ff.property(aname("geom")), ff.literal(point), 15000, "m");
-        
-        ContentFeatureCollection fc = dataStore.getFeatureSource(tname("ppoint")).getFeatures(filter);
+
+        ContentFeatureCollection fc =
+                dataStore.getFeatureSource(tname("ppoint")).getFeatures(filter);
         assertEquals(1, fc.size());
     }
 }

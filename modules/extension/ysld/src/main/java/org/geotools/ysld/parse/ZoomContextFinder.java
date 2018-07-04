@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,15 +21,14 @@ import java.util.Set;
 
 /**
  * Mapping of names to ZoomContexts
- * 
- * @author Kevin Smith, Boundless
  *
+ * @author Kevin Smith, Boundless
  */
 public interface ZoomContextFinder {
 
     /**
      * Get a named ZoomContext
-     * 
+     *
      * @param name
      * @return The named context, or null if it is not present
      */
@@ -37,14 +36,14 @@ public interface ZoomContextFinder {
 
     /**
      * Get all valid names
-     * 
+     *
      * @return
      */
     public Set<String> getNames();
 
     /**
      * Get one name for each available ZoomContext.
-     * 
+     *
      * @return
      */
     public Set<String> getCanonicalNames();

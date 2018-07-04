@@ -18,20 +18,15 @@ package org.geotools.graph.build.line;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import com.vividsolutions.jts.geom.Point;
 import junit.framework.TestCase;
-
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.basic.BasicNode;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-
-/**
- * @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com
- */
+/** @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com */
 public class LineStringGraphGeneratorTest extends TestCase {
 
     private Coordinate c1, c2, c3, c4, c6, c7;
@@ -53,9 +48,9 @@ public class LineStringGraphGeneratorTest extends TestCase {
     }
 
     public void testThatCoordinatesNearbySnapToSameNode() {
-        LineString lineString = gf.createLineString(new Coordinate[] { c1, c2 });
-        LineString lineString2 = gf.createLineString(new Coordinate[] { c6, c3 });
-        LineString lineString3 = gf.createLineString(new Coordinate[] { c7, c4 });
+        LineString lineString = gf.createLineString(new Coordinate[] {c1, c2});
+        LineString lineString2 = gf.createLineString(new Coordinate[] {c6, c3});
+        LineString lineString3 = gf.createLineString(new Coordinate[] {c7, c4});
         gen.add(lineString);
         gen.add(lineString2);
         gen.add(lineString3);
@@ -66,7 +61,9 @@ public class LineStringGraphGeneratorTest extends TestCase {
         Collection<Coordinate> graphNodeCoordinates = getCoordinates(graphNodes);
         assertTrue(graphNodeCoordinates.contains(c2));
         assertFalse("c6 should be snapped to c2", graphNodeCoordinates.contains(c6));
-        assertTrue("c7 should not have been snapped to c2 - distance bigger than tolerance", graphNodeCoordinates.contains(c7)); //
+        assertTrue(
+                "c7 should not have been snapped to c2 - distance bigger than tolerance",
+                graphNodeCoordinates.contains(c7)); //
         assertEquals(3, graph.getEdges().size());
     }
 

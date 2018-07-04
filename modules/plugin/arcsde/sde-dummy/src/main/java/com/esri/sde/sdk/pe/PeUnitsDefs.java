@@ -1,10 +1,4 @@
 package com.esri.sde.sdk.pe;
 
-/**
- * 
- *
- * @source $URL$
- */
-public class PeUnitsDefs {
-	
-}
+/** @source $URL$ */
+public class PeUnitsDefs {}

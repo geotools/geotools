@@ -20,32 +20,26 @@ import static org.junit.Assert.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.SampleModel;
-
 import org.junit.Test;
 import org.opengis.coverage.SampleDimensionType;
 
 /**
  * Testing {@link TypeMap} class.
- * 
+ *
  * @author Simone Giannecchini, GeoSolutions SAS
- *
- *
  * @source $URL$
  */
 public class TestTypeMap {
 
     @Test
     public void testGetSampleDimensionTypeSampleModel() {
-        
-        final SampleModel sm=new BufferedImage(512, 512, BufferedImage.TYPE_USHORT_555_RGB).getSampleModel();
-        assertSame(SampleDimensionType.UNSIGNED_8BITS, TypeMap.getSampleDimensionType(
-                sm, 0));
-        assertSame(SampleDimensionType.UNSIGNED_8BITS, TypeMap.getSampleDimensionType(
-                sm, 1));
-        assertSame(SampleDimensionType.UNSIGNED_8BITS, TypeMap.getSampleDimensionType(
-                sm, 2));
+
+        final SampleModel sm =
+                new BufferedImage(512, 512, BufferedImage.TYPE_USHORT_555_RGB).getSampleModel();
+        assertSame(SampleDimensionType.UNSIGNED_8BITS, TypeMap.getSampleDimensionType(sm, 0));
+        assertSame(SampleDimensionType.UNSIGNED_8BITS, TypeMap.getSampleDimensionType(sm, 1));
+        assertSame(SampleDimensionType.UNSIGNED_8BITS, TypeMap.getSampleDimensionType(sm, 2));
     }
-   
 
     @Test
     public void testIsSigned() {
@@ -60,7 +54,5 @@ public class TestTypeMap {
         assertFalse(TypeMap.isSigned(SampleDimensionType.UNSIGNED_32BITS));
         assertFalse(TypeMap.isSigned(SampleDimensionType.UNSIGNED_4BITS));
         assertFalse(TypeMap.isSigned(SampleDimensionType.UNSIGNED_8BITS));
-        
     }
-   
 }

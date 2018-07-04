@@ -1,15 +1,10 @@
 package org.geotools.data.mysql;
 
 import java.util.TimeZone;
-
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTimeZoneDateOnlineTest;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySQLTimeZoneCETDateOnlineTest extends JDBCTimeZoneDateOnlineTest {
 
     @Override
@@ -17,5 +12,4 @@ public class MySQLTimeZoneCETDateOnlineTest extends JDBCTimeZoneDateOnlineTest {
         super.setTimeZone(TimeZone.getTimeZone("CET"));
         return new MySQLDateTestSetup();
     }
-    
 }

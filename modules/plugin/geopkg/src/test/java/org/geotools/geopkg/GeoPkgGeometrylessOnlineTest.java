@@ -19,16 +19,11 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCGeometrylessOnlineTest;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeoPkgGeometrylessOnlineTest extends JDBCGeometrylessOnlineTest {
 
     @Override
     protected JDBCGeometrylessTestSetup createTestSetup() {
         return new GeoPkgGeometrylessTestSetup();
     }
-
 }

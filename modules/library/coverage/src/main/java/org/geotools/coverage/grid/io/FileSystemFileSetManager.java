@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FileSystemFileSetManager implements FileSetManager{
+public class FileSystemFileSetManager implements FileSetManager {
 
-    private static Logger LOGGER = Logger.getLogger(FileSystemFileSetManager.class.toString()); 
+    private static Logger LOGGER = Logger.getLogger(FileSystemFileSetManager.class.toString());
 
     private List<String> fileSet = Collections.synchronizedList(new ArrayList<String>());
 
@@ -53,15 +53,18 @@ public class FileSystemFileSetManager implements FileSetManager{
                 final File file = new File(filePath);
                 if (file.isDirectory()) {
                     File[] files = file.listFiles();
-                    for (File _file: files) {
+                    for (File _file : files) {
                         deleteFile(_file);
                     }
                 }
                 deleteFile(file);
-            } catch (Throwable t){
+            } catch (Throwable t) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Exception occurred while deleting file: " + filePath + 
-                            "\n" + t.getLocalizedMessage());
+                    LOGGER.fine(
+                            "Exception occurred while deleting file: "
+                                    + filePath
+                                    + "\n"
+                                    + t.getLocalizedMessage());
                 }
             }
         }
@@ -80,8 +83,8 @@ public class FileSystemFileSetManager implements FileSetManager{
     @Override
     public void purge() {
         if (!fileSet.isEmpty()) {
-            String[] files = (String[])fileSet.toArray(new String[fileSet.size()]);
-            for (String filePath: files) {
+            String[] files = (String[]) fileSet.toArray(new String[fileSet.size()]);
+            for (String filePath : files) {
                 removeFile(filePath);
             }
         }

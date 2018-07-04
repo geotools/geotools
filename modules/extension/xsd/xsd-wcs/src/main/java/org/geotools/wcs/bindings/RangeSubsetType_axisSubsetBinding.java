@@ -1,13 +1,10 @@
 package org.geotools.wcs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wcs10.AxisSubsetType;
 import net.opengis.wcs10.IntervalType;
 import net.opengis.wcs10.TypedLiteralType;
-import net.opengis.wcs10.ValueRangeType;
 import net.opengis.wcs10.Wcs10Factory;
-
 import org.geotools.wcs.WCS;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.AttributeInstance;
@@ -15,13 +12,12 @@ import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
 /**
- * Binding object for the type
- * http://www.opengis.net/wcs:RangeSubsetType_axisSubset.
- * 
+ * Binding object for the type http://www.opengis.net/wcs:RangeSubsetType_axisSubset.
+ *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;complexType name=&quot;RangeSubsetType_axisSubset&quot;&gt;
  *      &lt;complexContent&gt;
  *          &lt;extension base=&quot;wcs:valueEnumBaseType&quot;&gt;
@@ -32,30 +28,26 @@ import org.geotools.xml.Node;
  *              &lt;/attribute&gt;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
- *  &lt;/complexType&gt; 
- * 	
+ *  &lt;/complexType&gt;
+ *
  * </code>
- *	 </pre>
- * 
- * </p>
- * 
+ *  </pre>
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class RangeSubsetType_axisSubsetBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WCS.RangeSubsetType_axisSubset;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -63,20 +55,20 @@ public class RangeSubsetType_axisSubsetBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         AxisSubsetType axis = Wcs10Factory.eINSTANCE.createAxisSubsetType();
-        
+
         AttributeInstance[] atts = instance.getAttributes();
         for (AttributeInstance attType : atts) {
-            if (attType.getName().equals("name"))
-                axis.setName(attType.getText());
+            if (attType.getName().equals("name")) axis.setName(attType.getText());
         }
-        
+
         Node singleValue = node.getChild("singleValue");
         if (singleValue != null) {
             TypedLiteralType theValue = Wcs10Factory.eINSTANCE.createTypedLiteralType();
@@ -107,13 +99,11 @@ public class RangeSubsetType_axisSubsetBinding extends AbstractComplexBinding {
 
             if (interval.getAttribute("atomic") != null)
                 range.setAtomic((Boolean) interval.getAttributeValue("atomic"));
-            else
-                range.setAtomic(false);
-            
+            else range.setAtomic(false);
+
             axis.getInterval().add(range);
         }
 
         return axis;
     }
-
 }

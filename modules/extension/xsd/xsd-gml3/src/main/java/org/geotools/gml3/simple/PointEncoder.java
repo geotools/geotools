@@ -21,14 +21,13 @@ import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Point;
 import org.xml.sax.helpers.AttributesImpl;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * Encodes a GML3 point
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
@@ -48,16 +47,16 @@ class PointEncoder extends GeometryEncoder<Point> {
     }
 
     @Override
-    public void encode(Point geometry, AttributesImpl atts, GMLWriter handler)
+    public void encode(Point geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
+        atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(point, atts);
         handler.startElement(pos, null);
-        
+
         Coordinate coordinate = geometry.getCoordinate();
         handler.position(coordinate.x, coordinate.y, coordinate.z);
-        
+
         handler.endElement(pos);
         handler.endElement(point);
     }
-    
 }

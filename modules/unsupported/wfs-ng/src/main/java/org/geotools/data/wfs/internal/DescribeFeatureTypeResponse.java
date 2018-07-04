@@ -23,11 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-
 import javax.xml.namespace.QName;
-
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.output.TeeOutputStream;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.geotools.ows.ServiceException;
@@ -39,8 +36,9 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
 
     private FeatureType parsed;
 
-    public DescribeFeatureTypeResponse(final DescribeFeatureTypeRequest request,
-            final HTTPResponse httpResponse) throws ServiceException, IOException {
+    public DescribeFeatureTypeResponse(
+            final DescribeFeatureTypeRequest request, final HTTPResponse httpResponse)
+            throws ServiceException, IOException {
 
         super(request, httpResponse);
 
@@ -62,8 +60,13 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
             }
             try {
                 URL schemaLocation = tmpSchemaFile.toURI().toURL();
-                this.parsed = EmfAppSchemaParser.parse(wfsConfiguration, remoteTypeName,
-                        schemaLocation, defaultCrs, strategy.getFieldTypeMappings());
+                this.parsed =
+                        EmfAppSchemaParser.parse(
+                                wfsConfiguration,
+                                remoteTypeName,
+                                schemaLocation,
+                                defaultCrs,
+                                strategy.getFieldTypeMappings());
             } finally {
                 tmpSchemaFile.delete();
             }
@@ -71,7 +74,6 @@ public class DescribeFeatureTypeResponse extends WFSResponse {
             responseStream.close();
             httpResponse.dispose();
         }
-
     }
 
     public FeatureType getFeatureType() {

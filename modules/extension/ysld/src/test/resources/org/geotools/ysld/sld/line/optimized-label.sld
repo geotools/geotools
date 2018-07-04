@@ -28,9 +28,12 @@
             </Fill>
             <VendorOption name="followLine">true</VendorOption>
             <VendorOption name="underlineText">true</VendorOption>
+            <VendorOption name="strikethroughText">true</VendorOption>
             <VendorOption name="maxAngleDelta">90</VendorOption>
             <VendorOption name="maxDisplacement">400</VendorOption>
             <VendorOption name="repeat">150</VendorOption>
+            <VendorOption name="charSpacing">5</VendorOption>
+            <VendorOption name="wordSpacing">15</VendorOption>
           </TextSymbolizer>
         </Rule>
       </FeatureTypeStyle>

@@ -16,18 +16,7 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.Envelope;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.spatial.BBOX;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
@@ -36,13 +25,18 @@ import org.geotools.referencing.CRS;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.locationtech.jts.geom.Envelope;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.BBOX;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:BBOXType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="BBOXType"&gt;
  *      &lt;xsd:complexContent&gt;
@@ -57,12 +51,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCBBOXTypeBinding extends AbstractComplexBinding {
@@ -70,33 +60,31 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
     private CoordinateReferenceSystem crs;
 
     public OGCBBOXTypeBinding() {
-        //(JD) TODO: fix this. The reason we dont use constructor injection to get 
+        // (JD) TODO: fix this. The reason we dont use constructor injection to get
         // the factory is that pico does not do both setter + constructor injection
-        // And since we support setter injection of a crs we just fall back on 
+        // And since we support setter injection of a crs we just fall back on
         // common factory finder... since there is actually only one filter factory
         // impl not a huge deal, but it woul dbe nice to be consistent
         factory = CommonFactoryFinder.getFilterFactory2(null);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.BBOXType;
     }
 
     /**
      * Setter for crs.
-     * <p>
-     * This is used to allow containing entities (liek a wfs query) to provide
-     * a coordinate reference system in the context.
-     * </p>
+     *
+     * <p>This is used to allow containing entities (liek a wfs query) to provide a coordinate
+     * reference system in the context.
      */
     public void setCRS(CoordinateReferenceSystem crs) {
         this.crs = crs;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -107,63 +95,64 @@ public class OGCBBOXTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //TODO: crs
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // TODO: crs
         PropertyName propertyName = (PropertyName) node.getChildValue(PropertyName.class);
         Envelope box = (Envelope) node.getChildValue(Envelope.class);
-        
+
         if (box instanceof ReferencedEnvelope) {
-        	return factory.bbox(propertyName == null?  factory.property("") : propertyName, (ReferencedEnvelope) box);        	
-        }
-        else {
-        	String name = null;
-            if ( propertyName != null ) {
+            return factory.bbox(
+                    propertyName == null ? factory.property("") : propertyName,
+                    (ReferencedEnvelope) box);
+        } else {
+            String name = null;
+            if (propertyName != null) {
                 name = propertyName.getPropertyName();
             }
-            //JD: this is a bit hackish, we know that "" means default geometry
+            // JD: this is a bit hackish, we know that "" means default geometry
             // in SimpleFeaturePropertyAccessor, so instead of dying here set
             // to empty string to mean defualt geometry
             // TODO: come up with something a bit more concrete
-            if ( name == null ) {
+            if (name == null) {
                 name = "";
             }
-            
-        	Node srsNode = node.getChild(Envelope.class).getAttribute("srsName");
+
+            Node srsNode = node.getChild(Envelope.class).getAttribute("srsName");
             String srs = (srsNode != null) ? srsNode.getValue().toString() : null;
 
             if ((srs == null) && (crs != null)) {
                 srs = GML2EncodingUtils.crs(crs);
-            }          
-            
-        	return factory.bbox(name, box.getMinX(), box.getMinY(),
-        			box.getMaxX(), box.getMaxY(), srs);
+            }
+
+            return factory.bbox(
+                    name, box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY(), srs);
         }
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         BBOX box = (BBOX) object;
 
-        //&lt;xsd:element ref="ogc:PropertyName"/&gt;
+        // &lt;xsd:element ref="ogc:PropertyName"/&gt;
         if (OGC.PropertyName.equals(name)) {
             return factory.property(box.getPropertyName());
         }
 
-        //&lt;xsd:element ref="gml:Box"/&gt;
+        // &lt;xsd:element ref="gml:Box"/&gt;
         if (GML.Box.equals(name) || org.geotools.gml3.GML.Envelope.equals(name)) {
             try {
                 String srs = box.getSRS();
-                if(srs != null) {
+                if (srs != null) {
                     CoordinateReferenceSystem crs = CRS.decode(srs);
-                    return new ReferencedEnvelope(box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY(), crs);
+                    return new ReferencedEnvelope(
+                            box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY(), crs);
                 }
-            } catch(Throwable t) {
+            } catch (Throwable t) {
                 // never mind
             }
             return new Envelope(box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY());

@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -27,19 +27,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
-
+import java.util.logging.Logger;
 import org.geotools.data.wms.xml.Attribution;
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wms.xml.Extent;
 import org.geotools.data.wms.xml.MetadataURL;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
@@ -47,21 +44,20 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Nested list of zero or more map Layers offered by this server. It contains only fields for
  * information that we currently find interesting. Feel free to add your own.
- * 
+ *
  * @author rgould
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/extension/wms/src/main/java/org
- *         /geotools/data/ows/Layer.java $
+ *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/extension/wms/src/main/java/org
+ *     /geotools/data/ows/Layer.java $
  */
 public class Layer implements Comparable<Layer> {
+
+    private static final Logger LOGGER = Logging.getLogger(Layer.class);
+
     /** A machine-readable (typically one word) identifier */
     private String name;
 
-    /**
-     * Parent Layer may be null if this is the root Layer for a WMS Service
-     */
+    /** Parent Layer may be null if this is the root Layer for a WMS Service */
     private Layer parent;
 
     /**
@@ -80,7 +76,7 @@ public class Layer implements Comparable<Layer> {
      * A set of Strings representing SRSs. These are the SRSs contributed by this layer. For the
      * complete list you need to consider these values and those defined by its parent.
      */
-    private Set<String> srs = null;
+    protected Set<String> srs = new HashSet<>();
 
     /**
      * The bounding boxes on each layer; usually this matches the actual data coordinate reference
@@ -91,8 +87,8 @@ public class Layer implements Comparable<Layer> {
     private List<CRSEnvelope> boundingBoxes = new ArrayList<CRSEnvelope>();
 
     /**
-     * A BoundingBox containing the minimum rectangle of the map data in CRS:84
-     * (Prior to WMS 1.3.3 this was EPSG:4326)
+     * A BoundingBox containing the minimum rectangle of the map data in CRS:84 (Prior to WMS 1.3.3
+     * this was EPSG:4326)
      */
     private CRSEnvelope latLonBoundingBox = null;
 
@@ -101,7 +97,7 @@ public class Layer implements Comparable<Layer> {
 
     /** Indicates if this layer responds to a GetFeatureInfo query */
     private Boolean queryable = null;
-    
+
     /**
      * If a WMS cascades the content of another WMS, then it shall increment by 1 the value of the
      * cascaded attribute for the affected layers. If that attribute is missing from the originating
@@ -134,9 +130,7 @@ public class Layer implements Comparable<Layer> {
      */
     private Set<String> allSRSCache = null;
 
-    /**
-     * The union of the layer's boundingBoxes and the parent's bounding boxes.
-     */
+    /** The union of the layer's boundingBoxes and the parent's bounding boxes. */
     private Map<String, CRSEnvelope> allBoundingBoxesCache = null;
 
     /**
@@ -157,32 +151,30 @@ public class Layer implements Comparable<Layer> {
      * This is where we try and go from our rather lame CRSEnvelope data structure to an actual
      * ReferencedEnvelope with a real CoordinateReferenceSystem.
      */
-    private Map<CoordinateReferenceSystem, Envelope> envelopeCache = Collections
-            .synchronizedMap(new WeakHashMap<CoordinateReferenceSystem, Envelope>());
-    
+    private Map<CoordinateReferenceSystem, Envelope> envelopeCache =
+            Collections.synchronizedMap(new WeakHashMap<CoordinateReferenceSystem, Envelope>());
+
     private List<MetadataURL> metadataURL;
 
-    /** Element related to the Attribution tag in the GetCapabilities*/
+    /** Element related to the Attribution tag in the GetCapabilities */
     private Attribution attribution;
 
-    /**
-     * Called to clear the internal cache of this layer; and any children.
-     */
+    /** Called to clear the internal cache of this layer; and any children. */
     public void clearCache() {
         allSRSCache = null;
         allExtentsCache = null;
         allDimensionsCache = null;
         allBoundingBoxesCache = null;
         envelopeCache.clear();
-        for( Layer child : children ){
+        for (Layer child : children) {
             child.clearCache();
         }
     }
 
     /**
      * Crate a layer with no human readable title.
-     * <p>
-     * These layers are simply for organization and storage of common settings (like SRS or style
+     *
+     * <p>These layers are simply for organization and storage of common settings (like SRS or style
      * settings). These settings will be valid for all children.
      */
     public Layer() {
@@ -191,7 +183,7 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Create a layer with an optional title
-     * 
+     *
      * @param title
      */
     public Layer(String title) {
@@ -200,8 +192,8 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Get the BoundingBoxes associated with this layer.
-     * <p>
-     * If you modify the contents of this List please call clearCache() so that the
+     *
+     * <p>If you modify the contents of this List please call clearCache() so that the
      * getBoundingBoxes() method can return the correct combination of this list and the parent
      * bounding boxes.
      */
@@ -213,24 +205,24 @@ public class Layer implements Comparable<Layer> {
      * Returns every BoundingBox associated with this layer. The <code>HashMap</code> returned has
      * each bounding box's SRS Name (usually an EPSG code) value as the key, and the value is the
      * <code>BoundingBox</code> object itself.
-     * 
-     * Implements inheritance: if this layer's bounding box is null, query ancestors until the first
-     * bounding box is found or no more ancestors
-     * 
+     *
+     * <p>Implements inheritance: if this layer's bounding box is null, query ancestors until the
+     * first bounding box is found or no more ancestors
+     *
      * @return a HashMap of all of this layer's bounding boxes or null if no bounding boxes found
      */
     public synchronized Map<String, CRSEnvelope> getBoundingBoxes() {
         if (allBoundingBoxesCache == null) {
             allBoundingBoxesCache = new HashMap<String, CRSEnvelope>();
-            
-            for( CRSEnvelope bbox : getLayerBoundingBoxes() ){
-                allBoundingBoxesCache.put( bbox.getSRSName(), bbox );
+
+            for (CRSEnvelope bbox : getLayerBoundingBoxes()) {
+                allBoundingBoxesCache.put(bbox.getSRSName(), bbox);
             }
-            
+
             Layer parent = this.getParent();
             while (parent != null && allBoundingBoxesCache.size() == 0) {
-                for( CRSEnvelope bbox : parent.getLayerBoundingBoxes() ){
-                    allBoundingBoxesCache.put( bbox.getSRSName(), bbox );
+                for (CRSEnvelope bbox : parent.getLayerBoundingBoxes()) {
+                    allBoundingBoxesCache.put(bbox.getSRSName(), bbox);
                 }
                 parent = parent.getParent();
             }
@@ -241,15 +233,14 @@ public class Layer implements Comparable<Layer> {
 
     public void setBoundingBoxes(CRSEnvelope boundingBox) {
         this.boundingBoxes.clear();
-        this.boundingBoxes.add( boundingBox );
+        this.boundingBoxes.add(boundingBox);
     }
 
     /**
      * Sets this layer's bounding boxes. The HashMap must have each BoundingBox's CRS/SRS value as
      * its key, and the <code>BoundingBox</code> object as its value.
-     * 
-     * @param boundingBoxes
-     *            a HashMap containing bounding boxes
+     *
+     * @param boundingBoxes a HashMap containing bounding boxes
      */
     public void setBoundingBoxes(Map<String, CRSEnvelope> boundingBoxes) {
         this.boundingBoxes.clear();
@@ -257,56 +248,57 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
-     * Direct access to the dimensions contributed by this Layer.
-     * For the complete list of Dimensions applicable to the layer
-     * this value must be combined with any Dimensions supplied by
-     * the parent - this work is done for you using the getDimensions() method.
+     * Direct access to the dimensions contributed by this Layer. For the complete list of
+     * Dimensions applicable to the layer this value must be combined with any Dimensions supplied
+     * by the parent - this work is done for you using the getDimensions() method.
+     *
      * @see getDimensions()
      * @return List of Dimensions contributed by this Layer definition
      */
-    public List<Dimension> getLayerDimensions(){
+    public List<Dimension> getLayerDimensions() {
         return dimensions;
     }
-    
+
     /**
-     * The dimensions valid for this layer.
-     * Includes both getLauerDimensions() and all Dimensions contributed
-     * by parent layers. The result is an unmodifiable map indexed by Dimension
-     * name.
+     * The dimensions valid for this layer. Includes both getLauerDimensions() and all Dimensions
+     * contributed by parent layers. The result is an unmodifiable map indexed by Dimension name.
+     *
      * @return Map of valid dimensions for this layer indexed by Dimension name.
      */
     public synchronized Map<String, Dimension> getDimensions() {
-        if( allDimensionsCache == null ){
+        if (allDimensionsCache == null) {
             Layer layer = this;
             allDimensionsCache = new HashMap<String, Dimension>();
             while (layer != null) {
-                for( Dimension dimension : layer.getLayerDimensions() ){
-                    allDimensionsCache.put(dimension.getName(), dimension );
+                for (Dimension dimension : layer.getLayerDimensions()) {
+                    allDimensionsCache.put(dimension.getName(), dimension);
                 }
                 layer = layer.getParent();
             }
         }
-        return  Collections.unmodifiableMap( allDimensionsCache );
+        return Collections.unmodifiableMap(allDimensionsCache);
     }
 
     public void setDimensions(Map<String, Dimension> dimensionMap) {
         dimensions.clear();
-        if( dimensionMap != null ){
-            dimensions.addAll( dimensionMap.values() );
+        if (dimensionMap != null) {
+            dimensions.addAll(dimensionMap.values());
         }
         clearCache();
     }
+
     public void setDimensions(Collection<Dimension> dimensionList) {
         dimensions.clear();
-        if( dimensionList != null ){
-            dimensions.addAll( dimensionList );            
+        if (dimensionList != null) {
+            dimensions.addAll(dimensionList);
         }
         clearCache();
     }
-    public void setDimensions( Dimension dimension) {
+
+    public void setDimensions(Dimension dimension) {
         dimensions.clear();
-        if( dimension != null ){
-            dimensions.add( dimension );
+        if (dimension != null) {
+            dimensions.add(dimension);
         }
         clearCache();
     }
@@ -314,52 +306,54 @@ public class Layer implements Comparable<Layer> {
     public Dimension getDimension(String name) {
         return getDimensions().get(name);
     }
-    
+
     /**
      * The Extents contributed by this Layer.
-     * <p>
-     * Please note that for the complete list of Extents valid for this layer
-     * you should use the getExtents() method which will consider extents defined
-     * as part of a Dimension and all those contributed by Parent layers.
-     * <p>
-     * This is an accessor; if you modify the provided list please call clearCache().
-     * </p>
+     *
+     * <p>Please note that for the complete list of Extents valid for this layer you should use the
+     * getExtents() method which will consider extents defined as part of a Dimension and all those
+     * contributed by Parent layers.
+     *
+     * <p>This is an accessor; if you modify the provided list please call clearCache().
+     *
      * @return Extents directly defined by this layer
      */
-    public List<Extent> getLayerExtents(){
+    public List<Extent> getLayerExtents() {
         return extents;
     }
     /**
-     * The Extents valid for this layer; this includes both extents defined by this layer
-     * and all extents contributed by parent layers.
-     * <p>
-     * In keeping with the WMS 1.3.0 specification some extents may be defined as part of
-     * a Dimension definition.
+     * The Extents valid for this layer; this includes both extents defined by this layer and all
+     * extents contributed by parent layers.
+     *
+     * <p>In keeping with the WMS 1.3.0 specification some extents may be defined as part of a
+     * Dimension definition.
+     *
      * @return All extents valid for this layer.
      */
     public synchronized Map<String, Extent> getExtents() {
-        if( allExtentsCache == null ){
+        if (allExtentsCache == null) {
             Layer layer = this;
             allExtentsCache = new HashMap<String, Extent>();
             while (layer != null) {
-                for( Extent extent : layer.getLayerExtents() ){
-                    allExtentsCache.put(extent.getName(), extent );
+                for (Extent extent : layer.getLayerExtents()) {
+                    allExtentsCache.put(extent.getName(), extent);
                 }
-                for( Dimension dimension : layer.getLayerDimensions() ){
+                for (Dimension dimension : layer.getLayerDimensions()) {
                     Extent extent = dimension.getExtent(); // only for WMS 1.3.0
-                    if( extent == null || extent.isEmpty() ){
+                    if (extent == null || extent.isEmpty()) {
                         continue;
                     }
-                    allExtentsCache.put(extent.getName(), extent );                    
+                    allExtentsCache.put(extent.getName(), extent);
                 }
                 layer = layer.getParent();
             }
         }
-        return Collections.unmodifiableMap( allExtentsCache );
+        return Collections.unmodifiableMap(allExtentsCache);
     }
 
     /**
      * Look up an extent by name; search includes all parent extent definitions.
+     *
      * @param name
      * @return Extent or null if not found
      */
@@ -369,32 +363,33 @@ public class Layer implements Comparable<Layer> {
 
     public void setExtents(Map<String, Extent> extentMap) {
         extents.clear();
-        if( extentMap != null ){
-            extents.addAll( extentMap.values() );
+        if (extentMap != null) {
+            extents.addAll(extentMap.values());
         }
         clearCache();
     }
 
     public void setExtents(Collection<Extent> extentList) {
         extents.clear();
-        if( extentList != null ){
-            extents.addAll( extentList );
+        if (extentList != null) {
+            extents.addAll(extentList);
         }
         clearCache();
     }
+
     public void setExtents(Extent extent) {
         extents.clear();
-        if( extent != null ){
-            extents.add( extent );
+        if (extent != null) {
+            extents.add(extent);
         }
         clearCache();
     }
-    
+
     /**
      * Gets the name of the <code>Layer</code>. It is designed to be machine readable, and if it is
      * present, this layer is determined to be drawable and is a valid candidate for use in a GetMap
      * or GetFeatureInfo request.
-     * 
+     *
      * @return the machine-readable name of the layer
      */
     public String getName() {
@@ -404,9 +399,8 @@ public class Layer implements Comparable<Layer> {
     /**
      * Sets the name of this layer. Giving the layer name indicates that it can be drawn during a
      * GetMap or GetFeatureInfo request.
-     * 
-     * @param name
-     *            the layer's new name
+     *
+     * @param name the layer's new name
      */
     public void setName(String name) {
         this.name = name;
@@ -415,7 +409,7 @@ public class Layer implements Comparable<Layer> {
     /**
      * Accumulates all of the srs/crs specified for this layer and all srs/crs inherited from its
      * ancestors. No duplicates are returned.
-     * 
+     *
      * @return Set of all srs/crs for this layer and its ancestors
      */
     public Set<String> getSrs() {
@@ -427,7 +421,7 @@ public class Layer implements Comparable<Layer> {
                 if (parent != null) {
                     Set<String> parentSrs = parent.getSrs();
                     if (parentSrs != null) // got something, add to accumulation
-                        allSRSCache.addAll(parentSrs);
+                    allSRSCache.addAll(parentSrs);
                 }
             }
             // May return an empty list, but spec says at least one must be specified. Perhaps, need
@@ -436,7 +430,6 @@ public class Layer implements Comparable<Layer> {
             // class
             return allSRSCache;
         }
-
     }
 
     public void setSrs(Set<String> srs) {
@@ -446,10 +439,10 @@ public class Layer implements Comparable<Layer> {
     /**
      * Accumulates all of the styles specified for this layer and all styles inherited from its
      * ancestors. No duplicates are returned.
-     * 
-     * The List that is returned is of type List<org.opengis.layer.Style>. Before 2.2-RC0 it was of
-     * type List<java.lang.String>.
-     * 
+     *
+     * <p>The List that is returned is of type List<org.opengis.layer.Style>. Before 2.2-RC0 it was
+     * of type List<java.lang.String>.
+     *
      * @return List of all styles for this layer and its ancestors
      */
     public List<StyleImpl> getStyles() {
@@ -459,7 +452,7 @@ public class Layer implements Comparable<Layer> {
         if (parent != null) {
             List<StyleImpl> parentStyles = parent.getStyles();
             if (parentStyles != null) // got something, add to accumulation
-                allStyles.addAll(parentStyles);
+            allStyles.addAll(parentStyles);
         }
         // Now add my styles, if any
         // Brute force check for duplicates. The spec says duplicates are not allowed:
@@ -467,10 +460,9 @@ public class Layer implements Comparable<Layer> {
         // inherited from a parent. A child may define a new Style with a new Name that is
         // not available for the parent Layer."
         if ((styles != null) && !styles.isEmpty()) {
-            for (Iterator<StyleImpl> iter = styles.iterator(); iter.hasNext();) {
+            for (Iterator<StyleImpl> iter = styles.iterator(); iter.hasNext(); ) {
                 StyleImpl style = iter.next();
-                if (!allStyles.contains(style))
-                    allStyles.add(style);
+                if (!allStyles.contains(style)) allStyles.add(style);
             }
         }
 
@@ -496,7 +488,7 @@ public class Layer implements Comparable<Layer> {
      * attribute is null, check ancestors until the first Queryable attribute is found or no more
      * ancestors. If a Queryable attribute is not found for this layer, it will return the default
      * value of false.
-     * 
+     *
      * @return true is this layer is Queryable
      */
     public boolean isQueryable() {
@@ -504,10 +496,8 @@ public class Layer implements Comparable<Layer> {
             Layer parent = this.getParent();
             while (parent != null) {
                 Boolean q = parent.getQueryable();
-                if (q != null)
-                    return q.booleanValue();
-                else
-                    parent = parent.getParent();
+                if (q != null) return q.booleanValue();
+                else parent = parent.getParent();
             }
             // At this point a attribute was not found so return default
             return false;
@@ -525,7 +515,7 @@ public class Layer implements Comparable<Layer> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(Layer layer) {
@@ -538,7 +528,7 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @return Returns the parent.
      */
     public Layer getParent() {
@@ -547,14 +537,13 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Set the parent; child will be added to the parents list of children (if it is not already).
-     * 
-     * @param parent
-     *            The parent to set.
+     *
+     * @param parent The parent to set.
      */
     public void setParent(Layer parentLayer) {
         this.parent = parentLayer;
-        if( !parentLayer.children.contains( this )){
-            parentLayer.children.add( this );
+        if (!parentLayer.children.contains(this)) {
+            parentLayer.children.add(this);
         }
     }
 
@@ -562,7 +551,7 @@ public class Layer implements Comparable<Layer> {
      * Returns the LatLonBoundingBox for this layer. Implements inheritance: if this layer's
      * bounding box is null, query ancestors until the first bounding box is found or no more
      * ancestors.
-     * 
+     *
      * @return the LatLonBoundingBox for this layer or null if no lat/lon bounding box is found
      */
     public CRSEnvelope getLatLonBoundingBox() {
@@ -570,10 +559,8 @@ public class Layer implements Comparable<Layer> {
             Layer parent = this.getParent();
             while (parent != null) {
                 CRSEnvelope llbb = parent.getLatLonBoundingBox();
-                if (llbb != null)
-                    return llbb;
-                else
-                    parent = parent.getParent();
+                if (llbb != null) return llbb;
+                else parent = parent.getParent();
             }
             // We should never get to falling out of the while loop w/o a LatLonBoundingBox
             // being found. The WMS spec says one is required. So perhaps if we don't find one,
@@ -586,112 +573,115 @@ public class Layer implements Comparable<Layer> {
     }
 
     public void setLatLonBoundingBox(CRSEnvelope latLonBoundingBox) {
-        if( latLonBoundingBox.getSRSName() != null ){
+        if (latLonBoundingBox.getSRSName() != null) {
             String srsName = latLonBoundingBox.getSRSName();
-            if( !srsName.equals("CRS:84")){
-                throw new IllegalStateException("Layer LatLonBoundingBox srsName required to be null or CRS:84");
+            if (!srsName.equals("CRS:84")) {
+                throw new IllegalStateException(
+                        "Layer LatLonBoundingBox srsName required to be null or CRS:84");
             }
+        } else {
+            latLonBoundingBox.setSRSName("CRS:84", false);
         }
         this.latLonBoundingBox = latLonBoundingBox;
     }
 
     /**
      * List of children.
+     *
      * @return list of children
      */
-    public List<Layer> getLayerChildren(){
-        return new AbstractList<Layer>(){
+    public List<Layer> getLayerChildren() {
+        return new AbstractList<Layer>() {
             @Override
             public Layer get(int index) {
                 return children.get(index);
             }
+
             @Override
             public int size() {
                 return children.size();
             }
+
             @Override
             public Layer set(int index, Layer element) {
-                Layer replaced = children.set(index, element );
+                Layer replaced = children.set(index, element);
                 replaced.parent = null;
                 element.parent = Layer.this;
                 return replaced;
             }
+
             @Override
             public void add(int index, Layer element) {
-                children.add( index, element );
+                children.add(index, element);
                 element.parent = Layer.this;
             }
+
             @Override
             public Layer remove(int index) {
                 Layer removed = children.remove(index);
-                if( removed != null ){
+                if (removed != null) {
                     removed.parent = null;
                 }
                 return removed;
             }
         };
     }
+
     public Layer[] getChildren() {
-        return children.toArray(new Layer[ children.size()]);
+        return children.toArray(new Layer[children.size()]);
     }
 
     public void setChildren(Layer[] childrenArray) {
-       children.clear();
-       for( Layer child : childrenArray ){
-           if( child == null || children.contains( child )) {
-               continue; // skip
-           }
-           child.parent = this;
-           this.children.add( child );
-       }
+        children.clear();
+        for (Layer child : childrenArray) {
+            if (child == null || children.contains(child)) {
+                continue; // skip
+            }
+            child.parent = this;
+            this.children.add(child);
+        }
     }
-    public void addChildren( Layer child ){
+
+    public void addChildren(Layer child) {
         child.parent = this;
-        children.add( child );
+        children.add(child);
     }
 
     /**
      * The abstract contains human-readable information about this layer
-     * 
+     *
      * @return Returns the _abstract.
      */
     public String get_abstract() {
         return _abstract;
     }
 
-    /**
-     * @param _abstract
-     *            The _abstract to set.
-     */
+    /** @param _abstract The _abstract to set. */
     public void set_abstract(String _abstract) {
         this._abstract = _abstract;
     }
 
     /**
      * Keywords are Strings to be used in searches
-     * 
+     *
      * @return Returns the keywords.
      */
     public String[] getKeywords() {
         return keywords;
     }
 
-    /**
-     * @param keywords
-     *            The keywords to set.
-     */
+    /** @param keywords The keywords to set. */
     public void setKeywords(String[] keywords) {
         this.keywords = keywords;
     }
 
     /**
      * Max scale denominator for which it is appropriate to draw this layer.
-     * <p>
-     * Scale denominator is calculated based on the bounding box of the central pixel in a request
-     * (ie not a scale based on real world size of the entire layer).
-     * 
-     * @param Max
-     *            scale denominator for which it is approprirate to draw this layer
+     *
+     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
+     * request (ie not a scale based on real world size of the entire layer).
+     *
+     * @param Max scale denominator for which it is approprirate to draw this layer
      */
     public void setScaleDenominatorMax(double scaleDenominatorMax) {
         this.scaleDenominatorMax = scaleDenominatorMax;
@@ -699,14 +689,14 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Max scale denominator for which it is appropriate to draw this layer.
-     * <p>
-     * Scale denominator is calculated based on the bounding box of the central pixel in a request
-     * (ie not a scale based on real world size of the entire layer).
-     * <p>
-     * Some web map servers will refuse to render images at a scale greater than the value provided
-     * here.
-     * <p>
-     * return Max scale denominator for which it is appropriate to draw this layer.
+     *
+     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
+     * request (ie not a scale based on real world size of the entire layer).
+     *
+     * <p>Some web map servers will refuse to render images at a scale greater than the value
+     * provided here.
+     *
+     * <p>return Max scale denominator for which it is appropriate to draw this layer.
      */
     public double getScaleDenominatorMax() {
         return scaleDenominatorMax;
@@ -714,12 +704,11 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Min scale denominator for which it is appropriate to draw this layer.
-     * <p>
-     * Scale denominator is calculated based on the bounding box of the central pixel in a request
-     * (ie not a scale based on real world size of the entire layer).
-     * 
-     * @param Min
-     *            scale denominator for which it is appropriate to draw this layer
+     *
+     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
+     * request (ie not a scale based on real world size of the entire layer).
+     *
+     * @param Min scale denominator for which it is appropriate to draw this layer
      */
     public void setScaleDenominatorMin(double scaleDenominatorMin) {
         this.scaleDenominatorMin = scaleDenominatorMin;
@@ -727,14 +716,14 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Min scale denominator for which it is appropriate to draw this layer.
-     * <p>
-     * Scale denominator is calculated based on the bounding box of the central pixel in a request
-     * (ie not a scale based on real world size of the entire layer).
-     * <p>
-     * Some web map servers will refuse to render images at a scale less than the value provided
+     *
+     * <p>Scale denominator is calculated based on the bounding box of the central pixel in a
+     * request (ie not a scale based on real world size of the entire layer).
+     *
+     * <p>Some web map servers will refuse to render images at a scale less than the value provided
      * here.
-     * <p>
-     * return Min scale denominator for which it is appropriate to draw this layer
+     *
+     * <p>return Min scale denominator for which it is appropriate to draw this layer
      */
     public double getScaleDenominatorMin() {
         return scaleDenominatorMin;
@@ -742,11 +731,12 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Maximum scale for which this layer is considered good.
-     * <p>
-     * We assume this calculation is done in a similar manner to getScaleDenominatorMax(); but a
+     *
+     * <p>We assume this calculation is done in a similar manner to getScaleDenominatorMax(); but a
      * look at common web services such as JPL show this not to be the case.
+     *
      * <p>
-     * 
+     *
      * @return The second scale hint value (understood to mean the max value)
      * @deprecated Use getScaleDenomiatorMax() as there is less confusion over meaning
      */
@@ -756,13 +746,13 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Maximum scale for which this layer is considered good.
-     * <p>
-     * We assume this calculation is done in a similar manner to setScaleDenominatorMax(); but a
+     *
+     * <p>We assume this calculation is done in a similar manner to setScaleDenominatorMax(); but a
      * look at common web services such as JPL show this not to be the case.
+     *
      * <p>
-     * 
-     * @param The
-     *            second scale hint value (understood to mean the max value)
+     *
+     * @param The second scale hint value (understood to mean the max value)
      * @deprecated Use setScaleDenomiatorMax() as there is less confusion over meaning
      */
     public void setScaleHintMax(double scaleHintMax) {
@@ -771,11 +761,12 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Minimum scale for which this layer is considered good.
-     * <p>
-     * We assume this calculation is done in a similar manner to getScaleDenominatorMin(); but a
+     *
+     * <p>We assume this calculation is done in a similar manner to getScaleDenominatorMin(); but a
      * look at common web services such as JPL show this not to be the case.
+     *
      * <p>
-     * 
+     *
      * @return The first scale hint value (understood to mean the min value)
      * @deprecated Use getScaleDenomiatorMin() as there is less confusion over meaning
      */
@@ -785,12 +776,12 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Minimum scale for which this layer is considered good.
-     * <p>
-     * We assume this calculation is done in a similar manner to setScaleDenominatorMin(); but a
+     *
+     * <p>We assume this calculation is done in a similar manner to setScaleDenominatorMin(); but a
      * look at common web services such as JPL show this not to be the case.
-     * <p>
-     * param The first scale hint value (understood to mean the min value)
-     * 
+     *
+     * <p>param The first scale hint value (understood to mean the min value)
+     *
      * @deprecated Use setScaleDenomiatorMin() as there is less confusion over meaning
      */
     public void setScaleHintMin(double scaleHintMin) {
@@ -799,73 +790,66 @@ public class Layer implements Comparable<Layer> {
 
     /**
      * Look up an envelope for the provided CoordinateReferenceSystem.
-     * <p>
-     * Please note that the lookup is performed based on the SRS Name of the provided
-     * CRS which is assumed to be one of its identifiers.
-     * </p>
-     * This method returns the first envelope found; this may not be valid for
-     * sparse data sets that indicate data location using multiple envelopes for
-     * a provided CRS.
-     * 
+     *
+     * <p>Please note that the lookup is performed based on the SRS Name of the provided CRS which
+     * is assumed to be one of its identifiers. This method returns the first envelope found; this
+     * may not be valid for sparse data sets that indicate data location using multiple envelopes
+     * for a provided CRS.
+     *
      * @param crs
      * @return GeneralEnvelope matching the provided crs; or null if unavailable.
      */
     public GeneralEnvelope getEnvelope(CoordinateReferenceSystem crs) {
-        if( crs == null ){
+        if (crs == null) {
             return null;
         }
         // Check the cache!
         GeneralEnvelope found = (GeneralEnvelope) envelopeCache.get(crs);
-        if (found != null){
+        if (found != null) {
             return found;
         }
-        Collection<String> identifiers = new ArrayList<String>();
-        for( ReferenceIdentifier identifier : crs.getIdentifiers() ){
-            String srsName = identifier.toString();
-            identifiers.add( srsName );
-            if( srsName.startsWith("EPSG:")){
-                String urn = srsName.replace("EPSG:", "urn:ogc:def:crs:EPSG::");
-                identifiers.add( urn );
-            }
-        }
-        if (crs == DefaultGeographicCRS.WGS84 || crs == DefaultGeographicCRS.WGS84_3D) {
-            identifiers.add( "CRS:84" );
-        }
+        Collection<String> identifiers = extractCRSNames(crs);
         // first pass look for an exact match
         CRSEnvelope tempBBox = null;
-        for (String srsName : identifiers ) {
-            // Locate an exact bounding box if we can (searches all bounding boxes associated with layer)
-            Map<String, CRSEnvelope> boxes = Layer.this.getBoundingBoxes(); // extents for layer and parents
+        for (String srsName : identifiers) {
+            // Locate an exact bounding box if we can (searches all bounding boxes associated with
+            // layer)
+            Map<String, CRSEnvelope> boxes =
+                    Layer.this.getBoundingBoxes(); // extents for layer and parents
             tempBBox = (CRSEnvelope) boxes.get(srsName);
-            if( tempBBox != null ){
+            if (tempBBox != null) {
                 break;
             }
             // Otherwise, locate a LatLon bounding box ... if applicable
-            if ("CRS:84".equals(srsName.toUpperCase()) || "EPSG:4326".equals(srsName.toUpperCase())){
+            if ("CRS:84".equals(srsName.toUpperCase())
+                    || "EPSG:4326".equals(srsName.toUpperCase())) {
                 tempBBox = Layer.this.getLatLonBoundingBox(); // checks parents
                 break;
             }
         }
         // second pass just get a latLonBoundingox (and we will transform it)
-        if( tempBBox == null ){
+        if (tempBBox == null) {
             tempBBox = Layer.this.getLatLonBoundingBox(); // checks parents
         }
         // TODO Attempt to figure out the valid area of the CRS and use that.
-        
+
         // last attempt grab the first thing (and we will transform it)
         if (tempBBox == null && getBoundingBoxes() != null && getBoundingBoxes().size() > 0) {
             tempBBox = (CRSEnvelope) getBoundingBoxes().values().iterator().next();
         }
-        
+
         if (tempBBox != null) {
             GeneralEnvelope env;
             try {
-                Envelope fixed = CRS.transform( tempBBox, crs );
-                env = new GeneralEnvelope( fixed );
+                Envelope fixed = CRS.transform(tempBBox, crs);
+                env = new GeneralEnvelope(fixed);
             } catch (TransformException e) {
-                env = new GeneralEnvelope(new double[] { tempBBox.getMinX(),tempBBox.getMinY() },
-                        new double[] { tempBBox.getMaxX(), tempBBox.getMaxY() });
+                env =
+                        new GeneralEnvelope(
+                                new double[] {tempBBox.getMinX(), tempBBox.getMinY()},
+                                new double[] {tempBBox.getMaxX(), tempBBox.getMaxY()});
                 env.setCoordinateReferenceSystem(crs);
+                LOGGER.warning("Forcing bbox as " + env);
             }
             // success!!
             envelopeCache.put(crs, env);
@@ -875,17 +859,43 @@ public class Layer implements Comparable<Layer> {
     }
 
     /**
+     * @param crs
+     * @return
+     */
+    protected Collection<String> extractCRSNames(CoordinateReferenceSystem crs) {
+        Collection<String> identifiers = new ArrayList<String>();
+        for (ReferenceIdentifier identifier : crs.getIdentifiers()) {
+            String srsName = identifier.toString();
+            identifiers.add(srsName);
+            if (srsName.startsWith("EPSG:")) {
+                String urn = srsName.replace("EPSG:", "urn:ogc:def:crs:EPSG::");
+                identifiers.add(urn);
+            }
+            if (srsName.contains("900913")) {
+                identifiers.add("EPSG:3857");
+            }
+            if (srsName.equalsIgnoreCase("EPSG:3857")) {
+                identifiers.add("urn:ogc:def:crs:EPSG::900913");
+            }
+        }
+        if (crs == DefaultGeographicCRS.WGS84 || crs == DefaultGeographicCRS.WGS84_3D) {
+            identifiers.add("CRS:84");
+        }
+
+        return identifiers;
+    }
+
+    /**
      * @return {@code 0} if the layer is not cascaded, the number of times it has been cascaded
-     *         otherwise.
+     *     otherwise.
      */
     public int getCascaded() {
         return cascaded;
     }
 
     /**
-     * @param cascadedValue
-     *            {@code 0} if the layer is not cascaded, the number of times it has been cascaded
-     *            otherwise.
+     * @param cascadedValue {@code 0} if the layer is not cascaded, the number of times it has been
+     *     cascaded otherwise.
      */
     public void setCascaded(int cascadedValue) {
         this.cascaded = cascadedValue;

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,10 +21,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.swing.Icon;
-
 import org.geotools.factory.Factory;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
@@ -34,17 +32,20 @@ import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.ContrastMethod;
 import org.opengis.util.InternationalString;
 
-
 /**
  * Abstract base class for implementing style factories.
- *
  *
  * @source $URL$
  */
 public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
-    
-    public TextSymbolizer createTextSymbolizer(Fill fill, Font[] fonts, Halo halo,
-        Expression label, LabelPlacement labelPlacement, String geometryPropertyName);
+
+    public TextSymbolizer createTextSymbolizer(
+            Fill fill,
+            Font[] fonts,
+            Halo halo,
+            Expression label,
+            LabelPlacement labelPlacement,
+            String geometryPropertyName);
 
     public ExternalGraphic createExternalGraphic(URL url, String format);
 
@@ -60,8 +61,12 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     public PointSymbolizer createPointSymbolizer();
 
     //    public  PointPlacement createPointPlacement();
-    public Mark createMark(Expression wellKnownName, Stroke stroke, Fill fill, Expression size,
-        Expression rotation);
+    public Mark createMark(
+            Expression wellKnownName,
+            Stroke stroke,
+            Fill fill,
+            Expression size,
+            Expression rotation);
 
     /**
      * Convinence method for obtaining a mark of a fixed shape
@@ -110,7 +115,6 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      *
      * @param name The name of the extent.
      * @param value The value of the extent.
-     *
      * @return The new extent.
      */
     public Extent createExtent(String name, String value);
@@ -121,14 +125,13 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param featureTypeName The feature type name.
      * @param filter The filter.
      * @param extents The extents.
-     *
      * @return The new feature type constaint.
      */
-    public FeatureTypeConstraint createFeatureTypeConstraint(String featureTypeName, Filter filter,
-        Extent[] extents);
+    public FeatureTypeConstraint createFeatureTypeConstraint(
+            String featureTypeName, Filter filter, Extent[] extents);
 
     public LayerFeatureConstraints createLayerFeatureConstraints(
-        FeatureTypeConstraint[] featureTypeConstraints);
+            FeatureTypeConstraint[] featureTypeConstraints);
 
     public FeatureTypeStyle createFeatureTypeStyle(Rule[] rules);
 
@@ -136,7 +139,6 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * Creates a new ImageOutline.
      *
      * @param symbolizer A line or polygon symbolizer.
-     *
      * @return The new image outline.
      */
     public ImageOutline createImageOutline(Symbolizer symbolizer);
@@ -147,11 +149,12 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public Halo createHalo(Fill fill, Expression radius);
 
-    public Fill createFill(Expression color, Expression backgroundColor, Expression opacity,
-        Graphic graphicFill);
-    
+    public Fill createFill(
+            Expression color, Expression backgroundColor, Expression opacity, Graphic graphicFill);
+
     /**
-     * Create default line symbolizer 
+     * Create default line symbolizer
+     *
      * @return
      */
     public LineSymbolizer createLineSymbolizer();
@@ -168,17 +171,15 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public TextSymbolizer createTextSymbolizer();
 
-    public PointPlacement createPointPlacement(AnchorPoint anchorPoint, Displacement displacement,
-        Expression rotation);
+    public PointPlacement createPointPlacement(
+            AnchorPoint anchorPoint, Displacement displacement, Expression rotation);
 
     /**
      * A convienice method to make a simple stroke
      *
      * @param color the color of the line
      * @param width the width of the line
-     *
      * @return the stroke object
-     *
      * @see org.geotools.stroke
      */
     public Stroke createStroke(Expression color, Expression width);
@@ -189,9 +190,7 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param color the color of the line
      * @param width The width of the line
      * @param opacity The opacity of the line
-     *
      * @return The stroke
-     *
      * @see org.geotools.stroke
      */
     public Stroke createStroke(Expression color, Expression width, Expression opacity);
@@ -208,14 +207,19 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param dashOffset - where in the dash array to start drawing from
      * @param graphicFill - a graphic object to fill the line with
      * @param graphicStroke - a graphic object to draw the line with
-     *
      * @return The completed stroke.
-     *
      * @see org.geotools.stroke
      */
-    public Stroke createStroke(Expression color, Expression width, Expression opacity,
-        Expression lineJoin, Expression lineCap, float[] dashArray, Expression dashOffset,
-        Graphic graphicFill, Graphic graphicStroke);
+    public Stroke createStroke(
+            Expression color,
+            Expression width,
+            Expression opacity,
+            Expression lineJoin,
+            Expression lineCap,
+            float[] dashArray,
+            Expression dashOffset,
+            Graphic graphicFill,
+            Graphic graphicStroke);
 
     public Rule createRule();
 
@@ -223,22 +227,36 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public FeatureTypeStyle createFeatureTypeStyle();
 
-    public Graphic createGraphic(ExternalGraphic[] externalGraphics, Mark[] marks,
-        Symbol[] symbols, Expression opacity, Expression size, Expression rotation);
+    public Graphic createGraphic(
+            ExternalGraphic[] externalGraphics,
+            Mark[] marks,
+            Symbol[] symbols,
+            Expression opacity,
+            Expression size,
+            Expression rotation);
 
-    public Font createFont(Expression fontFamily, Expression fontStyle, Expression fontWeight,
-        Expression fontSize);
+    public Font createFont(
+            Expression fontFamily,
+            Expression fontStyle,
+            Expression fontWeight,
+            Expression fontSize);
 
     public Mark createMark();
 
-    public PolygonSymbolizer createPolygonSymbolizer(Stroke stroke, Fill fill,
-        String geometryPropertyName);
+    public PolygonSymbolizer createPolygonSymbolizer(
+            Stroke stroke, Fill fill, String geometryPropertyName);
 
     public RasterSymbolizer createRasterSymbolizer();
 
-    public RasterSymbolizer createRasterSymbolizer(String geometryPropertyName, Expression opacity,
-        ChannelSelection channel, Expression overlap, ColorMap colorMap, ContrastEnhancement ce,
-        ShadedRelief relief, Symbolizer outline);
+    public RasterSymbolizer createRasterSymbolizer(
+            String geometryPropertyName,
+            Expression opacity,
+            ChannelSelection channel,
+            Expression overlap,
+            ColorMap colorMap,
+            ContrastEnhancement ce,
+            ShadedRelief relief,
+            Symbolizer outline);
 
     public RasterSymbolizer getDefaultRasterSymbolizer();
 
@@ -248,13 +266,16 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public ContrastEnhancement createContrastEnhancement(Expression gammaValue);
 
-    public SelectedChannelType createSelectedChannelType(String name,
-        ContrastEnhancement enhancement);
+    public SelectedChannelType createSelectedChannelType(
+            Expression name, ContrastEnhancement enhancement);
 
-    /**
-     * @deprecated Use {@link #createSelectedChannelType(String, ContrastEnhancement)}
-     */
+    public SelectedChannelType createSelectedChannelType(
+            String name, ContrastEnhancement enhancement);
+
+    /** @deprecated Use {@link #createSelectedChannelType(String, ContrastEnhancement)} */
     public SelectedChannelType createSelectedChannelType(String name, Expression gammaValue);
+
+    public SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue);
 
     public ColorMap createColorMap();
 
@@ -275,9 +296,9 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     public LineSymbolizer getDefaultLineSymbolizer();
 
     /**
-     * Creates a default Text Symbolizer, using the defaultFill, defaultFont
-     * and defaultPointPlacement,  Sets the geometry attribute name to be
-     * geometry:text. No Halo is set. <b>The label is not set</b>
+     * Creates a default Text Symbolizer, using the defaultFill, defaultFont and
+     * defaultPointPlacement, Sets the geometry attribute name to be geometry:text. No Halo is set.
+     * <b>The label is not set</b>
      *
      * @return A default TextSymbolizer
      */
@@ -300,86 +321,79 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     public RemoteOWS createRemoteOWS(String service, String onlineResource);
 
     public ShadedRelief createShadedRelief(Expression reliefFactor);
-    
+
     //
     // Type Narrow org.opengis.StyleFactory
     //
     /**
      * Indicate what part of a Graphic is used to mark the location.
-     * 
+     *
      * @param x
      * @param y
      * @return
      */
     AnchorPoint anchorPoint(Expression x, Expression y);
     /**
-     * 
      * @param gray
      * @return
      */
     ChannelSelection channelSelection(org.opengis.style.SelectedChannelType gray);
     /**
-     * 
      * @param red
      * @param green
      * @param blue
      * @return
      */
-    ChannelSelection channelSelection(org.opengis.style.SelectedChannelType red,
-            org.opengis.style.SelectedChannelType green, org.opengis.style.SelectedChannelType blue);
+    ChannelSelection channelSelection(
+            org.opengis.style.SelectedChannelType red,
+            org.opengis.style.SelectedChannelType green,
+            org.opengis.style.SelectedChannelType blue);
 
     /**
      * Wrap up a "Categorize" function using the provided expressions.
-     * <p>
-     * The function will be created based on:
+     *
+     * <p>The function will be created based on:
+     *
      * <ol>
-     * <li>PropertyName; use "Rasterdata" to indicate this is a color map
-     * <li>Literal: lookup value
-     * <li>Literal: threshold 1
-     * <li>Literal: value 1
-     * <li>Literal: threshold 2
-     * <li>Literal: value 2
-     * <li>Literal: (Optional) succeeding or preceding
+     *   <li>PropertyName; use "Rasterdata" to indicate this is a color map
+     *   <li>Literal: lookup value
+     *   <li>Literal: threshold 1
+     *   <li>Literal: value 1
+     *   <li>Literal: threshold 2
+     *   <li>Literal: value 2
+     *   <li>Literal: (Optional) succeeding or preceding
      * </ol>
-     * @param propertyName
-     *            Property name to categorize, or use "Raster"
-     * @param mapping
-     *            Defined as a series of Expressions
+     *
+     * @param propertyName Property name to categorize, or use "Raster"
+     * @param mapping Defined as a series of Expressions
      * @return ColorMap wrapped around the "Cateogize" function
      */
     ColorMap colorMap(Expression propertyName, Expression... mapping);
 
     /**
      * Wrap up a replacement function using the provided expressions.
-     * 
-     * @param propertyName
-     *            Property name to categorize, or use "Raster"
-     * @param mapping
-     *            Defined as a series of Expressions
+     *
+     * @param propertyName Property name to categorize, or use "Raster"
+     * @param mapping Defined as a series of Expressions
      * @return ColorReplacement wrapped around a Function
      */
-    ColorReplacement colorReplacement(Expression propertyName,
-            Expression... mapping);
+    ColorReplacement colorReplacement(Expression propertyName, Expression... mapping);
     /**
-     * 
      * @param gamma
      * @param method
      * @return
      */
-    ContrastEnhancement contrastEnhancement(Expression gamma,
-            org.opengis.style.ContrastMethod method);
+    ContrastEnhancement contrastEnhancement(
+            Expression gamma, org.opengis.style.ContrastMethod method);
 
     /**
-     * 
      * @param title
      * @param description
      * @return
      */
-    Description description(InternationalString title,
-            InternationalString description);
+    Description description(InternationalString title, InternationalString description);
 
     /**
-     * 
      * @param dx
      * @param dy
      * @return
@@ -387,60 +401,59 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     Displacement displacement(Expression dx, Expression dy);
 
     /**
-     * 
      * @param resource
      * @param format
      * @param replacements
      * @return
      */
-    ExternalGraphic externalGraphic(OnLineResource resource,
-            String format, Collection<org.opengis.style.ColorReplacement> replacements);
+    ExternalGraphic externalGraphic(
+            OnLineResource resource,
+            String format,
+            Collection<org.opengis.style.ColorReplacement> replacements);
 
     /**
-     * 
      * @param inline
      * @param replacements
      * @return
      */
-    ExternalGraphic externalGraphic(Icon inline,
-            Collection<org.opengis.style.ColorReplacement> replacements);
+    ExternalGraphic externalGraphic(
+            Icon inline, Collection<org.opengis.style.ColorReplacement> replacements);
 
     /**
-     * 
      * @param resource
      * @param format
      * @param markIndex
      * @return
      */
-    ExternalMark externalMark(OnLineResource resource, String format,
-            int markIndex);
+    ExternalMark externalMark(OnLineResource resource, String format, int markIndex);
 
     /**
-     * 
      * @param inline
      * @return
      */
     ExternalMark externalMark(Icon inline);
 
     /**
-     * Direct FeatureTypeStyle creation (with no default SLD values applied). 
-     * 
+     * Direct FeatureTypeStyle creation (with no default SLD values applied).
+     *
      * @param name Name
      * @param description Description with title and abstract information
      * @param definedFor Currently unused
-     * @param featureTypeNames FeatureTypes this style applies to, use AbstractFeature to match all 
-     * @param types SemanticType 
-     * @param rules
-     *            May not be null or empty
+     * @param featureTypeNames FeatureTypes this style applies to, use AbstractFeature to match all
+     * @param types SemanticType
+     * @param rules May not be null or empty
      * @return feature type style
      * @see SimpleFe
      */
-    FeatureTypeStyle featureTypeStyle(String name,
-            org.opengis.style.Description description, Id definedFor, Set<Name> featureTypeNames,
-            Set<org.opengis.style.SemanticType> types, List<org.opengis.style.Rule> rules);
+    FeatureTypeStyle featureTypeStyle(
+            String name,
+            org.opengis.style.Description description,
+            Id definedFor,
+            Set<Name> featureTypeNames,
+            Set<org.opengis.style.SemanticType> types,
+            List<org.opengis.style.Rule> rules);
 
     /**
-     * 
      * @param fill
      * @param color
      * @param opacity
@@ -449,22 +462,23 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     Fill fill(org.opengis.style.GraphicFill fill, Expression color, Expression opacity);
 
     /**
-     * 
      * @param family
      * @param style
      * @param weight
      * @param size
      * @return
      */
-    Font font(List<Expression> family, Expression style,
-            Expression weight, Expression size);
+    Font font(List<Expression> family, Expression style, Expression weight, Expression size);
 
-    Graphic graphic(List<org.opengis.style.GraphicalSymbol> symbols,
-            Expression opacity, Expression size, Expression rotation,
-            org.opengis.style.AnchorPoint anchor, org.opengis.style.Displacement disp);
+    Graphic graphic(
+            List<org.opengis.style.GraphicalSymbol> symbols,
+            Expression opacity,
+            Expression size,
+            Expression rotation,
+            org.opengis.style.AnchorPoint anchor,
+            org.opengis.style.Displacement disp);
 
     /**
-     * 
      * @param symbols
      * @param opacity
      * @param size
@@ -472,12 +486,15 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param displacement
      * @return
      */
-    Graphic graphicFill(List<org.opengis.style.GraphicalSymbol> symbols,
-            Expression opacity, Expression size, Expression rotation,
-            org.opengis.style.AnchorPoint anchorPoint, org.opengis.style.Displacement displacement);
+    Graphic graphicFill(
+            List<org.opengis.style.GraphicalSymbol> symbols,
+            Expression opacity,
+            Expression size,
+            Expression rotation,
+            org.opengis.style.AnchorPoint anchorPoint,
+            org.opengis.style.Displacement displacement);
 
     /**
-     * 
      * @param symbols
      * @param opacity
      * @param size
@@ -485,11 +502,14 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param displacement
      * @return
      */
-    GraphicLegend graphicLegend(List<org.opengis.style.GraphicalSymbol> symbols,
-            Expression opacity, Expression size, Expression rotation,
-            org.opengis.style.AnchorPoint anchorPoint, org.opengis.style.Displacement displacement);
+    GraphicLegend graphicLegend(
+            List<org.opengis.style.GraphicalSymbol> symbols,
+            Expression opacity,
+            Expression size,
+            Expression rotation,
+            org.opengis.style.AnchorPoint anchorPoint,
+            org.opengis.style.Displacement displacement);
     /**
-     * 
      * @param symbols
      * @param opacity
      * @param size
@@ -499,13 +519,17 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param gap
      * @return
      */
-    Graphic graphicStroke(List<org.opengis.style.GraphicalSymbol> symbols,
-            Expression opacity, Expression size, Expression rotation,
-            org.opengis.style.AnchorPoint anchorPoint, org.opengis.style.Displacement displacement,
-            Expression initialGap, Expression gap);
+    Graphic graphicStroke(
+            List<org.opengis.style.GraphicalSymbol> symbols,
+            Expression opacity,
+            Expression size,
+            Expression rotation,
+            org.opengis.style.AnchorPoint anchorPoint,
+            org.opengis.style.Displacement displacement,
+            Expression initialGap,
+            Expression gap);
 
     /**
-     * 
      * @param fill
      * @param radius
      * @return
@@ -513,7 +537,6 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     Halo halo(org.opengis.style.Fill fill, Expression radius);
 
     /**
-     * 
      * @param offset
      * @param initialGap
      * @param gap
@@ -522,8 +545,12 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param generalizedLine
      * @return
      */
-    LinePlacement linePlacement(Expression offset, Expression initialGap,
-            Expression gap, boolean repeated, boolean aligned,
+    LinePlacement linePlacement(
+            Expression offset,
+            Expression initialGap,
+            Expression gap,
+            boolean repeated,
+            boolean aligned,
             boolean generalizedLine);
     /**
      * @param name handle used to refer to this symbolizer (machine readible)
@@ -534,51 +561,62 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param offset Offset used to position line relative to origional
      * @return Newly created Line Symbolizer
      */
-    LineSymbolizer lineSymbolizer(String name, Expression geometry, 
-            org.opengis.style.Description description, Unit<?> unit, org.opengis.style.Stroke stroke, Expression offset);
+    LineSymbolizer lineSymbolizer(
+            String name,
+            Expression geometry,
+            org.opengis.style.Description description,
+            Unit<?> unit,
+            org.opengis.style.Stroke stroke,
+            Expression offset);
 
     /**
-     * 
      * @param wellKnownName
      * @param fill
      * @param stroke
      * @return
      */
-    Mark mark(Expression wellKnownName, org.opengis.style.Fill fill, org.opengis.style.Stroke stroke);
+    Mark mark(
+            Expression wellKnownName, org.opengis.style.Fill fill, org.opengis.style.Stroke stroke);
     /**
-     * 
      * @param externalMark
      * @param fill
      * @param stroke
      * @return
      */
-    Mark mark(org.opengis.style.ExternalMark externalMark, org.opengis.style.Fill fill, org.opengis.style.Stroke stroke);
+    Mark mark(
+            org.opengis.style.ExternalMark externalMark,
+            org.opengis.style.Fill fill,
+            org.opengis.style.Stroke stroke);
     /**
-     * 
      * @param anchor
      * @param displacement
      * @param rotation
      * @return
      */
-    PointPlacement pointPlacement(org.opengis.style.AnchorPoint anchor,
-            org.opengis.style.Displacement displacement, Expression rotation);
+    PointPlacement pointPlacement(
+            org.opengis.style.AnchorPoint anchor,
+            org.opengis.style.Displacement displacement,
+            Expression rotation);
     /**
      * Creation of a PointSymbolizer to describe how geometry can be rendered as a point.
-     * 
+     *
      * @param name handle used to refer to this symbolizer (machine readable)
      * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
-     * @param description Human readable description of symboizer 
+     * @param description Human readable description of symboizer
      * @param unit Unit of Measure used to interpret symbolizer distances
      * @param graphic Graphic used to represent the geometry when rendering
      * @return Newly created PointSymbolizer
      */
-    PointSymbolizer pointSymbolizer(String name, Expression geometry,
-            org.opengis.style.Description description, Unit<?> unit, org.opengis.style.Graphic graphic);
+    PointSymbolizer pointSymbolizer(
+            String name,
+            Expression geometry,
+            org.opengis.style.Description description,
+            Unit<?> unit,
+            org.opengis.style.Graphic graphic);
     /**
-     * 
      * @param name handle used to refer to this symbolizer (machine readable)
      * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
-     * @param description Human readable description of symboizer 
+     * @param description Human readable description of symboizer
      * @param unit Unit of Measure used to interpret symbolizer distances
      * @param stroke
      * @param fill
@@ -586,14 +624,19 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param offset
      * @return
      */
-    PolygonSymbolizer polygonSymbolizer(String name, Expression geometry,
-            org.opengis.style.Description description, Unit<?> unit, org.opengis.style.Stroke stroke, org.opengis.style.Fill fill,
-            org.opengis.style.Displacement displacement, Expression offset);
+    PolygonSymbolizer polygonSymbolizer(
+            String name,
+            Expression geometry,
+            org.opengis.style.Description description,
+            Unit<?> unit,
+            org.opengis.style.Stroke stroke,
+            org.opengis.style.Fill fill,
+            org.opengis.style.Displacement displacement,
+            Expression offset);
     /**
-     * 
      * @param name handle used to refer to this symbolizer (machine readable)
      * @param geometry Expression used to extract the Geometry rendered; usually a PropertyName
-     * @param description Human readable description of symboizer 
+     * @param description Human readable description of symboizer
      * @param unit Unit of Measure used to interpret symbolizer distances
      * @param opacity
      * @param channelSelection
@@ -604,38 +647,44 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param outline
      * @return RasterSymbolizer
      */
-    RasterSymbolizer rasterSymbolizer(String name, Expression geometry,
-            org.opengis.style.Description description, Unit<?> unit, Expression opacity,
+    RasterSymbolizer rasterSymbolizer(
+            String name,
+            Expression geometry,
+            org.opengis.style.Description description,
+            Unit<?> unit,
+            Expression opacity,
             org.opengis.style.ChannelSelection channelSelection,
-            org.opengis.style.OverlapBehavior overlapsBehaviour, org.opengis.style.ColorMap colorMap,
-            org.opengis.style.ContrastEnhancement contrast, org.opengis.style.ShadedRelief shaded,
+            org.opengis.style.OverlapBehavior overlapsBehaviour,
+            org.opengis.style.ColorMap colorMap,
+            org.opengis.style.ContrastEnhancement contrast,
+            org.opengis.style.ShadedRelief shaded,
             org.opengis.style.Symbolizer outline);
     /**
      * Used to represent a symbolizer intended for a vendor specific rendering process. This
      * facility should be used to control subject matter that is beyond the scope of the traditional
      * symbology encoding data structure (subject matter like wind barbs or extra deegrees of
      * freedom like temporal symbolizers are good examples of the use of this facility).
-     * 
-     * @param name
-     *            handle used to refer to this symbolizer (machine readible)
-     * @param geometry
-     *            Geometry expression to renderer; formally a PropertyName
-     * @param description
-     *            Description of this symbolizer; human readable
-     * @param unit
-     *            Unit of measure to use when interpretting this symbolizer
-     * @param extensionName
-     *            Extension name used to identify the vendor specific extension being controlled
-     * @param parameters
-     *            Named expressions used to configure the vendor specific rendering process
+     *
+     * @param name handle used to refer to this symbolizer (machine readible)
+     * @param geometry Geometry expression to renderer; formally a PropertyName
+     * @param description Description of this symbolizer; human readable
+     * @param unit Unit of measure to use when interpretting this symbolizer
+     * @param extensionName Extension name used to identify the vendor specific extension being
+     *     controlled
+     * @param parameters Named expressions used to configure the vendor specific rendering process
      * @return newly created ExtensionSymbolizer
      */
-    ExtensionSymbolizer extensionSymbolizer(String name, String geometry, org.opengis.style.Description description,
-            Unit<?> unit, String extensionName, Map<String, Expression> parameters);
+    ExtensionSymbolizer extensionSymbolizer(
+            String name,
+            String geometry,
+            org.opengis.style.Description description,
+            Unit<?> unit,
+            String extensionName,
+            Map<String, Expression> parameters);
 
     /**
      * Create a rule from the provided definition.
-     * 
+     *
      * @param name handle used to refer to this rule (machine readable)
      * @param description Human readable description of this rule
      * @param legend Graphic used to indicate this rule in a legend or user interface
@@ -645,24 +694,37 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param filter
      * @return Newly created Rule
      */
-    Rule rule(String name, org.opengis.style.Description description, org.opengis.style.GraphicLegend legend,
-            double min, double max, List<org.opengis.style.Symbolizer> symbolizers, Filter filter);
+    Rule rule(
+            String name,
+            org.opengis.style.Description description,
+            org.opengis.style.GraphicLegend legend,
+            double min,
+            double max,
+            List<org.opengis.style.Symbolizer> symbolizers,
+            Filter filter);
 
     /**
-     * 
      * @param channelName
      * @param contrastEnhancement
      * @return SelectedChannelType
      */
-    SelectedChannelType selectedChannelType(String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
+    SelectedChannelType selectedChannelType(
+            Expression channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
+
     /**
-     * 
+     * @param channelName
+     * @param contrastEnhancement
+     * @return SelectedChannelType
+     */
+    SelectedChannelType selectedChannelType(
+            String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
+
+    /**
      * @param reliefFactor
      * @param brightnessOnly
      * @return ShadedRelief
      */
-    ShadedRelief shadedRelief(Expression reliefFactor,
-            boolean brightnessOnly);
+    ShadedRelief shadedRelief(Expression reliefFactor, boolean brightnessOnly);
 
     Stroke stroke(
             Expression color,
@@ -694,7 +756,6 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
             Expression offset);
 
     /**
-     * 
      * @param name
      * @param description
      * @param isDefault
@@ -702,12 +763,15 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param defaultSymbolizer
      * @return
      */
-    Style style(String name, org.opengis.style.Description description, boolean isDefault,
+    Style style(
+            String name,
+            org.opengis.style.Description description,
+            boolean isDefault,
             List<org.opengis.style.FeatureTypeStyle> featureTypeStyles,
             org.opengis.style.Symbolizer defaultSymbolizer);
     /**
      * Creation of a TextSymbolizer defining how labels are portrayed.
-     *  
+     *
      * @param name Handle used to refer to this symbolizer (machine readable)
      * @param geometry Geometry to be rendered
      * @param description Human readable description
@@ -719,13 +783,20 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @param fill definition of fill used
      * @return newly created TextSymbolizer
      */
-    TextSymbolizer textSymbolizer(String name, Expression geometry,
-            org.opengis.style.Description description, Unit<?> unit, Expression label, org.opengis.style.Font font,
-            org.opengis.style.LabelPlacement placement, org.opengis.style.Halo halo, org.opengis.style.Fill fill);
+    TextSymbolizer textSymbolizer(
+            String name,
+            Expression geometry,
+            org.opengis.style.Description description,
+            Unit<?> unit,
+            Expression label,
+            org.opengis.style.Font font,
+            org.opengis.style.LabelPlacement placement,
+            org.opengis.style.Halo halo,
+            org.opengis.style.Fill fill);
 
     /**
      * @param method
      * @return a deep copy of the method
      */
-    public ContrastMethod createContrastMethod(ContrastMethod method);   
+    public ContrastMethod createContrastMethod(ContrastMethod method);
 }

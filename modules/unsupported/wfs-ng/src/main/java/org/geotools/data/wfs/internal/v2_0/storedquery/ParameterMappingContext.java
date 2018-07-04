@@ -19,20 +19,17 @@ package org.geotools.data.wfs.internal.v2_0.storedquery;
 
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.Filter;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
- * The property expression evaluation context for stored query parameter mappings. To see how
- * these are mapped as properties in the expression, @see {@link ParameterCQLExpressionFilterFactoryImpl}.
- * 
- * @author Sampo Savolainen (Spatineo)
+ * The property expression evaluation context for stored query parameter mappings. To see how these
+ * are mapped as properties in the expression, @see {@link ParameterCQLExpressionFilterFactoryImpl}.
  *
+ * @author Sampo Savolainen (Spatineo)
  */
 public class ParameterMappingContext {
     // Set in constructor
@@ -43,8 +40,8 @@ public class ParameterMappingContext {
     // Cached
     private Envelope bbox;
 
-    public ParameterMappingContext(Filter filter, Map<String, String> viewParams, 
-            FeatureTypeInfo featureTypeInfo) {
+    public ParameterMappingContext(
+            Filter filter, Map<String, String> viewParams, FeatureTypeInfo featureTypeInfo) {
         this.filter = filter;
         if (viewParams == null) {
             viewParams = Collections.emptyMap();

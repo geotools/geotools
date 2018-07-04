@@ -19,9 +19,6 @@ package org.geotools.swing;
 
 import java.awt.Rectangle;
 import java.util.Arrays;
-
-import com.vividsolutions.jts.geom.Polygon;
-
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -35,15 +32,15 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.swing.testutils.WaitingMapPaneListener;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Base class for map pane tests.
- * 
+ *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
@@ -53,32 +50,33 @@ public abstract class JMapPaneTestBase {
     protected static final int WIDTH = 200;
     protected static final double TOL = 1.0E-6;
     protected static final long WAIT_TIMEOUT = 1000;
-    
+
     protected WaitingMapPaneListener listener;
     protected JMapPane mapPane;
 
     /**
-     * Creates a ReferencedEnvelope with the same aspect ratio as the
-     * given screen rectangle.
+     * Creates a ReferencedEnvelope with the same aspect ratio as the given screen rectangle.
      *
      * @param screenRect map pane or screen rectangle
      * @return new envelope
      */
     protected ReferencedEnvelope createMatchedBounds(Rectangle screenRect) {
         return new ReferencedEnvelope(
-                0, (double) screenRect.width / screenRect.height, 
-                0, 1.0, 
+                0,
+                (double) screenRect.width / screenRect.height,
+                0,
+                1.0,
                 DefaultEngineeringCRS.CARTESIAN_2D);
     }
 
     /**
-     * Creates a new MapContent optionally populated with single-feature Layers
-     * having the specified bounds.
-     * 
+     * Creates a new MapContent optionally populated with single-feature Layers having the specified
+     * bounds.
+     *
      * @param boundsOfLayers 0 or more bounds for layers
      * @return new map content
      */
-    protected MapContent createMapContent(ReferencedEnvelope ...boundsOfLayers) {
+    protected MapContent createMapContent(ReferencedEnvelope... boundsOfLayers) {
         MapContent mapContent = new MapContent();
         if (boundsOfLayers != null) {
             for (ReferencedEnvelope env : boundsOfLayers) {
@@ -90,7 +88,7 @@ public abstract class JMapPaneTestBase {
 
     /**
      * Creates a new feature layer.
-     * 
+     *
      * @param env layer bounds
      * @return the new layer
      */
@@ -101,8 +99,8 @@ public abstract class JMapPaneTestBase {
     }
 
     /**
-     * Creates a feature collection containing a single feature with a
-     * polygon geometry based on the input envelope.
+     * Creates a feature collection containing a single feature with a polygon geometry based on the
+     * input envelope.
      *
      * @param env the input envelope
      * @return new feature collection
@@ -118,12 +116,12 @@ public abstract class JMapPaneTestBase {
         typeBuilder.add("label", String.class);
         final SimpleFeatureType TYPE = typeBuilder.buildFeatureType();
 
-        SimpleFeature feature = SimpleFeatureBuilder.build(
-                TYPE, new Object[]{JTS.toGeometry(env), "a rectangle"}, null);
+        SimpleFeature feature =
+                SimpleFeatureBuilder.build(
+                        TYPE, new Object[] {JTS.toGeometry(env), "a rectangle"}, null);
 
         SimpleFeatureCollection fc = new ListFeatureCollection(TYPE, Arrays.asList(feature));
         ReferencedEnvelope bounds = fc.getBounds();
         return fc;
     }
-
 }

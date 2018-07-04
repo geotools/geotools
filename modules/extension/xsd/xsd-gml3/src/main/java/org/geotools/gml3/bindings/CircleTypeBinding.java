@@ -17,25 +17,19 @@
 package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
-
+import org.geotools.gml3.ArcParameters;
+import org.geotools.gml3.Circle;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import org.geotools.gml3.ArcParameters;
-import org.geotools.gml3.Circle;
-
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 
 /**
- *
  * @author Erik van de Pol. B3Partners BV.
- *
- *
  * @source $URL$
  */
 public class CircleTypeBinding extends AbstractComplexBinding {
@@ -43,20 +37,22 @@ public class CircleTypeBinding extends AbstractComplexBinding {
     CoordinateSequenceFactory csFactory;
     ArcParameters arcParameters;
 
-    public CircleTypeBinding(GeometryFactory gFactory, CoordinateSequenceFactory csFactory, ArcParameters arcParameters) {
+    public CircleTypeBinding(
+            GeometryFactory gFactory,
+            CoordinateSequenceFactory csFactory,
+            ArcParameters arcParameters) {
         this.gFactory = gFactory;
         this.csFactory = csFactory;
         this.arcParameters = arcParameters;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.CircleType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -72,14 +68,14 @@ public class CircleTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
     @Override
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         LineString circleLineString = GML3ParsingUtils.lineString(node, gFactory, csFactory);
 
@@ -87,7 +83,10 @@ public class CircleTypeBinding extends AbstractComplexBinding {
         if (circleCoordinates.length != 3) {
             // maybe log this instead and return null
             throw new RuntimeException(
-                    "GML3 parser exception: The number of coordinates of a Circle should be 3. It currently is: " + circleCoordinates.length + "; " + circleLineString);
+                    "GML3 parser exception: The number of coordinates of a Circle should be 3. It currently is: "
+                            + circleCoordinates.length
+                            + "; "
+                            + circleLineString);
         }
 
         Coordinate c1 = circleCoordinates[0];
@@ -102,6 +101,4 @@ public class CircleTypeBinding extends AbstractComplexBinding {
 
         return resultLineString;
     }
-
 }
-

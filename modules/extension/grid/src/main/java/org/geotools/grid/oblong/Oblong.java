@@ -20,17 +20,12 @@ package org.geotools.grid.oblong;
 import org.geotools.grid.PolygonElement;
 
 /**
- * Marker interface for oblong grid elements. The name was
- * chosen to avoid the inevitable confusion with {@code java.awt.Rectangle}
+ * Marker interface for oblong grid elements. The name was chosen to avoid the inevitable confusion
+ * with {@code java.awt.Rectangle}
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public interface Oblong extends PolygonElement {
-
-}
+public interface Oblong extends PolygonElement {}

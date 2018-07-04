@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
 
 
@@ -132,6 +132,11 @@
       <artifactId>commons-dbcp</artifactId>
       <scope>test</scope>
     </dependency>    
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-referencing</artifactId>

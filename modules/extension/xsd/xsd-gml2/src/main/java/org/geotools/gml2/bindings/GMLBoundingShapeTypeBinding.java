@@ -17,20 +17,18 @@
 package org.geotools.gml2.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.Envelope;
-
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:BoundingShapeType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="BoundingShapeType"&gt;
  *      &lt;annotation&gt;
@@ -47,23 +45,18 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLBoundingShapeTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.BoundingShapeType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -74,28 +67,27 @@ public class GMLBoundingShapeTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //do the null check
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // do the null check
         if (node.getChild("null") != null) {
-            //ignore the description as to why its null
+            // ignore the description as to why its null
             Envelope e = new Envelope();
             e.setToNull();
 
             return e;
         }
 
-        //has to be a valid bounding box
+        // has to be a valid bounding box
         return (Envelope) node.getChildValue(0);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         Envelope e = (Envelope) object;
 
         if (GML.Box.equals(name) && !e.isNull()) {

@@ -21,37 +21,27 @@ import java.util.Locale;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.XArray;
 
-
 /**
  * Static i18n methods.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class Locales {
-    /**
-     * Do not allow instantiation of this class.
-     */
-    private Locales() {
-    }
+    /** Do not allow instantiation of this class. */
+    private Locales() {}
 
     /**
      * Returns available languages.
      *
      * @return Available languages.
-     *
-     * @todo Current implementation returns a hard-coded list.
-     *       Future implementations may perform a more intelligent work.
+     * @todo Current implementation returns a hard-coded list. Future implementations may perform a
+     *     more intelligent work.
      */
     public static Locale[] getAvailableLanguages() {
-        return new Locale[] {
-            Locale.ENGLISH,
-            Locale.FRENCH,
-            Locale.GERMAN
+        return new Locale[] {Locale.ENGLISH, Locale.FRENCH, Locale.GERMAN
             // TODO: missing constants for SPANISH, PORTUGUES and GREEK
         };
     }
@@ -65,7 +55,7 @@ public final class Locales {
         final Locale[] languages = getAvailableLanguages();
         Locale[] locales = Locale.getAvailableLocales();
         int count = 0;
-        for (int i=0; i<locales.length; i++) {
+        for (int i = 0; i < locales.length; i++) {
             final Locale locale = locales[i];
             if (containsLanguage(languages, locale)) {
                 locales[count++] = locale;
@@ -76,12 +66,12 @@ public final class Locales {
     }
 
     /**
-     * Returns {@code true} if the specified array of locales contains at least
-     * one element with the specified language.
+     * Returns {@code true} if the specified array of locales contains at least one element with the
+     * specified language.
      */
     private static boolean containsLanguage(final Locale[] locales, final Locale language) {
         final String code = language.getLanguage();
-        for (int i=0; i<locales.length; i++) {
+        for (int i = 0; i < locales.length; i++) {
             if (code.equals(locales[i].getLanguage())) {
                 return true;
             }
@@ -98,7 +88,7 @@ public final class Locales {
     public static String[] getAvailableLocales(final Locale locale) {
         final Locale[] locales = getAvailableLocales();
         final String[] display = new String[locales.length];
-        for (int i=0; i<locales.length; i++) {
+        for (int i = 0; i < locales.length; i++) {
             display[i] = locales[i].getDisplayName(locale);
         }
         Arrays.sort(display);
@@ -114,7 +104,7 @@ public final class Locales {
         final Arguments arguments = new Arguments(args);
         args = arguments.getRemainingArguments(0);
         final String[] locales = getAvailableLocales(arguments.locale);
-        for (int i=0; i<locales.length; i++) {
+        for (int i = 0; i < locales.length; i++) {
             arguments.out.println(locales[i]);
         }
     }

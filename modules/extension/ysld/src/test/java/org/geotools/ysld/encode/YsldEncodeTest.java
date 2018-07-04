@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -32,20 +32,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-
-import javax.measure.unit.NonSI;
-
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
+import org.geotools.styling.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
@@ -58,10 +58,11 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.styling.UserLayer;
+import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
-import org.junit.Ignore;
+import org.geotools.ysld.parse.YsldParser;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.opengis.filter.FilterFactory;
@@ -73,13 +74,13 @@ import org.opengis.style.ContrastMethod;
 import org.opengis.style.Graphic;
 import org.opengis.style.GraphicalSymbol;
 import org.yaml.snakeyaml.Yaml;
+import systems.uom.common.USCustomary;
 
 public class YsldEncodeTest {
 
     private static final double EPSILON = 0.0000000001;
 
-    @org.junit.Rule
-    public ExpectedException exception = ExpectedException.none();
+    @org.junit.Rule public ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testFunction() throws Exception {
@@ -99,8 +100,9 @@ public class YsldEncodeTest {
         style.featureTypeStyles().add(styleFactory.createFeatureTypeStyle());
         style.featureTypeStyles().get(0).rules().add(rule);
 
-        Function func = filterFactory.function("strEndsWith", filterFactory.property("foo"),
-                filterFactory.literal("bar"));
+        Function func =
+                filterFactory.function(
+                        "strEndsWith", filterFactory.property("foo"), filterFactory.literal("bar"));
         rule.setFilter(filterFactory.equal(func, filterFactory.literal(true), false));
 
         StringWriter out = new StringWriter();
@@ -108,7 +110,7 @@ public class YsldEncodeTest {
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         String filter = obj.seq("feature-styles").map(0).seq("rules").map(0).str("filter");
-        assertEquals("${strEndsWith(foo,'bar') = 'true'}", filter);
+        assertEquals("${strEndsWith(foo,'bar') = true}", filter);
     }
 
     @Test
@@ -129,9 +131,13 @@ public class YsldEncodeTest {
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("data"));
-        Function p2 = filterFactory.function("parameter", filterFactory.literal("levels"),
-                filterFactory.literal(1000), filterFactory.literal(1100),
-                filterFactory.literal(1200));
+        Function p2 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("levels"),
+                        filterFactory.literal(1000),
+                        filterFactory.literal(1100),
+                        filterFactory.literal(1200));
 
         Function rt = filterFactory.function("ras:Contour", p1, p2);
         featureStyle.setTransformation(rt);
@@ -143,15 +149,18 @@ public class YsldEncodeTest {
         YamlMap tx = obj.seq("feature-styles").map(0).map("transform");
         assertThat(tx, yHasEntry("name", lexEqualTo("ras:Contour")));
         assertThat(tx, not(yHasEntry("input")));
-        assertThat(tx,
-                yHasEntry("params",
-                        allOf(not(yHasEntry("data")),
-                                yHasEntry("levels",
-                                        allOf(yHasItem(0, lexEqualTo(1000)),
+        assertThat(
+                tx,
+                yHasEntry(
+                        "params",
+                        allOf(
+                                not(yHasEntry("data")),
+                                yHasEntry(
+                                        "levels",
+                                        allOf(
+                                                yHasItem(0, lexEqualTo(1000)),
                                                 yHasItem(1, lexEqualTo(1100)),
-                                                yHasItem(2, lexEqualTo(1200))))
-
-                        )));
+                                                yHasItem(2, lexEqualTo(1200)))))));
     }
 
     @Test
@@ -172,9 +181,13 @@ public class YsldEncodeTest {
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("alternateInput"));
-        Function p2 = filterFactory.function("parameter", filterFactory.literal("levels"),
-                filterFactory.literal(1000), filterFactory.literal(1100),
-                filterFactory.literal(1200));
+        Function p2 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("levels"),
+                        filterFactory.literal(1000),
+                        filterFactory.literal(1100),
+                        filterFactory.literal(1200));
 
         Function rt = filterFactory.function("ras:Contour", p1, p2);
         featureStyle.setTransformation(rt);
@@ -186,15 +199,19 @@ public class YsldEncodeTest {
         YamlMap tx = obj.seq("feature-styles").map(0).map("transform");
         assertThat(tx, yHasEntry("name", lexEqualTo("ras:Contour")));
         assertThat(tx, yHasEntry("input", lexEqualTo("alternateInput")));
-        assertThat(tx,
-                yHasEntry("params",
-                        allOf(not(yHasEntry("data")), not(yHasEntry("alternateInput")),
-                                yHasEntry("levels",
-                                        allOf(yHasItem(0, lexEqualTo(1000)),
+        assertThat(
+                tx,
+                yHasEntry(
+                        "params",
+                        allOf(
+                                not(yHasEntry("data")),
+                                not(yHasEntry("alternateInput")),
+                                yHasEntry(
+                                        "levels",
+                                        allOf(
+                                                yHasItem(0, lexEqualTo(1000)),
                                                 yHasItem(1, lexEqualTo(1100)),
-                                                yHasItem(2, lexEqualTo(1200))))
-
-                        )));
+                                                yHasItem(2, lexEqualTo(1200)))))));
     }
 
     @Test
@@ -214,18 +231,34 @@ public class YsldEncodeTest {
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("data"));
-        Function p2 = filterFactory.function("parameter", filterFactory.literal("weightAttr"),
-                filterFactory.literal("pop2000"));
-        Function p3 = filterFactory.function("parameter", filterFactory.literal("radius"),
-                filterFactory.literal("100"));
-        Function p4 = filterFactory.function("parameter", filterFactory.literal("pixelsPerCell"),
-                filterFactory.literal(10));
-        Function p5 = filterFactory.function("parameter", filterFactory.literal("outputBBOX"),
-                filterFactory.function("env", filterFactory.literal("wms_bbox")));
-        Function p6 = filterFactory.function("parameter", filterFactory.literal("outputWidth"),
-                filterFactory.function("env", filterFactory.literal("wms_width")));
-        Function p7 = filterFactory.function("parameter", filterFactory.literal("outputHeight"),
-                filterFactory.function("env", filterFactory.literal("wms_height")));
+        Function p2 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("weightAttr"),
+                        filterFactory.literal("pop2000"));
+        Function p3 =
+                filterFactory.function(
+                        "parameter", filterFactory.literal("radius"), filterFactory.literal("100"));
+        Function p4 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("pixelsPerCell"),
+                        filterFactory.literal(10));
+        Function p5 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("outputBBOX"),
+                        filterFactory.function("env", filterFactory.literal("wms_bbox")));
+        Function p6 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("outputWidth"),
+                        filterFactory.function("env", filterFactory.literal("wms_width")));
+        Function p7 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("outputHeight"),
+                        filterFactory.function("env", filterFactory.literal("wms_height")));
 
         Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4, p5, p6, p7);
         featureStyle.setTransformation(rt);
@@ -271,18 +304,34 @@ public class YsldEncodeTest {
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("data"));
-        Function p2 = filterFactory.function("parameter", filterFactory.literal("weightAttr"),
-                filterFactory.literal("pop2000"));
-        Function p3 = filterFactory.function("parameter", filterFactory.literal("radius"),
-                filterFactory.literal("100"));
-        Function p4 = filterFactory.function("parameter", filterFactory.literal("pixelsPerCell"),
-                filterFactory.literal(10));
-        Function p5 = filterFactory.function("parameter", filterFactory.literal("outputBBOX"),
-                filterFactory.function("env", filterFactory.literal("something_else")));
-        Function p6 = filterFactory.function("parameter", filterFactory.literal("outputWidth"),
-                filterFactory.function("env", filterFactory.literal("wms_width")));
-        Function p7 = filterFactory.function("parameter", filterFactory.literal("outputHeight"),
-                filterFactory.function("env", filterFactory.literal("wms_height")));
+        Function p2 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("weightAttr"),
+                        filterFactory.literal("pop2000"));
+        Function p3 =
+                filterFactory.function(
+                        "parameter", filterFactory.literal("radius"), filterFactory.literal("100"));
+        Function p4 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("pixelsPerCell"),
+                        filterFactory.literal(10));
+        Function p5 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("outputBBOX"),
+                        filterFactory.function("env", filterFactory.literal("something_else")));
+        Function p6 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("outputWidth"),
+                        filterFactory.function("env", filterFactory.literal("wms_width")));
+        Function p7 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("outputHeight"),
+                        filterFactory.function("env", filterFactory.literal("wms_height")));
 
         Function rt = filterFactory.function("vec:Heatmap", p1, p2, p3, p4, p5, p6, p7);
         featureStyle.setTransformation(rt);
@@ -328,17 +377,32 @@ public class YsldEncodeTest {
         style.featureTypeStyles().add(featureStyle);
 
         Function p1 = filterFactory.function("parameter", filterFactory.literal("features"));
-        Function p2 = filterFactory.function("parameter", filterFactory.literal("distance"),
-                filterFactory.literal(10.0));
-        Function p3 = filterFactory.function("parameter", filterFactory.literal("preserveTopology"),
-                filterFactory.literal(true));
+        Function p2 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("distance"),
+                        filterFactory.literal(10.0));
+        Function p3 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("preserveTopology"),
+                        filterFactory.literal(true));
 
-        Function p5 = filterFactory.function("parameter", filterFactory.literal("outputBBOX"),
-                filterFactory.function("env", filterFactory.literal("wms_bbox")));
-        Function p6 = filterFactory.function("parameter", filterFactory.literal("outputWidth"),
-                filterFactory.function("env", filterFactory.literal("wms_width")));
-        Function p7 = filterFactory.function("parameter", filterFactory.literal("outputHeight"),
-                filterFactory.function("env", filterFactory.literal("wms_height")));
+        Function p5 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("outputBBOX"),
+                        filterFactory.function("env", filterFactory.literal("wms_bbox")));
+        Function p6 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("outputWidth"),
+                        filterFactory.function("env", filterFactory.literal("wms_width")));
+        Function p7 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("outputHeight"),
+                        filterFactory.function("env", filterFactory.literal("wms_height")));
 
         Function rt = filterFactory.function("vec:Simplify", p1, p2, p3, p5, p6, p7);
         featureStyle.setTransformation(rt);
@@ -385,14 +449,21 @@ public class YsldEncodeTest {
         style.featureTypeStyles().add(featureStyle);
 
         Function p1_1 = filterFactory.function("parameter", filterFactory.literal("data"));
-        Function p1_2 = filterFactory.function("parameter", filterFactory.literal("valueAttr"),
-                filterFactory.literal("foo"));
+        Function p1_2 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("valueAttr"),
+                        filterFactory.literal("foo"));
         Function rt1 = filterFactory.function("vec:BarnesSurface", p1_1, p1_2);
 
         Function p2_1 = filterFactory.function("parameter", filterFactory.literal("data"), rt1);
-        Function p2_2 = filterFactory.function("parameter", filterFactory.literal("levels"),
-                filterFactory.literal(1000), filterFactory.literal(1100),
-                filterFactory.literal(1200));
+        Function p2_2 =
+                filterFactory.function(
+                        "parameter",
+                        filterFactory.literal("levels"),
+                        filterFactory.literal(1000),
+                        filterFactory.literal(1100),
+                        filterFactory.literal(1200));
 
         Function rt2 = filterFactory.function("ras:Contour", p2_1, p2_2);
         featureStyle.setTransformation(rt2);
@@ -405,14 +476,35 @@ public class YsldEncodeTest {
 
         assertThat(tx, yHasEntry("name", lexEqualTo("ras:Contour")));
         assertThat(tx, not(yHasEntry("input")));
-        assertThat(tx, yHasEntry("params",
-                allOf(yHasEntry("data", allOf(yHasEntry("name", equalTo("vec:BarnesSurface")),
-                        yHasEntry("input", equalTo("data")), // Specify the input parameter
-                        yHasEntry("params",
-                                allOf(yHasEntry("valueAttr", equalTo("foo")), not(yHasEntry("data")) // Indicated by the input parameter above
-                                )))), yHasEntry("levels", allOf(yHasItem(0, lexEqualTo(1000)), yHasItem(1, lexEqualTo(1100)), yHasItem(2, lexEqualTo(1200))))
-
-                )));
+        assertThat(
+                tx,
+                yHasEntry(
+                        "params",
+                        allOf(
+                                yHasEntry(
+                                        "data",
+                                        allOf(
+                                                yHasEntry("name", equalTo("vec:BarnesSurface")),
+                                                yHasEntry(
+                                                        "input",
+                                                        equalTo("data")), // Specify the input
+                                                // parameter
+                                                yHasEntry(
+                                                        "params",
+                                                        allOf(
+                                                                yHasEntry(
+                                                                        "valueAttr",
+                                                                        equalTo("foo")),
+                                                                not(
+                                                                        yHasEntry(
+                                                                                "data")) // Indicated by the input parameter above
+                                                                )))),
+                                yHasEntry(
+                                        "levels",
+                                        allOf(
+                                                yHasItem(0, lexEqualTo(1000)),
+                                                yHasItem(1, lexEqualTo(1100)),
+                                                yHasItem(2, lexEqualTo(1200)))))));
     }
 
     @Test
@@ -435,8 +527,18 @@ public class YsldEncodeTest {
         Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
         List<GraphicalSymbol> symbols = new ArrayList<GraphicalSymbol>();
         symbols.add(mark);
-        TextSymbolizer2 text = (TextSymbolizer2) sf.textSymbolizer(null, ff.property("geom"), null,
-                null, ff.property("name"), null, null, null, null);
+        TextSymbolizer2 text =
+                (TextSymbolizer2)
+                        sf.textSymbolizer(
+                                null,
+                                ff.property("geom"),
+                                null,
+                                null,
+                                ff.property("name"),
+                                null,
+                                null,
+                                null,
+                                null);
         text.setGraphic(sf.graphic(symbols, null, null, null, null, null));
         rule.symbolizers().add(text);
 
@@ -445,10 +547,11 @@ public class YsldEncodeTest {
 
         YamlMap yaml = new YamlMap(new Yaml().load(out.toString()));
 
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/1/text"),
+        assertThat(
+                yaml.lookupY("feature-styles/0/rules/0/symbolizers/1/text"),
                 yHasEntry("label", equalTo("${name}")));
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/1/text"),
-                yHasEntry("graphic"));
+        assertThat(
+                yaml.lookupY("feature-styles/0/rules/0/symbolizers/1/text"), yHasEntry("graphic"));
         assertThat(
                 yaml.lookupY("feature-styles/0/rules/0/symbolizers/1/text/graphic/symbols/0/mark"),
                 yHasEntry("shape", equalTo("circle")));
@@ -470,11 +573,23 @@ public class YsldEncodeTest {
         Rule rule = sf.createRule();
         featureStyle.rules().add(rule);
 
-        LabelPlacement place = sf.createPointPlacement(
-                sf.createAnchorPoint(ff.literal(0.75), ff.literal(0.25)),
-                sf.createDisplacement(ff.literal(10), ff.literal(15)), ff.literal(90));
-        TextSymbolizer2 text = (TextSymbolizer2) sf.textSymbolizer(null, ff.property("geom"), null,
-                null, ff.property("name"), null, place, null, null);
+        LabelPlacement place =
+                sf.createPointPlacement(
+                        sf.createAnchorPoint(ff.literal(0.75), ff.literal(0.25)),
+                        sf.createDisplacement(ff.literal(10), ff.literal(15)),
+                        ff.literal(90));
+        TextSymbolizer2 text =
+                (TextSymbolizer2)
+                        sf.textSymbolizer(
+                                null,
+                                ff.property("geom"),
+                                null,
+                                null,
+                                ff.property("name"),
+                                null,
+                                place,
+                                null,
+                                null);
         rule.symbolizers().add(text);
 
         StringWriter out = new StringWriter();
@@ -482,13 +597,17 @@ public class YsldEncodeTest {
         System.out.println(out.toString());
         YamlMap yaml = new YamlMap(new Yaml().load(out.toString()));
 
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
+        assertThat(
+                yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
                 yHasEntry("placement", equalTo("point")));
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
+        assertThat(
+                yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
                 yHasEntry("displacement", yTuple(numEqualTo(10), numEqualTo(15))));
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
+        assertThat(
+                yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
                 yHasEntry("anchor", yTuple(numEqualTo(0.75, EPSILON), numEqualTo(0.25, EPSILON))));
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
+        assertThat(
+                yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
                 yHasEntry("rotation", equalTo(90)));
 
         assertThat(kvpLine(out.toString(), "displacement"), equalTo("[10, 15]"));
@@ -512,8 +631,18 @@ public class YsldEncodeTest {
 
         LabelPlacement place = sf.createLinePlacement(ff.literal(10));
 
-        TextSymbolizer2 text = (TextSymbolizer2) sf.textSymbolizer(null, ff.property("geom"), null,
-                null, ff.property("name"), null, place, null, null);
+        TextSymbolizer2 text =
+                (TextSymbolizer2)
+                        sf.textSymbolizer(
+                                null,
+                                ff.property("geom"),
+                                null,
+                                null,
+                                ff.property("name"),
+                                null,
+                                place,
+                                null,
+                                null);
         rule.symbolizers().add(text);
 
         StringWriter out = new StringWriter();
@@ -521,9 +650,11 @@ public class YsldEncodeTest {
 
         YamlMap yaml = new YamlMap(new Yaml().load(out.toString()));
 
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
+        assertThat(
+                yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
                 yHasEntry("placement", equalTo("line")));
-        assertThat(yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
+        assertThat(
+                yaml.lookupY("feature-styles/0/rules/0/symbolizers/0/text"),
                 yHasEntry("offset", equalTo(10)));
     }
 
@@ -537,8 +668,14 @@ public class YsldEncodeTest {
         Ysld.encode(sld, out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("raster");
+        YamlMap symbMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster");
 
         assertThat(symbMap, not(yHasEntry("color-map")));
     }
@@ -553,8 +690,14 @@ public class YsldEncodeTest {
         Ysld.encode(sld, out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("raster");
+        YamlMap symbMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster");
 
         assertFalse(symbMap.has("contrast-enhancement"));
     }
@@ -579,17 +722,36 @@ public class YsldEncodeTest {
         Ysld.encode(sld, out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("raster");
+        YamlMap symbMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster");
 
-        assertThat(symbMap,
-                yHasEntry("color-map",
-                        yHasEntry("entries", allOf(
-                                yHasItem(0,
-                                        yTuple(fakeString("#000011"), lexEqualTo(""),
-                                                numEqualTo(0.0, EPSILON), lexEqualTo(""))),
-                                yHasItem(1, yTuple(fakeString("#0000EE"), lexEqualTo(""),
-                                        numEqualTo(1.0, EPSILON), lexEqualTo("")))))));
+        assertThat(
+                symbMap,
+                yHasEntry(
+                        "color-map",
+                        yHasEntry(
+                                "entries",
+                                allOf(
+                                        yHasItem(
+                                                0,
+                                                yTuple(
+                                                        fakeString("#000011"),
+                                                        lexEqualTo(""),
+                                                        numEqualTo(0.0, EPSILON),
+                                                        lexEqualTo(""))),
+                                        yHasItem(
+                                                1,
+                                                yTuple(
+                                                        fakeString("#0000EE"),
+                                                        lexEqualTo(""),
+                                                        numEqualTo(1.0, EPSILON),
+                                                        lexEqualTo("")))))));
     }
 
     @Test
@@ -603,8 +765,9 @@ public class YsldEncodeTest {
         e1.setQuantity(filterFactory.literal(0.0d));
         ColorMapEntry e2 = styleFactory.createColorMapEntry();
         e2.setColor(filterFactory.literal("#0000EE"));
-        e2.setQuantity(filterFactory.function("pow", filterFactory.literal(1.2d),
-                filterFactory.literal(2.0d)));
+        e2.setQuantity(
+                filterFactory.function(
+                        "pow", filterFactory.literal(1.2d), filterFactory.literal(2.0d)));
         symb.getColorMap().addColorMapEntry(e1);
         symb.getColorMap().addColorMapEntry(e2);
         StyledLayerDescriptor sld = sld(symb);
@@ -613,17 +776,36 @@ public class YsldEncodeTest {
         Ysld.encode(sld, out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap symbMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("raster");
+        YamlMap symbMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster");
 
-        assertThat(symbMap,
-                yHasEntry("color-map",
-                        yHasEntry("entries", allOf(
-                                yHasItem(0,
-                                        yTuple(fakeString("#000011"), lexEqualTo(""),
-                                                numEqualTo(0.0, EPSILON), lexEqualTo(""))),
-                                yHasItem(1, yTuple(fakeString("#0000EE"), lexEqualTo(""),
-                                        equalTo("${pow(1.2,2.0)}"), lexEqualTo("")))))));
+        assertThat(
+                symbMap,
+                yHasEntry(
+                        "color-map",
+                        yHasEntry(
+                                "entries",
+                                allOf(
+                                        yHasItem(
+                                                0,
+                                                yTuple(
+                                                        fakeString("#000011"),
+                                                        lexEqualTo(""),
+                                                        numEqualTo(0.0, EPSILON),
+                                                        lexEqualTo(""))),
+                                        yHasItem(
+                                                1,
+                                                yTuple(
+                                                        fakeString("#0000EE"),
+                                                        lexEqualTo(""),
+                                                        equalTo("${pow(1.2,2.0)}"),
+                                                        lexEqualTo("")))))));
     }
 
     @Test
@@ -649,8 +831,18 @@ public class YsldEncodeTest {
         Ysld.encode(sld(p), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").seq("symbols").map(0).map("mark").str("shape");
+        String result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .seq("symbols")
+                        .map(0)
+                        .map("mark")
+                        .str("shape");
 
         assertThat(result, equalTo("test"));
     }
@@ -667,8 +859,18 @@ public class YsldEncodeTest {
         Ysld.encode(sld(p), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").seq("symbols").map(0).map("mark").str("shape");
+        String result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .seq("symbols")
+                        .map(0)
+                        .map("mark")
+                        .str("shape");
 
         assertThat(result, equalTo("${test}"));
     }
@@ -683,8 +885,15 @@ public class YsldEncodeTest {
         Ysld.encode(sld(p), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").str("geometry");
+        String result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .str("geometry");
 
         assertThat(result, equalTo("test"));
     }
@@ -699,8 +908,15 @@ public class YsldEncodeTest {
         Ysld.encode(sld(p), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").str("geometry");
+        String result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .str("geometry");
 
         assertThat(result, equalTo("${test}"));
     }
@@ -708,18 +924,28 @@ public class YsldEncodeTest {
     @Test
     public void testEmbededExpression() throws Exception {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
-        Expression expression = CommonFactoryFinder.getFilterFactory2().function("Concatenate",
-                CommonFactoryFinder.getFilterFactory2().literal("literal0"),
-                CommonFactoryFinder.getFilterFactory2().property("attribute1"),
-                CommonFactoryFinder.getFilterFactory2().literal("literal2"));
+        Expression expression =
+                CommonFactoryFinder.getFilterFactory2()
+                        .function(
+                                "Concatenate",
+                                CommonFactoryFinder.getFilterFactory2().literal("literal0"),
+                                CommonFactoryFinder.getFilterFactory2().property("attribute1"),
+                                CommonFactoryFinder.getFilterFactory2().literal("literal2"));
         p.setGeometry(expression);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld(p), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").str("geometry");
+        String result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .str("geometry");
 
         assertThat(result, equalTo("literal0${attribute1}literal2"));
     }
@@ -734,8 +960,15 @@ public class YsldEncodeTest {
         Ysld.encode(sld(p), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").str("geometry");
+        String result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .str("geometry");
 
         assertThat(result, equalTo("\\$\\}\\\\"));
     }
@@ -743,17 +976,27 @@ public class YsldEncodeTest {
     @Test
     public void testEmbededExpressionEscapeExpression() throws Exception {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
-        Expression expression = CommonFactoryFinder.getFilterFactory2().function("strEndsWith",
-                CommonFactoryFinder.getFilterFactory2().property("attribute1"),
-                CommonFactoryFinder.getFilterFactory2().literal("}"));
+        Expression expression =
+                CommonFactoryFinder.getFilterFactory2()
+                        .function(
+                                "strEndsWith",
+                                CommonFactoryFinder.getFilterFactory2().property("attribute1"),
+                                CommonFactoryFinder.getFilterFactory2().literal("}"));
         p.setGeometry(expression);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld(p), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        String result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").str("geometry");
+        String result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .str("geometry");
 
         assertThat(result, equalTo("${strEndsWith(attribute1,'\\}')}"));
     }
@@ -858,10 +1101,20 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         YamlSeq result = obj.seq("feature-styles").map(0).seq("rules");
 
-        assertThat(result, yHasItem(0, yHasEntry("scale",
-                yTuple(numEqualTo(5_000_000, 0.1), numEqualTo(10_000_000, 0.1)))));
-        assertThat(result, yHasItem(1, yHasEntry("scale",
-                yTuple(numEqualTo(2_000_000, 0.1), numEqualTo(5_000_000, 0.1)))));
+        assertThat(
+                result,
+                yHasItem(
+                        0,
+                        yHasEntry(
+                                "scale",
+                                yTuple(numEqualTo(5_000_000, 0.1), numEqualTo(10_000_000, 0.1)))));
+        assertThat(
+                result,
+                yHasItem(
+                        1,
+                        yHasEntry(
+                                "scale",
+                                yTuple(numEqualTo(2_000_000, 0.1), numEqualTo(5_000_000, 0.1)))));
     }
 
     @Test
@@ -897,26 +1150,39 @@ public class YsldEncodeTest {
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
         YamlSeq result = obj.seq("feature-styles").map(0).seq("rules");
 
-        assertThat(result, yHasItem(0,
-                yHasEntry("scale", yTuple(numEqualTo(5_000_000, 0.1), equalTo("max")))));
-        assertThat(result, yHasItem(1,
-                yHasEntry("scale", yTuple(equalTo("min"), numEqualTo(5_000_000, 0.1)))));
+        assertThat(
+                result,
+                yHasItem(
+                        0, yHasEntry("scale", yTuple(numEqualTo(5_000_000, 0.1), equalTo("max")))));
+        assertThat(
+                result,
+                yHasItem(
+                        1, yHasEntry("scale", yTuple(equalTo("min"), numEqualTo(5_000_000, 0.1)))));
     }
 
     @Test
     public void testGrayBandSelection() throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory();
         RasterSymbolizer r = factory.createRasterSymbolizer();
-        ChannelSelection sel = factory.channelSelection(
-                factory.createSelectedChannelType("foo", factory.createContrastEnhancement()));
+        ChannelSelection sel =
+                factory.channelSelection(
+                        factory.createSelectedChannelType(
+                                "foo", factory.createContrastEnhancement()));
         r.setChannelSelection(sel);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld(r), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("raster").map("channels");
+        YamlMap channelMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster")
+                        .map("channels");
 
         assertThat(channelMap, yHasEntry("gray"));
         assertThat(channelMap, not(yHasEntry("red")));
@@ -925,25 +1191,35 @@ public class YsldEncodeTest {
 
         assertThat(channelMap.map("gray"), yHasEntry("name", equalTo("foo")));
         assertThat(channelMap.map("gray"), not(yHasEntry("contrast-enhancement")));
-
     }
 
     @Test
     public void testRGBBandSelection() throws Exception {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory();
         RasterSymbolizer r = factory.createRasterSymbolizer();
-        ChannelSelection sel = factory.channelSelection(
-                factory.createSelectedChannelType("foo", factory.createContrastEnhancement()),
-                factory.createSelectedChannelType("bar", factory.createContrastEnhancement()),
-                factory.createSelectedChannelType("baz", factory.createContrastEnhancement()));
+        ChannelSelection sel =
+                factory.channelSelection(
+                        factory.createSelectedChannelType(
+                                "foo", factory.createContrastEnhancement()),
+                        factory.createSelectedChannelType(
+                                "bar", factory.createContrastEnhancement()),
+                        factory.createSelectedChannelType(
+                                "baz", factory.createContrastEnhancement()));
         r.setChannelSelection(sel);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld(r), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("raster").map("channels");
+        YamlMap channelMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster")
+                        .map("channels");
 
         assertThat(channelMap, not(yHasEntry("gray")));
         assertThat(channelMap, yHasEntry("red"));
@@ -968,7 +1244,6 @@ public class YsldEncodeTest {
         assertFalse(channelMap.map("green").has("contrast-enhancement"));
         assertThat(channelMap.map("blue").str("name"), equalTo("baz"));
         assertFalse(channelMap.map("blue").has("contrast-enhancement"));
-
     }
 
     @Test
@@ -977,7 +1252,7 @@ public class YsldEncodeTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         LineSymbolizer l = sf.createLineSymbolizer();
         Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
-        Graphic g = sf.createGraphic(null, new Mark[] { mark }, null, null, null, null);
+        Graphic g = sf.createGraphic(null, new Mark[] {mark}, null, null, null, null);
         Stroke s = sf.createStroke(null, null);
         s.setGraphicStroke(g);
         l.setStroke(s);
@@ -986,16 +1261,30 @@ public class YsldEncodeTest {
         Ysld.encode(sld(l), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap lineMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("line");
+        YamlMap lineMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("line");
 
-        assertThat(lineMap,
-                yHasEntry("stroke-graphic",
-                        yHasEntry("symbols",
-                                yHasItem(0,
-                                        yHasEntry("mark", allOf(
-                                                yHasEntry("shape", equalTo("circle")), yHasEntry(
-                                                        "fill-color", equalTo("#995555"))))))));
+        assertThat(
+                lineMap,
+                yHasEntry(
+                        "stroke-graphic",
+                        yHasEntry(
+                                "symbols",
+                                yHasItem(
+                                        0,
+                                        yHasEntry(
+                                                "mark",
+                                                allOf(
+                                                        yHasEntry("shape", equalTo("circle")),
+                                                        yHasEntry(
+                                                                "fill-color",
+                                                                equalTo("#995555"))))))));
     }
 
     @Test
@@ -1004,7 +1293,7 @@ public class YsldEncodeTest {
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         LineSymbolizer l = sf.createLineSymbolizer();
         Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
-        Graphic g = sf.createGraphic(null, new Mark[] { mark }, null, null, null, null);
+        Graphic g = sf.createGraphic(null, new Mark[] {mark}, null, null, null, null);
         Stroke s = sf.createStroke(null, ff.literal(10));
         s.setGraphicFill(g);
         l.setStroke(s);
@@ -1013,16 +1302,30 @@ public class YsldEncodeTest {
         Ysld.encode(sld(l), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap lineMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("line");
+        YamlMap lineMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("line");
 
-        assertThat(lineMap,
-                yHasEntry("stroke-graphic-fill",
-                        yHasEntry("symbols",
-                                yHasItem(0,
-                                        yHasEntry("mark", allOf(
-                                                yHasEntry("shape", equalTo("circle")), yHasEntry(
-                                                        "fill-color", equalTo("#995555"))))))));
+        assertThat(
+                lineMap,
+                yHasEntry(
+                        "stroke-graphic-fill",
+                        yHasEntry(
+                                "symbols",
+                                yHasItem(
+                                        0,
+                                        yHasEntry(
+                                                "mark",
+                                                allOf(
+                                                        yHasEntry("shape", equalTo("circle")),
+                                                        yHasEntry(
+                                                                "fill-color",
+                                                                equalTo("#995555"))))))));
     }
 
     @Test
@@ -1030,16 +1333,27 @@ public class YsldEncodeTest {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
         RasterSymbolizer r = styleFactory.createRasterSymbolizer();
-        ChannelSelection sel = styleFactory.channelSelection(styleFactory.createSelectedChannelType(
-                "foo", styleFactory.createContrastEnhancement(filterFactory.literal(1.2))));
+        ChannelSelection sel =
+                styleFactory.channelSelection(
+                        styleFactory.createSelectedChannelType(
+                                "foo",
+                                styleFactory.createContrastEnhancement(
+                                        filterFactory.literal(1.2))));
         r.setChannelSelection(sel);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld(r), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("raster").map("channels");
+        YamlMap channelMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster")
+                        .map("channels");
 
         assertThat(channelMap, yHasEntry("gray"));
         assertThat(channelMap, not(yHasEntry("red")));
@@ -1047,7 +1361,8 @@ public class YsldEncodeTest {
         assertThat(channelMap, not(yHasEntry("blue")));
 
         assertThat(channelMap.map("gray"), yHasEntry("name", equalTo("foo")));
-        assertThat(channelMap.map("gray"),
+        assertThat(
+                channelMap.map("gray"),
                 yHasEntry("contrast-enhancement", yHasEntry("gamma", equalTo(1.2d))));
     }
 
@@ -1056,23 +1371,33 @@ public class YsldEncodeTest {
         StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
         RasterSymbolizer r = styleFactory.createRasterSymbolizer();
-        ChannelSelection sel = styleFactory.channelSelection(
-                styleFactory.createSelectedChannelType("foo",
-                        styleFactory.createContrastEnhancement()),
-                styleFactory.createSelectedChannelType("bar",
-                        styleFactory.createContrastEnhancement(filterFactory.literal(1.2))),
-                styleFactory.createSelectedChannelType("baz",
-                        styleFactory.createContrastEnhancement()));
-        ((org.geotools.styling.ContrastEnhancement) sel.getRGBChannels()[2]
-                .getContrastEnhancement()).setMethod(ContrastMethod.HISTOGRAM);
+        ChannelSelection sel =
+                styleFactory.channelSelection(
+                        styleFactory.createSelectedChannelType(
+                                "foo", styleFactory.createContrastEnhancement()),
+                        styleFactory.createSelectedChannelType(
+                                "bar",
+                                styleFactory.createContrastEnhancement(filterFactory.literal(1.2))),
+                        styleFactory.createSelectedChannelType(
+                                "baz", styleFactory.createContrastEnhancement()));
+        ((org.geotools.styling.ContrastEnhancement)
+                        sel.getRGBChannels()[2].getContrastEnhancement())
+                .setMethod(ContrastMethod.HISTOGRAM);
         r.setChannelSelection(sel);
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld(r), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap channelMap = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("raster").map("channels");
+        YamlMap channelMap =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("raster")
+                        .map("channels");
 
         assertThat(channelMap, not(yHasEntry("gray")));
         assertThat(channelMap, yHasEntry("red"));
@@ -1082,10 +1407,12 @@ public class YsldEncodeTest {
         assertThat(channelMap.map("red"), yHasEntry("name", equalTo("foo")));
         assertThat(channelMap.map("red"), not(yHasEntry("contrast-enhancement")));
         assertThat(channelMap.map("green"), yHasEntry("name", equalTo("bar")));
-        assertThat(channelMap.map("green"),
+        assertThat(
+                channelMap.map("green"),
                 yHasEntry("contrast-enhancement", yHasEntry("gamma", equalTo(1.2d))));
         assertThat(channelMap.map("blue"), yHasEntry("name", equalTo("baz")));
-        assertThat(channelMap.map("blue"),
+        assertThat(
+                channelMap.map("blue"),
                 yHasEntry("contrast-enhancement", yHasEntry("mode", equalTo("histogram"))));
     }
 
@@ -1131,8 +1458,14 @@ public class YsldEncodeTest {
         Ysld.encode(sld(symb), out);
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap text = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("text");
+        YamlMap text =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("text");
         assertEquals("${foo}", text.str("priority"));
     }
 
@@ -1152,11 +1485,14 @@ public class YsldEncodeTest {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
 
         Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
-        m1.setFill(CommonFactoryFinder.getStyleFactory()
-                .createFill(CommonFactoryFinder.getFilterFactory2().literal("#112233")));
-        m1.setStroke(CommonFactoryFinder.getStyleFactory().createStroke(
-                CommonFactoryFinder.getFilterFactory2().literal("#005566"),
-                CommonFactoryFinder.getFilterFactory2().literal(3)));
+        m1.setFill(
+                CommonFactoryFinder.getStyleFactory()
+                        .createFill(CommonFactoryFinder.getFilterFactory2().literal("#112233")));
+        m1.setStroke(
+                CommonFactoryFinder.getStyleFactory()
+                        .createStroke(
+                                CommonFactoryFinder.getFilterFactory2().literal("#005566"),
+                                CommonFactoryFinder.getFilterFactory2().literal(3)));
         p.getGraphic().graphicalSymbols().add(m1);
 
         StringWriter out = new StringWriter();
@@ -1165,8 +1501,17 @@ public class YsldEncodeTest {
         System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").seq("symbols").map(0).map("mark");
+        YamlMap result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .seq("symbols")
+                        .map(0)
+                        .map("mark");
 
         assertThat(result, yHasEntry("fill-color", isColor("112233")));
         assertThat(result, yHasEntry("stroke-color", isColor("005566")));
@@ -1180,9 +1525,12 @@ public class YsldEncodeTest {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
 
         Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
-        m1.setFill(CommonFactoryFinder.getStyleFactory().createFill(
-                CommonFactoryFinder.getFilterFactory2().literal("#112233"),
-                CommonFactoryFinder.getFilterFactory2().literal(Double.MIN_NORMAL)));
+        m1.setFill(
+                CommonFactoryFinder.getStyleFactory()
+                        .createFill(
+                                CommonFactoryFinder.getFilterFactory2().literal("#112233"),
+                                CommonFactoryFinder.getFilterFactory2()
+                                        .literal(Double.MIN_NORMAL)));
         p.getGraphic().graphicalSymbols().add(m1);
 
         StringWriter out = new StringWriter();
@@ -1191,10 +1539,20 @@ public class YsldEncodeTest {
         System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").seq("symbols").map(0).map("mark");
+        YamlMap result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .seq("symbols")
+                        .map(0)
+                        .map("mark");
 
-        assertThat(kvpLine(out.toString(), "fill-opacity"),
+        assertThat(
+                kvpLine(out.toString(), "fill-opacity"),
                 equalTo(Double.toString(Double.MIN_NORMAL).toUpperCase()));
     }
 
@@ -1203,9 +1561,12 @@ public class YsldEncodeTest {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
 
         Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
-        m1.setFill(CommonFactoryFinder.getStyleFactory().createFill(
-                CommonFactoryFinder.getFilterFactory2().literal("#abcdef"),
-                CommonFactoryFinder.getFilterFactory2().literal(Double.MIN_NORMAL)));
+        m1.setFill(
+                CommonFactoryFinder.getStyleFactory()
+                        .createFill(
+                                CommonFactoryFinder.getFilterFactory2().literal("#abcdef"),
+                                CommonFactoryFinder.getFilterFactory2()
+                                        .literal(Double.MIN_NORMAL)));
         p.getGraphic().graphicalSymbols().add(m1);
 
         StringWriter out = new StringWriter();
@@ -1214,8 +1575,17 @@ public class YsldEncodeTest {
         System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point").seq("symbols").map(0).map("mark");
+        YamlMap result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point")
+                        .seq("symbols")
+                        .map(0)
+                        .map("mark");
 
         assertThat(kvpLine(out.toString(), "fill-color"), equalTo("'#ABCDEF'"));
     }
@@ -1249,8 +1619,14 @@ public class YsldEncodeTest {
         System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point");
+        YamlMap result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point");
 
         assertThat(result.str("x-foo"), equalTo("bar"));
     }
@@ -1267,8 +1643,14 @@ public class YsldEncodeTest {
         System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point");
+        YamlMap result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point");
 
         assertThat(result.str("uom"), equalTo("metre"));
     }
@@ -1285,8 +1667,14 @@ public class YsldEncodeTest {
         System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point");
+        YamlMap result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point");
 
         assertThat(result.str("uom"), equalTo("foot"));
     }
@@ -1303,8 +1691,14 @@ public class YsldEncodeTest {
         System.out.append(out.toString());
 
         YamlMap obj = new YamlMap(new Yaml().load(out.toString()));
-        YamlMap result = obj.seq("feature-styles").map(0).seq("rules").map(0).seq("symbolizers")
-                .map(0).map("point");
+        YamlMap result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .seq("symbolizers")
+                        .map(0)
+                        .map("point");
 
         assertThat(result.str("uom"), equalTo("pixel"));
     }
@@ -1313,11 +1707,51 @@ public class YsldEncodeTest {
     public void testSymbolizerUoMOther() throws Exception {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         FeatureTypeStyle fts = fts(p);
-        p.setUnitOfMeasure(NonSI.LIGHT_YEAR);
+        p.setUnitOfMeasure(USCustomary.LIGHT_YEAR);
 
         StringWriter out = new StringWriter();
 
         exception.expect(IllegalArgumentException.class);
         Ysld.encode(sld(fts), out);
+    }
+
+    @Test
+    public void testEncodeColorMapEntry() throws IOException {
+        StyledLayerDescriptor style =
+                new YsldParser(
+                                new ByteArrayInputStream(
+                                        ("name:  Test\n"
+                                                        + "title: Test Style title\n"
+                                                        + "abstract: Styling of Test layer\n"
+                                                        + "feature-styles:\n"
+                                                        + "- rules:\n"
+                                                        + "  - title: raster\n"
+                                                        + "    symbolizers:\n"
+                                                        + "      - raster:\n"
+                                                        + "          opacity: 1.0\n"
+                                                        + "          color-map:\n"
+                                                        + "            type: values\n"
+                                                        + "            entries:\n"
+                                                        + "            - ['#e20374', 1.0, 1, Lorem Ipsum (magenta = covered)]")
+                                                .getBytes()))
+                        .parse();
+
+        RasterSymbolizer symbolizer =
+                (RasterSymbolizer)
+                        ((NamedLayer) style.getStyledLayers()[0])
+                                .styles()
+                                .get(0)
+                                .featureTypeStyles()
+                                .get(0)
+                                .rules()
+                                .get(0)
+                                .symbolizers()
+                                .get(0);
+
+        ColorMap colorMap = symbolizer.getColorMap();
+        RasterSymbolizerEncoder.ColorMapEntryIterator iterator =
+                new RasterSymbolizerEncoder(symbolizer).new ColorMapEntryIterator(colorMap);
+        Tuple map = iterator.next();
+        assertEquals("('#E20374',1.0,1,Lorem Ipsum (magenta = covered))", map.toString());
     }
 }

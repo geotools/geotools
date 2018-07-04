@@ -17,19 +17,17 @@
 package org.geotools.wfs.v1_0;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:LockFeatureResponseType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="LockFeatureResponseType"&gt;
  *      &lt;xsd:annotation&gt;
@@ -84,12 +82,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class WFS_LockFeatureResponseTypeBinding extends AbstractComplexEMFBinding {
@@ -97,14 +91,13 @@ public class WFS_LockFeatureResponseTypeBinding extends AbstractComplexEMFBindin
         super(factory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.WFS_LockFeatureResponseType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -115,14 +108,14 @@ public class WFS_LockFeatureResponseTypeBinding extends AbstractComplexEMFBindin
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //TODO: implement and remove call to super
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // TODO: implement and remove call to super
         return super.parse(instance, node, value);
     }
 }

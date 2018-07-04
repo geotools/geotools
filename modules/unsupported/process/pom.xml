@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>unsupported</artifactId>
-        <version>17-SNAPSHOT</version>
+        <version>20-SNAPSHOT</version>
     </parent>
 
 
@@ -76,6 +76,17 @@
   <!-- =========================================================== -->
     <dependencies>
         <dependency>
+          <groupId>org.jaitools</groupId>
+          <artifactId>jt-utils</artifactId>
+          <version>${jt.version}</version>
+          <exclusions>
+            <exclusion>
+               <groupId>org.locationtech.jts</groupId>
+               <artifactId>jts</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-api</artifactId>
             <version>${project.version}</version>
@@ -87,13 +98,9 @@
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
-            <artifactId>gt-coverage</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
             <artifactId>gt-shapefile</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>

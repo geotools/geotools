@@ -16,14 +16,12 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
- * This interface is really just a trick for schema building, there
- * are no concrete implementors for it
- * @author Andrea Aime - GeoSolutions
+ * This interface is really just a trick for schema building, there are no concrete implementors for
+ * it
  *
+ * @author Andrea Aime - GeoSolutions
  */
-public interface MultiCurvedGeometry<T extends Geometry> extends CurvedGeometry<T> {
-
-}
+public interface MultiCurvedGeometry<T extends Geometry> extends CurvedGeometry<T> {}

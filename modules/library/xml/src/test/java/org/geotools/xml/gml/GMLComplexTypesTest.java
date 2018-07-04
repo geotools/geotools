@@ -17,17 +17,15 @@
 
 package org.geotools.xml.gml;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.any;
 
 import java.net.URI;
 import java.util.Map;
-
 import javax.naming.OperationNotSupportedException;
-
 import org.apache.commons.collections.map.HashedMap;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -38,25 +36,26 @@ import org.geotools.xml.schema.Element;
 import org.geotools.xml.xsi.XSISimpleTypes;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
 import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-
 public class GMLComplexTypesTest {
-    
+
     @Test
-    public void whenEncodePointInPlaceOfLineStringThenThrowOperationNotSupportedException() throws Exception {
+    public void whenEncodePointInPlaceOfLineStringThenThrowOperationNotSupportedException()
+            throws Exception {
         GMLComplexType instance = GMLComplexTypes.LineStringPropertyType.getInstance();
         Point value = mock(Point.class);
         PrintHandler printHandler = mock(PrintHandler.class);
         try {
             instance.encode(null, value, printHandler, null);
             Assert.fail();
-        } catch (OperationNotSupportedException e) {}
+        } catch (OperationNotSupportedException e) {
+        }
     }
 
     @Test
@@ -73,7 +72,7 @@ public class GMLComplexTypesTest {
             Assert.fail();
         }
     }
-    
+
     @Test
     public void whenEncodeLineStringWithElementThenEncodeWithGivenElement() throws Exception {
         GMLComplexType instance = GMLComplexTypes.LineStringPropertyType.getInstance();
@@ -93,18 +92,19 @@ public class GMLComplexTypesTest {
             Assert.fail();
         }
     }
-    
+
     /**
      * Test for encoding of null values. No exception must occur if features containing a null
      * geometry are encoded.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testEncodeFeatureWithNullAttributes() throws Exception {
         // given: Feature with null geometry
         GeometryBuilder geomBuilder = new GeometryBuilder();
-        MultiPolygon multiPolygon = geomBuilder.multiPolygon(geomBuilder.polygon(0, 0, 0, 1, 1, 1, 0, 0));
+        MultiPolygon multiPolygon =
+                geomBuilder.multiPolygon(geomBuilder.polygon(0, 0, 0, 1, 1, 1, 0, 0));
         GMLComplexType instance = GMLComplexTypes.AbstractFeatureType.getInstance();
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         typeBuilder.setName("person");
@@ -120,33 +120,33 @@ public class GMLComplexTypesTest {
         when(element.getType()).thenReturn(GMLComplexTypes.AbstractFeatureType.getInstance());
         when(element.findChildElement(eq("mpolygon"))).thenReturn(element_mpolygon);
         when(element.findChildElement(eq("name"))).thenReturn(element_name);
-        when(element_mpolygon.getType()).thenReturn(GMLComplexTypes.MultiPolygonPropertyType.getInstance());
+        when(element_mpolygon.getType())
+                .thenReturn(GMLComplexTypes.MultiPolygonPropertyType.getInstance());
         when(element_name.getType()).thenReturn(XSISimpleTypes.String.getInstance());
-        
+
         Map<?, ?> hints = new HashedMap();
         PrintHandler printHandler = mock(PrintHandler.class);
 
         // when: encode is called to serialize empty feature
         instance.encode(element, lFeature, printHandler, hints);
 
-        // then: 
+        // then:
         // - no exception must occur
-        // - start*() and end*() must be called once for feature itself and once for empty "name" attr
+        // - start*() and end*() must be called once for feature itself and once for empty "name"
+        // attr
         verify(printHandler, Mockito.times(2)).startElement(any(), any(), any());
         verify(printHandler, Mockito.times(2)).endElement(any(), any());
-        
+
         // when: encode is called to serialize feature with "mpolygon" and "name"
         lFeature.setAttribute("name", "Pink Panther");
         lFeature.setAttribute("mpolygon", multiPolygon);
         printHandler = mock(PrintHandler.class);
         instance.encode(element, lFeature, printHandler, hints);
-        
-        // then: 
+
+        // then:
         // - no exception must occur
         // - start*() and end*() must be called several times for feature, "name" and "mpolygon"
         verify(printHandler, Mockito.times(9)).startElement(any(), any(), any());
         verify(printHandler, Mockito.times(9)).endElement(any(), any());
-        
     }
-    
 }

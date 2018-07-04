@@ -16,7 +16,9 @@
  */
 package org.geotools.data.geojson;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -26,10 +28,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
@@ -43,28 +43,26 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.FactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
 /**
  * Informal test used to document expected functionality for workshop.
- * <p>
- * This test has a setup method used to copy locations.csv to a temporary file.
- * 
+ *
+ * <p>This test has a setup method used to copy locations.csv to a temporary file.
  */
 public class GeoJSONWriteTest {
     File tmp;
@@ -93,11 +91,10 @@ public class GeoJSONWriteTest {
 
         URL resource = TestData.getResource(GeoJSONWriteTest.class, "locations.json");
         url = resource;
-        if (url == null)
-            throw new RuntimeException("Input datafile not found");
+        if (url == null) throw new RuntimeException("Input datafile not found");
         System.out.println("copying " + resource.toExternalForm() + " to " + file);
         Files.copy(resource.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        url = DataUtilities.fileToURL(file);
+        url = URLs.fileToUrl(file);
     }
 
     private String checkFileContents(File modified) throws IOException {
@@ -159,28 +156,41 @@ public class GeoJSONWriteTest {
 
         // Tests after removal
         assertEquals("auto after featureStore1 removes fid1", 9, auto.getFeatures().size());
-        assertEquals("featureStore1 after featureStore1 removes fid1", 8,
+        assertEquals(
+                "featureStore1 after featureStore1 removes fid1",
+                8,
                 featureStore1.getFeatures().size());
-        assertEquals("featureStore2 after featureStore1 removes fid1", 9,
+        assertEquals(
+                "featureStore2 after featureStore1 removes fid1",
+                9,
                 featureStore2.getFeatures().size());
 
         // new feature to add!
         // 45.52, -122.681944, Portland, 800, 2014
         GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
         Point point = geometryFactory.createPoint(new Coordinate(-122.681944, 45.52));
-        SimpleFeature feature = SimpleFeatureBuilder.build(type,
-                new Object[] { 45.52, -122.681944, "Portland", 800, 2014, point }, "feature-10");
+        SimpleFeature feature =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {45.52, -122.681944, "Portland", 800, 2014, point},
+                        "feature-10");
         System.out.println(feature);
         SimpleFeatureCollection collection = DataUtilities.collection(feature);
 
         featureStore2.addFeatures(collection);
         // Tests after adding the feature
-        assertEquals("auto after featureStore1 removes Trento and featureStore2 adds Portland", 9,
+        assertEquals(
+                "auto after featureStore1 removes Trento and featureStore2 adds Portland",
+                9,
                 auto.getFeatures().size());
-        assertEquals("featureStore1 after featureStore1 removes fid1 and featureStore2 adds fid5",
-                8, featureStore1.getFeatures().size());
-        assertEquals("featureStore2 after featureStore1 removes fid1 and featureStore2 adds fid5",
-                10, featureStore2.getFeatures().size());
+        assertEquals(
+                "featureStore1 after featureStore1 removes fid1 and featureStore2 adds fid5",
+                8,
+                featureStore1.getFeatures().size());
+        assertEquals(
+                "featureStore2 after featureStore1 removes fid1 and featureStore2 adds fid5",
+                10,
+                featureStore2.getFeatures().size());
 
         // commit transaction one
         t1.commit();
@@ -189,25 +199,35 @@ public class GeoJSONWriteTest {
 
         assertEquals(
                 "auto after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
-                8, auto.getFeatures().size());
+                8,
+                auto.getFeatures().size());
 
-        assertEquals("featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)",
-                8, featureStore1.getFeatures().size());
+        assertEquals(
+                "featureStore1 after commiting removal of fid1 (featureStore2 has added fid5)",
+                8,
+                featureStore1.getFeatures().size());
         assertEquals(
                 "featureStore2 after featureStore1 commits removal of fid1 (featureStore2 has added fid5)",
-                9, featureStore2.getFeatures().size());
+                9,
+                featureStore2.getFeatures().size());
 
         // commit transaction two
         t2.commit();
 
         // Tests after 2nd commit
-        
-        assertEquals("auto after featureStore2 commits addition of fid5 (fid1 previously removed)", 9, auto.getFeatures().size());
-         
+
+        assertEquals(
+                "auto after featureStore2 commits addition of fid5 (fid1 previously removed)",
+                9,
+                auto.getFeatures().size());
+
         assertEquals(
                 "featureStore1 after featureStore2 commits addition of fid5 (fid1 previously removed)",
-                9, featureStore1.getFeatures().size());
-        assertEquals("featureStore2 after commiting addition of fid5 (fid1 previously removed)", 9,
+                9,
+                featureStore1.getFeatures().size());
+        assertEquals(
+                "featureStore2 after commiting addition of fid5 (fid1 previously removed)",
+                9,
                 featureStore2.getFeatures().size());
 
         t1.close();
@@ -223,8 +243,8 @@ public class GeoJSONWriteTest {
 
         Transaction t = new DefaultTransaction("locations");
         try {
-            FeatureWriter<SimpleFeatureType, SimpleFeature> writer = store
-                    .getFeatureWriter("locations", Filter.INCLUDE, t);
+            FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    store.getFeatureWriter("locations", Filter.INCLUDE, t);
 
             try {
                 while (writer.hasNext()) {
@@ -236,8 +256,8 @@ public class GeoJSONWriteTest {
             }
 
             // Test the contents have been removed
-            SimpleFeatureStore featureStore = (SimpleFeatureStore) store
-                    .getFeatureSource("locations");
+            SimpleFeatureStore featureStore =
+                    (SimpleFeatureStore) store.getFeatureSource("locations");
             assertEquals("featureStore should be empty", 0, featureStore.getFeatures().size());
             // Make sure the file is empty
             assertEquals("file should have no content", "", checkFileContents(file));
@@ -267,9 +287,11 @@ public class GeoJSONWriteTest {
         GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();
         Point portland = gf.createPoint(new Coordinate(45.52, -122.681944));
 
-        f = SimpleFeatureBuilder.build(type,
-                new Object[] { 45.52, -122.681944, "Portland", 800, 2014, portland },
-                "locations.1");
+        f =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {45.52, -122.681944, "Portland", 800, 2014, portland},
+                        "locations.1");
         collection.add(f);
 
         writer = store.getFeatureWriter("locations", Transaction.AUTO_COMMIT);
@@ -293,11 +315,16 @@ public class GeoJSONWriteTest {
 
         // Test everything was replaced by the one feature we added
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
-        assertEquals("featureStore should only have the one feature we created", 1,
+        assertEquals(
+                "featureStore should only have the one feature we created",
+                1,
                 featureStore.getFeatures().size());
         final String newline = System.lineSeparator();
-        String contents = "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.6819]},\"properties\":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},\"id\":\"locations.0\"}]}";
-        assertEquals("Ensure the file has only the one feature we created", contents.trim(),
+        String contents =
+                "{\"type\":\"FeatureCollection\",\"features\":[{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[45.52,-122.6819]},\"properties\":{\"LAT\":45.52,\"LON\":-122.681944,\"CITY\":\"Portland\",\"NUMBER\":800,\"YEAR\":2014},\"id\":\"locations.0\"}]}";
+        assertEquals(
+                "Ensure the file has only the one feature we created",
+                contents.trim(),
                 checkFileContents(file).trim());
     }
 
@@ -311,7 +338,7 @@ public class GeoJSONWriteTest {
 
         File file2 = new File(directory, "duplicate.json");
         Map<String, Serializable> params2 = new HashMap<String, Serializable>();
-        params2.put("url", DataUtilities.fileToURL(file2));
+        params2.put("url", URLs.fileToUrl(file2));
 
         GeoJSONDataStoreFactory factory = new GeoJSONDataStoreFactory();
         DataStore duplicate = factory.createNewDataStore(params2);
@@ -342,8 +369,8 @@ public class GeoJSONWriteTest {
         SimpleFeatureStore featureStore = (SimpleFeatureStore) store.getFeatureSource("locations");
         assertEquals(9, featureStore.getFeatures().size());
 
-        SimpleFeatureStore featureStored = (SimpleFeatureStore) duplicate
-                .getFeatureSource("duplicate");
+        SimpleFeatureStore featureStored =
+                (SimpleFeatureStore) duplicate.getFeatureSource("duplicate");
         assertEquals(9, featureStored.getFeatures().size());
 
         SimpleFeatureIterator original = featureStore.getFeatures().features();
@@ -362,19 +389,17 @@ public class GeoJSONWriteTest {
             original.close();
             dups.close();
         }
-
     }
 
-    public static void assertEqualsIgnoreWhitespace(String message, String expected,
-            String actual) {
+    public static void assertEqualsIgnoreWhitespace(
+            String message, String expected, String actual) {
         expected = removeWhitespace(expected);
         actual = removeWhitespace(actual);
         assertEquals(message, expected, actual);
     }
 
     private static String removeWhitespace(String actual) {
-        if (actual == null)
-            return "";
+        if (actual == null) return "";
         StringBuffer crush = new StringBuffer(actual);
         int ch = 0;
         while (ch < crush.length()) {

@@ -18,31 +18,27 @@
 package org.geotools.grid;
 
 import java.util.Map;
-
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
- * A basic implementation of {@code GridFeatureBuilder} which will create a
- * {@code SimpleFeatureType} having two properties:
+ * A basic implementation of {@code GridFeatureBuilder} which will create a {@code
+ * SimpleFeatureType} having two properties:
+ *
  * <ul>
- * <li>element - TYPE Polygon
- * <li>id - TYPE Integer
+ *   <li>element - TYPE Polygon
+ *   <li>id - TYPE Integer
  * </ul>
- * The attribute names can also be referred to using
- * {@linkplain GridFeatureBuilder#DEFAULT_GEOMETRY_ATTRIBUTE_NAME} and
- * {@linkplain #ID_ATTRIBUTE_NAME}
- * <p>
- * Grid elements will be assigned sequential id values starting with 1.
+ *
+ * The attribute names can also be referred to using {@linkplain
+ * GridFeatureBuilder#DEFAULT_GEOMETRY_ATTRIBUTE_NAME} and {@linkplain #ID_ATTRIBUTE_NAME}
+ *
+ * <p>Grid elements will be assigned sequential id values starting with 1.
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -53,17 +49,15 @@ public final class DefaultGridFeatureBuilder extends GridFeatureBuilder {
 
     /** Name used for the integer id attribute: "id" */
     public static final String ID_ATTRIBUTE_NAME = "id";
-    
+
     private int id;
 
     /**
      * Creates the feature TYPE
      *
-     * @param typeName name for the feature TYPE; if {@code null} or empty,
-     *        {@linkplain #DEFAULT_TYPE_NAME} will be used
-     *
+     * @param typeName name for the feature TYPE; if {@code null} or empty, {@linkplain
+     *     #DEFAULT_TYPE_NAME} will be used
      * @param crs coordinate reference system (may be {@code null})
-     *
      * @return the feature TYPE
      */
     protected static SimpleFeatureType createType(String typeName, CoordinateReferenceSystem crs) {
@@ -82,8 +76,8 @@ public final class DefaultGridFeatureBuilder extends GridFeatureBuilder {
     }
 
     /**
-     * Creates a new instance with a feature TYPE having the default name
-     * and a null coordinate reference system.
+     * Creates a new instance with a feature TYPE having the default name and a null coordinate
+     * reference system.
      *
      * @see #DEFAULT_TYPE_NAME
      */
@@ -94,19 +88,18 @@ public final class DefaultGridFeatureBuilder extends GridFeatureBuilder {
     /**
      * Creates a new instance with a null coordinate reference system.
      *
-     * @param typeName name for the feature TYPE; if {@code null} or empty,
-     *        {@linkplain #DEFAULT_TYPE_NAME} will be used
+     * @param typeName name for the feature TYPE; if {@code null} or empty, {@linkplain
+     *     #DEFAULT_TYPE_NAME} will be used
      */
     DefaultGridFeatureBuilder(String typeName) {
         this(typeName, null);
     }
 
     /**
-     * Creates a new instance with a feature TYPE having the default name
-     * and the supplied coordinate reference system.
+     * Creates a new instance with a feature TYPE having the default name and the supplied
+     * coordinate reference system.
      *
      * @param crs coordinate reference system (may be {@code null})
-     *
      * @see #DEFAULT_TYPE_NAME
      */
     public DefaultGridFeatureBuilder(CoordinateReferenceSystem crs) {
@@ -116,9 +109,8 @@ public final class DefaultGridFeatureBuilder extends GridFeatureBuilder {
     /**
      * Creates a new instance.
      *
-     * @param typeName name for the feature TYPE; if {@code null} or empty,
-     *        {@linkplain #DEFAULT_TYPE_NAME} will be used
-     *
+     * @param typeName name for the feature TYPE; if {@code null} or empty, {@linkplain
+     *     #DEFAULT_TYPE_NAME} will be used
      * @param crs coordinate reference system (may be {@code null})
      */
     public DefaultGridFeatureBuilder(String typeName, CoordinateReferenceSystem crs) {
@@ -127,17 +119,14 @@ public final class DefaultGridFeatureBuilder extends GridFeatureBuilder {
     }
 
     /**
-     * Overrides {@linkplain GridFeatureBuilder#setAttributes(GridElement, Map)}
-     * to assign a sequential integer id value to each grid element feature
-     * as it is constructed.
+     * Overrides {@linkplain GridFeatureBuilder#setAttributes(GridElement, Map)} to assign a
+     * sequential integer id value to each grid element feature as it is constructed.
      *
      * @param el the element from which the new feature is being constructed
-     *
      * @param attributes a {@code Map} with the single key "id"
      */
     @Override
     public void setAttributes(GridElement el, Map<String, Object> attributes) {
         attributes.put("id", ++id);
     }
-
 }

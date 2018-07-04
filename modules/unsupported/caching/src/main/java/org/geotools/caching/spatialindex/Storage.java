@@ -18,21 +18,16 @@ package org.geotools.caching.spatialindex;
 
 import java.util.Collection;
 import java.util.Properties;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.type.FeatureType;
 
 /**
  * Interface for cache storage options.
- * 
- *
- *
- *
  *
  * @source $URL$
  */
 public interface Storage {
-    
+
     public static final String STORAGE_TYPE_PROPERTY = "Storage.Type";
 
     /**
@@ -45,26 +40,24 @@ public interface Storage {
     /**
      * Removes a node from the store given a node identifier
      *
-     * @param id  identifier of the node to remove
+     * @param id identifier of the node to remove
      */
     public void remove(NodeIdentifier id);
 
     /**
      * Reads a node from the store given an node identifier
      *
-     * @param id  identifier of the node to read
+     * @param id identifier of the node to read
      * @return
      */
     public Node get(NodeIdentifier id);
 
-    /**
-     * Clears all information from the store.
-     */
+    /** Clears all information from the store. */
     public void clear();
 
     /**
-     * Get properties about the given storage.  The actual
-     * properties returned depend on the type of storage.
+     * Get properties about the given storage. The actual properties returned depend on the type of
+     * storage.
      *
      * @return
      */
@@ -72,23 +65,18 @@ public interface Storage {
 
     /**
      * Flushes the store writing everything to the store.
-     * <p>Currently this is really only used by the BufferedDiskStorage
-     * to write everything in the buffer to the store.
-     * </p>
+     *
+     * <p>Currently this is really only used by the BufferedDiskStorage to write everything in the
+     * buffer to the store.
      */
     public void flush();
-    
-    /**
-     * Disposes of the store.
-     */
+
+    /** Disposes of the store. */
     public void dispose();
-    
 
     public NodeIdentifier findUniqueInstance(NodeIdentifier id);
-        
-    /**
-     * @returns an unmodifiable collection of all the features types of the stored features
-     */
+
+    /** @returns an unmodifiable collection of all the features types of the stored features */
     public Collection<FeatureType> getFeatureTypes();
 
     /**
@@ -97,19 +85,17 @@ public interface Storage {
      * @param ft feature type to add
      */
     public void addFeatureType(FeatureType ft);
-    
-    /**
-     * Removes all feature types associated with the store.
-     */
+
+    /** Removes all feature types associated with the store. */
     public void clearFeatureTypes();
-    
+
     /**
      * Sets the bounds of the data in the cache.
      *
      * @param bounds
      */
     public void setBounds(ReferencedEnvelope bounds);
-    
+
     /**
      * Gets the bounds of the cached data.
      *

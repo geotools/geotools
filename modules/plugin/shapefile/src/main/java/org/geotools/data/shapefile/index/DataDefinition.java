@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- * 
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,10 +21,8 @@ import java.util.ArrayList;
 
 /**
  * Field definition
- * 
+ *
  * @author Tommaso Nolli
- *
- *
  * @source $URL$
  */
 public class DataDefinition {
@@ -37,8 +35,7 @@ public class DataDefinition {
     }
 
     public final boolean isValid() {
-        return (this.charset != null) && !this.charset.equals("")
-                && (this.fields.size() > 0);
+        return (this.charset != null) && !this.charset.equals("") && (this.fields.size() > 0);
     }
 
     public int getFieldsCount() {
@@ -51,21 +48,18 @@ public class DataDefinition {
 
     /**
      * Well known classes
-     * 
+     *
      * <ul>
-     * <li> Short </li>
-     * <li> Integer </li>
-     * <li> Long </li>
-     * <li> Float </li>
-     * <li> Double </li>
-     * <li> Date </li>
+     *   <li>Short
+     *   <li>Integer
+     *   <li>Long
+     *   <li>Float
+     *   <li>Double
+     *   <li>Date
      * </ul>
-     * 
-     * 
+     *
      * @param clazz
-     * 
-     * @throws TreeException
-     *                 DOCUMENT ME!
+     * @throws TreeException DOCUMENT ME!
      */
     public void addField(Class clazz) {
         if (clazz.isAssignableFrom(Short.class)) {
@@ -80,32 +74,27 @@ public class DataDefinition {
         } else if (clazz.isAssignableFrom(Double.class)) {
             this.fields.add(new Field(clazz, 8));
         } else {
-            throw new IllegalArgumentException("Unknow len of class " + clazz
-                    + "use addField(int)");
+            throw new IllegalArgumentException(
+                    "Unknow len of class " + clazz + "use addField(int)");
         }
     }
 
     /**
-     * For classes with unknown length; this values will be threated as
-     * <code>String</code>s and truncated at the specified len
-     * 
+     * For classes with unknown length; this values will be threated as <code>String</code>s and
+     * truncated at the specified len
+     *
      * @param len
      */
     public void addField(int len) {
         this.fields.add(new Field(String.class, len));
     }
 
-    /**
-     * Character set values are encoded in.
-     * 
-     */
+    /** Character set values are encoded in. */
     public Charset getCharset() {
         return charset;
     }
 
-    /**
-     * Gets the max len of the data
-     */
+    /** Gets the max len of the data */
     public int getLen() {
         int len = 0;
 
@@ -120,9 +109,8 @@ public class DataDefinition {
     }
 
     /**
-     * Gets the len of this field after the encoding, this method may be
-     * different from getLen() only if exists strings in the definition
-     * 
+     * Gets the len of this field after the encoding, this method may be different from getLen()
+     * only if exists strings in the definition
      */
     public int getEncodedLen() {
         int len = 0;
@@ -139,7 +127,7 @@ public class DataDefinition {
 
     /**
      * Inner class for Data fields
-     * 
+     *
      * @author Tommaso Nolli
      */
     public class Field {
@@ -151,26 +139,17 @@ public class DataDefinition {
             this.len = len;
         }
 
-        /**
-         * DOCUMENT ME!
-         * 
-         */
+        /** DOCUMENT ME! */
         public Class getFieldClass() {
             return clazz;
         }
 
-        /**
-         * DOCUMENT ME!
-         * 
-         */
+        /** DOCUMENT ME! */
         public int getLen() {
             return len;
         }
 
-        /**
-         * DOCUMENT ME!
-         * 
-         */
+        /** DOCUMENT ME! */
         public int getEncodedLen() {
             int ret = this.len;
 

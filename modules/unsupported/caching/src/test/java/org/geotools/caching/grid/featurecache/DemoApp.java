@@ -16,31 +16,23 @@
  */
 package org.geotools.caching.grid.featurecache;
 
+import org.locationtech.jts.geom.Envelope;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import org.geotools.caching.featurecache.FeatureCacheException;
 import org.geotools.caching.grid.spatialindex.store.MemoryStorage;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.feature.FeatureCollection;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DemoApp extends JFrame {
     MemoryDataStore ds;
     GridFeatureCache cache;
@@ -73,8 +65,12 @@ public class DemoApp extends JFrame {
 
     void initDataCache() {
         try {
-            cache = new GridFeatureCache(ds.getFeatureSource(ds.getTypeNames()[0]), 100, 100,
-                    MemoryStorage.createInstance());
+            cache =
+                    new GridFeatureCache(
+                            ds.getFeatureSource(ds.getTypeNames()[0]),
+                            100,
+                            100,
+                            MemoryStorage.createInstance());
         } catch (FeatureCacheException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -136,33 +132,35 @@ public class DemoApp extends JFrame {
     JButton getRunQueryButton() {
         if (runQueryButton == null) {
             runQueryButton = new JButton("New thread");
-            runQueryButton.addMouseListener(new MouseListener() {
-                    public void mouseClicked(MouseEvent ev) {
-                        Runnable task = new Runnable() {
-                                public void run() {
-                                    runQueries();
-                                }
-                            };
+            runQueryButton.addMouseListener(
+                    new MouseListener() {
+                        public void mouseClicked(MouseEvent ev) {
+                            Runnable task =
+                                    new Runnable() {
+                                        public void run() {
+                                            runQueries();
+                                        }
+                                    };
 
-                        new Thread(task, new Integer(++threads).toString()).start();
-                    }
+                            new Thread(task, new Integer(++threads).toString()).start();
+                        }
 
-                    public void mouseEntered(MouseEvent arg0) {
-                        // TODO Auto-generated method stub
-                    }
+                        public void mouseEntered(MouseEvent arg0) {
+                            // TODO Auto-generated method stub
+                        }
 
-                    public void mouseExited(MouseEvent arg0) {
-                        // TODO Auto-generated method stub
-                    }
+                        public void mouseExited(MouseEvent arg0) {
+                            // TODO Auto-generated method stub
+                        }
 
-                    public void mousePressed(MouseEvent arg0) {
-                        // TODO Auto-generated method stub
-                    }
+                        public void mousePressed(MouseEvent arg0) {
+                            // TODO Auto-generated method stub
+                        }
 
-                    public void mouseReleased(MouseEvent arg0) {
-                        // TODO Auto-generated method stub
-                    }
-                });
+                        public void mouseReleased(MouseEvent arg0) {
+                            // TODO Auto-generated method stub
+                        }
+                    });
         }
 
         return runQueryButton;
@@ -171,33 +169,34 @@ public class DemoApp extends JFrame {
     JButton getPauseButton() {
         if (pauseButton == null) {
             pauseButton = new JButton("Start");
-            pauseButton.addMouseListener(new MouseListener() {
-                    public void mouseClicked(MouseEvent e) {
-                        if (task_wait) {
-                            pauseButton.setText("Pause");
-                        } else {
-                            pauseButton.setText("Resume");
+            pauseButton.addMouseListener(
+                    new MouseListener() {
+                        public void mouseClicked(MouseEvent e) {
+                            if (task_wait) {
+                                pauseButton.setText("Pause");
+                            } else {
+                                pauseButton.setText("Resume");
+                            }
+
+                            task_wait = !task_wait;
                         }
 
-                        task_wait = !task_wait;
-                    }
+                        public void mouseEntered(MouseEvent arg0) {
+                            // TODO Auto-generated method stub
+                        }
 
-                    public void mouseEntered(MouseEvent arg0) {
-                        // TODO Auto-generated method stub
-                    }
+                        public void mouseExited(MouseEvent arg0) {
+                            // TODO Auto-generated method stub
+                        }
 
-                    public void mouseExited(MouseEvent arg0) {
-                        // TODO Auto-generated method stub
-                    }
+                        public void mousePressed(MouseEvent arg0) {
+                            // TODO Auto-generated method stub
+                        }
 
-                    public void mousePressed(MouseEvent arg0) {
-                        // TODO Auto-generated method stub
-                    }
-
-                    public void mouseReleased(MouseEvent arg0) {
-                        // TODO Auto-generated method stub
-                    }
-                });
+                        public void mouseReleased(MouseEvent arg0) {
+                            // TODO Auto-generated method stub
+                        }
+                    });
         }
 
         return pauseButton;
@@ -234,14 +233,15 @@ public class DemoApp extends JFrame {
                         }
                     }
 
-                    //System.out.print("i = " + i + ", j = " + j);
+                    // System.out.print("i = " + i + ", j = " + j);
                     Envelope query = new Envelope(i * .1, (i + 1) * .1, j * .1, (j + 1) * .1);
                     display.setResult(cache.get(query));
-                    lblNumData.setText(new Long(cache.tracker.getStatistics().getNumberOfData())
-                        .toString());
-                    lblNumReads.setText(new Long(cache.tracker.getStatistics().getReads()).toString());
-                    lblNumWrites.setText(new Long(cache.tracker.getStatistics().getWrites())
-                        .toString());
+                    lblNumData.setText(
+                            new Long(cache.tracker.getStatistics().getNumberOfData()).toString());
+                    lblNumReads.setText(
+                            new Long(cache.tracker.getStatistics().getReads()).toString());
+                    lblNumWrites.setText(
+                            new Long(cache.tracker.getStatistics().getWrites()).toString());
                     lblNumEvictions.setText(new Integer(cache.tracker.getEvictions()).toString());
                     panel.setCurrentQuery(Thread.currentThread().getName(), query);
                     panel.repaint();
@@ -280,7 +280,7 @@ public class DemoApp extends JFrame {
                 seed = Long.parseLong(args[0]);
             } catch (Exception e) {
                 throw new IllegalArgumentException(
-                    "Error : seed argument must be numeric ; input was : " + args[0]);
+                        "Error : seed argument must be numeric ; input was : " + args[0]);
             }
         }
 

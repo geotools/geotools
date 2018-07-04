@@ -19,13 +19,11 @@ package org.geotools.styling.css;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import org.geotools.styling.css.selector.Accept;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.geotools.styling.css.selector.Selector;
 import org.geotools.styling.css.util.FilteredPowerSetBuilder;
@@ -36,20 +34,19 @@ import org.geotools.util.logging.Logging;
 /**
  * Gives a list of Rules, it builds their power set, making it so that any set of rules extracted as
  * at least a chance to match a feature (e.g., the rule selectors are not contractiding each other)
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
 
     static final Logger LOGGER = Logging.getLogger(RulePowerSetBuilder.class);
-    
+
     RulesCombiner combiner;
 
     int maxCombinations = -1;
 
     int count = 0;
-    
+
     UnboundSimplifyingFilterVisitor simplifier;
 
     /**
@@ -74,28 +71,26 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         Collections.sort(main, CssRuleComparator.ASCENDING);
         Collections.sort(mixins, CssRuleComparator.ASCENDING);
 
-        return new List[] { main, mixins };
+        return new List[] {main, mixins};
     }
-
 
     public RulePowerSetBuilder(List<CssRule> domain, UnboundSimplifyingFilterVisitor simplifier) {
         this(classifyRules(domain), simplifier, -1);
     }
 
-    RulePowerSetBuilder(List<CssRule> domain, UnboundSimplifyingFilterVisitor simplifier,
-            int maxCombinations) {
+    RulePowerSetBuilder(
+            List<CssRule> domain, UnboundSimplifyingFilterVisitor simplifier, int maxCombinations) {
         this(classifyRules(domain), simplifier, maxCombinations);
     }
 
-    protected RulePowerSetBuilder(List[] domainMixins, UnboundSimplifyingFilterVisitor simplifier,
-            int maxCombinations) {
+    protected RulePowerSetBuilder(
+            List[] domainMixins, UnboundSimplifyingFilterVisitor simplifier, int maxCombinations) {
         super(domainMixins[0]);
         this.mixins = domainMixins[1];
         this.maxCombinations = maxCombinations;
         this.simplifier = simplifier;
         this.combiner = new RulesCombiner(simplifier);
     }
-
 
     @Override
     protected List<CssRule> buildResult(List<CssRule> rules) {
@@ -132,8 +127,8 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
                 // let's see if all mixins are applying without conditinos
                 for (; idx < applicableMixins.size(); idx++) {
                     CssRule mixin = applicableMixins.get(idx);
-                    Selector mixedSelector = Selector.and(mixin.selector, combined.selector,
-                            simplifier);
+                    Selector mixedSelector =
+                            Selector.and(mixin.selector, combined.selector, simplifier);
                     if (mixedSelector == Selector.REJECT) {
                         // this mixin is no good
                         continue;
@@ -152,8 +147,11 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
                     List<CssRule> list = new ArrayList<>();
                     list.add(combined);
                     list.addAll(applicableMixins.subList(idx, applicableMixins.size()));
-                    RulePowerSetBuilder builder = new RulePowerSetBuilder(new List[] { list,
-                            Collections.emptyList() }, simplifier, maxCombinations - count);
+                    RulePowerSetBuilder builder =
+                            new RulePowerSetBuilder(
+                                    new List[] {list, Collections.emptyList()},
+                                    simplifier,
+                                    maxCombinations - count);
                     List<CssRule> conditionalPowerSet = builder.buildPowerSet();
                     results.addAll(conditionalPowerSet);
                 } else {
@@ -168,8 +166,9 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         // make sure we're not going beyond the max generated rules
         count += results.size();
         if (maxCombinations > 0 && count > maxCombinations) {
-            LOGGER.severe("Bailing out, the CSS rule combinations have already generated more than "
-                    + "maxCombinations SLD rules, giving up. Please simplify your CSS style");
+            LOGGER.severe(
+                    "Bailing out, the CSS rule combinations have already generated more than "
+                            + "maxCombinations SLD rules, giving up. Please simplify your CSS style");
         } else if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("New rule (" + count + "):" + combined);
         }
@@ -177,14 +176,12 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         return results;
     }
 
-   
-
     /**
      * Returns all the mixins that can be combined with the rule at hand, that is, mixins that have
      * their pseudo-classes matched by the main rule symbolizers. Two lists will be returned, an
      * in-conditional one, where the mixins just blend into the main rule, and a conditional one,
      * where the mixin adds its own conditions, and thus require its own power set expansion
-     * 
+     *
      * @param rule
      * @return
      */
@@ -210,18 +207,18 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
 
         return result;
     }
-    
+
     /**
      * Filter applicable mixin rules. Defaults to accepting all rules.
+     *
      * @param rule
      * @param mixinRule
-     * @return 
+     * @return
      */
     protected boolean acceptMixinCssRule(CssRule rule, CssRule mixinRule) {
         return true;
     }
 
-    
     @Override
     protected boolean accept(List<CssRule> rules) {
         if (count > maxCombinations) {
@@ -230,8 +227,6 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         Selector combined = combiner.combineSelectors(rules);
         return combined != Selector.REJECT;
     }
-
-    
 
     @Override
     protected List<CssRule> postFilterResult(List<CssRule> result) {
@@ -252,4 +247,8 @@ class RulePowerSetBuilder extends FilteredPowerSetBuilder<CssRule, CssRule> {
         return filtered;
     }
 
+    @Override
+    protected boolean isInclude(CssRule t) {
+        return t.getSelector() instanceof Accept;
+    }
 }

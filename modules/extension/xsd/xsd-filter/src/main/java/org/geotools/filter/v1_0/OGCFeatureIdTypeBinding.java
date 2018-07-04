@@ -18,18 +18,18 @@ package org.geotools.filter.v1_0;
 
 import java.net.URI;
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.identity.FeatureId;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.identity.FeatureId;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:FeatureIdType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="FeatureIdType"&gt;
  *      &lt;xsd:attribute name="fid" type="xsd:anyURI" use="required"/&gt;
@@ -37,12 +37,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCFeatureIdTypeBinding extends AbstractComplexBinding {
@@ -52,37 +48,32 @@ public class OGCFeatureIdTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.FeatureIdType;
     }
 
-    /**
-     * @generated modifiable
-     */
+    /** @generated modifiable */
     public Class getType() {
         return FeatureId.class;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return factory.featureId(node.getAttributeValue("fid").toString());
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         if ("fid".equals(name.getLocalPart())) {
             FeatureId featureId = (FeatureId) object;
 
-            //&lt;xsd:attribute name="fid" type="xsd:anyURI" use="required"/&gt;
+            // &lt;xsd:attribute name="fid" type="xsd:anyURI" use="required"/&gt;
             if (featureId != null) {
                 return new URI(featureId.getID());
             }

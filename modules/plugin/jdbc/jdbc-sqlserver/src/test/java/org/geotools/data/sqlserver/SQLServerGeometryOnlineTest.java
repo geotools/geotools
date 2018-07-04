@@ -19,21 +19,17 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.type.GeometryDescriptor;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
-/**
- * @author DamianoG
- * 
- */
+/** @author DamianoG */
 public class SQLServerGeometryOnlineTest extends JDBCGeometryOnlineTest {
 
     private SQLServerGeometryTestSetup testSetup;
@@ -96,13 +92,13 @@ public class SQLServerGeometryOnlineTest extends JDBCGeometryOnlineTest {
         testSetup.setupMetadataTable(dataStore);
         assertEquals(GeometryCollection.class, checkGeometryType(GeometryCollection.class));
     }
-    
+
     public void testGeometryMetadataTable() throws Exception {
         testSetup.setupMetadataTable(dataStore);
-        
-        GeometryDescriptor gd = dataStore.getFeatureSource(tname("gtmeta")).getSchema().getGeometryDescriptor();
+
+        GeometryDescriptor gd =
+                dataStore.getFeatureSource(tname("gtmeta")).getSchema().getGeometryDescriptor();
         assertEquals(Point.class, gd.getType().getBinding());
         assertEquals(4326, (int) CRS.lookupEpsgCode(gd.getCoordinateReferenceSystem(), false));
     }
-
 }

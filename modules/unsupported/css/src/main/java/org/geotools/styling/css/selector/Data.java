@@ -18,7 +18,6 @@ package org.geotools.styling.css.selector;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
@@ -89,18 +88,13 @@ public class Data extends Selector {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Data other = (Data) obj;
         if (filter == null) {
-            if (other.filter != null)
-                return false;
-        } else if (!filter.equals(other.filter))
-            return false;
+            if (other.filter != null) return false;
+        } else if (!filter.equals(other.filter)) return false;
         return true;
     }
 
@@ -115,9 +109,8 @@ public class Data extends Selector {
         filter.accept(extractor, null);
         return new Specificity(0, extractor.getSpecificityScore(), 0);
     }
-    
-    public Object accept(SelectorVisitor visitor) {
-    	return visitor.visit(this);
-    }
 
+    public Object accept(SelectorVisitor visitor) {
+        return visitor.visit(this);
+    }
 }

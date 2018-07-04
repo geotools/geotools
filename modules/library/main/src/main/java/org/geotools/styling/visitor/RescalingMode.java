@@ -18,15 +18,14 @@ package org.geotools.styling.visitor;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.measure.converter.UnitConverter;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-
+import org.geotools.measure.Units;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
 
 /**
  * Helper class that allows rescaling to pixels numbers that might carry a unit specification along
@@ -34,9 +33,7 @@ import org.opengis.filter.expression.Literal;
  * well as the simpler case where everything should be rescaled (uom rescaling)
  */
 enum RescalingMode {
-    /**
-     * Rescales the values and maintains the units
-     */
+    /** Rescales the values and maintains the units */
     KeepUnits {
         @Override
         public String rescaleToStringInternal(double scaleFactor, Measure measure) {
@@ -53,19 +50,16 @@ enum RescalingMode {
                 return rescaledString + UNIT_SYMBOLS.get(measure.uom);
             }
         }
-
     },
 
-    /**
-     * Only rescales pixel values
-     */
+    /** Only rescales pixel values */
     Pixels {
         @Override
         public String rescaleToStringInternal(double scaleFactor, Measure measure) {
             if (measure.isRealWorldUnit()) {
-                if(measure.isRealWorldUnitInPixelDefault()){                    
+                if (measure.isRealWorldUnitInPixelDefault()) {
                     return String.valueOf(measure.value) + UNIT_SYMBOLS.get(measure.uom);
-                }else{
+                } else {
                     return String.valueOf(measure.value);
                 }
             } else {
@@ -90,31 +84,29 @@ enum RescalingMode {
     RealWorld {
         @Override
         public String rescaleToStringInternal(double scaleFactor, Measure measure) {
-            return String.valueOf(measure.value
-                    * computeRescaleMultiplier(scaleFactor, measure.uom));
+            return String.valueOf(
+                    measure.value * computeRescaleMultiplier(scaleFactor, measure.uom));
         }
 
         /**
          * Computes a rescaling multiplier to be applied to an unscaled value.
-         * 
+         *
          * @param mapScale the mapScale in pixels per meter.
          * @param uom the unit of measure that will be used to scale.
          * @return the rescaling multiplier for the provided parameters.
          */
         double computeRescaleMultiplier(double mapScale, Unit<Length> uom) {
             // no scaling to do if UOM is PIXEL (or null, which stands for PIXEL as well)
-            if (uom == null || uom.equals(NonSI.PIXEL))
-                return 1;
+            if (uom == null || uom.equals(Units.PIXEL)) return 1;
 
-            if (uom == SI.METER) {
+            if (uom == SI.METRE) {
                 return mapScale;
             }
 
             // converts value from meters to given UOM
-            UnitConverter converter = uom.getConverterTo(SI.METER);
+            UnitConverter converter = uom.getConverterTo(SI.METRE);
             return converter.convert(mapScale);
         }
-
     };
 
     public abstract String rescaleToStringInternal(double scaleFactor, Measure measure);
@@ -137,21 +129,25 @@ enum RescalingMode {
             // if it's an expression, there is still a chance the expression will have, at the
             // end,
             // a unit, so we have to delay the evaluation to later
-            return Measure.ff.function("rescaleToPixels", measure.expression,
-                    Measure.ff.literal(measure.uom), scaleFactor, Measure.ff.literal(this));
+            return Measure.ff.function(
+                    "rescaleToPixels",
+                    measure.expression,
+                    Measure.ff.literal(measure.uom),
+                    scaleFactor,
+                    Measure.ff.literal(this));
         }
     }
-    
+
     /**
      * Translates between units and their shortcuts (we can only get the full name from the unit
      * object
      */
-    final Map<Unit, String> UNIT_SYMBOLS = new HashMap<Unit, String>() {
-        {
-            put(NonSI.PIXEL, "px");
-            put(NonSI.FOOT, "ft");
-            put(SI.METER, "m");
-        }
-    };
-
+    final Map<Unit, String> UNIT_SYMBOLS =
+            new HashMap<Unit, String>() {
+                {
+                    put(Units.PIXEL, "px");
+                    put(USCustomary.FOOT, "ft");
+                    put(SI.METRE, "m");
+                }
+            };
 }

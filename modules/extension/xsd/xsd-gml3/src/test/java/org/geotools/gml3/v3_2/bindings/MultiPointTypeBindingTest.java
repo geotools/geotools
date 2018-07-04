@@ -21,28 +21,23 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.MultiPoint;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiPointTypeBindingTest extends GML32TestSupport {
-//    public void test() throws Exception {
-//        GML3MockData.multiPoint(document, document);
-//
-//        MultiPoint multiPoint = (MultiPoint) parse();
-//        assertNotNull(multiPoint);
-//
-//        assertEquals(4, multiPoint.getNumPoints());
-//    }
+    //    public void test() throws Exception {
+    //        GML3MockData.multiPoint(document, document);
+    //
+    //        MultiPoint multiPoint = (MultiPoint) parse();
+    //        assertNotNull(multiPoint);
+    //
+    //        assertEquals(4, multiPoint.getNumPoints());
+    //    }
 
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiPoint(), GML.MultiPoint);
-        print(dom);
-        assertEquals(2,
-            dom.getElementsByTagNameNS(GML.NAMESPACE, GML.pointMember.getLocalPart()).getLength());
+        // print(dom);
+        assertEquals(
+                2,
+                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.pointMember.getLocalPart())
+                        .getLength());
     }
 }

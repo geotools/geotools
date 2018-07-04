@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,16 +17,10 @@
 package org.geotools.swing.wizard;
 
 /**
- * A factory that takes a parameter type and its map of metadata and determines
- * what sort of form widget to create for it
- * 
+ * A factory that takes a parameter type and its map of metadata and determines what sort of form
+ * widget to create for it
+ *
  * @author Graham Davis
- *
- *
- *
- *
  * @source $URL$
  */
-public class ParamWidgetFactory {
-
-}
+public class ParamWidgetFactory {}

@@ -19,13 +19,13 @@ public interface TargetAxisExtentType extends EObject {
 
   
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.TargetAxisExtentType#getAxis <em>Axis</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.TargetAxisExtentType#getAxis <em>Axis</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Axis</em>' attribute.
-     * @see #getAxis()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Axis</em>' attribute.
+	 * @see #getAxis()
+	 * @generated
+	 */
     void setAxis(String value);
 
 
@@ -36,13 +36,13 @@ public interface TargetAxisExtentType extends EObject {
     public double getLow();
     
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.TargetAxisExtentType#getLow <em>Low</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.TargetAxisExtentType#getLow <em>Low</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Low</em>' attribute.
-     * @see #getLow()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Low</em>' attribute.
+	 * @see #getLow()
+	 * @generated
+	 */
     void setLow(double value);
 
     /**
@@ -52,13 +52,13 @@ public interface TargetAxisExtentType extends EObject {
     public double getHigh();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.TargetAxisExtentType#getHigh <em>High</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.TargetAxisExtentType#getHigh <em>High</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>High</em>' attribute.
-     * @see #getHigh()
-     * @generated
-     */
+	 * @param value the new value of the '<em>High</em>' attribute.
+	 * @see #getHigh()
+	 * @generated
+	 */
     void setHigh(double value);
     
 

@@ -18,14 +18,12 @@ package org.geotools.styling.css.selector;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.util.logging.Logging;
 
 /**
@@ -33,14 +31,41 @@ import org.geotools.util.logging.Logging;
  * including one or more scale ranges in which the rule is valid. A subclass of selectors, known as
  * pseudo-selectors, are used to specify how to fill/stroke the innards of a mark used to depict
  * points, lines and fills.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 public abstract class Selector implements Comparable<Selector> {
-    
-    private static final List<Class<? extends Selector>> BASE_CLASSES = Arrays.asList(TypeName.class, ScaleRange.class,
-            Id.class, Data.class, PseudoClass.class);
+
+    private static class AndCombiner {
+        Class clazz;
+
+        Method andMethod;
+
+        public AndCombiner(Class clazz, Method method) {
+            super();
+            this.clazz = clazz;
+            this.andMethod = method;
+        }
+    }
+
+    private static List<AndCombiner> AND_COMBINERS;
+
+    static {
+        Class[] baseClasses =
+                new Class[] {
+                    TypeName.class, ScaleRange.class, Id.class, Data.class, PseudoClass.class
+                };
+        AND_COMBINERS = new ArrayList<>();
+        for (Class baseClass : baseClasses) {
+            try {
+                Method combineAnd =
+                        baseClass.getDeclaredMethod("combineAnd", List.class, Object.class);
+                AND_COMBINERS.add(new AndCombiner(baseClass, combineAnd));
+            } catch (NoSuchMethodException | SecurityException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
     static final Logger LOGGER = Logging.getLogger(Selector.class);
 
@@ -67,17 +92,17 @@ public abstract class Selector implements Comparable<Selector> {
         } else if (s2 instanceof Accept) {
             return s1;
         }
-        
+
         // merge with Negate
         if (s1 instanceof Reject || s2 instanceof Reject) {
             return REJECT;
         }
-        
+
         // if one of the two is an or, we can fold the other into it to preserve
         // a structure with a top-most or
-        if(s1 instanceof Or) {
+        if (s1 instanceof Or) {
             return foldInOr((Or) s1, s2, context);
-        } else if(s2 instanceof Or) {
+        } else if (s2 instanceof Or) {
             return foldInOr((Or) s2, s1, context);
         }
 
@@ -88,9 +113,9 @@ public abstract class Selector implements Comparable<Selector> {
 
         // map by class, same class selectors can be merged
         Map<Class, List<Selector>> classifieds = mapByClass(selectors);
-        
+
         // simplest scenario, there is a Reject
-        if(classifieds.get(Reject.class) != null) {
+        if (classifieds.get(Reject.class) != null) {
             return REJECT;
         }
 
@@ -98,24 +123,26 @@ public abstract class Selector implements Comparable<Selector> {
         classifieds.remove(Accept.class);
 
         // perform combinations for selected types
-        for (Class<? extends Selector> clazz : BASE_CLASSES) {
-            List<Selector> classSelectors = classifieds.get(clazz);
+        for (AndCombiner combiner : AND_COMBINERS) {
+            List<Selector> classSelectors = classifieds.get(combiner.clazz);
             if (classSelectors == null) {
                 continue;
             }
-            if(classSelectors.size() > 1) {
+            if (classSelectors.size() > 1) {
                 try {
-                    Method combineAnd = clazz.getDeclaredMethod("combineAnd", List.class,
-                            Object.class);
-                    Selector result = (Selector) combineAnd.invoke(null, classSelectors, context);
+
+                    Selector result =
+                            (Selector) combiner.andMethod.invoke(null, classSelectors, context);
                     if (result == REJECT) {
                         return REJECT;
                     } else if (result == ACCEPT) {
-                        classifieds.remove(clazz);
+                        classifieds.remove(combiner.clazz);
                     } else if (result instanceof And) {
-                        classifieds.put(clazz, new ArrayList<>(((Composite) result).getChildren()));
+                        classifieds.put(
+                                combiner.clazz,
+                                new ArrayList<>(((Composite) result).getChildren()));
                     } else {
-                        classifieds.put(clazz, Collections.singletonList(result));
+                        classifieds.put(combiner.clazz, Collections.singletonList(result));
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -139,7 +166,7 @@ public abstract class Selector implements Comparable<Selector> {
             return new And(finalList);
         }
     }
-    
+
     private static Selector foldInOr(Or or, Selector anded, Object context) {
         List<Selector> newChildren = new ArrayList<>();
         for (Selector s : or.getChildren()) {
@@ -161,12 +188,11 @@ public abstract class Selector implements Comparable<Selector> {
             flatten(selectors, child, Or.class);
         }
         return new Or(selectors);
-
     }
-    
+
     /**
      * Combines in or and simplifies the two given selectors
-     * 
+     *
      * @param s1
      * @param s2
      * @param context
@@ -200,7 +226,7 @@ public abstract class Selector implements Comparable<Selector> {
 
         // get rid of Reject, they are irrelevant
         classifieds.remove(Reject.class);
-        
+
         // build the result
         List<Selector> finalList = new ArrayList<>();
         for (Class c : classifieds.keySet()) {
@@ -218,7 +244,8 @@ public abstract class Selector implements Comparable<Selector> {
         }
     }
 
-    private static void flatten(List<Selector> selectors, Selector s, Class<? extends Composite> clazz) {
+    private static void flatten(
+            List<Selector> selectors, Selector s, Class<? extends Composite> clazz) {
         if (!clazz.isInstance(s)) {
             selectors.add(s);
         } else {
@@ -227,7 +254,6 @@ public abstract class Selector implements Comparable<Selector> {
                 flatten(selectors, child, clazz);
             }
         }
-
     }
 
     private static Map<Class, List<Selector>> mapByClass(List<Selector> selectors) {
@@ -248,16 +274,15 @@ public abstract class Selector implements Comparable<Selector> {
 
     /**
      * Returns the specificity of this selector
-     * 
+     *
      * @return
      */
     public abstract Specificity getSpecificity();
-    
+
     @Override
     public int compareTo(Selector o) {
         return getSpecificity().compareTo(o.getSpecificity());
     }
-    
-    public abstract Object accept(SelectorVisitor visitor);
 
+    public abstract Object accept(SelectorVisitor visitor);
 }

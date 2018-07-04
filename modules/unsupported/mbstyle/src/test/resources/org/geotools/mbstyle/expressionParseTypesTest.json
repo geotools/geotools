@@ -1,0 +1,217 @@
+{
+  "version": 8,
+  "name": "expressions",
+  "metadata": {
+    "mapbox:autocomposite": true,
+    "mapbox:type": "template"
+  },
+  "center": [
+    -482.37277069238866,
+    37.59758909587205
+  ],
+  "zoom": 12.367375686228195,
+  "bearing": 0,
+  "pitch": 0,
+  "sources": {
+    "composite": {
+      "url": "mapbox://mapbox.mapbox-streets-v7",
+      "type": "vector"
+    },
+    "mapbox://mapbox.satellite": {
+      "url": "mapbox://mapbox.satellite",
+      "type": "raster",
+      "tileSize": 256
+    }
+  },
+  "sprite": "mapbox://sprites/testuser/ciz723a3y000g2so5l675lmz8",
+  "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "literalExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "circle-radius": ["literal", [123, "string", ["arr"], {"object":"test"}]],
+        "circle-color": ["literal", {"object":"test", "key2": 99.0}]
+      }
+    },
+    {
+      "id": "typeOfExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "number": ["typeof", 123],
+        "JSONObject": ["typeof", ["literal", {"object":"test", "key2": 99.0}]],
+        "boolean": ["typeof", true],
+        "JSONArray": ["typeof", ["literal", [1, 2, 3]]],
+        "string": ["typeof", "string"]
+      }
+    },
+    {
+      "id": "booleanExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "single": ["boolean", false],
+        "multiple": ["boolean", "string", 123, true],
+        "nested": ["boolean", ["has", "color", ["literal", {"color":"green"}]]],
+        "no-bool": ["boolean", "error"]
+      }
+    },
+    {
+      "id": "numberExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "decimal": ["number", 1.0],
+        "integer": ["number", 1],
+        "multiple": ["number", "string", 123, true],
+        "nested": ["number", ["get", "color", ["literal", {"color":1234}]]],
+        "no-num": ["number", "error"]
+      }
+    },
+    {
+      "id": "objectExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "single": ["object", ["literal", {"object": "test"}]],
+        "multiple": ["object", "string", 123, true, ["literal", {"object": "test"}]],
+        "nested": ["object", ["get", "color", ["literal", {"color":{"obj":"test"}}]]],
+        "no-obj": ["object", "error"]
+      }
+    },
+    {
+      "id": "stringExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "single": ["string", "singlestring"],
+        "multiple": ["string", 123, true, ["literal", {"object": "test"}], "multistring"],
+        "nested": ["string", ["get", "color", ["literal", {"color":"nestedstring"}]]],
+        "no-string": ["string", 123]
+      }
+    },
+    {
+      "id": "toBooleanExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "false": ["to-boolean", false],
+        "true": ["to-boolean", true],
+        "string": ["to-boolean", "bool"],
+        "empty-string": ["to-boolean", ""],
+        "number":["to-boolean", 123],
+        "zero": ["to-boolean", 0],
+        "null": ["to-boolean", null],
+        "nestedFalse": ["to-boolean", ["get", "color", ["literal", {"color":false}]]],
+        "nestedTrue": ["to-boolean", ["get", "color", ["literal", {"color":true}]]]
+      }
+    },
+    {
+      "id": "toStringExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "false": ["to-string", false],
+        "true": ["to-string", true],
+        "string": ["to-string", "bool"],
+        "empty-string": ["to-string", ""],
+        "number":["to-string", 123],
+        "zero": ["to-string", 0],
+        "null": ["to-string", null],
+        "nestedFalse": ["to-string", ["get", "color", ["literal", {"color":false}]]],
+        "nestedTrue": ["to-string", ["get", "color", ["literal", {"color":true}]]]
+      }
+    },
+    {
+      "id": "toStringExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "false": ["to-string", false],
+        "true": ["to-string", true],
+        "string": ["to-string", "string"],
+        "empty-string": ["to-string", ""],
+        "number":["to-string", 123],
+        "zero": ["to-string", 0],
+        "null": ["to-string", null],
+        "object": ["to-string", ["literal", {"color":false}]],
+        "array": ["to-string", ["literal", ["color", true, 123, {"obj":"test"}]]],
+        "color": ["to-string", ["rgb", 23, 34, 45]]
+      }
+    },
+    {
+      "id": "toNumberExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "false": ["to-number", false],
+        "true": ["to-number", true],
+        "string": ["to-number", "string"],
+        "empty-string": ["to-number", ""],
+        "int-string": ["to-number", "123"],
+        "double-string": ["to-number", "123.123"],
+        "number":["to-number", 123],
+        "zero": ["to-number", 0],
+        "null": ["to-number", null],
+        "object": ["to-number", ["literal", {"color":false}]],
+        "nest": ["to-number", ["get", "obj",["at", 3,["literal", ["color", true, 123, {"obj":"46.08"}]]]]]
+      }
+    },
+    {
+      "id": "toColorExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "false": ["to-color", false],
+        "true": ["to-color", true],
+        "rgb": ["to-color", "rgb(111,222,121)"],
+        "rgba": ["to-color", "rgba(111,222,121,0.5)"],
+        "hex": ["to-color", "#AAFF11"],
+        "three-hex": ["to-color", "#AF1"],
+        "rgb-array": ["to-color", ["literal", [111, 222, 121]]],
+        "rgba-array": ["to-color", ["literal", [111, 222, 121, 0.5]]],
+        "nest": ["to-color", ["get", "obj",["at", 3,["literal", ["color", true, 123, {"obj":[111,222,121]}]]]]]
+      }
+    },
+    {
+      "id": "arrayExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "boolean": ["array", false],
+        "null": ["array", null],
+        "string": ["array", "test"],
+        "number": ["array", 123],
+        "array": ["array", ["literal", [111, 222, 121]]],
+        "object": ["array", ["literal", {"obj":"test"}]],
+        "nest": ["array", ["get", "obj",["at", 3,["literal", ["color", true, 123, {"obj":[111,222,121]}]]]]]
+      }
+    }
+  ]
+}

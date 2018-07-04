@@ -21,36 +21,44 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.Envelope;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
-
-/**
- * Default granule handling
- */
+/** Default granule handling */
 public class DefaultGranuleHandler implements GranuleHandler {
 
-    private final static PrecisionModel PRECISION_MODEL = new PrecisionModel(
-            PrecisionModel.FLOATING);
+    private static final PrecisionModel PRECISION_MODEL =
+            new PrecisionModel(PrecisionModel.FLOATING);
 
-    private final static GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
+    private static final GeometryFactory GEOM_FACTORY = new GeometryFactory(PRECISION_MODEL);
 
     @Override
-    public void handleGranule(Object source, GridCoverage2DReader inputReader,
-            SimpleFeature targetFeature, SimpleFeatureType targetFeatureType, SimpleFeature feature,
-            SimpleFeatureType inputFeatureType, MosaicConfigurationBean mosaicConfiguration) {
+    public void handleGranule(
+            Object source,
+            GridCoverage2DReader inputReader,
+            SimpleFeature targetFeature,
+            SimpleFeatureType targetFeatureType,
+            SimpleFeature feature,
+            SimpleFeatureType inputFeatureType,
+            MosaicConfigurationBean mosaicConfiguration) {
 
         if (inputReader instanceof StructuredGridCoverage2DReader) {
-            handleStructuredGranule(source, inputReader, targetFeature, targetFeatureType, feature,
-                    inputFeatureType, mosaicConfiguration);
+            handleStructuredGranule(
+                    source,
+                    inputReader,
+                    targetFeature,
+                    targetFeatureType,
+                    feature,
+                    inputFeatureType,
+                    mosaicConfiguration);
         } else {
             Envelope coverageEnvelope = inputReader.getOriginalEnvelope();
-            targetFeature.setAttribute(targetFeatureType.getGeometryDescriptor().getLocalName(),
+            targetFeature.setAttribute(
+                    targetFeatureType.getGeometryDescriptor().getLocalName(),
                     GEOM_FACTORY.toGeometry(new ReferencedEnvelope(coverageEnvelope)));
         }
-
     }
 }

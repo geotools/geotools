@@ -18,14 +18,10 @@ package org.geotools.styling;
 
 import org.opengis.style.ContrastMethod;
 
-/**
- * @author iant
- *
- */
+/** @author iant */
 public class HistogramContrastMethodStrategy extends AbstractContrastMethodStrategy {
 
     public HistogramContrastMethodStrategy() {
         method = ContrastMethod.HISTOGRAM;
     }
-
 }

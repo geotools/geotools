@@ -59,6 +59,8 @@
   <!--     stress             Profile to active tests which end in -->
   <!--                        "StressTest.java"                    -->
   <!--                                                             -->
+  <!--     dependencycheck    Profile to check dependency versions -->
+  <!--                                                             -->
   <!--   Example:                                                  -->
   <!--       mvn install -Dall                                     -->
   <!--       mvn eclipse:eclipse -Dall                             -->
@@ -93,19 +95,27 @@
     <test.forkMode>once</test.forkMode>
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.17</imageio.ext.version>
-    <jaiext.version>1.0.13</jaiext.version>
+    <imageio.ext.version>1.1.24</imageio.ext.version>
+    <jts.version>1.15.1</jts.version>
+    <jaiext.version>1.1.1</jaiext.version>
     <netcdf.version>4.6.6</netcdf.version>
-    <jt.version>1.4.0</jt.version>
+    <jt.version>1.5.0</jt.version>
     <java.awt.headless>true</java.awt.headless>
+    <sun.java2d.d3d>true</sun.java2d.d3d>
     <jvm.opts></jvm.opts>
     <maven.build.timestamp.format>dd-MMM-yyyy HH:mm</maven.build.timestamp.format>
     <build.timestamp>${maven.build.timestamp}</build.timestamp>
     <fork.javac>true</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <postgresql.jdbc.version>9.4.1211</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.1.1</postgresql.jdbc.version>
+    <solrj.version>7.2.1</solrj.version>
     <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
+    <git.commit.useNative>false</git.commit.useNative>
+    <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
+    <fmt.action>format</fmt.action>
+    <fmt.skip>false</fmt.skip>
+    <batik.version>1.10</batik.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -192,6 +202,48 @@
         </site>
       </distributionManagement>
     </profile>
+
+    <!-- Dependency version checks -->
+    <profile>
+      <id>dependencycheck</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.commonjava.maven.plugins</groupId>
+            <artifactId>directory-maven-plugin</artifactId>
+            <version>0.3.1</version>
+            <executions>
+              <execution>
+                <id>directories</id>
+                <goals>
+                  <goal>highest-basedir</goal>
+                </goals>
+                <phase>initialize</phase>
+                <configuration>
+                  <property>geotoolsBaseDir</property>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <version>3.2.1</version>
+            <configuration>
+              <failBuildOnCVSS>8</failBuildOnCVSS>
+              <suppressionFile>${geotoolsBaseDir}/dependency-check-suppression.xml</suppressionFile>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>aggregate</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
 
@@ -201,7 +253,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>17-SNAPSHOT</version>
+  <version>20-SNAPSHOT</version>
   <name>GeoTools</name>
 
   <scm>
@@ -574,12 +626,40 @@
   <!-- =========================================================== -->
   <dependencyManagement>
     <dependencies>
+      <!--
       <dependency>
         <groupId>net.java.dev.jsr-275</groupId>
         <artifactId>jsr-275</artifactId>
         <version>1.0-beta-2</version>
       </dependency>
-
+       -->
+      <!--dependency>
+        <groupId>javax.measure</groupId>
+        <artifactId>unit-api</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>tec.uom</groupId>
+        <artifactId>uom-se</artifactId>
+        <version>1.0.9</version>
+      </dependency>
+      <dependency>
+        <groupId>si.uom</groupId>
+        <artifactId>si-units-java8</artifactId>
+        <version>0.8</version>
+      </dependency-->
+      <dependency>
+          <groupId>systems.uom</groupId>
+          <artifactId>systems-common-java8</artifactId>
+          <version>0.7.2</version>
+      </dependency>
+      <!-- inconsistent cannot load due to missing drag quantity -->
+      <!--dependency>
+        <groupId>systems.uom</groupId>
+        <artifactId>systems-ucum-java8</artifactId>
+        <version>0.7.2</version>
+      </dependency-->
+    
       <!-- Java Advanced Imaging (JAI) -->
       <dependency>
         <groupId>javax.media</groupId>
@@ -680,6 +760,11 @@
       </dependency>
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-gdalsrp</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-imagereadmt</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
@@ -739,18 +824,30 @@
         <groupId>org.jaitools</groupId>
         <artifactId>jt-zonalstats</artifactId>
         <version>${jt.version}</version>
-       </dependency>
-      
+      </dependency>
+
+       
       <!-- Mathematic, geometries, SVG... -->
       <dependency>
-        <groupId>com.googlecode.efficient-java-matrix-library</groupId>
-        <artifactId>core</artifactId>
-        <version>0.26</version>
+        <groupId>org.ejml</groupId>
+        <artifactId>ejml-ddense</artifactId>
+        <version>0.32</version>
       </dependency>
       <dependency>
-        <groupId>com.vividsolutions</groupId>
-        <artifactId>jts</artifactId>
-        <version>1.13</version>
+        <groupId>org.locationtech.jts</groupId>
+        <artifactId>jts-core</artifactId>
+	<version>${jts.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.locationtech.jts</groupId>
+        <artifactId>jts-example</artifactId>
+	<version>${jts.version}</version>
         <exclusions>
           <exclusion>
             <groupId>xerces</groupId>
@@ -766,72 +863,77 @@
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-transcoder</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-svggen</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-awt-util</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-rasterizer</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-dom</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-bridge</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-gvt</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-svg-dom</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-util</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-css</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-parser</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-xml</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-ext</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-script</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-anim</artifactId>
+        <version>${batik.version}</version>
       </dependency>
 
       <!-- Chart -->
@@ -844,8 +946,8 @@
       <!-- XML -->
       <dependency>
         <groupId>org.jdom</groupId>
-        <artifactId>jdom</artifactId>
-        <version>1.1.3</version>
+        <artifactId>jdom2</artifactId>
+        <version>2.0.6</version>
       </dependency>
 
       <!-- Apache -->
@@ -882,7 +984,7 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.1</version>
+        <version>2.6</version>
       </dependency>
       <dependency>
         <groupId>log4j</groupId>
@@ -941,12 +1043,12 @@
       <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <version>5.1.17</version>
+        <version>5.1.46</version>
       </dependency>
       <dependency>
         <groupId>org.hsqldb</groupId>
         <artifactId>hsqldb</artifactId>
-        <version>2.3.0</version>
+        <version>2.4.1</version>
       </dependency>
       <dependency>
         <groupId>org.openplans</groupId>
@@ -1003,22 +1105,28 @@
       </dependency>
 
       <!-- EMF -->
-      <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>common</artifactId>
-        <version>2.6.0</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>ecore</artifactId>
-        <version>2.6.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.eclipse.xsd</groupId>
-        <artifactId>xsd</artifactId>
-        <version>2.6.0</version>
-      </dependency>
 
+      <dependency>
+	    <groupId>org.eclipse.emf</groupId>
+	    <artifactId>org.eclipse.emf.common</artifactId>
+	    <version>2.12.0</version>
+    </dependency>
+	<dependency>
+		<groupId>org.eclipse.emf</groupId>
+		<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+		<version>2.12.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.eclipse.emf</groupId>
+		<artifactId>org.eclipse.emf.ecore</artifactId>
+		<version>2.12.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.eclipse.xsd</groupId>
+		<artifactId>org.eclipse.xsd</artifactId>
+		<version>2.12.0</version>
+	</dependency>
+	
       <dependency>
         <groupId>com.sleepycat</groupId>
         <artifactId>je</artifactId>
@@ -1034,13 +1142,6 @@
         <artifactId>java-uuid-generator</artifactId>
         <version>3.1.2</version>
       </dependency>
-      <dependency>
-        <!-- Google Common Libraries. Featuring com.google.collect collection 
-          classes -->
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>17.0</version>
-      </dependency>      
       
       <!-- Other random non test dependencies -->
       <dependency>
@@ -1064,6 +1165,11 @@
       <dependency>
         <groupId>org.hamcrest</groupId>
         <artifactId>hamcrest-core</artifactId>
+        <version>1.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hamcrest</groupId>
+        <artifactId>hamcrest-all</artifactId>
         <version>1.3</version>
       </dependency>
       <dependency>
@@ -1185,6 +1291,11 @@
         <version>${jaiext.version}</version>
       </dependency>
       <dependency>
+        <groupId>it.geosolutions.jaiext.scale2</groupId>
+        <artifactId>jt-scale2</artifactId>
+        <version>${jaiext.version}</version>
+      </dependency>
+      <dependency>
         <groupId>it.geosolutions.jaiext.stats</groupId>
         <artifactId>jt-stats</artifactId>
         <version>${jaiext.version}</version>
@@ -1267,7 +1378,18 @@
       <dependency>
         <groupId>org.xerial</groupId>
         <artifactId>sqlite-jdbc</artifactId>
-        <version>3.14.2.1</version>
+        <version>3.20.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.solr</groupId>
+        <artifactId>solr-solrj</artifactId>
+        <version>${solrj.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
     </dependencies>
 
@@ -1308,7 +1430,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.5</version>
+          <version>2.10</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -1329,6 +1451,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-plugin-plugin</artifactId>
           <version>3.4</version>
+        </plugin>
+        <plugin>
+          <groupId>com.coveo</groupId>
+            <artifactId>fmt-maven-plugin</artifactId>
+            <version>2.4.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -1422,7 +1549,7 @@
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
           </excludes>
-          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}</argLine>
+          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions --add-modules=java.xml.bind --add-modules=java.activation</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the begining of this pom.xml file. -->
@@ -1490,7 +1617,7 @@
       <plugin>
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
-        <version>2.1.2</version>
+        <version>2.1.15</version>
         <executions>
           <execution>
             <goals>
@@ -1498,10 +1625,9 @@
             </goals>
           </execution>
         </executions>
-        <configuration> 
+        <configuration>
           <prefix>build</prefix>
           <failOnNoGitDirectory>false</failOnNoGitDirectory>
-
           <!-- needed for filtering with VERSION.txt -->
           <skipPoms>false</skipPoms>
           <verbose>false</verbose>
@@ -1509,7 +1635,24 @@
             <!-- the git describe step is expensive, we don't need it -->
             <skip>true</skip>
           </gitDescribe>
-        </configuration> 
+          <injectAllReactorProjects>true</injectAllReactorProjects>
+          <runOnlyOnce>${git.commit.runOnlyOnce}</runOnlyOnce>
+          <!--
+          In order to use native git (3+ times faster) add the following in ~/.m2/settings.xml
+          <profiles>
+            <profile>
+              <id>gitNative</id>
+              <properties>
+                <git.commit.useNative>true</git.commit.useNative>
+              </properties>
+            </profile>
+          <profiles>
+          <activeProfiles>
+            <activeProfile>gitNative</activeProfile>
+          </activeProfiles>
+          -->
+          <useNativeGit>${git.commit.useNative}</useNativeGit>
+        </configuration>
       </plugin>
       
       <!-- ======================================================= -->
@@ -1568,7 +1711,7 @@
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
-          <!-- should be a combinaison of the letters Xaoptcmf.             -->
+          <!-- should be a combination of the letters Xaoptcmf.             -->
           <tags>
             <tag>
               <name>todo</name>
@@ -1693,6 +1836,23 @@
           </groups>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.coveo</groupId>
+            <artifactId>fmt-maven-plugin</artifactId>
+            <configuration>
+                <verbose>false</verbose>
+                <filesNamePattern>.*\.java</filesNamePattern>
+                <skip>${fmt.skip}</skip>
+                <style>aosp</style>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>${fmt.action}</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
     </plugins>
   </build>
 
@@ -1765,7 +1925,7 @@
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
-          <!-- should be a combinaison of the letters Xaoptcmf.             -->
+          <!-- should be a combination of the letters Xaoptcmf.             -->
           <tags>
             <tag>
               <name>todo</name>

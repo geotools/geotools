@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,17 +16,15 @@
  */
 package org.geotools.data.couchdb;
 
-import com.vividsolutions.jts.geom.Envelope;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.geotools.data.couchdb.client.CouchDBUtils;
-import org.geotools.data.couchdb.client.CouchDBSpatialView;
-import org.geotools.data.couchdb.client.CouchDBException;
-import org.geotools.data.couchdb.client.CouchDBView;
+import org.locationtech.jts.geom.Envelope;
 import java.io.IOException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
+import org.geotools.data.couchdb.client.CouchDBException;
+import org.geotools.data.couchdb.client.CouchDBSpatialView;
+import org.geotools.data.couchdb.client.CouchDBUtils;
+import org.geotools.data.couchdb.client.CouchDBView;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.feature.NameImpl;
@@ -37,12 +35,9 @@ import org.json.simple.JSONObject;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-import org.opengis.geometry.BoundingBox;
 
 /**
- *
  * @author Ian Schneider (OpenGeo)
- *
  * @source $URL$
  */
 public class CouchDBFeatureStore extends ContentFeatureStore {
@@ -52,53 +47,60 @@ public class CouchDBFeatureStore extends ContentFeatureStore {
         super(entry, query);
         // local name is <dbname>.<view>
         // extract view part
-        String localName =  entry.getName().getLocalPart();
+        String localName = entry.getName().getLocalPart();
         int idx = localName.indexOf('.');
         viewName = localName.substring(idx + 1);
     }
 
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        // there appears to be no way to obtain the bbox from couch documents 
+        // there appears to be no way to obtain the bbox from couch documents
         // (aka features) without getting all the geometry as well.
         // one approach might be to write a view that only returns bbox?
         CouchDBSpatialView spatialView = getDataStore().getConnection().spatialView(viewName);
         Envelope e = getBBox(query);
         JSONObject results;
         try {
-            results = spatialView.get(e.getMinX(),e.getMinY(),e.getMaxX(),e.getMaxY());
+            results = spatialView.get(e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY());
         } catch (CouchDBException ex) {
             throw ex.wrap();
         }
-        Envelope env  = null;
+        Envelope env = null;
         JSONArray rows = (JSONArray) results.get("rows");
         for (int i = 0; i < rows.size(); i++) {
             JSONArray bbox = (JSONArray) ((JSONObject) rows.get(i)).get("bbox");
             if (env == null) {
-                env = new Envelope((Double)bbox.get(0),(Double)bbox.get(1),(Double)bbox.get(2),(Double)bbox.get(3));
+                env =
+                        new Envelope(
+                                (Double) bbox.get(0),
+                                (Double) bbox.get(1),
+                                (Double) bbox.get(2),
+                                (Double) bbox.get(3));
             } else {
-                env.expandToInclude((Double)bbox.get(0),(Double)bbox.get(1));
-                env.expandToInclude((Double)bbox.get(2),(Double)bbox.get(3));
+                env.expandToInclude((Double) bbox.get(0), (Double) bbox.get(1));
+                env.expandToInclude((Double) bbox.get(2), (Double) bbox.get(3));
             }
         }
-        return new ReferencedEnvelope(env,null);
+        return new ReferencedEnvelope(env, null);
     }
 
     @Override
     public CouchDBDataStore getDataStore() {
         return (CouchDBDataStore) super.getDataStore();
     }
-    
+
     private CouchDBSpatialView spatialView() {
         return getDataStore().getConnection().spatialView(viewName);
     }
-    
+
     private CouchDBView dataView() {
         return getDataStore().getConnection().view(viewName);
     }
-    
+
     private Envelope getBBox(Query query) {
-        Envelope envelope = (Envelope) query.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
+        Envelope envelope =
+                (Envelope)
+                        query.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, null);
         if (envelope == null || envelope.isNull() || Double.isInfinite(envelope.getArea())) {
             envelope = new Envelope(-180, 180, -90, 90);
         }
@@ -110,19 +112,20 @@ public class CouchDBFeatureStore extends ContentFeatureStore {
         // @todo ianschneider understand query
         Envelope e = getBBox(query);
         try {
-            return (int) spatialView().count(e.getMinX(),e.getMinY(),e.getMaxX(),e.getMaxY());
+            return (int) spatialView().count(e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY());
         } catch (CouchDBException ex) {
             throw ex.wrap();
         }
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+            throws IOException {
         // @todo ianschneider understand query
         JSONObject features;
         Envelope e = getBBox(query);
         try {
-            features = spatialView().get(e.getMinX(),e.getMinY(),e.getMaxX(),e.getMaxY());
+            features = spatialView().get(e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY());
         } catch (CouchDBException ex) {
             throw ex.wrap();
         }
@@ -135,15 +138,15 @@ public class CouchDBFeatureStore extends ContentFeatureStore {
         // 1. created dynamically
         // 2. pointed to statically (schema or json)
         //    a. if design document had schema in it, that'd be conventional
-        
+
         // for now, choice 1
         return createFeatureTypeFromData();
     }
-    
+
     protected SimpleFeatureType createFeatureTypeFromData() throws IOException {
         JSONArray res;
         try {
-             res = dataView().get(1);
+            res = dataView().get(1);
         } catch (CouchDBException ex) {
             throw ex.wrap();
         }
@@ -152,22 +155,22 @@ public class CouchDBFeatureStore extends ContentFeatureStore {
         }
         JSONObject row = (JSONObject) res.get(0);
         row = (JSONObject) row.get("value");
-        Name fqn = new NameImpl(getDataStore().getNamespaceURI(),getEntry().getTypeName());
+        Name fqn = new NameImpl(getDataStore().getNamespaceURI(), getEntry().getTypeName());
         return CouchDBUtils.createFeatureType(row, fqn);
     }
-    
+
     @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query, int flags) throws IOException {
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
+            Query query, int flags) throws IOException {
         switch (flags) {
-            case 0: throw new IllegalArgumentException( "no write flags set" );
+            case 0:
+                throw new IllegalArgumentException("no write flags set");
             case WRITER_ADD:
-                return new CouchDBAddFeatureWriter(buildFeatureType(),getDataStore());
+                return new CouchDBAddFeatureWriter(buildFeatureType(), getDataStore());
             case WRITER_UPDATE:
                 throw new UnsupportedOperationException("Update not supported");
             default:
                 throw new IllegalArgumentException(" cannot handle flags " + flags);
         }
     }
-
-    
 }

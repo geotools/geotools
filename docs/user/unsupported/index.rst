@@ -16,17 +16,19 @@ Research and Development:
 .. toctree::
    :maxdepth: 1
 
+   arcgis-rest
    css
    csv
    efeature/index
    geojson
    geometry/index
    jts-wrapper
-   mbstyle
+   mbstyle/index
    process/index
    swing/index
    swt/index
    wps
+   gtopo30
    sample
 
 Unsupported rendering plugins:
@@ -42,10 +44,8 @@ Unsupported DataStore implementations:
 * :doc:`/library/data/excel` (Unknown) Support for Microsoft Excel files
 * :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
 * :doc:`/library/data/mongodb` (Unknown) Support for using mongodb (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.
-* :doc:`/library/data/wfs` (Stable but not active) Supports communcation with a Web Feature Server using the standard GeoTools DataStore API
-* :doc:`/library/data/wfs-ng` (Inactive) Experimental code for "next generation" Web Feature Server support
+* :doc:`/library/data/wfs-ng` (Active) Supports communcation with a Web Feature Server using the standard GeoTools DataStore API
 * :doc:`/library/data/sfs` (Unknown) Support for the experimental GeoServer Simple Feature Service
-* :doc:`/library/data/vpf` (Inactive) Support for VPF (Vector Product Format) files
 
 Unsupported Raster modules:
 

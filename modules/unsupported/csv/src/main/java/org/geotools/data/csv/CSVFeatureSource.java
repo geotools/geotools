@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  * 	  (c) 2014 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
@@ -18,10 +18,8 @@
 package org.geotools.data.csv;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
-import org.geotools.data.QueryCapabilities;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -51,9 +49,10 @@ public class CSVFeatureSource extends ContentFeatureSource {
         return (CSVDataStore) super.getDataStore();
     }
 
+    // docs start getBoundsInternal
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        ReferencedEnvelope bounds = new ReferencedEnvelope(getSchema()
-                .getCoordinateReferenceSystem());
+        ReferencedEnvelope bounds =
+                new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReader(query);
         try {
             while (featureReader.hasNext()) {
@@ -65,7 +64,9 @@ public class CSVFeatureSource extends ContentFeatureSource {
         }
         return bounds;
     }
+    // docs end getBoundsInternal
 
+    // docs start getCountInternal
     protected int getCountInternal(Query query) throws IOException {
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
         int n = 0;
@@ -78,15 +79,19 @@ public class CSVFeatureSource extends ContentFeatureSource {
         }
         return n;
     }
+    // docs end getCountInternal
 
+    // docs start getReaderInternal
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         CSVDataStore dataStore = getDataStore();
         return new CSVFeatureReader(dataStore.getCSVStrategy(), query);
     }
+    // docs end getReaderInternal
 
+    // docs start buildFeatureType
     protected SimpleFeatureType buildFeatureType() throws IOException {
         return getDataStore().getSchema();
     }
-
+    // docs end buildFeatureType
 }

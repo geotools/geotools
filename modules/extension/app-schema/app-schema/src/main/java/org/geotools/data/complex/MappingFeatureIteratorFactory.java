@@ -20,14 +20,15 @@ package org.geotools.data.complex;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
+import org.geotools.data.Transaction;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.ComplexFilterSplitter;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
+import org.geotools.data.complex.spi.CustomSourceDataStore;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
@@ -44,25 +45,23 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Russell Petty (GeoScience Victoria)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * 
  * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema/src/main
- *         /java/org/geotools/data/complex/MappingFeatureIteratorFactory.java $
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *         /java/org/geotools/data/complex/MappingFeatureIteratorFactory.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema/src/main
+ *     /java/org/geotools/data/complex/MappingFeatureIteratorFactory.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
+ *     /java/org/geotools/data/complex/MappingFeatureIteratorFactory.java $
  */
 public class MappingFeatureIteratorFactory {
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.data.complex");    
-    
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+
     /**
      * Temporary filter visitor to determine whether the filter concerns any attribute mapping that
      * has isList enabled. This is because Bureau of Meteorology requires a subset of the property
      * value to be returned, instead of the full value. This should be a temporary solution. This
      * won't work with feature chaining at the moment.
-     * 
+     *
      * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
-     * 
      */
     static class IsListFilterVisitor extends DefaultFilterVisitor {
 
@@ -74,7 +73,8 @@ public class MappingFeatureIteratorFactory {
 
         private FeatureTypeMapping mappings;
 
-        public IsListFilterVisitor(List<AttributeMapping> listMappings, FeatureTypeMapping mappings) {
+        public IsListFilterVisitor(
+                List<AttributeMapping> listMappings, FeatureTypeMapping mappings) {
             this.listMappings = listMappings;
             this.mappings = mappings;
             isListFilter = false;
@@ -103,8 +103,23 @@ public class MappingFeatureIteratorFactory {
         }
     }
 
-    public static IMappingFeatureIterator getInstance(AppSchemaDataAccess store,
-            FeatureTypeMapping mapping, Query query, Filter unrolledFilter) throws IOException {
+    public static IMappingFeatureIterator getInstance(
+            AppSchemaDataAccess store,
+            FeatureTypeMapping mapping,
+            Query query,
+            Filter unrolledFilter)
+            throws IOException {
+        return MappingFeatureIteratorFactory.getInstance(
+                store, mapping, query, unrolledFilter, null);
+    }
+
+    public static IMappingFeatureIterator getInstance(
+            AppSchemaDataAccess store,
+            FeatureTypeMapping mapping,
+            Query query,
+            Filter unrolledFilter,
+            Transaction transaction)
+            throws IOException {
 
         if (mapping instanceof XmlFeatureTypeMapping) {
             return new XmlMappingFeatureIterator(store, mapping, query);
@@ -116,7 +131,8 @@ public class MappingFeatureIteratorFactory {
         FeatureSource mappedSource = mapping.getSource();
 
         if (isJoining
-                && !(mappedSource instanceof JDBCFeatureSource || mappedSource instanceof JDBCFeatureStore)) {
+                && !(mappedSource instanceof JDBCFeatureSource
+                        || mappedSource instanceof JDBCFeatureStore)) {
             // check if joining is explicitly set for non database backends
             if (AppSchemaDataAccessConfigurator.isJoiningSet()) {
                 throw new IllegalArgumentException(
@@ -130,8 +146,9 @@ public class MappingFeatureIteratorFactory {
 
         if (isJoining) {
             if (!(query instanceof JoiningQuery)) {
-                boolean hasIdColumn = !Expression.NIL.equals(mapping.getFeatureIdExpression())
-                        && !(mapping.getFeatureIdExpression() instanceof Literal);
+                boolean hasIdColumn =
+                        !Expression.NIL.equals(mapping.getFeatureIdExpression())
+                                && !(mapping.getFeatureIdExpression() instanceof Literal);
                 query = new JoiningQuery(query);
                 if (hasIdColumn) {
                     FilterAttributeExtractor extractor = new FilterAttributeExtractor();
@@ -143,7 +160,7 @@ public class MappingFeatureIteratorFactory {
                 ((JoiningQuery) query).setRootMapping(mapping);
             }
         }
-        IMappingFeatureIterator iterator;
+        IMappingFeatureIterator iterator = null;
         if (unrolledFilter != null) {
             // unrolledFilter is set in JoiningNestedAttributeMapping
             // so this is for nested features with joining
@@ -151,14 +168,17 @@ public class MappingFeatureIteratorFactory {
             Query unrolledQuery = store.unrollQuery(query, mapping);
             unrolledQuery.setFilter(unrolledFilter);
             if (query instanceof JoiningQuery && unrolledQuery instanceof JoiningQuery) {
-                ((JoiningQuery) unrolledQuery).setRootMapping(((JoiningQuery) query)
-                        .getRootMapping());
+                ((JoiningQuery) unrolledQuery)
+                        .setRootMapping(((JoiningQuery) query).getRootMapping());
             }
             if (isSimpleType(mapping)) {
-                iterator = new MappingAttributeIterator(store, mapping, query, unrolledQuery);
+                iterator =
+                        new MappingAttributeIterator(
+                                store, mapping, query, unrolledQuery, transaction);
             } else {
-                iterator = new DataAccessMappingFeatureIterator(store, mapping, query,
-                        unrolledQuery, false);
+                iterator =
+                        new DataAccessMappingFeatureIterator(
+                                store, mapping, query, unrolledQuery, false, transaction);
             }
         } else {
             // HACK HACK HACK
@@ -174,7 +194,8 @@ public class MappingFeatureIteratorFactory {
                 }
             }
             // END OF HACK
-            if (isJoining || mappedSource instanceof JDBCFeatureSource
+            if (isJoining
+                    || mappedSource instanceof JDBCFeatureSource
                     || mappedSource instanceof JDBCFeatureStore) {
                 // has database as data source, we can use the data source filter capabilities
                 FilterCapabilities capabilities = getFilterCapabilities(mappedSource);
@@ -184,9 +205,9 @@ public class MappingFeatureIteratorFactory {
                 Filter preFilter = splitter.getFilterPre();
                 query.setFilter(preFilter);
                 filter = splitter.getFilterPost();
-                
+
                 if (isJoining) {
-                   ((JoiningQuery)query).setDenormalised(mapping.isDenormalised());
+                    ((JoiningQuery) query).setDenormalised(mapping.isDenormalised());
                 }
                 if (isJoining && isListFilter != null) {
                     // pass it on in JoiningQuery so it can be handled when the SQL is prepared
@@ -215,22 +236,30 @@ public class MappingFeatureIteratorFactory {
                 }
                 int offset = 0;
                 int maxFeatures = 1000000;
-                if (hasPostFilter) {      
+                if (hasPostFilter) {
                     // can't apply offset to the SQL query if using post filters
                     // it has to be applied to the post filter
                     offset = query.getStartIndex() == null ? 0 : query.getStartIndex();
                     query.setStartIndex(null);
                     maxFeatures = query.getMaxFeatures();
                     removeQueryLimitIfDenormalised = true;
-                } 
-                iterator = new DataAccessMappingFeatureIterator(store, mapping, query, isFiltered,
-                        removeQueryLimitIfDenormalised, hasPostFilter);
+                }
+                iterator =
+                        new DataAccessMappingFeatureIterator(
+                                store,
+                                mapping,
+                                query,
+                                isFiltered,
+                                removeQueryLimitIfDenormalised,
+                                hasPostFilter,
+                                transaction);
                 if (isListFilter != null) {
                     ((DataAccessMappingFeatureIterator) iterator).setListFilter(isListFilter);
                 }
                 if (hasPostFilter) {
-                    iterator = new PostFilteringMappingFeatureIterator(iterator, filter,
-                            maxFeatures, offset);
+                    iterator =
+                            new PostFilteringMappingFeatureIterator(
+                                    iterator, filter, maxFeatures, offset);
                 }
             } else if (mappedSource instanceof MappingFeatureSource) {
                 // web service data access wrapper
@@ -241,8 +270,17 @@ public class MappingFeatureIteratorFactory {
             } else {
                 // non database sources e.g. property data store
                 Filter filter = query.getFilter();
-                iterator = new DataAccessMappingFeatureIterator(store, mapping, query,
-                        !Filter.INCLUDE.equals(filter), true);
+                for (CustomSourceDataStore customSourceDataStore :
+                        CustomSourceDataStore.loadExtensions()) {
+                    // extension point to allow custom data source to provide their own iterator
+                    iterator =
+                            customSourceDataStore.buildIterator(store, mapping, query, transaction);
+                }
+                if (iterator == null) {
+                    iterator =
+                            new DataAccessMappingFeatureIterator(
+                                    store, mapping, query, !Filter.INCLUDE.equals(filter), true);
+                }
                 // HACK HACK HACK
                 // experimental/temporary solution for isList subsetting by filtering
                 if (isListFilter != null) {
@@ -262,8 +300,8 @@ public class MappingFeatureIteratorFactory {
             throws IllegalArgumentException {
         FilterCapabilities capabilities = null;
         if (mappedSource instanceof JDBCFeatureSource) {
-            capabilities = ((JDBCFeatureSource) mappedSource).getDataStore()
-                    .getFilterCapabilities();
+            capabilities =
+                    ((JDBCFeatureSource) mappedSource).getDataStore().getFilterCapabilities();
         } else if (mappedSource instanceof JDBCFeatureStore) {
             capabilities = ((JDBCFeatureStore) mappedSource).getDataStore().getFilterCapabilities();
         } else {
@@ -272,5 +310,4 @@ public class MappingFeatureIteratorFactory {
         }
         return capabilities;
     }
-
 }

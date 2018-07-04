@@ -1,0 +1,16 @@
+The mosselzaad.gpkg file is provided as open data by the data portal (www.pdok.nl). It was provided by Frank Steggink (Frank.Steggink@kadaster.nl)
+
+Here is some translated metadata about this dataset from http://www.nationaalgeoregister.nl/geonetwork/srv/dut/catalog.search#/metadata/5457A9C4-2224-41BB-A958-1C983C7633C7?tab=general: 
+
+Mussel seed collection installations 2017
+
+Brontype: Dataset
+
+Plots, in rye ownership, on which mussel seed collection installations are allowed. A mussel seed collection plant (MZI) is an underground anchoring structure consisting of ropes and network, which catches mussel bread in the water column. This mussel broth (also called mussel seed) is harvested from the construction and further grown to consumption mussels on shellfish parcels. This file distinguishes between 3 different types:
+1. MZI areas according to implementation of fishing regulations
+2. MZI plots issued by Productschap mussels
+3. MZI Plots of Experimental:
+
+
+
+contact information (http://www.nationaalgeoregister.nl/geonetwork/srv/dut/catalog.search#/metadata/5457A9C4-2224-41BB-A958-1C983C7633C7?tab=contact).

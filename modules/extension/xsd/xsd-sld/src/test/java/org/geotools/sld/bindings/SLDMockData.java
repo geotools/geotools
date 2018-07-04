@@ -16,18 +16,13 @@
  */
 package org.geotools.sld.bindings;
 
+import javax.xml.namespace.QName;
+import org.geotools.filter.v1_0.OGC;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import javax.xml.namespace.QName;
-import org.geotools.filter.v1_0.OGC;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDMockData {
     static Element anchorPoint(Document document, Node parent) {
         Element anchorPoint = element(SLD.ANCHORPOINT, document, parent);
@@ -162,7 +157,7 @@ public class SLDMockData {
 
         return polygonSymbolizer;
     }
-    
+
     static Element transformedPolygonSymbolizer(Document document, Node parent) {
         Element polygonSymbolizer = element(SLD.POLYGONSYMBOLIZER, document, parent);
 
@@ -180,7 +175,7 @@ public class SLDMockData {
 
         return lineSymbolizer;
     }
-    
+
     static Element transformedLineSymbolizer(Document document, Node parent) {
         Element lineSymbolizer = element(SLD.LINESYMBOLIZER, document, parent);
 
@@ -197,7 +192,7 @@ public class SLDMockData {
 
         return geometry;
     }
-    
+
     static Element transformedGeometry(Document document, Node parent) {
         Element geometry = element(SLD.GEOMETRY, document, parent);
         Element function = element(OGC.Function, document, geometry);
@@ -209,7 +204,6 @@ public class SLDMockData {
 
         return geometry;
     }
-
 
     static Element channelSelectionRGB(Document document, Node parent) {
         Element channelSelection = element(SLD.CHANNELSELECTION, document, parent);
@@ -228,7 +222,25 @@ public class SLDMockData {
 
         return channelSelection;
     }
-    
+
+    static Element channelSelectionExpression(Document document, Node parent) {
+        Element channelSelection = element(SLD.CHANNELSELECTION, document, parent);
+
+        Element channel = element(SLD.REDCHANNEL, document, channelSelection);
+        Element sourceChannelName = element(SLD.SOURCECHANNELNAME, document, channel);
+        Element expression = envFuntionfilter(document, sourceChannelName);
+
+        channel = element(SLD.GREENCHANNEL, document, channelSelection);
+        sourceChannelName = element(SLD.SOURCECHANNELNAME, document, channel);
+        sourceChannelName.appendChild(document.createTextNode("2"));
+
+        channel = element(SLD.BLUECHANNEL, document, channelSelection);
+        sourceChannelName = element(SLD.SOURCECHANNELNAME, document, channel);
+        sourceChannelName.appendChild(document.createTextNode("3"));
+
+        return channelSelection;
+    }
+
     static Element channelSelectionGray(Document document, Node parent) {
         Element channelSelection = element(SLD.CHANNELSELECTION, document, parent);
 
@@ -314,14 +326,14 @@ public class SLDMockData {
 
     static Element halo(Document document, Node parent, boolean setFillRadius) {
         Element halo = element(SLD.HALO, document, parent);
-        if(setFillRadius) {
+        if (setFillRadius) {
             fill(document, halo);
             element(SLD.RADIUS, document, halo, "1.0");
         }
 
         return halo;
     }
-    
+
     static Element textSymbolizer(Document document, Node parent) {
         Element textSymbolizer = element(SLD.TEXTSYMBOLIZER, document, parent);
         geometry(document, textSymbolizer);
@@ -356,7 +368,7 @@ public class SLDMockData {
 
         return pointSymbolizer;
     }
-    
+
     static Element transformedPointSymbolizer(Document document, Node parent) {
         Element pointSymbolizer = element(SLD.POINTSYMBOLIZER, document, parent);
 
@@ -381,6 +393,17 @@ public class SLDMockData {
         return filter;
     }
 
+    static Element envFuntionfilter(Document document, Node parent) {
+        Element filter = element(OGC.Function, document, parent);
+        filter.setAttribute("name", "env");
+        Element lit1 = element(OGC.Literal, document, filter);
+        lit1.appendChild(document.createTextNode("B1"));
+        Element lit2 = element(OGC.Literal, document, filter);
+        lit2.appendChild(document.createTextNode("1"));
+
+        return filter;
+    }
+
     static Element rule(Document document, Node parent) {
         Element rule = element(SLD.RULE, document, parent);
         element(SLD.NAME, document, rule, "theName");
@@ -401,10 +424,10 @@ public class SLDMockData {
 
         return rule;
     }
-    
+
     static Element localizedRule(Document document, Node parent) {
         Element rule = element(SLD.RULE, document, parent);
-        
+
         element(SLD.NAME, document, rule, "theName");
         Element title = element(SLD.TITLE, document, rule, "theTitle");
         Element loc = element(SLD.LOCALIZED, document, title, "italian");

@@ -1,30 +1,25 @@
 package org.geotools.data.shapefile;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
-
 import org.geotools.TestData;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.URLs;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class DuplicateColumnNameReaderTest extends TestCaseSupport {
 
     public final String SHPFILE = "dup-column/dup_column.shp";
@@ -38,7 +33,7 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
     @Test
     public void testAttributeReader() throws IOException {
         URL u = TestData.url(TestCaseSupport.class, SHPFILE);
-        File shpFile = DataUtilities.urlToFile(u);
+        File shpFile = URLs.urlToFile(u);
 
         // open the test shapefile
         ShapefileDataStore store = new ShapefileDataStore(shpFile.toURI().toURL());
@@ -59,7 +54,7 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
     @Test
     public void testAttributeReaderIndexed() throws IOException {
         URL u = TestData.url(TestCaseSupport.class, SHPFILE);
-        File shpFile = DataUtilities.urlToFile(u);
+        File shpFile = URLs.urlToFile(u);
 
         // open the test shapefile
         // creates both indexed and regular shapefile data store
@@ -73,10 +68,13 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
         // query the datastore
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter idFilter = ff.id(Collections.singleton(fid));
-        final Query query = new Query(indexedstore.getSchema().getName().getLocalPart(),
-                idFilter, new String[] { testColumn });
-        final SimpleFeatureCollection indexedfeatures = indexedstore.getFeatureSource()
-                .getFeatures(query);
+        final Query query =
+                new Query(
+                        indexedstore.getSchema().getName().getLocalPart(),
+                        idFilter,
+                        new String[] {testColumn});
+        final SimpleFeatureCollection indexedfeatures =
+                indexedstore.getFeatureSource().getFeatures(query);
 
         // compare the results
         SimpleFeatureIterator indexIterator = indexedfeatures.features();

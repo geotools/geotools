@@ -1,0 +1,60 @@
+{
+    "version": 8,
+    "name": "Empty",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -106.37942820066576,
+        39.62499260458827
+    ],
+    "zoom": 15.80212732929003,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        },
+        "composite": {
+            "url": "mapbox://test.cixwdy1nj001933p91a6wnxe0-2emxh,testuser.cixwc3qp2001l2wquza8ccz21-658xw",
+            "type": "vector"
+        }
+    },
+    "sprite": "file:src/test/resources/org/geotools/mbstyle/sprite/test-data/sprite",
+    "glyphs": "mapbox://fonts/test/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "test-id",
+            "type": "line",
+            "source": "test-source",
+            "source-layer": "test-source-layer",
+            "layout": {
+                "visibility": "visible",
+                "line-cap": "square",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#0099ff",
+                "line-pattern": "pattern",
+                "line-opacity": 0.9,
+                "line-translate-anchor": "viewport",
+                "line-dasharray": [50, 50],
+                "line-offset": 30,
+                "line-translate": [
+                    3,
+                    30
+                ],
+                "line-width": 32,
+                "line-blur": 2
+            }
+        }
+    ],
+    "created": "2017-01-13T22:41:15.108Z",
+    "id": "cixwe1jim001l2sp6his5j6ns",
+    "modified": "2017-02-08T16:37:48.232Z",
+    "owner": "test",
+    "draft": false
+}

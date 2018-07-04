@@ -1,6 +1,23 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
+
 package org.geotools.styling.css;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.geotools.styling.css.selector.Data;
 import org.geotools.styling.css.selector.Id;
@@ -26,8 +43,8 @@ public class SpecificityTest {
 
     public static Selector PSEUDO_NTH = PseudoClass.newPseudoClass("mark", 1);
 
-    public static Selector SCALE_MIN_10000 = new ScaleRange(10000, true, Double.POSITIVE_INFINITY,
-            false);
+    public static Selector SCALE_MIN_10000 =
+            new ScaleRange(10000, true, Double.POSITIVE_INFINITY, false);
 
     public static Selector PROPERTY = new Data("att > 10");
 
@@ -118,5 +135,4 @@ public class SpecificityTest {
         assertSpecificity(1, 0, 0, new Or(ID, ENV));
         assertSpecificity(1, 0, 0, new Or(ID, Selector.and(ENV, TYPENAME)));
     }
-
 }

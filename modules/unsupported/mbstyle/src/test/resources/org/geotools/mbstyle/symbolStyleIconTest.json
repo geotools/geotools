@@ -1,0 +1,899 @@
+{
+    "version": 8,
+    "name": "test1",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -97.3102941696629,
+        35.83404898934407
+    ],
+    "zoom": 7.0452562559703695,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7,vickdw.cizpz2fks00pn32lfclo5hgs0-1ntw8",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/vickdw/cizpzdf27007s2rqk92rgy4dj",
+    "glyphs": "mapbox://fonts/vickdw/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "background",
+            "type": "background",
+            "paint": {
+                "background-color": "#dedede"
+            }
+        },
+        {
+            "id": "landuse_overlay_national_park",
+            "type": "fill",
+            "source": "composite",
+            "source-layer": "landuse_overlay",
+            "filter": [
+                "==",
+                "class",
+                "national_park"
+            ],
+            "paint": {
+                "fill-color": "#d2edae",
+                "fill-opacity": 0.75
+            }
+        },
+        {
+            "id": "landuse_park",
+            "type": "fill",
+            "source": "composite",
+            "source-layer": "landuse",
+            "filter": [
+                "==",
+                "class",
+                "park"
+            ],
+            "paint": {
+                "fill-color": "#d2edae"
+            }
+        },
+        {
+            "id": "waterway",
+            "type": "line",
+            "source": "composite",
+            "source-layer": "waterway",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "in",
+                    "class",
+                    "canal",
+                    "river"
+                ]
+            ],
+            "paint": {
+                "line-color": "#a0cfdf",
+                "line-width": {
+                    "base": 1.4,
+                    "stops": [
+                        [
+                            8,
+                            0.5
+                        ],
+                        [
+                            20,
+                            15
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "water",
+            "type": "fill",
+            "source": "composite",
+            "source-layer": "water",
+            "paint": {
+                "fill-color": "#a0cfdf"
+            }
+        },
+        {
+            "id": "building",
+            "type": "fill",
+            "source": "composite",
+            "source-layer": "building",
+            "paint": {
+                "fill-color": "#d6d6d6"
+            }
+        },
+        {
+            "id": "tunnel_minor",
+            "type": "line",
+            "source": "composite",
+            "source-layer": "road",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "==",
+                        "structure",
+                        "tunnel"
+                    ],
+                    [
+                        "in",
+                        "class",
+                        "link",
+                        "motorway_link",
+                        "path",
+                        "pedestrian",
+                        "service",
+                        "street",
+                        "street_limited",
+                        "track"
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "butt",
+                "line-join": "miter"
+            },
+            "paint": {
+                "line-color": "#efefef",
+                "line-width": {
+                    "base": 1.55,
+                    "stops": [
+                        [
+                            4,
+                            0.25
+                        ],
+                        [
+                            20,
+                            30
+                        ]
+                    ]
+                },
+                "line-dasharray": [
+                    0.36,
+                    0.18
+                ]
+            }
+        },
+        {
+            "id": "tunnel_major",
+            "type": "line",
+            "source": "composite",
+            "source-layer": "road",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "==",
+                        "structure",
+                        "tunnel"
+                    ],
+                    [
+                        "in",
+                        "class",
+                        "motorway",
+                        "primary",
+                        "secondary",
+                        "tertiary",
+                        "trunk"
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "butt",
+                "line-join": "miter"
+            },
+            "paint": {
+                "line-color": "#fff",
+                "line-width": {
+                    "base": 1.4,
+                    "stops": [
+                        [
+                            6,
+                            0.5
+                        ],
+                        [
+                            20,
+                            30
+                        ]
+                    ]
+                },
+                "line-dasharray": [
+                    0.28,
+                    0.14
+                ]
+            }
+        },
+        {
+            "id": "road_minor",
+            "type": "line",
+            "source": "composite",
+            "source-layer": "road",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "in",
+                        "class",
+                        "link",
+                        "motorway_link",
+                        "path",
+                        "pedestrian",
+                        "service",
+                        "street",
+                        "street_limited",
+                        "track"
+                    ],
+                    [
+                        "in",
+                        "structure",
+                        "ford",
+                        "none"
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#efefef",
+                "line-width": {
+                    "base": 1.55,
+                    "stops": [
+                        [
+                            4,
+                            0.25
+                        ],
+                        [
+                            20,
+                            30
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "road_major",
+            "type": "line",
+            "source": "composite",
+            "source-layer": "road",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "in",
+                        "class",
+                        "motorway",
+                        "primary",
+                        "secondary",
+                        "tertiary",
+                        "trunk"
+                    ],
+                    [
+                        "in",
+                        "structure",
+                        "ford",
+                        "none"
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#fff",
+                "line-width": {
+                    "base": 1.4,
+                    "stops": [
+                        [
+                            6,
+                            0.5
+                        ],
+                        [
+                            20,
+                            30
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "bridge_minor case",
+            "type": "line",
+            "source": "composite",
+            "source-layer": "road",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "==",
+                        "structure",
+                        "bridge"
+                    ],
+                    [
+                        "in",
+                        "class",
+                        "link",
+                        "motorway_link",
+                        "path",
+                        "pedestrian",
+                        "service",
+                        "street",
+                        "street_limited",
+                        "track"
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "butt",
+                "line-join": "miter"
+            },
+            "paint": {
+                "line-color": "#dedede",
+                "line-width": {
+                    "base": 1.6,
+                    "stops": [
+                        [
+                            12,
+                            0.5
+                        ],
+                        [
+                            20,
+                            10
+                        ]
+                    ]
+                },
+                "line-gap-width": {
+                    "base": 1.55,
+                    "stops": [
+                        [
+                            4,
+                            0.25
+                        ],
+                        [
+                            20,
+                            30
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "bridge_major case",
+            "type": "line",
+            "metadata": {},
+            "source": "composite",
+            "source-layer": "road",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "==",
+                        "structure",
+                        "bridge"
+                    ],
+                    [
+                        "in",
+                        "class",
+                        "motorway",
+                        "primary",
+                        "secondary",
+                        "tertiary",
+                        "trunk"
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "butt",
+                "line-join": "miter"
+            },
+            "paint": {
+                "line-color": "#dedede",
+                "line-width": {
+                    "base": 1.6,
+                    "stops": [
+                        [
+                            12,
+                            0.5
+                        ],
+                        [
+                            20,
+                            10
+                        ]
+                    ]
+                },
+                "line-gap-width": {
+                    "base": 1.55,
+                    "stops": [
+                        [
+                            4,
+                            0.25
+                        ],
+                        [
+                            20,
+                            30
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "bridge_major",
+            "type": "line",
+            "metadata": {},
+            "source": "composite",
+            "source-layer": "road",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "==",
+                        "structure",
+                        "bridge"
+                    ],
+                    [
+                        "in",
+                        "class",
+                        "motorway",
+                        "primary",
+                        "secondary",
+                        "tertiary",
+                        "trunk"
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#fff",
+                "line-width": {
+                    "base": 1.4,
+                    "stops": [
+                        [
+                            6,
+                            0.5
+                        ],
+                        [
+                            20,
+                            30
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "bridge_minor",
+            "type": "line",
+            "source": "composite",
+            "source-layer": "road",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "==",
+                        "structure",
+                        "bridge"
+                    ],
+                    [
+                        "in",
+                        "class",
+                        "link",
+                        "motorway_link",
+                        "path",
+                        "pedestrian",
+                        "service",
+                        "street",
+                        "street_limited",
+                        "track"
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#efefef",
+                "line-width": {
+                    "base": 1.55,
+                    "stops": [
+                        [
+                            4,
+                            0.25
+                        ],
+                        [
+                            20,
+                            30
+                        ]
+                    ]
+                }
+            }
+        },
+        {
+            "id": "admin_country",
+            "type": "line",
+            "source": "composite",
+            "source-layer": "admin",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "all",
+                    [
+                        "<=",
+                        "admin_level",
+                        2
+                    ],
+                    [
+                        "==",
+                        "maritime",
+                        0
+                    ]
+                ]
+            ],
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#8b8a8a"
+
+            }
+        },
+        {
+            "id": "poi_label",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "poi_label",
+            "minzoom": 5,
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "Point"
+                ],
+                [
+                    "all",
+                    [
+                        "==",
+                        "localrank",
+                        1
+                    ],
+                    [
+                        "==",
+                        "scalerank",
+                        1
+                    ]
+                ]
+            ],
+            "layout": {
+                "icon-image": "{maki}-11",
+                "text-offset": [
+                    0,
+                    0.5
+                ],
+                "text-field": "{name_en}",
+                "text-font": [
+                    "Open Sans Semibold",
+                    "Arial Unicode MS Bold"
+                ],
+                "text-max-width": 8,
+                "text-anchor": "top",
+                "text-size": 11,
+                "icon-size": 1
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-width": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
+                "text-halo-blur": 1
+            }
+        },
+        {
+            "id": "road_major_label",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "road_label",
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "LineString"
+                ],
+                [
+                    "in",
+                    "class",
+                    "motorway",
+                    "primary",
+                    "secondary",
+                    "tertiary",
+                    "trunk"
+                ]
+            ],
+            "layout": {
+                "symbol-placement": "line",
+                "text-field": "{name_en}",
+                "text-font": [
+                    "Open Sans Semibold",
+                    "Arial Unicode MS Bold"
+                ],
+                "text-transform": "uppercase",
+                "text-letter-spacing": 0.1,
+                "text-size": {
+                    "base": 1.4,
+                    "stops": [
+                        [
+                            10,
+                            8
+                        ],
+                        [
+                            20,
+                            14
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-color": "rgba(255,255,255,0.75)",
+                "text-halo-width": 2
+            }
+        },
+        {
+            "id": "place_label_other",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "place_label",
+            "minzoom": 8,
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "Point"
+                ],
+                [
+                    "in",
+                    "type",
+                    "hamlet",
+                    "island",
+                    "neighbourhood",
+                    "suburb",
+                    "town",
+                    "village"
+                ]
+            ],
+            "layout": {
+                "text-field": "{name_en}",
+                "text-font": [
+                    "Open Sans Semibold",
+                    "Arial Unicode MS Bold"
+                ],
+                "text-max-width": 6,
+                "text-size": {
+                    "stops": [
+                        [
+                            6,
+                            12
+                        ],
+                        [
+                            12,
+                            16
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-color": "rgba(255,255,255,0.75)",
+                "text-halo-width": 1,
+                "text-halo-blur": 1
+            }
+        },
+        {
+            "id": "place_label_city",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "place_label",
+            "maxzoom": 16,
+            "filter": [
+                "all",
+                [
+                    "==",
+                    "$type",
+                    "Point"
+                ],
+                [
+                    "==",
+                    "type",
+                    "city"
+                ]
+            ],
+            "layout": {
+                "text-field": "{name_en}",
+                "text-font": [
+                    "Open Sans Bold",
+                    "Arial Unicode MS Bold"
+                ],
+                "text-max-width": 10,
+                "text-size": {
+                    "stops": [
+                        [
+                            3,
+                            12
+                        ],
+                        [
+                            8,
+                            16
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-color": "rgba(255,255,255,0.75)",
+                "text-halo-width": 1,
+                "text-halo-blur": 1
+            }
+        },
+        {
+            "id": "country_label",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "country_label",
+            "maxzoom": 12,
+            "filter": [
+                "==",
+                "$type",
+                "Point"
+            ],
+            "layout": {
+                "text-field": "{name_en}",
+                "text-font": [
+                    "Open Sans Regular",
+                    "Arial Unicode MS Regular"
+                ],
+                "text-max-width": 10,
+                "text-size": {
+                    "stops": [
+                        [
+                            3,
+                            14
+                        ],
+                        [
+                            8,
+                            22
+                        ]
+                    ]
+                }
+            },
+            "paint": {
+                "text-color": "#666",
+                "text-halo-color": "rgba(255,255,255,0.75)",
+                "text-halo-width": 1,
+                "text-halo-blur": 1
+            }
+        },
+        {
+            "id": "earthquakes",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "earthquakes",
+            "filter": [
+                "all",
+                [
+                    "<=",
+                    "Primary ID",
+                    "3.0"
+                ],
+                [
+                    ">=",
+                    "Primary ID",
+                    "3.0"
+                ]
+            ],
+            "layout": {
+                "icon-image": "triangle-11",
+                "text-field": "{Primary ID}",
+                "text-size": 10,
+                "text-justify": "left",
+                "text-anchor": "bottom-right",
+                "text-offset": [
+                    0,
+                    0
+                ],
+                "icon-offset": [
+                    1,
+                    5
+                ],
+                "text-rotate": -60
+            },
+            "paint": {
+                "text-opacity": 1
+            }
+        },
+        {
+            "id": "admin",
+            "type": "line",
+            "metadata": {},
+            "source": "composite",
+            "source-layer": "admin",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {}
+        }
+    ],
+    "created": "2017-02-28T20:23:22.576Z",
+    "id": "cizpzdf27007s2rqk92rgy4dj",
+    "modified": "2017-03-07T21:41:36.234Z",
+    "owner": "vickdw",
+    "visibility": "private",
+    "draft": false
+}

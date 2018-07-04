@@ -18,18 +18,16 @@ package org.geotools.tutorial.process;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.impl.AbstractProcess;
 import org.geotools.text.Text;
 import org.geotools.util.NullProgressListener;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.util.ProgressListener;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Process for adding a buffer around a geometry
- * 
+ *
  * @author gdavis
  */
 class BufferProcess extends AbstractProcess {
@@ -44,12 +42,10 @@ class BufferProcess extends AbstractProcess {
     }
 
     public Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor) {
-        if (started)
-            throw new IllegalStateException("Process can only be run once");
+        if (started) throw new IllegalStateException("Process can only be run once");
         started = true;
 
-        if (monitor == null)
-            monitor = new NullProgressListener();
+        if (monitor == null) monitor = new NullProgressListener();
         try {
             monitor.started();
             monitor.setTask(Text.text("Grabbing arguments"));

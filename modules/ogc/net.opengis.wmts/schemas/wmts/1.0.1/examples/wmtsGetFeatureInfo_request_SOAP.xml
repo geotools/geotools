@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is an example of a SOAP WMTS GetFeatureInfo request -->
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xsi:schemaLocation="http://www.w3.org/2003/05/soap-envelope http://www.w3.org/2003/05/soap-envelope">
+	<soap:Body>
+		<GetFeatureInfo  xmlns="http://www.opengis.net/wmts/1.0"
+			xmlns:ows="http://www.opengis.net/ows/1.1"
+			xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://schemas.opengis.net/wmts/1.0/wmtsGetFeatureInfo_request.xsd"
+			service="WMTS" version="1.0.0">
+			<GetTile service="WMTS" version="1.0.0">
+				<Layer>coastlines</Layer>
+				<Style>blue</Style>
+				<Format>image/png</Format>
+				<DimensionNameValue name="TIME">2007-06</DimensionNameValue>
+				<TileMatrixSet>coastlinesInCrs84</TileMatrixSet>
+				<TileMatrix>5e6</TileMatrix>
+				<TileRow>42</TileRow>
+				<TileCol>112</TileCol>
+			</GetTile>
+			<J>23</J>
+			<I>35</I>
+			<InfoFormat>text/html</InfoFormat>
+		</GetFeatureInfo>
+	</soap:Body>
+</soap:Envelope>

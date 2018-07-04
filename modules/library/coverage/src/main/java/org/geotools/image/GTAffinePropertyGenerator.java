@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,12 +16,12 @@
  */
 package org.geotools.image;
 
+import com.sun.media.jai.util.PropertyGeneratorImpl;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
-
 import javax.media.jai.GeometricOpImage;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
@@ -31,14 +31,12 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
-
 import org.geotools.factory.Hints;
 
-import com.sun.media.jai.util.PropertyGeneratorImpl;
-
 /**
- * A property generator for the Affine operation that builds a ROI with a sane image layout even with large upscale factors
- * 
+ * A property generator for the Affine operation that builds a ROI with a sane image layout even
+ * with large upscale factors
+ *
  * @author Andrea Aime - GeoSolutions
  * @author Daniele Romagnoli - GeoSolutions
  */
@@ -47,12 +45,12 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
 
     /** Constructor. */
     public GTAffinePropertyGenerator() {
-        super(new String[] { "ROI" }, new Class[] { ROI.class }, new Class[] { RenderedOp.class });
+        super(new String[] {"ROI"}, new Class[] {ROI.class}, new Class[] {RenderedOp.class});
     }
 
     static boolean registered = false;
 
-    public synchronized static void register(boolean force) {
+    public static synchronized void register(boolean force) {
         if (!registered || force) {
             OperationRegistry registry = JAI.getDefaultInstance().getOperationRegistry();
             registry.addPropertyGenerator("rendered", "Affine", new GTAffinePropertyGenerator());
@@ -77,7 +75,8 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
             // Retrieve the rendered source image and its ROI.
             RenderedImage src = pb.getRenderedSource(0);
             Object property = src.getProperty("ROI");
-            if (property == null || property.equals(java.awt.Image.UndefinedProperty)
+            if (property == null
+                    || property.equals(java.awt.Image.UndefinedProperty)
                     || !(property instanceof ROI)) {
                 // Check on the parameterBlock
                 if (pb.getNumParameters() >= 4 && pb.getObjectParameter(3) != null) {
@@ -96,13 +95,16 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
             PlanarImage dst = op.getRendering();
             if (dst instanceof GeometricOpImage
                     && ((GeometricOpImage) dst).getBorderExtender() == null) {
-                srcBounds = new Rectangle(src.getMinX() + interp.getLeftPadding(),
-                        src.getMinY() + interp.getTopPadding(),
-                        src.getWidth() - interp.getWidth() + 1,
-                        src.getHeight() - interp.getHeight() + 1);
+                srcBounds =
+                        new Rectangle(
+                                src.getMinX() + interp.getLeftPadding(),
+                                src.getMinY() + interp.getTopPadding(),
+                                src.getWidth() - interp.getWidth() + 1,
+                                src.getHeight() - interp.getHeight() + 1);
             } else {
-                srcBounds = new Rectangle(src.getMinX(), src.getMinY(), src.getWidth(),
-                        src.getHeight());
+                srcBounds =
+                        new Rectangle(
+                                src.getMinX(), src.getMinY(), src.getWidth(), src.getHeight());
             }
 
             // If necessary, clip the ROI to the effective source bounds.
@@ -115,7 +117,7 @@ public class GTAffinePropertyGenerator extends PropertyGeneratorImpl {
 
             // Create the transformed ROI.
             ROI dstROI;
-            if(srcROI.getClass().equals(ROI.class)) {
+            if (srcROI.getClass().equals(ROI.class)) {
                 // we need to build an image with the same layout of the op, or we
                 // risk of building a very large ROI with super-tiny tiles when
                 // doing up-sampling of a single pixel image (high oversample case)

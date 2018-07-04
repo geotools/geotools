@@ -16,18 +16,18 @@
  */
 package org.geotools.data.geobuf;
 
-import com.vividsolutions.jts.geom.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.locationtech.jts.geom.*;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 /**
  * GeobufFeature encodes and decodes SimpleFeatures
+ *
  * @author Jared Erickson
  */
 public class GeobufFeature {
@@ -62,16 +62,19 @@ public class GeobufFeature {
     public SimpleFeature decode(InputStream in) throws IOException {
         Geobuf.Data data = Geobuf.Data.parseFrom(in);
         GeobufFeatureType geobufFeatureType = new GeobufFeatureType();
-        return decode(data, new SimpleFeatureBuilder(geobufFeatureType.getFeatureType("features", data)));
+        return decode(
+                data, new SimpleFeatureBuilder(geobufFeatureType.getFeatureType("features", data)));
     }
 
     protected Geobuf.Data.Feature encode(SimpleFeature feature) {
         Geobuf.Data.Feature.Builder featureBuilder = Geobuf.Data.Feature.newBuilder();
         int i = 0;
-        for (AttributeDescriptor attributeDescriptor : feature.getFeatureType().getAttributeDescriptors()) {
+        for (AttributeDescriptor attributeDescriptor :
+                feature.getFeatureType().getAttributeDescriptors()) {
             Object value = feature.getAttribute(attributeDescriptor.getName());
             if (attributeDescriptor instanceof GeometryDescriptor) {
-                featureBuilder.setGeometry(geobufGeometry.encode((Geometry)feature.getDefaultGeometry()));
+                featureBuilder.setGeometry(
+                        geobufGeometry.encode((Geometry) feature.getDefaultGeometry()));
             } else {
                 featureBuilder.addValues(i, encodeValue(attributeDescriptor, value));
                 i++;
@@ -83,13 +86,13 @@ public class GeobufFeature {
     protected Geobuf.Data.Value encodeValue(AttributeDescriptor attributeDescriptor, Object value) {
         Geobuf.Data.Value.Builder builder = Geobuf.Data.Value.newBuilder();
         if (value instanceof String) {
-            builder.setStringValue((String)value);
+            builder.setStringValue((String) value);
         } else if (value instanceof Integer) {
             builder.setPosIntValue((Integer) value);
         } else if (value instanceof Double) {
             builder.setDoubleValue((Double) value);
         } else if (value instanceof Boolean) {
-            builder.setBoolValue((Boolean)value);
+            builder.setBoolValue((Boolean) value);
         } else {
             builder.setStringValue(value != null ? value.toString() : null);
         }
@@ -98,26 +101,32 @@ public class GeobufFeature {
 
     protected SimpleFeature decode(Geobuf.Data data) throws IOException {
         GeobufFeatureType geobufFeatureType = new GeobufFeatureType();
-        return decode(data, 0, new SimpleFeatureBuilder(geobufFeatureType.getFeatureType("features", data)));
+        return decode(
+                data,
+                0,
+                new SimpleFeatureBuilder(geobufFeatureType.getFeatureType("features", data)));
     }
 
     protected SimpleFeature decode(Geobuf.Data data, SimpleFeatureBuilder featureBuilder) {
-       return decode(data, 0, featureBuilder);
+        return decode(data, 0, featureBuilder);
     }
 
-    protected SimpleFeature decode(Geobuf.Data data, int index, SimpleFeatureBuilder featureBuilder) {
+    protected SimpleFeature decode(
+            Geobuf.Data data, int index, SimpleFeatureBuilder featureBuilder) {
         if (data.getDataTypeCase() == Geobuf.Data.DataTypeCase.GEOMETRY) {
             if (index > 0) {
                 return null;
             }
-            featureBuilder.set(featureBuilder.getFeatureType().getGeometryDescriptor().getLocalName(),
+            featureBuilder.set(
+                    featureBuilder.getFeatureType().getGeometryDescriptor().getLocalName(),
                     geobufGeometry.decode(data.getGeometry()));
 
         } else if (data.getDataTypeCase() == Geobuf.Data.DataTypeCase.FEATURE) {
             if (index > 0) {
                 return null;
             }
-            featureBuilder.set(featureBuilder.getFeatureType().getGeometryDescriptor().getLocalName(),
+            featureBuilder.set(
+                    featureBuilder.getFeatureType().getGeometryDescriptor().getLocalName(),
                     geobufGeometry.decode(data.getFeature().getGeometry()));
             int keyCount = data.getKeysCount();
             for (int j = 0; j < keyCount; j++) {
@@ -130,7 +139,8 @@ public class GeobufFeature {
                 return null;
             }
             Geobuf.Data.Feature feature = data.getFeatureCollection().getFeatures(index);
-            featureBuilder.set(featureBuilder.getFeatureType().getGeometryDescriptor().getLocalName(),
+            featureBuilder.set(
+                    featureBuilder.getFeatureType().getGeometryDescriptor().getLocalName(),
                     geobufGeometry.decode(feature.getGeometry()));
             int keyCount = data.getKeysCount();
             for (int j = 0; j < keyCount; j++) {
@@ -159,5 +169,4 @@ public class GeobufFeature {
             return null;
         }
     }
-
 }

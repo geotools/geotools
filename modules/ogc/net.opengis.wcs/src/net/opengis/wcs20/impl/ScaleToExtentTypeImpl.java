@@ -31,104 +31,104 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class ScaleToExtentTypeImpl extends EObjectImpl implements ScaleToExtentType {
     /**
-     * The cached value of the '{@link #getTargetAxisExtent() <em>Target Axis Extent</em>}' reference list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getTargetAxisExtent() <em>Target Axis Extent</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getTargetAxisExtent()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTargetAxisExtent()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<TargetAxisExtentType> targetAxisExtent;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected ScaleToExtentTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.SCALE_TO_EXTENT_TYPE;
-    }
+		return Wcs20Package.Literals.SCALE_TO_EXTENT_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EList<TargetAxisExtentType> getTargetAxisExtent() {
-        if (targetAxisExtent == null) {
-            targetAxisExtent = new EObjectResolvingEList<TargetAxisExtentType>(TargetAxisExtentType.class, this, Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT);
-        }
-        return targetAxisExtent;
-    }
+		if (targetAxisExtent == null) {
+			targetAxisExtent = new EObjectResolvingEList<TargetAxisExtentType>(TargetAxisExtentType.class, this, Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT);
+		}
+		return targetAxisExtent;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT:
-                return getTargetAxisExtent();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT:
+				return getTargetAxisExtent();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT:
-                getTargetAxisExtent().clear();
-                getTargetAxisExtent().addAll((Collection<? extends TargetAxisExtentType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT:
+				getTargetAxisExtent().clear();
+				getTargetAxisExtent().addAll((Collection<? extends TargetAxisExtentType>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT:
-                getTargetAxisExtent().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT:
+				getTargetAxisExtent().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT:
-                return targetAxisExtent != null && !targetAxisExtent.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.SCALE_TO_EXTENT_TYPE__TARGET_AXIS_EXTENT:
+				return targetAxisExtent != null && !targetAxisExtent.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //ScaleToExtentTypeImpl

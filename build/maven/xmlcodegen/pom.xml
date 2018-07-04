@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.maven</groupId>
     <artifactId>maven</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
   
 
@@ -49,6 +49,25 @@
 			<groupId>org.geotools.xsd</groupId>
 			<artifactId>gt-xsd-core</artifactId>
 			<version>${project.version}</version>
+		</dependency>	
+                <dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-graph</artifactId>
+			<version>${project.version}</version>
 		</dependency>
+
 	</dependencies>
+
+  <build> 
+    <plugins>
+      <plugin>
+        <groupId>com.coveo</groupId>
+        <artifactId>fmt-maven-plugin</artifactId>
+        <configuration>
+            <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

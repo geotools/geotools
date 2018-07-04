@@ -17,7 +17,6 @@
 
 package org.geotools.gce.imagemosaic.jdbc.custom;
 
-
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.sql.CallableStatement;
@@ -30,9 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
-
 import javax.sql.DataSource;
-
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.jdbc.datasource.DataSourceFinder;
 import org.geotools.gce.imagemosaic.jdbc.Config;
@@ -45,29 +42,22 @@ import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * This class is a base class for customzied JDBCAccess
- * Special implentations should subclass
- * 
+ * This class is a base class for customzied JDBCAccess Special implentations should subclass
+ *
  * @author mcr
- * 
- *
- *
  * @source $URL$
  */
-
 public abstract class JDBCAccessCustom implements JDBCAccess {
 
-    private final static Logger LOGGER = Logging.getLogger(JDBCAccessCustom.class
-            .getPackage().getName());
+    private static final Logger LOGGER =
+            Logging.getLogger(JDBCAccessCustom.class.getPackage().getName());
 
     private Config config;
     private DataSource dataSource;
 
     private List<ImageLevelInfo> levelInfos = new ArrayList<ImageLevelInfo>();
 
-    
-
-    public JDBCAccessCustom(Config config) throws IOException{
+    public JDBCAccessCustom(Config config) throws IOException {
         super();
         this.config = config;
         this.dataSource = DataSourceFinder.getDataSource(config.getDataSourceParams());
@@ -92,22 +82,24 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
     /* (non-Javadoc)
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#initialize()
      */
-    abstract public void initialize() throws SQLException, IOException;
-    
+    public abstract void initialize() throws SQLException, IOException;
 
     /* (non-Javadoc)
      * @see org.geotools.gce.imagemosaic.jdbc.JDBCAccess#startTileDecoders(java.awt.Rectangle, org.geotools.geometry.GeneralEnvelope, org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo, java.util.concurrent.LinkedBlockingQueue, org.geotools.coverage.grid.GridCoverageFactory)
      */
-    abstract public void startTileDecoders(Rectangle pixelDimension, GeneralEnvelope requestEnvelope,
-            ImageLevelInfo info, LinkedBlockingQueue<TileQueueElement> tileQueue,
-            GridCoverageFactory coverageFactory) throws IOException;
+    public abstract void startTileDecoders(
+            Rectangle pixelDimension,
+            GeneralEnvelope requestEnvelope,
+            ImageLevelInfo info,
+            LinkedBlockingQueue<TileQueueElement> tileQueue,
+            GridCoverageFactory coverageFactory)
+            throws IOException;
 
     /**
      * getConnection
-     * 
+     *
      * @return Connection
-     **/
-
+     */
     protected Connection getConnection() {
 
         Connection con = null;
@@ -124,11 +116,9 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
 
     /**
      * closeConnection
-     * 
-     * @param conn
-     *            Connection Object passed to be closed
-     **/
-
+     *
+     * @param conn Connection Object passed to be closed
+     */
     protected void closeConnection(Connection con) {
         try {
 
@@ -142,11 +132,9 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
 
     /**
      * closePreparedStatement
-     * 
-     * @param stmt
-     *            PreparedStatement Object passed to be closed
-     **/
-
+     *
+     * @param stmt PreparedStatement Object passed to be closed
+     */
     protected void closePreparedStmt(PreparedStatement stmt) {
         try {
 
@@ -157,14 +145,12 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
             throw new RuntimeException(e);
         }
     }
-    
+
     /**
      * closeCallableStatement
-     * 
-     * @param stmt
-     *            CallableStatement Object passed to be closed
-     **/
-
+     *
+     * @param stmt CallableStatement Object passed to be closed
+     */
     protected void closeCallableStmt(CallableStatement stmt) {
         try {
 
@@ -176,14 +162,11 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
         }
     }
 
-
     /**
      * closeStmt
-     * 
-     * @param stmt
-     *            Statement Object passed to be closed
-     **/
-
+     *
+     * @param stmt Statement Object passed to be closed
+     */
     protected void closeStmt(Statement stmt) {
 
         try {
@@ -198,11 +181,9 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
 
     /**
      * closeResultSet
-     * 
-     * @param rs
-     *            ResultSet Object passed to be closed
-     **/
-
+     *
+     * @param rs ResultSet Object passed to be closed
+     */
     protected void closeResultSet(ResultSet rs) {
         try {
 
@@ -215,11 +196,10 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
     }
 
     /**
-     *getCRS
-     * 
+     * getCRS
+     *
      * @return CoordinateReferenceSystem
-     **/
-
+     */
     protected CoordinateReferenceSystem getCRS() {
 
         LOGGER.fine("getCRS Method");
@@ -241,21 +221,15 @@ public abstract class JDBCAccessCustom implements JDBCAccess {
         LOGGER.fine("Returning CRS Result");
 
         return crs;
-
     }
 
-    /**
-     * @return the Config
-     */
+    /** @return the Config */
     public Config getConfig() {
         return config;
     }
 
-    /**
-     * @return LevelInofs
-     */
+    /** @return LevelInofs */
     public List<ImageLevelInfo> getLevelInfos() {
         return levelInfos;
     }
-    
 }

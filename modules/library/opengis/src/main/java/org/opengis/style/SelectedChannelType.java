@@ -4,22 +4,21 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2008, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.style;
 
 import org.opengis.annotation.Extension;
 import org.opengis.annotation.XmlElement;
-
+import org.opengis.filter.expression.Expression;
 
 /**
  * A class to hold Channel information for use in ChannelSelection objects.
  *
- *
- *
  * @source $URL$
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
+ *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium
  * @author Ian Turton, CCG
  * @author Johann Sorel (Geomatys)
@@ -31,10 +30,10 @@ public interface SelectedChannelType {
     /**
      * Returns the channel's name.
      *
-     * @return String
+     * @return Expression
      */
     @XmlElement("SourceChannelName")
-    public String getChannelName();
+    public Expression getChannelName();
 
     /**
      * Contrast enhancement may be applied to each channel in isolation.
@@ -51,5 +50,4 @@ public interface SelectedChannelType {
      */
     @Extension
     Object accept(StyleVisitor visitor, Object extraData);
-    
 }

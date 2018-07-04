@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic.egr;
 
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -36,35 +37,32 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RasterFactory;
-
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.prep.PreparedGeometry;
-import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.prep.PreparedGeometry;
+import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
 
 /**
  * Creates a quantized binary representation of a Bounding Box.
- * <p/>
- * <br/>
- * The BBOx is represented by a grid of pixels, which are then split in a set of tiles. <br/>
- * <p/>
- * By {@link #add(com.vividsolutions.jts.geom.Geometry) adding} Geometries to the Binarizator, they will be rendered on the grid.<br/>
- * <p/>
- * You can check if the grid has been fully drawn using the {@link #isComplete() } method.<br/>
- * <p/>
- * When a Tile has been completely drawn, it is removed from the list.
+ *
+ * <p><br>
+ * The BBOx is represented by a grid of pixels, which are then split in a set of tiles. <br>
+ *
+ * <p>By {@link #add(org.locationtech.jts.geom.Geometry) adding} Geometries to the Binarizator, they
+ * will be rendered on the grid.<br>
+ *
+ * <p>You can check if the grid has been fully drawn using the {@link #isComplete() } method.<br>
+ *
+ * <p>When a Tile has been completely drawn, it is removed from the list.
  *
  * @author Emanuele Tajariol <etj at geo-solutions dot it>
  */
@@ -79,9 +77,7 @@ class Binarizator {
     // only used for debug
     private final int origW, origH;
 
-    /**
-     * Tiles not yet fully covered by the input geometries
-     */
+    /** Tiles not yet fully covered by the input geometries */
     private List<Tile> activeTiles;
 
     Binarizator(Polygon bbox, int pxWidth, int pxHeight, int tileWidth, int tileHeight) {
@@ -92,8 +88,8 @@ class Binarizator {
         this.origH = pxHeight;
 
         final ReferencedEnvelope env = JTS.toEnvelope(bbox);
-        w2gTransform = RendererUtilities.worldToScreenTransform(env,
-                new Rectangle(pxWidth, pxHeight));
+        w2gTransform =
+                RendererUtilities.worldToScreenTransform(env, new Rectangle(pxWidth, pxHeight));
 
         if (w2gTransform == null) {
             LOGGER.info("Null transformer, possible bad bbox requested " + env);
@@ -139,17 +135,15 @@ class Binarizator {
         }
     }
 
-    /**
-     * Tells if the grid has been fully drawn.
-     */
+    /** Tells if the grid has been fully drawn. */
     public boolean isComplete() {
         return activeTiles.isEmpty();
     }
 
     /**
-     * Adds a ROI to the binarizator. This assumes the operation is already fully working in raster space, in other words, the world to grid
-     * transformation is the identity
-     * 
+     * Adds a ROI to the binarizator. This assumes the operation is already fully working in raster
+     * space, in other words, the world to grid transformation is the identity
+     *
      * @param roi
      * @return
      */
@@ -175,7 +169,7 @@ class Binarizator {
         final PlanarImage roiImage = roi.getAsImage();
         final Rectangle roiBounds = roiImage.getBounds();
         boolean added = false;
-        for (Iterator<Tile> it = activeTiles.iterator(); it.hasNext();) {
+        for (Iterator<Tile> it = activeTiles.iterator(); it.hasNext(); ) {
             Tile tile = it.next();
 
             Rectangle tileBounds = tile.getTileArea();
@@ -184,8 +178,12 @@ class Binarizator {
                     added = true;
                     if (tile.isFullyCovered()) {
                         if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine("Removing covered tile " + tile + " (" + activeTiles.size()
-                                    + " left)");
+                            LOGGER.fine(
+                                    "Removing covered tile "
+                                            + tile
+                                            + " ("
+                                            + activeTiles.size()
+                                            + " left)");
                         }
                         it.remove();
                         tile.dispose();
@@ -219,7 +217,7 @@ class Binarizator {
         Shape projectedShape = w2gTransform.createTransformedShape(shape);
         boolean added = false;
 
-        for (Iterator<Tile> it = activeTiles.iterator(); it.hasNext();) {
+        for (Iterator<Tile> it = activeTiles.iterator(); it.hasNext(); ) {
             Tile tile = it.next();
 
             Polygon tileBBox = tile.getTileBBox();
@@ -231,8 +229,12 @@ class Binarizator {
                 {
                     added = true;
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("Removing fully covered tile " + tile + " ("
-                                + activeTiles.size() + " left)");
+                        LOGGER.fine(
+                                "Removing fully covered tile "
+                                        + tile
+                                        + " ("
+                                        + activeTiles.size()
+                                        + " left)");
                     }
                     it.remove();
                     tile.dispose();
@@ -247,8 +249,12 @@ class Binarizator {
                         added = true;
                         if (tile.isFullyCovered()) {
                             if (LOGGER.isLoggable(Level.FINE)) {
-                                LOGGER.fine("Removing covered tile " + tile + " ("
-                                        + activeTiles.size() + " left)");
+                                LOGGER.fine(
+                                        "Removing covered tile "
+                                                + tile
+                                                + " ("
+                                                + activeTiles.size()
+                                                + " left)");
                             }
                             it.remove();
                             tile.dispose();
@@ -272,12 +278,12 @@ class Binarizator {
     BufferedImage getDebugImage() {
 
         // "The code works only if the sample model data type is BYTE");
-        SampleModel sampleModel = new MultiPixelPackedSampleModel(DataBuffer.TYPE_BYTE, origW,
-                origH, 1);
+        SampleModel sampleModel =
+                new MultiPixelPackedSampleModel(DataBuffer.TYPE_BYTE, origW, origH, 1);
 
         // build the raster
-        WritableRaster mainRaster = RasterFactory.createWritableRaster(sampleModel,
-                new java.awt.Point(0, 0));
+        WritableRaster mainRaster =
+                RasterFactory.createWritableRaster(sampleModel, new java.awt.Point(0, 0));
 
         // fill with 0 the whole raster
         int[] data = new int[origW * origH];
@@ -290,7 +296,7 @@ class Binarizator {
         int colnum = origW / tileWidth;
         int rownum = origH / tileHeight;
 
-        final byte[] x00FF = { 0, (byte) 0xff };
+        final byte[] x00FF = {0, (byte) 0xff};
         final ColorModel binaryCM = new IndexColorModel(1, 2, x00FF, x00FF, x00FF);
 
         BufferedImage mainBI = new BufferedImage(binaryCM, mainRaster, false, null);
@@ -332,7 +338,8 @@ class Binarizator {
         // for (int row = 0; row <= rownum; row++)
         // {
         // graphics.setColor(Color.WHITE);
-        // graphics.drawString(col + "x" + row, (int) ((col + 0.5) * tileWidth), (int) ((row - 0.5) * tileWidth));
+        // graphics.drawString(col + "x" + row, (int) ((col + 0.5) * tileWidth), (int) ((row - 0.5)
+        // * tileWidth));
         // }
         // }
 
@@ -342,10 +349,16 @@ class Binarizator {
     private void drawCross(Graphics2D graphics, int col, int row) {
         graphics.drawRect(col * tileWidth, row * tileHeight, tileWidth - 1, tileHeight - 1);
 
-        graphics.drawLine(col * tileWidth, row * tileHeight, (col * tileWidth) + tileWidth - 1,
+        graphics.drawLine(
+                col * tileWidth,
+                row * tileHeight,
+                (col * tileWidth) + tileWidth - 1,
                 (row * tileHeight) + tileHeight - 1);
 
-        graphics.drawLine((col * tileWidth) + tileWidth - 1, row * tileWidth, col * tileWidth,
+        graphics.drawLine(
+                (col * tileWidth) + tileWidth - 1,
+                row * tileWidth,
+                col * tileWidth,
                 (row * tileHeight) + tileHeight - 1);
     }
 
@@ -356,8 +369,6 @@ class Binarizator {
             for (int x = y % 2; x < tileWidth; x += 2) {
                 graphics.drawRect((col * tileWidth) + x, (row * tileWidth) + y, 0, 0);
             }
-
         }
     }
-
 }

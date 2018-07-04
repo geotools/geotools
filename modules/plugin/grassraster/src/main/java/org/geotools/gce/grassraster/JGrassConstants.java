@@ -20,14 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>
  * Constants used by the JGrass engine
- * </p>
- * 
+ *
  * @author Andrea Antonello - www.hydrologis.com
  * @since 1.1.0
- *
- *
  * @source $URL$
  */
 @SuppressWarnings("nls")
@@ -125,16 +121,19 @@ public class JGrassConstants {
      */
     /** raster map types */
     public static final String GRASSBINARYRASTERMAP = "grassbinaryraster";
+
     public static final String GRASSASCIIRASTERMAP = "grassasciiraster";
     public static final String FTRASTERMAP = "fluidturtleasciiraster";
     public static final String ESRIRASTERMAP = "esriasciigrid";
 
     /** grass 6 vector map types */
     public static final String GRASS6VECTORMAP = "grass6vector";
+
     public static final String OLDGRASSVECTORMAP = "oldgrassvector";
 
     /** grass application paths */
     public static final String GRASSBIN = "bin";
+
     public static final String GRASSLIB = "lib";
 
     /*
@@ -165,21 +164,17 @@ public class JGrassConstants {
     public static final String ESRI_HEADER_NOVALUE_PIECE = "nov";
     public static final String ESRI_HEADER_NOVALUE = "nodata_value";
 
-    /**
-     * Array of supported types for csv imports.
-     */
-    public static final String[] CSVTYPESARRAY = new String[]{"X", "Y", "Z", "String", "Double",
-            "Integer"};
-    /**
-     * {@link Map} of classes for csv types.
-     */
+    /** Array of supported types for csv imports. */
+    public static final String[] CSVTYPESARRAY =
+            new String[] {"X", "Y", "Z", "String", "Double", "Integer"};
+    /** {@link Map} of classes for csv types. */
     public static final Map<String, Class<?>> CSVTYPESCLASSESMAP = new HashMap<String, Class<?>>();
+
     static {
         CSVTYPESCLASSESMAP.put(CSVTYPESARRAY[3], String.class);
         CSVTYPESCLASSESMAP.put(CSVTYPESARRAY[4], Double.class);
         CSVTYPESCLASSESMAP.put(CSVTYPESARRAY[5], Integer.class);
     }
 
-    private JGrassConstants() {
-    }
+    private JGrassConstants() {}
 }

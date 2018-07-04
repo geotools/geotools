@@ -4,45 +4,35 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.temporal;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import org.opengis.util.CodeList;
-import org.opengis.annotation.UML;
-
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.opengis.annotation.UML;
+import org.opengis.util.CodeList;
 
 /**
- * Values for relative temporal position based on the 13 temporal relationships
- * identified by Allen (1993).
+ * Values for relative temporal position based on the 13 temporal relationships identified by Allen
+ * (1993).
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  * @author Martin Desruisseaux (IRD)
- *
  * @todo Need javadoc for each enumeration.
- *
- *
  * @source $URL$
  */
-@UML(identifier="TM_RelativePosition", specification=ISO_19108)
+@UML(identifier = "TM_RelativePosition", specification = ISO_19108)
 public final class RelativePosition extends CodeList<RelativePosition> {
-    /**
-     * Serial number for compatibility with different versions.
-     */
+    /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = -2918422623747953495L;
 
-    /**
-     * List of all enumerations of this type.
-     * Must be declared before any enum declaration.
-     */
+    /** List of all enumerations of this type. Must be declared before any enum declaration. */
     private static final List<RelativePosition> VALUES = new ArrayList<RelativePosition>(13);
 
     public static final RelativePosition BEFORE = new RelativePosition("BEFORE");
@@ -60,8 +50,8 @@ public final class RelativePosition extends CodeList<RelativePosition> {
     public static final RelativePosition ENDED_BY = new RelativePosition("ENDED_BY");
 
     /**
-     * Constructs an enum with the given name. The new enum is
-     * automatically added to the list returned by {@link #values}.
+     * Constructs an enum with the given name. The new enum is automatically added to the list
+     * returned by {@link #values}.
      *
      * @param name The enum name. This name must not be in use by an other enum of this type.
      */
@@ -80,16 +70,14 @@ public final class RelativePosition extends CodeList<RelativePosition> {
         }
     }
 
-    /**
-     * Returns the list of enumerations of the same kind than this enum.
-     */
+    /** Returns the list of enumerations of the same kind than this enum. */
     public RelativePosition[] family() {
         return values();
     }
 
     /**
-     * Returns the relative position that matches the given string, or returns a
-     * new one if none match it.
+     * Returns the relative position that matches the given string, or returns a new one if none
+     * match it.
      *
      * @param code The name of the code to fetch or to create.
      * @return A code matching the given name.

@@ -17,24 +17,24 @@
 
 package org.geotools.renderer.lite;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.util.GeometricShapeFactory;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.util.GeometricShapeFactory;
 import org.opengis.filter.FilterFactory2;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 /**
- * This tests <a href="https://osgeo-org.atlassian.net/browse/GEOT-5401">[GEOT-5401] FastBBOX
- * should not cast to SimpleFeature</a>, ensuring that FastBBOX does not require a SimpleFeature,
- * but only relies on the (custom) property accessor.
+ * This tests <a href="https://osgeo-org.atlassian.net/browse/GEOT-5401">[GEOT-5401] FastBBOX should
+ * not cast to SimpleFeature</a>, ensuring that FastBBOX does not require a SimpleFeature, but only
+ * relies on the (custom) property accessor.
  *
  * @author Jes Wulfsberg Nielsen - NorthTech
  */
@@ -52,25 +52,37 @@ public class FastBBOXTest {
 
     @Test
     public void evaluate_envelopeOverlapsBBOX() throws Exception {
-        FastBBOX fastBBOX = new FastBBOX(filterFactory.property("geometry"),new Envelope(0.8, 2, 0.8, 2), filterFactory);
+        FastBBOX fastBBOX =
+                new FastBBOX(
+                        filterFactory.property("geometry"),
+                        new Envelope(0.8, 2, 0.8, 2),
+                        filterFactory);
         assertTrue(fastBBOX.evaluate(circle));
     }
 
     @Test
     public void evaluate_envelopeIntersectsGeometry() throws Exception {
-        FastBBOX fastBBOX = new FastBBOX(filterFactory.property("geometry"), new Envelope(0.5, 2, 0.5, 2), filterFactory);
+        FastBBOX fastBBOX =
+                new FastBBOX(
+                        filterFactory.property("geometry"),
+                        new Envelope(0.5, 2, 0.5, 2),
+                        filterFactory);
         assertTrue(fastBBOX.evaluate(circle));
     }
 
     @Test
     public void evaluate_envelopeDisjoint() throws Exception {
-        FastBBOX fastBBOX = new FastBBOX(filterFactory.property("geometry"), new Envelope(1.1, 2, 1.1, 2), filterFactory);
+        FastBBOX fastBBOX =
+                new FastBBOX(
+                        filterFactory.property("geometry"),
+                        new Envelope(1.1, 2, 1.1, 2),
+                        filterFactory);
         assertFalse(fastBBOX.evaluate(circle));
     }
 
     /**
-     * An object carrying data which will be accessed through a custom
-     * {@link MockPropertyAccessorFactory}
+     * An object carrying data which will be accessed through a custom {@link
+     * MockPropertyAccessorFactory}
      */
     public static class MockDataObject {
         Geometry geometry;
@@ -83,12 +95,13 @@ public class FastBBOXTest {
     /**
      * A minimalistic MockPropertyAccessor (and its factory), which only recognizes a single field;
      * namely the "geometry". It is registered through the
-     * META-INF/services/org.geotools.filter.expression.PropertyAccessorFactory SPI registration
-     * in the test/resources.
+     * META-INF/services/org.geotools.filter.expression.PropertyAccessorFactory SPI registration in
+     * the test/resources.
      */
     public static class MockPropertyAccessorFactory implements PropertyAccessorFactory {
         @Override
-        public PropertyAccessor createPropertyAccessor(Class<?> type, String xpath, Class<?> target, Hints hints) {
+        public PropertyAccessor createPropertyAccessor(
+                Class<?> type, String xpath, Class<?> target, Hints hints) {
             if (!MockDataObject.class.equals(type)) {
                 return null;
             }
@@ -99,7 +112,8 @@ public class FastBBOXTest {
                 }
 
                 @Override
-                public <T> T get(Object object, String xpath, Class<T> target) throws IllegalArgumentException {
+                public <T> T get(Object object, String xpath, Class<T> target)
+                        throws IllegalArgumentException {
                     if ("geometry".equals(xpath)) {
                         return (T) ((MockDataObject) object).geometry;
                     } else {
@@ -108,7 +122,8 @@ public class FastBBOXTest {
                 }
 
                 @Override
-                public <T> void set(Object object, String xpath, T value, Class<T> target) throws IllegalArgumentException {
+                public <T> void set(Object object, String xpath, T value, Class<T> target)
+                        throws IllegalArgumentException {
                     throw new UnsupportedOperationException();
                 }
             };

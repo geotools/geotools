@@ -16,23 +16,20 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import javax.xml.namespace.QName;
-
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.gml3.bindings.CurveTypeBinding;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:CurvePropertyType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *         <code>
  *  &lt;complexType name="CurvePropertyType"&gt;
@@ -55,26 +52,22 @@ import com.vividsolutions.jts.geom.LineString;
  *          &lt;/annotation&gt;
  *      &lt;/attributeGroup&gt;
  *  &lt;/complexType&gt;
- * 
+ *
  *          </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *         /geotools/gml3/bindings/CurvePropertyTypeBinding.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
+ *     /geotools/gml3/bindings/CurvePropertyTypeBinding.java $
  */
 public class CurvePropertyTypeBinding extends org.geotools.gml3.bindings.CurvePropertyTypeBinding
-    implements Comparable {
+        implements Comparable {
 
     GeometryFactory gf;
-    
-    public CurvePropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry, GeometryFactory gf) {
+
+    public CurvePropertyTypeBinding(
+            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry, GeometryFactory gf) {
         super(encodingUtils, idRegistry);
         this.gf = gf;
     }
@@ -82,7 +75,7 @@ public class CurvePropertyTypeBinding extends org.geotools.gml3.bindings.CurvePr
     public Class<? extends Geometry> getGeometryType() {
         return LineString.class;
     }
-    
+
     @Override
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(LineString.class);
@@ -95,5 +88,4 @@ public class CurvePropertyTypeBinding extends org.geotools.gml3.bindings.CurvePr
             return 0;
         }
     }
-
 }

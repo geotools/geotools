@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,28 +18,23 @@ package org.geotools.xml.handlers.xsi;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import org.geotools.xml.XSIElementHandler;
 import org.xml.sax.Attributes;
 
-
 /**
  * RedefineHandler purpose.
- * 
- * <p>
- * represents a 'redefine' element
- * </p>
+ *
+ * <p>represents a 'redefine' element
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class RedefineHandler extends XSIElementHandler {
     /** 'redefine' */
-    public final static String LOCALNAME = "redefine";
+    public static final String LOCALNAME = "redefine";
+
     private static int offset = 0;
     private String id;
     private String schemaLocation;
@@ -56,19 +51,16 @@ public class RedefineHandler extends XSIElementHandler {
         return offset++;
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((schemaLocation == null)
-        ? 1 : schemaLocation.hashCode())) + hashCodeOffset;
+        return (LOCALNAME.hashCode()
+                        * ((id == null) ? 1 : id.hashCode())
+                        * ((schemaLocation == null) ? 1 : schemaLocation.hashCode()))
+                + hashCodeOffset;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
             //
@@ -125,11 +117,10 @@ public class RedefineHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts){
+    public void startElement(String namespaceURI, String localName, Attributes atts) {
         id = atts.getValue("", "id");
 
         if (id == null) {
@@ -143,85 +134,48 @@ public class RedefineHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
-    /**
-     * <p>
-     * Returns a list of AttributeGroupHandlers
-     * </p>
-     *
-     */
+    /** Returns a list of AttributeGroupHandlers */
     public List getAttributeGroups() {
         return attributeGroups;
     }
 
-    /**
-     * <p>
-     * Returns a list of ComplexTypeHandlers
-     * </p>
-     *
-     */
+    /** Returns a list of ComplexTypeHandlers */
     public List getComplexTypes() {
         return complexTypes;
     }
 
-    /**
-     * <p>
-     * Returns a list of GroupHandlers
-     * </p>
-     *
-     */
+    /** Returns a list of GroupHandlers */
     public List getGroups() {
         return groups;
     }
 
-    /**
-     * <p>
-     * Returns the id attribute
-     * </p>
-     *
-     */
+    /** Returns the id attribute */
     public String getId() {
         return id;
     }
 
-    /**
-     * <p>
-     * Returns the schemaLocation attribute
-     * </p>
-     *
-     */
+    /** Returns the schemaLocation attribute */
     public String getSchemaLocation() {
         return schemaLocation;
     }
 
-    /**
-     * <p>
-     * Returns a list of SimpleTypeHandlers
-     * </p>
-     *
-     */
+    /** Returns a list of SimpleTypeHandlers */
     public List getSimpleTypes() {
         return simpleTypes;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 }

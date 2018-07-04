@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.opengis.net/wmts/1.0" 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:gml="http://www.opengis.net/gml"
+	xmlns:ows="http://www.opengis.net/ows/1.1"
+	xmlns:wmts="http://www.opengis.net/wmts/1.0" 
+	elementFormDefault="qualified" xml:lang="en"
+	version="1.0.1">
+	<annotation>
+		<appinfo>wmtsGetFeatureInfo_response</appinfo>
+		<documentation>
+			This XML Schema Document was intended to encode SOAP 
+			response for a WMTS GetFeatureInfo request but it can be used in other 
+			encoding. Since GetFeatureInfo response is completely open, it can not 
+			be more specific.
+			
+			WMTS is an OGC Standard.
+			Copyright (c) 2009,2010 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	<!-- =============================================================
+		includes and imports
+	============================================================== -->
+	<include schemaLocation="wmtsPayload_response.xsd"/>
+	<import namespace="http://www.opengis.net/ows/1.1" schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"/>
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!-- =============================================================
+		elements and types
+	============================================================== -->
+	<element name="FeatureInfoResponse">
+		<complexType>
+			<choice>
+				<element ref="gml:_FeatureCollection">
+					<annotation>
+						<documentation>
+							This allows to define any FeatureCollection that is a substitutionGroup 
+							of gml:_GML and use it here. A Geography Markup Language GML 
+							Simple Features Profile level 0 response format is strongly 
+							recommended as a FeatureInfo response.
+						</documentation>
+					</annotation>
+				</element>
+				<element ref="wmts:TextPayload">
+					<annotation>
+						<documentation>
+							This allows to include any text format that is not a gml:_FeatureCollection 
+							like HTML, TXT, etc
+						</documentation>
+					</annotation>
+				</element>
+				<element ref="wmts:BinaryPayload">
+					<annotation>
+						<documentation>
+							This allows to include any binary format. Binary formats are not 
+							common response for a GeFeatureInfo requests but possible for 
+							some imaginative implementations.
+						</documentation>
+					</annotation>
+				</element>
+				<element name="AnyContent" type="anyType">
+					<annotation>
+						<documentation>
+							This allows to include any XML content that it is not any of 
+							the previous ones.
+						</documentation>
+					</annotation>
+				</element>
+			</choice>
+		</complexType>
+	</element>
+</schema>

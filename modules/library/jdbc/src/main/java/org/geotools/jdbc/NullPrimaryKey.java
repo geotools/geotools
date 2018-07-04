@@ -18,23 +18,17 @@ package org.geotools.jdbc;
 
 import java.util.ArrayList;
 
-
 /**
  * Primary key for tables which do not have a primary key.
- * <p>
- * New key values are generated "from thin air" and are not persistent.
- * </p>
+ *
+ * <p>New key values are generated "from thin air" and are not persistent.
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class NullPrimaryKey extends PrimaryKey {
 
     public NullPrimaryKey(String tableName) {
         super(tableName, new ArrayList());
-        
     }
 }

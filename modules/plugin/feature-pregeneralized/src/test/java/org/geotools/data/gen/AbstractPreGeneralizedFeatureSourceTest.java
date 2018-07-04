@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,12 +20,9 @@ package org.geotools.data.gen;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -43,29 +40,24 @@ import org.geotools.filter.SortByImpl;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Assert;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
-import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.xml.sax.helpers.NamespaceSupport;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
-    static Map<String, PreGeneralizedDataStore> DSMap = new HashMap<String, PreGeneralizedDataStore>();
+    static Map<String, PreGeneralizedDataStore> DSMap =
+            new HashMap<String, PreGeneralizedDataStore>();
 
     @Override
     protected void setUp() throws Exception {
@@ -76,8 +68,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
     protected PreGeneralizedDataStore getDataStore(String configName) throws IOException {
 
         PreGeneralizedDataStore ds = DSMap.get(configName);
-        if (ds != null)
-            return ds;
+        if (ds != null) return ds;
 
         GeneralizationInfosProvider provider = new GeneralizationInfosProviderImpl();
         GeneralizationInfos ginfos = null;
@@ -150,28 +141,23 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 1.0);
                 env = fs.getBounds(q);
-                if (env != null)
-                    assertTrue(envOrig.intersects((Envelope) env));
+                if (env != null) assertTrue(envOrig.intersects((Envelope) env));
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 5.0);
                 env = fs.getBounds(q);
-                if (env != null)
-                    assertTrue(envOrig.intersects((Envelope) env));
+                if (env != null) assertTrue(envOrig.intersects((Envelope) env));
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 10.0);
                 env = fs.getBounds(q);
-                if (env != null)
-                    assertTrue(envOrig.intersects((Envelope) env));
+                if (env != null) assertTrue(envOrig.intersects((Envelope) env));
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 20.0);
                 env = fs.getBounds(q);
-                if (env != null)
-                    assertTrue(envOrig.intersects((Envelope) env));
+                if (env != null) assertTrue(envOrig.intersects((Envelope) env));
 
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 25.0);
                 env = fs.getBounds(q);
-                if (env != null)
-                    assertTrue(envOrig.intersects((Envelope) env));
+                if (env != null) assertTrue(envOrig.intersects((Envelope) env));
             }
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
@@ -190,8 +176,8 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             DefaultQuery[] queries = new DefaultQuery[2];
             queries[0] = new DefaultQuery("GenStreams");
-            queries[1] = new DefaultQuery("GenStreams", filter,
-                    new String[] { "the_geom", "CAT_ID" });
+            queries[1] =
+                    new DefaultQuery("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
 
             for (DefaultQuery q : queries) {
 
@@ -202,8 +188,12 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
                 typeName = reader.getFeatureType().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(reader.getFeatureType().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        reader.getFeatureType()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 while (reader.hasNext()) {
                     SimpleFeature f = reader.next();
                     checkPoints(f, 0.0);
@@ -214,8 +204,12 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
                 typeName = reader.getFeatureType().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(reader.getFeatureType().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        reader.getFeatureType()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 while (reader.hasNext()) {
                     SimpleFeature f = reader.next();
                     checkPoints(f, 5.0);
@@ -226,8 +220,12 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
                 typeName = reader.getFeatureType().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(reader.getFeatureType().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        reader.getFeatureType()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 while (reader.hasNext()) {
                     SimpleFeature f = reader.next();
                     checkPoints(f, 10.0);
@@ -238,8 +236,12 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
                 typeName = reader.getFeatureType().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(reader.getFeatureType().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        reader.getFeatureType()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 while (reader.hasNext()) {
                     SimpleFeature f = reader.next();
                     checkPoints(f, 20.0);
@@ -250,14 +252,17 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 reader = ds.getFeatureReader(q, Transaction.AUTO_COMMIT);
                 typeName = reader.getFeatureType().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(reader.getFeatureType().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        reader.getFeatureType()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 while (reader.hasNext()) {
                     SimpleFeature f = reader.next();
                     checkPoints(f, 50.0);
                 }
                 reader.close();
-
             }
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
@@ -275,9 +280,9 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             Filter filter = CQL.toFilter("CAT_ID = 2");
 
-            Query q = new DefaultQuery("GenStreams", filter, new String[] { "CAT_ID" });
+            Query q = new DefaultQuery("GenStreams", filter, new String[] {"CAT_ID"});
 
-            for (Double distance : new Double[] { 1.0, 5.0, 10.0, 20.0, 50.0 }) {
+            for (Double distance : new Double[] {1.0, 5.0, 10.0, 20.0, 50.0}) {
                 FeatureReader<SimpleFeatureType, SimpleFeature> reader;
                 String typeName;
 
@@ -305,8 +310,8 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             DefaultQuery[] queries = new DefaultQuery[2];
             queries[0] = new DefaultQuery("GenStreams");
-            queries[1] = new DefaultQuery("GenStreams", filter,
-                    new String[] { "the_geom", "CAT_ID" });
+            queries[1] =
+                    new DefaultQuery("GenStreams", filter, new String[] {"the_geom", "CAT_ID"});
 
             for (DefaultQuery q : queries) {
 
@@ -317,16 +322,20 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 fCollection = fs.getFeatures(q);
                 typeName = fCollection.getSchema().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        fCollection
+                                                .getSchema()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 SimpleFeatureIterator iterator = fCollection.features();
                 try {
                     while (iterator.hasNext()) {
                         SimpleFeature f = iterator.next();
                         checkPoints(f, 0.0);
                     }
-                }
-                finally {
+                } finally {
                     iterator.close();
                 }
 
@@ -334,16 +343,20 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 fCollection = fs.getFeatures(q);
                 typeName = fCollection.getSchema().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        fCollection
+                                                .getSchema()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 iterator = fCollection.features();
                 try {
                     while (iterator.hasNext()) {
                         SimpleFeature f = iterator.next();
                         checkPoints(f, 5.0);
                     }
-                }
-                finally {
+                } finally {
                     iterator.close();
                 }
 
@@ -351,16 +364,20 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 fCollection = fs.getFeatures(q);
                 typeName = fCollection.getSchema().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        fCollection
+                                                .getSchema()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 iterator = fCollection.features();
                 try {
                     while (iterator.hasNext()) {
                         SimpleFeature f = iterator.next();
                         checkPoints(f, 10.0);
                     }
-                }
-                finally {
+                } finally {
                     iterator.close();
                 }
 
@@ -368,32 +385,40 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                 fCollection = fs.getFeatures(q);
                 typeName = fCollection.getSchema().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        fCollection
+                                                .getSchema()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 iterator = fCollection.features();
                 try {
                     while (iterator.hasNext()) {
                         SimpleFeature f = iterator.next();
                         checkPoints(f, 20.0);
                     }
-                }
-                finally {
+                } finally {
                     iterator.close();
                 }
                 q.getHints().put(Hints.GEOMETRY_DISTANCE, 50.0);
                 fCollection = fs.getFeatures(q);
                 typeName = fCollection.getSchema().getTypeName();
                 assertTrue("GenStreams".equals(typeName));
-                assertTrue("the_geom".equals(fCollection.getSchema().getGeometryDescriptor()
-                        .getLocalName()));
+                assertTrue(
+                        "the_geom"
+                                .equals(
+                                        fCollection
+                                                .getSchema()
+                                                .getGeometryDescriptor()
+                                                .getLocalName()));
                 iterator = fCollection.features();
                 try {
                     while (iterator.hasNext()) {
                         SimpleFeature f = iterator.next();
                         checkPoints(f, 0.0);
                     }
-                }
-                finally {
+                } finally {
                     iterator.close();
                 }
             }
@@ -410,7 +435,6 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
         }
-
     }
 
     protected void testGetFeatures2(String configName) {
@@ -434,8 +458,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
                     SimpleFeature f = iterator.next();
                     checkPoints(f, 0.0);
                 }
-            }
-            finally {
+            } finally {
                 iterator.close();
             }
             fCollection = fs.getFeatures(Filter.INCLUDE);
@@ -446,13 +469,12 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             iterator = fCollection.features();
             try {
                 while (iterator.hasNext()) {
-                
+
                     SimpleFeature f = iterator.next();
                     checkPoints(f, 0.0);
                 }
                 // iterator.remove() no longer provided
-            }
-            finally {
+            } finally {
                 iterator.close();
             }
             ds.dispose();
@@ -460,7 +482,6 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
         }
-
     }
 
     protected void testGetFeatures3(String configName) {
@@ -497,8 +518,7 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             list.add(array[1]);
             assertTrue(fCollection.containsAll(list));
 
-            SimpleFeatureCollection subCollection = fCollection
-                    .subCollection(Filter.INCLUDE);
+            SimpleFeatureCollection subCollection = fCollection.subCollection(Filter.INCLUDE);
             typeName = subCollection.getSchema().getTypeName();
             assertTrue("GenStreams".equals(typeName));
             assertTrue(fCollection.size() == subCollection.size());
@@ -512,16 +532,17 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             // SortBy2 sortBy = new SortByImpl(new
             // AttributeExpressionImpl("CAT_ID"),SortOrder.ASCENDING);
-            SortBy sortBy = new SortBy() {
-                public PropertyName getPropertyName() {
-                    return new AttributeExpressionImpl("CAT_ID");
-                }
-                public SortOrder getSortOrder() {
-                    return SortOrder.ASCENDING;
-                }
-            };
-            SimpleFeatureCollection sortedCollection = fCollection
-                    .sort(sortBy);
+            SortBy sortBy =
+                    new SortBy() {
+                        public PropertyName getPropertyName() {
+                            return new AttributeExpressionImpl("CAT_ID");
+                        }
+
+                        public SortOrder getSortOrder() {
+                            return SortOrder.ASCENDING;
+                        }
+                    };
+            SimpleFeatureCollection sortedCollection = fCollection.sort(sortBy);
             // null here
 
             // /typeName=sortedCollection.getSchema().getTypeName();
@@ -530,15 +551,16 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
             final List<Long> catIds = new ArrayList<Long>();
 
-            FeatureVisitor checkSortVisitor = new FeatureVisitor() {
+            FeatureVisitor checkSortVisitor =
+                    new FeatureVisitor() {
 
-                public void visit(Feature feature) {
-                    SimpleFeature sf = (SimpleFeature) feature;
-                    assertTrue(feature instanceof PreGeneralizedSimpleFeature);
-                    long catid = (Long) sf.getAttribute("CAT_ID");
-                    catIds.add(catid);
-                }
-            };
+                        public void visit(Feature feature) {
+                            SimpleFeature sf = (SimpleFeature) feature;
+                            assertTrue(feature instanceof PreGeneralizedSimpleFeature);
+                            long catid = (Long) sf.getAttribute("CAT_ID");
+                            catIds.add(catid);
+                        }
+                    };
 
             try {
                 fCollection.accepts(checkSortVisitor, null);
@@ -551,7 +573,6 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
         }
-
     }
 
     protected void testNameAndInfo(String configName) {
@@ -567,7 +588,6 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
         }
-
     }
 
     protected void testQueryCapabilities(String configName, boolean pureShapefile) {
@@ -578,39 +598,39 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
             assertTrue(fs.getQueryCapabilities().isOffsetSupported());
             assertTrue(fs.getQueryCapabilities().isReliableFIDSupported());
 
-            PropertyName propertyName = new PropertyName() {
-                public String getPropertyName() {
-                    return "CAT_ID";
-                }
+            PropertyName propertyName =
+                    new PropertyName() {
+                        public String getPropertyName() {
+                            return "CAT_ID";
+                        }
 
-                public Object accept(ExpressionVisitor arg0, Object arg1) {
-                    return true;
-                }
+                        public Object accept(ExpressionVisitor arg0, Object arg1) {
+                            return true;
+                        }
 
-                public Object evaluate(Object arg0) {
-                    return arg0;
-                }
+                        public Object evaluate(Object arg0) {
+                            return arg0;
+                        }
 
-                public <T> T evaluate(Object arg0, Class<T> arg1) {
-                    return null;
-                }
+                        public <T> T evaluate(Object arg0, Class<T> arg1) {
+                            return null;
+                        }
 
-                public NamespaceSupport getNamespaceContext() {
-                    return null;
-                }
-
-            };
+                        public NamespaceSupport getNamespaceContext() {
+                            return null;
+                        }
+                    };
 
             SortOrder so = SortOrder.valueOf("CAT_ID");
-            assertTrue(fs.getQueryCapabilities().supportsSorting(
-                    new SortBy[] { new SortByImpl(propertyName, so) }));
+            assertTrue(
+                    fs.getQueryCapabilities()
+                            .supportsSorting(new SortBy[] {new SortByImpl(propertyName, so)}));
 
             ds.dispose();
 
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
         }
-
     }
 
     protected void testGetSchema(String configName) {
@@ -630,14 +650,13 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
         } catch (Exception ex) {
             Assert.fail(ex.getMessage());
         }
-
     }
 
     protected boolean checkPoints(SimpleFeature f, double distance) {
         int geomIndex = -1;
         for (int i = 0; i < f.getFeatureType().getAttributeDescriptors().size(); i++) {
-            if ("the_geom".equals(f.getFeatureType().getAttributeDescriptors().get(i)
-                    .getLocalName())) {
+            if ("the_geom"
+                    .equals(f.getFeatureType().getAttributeDescriptors().get(i).getLocalName())) {
                 geomIndex = i;
                 break;
             }
@@ -649,5 +668,4 @@ public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
         Integer numPoints = TestSetup.POINTMAP.get(distance).get(f.getID());
         return numPoints == ((Geometry) f.getDefaultGeometry()).getNumPoints();
     }
-
 }

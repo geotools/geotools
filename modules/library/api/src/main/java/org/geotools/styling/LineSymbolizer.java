@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,25 +18,19 @@ package org.geotools.styling;
 
 import org.opengis.filter.expression.Expression;
 
-
 /**
  * A symbolizer describes how a feature should appear on a map.
  *
- * <p>
- * The symbolizer describes not just the shape that should appear but also
- * such graphical properties as color and opacity.
- * </p>
+ * <p>The symbolizer describes not just the shape that should appear but also such graphical
+ * properties as color and opacity.
  *
- * <p>
- * A symbolizer is obtained by specifying one of a small number of different
- * types of symbolizer and then supplying parameters to override its default
- * behaviour.
- * </p>
+ * <p>A symbolizer is obtained by specifying one of a small number of different types of symbolizer
+ * and then supplying parameters to override its default behaviour.
  *
- * <p>
- * The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188"> OGC
- * Styled-Layer Descriptor Report (OGC 02-070) version 1.0.0.</a>:
+ * <p>The details of this object are taken from the <a
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
+ * Report (OGC 02-070) version 1.0.0.</a>:
+ *
  * <pre><code>
  * &lt;xsd:element name="LineSymbolizer" substitutionGroup="sld:Symbolizer">
  *   &lt;xsd:annotation>
@@ -56,44 +50,32 @@ import org.opengis.filter.expression.Expression;
  *   &lt;/xsd:complexType>
  * &lt;/xsd:element>
  * </code></pre>
- * </p>
  *
- * <p>
- * Renderers can use this information when displaying styled features, though
- * it must be remembered that not all renderers will be able to fully
- * represent strokes as set out by this interface.  For example, opacity may
- * not be supported.
- * </p>
+ * <p>Renderers can use this information when displaying styled features, though it must be
+ * remembered that not all renderers will be able to fully represent strokes as set out by this
+ * interface. For example, opacity may not be supported.
  *
- * <p>
- * Notes:
+ * <p>Notes:
  *
  * <ul>
- * <li>
- * The graphical parameters and their values are derived from SVG/CSS2
- * standards with names and semantics which are as close as possible.
- * </li>
+ *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
+ *       and semantics which are as close as possible.
  * </ul>
- * </p>
  *
  * @author James Macgill, CCG
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public interface LineSymbolizer extends org.opengis.style.LineSymbolizer, Symbolizer {
     /**
-     * Provides the graphical-symbolization parameter to use for the  linear
-     * geometry.
+     * Provides the graphical-symbolization parameter to use for the linear geometry.
      *
      * @return The Stroke style to use when rendering lines.
      */
     Stroke getStroke();
 
     /**
-     * Provides the graphical-symbolization parameter to use for the  linear
-     * geometry.
+     * Provides the graphical-symbolization parameter to use for the linear geometry.
      *
      * @param stroke The Stroke style to use when rendering lines.
      */
@@ -101,10 +83,9 @@ public interface LineSymbolizer extends org.opengis.style.LineSymbolizer, Symbol
 
     /**
      * Define an offset to draw lines in parallel to the original geometry.
-     * 
-     * @param offset
-     *            Distance in UOMs to offset line; left-hand side is positive; right-hand side is
-     *            negative; the default value is 0
+     *
+     * @param offset Distance in UOMs to offset line; left-hand side is positive; right-hand side is
+     *     negative; the default value is 0
      */
     void setPerpendicularOffset(Expression offset);
 }

@@ -17,23 +17,22 @@
 package org.geotools.styling.css.util;
 
 import java.util.BitSet;
+import java.util.function.IntConsumer;
 
 /**
  * The binary signature for a list of values, indicates which objects of the list have been selected
  * using 1s, those that have not using 0s
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public abstract class Signature implements Cloneable {
 
-    /**
-     * Increments the binary signature, that is, adds 1 to it
-     */
+    /** Increments the binary signature, that is, adds 1 to it */
     public abstract void increment();
 
     /**
      * Checks if this signature contains another
-     * 
+     *
      * @param other
      * @param k
      * @return
@@ -42,7 +41,7 @@ public abstract class Signature implements Cloneable {
 
     /**
      * Returns the flag at the i-th position
-     * 
+     *
      * @param i
      * @return
      */
@@ -50,7 +49,7 @@ public abstract class Signature implements Cloneable {
 
     /**
      * Sets the flag at the i-th position
-     * 
+     *
      * @param idx
      * @param b
      */
@@ -58,14 +57,12 @@ public abstract class Signature implements Cloneable {
 
     /**
      * The size of the signature, in number of bits
-     * 
+     *
      * @return
      */
     public abstract int size();
 
-    /**
-     * Clones the signature
-     */
+    /** Clones the signature */
     public abstract Object clone();
 
     @Override
@@ -86,9 +83,11 @@ public abstract class Signature implements Cloneable {
         return new BitsetSignature(size);
     }
 
-    /**
-     * An implementation of signature based on a Java {@link BitSet}
-     */
+    public abstract int cardinality();
+
+    public abstract void foreach(IntConsumer consumer);
+
+    /** An implementation of signature based on a Java {@link BitSet} */
     public static class BitsetSignature extends Signature {
         BitSet bs;
 
@@ -113,7 +112,6 @@ public abstract class Signature implements Cloneable {
                     return;
                 }
             }
-
         }
 
         public boolean contains(Signature otherSignature, int k) {
@@ -151,6 +149,18 @@ public abstract class Signature implements Cloneable {
             return new BitsetSignature(this);
         }
 
-    }
+        @Override
+        public int cardinality() {
+            return bs.cardinality();
+        }
 
+        @Override
+        public void foreach(IntConsumer consumer) {
+            int next = bs.nextSetBit(0);
+            while (next != -1) {
+                consumer.accept(next);
+                next = bs.nextSetBit(next + 1);
+            }
+        }
+    }
 }

@@ -16,9 +16,9 @@
  */
 package org.geotools.coverage.processing.operation;
 
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import it.geosolutions.jaiext.zonal.ZonalStatsDescriptor;
 import it.geosolutions.jaiext.zonal.ZoneGeometry;
-
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.RenderedImage;
@@ -29,12 +29,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
@@ -46,7 +44,11 @@ import org.geotools.parameter.ImagingParameters;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.logging.Logging;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.util.AffineTransformation;
+import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.metadata.spatial.PixelOrientation;
@@ -56,44 +58,36 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.util.InternationalString;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
-
 /**
- * This operation is similar to the {@link ZonalStats} operation but implements a new version of the "ZonalStats" operation. 
- * The main difference between the two operations is that inside this version multiple geometries 
- * are handled, instead of the old version which supports only one geometry per time.
- * 
+ * This operation is similar to the {@link ZonalStats} operation but implements a new version of the
+ * "ZonalStats" operation. The main difference between the two operations is that inside this
+ * version multiple geometries are handled, instead of the old version which supports only one
+ * geometry per time.
+ *
  * @author Nicola Lagomarsini, GeoSolutions SAS
- * 
  */
-
 public class ZonalStatistics extends BaseStatisticsOperationJAI {
-    
+
     /** {@link String} key for getting the {@link ZoneGeometry} list. */
-    public final static String GT_SYNTHETIC_PROPERTY_ZONALSTATS = ZonalStatsDescriptor.ZS_PROPERTY;
+    public static final String GT_SYNTHETIC_PROPERTY_ZONALSTATS = ZonalStatsDescriptor.ZS_PROPERTY;
 
     /** {@link Logger} for this class. */
-    public final static Logger LOGGER = Logging
-            .getLogger("org.geotools.coverage.processing.operation");
+    public static final Logger LOGGER =
+            Logging.getLogger("org.geotools.coverage.processing.operation");
 
-    /**
-     * Constructs a default {@code "ZonalStatistics"} operation.
-     */
+    /** Constructs a default {@code "ZonalStatistics"} operation. */
     public ZonalStatistics() throws OperationNotFoundException {
         super(getOperationDescriptor("Zonal"));
     }
 
     /**
-     * Copies parameter values from the specified {@link ParameterValueGroup} to the {@link ParameterBlockJAI}
-     * 
+     * Copies parameter values from the specified {@link ParameterValueGroup} to the {@link
+     * ParameterBlockJAI}
+     *
      * @param parameters The {@link ParameterValueGroup} to be copied.
      * @return A copy of the provided {@link ParameterValueGroup} as a JAI block.
-     * 
-     * @see org.geotools.coverage.processing.OperationJAI#prepareParameters(org.opengis.parameter.ParameterValueGroup)
+     * @see
+     *     org.geotools.coverage.processing.OperationJAI#prepareParameters(org.opengis.parameter.ParameterValueGroup)
      */
     @Override
     protected ParameterBlockJAI prepareParameters(final ParameterValueGroup parameters) {
@@ -115,15 +109,20 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
             //
             // ///////////////////////////////////////////////////////////////////
             // XXX make it robust
-            final GridCoverage2D source = (GridCoverage2D) parameters.parameter(
-                    operation.getSourceNames()[PRIMARY_SOURCE_INDEX]).getValue();
-            final AffineTransform gridToWorldTransformCorrected = new AffineTransform(
-                    (AffineTransform) ((GridGeometry2D) source.getGridGeometry())
-                            .getGridToCRS2D(PixelOrientation.UPPER_LEFT));
+            final GridCoverage2D source =
+                    (GridCoverage2D)
+                            parameters
+                                    .parameter(operation.getSourceNames()[PRIMARY_SOURCE_INDEX])
+                                    .getValue();
+            final AffineTransform gridToWorldTransformCorrected =
+                    new AffineTransform(
+                            (AffineTransform)
+                                    ((GridGeometry2D) source.getGridGeometry())
+                                            .getGridToCRS2D(PixelOrientation.UPPER_LEFT));
             final MathTransform worldToGridTransform;
             try {
-                worldToGridTransform = ProjectiveTransform.create(gridToWorldTransformCorrected
-                        .createInverse());
+                worldToGridTransform =
+                        ProjectiveTransform.create(gridToWorldTransformCorrected.createInverse());
             } catch (NoninvertibleTransformException e) {
                 // //
                 //
@@ -184,8 +183,8 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                     Geometry geometry = (Geometry) zone.getDefaultGeometry();
 
                     // first off, cut the geometry around the coverage bounds if necessary
-                    ReferencedEnvelope geometryEnvelope = new ReferencedEnvelope(
-                            geometry.getEnvelopeInternal(), crs);
+                    ReferencedEnvelope geometryEnvelope =
+                            new ReferencedEnvelope(geometry.getEnvelopeInternal(), crs);
 
                     if (!coverageEnvelope.intersects((Envelope) geometryEnvelope)) {
                         // no intersection, no stats
@@ -193,21 +192,23 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                     } else if (!coverageEnvelope.contains((Envelope) geometryEnvelope)) {
                         // the geometry goes outside of the coverage envelope, that makes
                         // the stats fail for some reason
-                        geometry = JTS.toGeometry((Envelope) coverageEnvelope).intersection(
-                                geometry);
-                        geometryEnvelope = new ReferencedEnvelope(geometry.getEnvelopeInternal(),
-                                crs);
+                        geometry =
+                                JTS.toGeometry((Envelope) coverageEnvelope).intersection(geometry);
+                        geometryEnvelope =
+                                new ReferencedEnvelope(geometry.getEnvelopeInternal(), crs);
                     }
 
                     // transform the geometry to raster space so that we can use it as a ROI source
                     Geometry rasterSpaceGeometry = JTS.transform(geometry, worldToGridTransform);
 
-                    // simplify the geometry so that it's as precise as the coverage, excess coordinates
+                    // simplify the geometry so that it's as precise as the coverage, excess
+                    // coordinates
                     // just make it slower to determine the point in polygon relationship
-                    Geometry simplifiedGeometry = DouglasPeuckerSimplifier.simplify(
-                            rasterSpaceGeometry, 1);
+                    Geometry simplifiedGeometry =
+                            DouglasPeuckerSimplifier.simplify(rasterSpaceGeometry, 1);
 
-                    // translation of the selected geometry of 0.5, from the pixel center to the corners.
+                    // translation of the selected geometry of 0.5, from the pixel center to the
+                    // corners.
                     AffineTransformation at = new AffineTransformation();
 
                     at.setToTranslation(-0.5, -0.5);
@@ -225,20 +226,20 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                 // Selection of the polygon associated with the ROI
                 final Polygon roiInput = (Polygon) o;
                 // If the input ROI intersects the coverage, then it is added to the list
-                if (new ReferencedEnvelope(roiInput.getEnvelopeInternal(),
-                        source.getCoordinateReferenceSystem2D())
+                if (new ReferencedEnvelope(
+                                roiInput.getEnvelopeInternal(),
+                                source.getCoordinateReferenceSystem2D())
                         .intersects((Envelope) new ReferencedEnvelope(envelope))) {
 
-                    final java.awt.Polygon shapePolygon = convertPolygon(roiInput,
-                            worldToGridTransform);
+                    final java.awt.Polygon shapePolygon =
+                            convertPolygon(roiInput, worldToGridTransform);
 
                     outputList.add(new ROIShape(shapePolygon));
-
                 }
             }
             // Setting of the roilist parameter to the parameterBlock
             block.setParameter("roilist", outputList);
-            
+
             // /////////////////////////////////////////////////////////////////////
             //
             // Transcode the mask parameter into a roi.
@@ -250,8 +251,8 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
 
             if (mask != null) {
                 // first off, cut the geometry around the coverage bounds if necessary
-                ReferencedEnvelope maskEnvelope = new ReferencedEnvelope(
-                        mask.getEnvelopeInternal(), crs);
+                ReferencedEnvelope maskEnvelope =
+                        new ReferencedEnvelope(mask.getEnvelopeInternal(), crs);
 
                 // Check if the mask envelop intersects the coverage Envelope
                 if (coverageEnvelope.intersects((Envelope) maskEnvelope)) {
@@ -266,12 +267,14 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                     // transform the geometry to raster space so that we can use it as a ROI source
                     Geometry maskSpaceGeometry = JTS.transform(mask, worldToGridTransform);
 
-                    // simplify the geometry so that it's as precise as the coverage, excess coordinates
+                    // simplify the geometry so that it's as precise as the coverage, excess
+                    // coordinates
                     // just make it slower to determine the point in polygon relationship
-                    Geometry simplifiedMaskGeometry = DouglasPeuckerSimplifier.simplify(
-                            maskSpaceGeometry, 1);
+                    Geometry simplifiedMaskGeometry =
+                            DouglasPeuckerSimplifier.simplify(maskSpaceGeometry, 1);
 
-                    // translation of the selected geometry of 0.5, from the pixel center to the corners.
+                    // translation of the selected geometry of 0.5, from the pixel center to the
+                    // corners.
                     AffineTransformation at = new AffineTransformation();
 
                     at.setToTranslation(-0.5, -0.5);
@@ -286,7 +289,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
                     throw new IllegalArgumentException("Mask is outside the Coverage Envelope");
                 }
             }
-            
+
             // Setting of the Output mask and NoData Range
             handleROINoDataInternal(block, source, "Zonal", 4, 3);
 
@@ -302,8 +305,12 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
         }
     }
 
-    protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
-            InternationalString name, MathTransform toCRS, GridCoverage2D[] sources,
+    protected Map<String, ?> getProperties(
+            RenderedImage data,
+            CoordinateReferenceSystem crs,
+            InternationalString name,
+            MathTransform toCRS,
+            GridCoverage2D[] sources,
             Parameters parameters) {
         // /////////////////////////////////////////////////////////////////////
         //
@@ -318,11 +325,12 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
             // Addition of the ROI property and NoData property
             GridCoverage2D source = sources[0];
             CoverageUtilities.setROIProperty(synthProp, CoverageUtilities.getROIProperty(source));
-            CoverageUtilities.setNoDataProperty(synthProp, CoverageUtilities.getNoDataProperty(source));
-            
+            CoverageUtilities.setNoDataProperty(
+                    synthProp, CoverageUtilities.getNoDataProperty(source));
+
             Object results = result.getProperty(GT_SYNTHETIC_PROPERTY_ZONALSTATS);
-            
-            if(results != null && results instanceof List<?>){
+
+            if (results != null && results instanceof List<?>) {
                 List<ZoneGeometry> geoms = (List<ZoneGeometry>) results;
                 synthProp.put(GT_SYNTHETIC_PROPERTY_ZONALSTATS, geoms);
             }

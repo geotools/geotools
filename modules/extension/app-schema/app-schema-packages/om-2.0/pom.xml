@@ -9,18 +9,17 @@
     <version>2.0.0-1</version>
     <name>Observations and Measurements 2.0 application schema</name>
 
-
     <developers>
         <developer>
             <name>Ben Caradoc-Davies</name>
             <id>bencaradocdavies</id>
-            <email>Ben.Caradoc-Davies@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering </organization>
+            <email>ben@transient.nz</email>
+            <organization>Transient Software Limited</organization>
             <roles>
                 <role>Module Maintainer</role>
                 <role>Schema Packager</role>
             </roles>
-            <timezone>8</timezone>
+            <timezone>Pacific/Auckland</timezone>
         </developer>
     </developers>
 
@@ -56,12 +55,12 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <tasks>
-                                <property name="srcdir" value="http://schemas.opengis.net/om/2.0" />
+                                <property name="srcdir" value="http://schemas.opengis.net/om/2.0"/>
                                 <property name="destdir"
-                                    value="${project.build.outputDirectory}/net/opengis/schemas/om/2.0" />
-                                <mkdir dir="${destdir}" />
-                                <get src="${srcdir}/observation.xsd" dest="${destdir}/observation.xsd" />
-                                <get src="${srcdir}/specializingObservationExample.xsd" dest="${destdir}/specializingObservationExample.xsd" />
+                                    value="${project.build.outputDirectory}/net/opengis/schemas/om/2.0"/>
+                                <mkdir dir="${destdir}"/>
+                                <get src="${srcdir}/observation.xsd" dest="${destdir}/observation.xsd"/>
+                                <get src="${srcdir}/specializingObservationExample.xsd" dest="${destdir}/specializingObservationExample.xsd"/>
                             </tasks>
                         </configuration>
                         <goals>

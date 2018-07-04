@@ -18,26 +18,25 @@ package org.geotools.gml3.bindings;
 
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SurfacePropertyTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         GeometryFactory gf = new GeometryFactory();
-        Polygon polygon = gf.createPolygon(gf.createLinearRing(
-                    new Coordinate[] {
-                        new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(2, 2),
-                        new Coordinate(0, 0)
-                    }), null);
+        Polygon polygon =
+                gf.createPolygon(
+                        gf.createLinearRing(
+                                new Coordinate[] {
+                                    new Coordinate(0, 0),
+                                    new Coordinate(1, 1),
+                                    new Coordinate(2, 2),
+                                    new Coordinate(0, 0)
+                                }),
+                        null);
 
         Document dom = encode(polygon, GML.surfaceProperty);
         assertEquals(1, dom.getElementsByTagName("gml:Polygon").getLength());

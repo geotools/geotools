@@ -18,12 +18,11 @@ package org.geotools.referencing.operation.transform;
 
 import java.util.Arrays;
 
-
 /**
- * A one dimensional, constant transform. Output values are set to a constant value regardless
- * of input values. This class is really a special case of {@link LinearTransform1D} in which
- * <code>{@link #scale} = 0</code> and <code>{@link #offset} = constant</code>. However, this
- * specialized {@code ConstantTransform1D} class is faster.
+ * A one dimensional, constant transform. Output values are set to a constant value regardless of
+ * input values. This class is really a special case of {@link LinearTransform1D} in which <code>
+ * {@link #scale} = 0</code> and <code>{@link #offset} = constant</code>. However, this specialized
+ * {@code ConstantTransform1D} class is faster.
  *
  * @since 2.0
  * @source $URL$
@@ -31,9 +30,7 @@ import java.util.Arrays;
  * @author Martin Desruisseaux (IRD)
  */
 final class ConstantTransform1D extends LinearTransform1D {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -1583675681650985947L;
 
     /**
@@ -45,31 +42,23 @@ final class ConstantTransform1D extends LinearTransform1D {
         super(0, offset);
     }
 
-    /**
-     * Transforms the specified value.
-     */
+    /** Transforms the specified value. */
     @Override
     public double transform(double value) {
         return offset;
     }
 
-    /**
-     * Transforms a list of coordinate point ordinal values.
-     */
+    /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(final float[] srcPts, int srcOff,
-                          final float[] dstPts, int dstOff, int numPts)
-    {
-        Arrays.fill(dstPts, dstOff, dstOff+numPts, (float)offset);
+    public void transform(
+            final float[] srcPts, int srcOff, final float[] dstPts, int dstOff, int numPts) {
+        Arrays.fill(dstPts, dstOff, dstOff + numPts, (float) offset);
     }
 
-    /**
-     * Transforms a list of coordinate point ordinal values.
-     */
+    /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(final double[] srcPts, int srcOff,
-                          final double[] dstPts, int dstOff, int numPts)
-    {
-        Arrays.fill(dstPts, dstOff, dstOff+numPts, offset);
+    public void transform(
+            final double[] srcPts, int srcOff, final double[] dstPts, int dstOff, int numPts) {
+        Arrays.fill(dstPts, dstOff, dstOff + numPts, offset);
     }
 }

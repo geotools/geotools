@@ -4,16 +4,15 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2003-2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.util;
 
-import org.opengis.annotation.UML;
-
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
 
+import org.opengis.annotation.UML;
 
 /**
  * The name of an {@linkplain MemberName attribute} type.
@@ -21,10 +20,7 @@ import static org.opengis.annotation.Specification.*;
  * @author Bryce Nordgren (USDA)
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
- *
- *
  * @source $URL$
  */
-@UML(identifier="TypeName", specification=ISO_19103)
-public interface TypeName extends LocalName {
-}
+@UML(identifier = "TypeName", specification = ISO_19103)
+public interface TypeName extends LocalName {}

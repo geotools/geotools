@@ -19,18 +19,12 @@ package org.geotools.gml2.bindings;
 import org.geotools.gml2.GML;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLLinearRingMemberTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;
@@ -43,18 +37,28 @@ public class GMLLinearRingMemberTypeBindingTest extends AbstractGMLBindingTest {
     }
 
     public void testWithGeometry() throws Exception {
-        Node node = createNode(association, new ElementInstance[] { geometry },
-                new Object[] {
-                    new GeometryFactory().createLinearRing(
-                        new Coordinate[] {
-                            new Coordinate(0, 0), new Coordinate(1, 1), new Coordinate(2, 2),
-                            new Coordinate(0, 0)
-                        })
-                }, null, null);
-        GMLGeometryAssociationTypeBinding s1 = (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+        Node node =
+                createNode(
+                        association,
+                        new ElementInstance[] {geometry},
+                        new Object[] {
+                            new GeometryFactory()
+                                    .createLinearRing(
+                                            new Coordinate[] {
+                                                new Coordinate(0, 0),
+                                                new Coordinate(1, 1),
+                                                new Coordinate(2, 2),
+                                                new Coordinate(0, 0)
+                                            })
+                        },
+                        null,
+                        null);
+        GMLGeometryAssociationTypeBinding s1 =
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
         Geometry g = (Geometry) s1.parse(association, node, null);
 
-        GMLLinearRingMemberTypeBinding s2 = (GMLLinearRingMemberTypeBinding) getBinding(GML.LINEARRINGMEMBERTYPE);
+        GMLLinearRingMemberTypeBinding s2 =
+                (GMLLinearRingMemberTypeBinding) getBinding(GML.LINEARRINGMEMBERTYPE);
         g = (Geometry) s2.parse(association, node, g);
 
         assertNotNull(g);

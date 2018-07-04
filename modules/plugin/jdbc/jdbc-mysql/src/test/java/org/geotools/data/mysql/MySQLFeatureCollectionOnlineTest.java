@@ -19,15 +19,10 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCFeatureCollectionOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-
 /**
  * SimpleFeatureCollection test for MySQL.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class MySQLFeatureCollectionOnlineTest extends JDBCFeatureCollectionOnlineTest {

@@ -16,18 +16,13 @@
  */
 package org.geotools.styling.builder;
 
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.measure.unit.Unit;
-
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this);
 
@@ -137,10 +132,9 @@ public class LineSymbolizerBuilder extends SymbolizerBuilder<LineSymbolizer> {
         this.perpendicularOffset = perpendicularOffset;
         return this;
     }
-    
+
     public LineSymbolizerBuilder perpendicularOffset(double perpendicularOffset) {
         this.perpendicularOffset = literal(perpendicularOffset);
         return this;
     }
-
 }

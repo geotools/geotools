@@ -1,0 +1,412 @@
+{
+	"@context":{
+		"ows": "http://www.opengis.net/ows/1.1/",
+		"wmts": "http://www.opengis.net/wmts/1.0/",
+		"wmtss": "http://www.opengis.net/spec/wmts-simple/1.0/conf/simple-profile/",
+		"xsd": "http://www.w3.org/2001/XMLSchema#",
+		
+		"id": "@id",
+		"type": "@type",
+		
+		"tileMatrixSet": "wmts:tileMatrixSet",
+		"title": "ows:title",
+		"CRSbbox": "ows:BoundingBox",
+		"crs": {"@id":"ows:SupportedCRS", "@type": "@id"},
+		"lowerCorner": "ows:lowerCorner",
+		"lowerCorner": "ows:lowerCorner",
+		"wellKnownScaleSet": {"@id":"wmts:wellKnownScaleSet", "@type": "@id"},
+
+		"tileMatrix": "wmts:tileMatrix",
+		"scaleDenominator": {"@id": "wmts:scaleDenominator", "@type": "xsd:float"},
+		"topLeftCorner": "wmts:topLeftCorner",
+		"tileWidth": {"@id": "wmts:tileWidth", "@type": "xsd:positiveInteger"},
+		"tileHeight": {"@id": "wmts:tileHeight", "@type": "xsd:positiveInteger"},
+		"matrixWidth": {"@id": "wmts:matrixWidth", "@type": "xsd:positiveInteger"},
+		"matrixHeight": {"@id": "wmts:matrixHeight", "@type": "xsd:positiveInteger"}
+	},
+	"id": "wmtss:",	
+	"tileMatrixSet": [{
+		"type": "wmts:TileMatrixSet",
+		"title": "Google Maps Compatible for the World",
+		"id": "wmtss:WorldWebMercatorQuad",
+		"CRSbbox":
+		{
+			"type": "ows:CRSbbox",
+			"id": "wmtss:WorldWebMercatorQuad/CRSbbox",			
+			"crs": "http://www.opengis.net/def/crs/EPSG/0/3857",
+			"lowerCorner": "POINT(-20037508.3427892, -20037508.3427892)",
+			"upperCorner": "POINT(20037508.3427892, 20037508.3427892)"
+		},
+		"crs": "http://www.opengis.net/def/crs/EPSG/0/3857",
+		"wellKnownScaleSet": "http://www.opengis.net/def/wkss/OGC/1.0/GoogleMapsCompatible",
+
+		"tileMatrix": [{
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/0",
+			"scaleDenominator": 559082264.0287178,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 1,
+			"matrixHeight": 1
+		},{
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/1",
+			"scaleDenominator": 279541132.0143589,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 2,
+			"matrixHeight": 2
+		}, 				{
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/2",
+			"scaleDenominator": 139770566.0071794,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 4,
+			"matrixHeight": 4
+		}, 				{
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/3",
+			"scaleDenominator": 69885283.00358972,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 8,
+			"matrixHeight": 8
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/4",
+			"scaleDenominator": 34942641.50179486,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 16,
+			"matrixHeight": 16
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/5",
+			"scaleDenominator": 17471320.75089743,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 32,
+			"matrixHeight": 32
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/6",
+			"scaleDenominator": 8735660.375448715,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 64,
+			"matrixHeight": 64
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/7",
+			"scaleDenominator": 4367830.187724357,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 128,
+			"matrixHeight": 128
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/8",
+			"scaleDenominator": 2183915.093862179,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 256,
+			"matrixHeight": 256
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/9",
+			"scaleDenominator": 1091957.546931089,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 512,
+			"matrixHeight": 512
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/10",
+			"scaleDenominator": 545978.7734655447,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 1024,
+			"matrixHeight": 1024
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/11",
+			"scaleDenominator": 272989.3867327723,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 2048,
+			"matrixHeight": 2048
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/12",
+			"scaleDenominator": 136494.6933663862,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 4096,
+			"matrixHeight": 4096
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/13",
+			"scaleDenominator": 68247.34668319309,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 8192,
+			"matrixHeight": 8192
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/14",
+			"scaleDenominator": 34123.67334159654,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 16384,
+			"matrixHeight": 16384
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/15",
+			"scaleDenominator": 17061.83667079827,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 32768,
+			"matrixHeight": 32768
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/16",
+			"scaleDenominator": 8530.918335399136,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 65536,
+			"matrixHeight": 65536
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/17",
+			"scaleDenominator": 4265.459167699568,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 131072,
+			"matrixHeight": 131072
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldWebMercatorQuad/18",
+			"scaleDenominator": 2132.729583849784,
+			"topLeftCorner": "POINT(-20037508.3427892, 20037508.3427892)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 262144,
+			"matrixHeight": 262144
+		} ]
+	},{
+		"type": "wmts:TileMatrixSet",
+		"title": "CRS84 for the World",
+		"id": "wmtss:WorldCRS84Quad",
+		"CRSbbox":
+		{
+			"type": "ows:CRSbbox",
+			"id": "wmtss:WorldCRS84Quad/CRSbbox",
+			"crs": "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+			"lowerCorner": "POINT(-180, -90)",
+			"upperCorner": "POINT(180, 90)"
+		},
+		"crs": "http://www.opengis.net/def/crs/OGC/1.3/CRS84",
+		"wellKnownScaleSet": "http://www.opengis.net/def/wkss/OGC/1.0/GoogleCRS84Quad",
+
+		"tileMatrix": [{
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/-1",
+			"scaleDenominator": 559082264.0287178,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 1,
+			"matrixHeight": 1
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/0",
+			"scaleDenominator": 279541132.0143589,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 2,
+			"matrixHeight": 1
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/1",
+			"scaleDenominator": 139770566.0071794,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 4,
+			"matrixHeight": 2
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/2",
+			"scaleDenominator": 69885283.00358972,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 8,
+			"matrixHeight": 4
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/3",
+			"scaleDenominator": 34942641.50179486,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 16,
+			"matrixHeight": 8
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/4",
+			"scaleDenominator": 17471320.75089743,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 32,
+			"matrixHeight": 16
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/5",
+			"scaleDenominator": 8735660.375448715,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 64,
+			"matrixHeight": 32
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/6",
+			"scaleDenominator": 4367830.187724357,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 128,
+			"matrixHeight": 64
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/7",
+			"scaleDenominator": 2183915.093862179,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 256,
+			"matrixHeight": 128
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/8",
+			"scaleDenominator": 1091957.546931089,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 512,
+			"matrixHeight": 256
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/9",
+			"scaleDenominator": 545978.7734655447,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 1024,
+			"matrixHeight": 512
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/10",
+			"scaleDenominator": 272989.3867327723,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 2048,
+			"matrixHeight": 1024
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/11",
+			"scaleDenominator": 136494.6933663862,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 4096,
+			"matrixHeight": 2048
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/12",
+			"scaleDenominator": 68247.34668319309,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 8192,
+			"matrixHeight": 4096
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/13",
+			"scaleDenominator": 34123.67334159654,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 16384,
+			"matrixHeight": 8192
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/14",
+			"scaleDenominator": 17061.83667079827,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 32768,
+			"matrixHeight": 16384
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/15",
+			"scaleDenominator": 8530.918335399136,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 65536,
+			"matrixHeight": 32768
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/16",
+			"scaleDenominator": 4265.459167699568,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 131072,
+			"matrixHeight": 65536
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/17",
+			"scaleDenominator": 2132.729583849784,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 262144,
+			"matrixHeight": 131072
+		}, {
+			"type": "wmts:TileMatrix",
+			"id": "wmtss:WorldCRS84Quad/18",
+			"scaleDenominator": 1066.364791924892,
+			"topLeftCorner": "POINT(-180, 90)",
+			"tileWidth": 256,
+			"tileHeight": 256,
+			"matrixWidth": 524288,
+			"matrixHeight": 262144
+		} ]
+	} ]
+}

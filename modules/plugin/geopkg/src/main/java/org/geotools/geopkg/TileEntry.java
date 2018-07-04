@@ -18,20 +18,18 @@ package org.geotools.geopkg;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Tiles Entry inside a GeoPackage.
- * 
+ *
  * @author Justin Deoliveira
  * @author Niels Charlier
- *
  */
 public class TileEntry extends Entry {
 
     List<TileMatrix> tileMatricies = new ArrayList();
-    
+
     Envelope tileMatrixSetBounds;
 
     public TileEntry() {
@@ -49,13 +47,15 @@ public class TileEntry extends Entry {
     void init(TileEntry e) {
         super.init(e);
         setTileMatricies(e.getTileMatricies());
-        this.tileMatrixSetBounds = e.tileMatrixSetBounds == null ? null : new Envelope(e.tileMatrixSetBounds);
+        this.tileMatrixSetBounds =
+                e.tileMatrixSetBounds == null ? null : new Envelope(e.tileMatrixSetBounds);
     }
-    
+
     /**
      * Returns the tile matrix set bounds. The bounds are expressed in the same CRS as the entry,
      * but they might differ in extent (if null, then the tile matrix bounds are supposed to be the
      * same as the entry)
+     *
      * @return
      */
     public Envelope getTileMatrixSetBounds() {
@@ -65,6 +65,4 @@ public class TileEntry extends Entry {
     public void setTileMatrixSetBounds(Envelope tileMatrixSetBounds) {
         this.tileMatrixSetBounds = tileMatrixSetBounds;
     }
-
-
 }

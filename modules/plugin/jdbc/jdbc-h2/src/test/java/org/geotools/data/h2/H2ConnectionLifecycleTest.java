@@ -19,7 +19,6 @@ package org.geotools.data.h2;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.jdbc.ConnectionLifecycleListener;
@@ -28,13 +27,12 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.VirtualTable;
 
-
 public class H2ConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest {
-    
+
     private class SetVariableListener implements ConnectionLifecycleListener {
 
         double value;
-        
+
         public void onBorrow(JDBCDataStore store, Connection cx) throws SQLException {
             Statement st = null;
             try {
@@ -56,29 +54,30 @@ public class H2ConnectionLifecycleTest extends JDBCConnectionLifecycleOnlineTest
         public void onRollback(JDBCDataStore store, Connection cx) throws SQLException {
             // nothing to do
         }
-
     }
-    
+
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }
-    
+
     public void testVariableListener() throws Exception {
         // setup a virtual table using the user variable
-        VirtualTable vt = new VirtualTable("ft1var", "select * from  \"geotools\".\"ft1\" where \"doubleProperty\" > @MYVAR");
+        VirtualTable vt =
+                new VirtualTable(
+                        "ft1var",
+                        "select * from  \"geotools\".\"ft1\" where \"doubleProperty\" > @MYVAR");
         dataStore.addVirtualTable(vt);
-        
+
         // setup a listener that uses said variable
         SetVariableListener listener = new SetVariableListener();
         dataStore.getConnectionLifecycleListeners().add(listener);
-        
+
         // set the value and test
         listener.value = 1.0;
         SimpleFeatureSource fs = dataStore.getFeatureSource("ft1var");
         assertEquals(2, fs.getCount(Query.ALL));
-        
+
         listener.value = 10;
         assertEquals(0, fs.getCount(Query.ALL));
-        
     }
 }

@@ -17,22 +17,16 @@
 package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PolygonTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Polygon.class, binding(KML.PolygonType).getType());
@@ -43,11 +37,15 @@ public class PolygonTypeBindingTest extends KMLTestSupport {
     }
 
     public void testParse() throws Exception {
-        String xml = "<Polygon>" + "<outerBoundaryIs>"
-            + "<LinearRing><coordinates>1,1 2,2 3,3 1,1</coordinates></LinearRing>"
-            + "</outerBoundaryIs>" + "<innerBoundaryIs>"
-            + "<LinearRing><coordinates>1,1 2,2 3,3 1,1</coordinates></LinearRing>"
-            + "</innerBoundaryIs>" + "</Polygon>";
+        String xml =
+                "<Polygon>"
+                        + "<outerBoundaryIs>"
+                        + "<LinearRing><coordinates>1,1 2,2 3,3 1,1</coordinates></LinearRing>"
+                        + "</outerBoundaryIs>"
+                        + "<innerBoundaryIs>"
+                        + "<LinearRing><coordinates>1,1 2,2 3,3 1,1</coordinates></LinearRing>"
+                        + "</innerBoundaryIs>"
+                        + "</Polygon>";
 
         buildDocument(xml);
 
@@ -55,22 +53,32 @@ public class PolygonTypeBindingTest extends KMLTestSupport {
 
         assertEquals(1, p.getNumInteriorRing());
     }
-    
+
     public void testEncode() throws Exception {
-        Polygon p = new GeometryFactory().createPolygon(
-            new GeometryFactory().createLinearRing(
-                new Coordinate[]{ new Coordinate(1,1), new Coordinate(2,2), 
-                    new Coordinate(3,3), new Coordinate(1,1) }
-            ), new LinearRing[] {
-                new GeometryFactory().createLinearRing(
-                        new Coordinate[]{ new Coordinate(1,1), new Coordinate(2,2), 
-                            new Coordinate(3,3), new Coordinate(1,1) }
-                )
-            }
-        );
-        Document dom = encode( p, KML.Polygon );
-        
-        assertNotNull( getElementByQName(dom, new QName( KML.NAMESPACE, "outerBoundaryIs") ) );
-        assertNotNull( getElementByQName(dom, new QName( KML.NAMESPACE, "innerBoundaryIs") ) );
+        Polygon p =
+                new GeometryFactory()
+                        .createPolygon(
+                                new GeometryFactory()
+                                        .createLinearRing(
+                                                new Coordinate[] {
+                                                    new Coordinate(1, 1),
+                                                    new Coordinate(2, 2),
+                                                    new Coordinate(3, 3),
+                                                    new Coordinate(1, 1)
+                                                }),
+                                new LinearRing[] {
+                                    new GeometryFactory()
+                                            .createLinearRing(
+                                                    new Coordinate[] {
+                                                        new Coordinate(1, 1),
+                                                        new Coordinate(2, 2),
+                                                        new Coordinate(3, 3),
+                                                        new Coordinate(1, 1)
+                                                    })
+                                });
+        Document dom = encode(p, KML.Polygon);
+
+        assertNotNull(getElementByQName(dom, new QName(KML.NAMESPACE, "outerBoundaryIs")));
+        assertNotNull(getElementByQName(dom, new QName(KML.NAMESPACE, "innerBoundaryIs")));
     }
 }

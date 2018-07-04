@@ -9,7 +9,7 @@ package net.opengis.wps10.impl;
 import java.math.BigInteger;
 
 import java.util.Map;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.xml.namespace.QName;
 import net.opengis.ows11.Ows11Package;
 

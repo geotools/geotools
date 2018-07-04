@@ -16,30 +16,23 @@
  */
 package org.geotools.brewer.color;
 
+// import edu.psu.geovista.colorbrewer.OriginalColor;
 
-//import edu.psu.geovista.colorbrewer.OriginalColor;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.awt.Color;
 import java.util.List;
-
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FunctionExpression;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.ClassificationFunction;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
-
 /**
- *
  * @author James Macgill
- *
- *
  * @source $URL$
  */
 public class PaletteFunction extends FunctionExpressionImpl {
@@ -47,12 +40,14 @@ public class PaletteFunction extends FunctionExpressionImpl {
     String paletteName;
     FilterFactory ff;
 
-    //public static FunctionName NAME = new FunctionNameImpl("Palette","classifier","paletteName");
-    public static FunctionName NAME = new FunctionNameImpl("Palette",
-            parameter("color", Color.class),
-            parameter("classifier", ClassificationFunction.class),
-            parameter("paletteName", String.class));
-    
+    // public static FunctionName NAME = new FunctionNameImpl("Palette","classifier","paletteName");
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "Palette",
+                    parameter("color", Color.class),
+                    parameter("classifier", ClassificationFunction.class),
+                    parameter("paletteName", String.class));
+
     /** Creates a new instance of PaletteFunction */
     public PaletteFunction() {
         this(CommonFactoryFinder.getFilterFactory(null));
@@ -126,8 +121,11 @@ public class PaletteFunction extends FunctionExpressionImpl {
 
         BrewerPalette pal = brewer.getPalette(paletteName);
         Color[] colors = pal.getColors(classNum);
-        String color = "#" + intToHex(colors[klass].getRed()) + intToHex(colors[klass].getGreen())
-            + intToHex(colors[klass].getBlue());
+        String color =
+                "#"
+                        + intToHex(colors[klass].getRed())
+                        + intToHex(colors[klass].getGreen())
+                        + intToHex(colors[klass].getBlue());
 
         return color;
     }

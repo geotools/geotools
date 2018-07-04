@@ -7,13 +7,12 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>app-schema</artifactId>
-        <version>17-SNAPSHOT</version>
+        <version>20-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
     <artifactId>gt-app-schema</artifactId>
     <name>Application Schema DataAccess</name>
-
 
     <description>DataAccess to create complex feature types defined in a GML application schema.</description>
 
@@ -21,13 +20,13 @@
         <developer>
             <name>Ben Caradoc-Davies</name>
             <id>bencaradocdavies</id>
-            <email>Ben.Caradoc-Davies@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering</organization>
+            <email>ben@transient.nz</email>
+            <organization>Transient Software Limited</organization>
             <roles>
                 <role>Module Maintainer</role>
                 <role>Java Developer</role>
             </roles>
-            <timezone>8</timezone>
+            <timezone>Pacific/Auckland</timezone>
         </developer>
         <developer>
             <name>Rini Angreani</name>
@@ -41,12 +40,12 @@
         </developer>
     </developers>
 
-    <dependencies>      
+    <dependencies>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-complex</artifactId>
             <version>${project.version}</version>
-        </dependency> 
+        </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-complex</artifactId>
@@ -70,14 +69,14 @@
             </exclusions>
         </dependency>
         <dependency>
-            <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections 
+            <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections
                 2.1, since xml (SchemaIndexImpl) depends on commons-collections 3.1 -->
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>3.2.2</version>  <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
         </dependency>
         <dependency>
-            <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections 
+            <!-- override transitive dependency from commons-digester 1.7 which depends on commons-collections
                 2.1, since xml (SchemaIndexImpl) depends on commons-collections 3.1 -->
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
@@ -101,11 +100,6 @@
         <dependency>
             <groupId>org.geotools</groupId>
             <artifactId>gt-cql</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-render</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -194,16 +188,24 @@
             <version>3.2.0-1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.2.13.v20150730</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
-
     <build>
+
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
-            <!-- build test jar so that app-schema tests in GeoServer can use classes in GeoTools app-schema 
+
+            <!-- build test jar so that app-schema tests in GeoServer can use classes in GeoTools app-schema
                 tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -217,6 +219,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -229,7 +232,9 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
+
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
@@ -241,5 +246,7 @@
                 </includes>
             </testResource>
         </testResources>
+
     </build>
+
 </project>

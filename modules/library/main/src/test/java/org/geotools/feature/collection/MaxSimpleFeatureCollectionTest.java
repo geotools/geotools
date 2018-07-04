@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,16 +17,14 @@
 package org.geotools.feature.collection;
 
 import junit.framework.TestCase;
-
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 
 public class MaxSimpleFeatureCollectionTest extends TestCase {
 
@@ -38,14 +36,14 @@ public class MaxSimpleFeatureCollectionTest extends TestCase {
         tb.setName("foo");
         tb.add("geom", Point.class);
         tb.add("name", String.class);
-        
+
         SimpleFeatureType featureType = tb.buildFeatureType();
 
         delegate = new DefaultFeatureCollection(null, featureType);
 
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureType);
         for (int i = 0; i < 10; i++) {
-            b.add(new GeometryFactory().createPoint(new Coordinate(i,i)));
+            b.add(new GeometryFactory().createPoint(new Coordinate(i, i)));
             b.add(String.valueOf(i));
             delegate.add(b.buildFeature("fid." + i));
         }
@@ -54,7 +52,7 @@ public class MaxSimpleFeatureCollectionTest extends TestCase {
     public void testSize() {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 5);
         assertEquals(5, max.size());
-        
+
         max = new MaxSimpleFeatureCollection(delegate, 7, 5);
         assertEquals(3, max.size());
     }
@@ -62,10 +60,10 @@ public class MaxSimpleFeatureCollectionTest extends TestCase {
     public void testIsEmpty() {
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 5);
         assertFalse(max.isEmpty());
-        
+
         max = new MaxSimpleFeatureCollection(delegate, 9, 5);
         assertFalse(max.isEmpty());
-        
+
         max = new MaxSimpleFeatureCollection(delegate, 10, 5);
         assertTrue(max.isEmpty());
 
@@ -74,7 +72,7 @@ public class MaxSimpleFeatureCollectionTest extends TestCase {
     }
 
     public void testIterator() {
-        
+
         MaxSimpleFeatureCollection max = new MaxSimpleFeatureCollection(delegate, 5);
         SimpleFeatureIterator it = max.features();
         try {
@@ -83,8 +81,7 @@ public class MaxSimpleFeatureCollectionTest extends TestCase {
                 assertNotNull(it.next());
             }
             assertFalse(it.hasNext());
-        }
-        finally {
+        } finally {
             it.close();
         }
 
@@ -96,8 +93,7 @@ public class MaxSimpleFeatureCollectionTest extends TestCase {
                 assertNotNull(it.next());
             }
             assertFalse(it.hasNext());
-        }
-        finally {
+        } finally {
             it.close();
         }
     }

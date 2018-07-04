@@ -18,11 +18,7 @@ package org.geotools.styling.builder;
 
 import org.geotools.styling.ChannelSelection;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelection> {
 
     SelectedChannelTypeBuilder gray = new SelectedChannelTypeBuilder().unset();
@@ -92,12 +88,12 @@ public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelecti
             return unset();
         }
 
-        if (original.getRGBChannels() != null) {
-            red.reset(original.getGrayChannel());
-            green.reset(original.getGrayChannel());
-            blue.reset(original.getGrayChannel());
-        } else {
+        if (original.getGrayChannel() != null) {
             gray.reset(original.getGrayChannel());
+        } else {
+            red.reset(original.getRGBChannels()[0]);
+            green.reset(original.getRGBChannels()[1]);
+            blue.reset(original.getRGBChannels()[2]);
         }
         unset = false;
         return this;
@@ -111,5 +107,4 @@ public class ChannelSelectionBuilder extends AbstractStyleBuilder<ChannelSelecti
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().raster().channelSelection().init(this);
     }
-
 }

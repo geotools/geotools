@@ -40,7 +40,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -67,71 +66,70 @@ import org.opengis.parameter.ParameterValue;
 
 /**
  * Testing using a Postgis database for storing the index for the ImageMosaic
- * 
- * @author Simone Giannecchini, GeoSolutions SAS
  *
+ * @author Simone Giannecchini, GeoSolutions SAS
  */
 public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
-    
-    private final static Logger LOGGER= Logging.getLogger(ImageMosaicPostgisIndexOnlineTest.class);
-	
+
+    private static final Logger LOGGER = Logging.getLogger(ImageMosaicPostgisIndexOnlineTest.class);
+
     static final String tempFolderNoEpsg = "rgbNoEpsg";
 
     static final String tempFolderName1 = "waterTempPG";
-    
+
     static final String tempFolderName2 = "waterTempPG2";
-    
+
     static final String tempFolderName3 = "waterTempPG3";
-    
+
     static final String tempFolderName4 = "waterTempPGCD";
 
     static final String tempFolderNameWrap = "waterTempPGWrap";
 
-    static final String VERY_LONG_NAME = "very_very_long_name_with_number_of_chars_greater_than_64_to_test_the_postgis_wrapper";
-	/**
-	 * Simple Class for better testing raster manager
-	 * @author Simone Giannecchini, GeoSolutions SAS
-	 *
-	 */
-	private static class MyImageMosaicReader extends ImageMosaicReader{
+    static final String VERY_LONG_NAME =
+            "very_very_long_name_with_number_of_chars_greater_than_64_to_test_the_postgis_wrapper";
+    /**
+     * Simple Class for better testing raster manager
+     *
+     * @author Simone Giannecchini, GeoSolutions SAS
+     */
+    private static class MyImageMosaicReader extends ImageMosaicReader {
 
-		public MyImageMosaicReader(Object source) throws IOException {
-			super(source);
-		}
+        public MyImageMosaicReader(Object source) throws IOException {
+            super(source);
+        }
 
-		public MyImageMosaicReader(Object source, Hints uHints)
-				throws IOException {
-			super(source, uHints);
-		}
-	}
+        public MyImageMosaicReader(Object source, Hints uHints) throws IOException {
+            super(source, uHints);
+        }
+    }
 
-	@Override
-	protected Properties createExampleFixture() {
-		// create sample properties file for postgis datastore
-		final Properties props= new Properties();
-		props.setProperty("SPI", "org.geotools.data.postgis.PostgisNGDataStoreFactory");
-		props.setProperty("host", "localhost");
-		props.setProperty("port", "5432");
-		props.setProperty("user", "xxx");
-		props.setProperty("passwd", "xxx");
-		props.setProperty("database", "ddd");
-		props.setProperty("schema", "public");
-		props.setProperty("Loose bbox", "true");
-		props.setProperty("Estimated extends", "false");
-		props.setProperty("validate connections", "true");
-		props.setProperty("Connection timeout", "10");
-		props.setProperty("preparedStatements", "false");
-		props.setProperty("create database params", "WITH TEMPLATE=template_postgis");
-		return props;
-	}
+    @Override
+    protected Properties createExampleFixture() {
+        // create sample properties file for postgis datastore
+        final Properties props = new Properties();
+        props.setProperty("SPI", "org.geotools.data.postgis.PostgisNGDataStoreFactory");
+        props.setProperty("host", "localhost");
+        props.setProperty("port", "5432");
+        props.setProperty("user", "xxx");
+        props.setProperty("passwd", "xxx");
+        props.setProperty("database", "ddd");
+        props.setProperty("schema", "public");
+        props.setProperty("Loose bbox", "true");
+        props.setProperty("Estimated extends", "false");
+        props.setProperty("validate connections", "true");
+        props.setProperty("Connection timeout", "10");
+        props.setProperty("preparedStatements", "false");
+        props.setProperty("create database params", "WITH TEMPLATE=template_postgis");
+        return props;
+    }
 
-	/* (non-Javadoc)
-	 * @see org.geotools.test.OnlineTestCase#getFixtureId()
-	 */
-	@Override
-	protected String getFixtureId() {
-		return "postgis_datastore";
-	}
+    /* (non-Javadoc)
+     * @see org.geotools.test.OnlineTestCase#getFixtureId()
+     */
+    @Override
+    protected String getFixtureId() {
+        return "postgis_datastore";
+    }
 
     // name of a table without geometry
     //
@@ -139,103 +137,115 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
     private final String noGeomLast = "zNotGeom";
 
-	
-	/**
-	 * Complex test for Postgis indexing on db.
-	 * 
-	 * @throws Exception
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Test
-	public void testPostgisIndexing() throws Exception{
-    	final File workDir=new File(TestData.file(this, "."),tempFolderName1);
-    	assertTrue(workDir.mkdir());
-    	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
-    	TestData.unzipFile(this, tempFolderName1 + "/watertemp.zip");
-	    final URL timeElevURL = TestData.url(this, tempFolderName1);
-	    
-        setupDataStoreProperties(tempFolderName1);
-	    
-	    
-	    // now start the test
-		final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
-		assertNotNull(format);
-		ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
-		assertNotNull(reader);
-		
-		final String[] metadataNames = reader.getMetadataNames();
-		assertNotNull(metadataNames);
-		assertEquals(12, metadataNames.length);
-		
-		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
-		final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
-		assertNotNull(timeMetadata);
-		assertEquals(2,timeMetadata.split(",").length);
-		assertEquals(timeMetadata.split(",")[0],reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
-		assertEquals(timeMetadata.split(",")[1],reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
-		
-		assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
-		final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
-		assertNotNull(elevationMetadata);
-		assertEquals(2,elevationMetadata.split(",").length);
-	    assertEquals(Double.parseDouble(elevationMetadata.split(",")[0]),Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM")),1E-6);
-	    assertEquals(Double.parseDouble(elevationMetadata.split(",")[1]),Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM")),1E-6);
-		
-		
-		// limit yourself to reading just a bit of it
-		final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-		final GeneralEnvelope envelope = reader.getOriginalEnvelope();
-		final Dimension dim= new Dimension();
-		dim.setSize(reader.getOriginalGridRange().getSpan(0)/2.0, reader.getOriginalGridRange().getSpan(1)/2.0);
-		final Rectangle rasterArea=(( GridEnvelope2D)reader.getOriginalGridRange());
-		rasterArea.setSize(dim);
-		final GridEnvelope2D range= new GridEnvelope2D(rasterArea);
-		gg.setValue(new GridGeometry2D(range,envelope));
-		
-		
-		// use imageio with defined tiles
-		final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
-		final List<Date> timeValues= new ArrayList<Date>();
-		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
-		sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-		Date date = sdf.parse("2008-10-31T00:00:00.000Z");
-		timeValues.add(date);
-		time.setValue(timeValues);
-		
-		final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
-		bkg.setValue(new double[]{-9999.0});
-		
-		
-		final ParameterValue<Boolean> direct= ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
-		direct.setValue(false);
-		
-		final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
-		elevation.setValue(Arrays.asList(100.0));
-	                
-		// Test the output coverage
-                assertNotNull(reader.read(new GeneralParameterValue[] {gg,time,bkg ,elevation ,direct}));
-		TestUtils.checkCoverage(reader, new GeneralParameterValue[] {gg,time,bkg ,elevation ,direct}, "Time-Elevation Test");
-		
-                        
-                // Test the output coverage
-                reader= TestUtils.getReader(timeElevURL, format);
-		elevation.setValue(Arrays.asList(NumberRange.create(0.0,10.0)));
-                TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,direct },"Time-Elevation Test");
-	}
-	
     /**
      * Complex test for Postgis indexing on db.
-     * 
+     *
      * @throws Exception
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Test
+    public void testPostgisIndexing() throws Exception {
+        final File workDir = new File(TestData.file(this, "."), tempFolderName1);
+        assertTrue(workDir.mkdir());
+        FileUtils.copyFile(
+                TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        TestData.unzipFile(this, tempFolderName1 + "/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, tempFolderName1);
+
+        setupDataStoreProperties(tempFolderName1);
+
+        // now start the test
+        final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+
+        final String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+        assertEquals(12, metadataNames.length);
+
+        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+        final String timeMetadata = reader.getMetadataValue("TIME_DOMAIN");
+        assertNotNull(timeMetadata);
+        assertEquals(2, timeMetadata.split(",").length);
+        assertEquals(timeMetadata.split(",")[0], reader.getMetadataValue("TIME_DOMAIN_MINIMUM"));
+        assertEquals(timeMetadata.split(",")[1], reader.getMetadataValue("TIME_DOMAIN_MAXIMUM"));
+
+        assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+        final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
+        assertNotNull(elevationMetadata);
+        assertEquals(2, elevationMetadata.split(",").length);
+        assertEquals(
+                Double.parseDouble(elevationMetadata.split(",")[0]),
+                Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM")),
+                1E-6);
+        assertEquals(
+                Double.parseDouble(elevationMetadata.split(",")[1]),
+                Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM")),
+                1E-6);
+
+        // limit yourself to reading just a bit of it
+        final ParameterValue<GridGeometry2D> gg =
+                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final GeneralEnvelope envelope = reader.getOriginalEnvelope();
+        final Dimension dim = new Dimension();
+        dim.setSize(
+                reader.getOriginalGridRange().getSpan(0) / 2.0,
+                reader.getOriginalGridRange().getSpan(1) / 2.0);
+        final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
+        rasterArea.setSize(dim);
+        final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
+        gg.setValue(new GridGeometry2D(range, envelope));
+
+        // use imageio with defined tiles
+        final ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
+        final List<Date> timeValues = new ArrayList<Date>();
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+        Date date = sdf.parse("2008-10-31T00:00:00.000Z");
+        timeValues.add(date);
+        time.setValue(timeValues);
+
+        final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
+        bkg.setValue(new double[] {-9999.0});
+
+        final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
+        direct.setValue(false);
+
+        final ParameterValue<List> elevation = ImageMosaicFormat.ELEVATION.createValue();
+        elevation.setValue(Arrays.asList(100.0));
+
+        // Test the output coverage
+        assertNotNull(reader.read(new GeneralParameterValue[] {gg, time, bkg, elevation, direct}));
+        TestUtils.checkCoverage(
+                reader,
+                new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
+                "Time-Elevation Test");
+
+        // Test the output coverage
+        reader = TestUtils.getReader(timeElevURL, format);
+        elevation.setValue(Arrays.asList(NumberRange.create(0.0, 10.0)));
+        TestUtils.checkCoverage(
+                reader,
+                new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
+                "Time-Elevation Test");
+
+        reader.dispose();
+    }
+
+    /**
+     * Complex test for Postgis indexing on db.
+     *
+     * @throws Exception
+     */
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testPostgisIndexingNoEpsgCode() throws Exception {
         final File workDir = new File(TestData.file(this, "."), tempFolderNoEpsg);
         workDir.mkdir();
         assertTrue(workDir.exists());
-        FileUtils.copyFile(TestData.file(this, "rgb_noepsg.zip"),
-                new File(workDir, "rgb_noepsg.zip"));
+        FileUtils.copyFile(
+                TestData.file(this, "rgb_noepsg.zip"), new File(workDir, "rgb_noepsg.zip"));
         TestData.unzipFile(this, tempFolderNoEpsg + "/rgb_noepsg.zip");
         final URL noEpsgURL = TestData.url(this, tempFolderNoEpsg);
 
@@ -249,14 +259,14 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         assertNotNull(reader);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testPostgisCreateAndDrop() throws Exception {
         final File workDir = new File(TestData.file(this, "."), tempFolderName4);
         workDir.mkdir();
         assertTrue(workDir.exists());
-        FileUtils
-                .copyFile(TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        FileUtils.copyFile(
+                TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
         TestData.unzipFile(this, tempFolderName4 + "/watertemp.zip");
         final URL timeElevURL = TestData.url(this, tempFolderName4);
 
@@ -270,21 +280,23 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         reader.delete(true);
         boolean dropSuccessfull = false;
         try {
-            dropTables(new String[] { tempFolderName4 }, "samplecreate2");
+            dropTables(new String[] {tempFolderName4}, "samplecreate2");
             dropSuccessfull = true;
         } catch (SQLException E) {
             // The tables have been already deleted with the database drop performed
             // by the delete operation.
             assertFalse(dropSuccessfull);
         }
+        reader.dispose();
     }
 
     private void setupDataStoreProperties(String folder) throws IOException, FileNotFoundException {
         // place datastore.properties file in the dir for the indexing
         FileWriter out = null;
         try {
-            out = new FileWriter(new File(TestData.file(this, "."), folder
-                    + "/datastore.properties"));
+            out =
+                    new FileWriter(
+                            new File(TestData.file(this, "."), folder + "/datastore.properties"));
 
             final Set<Object> keyset = fixture.keySet();
             for (Object key : keyset) {
@@ -304,124 +316,133 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         }
     }
 
-	/**
-	 * Complex test for Postgis indexing on db.
-	 * 
-	 * @throws Exception
-	 */
-	@Test
-	public void testSortingAndLimiting() throws Exception{
-    	final File workDir=new File(TestData.file(this, "."), tempFolderName2);
-    	assertTrue(workDir.mkdir());
-    	FileUtils.copyFile(TestData.file(this, "watertemp.zip"), new File(workDir,"watertemp.zip"));
-    	TestData.unzipFile(this, tempFolderName2 + "/watertemp.zip");
-	    final URL timeElevURL = TestData.url(this, tempFolderName2);
-	    
-        setupDataStoreProperties(tempFolderName2);
-	    
-	    
-	    // now start the test
-		final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
-		assertNotNull(format);
-		ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
-		assertNotNull(reader);
-		
-		final String[] metadataNames = reader.getMetadataNames();
-		assertNotNull(metadataNames);
-		assertEquals(12, metadataNames.length);
-		
-		assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));		
-		assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+    /**
+     * Complex test for Postgis indexing on db.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSortingAndLimiting() throws Exception {
+        final File workDir = new File(TestData.file(this, "."), tempFolderName2);
+        assertTrue(workDir.mkdir());
+        FileUtils.copyFile(
+                TestData.file(this, "watertemp.zip"), new File(workDir, "watertemp.zip"));
+        TestData.unzipFile(this, tempFolderName2 + "/watertemp.zip");
+        final URL timeElevURL = TestData.url(this, tempFolderName2);
 
-		// dispose and create new reader
-		reader.dispose();
-		final MyImageMosaicReader reader1 = new MyImageMosaicReader(timeElevURL);
-		final RasterManager rasterManager = reader1.getRasterManager(reader1.getGridCoverageNames()[0]);
-		
-		// query
-		final SimpleFeatureType type = rasterManager.granuleCatalog.getType("waterTempPG2");
-		Query query = null;
-		if (type != null){
-			// creating query
-			query= new Query(type.getTypeName());
-			
-			// sorting and limiting
+        setupDataStoreProperties(tempFolderName2);
+
+        // now start the test
+        final AbstractGridFormat format = TestUtils.getFormat(timeElevURL);
+        assertNotNull(format);
+        ImageMosaicReader reader = TestUtils.getReader(timeElevURL, format);
+        assertNotNull(reader);
+
+        final String[] metadataNames = reader.getMetadataNames();
+        assertNotNull(metadataNames);
+        assertEquals(12, metadataNames.length);
+
+        assertEquals("true", reader.getMetadataValue("HAS_TIME_DOMAIN"));
+        assertEquals("true", reader.getMetadataValue("HAS_ELEVATION_DOMAIN"));
+
+        // dispose and create new reader
+        reader.dispose();
+        final MyImageMosaicReader reader1 = new MyImageMosaicReader(timeElevURL);
+        final RasterManager rasterManager =
+                reader1.getRasterManager(reader1.getGridCoverageNames()[0]);
+
+        // query
+        final SimpleFeatureType type = rasterManager.granuleCatalog.getType("waterTempPG2");
+        Query query = null;
+        if (type != null) {
+            // creating query
+            query = new Query(type.getTypeName());
+
+            // sorting and limiting
             // max number of elements
             query.setMaxFeatures(1);
-            
+
             // sorting
-            final SortBy[] clauses=new SortBy[]{
-            		new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),SortOrder.DESCENDING),
-            		new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),SortOrder.ASCENDING),
-            };
+            final SortBy[] clauses =
+                    new SortBy[] {
+                        new SortByImpl(
+                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),
+                                SortOrder.DESCENDING),
+                        new SortByImpl(
+                                FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),
+                                SortOrder.ASCENDING),
+                    };
             query.setSortBy(clauses);
-			
-		}
-		
-		// checking that we get a single feature and that feature is correct
-		final Collection<GranuleDescriptor> features = new ArrayList<GranuleDescriptor>();
-		rasterManager.getGranuleDescriptors(query, new GranuleCatalogVisitor() {
-                    
+        }
+
+        // checking that we get a single feature and that feature is correct
+        final Collection<GranuleDescriptor> features = new ArrayList<GranuleDescriptor>();
+        rasterManager.getGranuleDescriptors(
+                query,
+                new GranuleCatalogVisitor() {
+
                     @Override
                     public void visit(GranuleDescriptor granule, SimpleFeature o) {
                         features.add(granule);
-                        
                     }
                 });
-		assertEquals(features.size(), 1);
-		GranuleDescriptor granule=features.iterator().next();
-		SimpleFeature sf=granule.getOriginator();
-		assertNotNull(sf);
-		Object ingestion = sf.getAttribute("ingestion");
-		assertTrue(ingestion instanceof Timestamp);
-		final GregorianCalendar gc=  new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-		gc.setTimeInMillis(1225497600000l);
-		assertEquals(0,(((Timestamp)ingestion).compareTo(gc.getTime())));		
-		Object elevation = sf.getAttribute("elevation");
-		assertTrue(elevation instanceof Integer);
-		assertEquals(((Integer)elevation).intValue(), 0);
-		
-		
-		
-		// Reverting order (the previous timestamp shouldn't match anymore)
-		final SortBy[] clauses=new SortBy[]{
-	                        new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),SortOrder.ASCENDING),
-	                        new SortByImpl(FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),SortOrder.DESCENDING),
-	            };
-	            query.setSortBy(clauses);
-	            
-	         // checking that we get a single feature and that feature is correct
-	                features.clear();
-	                rasterManager.getGranuleDescriptors(query, new GranuleCatalogVisitor() {
-	                    
-	                    @Override
-	                    public void visit(GranuleDescriptor granule, SimpleFeature o) {
-	                        features.add(granule);
-	                        
-	                    }
-	                });
-	                assertEquals(features.size(), 1);
-	                granule=features.iterator().next();
-	                sf=granule.getOriginator();
-	                assertNotNull(sf);
-	                ingestion = sf.getAttribute("ingestion");
-	                assertTrue(ingestion instanceof Timestamp);
-	                assertNotSame(0,(((Timestamp)ingestion).compareTo(gc.getTime())));               
-	                elevation = sf.getAttribute("elevation");
-	                assertTrue(elevation instanceof Integer);
-	                assertNotSame(((Integer)elevation).intValue(), 0);
-		
-	}
-	
-	@Override
-	protected void setUpInternal() throws Exception {
-		super.setUpInternal();
-		
-		//make sure CRS ordering is correct
-		System.setProperty("org.geotools.referencing.forceXY", "true");
-	    System.setProperty("user.timezone", "GMT");
-	}
-	
+        assertEquals(features.size(), 1);
+        GranuleDescriptor granule = features.iterator().next();
+        SimpleFeature sf = granule.getOriginator();
+        assertNotNull(sf);
+        Object ingestion = sf.getAttribute("ingestion");
+        assertTrue(ingestion instanceof Timestamp);
+        final GregorianCalendar gc = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+        gc.setTimeInMillis(1225497600000l);
+        assertEquals(0, (((Timestamp) ingestion).compareTo(gc.getTime())));
+        Object elevation = sf.getAttribute("elevation");
+        assertTrue(elevation instanceof Integer);
+        assertEquals(((Integer) elevation).intValue(), 0);
+
+        // Reverting order (the previous timestamp shouldn't match anymore)
+        final SortBy[] clauses =
+                new SortBy[] {
+                    new SortByImpl(
+                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property("ingestion"),
+                            SortOrder.ASCENDING),
+                    new SortByImpl(
+                            FeatureUtilities.DEFAULT_FILTER_FACTORY.property("elevation"),
+                            SortOrder.DESCENDING),
+                };
+        query.setSortBy(clauses);
+
+        // checking that we get a single feature and that feature is correct
+        features.clear();
+        rasterManager.getGranuleDescriptors(
+                query,
+                new GranuleCatalogVisitor() {
+
+                    @Override
+                    public void visit(GranuleDescriptor granule, SimpleFeature o) {
+                        features.add(granule);
+                    }
+                });
+        assertEquals(features.size(), 1);
+        granule = features.iterator().next();
+        sf = granule.getOriginator();
+        assertNotNull(sf);
+        ingestion = sf.getAttribute("ingestion");
+        assertTrue(ingestion instanceof Timestamp);
+        assertNotSame(0, (((Timestamp) ingestion).compareTo(gc.getTime())));
+        elevation = sf.getAttribute("elevation");
+        assertTrue(elevation instanceof Integer);
+        assertNotSame(((Integer) elevation).intValue(), 0);
+        reader1.dispose();
+    }
+
+    @Override
+    protected void setUpInternal() throws Exception {
+        super.setUpInternal();
+
+        // make sure CRS ordering is correct
+        System.setProperty("org.geotools.referencing.forceXY", "true");
+        System.setProperty("user.timezone", "GMT");
+    }
 
     private void dropTables(String[] tables) throws Exception {
         dropTables(tables, null);
@@ -433,11 +454,18 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         Connection connection = null;
         Statement st = null;
         try {
-            connection = DriverManager.getConnection(
-                    "jdbc:postgresql://" + fixture.getProperty("host") + ":"
-                            + fixture.getProperty("port") + "/" + 
-                            (database != null ? database : fixture.getProperty("database")),
-                    fixture.getProperty("user"), fixture.getProperty("passwd"));
+            connection =
+                    DriverManager.getConnection(
+                            "jdbc:postgresql://"
+                                    + fixture.getProperty("host")
+                                    + ":"
+                                    + fixture.getProperty("port")
+                                    + "/"
+                                    + (database != null
+                                            ? database
+                                            : fixture.getProperty("database")),
+                            fixture.getProperty("user"),
+                            fixture.getProperty("passwd"));
             st = connection.createStatement();
             for (String table : tables) {
                 st.execute("DROP TABLE IF EXISTS \"" + table + "\"");
@@ -464,16 +492,17 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
 
     /**
      * Complex test for Postgis store wrapping.
-     * 
+     *
      * @throws Exception
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void testPostgisWrapping() throws Exception {
         final File workDir = new File(TestData.file(this, "."), tempFolderNameWrap);
         assertTrue(workDir.mkdir());
-        FileUtils
-                .copyFile(TestData.file(this, "watertemplongnames.zip"), new File(workDir, "watertemplongnames.zip"));
+        FileUtils.copyFile(
+                TestData.file(this, "watertemplongnames.zip"),
+                new File(workDir, "watertemplongnames.zip"));
         TestData.unzipFile(this, tempFolderNameWrap + "/watertemplongnames.zip");
         final URL dataUrl = TestData.url(this, tempFolderNameWrap);
 
@@ -490,7 +519,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         String coverageName = coverageNames[0];
         assertEquals(VERY_LONG_NAME, coverageName);
         List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors(coverageName);
-        for (DimensionDescriptor descriptor: descriptors) {
+        for (DimensionDescriptor descriptor : descriptors) {
             String name = descriptor.getName();
             if (name.equalsIgnoreCase("time")) {
                 assertTrue(descriptor.getStartAttribute().length() > 64);
@@ -512,18 +541,23 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         final String elevationMetadata = reader.getMetadataValue("ELEVATION_DOMAIN");
         assertNotNull(elevationMetadata);
         assertEquals(2, elevationMetadata.split(",").length);
-        assertEquals(Double.parseDouble(elevationMetadata.split(",")[0]),
-                Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM")), 1E-6);
-        assertEquals(Double.parseDouble(elevationMetadata.split(",")[1]),
-                Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM")), 1E-6);
+        assertEquals(
+                Double.parseDouble(elevationMetadata.split(",")[0]),
+                Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MINIMUM")),
+                1E-6);
+        assertEquals(
+                Double.parseDouble(elevationMetadata.split(",")[1]),
+                Double.parseDouble(reader.getMetadataValue("ELEVATION_DOMAIN_MAXIMUM")),
+                1E-6);
 
         // limit yourself to reading just a bit of it
-        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
-                .createValue();
+        final ParameterValue<GridGeometry2D> gg =
+                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralEnvelope envelope = reader.getOriginalEnvelope();
         final Dimension dim = new Dimension();
-        dim.setSize(reader.getOriginalGridRange().getSpan(0) / 2.0, reader.getOriginalGridRange()
-                .getSpan(1) / 2.0);
+        dim.setSize(
+                reader.getOriginalGridRange().getSpan(0) / 2.0,
+                reader.getOriginalGridRange().getSpan(1) / 2.0);
         final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
         rasterArea.setSize(dim);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
@@ -539,7 +573,7 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         time.setValue(timeValues);
 
         final ParameterValue<double[]> bkg = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
-        bkg.setValue(new double[] { -9999.0 });
+        bkg.setValue(new double[] {-9999.0});
 
         final ParameterValue<Boolean> direct = ImageMosaicFormat.USE_JAI_IMAGEREAD.createValue();
         direct.setValue(false);
@@ -548,31 +582,50 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         elevation.setValue(Arrays.asList(100.0));
 
         // Test the output coverage
-        assertNotNull(reader.read(new GeneralParameterValue[] { gg, time, bkg, elevation, direct }));
-        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,
-                direct }, "Time-Elevation Test");
+        assertNotNull(reader.read(new GeneralParameterValue[] {gg, time, bkg, elevation, direct}));
+        TestUtils.checkCoverage(
+                reader,
+                new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
+                "Time-Elevation Test");
 
         // Test the output coverage
         reader = TestUtils.getReader(dataUrl, format, null);
         elevation.setValue(Arrays.asList(NumberRange.create(0.0, 10.0)));
-        TestUtils.checkCoverage(reader, new GeneralParameterValue[] { gg, time, bkg, elevation,
-                direct }, "Time-Elevation Test");
+        TestUtils.checkCoverage(
+                reader,
+                new GeneralParameterValue[] {gg, time, bkg, elevation, direct},
+                "Time-Elevation Test");
+        reader.dispose();
     }
 
-	@Override
-	protected void tearDownInternal() throws Exception {
-	  
+    @Override
+    protected void tearDownInternal() throws Exception {
+
         // delete tables
-        dropTables(new String[] { tempFolderNoEpsg, tempFolderName1, tempFolderName2, noGeomLast,
-                noGeomFirst, tempFolderName3, VERY_LONG_NAME.substring(0, 63) });
+        dropTables(
+                new String[] {
+                    tempFolderNoEpsg,
+                    tempFolderName1,
+                    tempFolderName2,
+                    noGeomLast,
+                    noGeomFirst,
+                    tempFolderName3,
+                    VERY_LONG_NAME.substring(0, 63)
+                });
 
         System.clearProperty("org.geotools.referencing.forceXY");
-	        
+
         // clean up disk
-        if (!ImageMosaicReaderTest.INTERACTIVE){        	
+        if (!ImageMosaicReaderTest.INTERACTIVE) {
             File parent = TestData.file(this, ".");
-            for (String name : Arrays.asList(tempFolderName1, tempFolderName2, tempFolderName3,
-                    tempFolderName4, tempFolderNameWrap, tempFolderNoEpsg)) {
+            for (String name :
+                    Arrays.asList(
+                            tempFolderName1,
+                            tempFolderName2,
+                            tempFolderName3,
+                            tempFolderName4,
+                            tempFolderNameWrap,
+                            tempFolderNoEpsg)) {
                 File directory = new File(parent, name);
                 if (directory.isDirectory() && directory.exists()) {
                     FileUtils.deleteDirectory(directory);
@@ -581,5 +634,4 @@ public class ImageMosaicPostgisIndexOnlineTest extends OnlineTestCase {
         }
         super.tearDownInternal();
     }
-
 }

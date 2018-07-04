@@ -1,7 +1,6 @@
 package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.kml.Folder;
 import org.geotools.kml.FolderStack;
 import org.geotools.kml.v22.KML;
@@ -16,7 +15,7 @@ public class NameBinding extends AbstractComplexBinding {
 
     private final FolderStack folderStack;
 
-    private final static String FOLDER = KML.Folder.getLocalPart();
+    private static final String FOLDER = KML.Folder.getLocalPart();
 
     public NameBinding(FolderStack folderStack) {
         this.folderStack = folderStack;

@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
 
   <!-- =========================================================== -->
@@ -113,12 +113,6 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-image</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
 	<dependency>
 	  <groupId>org.geotools.xsd</groupId>
 	  <artifactId>gt-xsd-core</artifactId>
@@ -130,15 +124,16 @@
 	  <version>${project.version}</version>
 	</dependency>   
 	<dependency>
-	  <groupId>org.geotools.xsd</groupId>
-	  <artifactId>gt-xsd-ows</artifactId>
-	  <version>${project.version}</version>
-	</dependency>
-	<dependency>
 	  <groupId>xmlunit</groupId>
 	  <artifactId>xmlunit</artifactId>
 	  <scope>test</scope>
-	</dependency>  
+	</dependency>
+	<dependency>
+		<groupId>org.geotools</groupId>
+		<artifactId>gt-cql</artifactId>
+		<version>${project.version}</version>
+		<scope>test</scope>
+	</dependency>
     </dependencies>
     
     <build>

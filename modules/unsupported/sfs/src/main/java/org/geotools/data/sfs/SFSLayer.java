@@ -17,14 +17,11 @@
 
 package org.geotools.data.sfs;
 
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-/**
- * Stores a single layer information from the capabilities
- */
+/** Stores a single layer information from the capabilities */
 class SFSLayer {
 
     Name typeName;
@@ -37,8 +34,12 @@ class SFSLayer {
 
     Envelope bounds;
 
-    public SFSLayer(Name typeName, boolean layerAxisOrder, String layerSRS,
-            CoordinateReferenceSystem crs, Envelope bounds) {
+    public SFSLayer(
+            Name typeName,
+            boolean layerAxisOrder,
+            String layerSRS,
+            CoordinateReferenceSystem crs,
+            Envelope bounds) {
         super();
         this.typeName = typeName;
         this.xyOrder = layerAxisOrder;

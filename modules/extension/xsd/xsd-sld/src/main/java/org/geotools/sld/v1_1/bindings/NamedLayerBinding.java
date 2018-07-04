@@ -17,18 +17,15 @@
 package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.sld.bindings.SLDNamedLayerBinding;
-import org.geotools.sld.v1_1.SLD;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/sld:NamedLayer.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="NamedLayer"&gt;
@@ -48,16 +45,12 @@ import javax.xml.namespace.QName;
  *              &lt;/xsd:choice&gt;
  *          &lt;/xsd:sequence&gt;
  *      &lt;/xsd:complexType&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class NamedLayerBinding extends SLDNamedLayerBinding {
@@ -67,15 +60,16 @@ public class NamedLayerBinding extends SLDNamedLayerBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         NamedLayer layer = (NamedLayer) super.parse(instance, node, value);
-        
-        //TODO: description
+
+        // TODO: description
         return layer;
     }
-
 }

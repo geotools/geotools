@@ -16,28 +16,10 @@
  */
 package org.geotools.data.teradata;
 
-import java.util.Collections;
-
-import org.geotools.data.DataUtilities;
-import org.geotools.data.FeatureReader;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
-import org.geotools.jdbc.TestData;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override
@@ -45,19 +27,16 @@ public class TeradataDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         super.connect();
         dataStore.setDatabaseSchema(fixture.getProperty("user"));
     }
-    
+
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new TeradataDataStoreAPITestSetup(new TeradataTestSetup());
     }
-
 
     public void testGetFeatureWriterConcurrency() throws Exception {
         // Teradata will lock indefinitely, won't throw an exception
     }
 
-
     public void testTransactionIsolation() throws Exception {
         // TODO implement writing
     }
-    
 }

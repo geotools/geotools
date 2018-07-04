@@ -27,63 +27,61 @@ import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
-
 import junit.framework.AssertionFailedError;
-
 import org.geotools.TestData;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
- * 
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */
 public class ShapefileReadWriteTest extends TestCaseSupport {
-    final String[] files = { "shapes/statepop.shp", "shapes/polygontest.shp",
-            "shapes/pointtest.shp", "shapes/holeTouchEdge.shp",
-            "shapes/stream.shp", "shapes/chinese_poly.shp" };
-    
+    final String[] files = {
+        "shapes/statepop.shp",
+        "shapes/polygontest.shp",
+        "shapes/pointtest.shp",
+        "shapes/holeTouchEdge.shp",
+        "shapes/stream.shp",
+        "shapes/chinese_poly.shp"
+    };
+
     boolean readStarted = false;
 
     Exception exception = null;
-
 
     @Test
     public void testReadWriteStatePop() throws Exception {
         test("shapes/statepop.shp");
     }
-    
+
     @Test
     public void testReadWritePolygonTest() throws Exception {
         test("shapes/polygontest.shp");
     }
-    
+
     @Test
     public void testReadWritePointTest() throws Exception {
         test("shapes/pointtest.shp");
     }
-    
+
     @Test
     public void testReadWriteHoleTouchEdge() throws Exception {
         test("shapes/holeTouchEdge.shp");
     }
-    
+
     @Test
     public void testReadWriteChinese() throws Exception {
         test("shapes/chinese_poly.shp", Charset.forName("GB18030"));
     }
-    
+
     @Test
     public void testReadWriteDanishPoint() throws Exception {
         test("shapes/danish_point.shp");
@@ -95,52 +93,53 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         System.runFinalization(); // If some streams are still open, it may
         // help to close them.
         final File file = getTempFile();
-        Runnable reader = new Runnable() {
-            public void run() {
-                int cutoff = 0;
-                FileInputStream fr = null;
-                try {
-                    fr = new FileInputStream(file);
-                    try {
-                        fr.read();
-                    } catch (IOException e1) {
-                        exception = e1;
-                        return;
-                    }
-                    // if (verbose) {
-                    // System.out.println("locked");
-                    // }
-                    readStarted = true;
-                    while (cutoff < 10) {
-                        synchronized (this) {
+        Runnable reader =
+                new Runnable() {
+                    public void run() {
+                        int cutoff = 0;
+                        FileInputStream fr = null;
+                        try {
+                            fr = new FileInputStream(file);
                             try {
+                                fr.read();
+                            } catch (IOException e1) {
+                                exception = e1;
+                                return;
+                            }
+                            // if (verbose) {
+                            // System.out.println("locked");
+                            // }
+                            readStarted = true;
+                            while (cutoff < 10) {
+                                synchronized (this) {
+                                    try {
+                                        try {
+                                            fr.read();
+                                        } catch (IOException e) {
+                                            exception = e;
+                                            return;
+                                        }
+                                        wait(500);
+                                        cutoff++;
+                                    } catch (InterruptedException e) {
+                                        cutoff = 10;
+                                    }
+                                }
+                            }
+                        } catch (FileNotFoundException e) {
+                            assertTrue(false);
+                        } finally {
+                            if (fr != null) {
                                 try {
-                                    fr.read();
+                                    fr.close();
                                 } catch (IOException e) {
                                     exception = e;
                                     return;
                                 }
-                                wait(500);
-                                cutoff++;
-                            } catch (InterruptedException e) {
-                                cutoff = 10;
                             }
                         }
                     }
-                } catch (FileNotFoundException e) {
-                    assertTrue(false);
-                } finally {
-                    if (fr != null) {
-                        try {
-                            fr.close();
-                        } catch (IOException e) {
-                            exception = e;
-                            return;
-                        }
-                    }
-                }
-            }
-        };
+                };
         Thread readThread = new Thread(reader);
         readThread.start();
         while (!readStarted) {
@@ -157,7 +156,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         fail.initCause(cause);
         throw fail;
     }
-    
+
     private void test(String f) throws Exception {
         test(f, null);
     }
@@ -165,7 +164,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
     private void test(String f, Charset charset) throws Exception {
         copyShapefiles(f); // Work on File rather than URL from JAR.
         ShapefileDataStore s = new ShapefileDataStore(TestData.url(TestCaseSupport.class, f));
-        if(charset != null) {
+        if (charset != null) {
             s.setCharset(charset);
         }
         String typeName = s.getTypeNames()[0];
@@ -183,18 +182,22 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         s.dispose();
     }
 
-    private void test(SimpleFeatureType type, SimpleFeatureCollection original,
-            File tmp, ShapefileDataStoreFactory maker, boolean memorymapped, Charset charset)
+    private void test(
+            SimpleFeatureType type,
+            SimpleFeatureCollection original,
+            File tmp,
+            ShapefileDataStoreFactory maker,
+            boolean memorymapped,
+            Charset charset)
             throws IOException, MalformedURLException, Exception {
 
         ShapefileDataStore shapefile;
         String typeName;
-        Map<String,Serializable> params = new HashMap<String,Serializable>();
+        Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put(ShapefileDataStoreFactory.URLP.key, tmp.toURI().toURL());
         params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, memorymapped);
         shapefile = (ShapefileDataStore) maker.createDataStore(params);
-        if(charset != null)
-            shapefile.setCharset(charset);
+        if (charset != null) shapefile.setCharset(charset);
 
         shapefile.createSchema(type);
 
@@ -207,7 +210,7 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
 
         ShapefileDataStore review = new ShapefileDataStore(tmp.toURI().toURL());
         review.setMemoryMapped(memorymapped);
-        if(charset != null) {
+        if (charset != null) {
             review.setCharset(charset);
         }
         typeName = review.getTypeNames()[0];
@@ -217,16 +220,14 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
         compare(copy, again);
         compare(original, again);
         review.dispose();
-        
+
         shapefile.dispose();
     }
 
-    static void compare(SimpleFeatureCollection one, SimpleFeatureCollection two)
-            throws Exception {
+    static void compare(SimpleFeatureCollection one, SimpleFeatureCollection two) throws Exception {
 
         if (one.size() != two.size()) {
-            throw new Exception("Number of Features unequal : " + one.size()
-                    + " != " + two.size());
+            throw new Exception("Number of Features unequal : " + one.size() + " != " + two.size());
         }
 
         SimpleFeatureIterator iterator1 = one.features();
@@ -256,17 +257,15 @@ public class ShapefileReadWriteTest extends TestCaseSupport {
                 g1.normalize();
                 g2.normalize();
                 if (!g1.equalsExact(g2)) {
-                    throw new Exception("Different geometries (" + i + "):\n"
-                            + g1 + "\n" + g2);
+                    throw new Exception("Different geometries (" + i + "):\n" + g1 + "\n" + g2);
                 }
             } else {
                 if (!att1.equals(att2)) {
-                    throw new Exception("Different attribute (" + i + "): ["
-                            + att1 + "] - [" + att2 + "]");
+                    throw new Exception(
+                            "Different attribute (" + i + "): [" + att1 + "] - [" + att2 + "]");
                 }
             }
         }
-
     }
 
     public static final void main(String[] args) throws Exception {

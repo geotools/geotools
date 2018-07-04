@@ -20,16 +20,11 @@ import org.geotools.data.postgis.PostgisDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new PostgisDataStoreAPITestSetup(new PostGISPSTestSetup());
     }
-
 }

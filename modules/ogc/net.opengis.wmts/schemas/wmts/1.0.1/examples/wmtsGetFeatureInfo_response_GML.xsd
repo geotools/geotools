@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<schema targetNamespace="http://www.opengis.uab.es/SITiled/world/etopo2"
+	xmlns:etopo2="http://www.opengis.uab.es/SITiled/world/etopo2" 
+	xmlns:gml="http://www.opengis.net/gml" 
+	xmlns:gmlsf="http://www.opengis.net/gmlsf" 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	elementFormDefault="qualified"
+	version="1.0.1">
+	<annotation>
+		<appinfo source="http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsfLevels.xsd">
+			<gmlsf:ComplianceLevel>0</gmlsf:ComplianceLevel>
+			<gmlsf:GMLProfileSchema>http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsf.xsd</gmlsf:GMLProfileSchema>
+		</appinfo>
+		<documentation>
+			This is an example of a KVP WMTS GetFeatureInfo response schema.
+
+			WMTS is an OGC Standard.
+			Copyright (c) 2009,2010 Open Geospatial Consortium.
+			To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	<!-- ============================================================= -->
+	<!-- === includes and imports                                  === -->
+	<!-- ============================================================= -->
+	<import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+	<!-- =========================================================
+        define feature types
+        ========================================================= -->
+	<element name="GridPoint_etopo2" type="etopo2:GridPoint_etopo2Type" substitutionGroup="gml:_Feature"/>
+	<!-- ============================================================= -->
+	<complexType name="GridPoint_etopo2Type">
+		<complexContent>
+			<extension base="gml:AbstractFeatureType">
+				<sequence>
+					<element name="elevation">
+						<simpleType>
+							<restriction base="double">
+								<minInclusive value="-10654"/>
+								<maxInclusive value="8593"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="TileRow" type="nonNegativeInteger"/>
+					<element name="TileCol" type="nonNegativeInteger"/>
+					<element name="J" type="nonNegativeInteger"/>
+					<element name="I" type="nonNegativeInteger"/>
+					<element name="Geometry" type="gml:PointPropertyType" minOccurs="0"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<!-- ============================================================= -->
+	<!-- Define a feature collection for a set of Roads_etopo2            -->
+	<!-- ============================================================= -->
+	<element name="ReguralGridedElevations" type="gml:FeatureCollectionType" 
+			substitutionGroup="gml:_FeatureCollection"/>
+	<complexType name="ReguralGridedElevationsType">
+		<complexContent>
+			<extension base="gml:FeatureCollectionType">
+				<sequence maxOccurs="unbounded">
+					<element name="featureMember">
+						<complexType>
+							<sequence>
+								<element ref="gml:_Feature"/>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+</schema>

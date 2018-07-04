@@ -1,0 +1,69 @@
+{
+    "version": 8,
+    "name": "Symbols",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -93.22737015511188,
+        40.47523833683954
+    ],
+    "zoom": 8.080869332094693,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        },
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        }
+    },
+    "sprite": "file:src/test/resources/org/geotools/mbstyle/sprite/test-data/sprite",
+    "glyphs": "mapbox://fonts/testUser/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "testid",
+            "type": "symbol",
+            "source": "testsource",
+            "source-layer": "testsource-layer",
+            "layout": {
+                "text-line-height": 1,
+                "text-size": 23,
+                "text-transform": "lowercase",
+                "text-justify": "left",
+                "visibility": "visible",
+                "text-offset": [
+                    00,
+                    00
+                ],
+                "text-anchor": "CENTER",
+                "text-pitch-alignment": "viewport",
+                "text-field": "{text}",
+                "text-font": ["Bitstream Vera Sans"],
+                "icon-image": "pattern",
+                "symbol-placement": "point"
+            },
+            "paint": {
+                "text-color": "#eeedf7",
+                "text-halo-color": "#5d588c",
+                "text-halo-width": 2,
+                "text-opacity": 1,
+                "text-translate": [
+                      0,
+                      0
+                ]
+            }
+        }
+    ],
+    "created": "2017-02-14T16:14:54.215Z",
+    "id": "ciz5qbyd3007j2spd3flvk2uh",
+    "modified": "2017-02-14T17:56:14.670Z",
+    "owner": "testUser",
+    "visibility": "private",
+    "draft": false
+}

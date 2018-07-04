@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.opengis.net/wmts/1.0" 
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:ows="http://www.opengis.net/ows/1.1" 
+	xmlns:wmts="http://www.opengis.net/wmts/1.0" 
+	elementFormDefault="qualified" xml:lang="en"
+	version="1.0.1">
+	<annotation>
+		<appinfo>wmtsGetFeatureInfo_request</appinfo>
+		<documentation>
+			This XML Schema Document defines XML WMTS
+			GetFeatureInfo request that can be used in SOAP encodings.
+		    
+		    	WMTS is an OGC Standard.
+		    	Copyright (c) 2009,2010 Open Geospatial Consortium.
+		    	To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	<!-- =============================================================
+		includes and imports
+	============================================================== -->
+	<import namespace="http://www.opengis.net/ows/1.1" 
+		schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"/>
+	<include schemaLocation="wmts.xsd"/>
+	<include schemaLocation="wmtsGetTile_request.xsd"/>
+	<!-- =============================================================
+		elements and types
+	============================================================== -->
+	<element name="GetFeatureInfo">
+		<complexType>
+			<sequence>
+				<element ref="wmts:GetTile">
+					<annotation>
+						<documentation>The corresponding GetTile request parameters</documentation>
+					</annotation>
+				</element>
+				<element name="J" type="nonNegativeInteger">
+					<annotation>
+						<documentation>Row index of a pixel in the tile</documentation>
+					</annotation>
+				</element>
+				<element name="I" type="nonNegativeInteger">
+					<annotation>
+						<documentation>Column index of a pixel in the tile</documentation>
+					</annotation>
+				</element>
+				<element name="InfoFormat" type="ows:MimeType">
+					<annotation>
+						<documentation>Output MIME type format of the 
+						retrieved information</documentation>
+					</annotation>
+				</element>
+			</sequence>
+			<attribute name="service" type="string" use="required" fixed="WMTS"/>
+			<attribute name="version" type="string" use="required" fixed="1.0.0"/>
+		</complexType>
+	</element>
+</schema>

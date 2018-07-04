@@ -16,29 +16,27 @@
  */
 package org.geotools.geopkg;
 
-import com.vividsolutions.jts.geom.Point;
-import org.geotools.data.DataStore;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.Assert.assertTrue;
+import org.geotools.data.DataStore;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.geom.Point;
 
 public class GeoPkgDataStoreFactoryTest {
 
-    @Rule
-    public TemporaryFolder tmp = new TemporaryFolder(new File("target"));
+    @Rule public TemporaryFolder tmp = new TemporaryFolder(new File("target"));
 
     @Test
     public void testBaseDirectory() throws IOException {
-        Map<String,Serializable> map = new HashMap<>();
+        Map<String, Serializable> map = new HashMap<>();
         map.put(GeoPkgDataStoreFactory.DBTYPE.key, "geopkg");
         map.put(GeoPkgDataStoreFactory.DATABASE.key, "foo.gpkg");
 

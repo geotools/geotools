@@ -46,7 +46,7 @@ public class TypeBinding {
     }
 
     /**
-     * @return fully-qualified binding class name, for example "com.vividsolutions.jts.geom.Point"
+     * @return fully-qualified binding class name, for example "org.locationtech.jts.geom.Point"
      */
     public String getBinding() {
         return binding;

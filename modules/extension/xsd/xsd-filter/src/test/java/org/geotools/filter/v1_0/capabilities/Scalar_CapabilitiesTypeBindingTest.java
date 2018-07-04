@@ -16,18 +16,12 @@
  */
 package org.geotools.filter.v1_0.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.ArithmeticOperators;
-import org.opengis.filter.capability.ScalarCapabilities;
 import org.geotools.xml.Binding;
+import org.opengis.filter.capability.ScalarCapabilities;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class Scalar_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(ScalarCapabilities.class, binding(OGC.Scalar_CapabilitiesType).getType());
@@ -58,15 +52,21 @@ public class Scalar_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSu
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.scalarCapabilities(true),
-                new QName(OGC.NAMESPACE, "Scalar_Capabilities"), OGC.Scalar_CapabilitiesType);
+        Document dom =
+                encode(
+                        FilterMockData.scalarCapabilities(true),
+                        new QName(OGC.NAMESPACE, "Scalar_Capabilities"),
+                        OGC.Scalar_CapabilitiesType);
 
         assertNotNull(getElementByQName(dom, OGC.Logical_Operators));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Comparison_Operators")));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Arithmetic_Operators")));
 
-        dom = encode(FilterMockData.scalarCapabilities(false),
-                new QName(OGC.NAMESPACE, "Scalar_Capabilities"), OGC.Scalar_CapabilitiesType);
+        dom =
+                encode(
+                        FilterMockData.scalarCapabilities(false),
+                        new QName(OGC.NAMESPACE, "Scalar_Capabilities"),
+                        OGC.Scalar_CapabilitiesType);
         assertNull(getElementByQName(dom, OGC.Logical_Operators));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Comparison_Operators")));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Arithmetic_Operators")));

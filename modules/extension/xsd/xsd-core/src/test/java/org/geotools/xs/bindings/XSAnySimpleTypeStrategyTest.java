@@ -16,18 +16,13 @@
  */
 package org.geotools.xs.bindings;
 
-import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class XSAnySimpleTypeStrategyTest extends TestSchema {
     private XSDSimpleTypeDefinition typeDef;
     private SimpleBinding stratagy;
@@ -44,8 +39,9 @@ public class XSAnySimpleTypeStrategyTest extends TestSchema {
     }
 
     public void testAnyTypeParse() throws Exception {
-        assertEquals("  hello world",
-            stratagy.parse(element("  hello world", XS.ANYSIMPLETYPE), "  hello world"));
+        assertEquals(
+                "  hello world",
+                stratagy.parse(element("  hello world", XS.ANYSIMPLETYPE), "  hello world"));
     }
 
     public void testHandlingOfWhiteSpace() throws Exception {

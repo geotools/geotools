@@ -26,10 +26,9 @@ import java.util.Iterator;
 
 /**
  * The TileReader reads tiles consecutively from a tile layer inside a GeoPackage.
- * 
+ *
  * @author Justin Deoliveira
  * @author Niels Charlier
- *
  */
 public class TileReader implements Iterator<Tile>, Closeable {
 
@@ -62,9 +61,8 @@ public class TileReader implements Iterator<Tile>, Closeable {
             t.setZoom(rs.getInt("zoom_level"));
             t.setColumn(rs.getInt("tile_column"));
             t.setRow(rs.getInt("tile_row"));
-            t.setData(rs.getBytes("tile_data")); 
-        }
-        catch(SQLException e) {
+            t.setData(rs.getBytes("tile_data"));
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
@@ -84,7 +82,7 @@ public class TileReader implements Iterator<Tile>, Closeable {
             st = rs.getStatement();
 
             rs.close();
-            if (st != null) {
+            if (st != null && !st.isClosed()) {
                 st.close();
             }
 
@@ -93,5 +91,4 @@ public class TileReader implements Iterator<Tile>, Closeable {
             throw new IOException(e);
         }
     }
-
 }

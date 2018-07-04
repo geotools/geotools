@@ -17,36 +17,32 @@
 package org.geotools.data.oracle;
 
 import java.util.List;
-
 import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
 public class OracleTypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
-	protected OracleTypeNamesTestSetup() {
-		super(new OracleTestSetup());
-	}
+    protected OracleTypeNamesTestSetup() {
+        super(new OracleTestSetup());
+    }
 
-	@Override
-	protected void createTypes() throws Exception {
-		run("CREATE TABLE ftntable ("
-				+ "id INT, name VARCHAR(255), geom MDSYS.SDO_GEOMETRY)");
-		run("CREATE VIEW ftnview AS SELECT id, geom FROM ftntable");
-		run("CREATE SYNONYM ftnsyn FOR ftntable");
+    @Override
+    protected void createTypes() throws Exception {
+        run("CREATE TABLE ftntable (" + "id INT, name VARCHAR(255), geom MDSYS.SDO_GEOMETRY)");
+        run("CREATE VIEW ftnview AS SELECT id, geom FROM ftntable");
+        run("CREATE SYNONYM ftnsyn FOR ftntable");
+    }
 
-	}
+    @Override
+    protected void dropTypes() throws Exception {
+        runSafe("DROP SYNONYM ftnsyn");
+        runSafe("DROP VIEW ftnview");
+        runSafe("DROP TABLE ftntable purge");
+    }
 
-	@Override
-	protected void dropTypes() throws Exception {
-		runSafe("DROP SYNONYM ftnsyn");
-		runSafe("DROP VIEW ftnview");
-		runSafe("DROP TABLE ftntable purge");
-	}
-	
-	@Override
-	protected List<String> getExpectedTypeNames() {
-		List<String> ret = super.getExpectedTypeNames();
-		ret.add("ftnsyn");
-		return ret;
-	}
-
+    @Override
+    protected List<String> getExpectedTypeNames() {
+        List<String> ret = super.getExpectedTypeNames();
+        ret.add("ftnsyn");
+        return ret;
+    }
 }

@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,18 +18,16 @@ package org.geotools.data.wms.request;
 
 import java.net.URL;
 import java.util.Properties;
-
 import org.geotools.data.ows.Layer;
 
 /**
  * Provides functionality for a basic getStyles request
- * 
+ *
  * @author Richard Gould
- *
- *
  * @source $URL$
  */
-public abstract class AbstractGetStylesRequest extends AbstractWMSRequest implements GetStylesRequest {
+public abstract class AbstractGetStylesRequest extends AbstractWMSRequest
+        implements GetStylesRequest {
 
     private Layer[] layers;
 
@@ -37,27 +35,27 @@ public abstract class AbstractGetStylesRequest extends AbstractWMSRequest implem
      * @param onlineResource
      * @param properties
      */
-    public AbstractGetStylesRequest( URL onlineResource, Properties properties ) {
+    public AbstractGetStylesRequest(URL onlineResource, Properties properties) {
         super(onlineResource, properties);
     }
-    
+
     protected void initRequest() {
         setProperty(REQUEST, "GetStyles");
     }
-    
+
     protected abstract void initVersion();
 
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetStylesRequest#setLayers(java.lang.String)
      */
-    public void setLayers( String layers ) {
+    public void setLayers(String layers) {
         setProperty(LAYERS, layers);
     }
 
     /* (non-Javadoc)
      * @see org.geotools.data.wms.request.GetStylesRequest#setSLDver(java.lang.String)
      */
-    public void setSLDver( String sldVer ) {
+    public void setSLDver(String sldVer) {
         setProperty(SLDVER, sldVer);
     }
 
@@ -67,5 +65,4 @@ public abstract class AbstractGetStylesRequest extends AbstractWMSRequest implem
     public Layer[] getLayers() {
         return layers;
     }
-
 }

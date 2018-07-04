@@ -16,29 +16,33 @@
  */
 package org.geotools.gce.imagemosaic.properties;
 
+import static org.geotools.gce.imagemosaic.properties.ResolutionExtractor.Axis.BOTH;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- * @author Niels Charlier
- * 
- */
+/** @author Niels Charlier */
 class ResolutionExtractor extends PropertiesCollector {
 
-    private final static Logger LOGGER = Logging.getLogger(ResolutionExtractor.class);
+    private static final Logger LOGGER = Logging.getLogger(ResolutionExtractor.class);
 
-    public ResolutionExtractor(PropertiesCollectorSPI spi, List<String> propertyNames) {
+    enum Axis {
+        X,
+        Y,
+        BOTH
+    };
+
+    Axis axis = BOTH;
+
+    public ResolutionExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, Axis axis) {
         super(spi, propertyNames);
+        this.axis = axis;
     }
 
     @Override
@@ -47,7 +51,13 @@ class ResolutionExtractor extends PropertiesCollector {
         try {
             resolutionLevels = gridCoverageReader.getResolutionLevels();
 
-            addMatch("" + Math.max(resolutionLevels[0][0], resolutionLevels[0][1]));
+            if (axis == Axis.X) {
+                addMatch("" + resolutionLevels[0][0]);
+            } else if (axis == Axis.Y) {
+                addMatch("" + resolutionLevels[0][1]);
+            } else {
+                addMatch("" + Math.max(resolutionLevels[0][0], resolutionLevels[0][1]));
+            }
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
@@ -99,5 +109,4 @@ class ResolutionExtractor extends PropertiesCollector {
             map.put(propertyName, res);
         }
     }
-
 }

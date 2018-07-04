@@ -3,9 +3,7 @@ package org.geotools.data.postgis;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
-
 import javax.sql.DataSource;
-
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.jdbc.JDBCTestSetup;
@@ -21,7 +19,7 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
     protected JDBCTestSetup createTestSetup() {
         return new PostGISCitextTestSetup();
     }
-    
+
     @Override
     protected String getFixtureId() {
         return super.getFixtureId() + "citeext";
@@ -29,16 +27,16 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
 
     @Override
     protected boolean isOnline() throws Exception {
-        if(!super.isOnline()) {
+        if (!super.isOnline()) {
             return false;
         }
-        
-        // We need to see if we have the citext extension and if we are authorized to 
-        // create it, to make things easy, we just directly try to do so, if this fails, 
+
+        // We need to see if we have the citext extension and if we are authorized to
+        // create it, to make things easy, we just directly try to do so, if this fails,
         // the test will be skipped
         JDBCTestSetup setup = createTestSetup();
         setup.setFixture(fixture);
-        
+
         Connection cx = null;
         Statement st = null;
         try {
@@ -50,27 +48,24 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
             st.close();
             cx.close();
             return true;
-        } 
-        catch (Throwable t) {
+        } catch (Throwable t) {
 
             return false;
-        } 
-        finally {
+        } finally {
             if (st != null) {
-              st.close();
-          }
-          if (cx != null) {
-              cx.close();
-          }
+                st.close();
+            }
+            if (cx != null) {
+                cx.close();
+            }
             try {
-                setup.tearDown();    
-            } 
-            catch(Exception e) {
+                setup.tearDown();
+            } catch (Exception e) {
                 System.out.println("Error occurred tearing down the test setup");
             }
         }
     }
-    
+
     public void testSchema() throws IOException {
         SimpleFeatureType schema = dataStore.getSchema(tname("users"));
         assertEquals(2, schema.getAttributeCount());
@@ -78,16 +73,17 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
         assertEquals("nick", ad.getLocalName());
         assertEquals(String.class, ad.getType().getBinding());
     }
-    
+
     public void testEquality() throws IOException {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("users"));
         FilterFactory ff = dataStore.getFilterFactory();
         Filter filter = ff.equal(ff.property(aname("nick")), ff.literal("LARRY"), true);
         int count = fs.getCount(new Query(tname("users"), filter));
-        // we had a case insensitive comparison due to the type, regardless of what we asked in the filter
+        // we had a case insensitive comparison due to the type, regardless of what we asked in the
+        // filter
         assertEquals(1, count);
     }
-    
+
     public void testLike() throws IOException {
         SimpleFeatureSource fs = dataStore.getFeatureSource(tname("users"));
         FilterFactory ff = dataStore.getFilterFactory();
@@ -96,6 +92,4 @@ public class PostGISCitextOnlineTest extends JDBCTestSupport {
         // we had a case insensitive comparison due to the type, so we get two matches
         assertEquals(2, count);
     }
-
-
 }

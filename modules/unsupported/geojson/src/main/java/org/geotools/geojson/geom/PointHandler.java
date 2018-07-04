@@ -18,32 +18,26 @@ package org.geotools.geojson.geom;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import org.json.simple.parser.ParseException;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PointHandler extends GeometryHandlerBase<Point> {
-    
+
     public PointHandler(GeometryFactory factory) {
         super(factory);
     }
-    
+
     public boolean startObjectEntry(String key) throws ParseException, IOException {
         if ("coordinates".equals(key)) {
             ordinates = new ArrayList();
         }
-        
+
         return true;
     }
-    
+
     @Override
     public boolean endObject() throws ParseException, IOException {
         if (ordinates != null) {

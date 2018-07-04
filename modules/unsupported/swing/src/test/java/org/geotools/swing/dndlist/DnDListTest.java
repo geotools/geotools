@@ -17,78 +17,66 @@
 
 package org.geotools.swing.dndlist;
 
-import java.awt.GraphicsEnvironment;
-
-import javax.swing.RepaintManager;
-
-import org.geotools.swing.control.DnDList;
-import org.geotools.swing.control.DnDListModel;
-
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- * 
- *
- * @source $URL$
- */
+import java.awt.GraphicsEnvironment;
+import javax.swing.RepaintManager;
+import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
+import org.geotools.swing.control.DnDList;
+import org.geotools.swing.control.DnDListModel;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+/** @source $URL$ */
 public class DnDListTest {
 
-    boolean isHeadless(){
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); 
+    boolean isHeadless() {
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         return ge.isHeadless();
     }
-    
-    /**
-     * Temporary hack prior to setting up proper fest-swing tests.
-     */
+
+    /** Temporary hack prior to setting up proper fest-swing tests. */
     @BeforeClass
     public static void setupOnce() {
         RepaintManager rm = new RepaintManager();
         FailOnThreadViolationRepaintManager.setCurrentManager(rm);
     }
-    
-    
+
     @Test
     public void testDnDList() {
-        if( isHeadless() ) return;
+        if (isHeadless()) return;
 
         DnDList<String> list = new DnDList<String>();
-        assertNotNull( list );
+        assertNotNull(list);
     }
 
     @Test
     public void testDnDListDnDListModelOfT() {
-        if( isHeadless() ) return;
+        if (isHeadless()) return;
 
         DnDListModel<String> model = new DnDListModel<String>();
         model.addItem("one");
         model.addItem("two");
-        
-        DnDList<String> list = new DnDList<String>( model );
-        assertSame( model, list.getModel() );
-        
+
+        DnDList<String> list = new DnDList<String>(model);
+        assertSame(model, list.getModel());
+
         try {
-           list = new DnDList<String>( null );
-           fail( "Expected illegal argument exception");
-        }
-        catch( IllegalArgumentException expected ){            
+            list = new DnDList<String>(null);
+            fail("Expected illegal argument exception");
+        } catch (IllegalArgumentException expected) {
         }
     }
 
     @Test
     public void testGetModel() {
-        if( isHeadless() ) return;
+        if (isHeadless()) return;
 
         DnDListModel<String> model = new DnDListModel<String>();
         model.addItem("one");
         model.addItem("two");
-        
-        DnDList<String> list = new DnDList<String>( model );
-        assertSame( model, list.getModel() );
-    }
 
+        DnDList<String> list = new DnDList<String>(model);
+        assertSame(model, list.getModel());
+    }
 }

@@ -21,9 +21,8 @@ import org.geotools.gml3.GML3CurveParsingTest;
 
 /**
  * Checks that the GML 3.2 bindings can do the work as well as the GML 3 ones
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class GML32CurveParsingTest extends GML3CurveParsingTest {
 

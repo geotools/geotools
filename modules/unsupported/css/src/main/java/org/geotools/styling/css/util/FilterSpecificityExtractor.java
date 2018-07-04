@@ -18,7 +18,6 @@ package org.geotools.styling.css.util;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_property;
@@ -44,7 +43,7 @@ public class FilterSpecificityExtractor extends DefaultFilterVisitor {
     public Object visit(org.opengis.filter.expression.Function expression, Object data) {
         super.visit(expression, data);
         if (expression instanceof VolatileFunction) {
-            // the volatile function is assumed to be the same as a property, since it returns 
+            // the volatile function is assumed to be the same as a property, since it returns
             // different values when we evaluate it
             properties.add(expression);
         }

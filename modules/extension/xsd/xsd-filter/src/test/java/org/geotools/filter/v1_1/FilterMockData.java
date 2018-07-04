@@ -19,12 +19,13 @@ package org.geotools.filter.v1_1;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.ResourceIdImpl;
 import org.geotools.gml3.GML;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
@@ -64,43 +65,39 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
-
 /**
  * Mock data class used for filter binding tests.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class FilterMockData {
     static FilterFactory2 f = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
 
     public static Id id() {
-        return f.id(new LinkedHashSet<Identifier>(Arrays.asList(
-            f.featureId("foo.1"), f.featureId("foo.2"), f.featureId("foo.3"))));
+        return f.id(
+                new LinkedHashSet<Identifier>(
+                        Arrays.asList(
+                                f.featureId("foo.1"), f.featureId("foo.2"), f.featureId("foo.3"))));
     }
-    
+
     public static Id resourceId() {
-        ResourceIdImpl resourceId = new ResourceIdImpl("foo.4","", new Version(Version.Action.NEXT));
-        
+        ResourceIdImpl resourceId =
+                new ResourceIdImpl("foo.4", "", new Version(Version.Action.NEXT));
+
         resourceId.setPreviousRid("previousRid");
-        resourceId.setStartTime( new Date(1000) );
+        resourceId.setStartTime(new Date(1000));
         resourceId.setEndTime(new Date(2000));
 
         Integer testInt = new Integer(1234567890);
-        
-        return f.id(new LinkedHashSet<Identifier>(Arrays.asList(
-                f.featureId("foo.1", "v1"),
-                f.resourceId("foo.2", "", new Version(new Date(1000))),//
-                f.resourceId("foo.3", "", new Version(testInt)),//
-                resourceId)));
+
+        return f.id(
+                new LinkedHashSet<Identifier>(
+                        Arrays.asList(
+                                f.featureId("foo.1", "v1"),
+                                f.resourceId("foo.2", "", new Version(new Date(1000))), //
+                                f.resourceId("foo.3", "", new Version(testInt)), //
+                                resourceId)));
     }
 
     public static Element propertyName(Document document, Node parent) {
@@ -140,15 +137,15 @@ public class FilterMockData {
     public static Literal literal(Object value) {
         return f.literal(value);
     }
-    
+
     public static Function function() {
         return f.function("abs", f.property("foo"));
     }
-    
+
     static PropertyIsLike propertyIsLike() {
         return f.like(propertyName(), "foo", "x", "y", "z", false);
     }
-    
+
     static Element propertyIsLike(Document document, Node parent) {
         Element isLike = element(document, parent, OGC.PropertyIsLike);
 
@@ -258,7 +255,7 @@ public class FilterMockData {
     }
 
     public static BBOX bbox() {
-        return f.bbox(f.property("the_geom"), 5,5,100,100, "epsg:4326");
+        return f.bbox(f.property("the_geom"), 5, 5, 100, 100, "epsg:4326");
     }
 
     public static Beyond beyond() {
@@ -436,7 +433,7 @@ public class FilterMockData {
         return f.gmlObjectId("foo");
     }
 
-    //sorting
+    // sorting
     public static Element sortBy(Document document, Node parent) {
         Element sortBy = element(document, parent, OGC.SortBy);
         sortProperty(document, sortBy);
@@ -446,7 +443,7 @@ public class FilterMockData {
     }
 
     public static SortBy[] sortBy() {
-        return new SortBy[] { sortProperty(), sortProperty() };
+        return new SortBy[] {sortProperty(), sortProperty()};
     }
 
     public static Element sortProperty(Document document, Node parent) {

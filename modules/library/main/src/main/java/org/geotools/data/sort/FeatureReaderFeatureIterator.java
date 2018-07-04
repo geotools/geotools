@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,14 +18,11 @@ package org.geotools.data.sort;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * A simple feature iterator wrapping a feature reader
- */
+/** A simple feature iterator wrapping a feature reader */
 class FeatureReaderFeatureIterator implements SimpleFeatureIterator {
     SimpleFeatureReader reader;
 

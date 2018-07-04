@@ -16,24 +16,28 @@
  */
 package org.geotools.sld.bindings;
 
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.namespace.QName;
-
 import org.geotools.styling.Fill;
 import org.geotools.styling.Mark;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleFactory;
+import org.geotools.util.logging.Logging;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
  * Binding object for the element http://www.opengis.net/sld:Mark.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Mark"&gt;
  *      &lt;xsd:annotation&gt;
@@ -51,31 +55,33 @@ import org.picocontainer.MutablePicoContainer;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDMarkBinding extends AbstractComplexBinding {
+    static final Logger LOGGER = Logging.getLogger(SLDMarkBinding.class);
+
     protected FilterFactory filterFactory;
     protected StyleFactory styleFactory;
+    ResourceLocator resourceLocator;
 
-    public SLDMarkBinding(StyleFactory styleFactory, FilterFactory filterFactory) {
+    public SLDMarkBinding(
+            StyleFactory styleFactory,
+            FilterFactory filterFactory,
+            ResourceLocator resourceLocator) {
         this.styleFactory = styleFactory;
         this.filterFactory = filterFactory;
+        this.resourceLocator = resourceLocator;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.MARK;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -86,6 +92,7 @@ public class SLDMarkBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -96,22 +103,22 @@ public class SLDMarkBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String wkName = (String) node.getChildValue("WellKnownName");
         Stroke stroke = (Stroke) node.getChildValue("Stroke");
         Fill fill = (Fill) node.getChildValue("Fill");
@@ -119,6 +126,15 @@ public class SLDMarkBinding extends AbstractComplexBinding {
         Mark mark = styleFactory.createMark();
 
         if (wkName != null) {
+            // allow references to files containing mark definitions
+            if (wkName.startsWith("file://")) {
+                URL url = resourceLocator.locateResource(wkName);
+                if (url != null) {
+                    wkName = url.toExternalForm();
+                } else {
+                    LOGGER.log(Level.WARNING, "Could not resolve location of " + wkName);
+                }
+            }
             mark.setWellKnownName(filterFactory.literal(wkName));
         }
 

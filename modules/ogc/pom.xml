@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>modules</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
 
   <groupId>org.geotools</groupId>
@@ -29,12 +29,16 @@
   <dependencies>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>org.eclipse.emf.common</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
-      <artifactId>ecore</artifactId>
+      <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
+    <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+      </dependency>
   </dependencies>
 
   <build>
@@ -52,6 +56,13 @@
           </additionalProjectnatures>
        </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.coveo</groupId>
+        <artifactId>fmt-maven-plugin</artifactId>
+        <configuration>
+            <skip>true</skip>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -63,6 +74,7 @@
     <module>net.opengis.wps</module>
     <module>net.opengis.wcs</module>
     <module>net.opengis.csw</module>
+    <module>net.opengis.wmts</module>
   </modules>
 
 </project>

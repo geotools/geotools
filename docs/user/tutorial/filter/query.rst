@@ -18,12 +18,16 @@ Welcome
 Welcome to Geospatial for Java. This workbook is aimed at Java developers who are new to geospatial
 and would like to get started.
 
-Please set up your development environment prior to starting this tutorial. We will list the maven
+.. _quickstarts: ../quickstart/index.html
+
+You should have completed one of the GeoTools' Quickstarts_ 
+prior to running through this workbook. We need to be sure that you have an environment to work
+in with GeoTools jars and all their dependencies. We will list the maven
 dependencies required at the start of the workbook.
 
 This tutorial illustrates how to query spatial data in GeoTools. In the earlier tutorials we
 have been working with shapefiles. The focus of this workbook is the Filter API used to query
-DataStores, such as shapefiles and databases, and Web Feature Servers.In this lab we will also bring
+DataStores, such as shapefiles, databases and Web Feature Servers. So in this lab we will bring
 out the big guns - a real spatial database.
 
 If you are working in an enterprise that has as spatial database (e.g. Oracle, DB2) or geospatial
@@ -43,7 +47,7 @@ example will go through using a Filter to select a FeatureCollection from a shap
 DataStore.
 
 We are going to be using connection parameters to connect to our DataStore this time;
-and you will have a chance to try out using PostGIS or a Web Feature Server at the end of this
+and you will have a chance to try it out using PostGIS or a Web Feature Server at the end of this
 example.
 
 1. Please ensure your pom.xml includes the following:
@@ -51,7 +55,7 @@ example.
    .. literalinclude:: artifacts/pom.xml
       :language: xml
       :start-after: <url>http://maven.apache.org</url>
-      :end-before: <repositories>
+      :end-before: </project>
 
 2. Create the package **org.geotools.tutorial.filter** and class **QueryLab** class and copy and paste the following to get going:
    
@@ -96,7 +100,7 @@ Here is the code to create the controls:
 Connect to DataStore
 ---------------------
 
-In the quickstart we made use **FileDataStoreFinder** to connect to a specific file. This time
+In the quickstart we made use of **FileDataStoreFinder** to connect to a specific file. This time
 we will be using the more general **DataStoreFinder** which takes a map of connection parameters.
 
 Note the same code can be used to connect to quite different types of data stores as specified by the the
@@ -126,7 +130,7 @@ Query
 -----
 
 A **Filter** is similar to the where clause of an SQL statement; defining a condition that each
-selected feature needs to meet in order to be included.
+feature needs to meet in order to be selected.
 
 Here is our strategy for displaying the selected features:
    
@@ -267,7 +271,7 @@ Things to Try
   Next the wizard will display a second page of optional parameters. For this example you can leave this blank and just
   click the *Finish* button.
 
-* We have seen how to represent a Filter using CQL. There is also the origional XML representation
+* We have seen how to represent a Filter using CQL. There is also the original XML representation
   used by web features servers to work with.
   
   .. code-block:: java
@@ -379,7 +383,7 @@ Query
 -----
 
 The Query data structure is used to offer finer grain control on the results returned. The
-following query will request THE_GEOM and POPULATION from a FeatureSource |ldquo| cities |rdquo|:
+following query will request THE_GEOM and POPULATION from a FeatureSource "cities":
 
 .. code-block:: java
    
@@ -395,7 +399,7 @@ Special care is needed when stepping through the contents of a FeatureCollection
 FeatureIterator. A FeatureIterator will actually be streaming the data off disk and we need to
 remember to close the stream  when we are done.
 
-Even though a FeatureCollection is a |ldquo| Collection |rdquo| it is very lazy and does not load
+Even though a FeatureCollection is a :code:`Collection` it is very lazy and does not load
 anything until you start iterating through the contents. 
 
 The closest Java concepts I have to FeatureCollection and FeatureIterator come from JDBC as show
@@ -411,4 +415,4 @@ below.
  ================== ====================
 
 If that is too much just remember |hyphen| please close your feature iterator when you are done. If
-not you will leak resources and get into trouble.
+not you will leak resources and get into trouble. 

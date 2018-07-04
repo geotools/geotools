@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =======================================================================
+        Maven Project Configuration File
+
+        The Geotools Project
+            http://www.geotools.org/
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.geotools.xsd</groupId>
+        <artifactId>xsd</artifactId>
+        <version>20-SNAPSHOT</version>
+    </parent>
+
+    <!-- =========================================================== -->
+    <!-- Module Description -->
+    <!-- =========================================================== -->
+    <groupId>org.geotools.xsd</groupId>
+    <artifactId>gt-xsd-wmts</artifactId>
+    <packaging>jar</packaging>
+    <name>WMTS XML Support</name>
+
+    <description>
+        WMTS XML support for Geotools.
+    </description>
+
+    <licenses>
+        <license>
+            <name>Lesser General Public License (LGPL)</name>
+            <url>http://www.gnu.org/copyleft/lesser.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <!-- =========================================================== -->
+    <!-- Developers and Contributors -->
+    <!-- =========================================================== -->
+    <developers>
+        <developer>
+            <name>Emanuele Tajariol</name>
+            <id>etj</id>
+            <email>etj@geo-solutions.it</email>
+            <organization>GeoSolutions</organization>
+            <roles>
+                <role>Java Developer</role>
+                <role>Module Maintainer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Ian Turton</name>
+            <id>etj</id>
+            <roles>
+                <role>Java Developer</role>
+                <role>Module Maintainer</role>
+                <role>Project Management Committee (PMC) Member</role>
+            </roles>
+        </developer>
+    </developers>
+
+
+    <!-- =========================================================== -->
+    <!-- Dependency Management -->
+    <!-- =========================================================== -->
+    <dependencies>
+        <dependency>
+            <groupId>org.geotools.ogc</groupId>
+            <artifactId>net.opengis.wmts</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.xsd</groupId>
+            <artifactId>gt-xsd-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.xsd</groupId>
+            <artifactId>gt-xsd-ows</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.geotools.maven</groupId>
+                <artifactId>xmlcodegen</artifactId>
+                <version>${project.version}</version>
+                <configuration>
+                    <schemaLocation>wmts.xsd</schemaLocation>
+                    <schemaSourceDirectory>${project.basedir}/src/main/resources/org/geotools/wmts/v_10/</schemaSourceDirectory>
+                    <destinationPackage>org.geotools.wmts.bindings</destinationPackage>
+                    <generateConfiguration>true</generateConfiguration>
+                    <generateBindingInterface>true</generateBindingInterface>
+                    <generateElementBindings>true</generateElementBindings>
+                    <generateAttributeBindings>true</generateAttributeBindings>
+                    <generateTypeBindings>true</generateTypeBindings>
+                    <generateXsd>true</generateXsd>
+                    <targetPrefix>wmts</targetPrefix>
+                    <generateSchemaLocationResolver>true</generateSchemaLocationResolver>
+                    <complexBindingBaseClass>org.geotools.xml.AbstractComplexBinding</complexBindingBaseClass>
+                    <simpleBindingBaseClass>org.geotools.xml.AbstractSimpleBinding</simpleBindingBaseClass>
+                    <bindingConstructorArguments>
+                        <bindingConstructorArgument>
+                            <name>factory</name>
+                            <type>net.opengis.wmts.v_10.wmts10Factory</type>
+                        </bindingConstructorArgument>
+                    </bindingConstructorArguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+

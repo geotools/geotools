@@ -16,6 +16,8 @@
  */
 package org.geotools.caching.grid.featurecache;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,7 +26,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.caching.util.CacheUtil;
 import org.geotools.caching.util.Generator;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -32,13 +33,8 @@ import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.spatial.BBOXImpl;
 import org.opengis.filter.Filter;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
  * Data Utilities for Caching.
- *
- *
  *
  * @source $URL$
  */
@@ -70,7 +66,7 @@ public class DataUtilities {
     public static ArrayList<Filter> createUnitsquareFilterSet(int numfilters, double[] windows) {
         ArrayList<Filter> filterset = new ArrayList<Filter>(numfilters);
 
-        //Coordinate p = Generator.pickRandomPoint(new Coordinate(0.5, 0.5), .950, .950);
+        // Coordinate p = Generator.pickRandomPoint(new Coordinate(0.5, 0.5), .950, .950);
         Coordinate p = new Coordinate(0.5, 0.5);
 
         for (int i = 0; i < numfilters; i += windows.length) {
@@ -87,8 +83,7 @@ public class DataUtilities {
         return ff.bbox("", e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY(), "");
     }
 
-    public static void saveFilters(List<Filter> filterset, File f)
-        throws Exception {
+    public static void saveFilters(List<Filter> filterset, File f) throws Exception {
         FileOutputStream fos = new FileOutputStream(f);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         dumpFilterSet(oos, filterset);
@@ -116,10 +111,10 @@ public class DataUtilities {
     }
 
     public static void dumpFilterSet(ObjectOutputStream oos, List<Filter> filterset)
-        throws Exception {
+            throws Exception {
         oos.writeInt(filterset.size());
 
-        for (Iterator<Filter> it = filterset.iterator(); it.hasNext();) {
+        for (Iterator<Filter> it = filterset.iterator(); it.hasNext(); ) {
             Envelope e = CacheUtil.extractEnvelope((BBOXImpl) it.next());
             oos.writeObject(e);
         }

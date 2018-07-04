@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,9 +23,7 @@ import org.geotools.styling.Rule;
 import org.geotools.ysld.Tuple;
 import org.opengis.filter.Filter;
 
-/**
- * Encodes a {@link Rule} as YSLD. Delegates to {@link SymbolizersEncoder}.
- */
+/** Encodes a {@link Rule} as YSLD. Delegates to {@link SymbolizersEncoder}. */
 public class RuleEncoder extends YsldEncodeHandler<Rule> {
 
     public RuleEncoder(FeatureTypeStyle featureStyle) {
@@ -38,15 +36,18 @@ public class RuleEncoder extends YsldEncodeHandler<Rule> {
         put("title", rule.getTitle());
         put("abstract", rule.getAbstract());
         if (rule.getFilter() != null && rule.getFilter() != Filter.INCLUDE) {
-            put("filter",
+            put(
+                    "filter",
                     String.format("${%s}", escapeForEmbededCQL(ECQL.toCQL(rule.getFilter()))));
         }
         if (rule.isElseFilter()) {
             put("else", true);
         }
 
-        Tuple t = Tuple.of(toStringOrNull(rule.getMinScaleDenominator(), "min"),
-                toStringOrNull(rule.getMaxScaleDenominator(), "max"));
+        Tuple t =
+                Tuple.of(
+                        toStringOrNull(rule.getMinScaleDenominator(), "min"),
+                        toStringOrNull(rule.getMaxScaleDenominator(), "max"));
         if (!t.isNull()) {
             put("scale", t);
         }

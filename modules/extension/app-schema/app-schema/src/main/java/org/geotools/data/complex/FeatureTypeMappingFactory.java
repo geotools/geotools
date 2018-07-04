@@ -17,30 +17,32 @@
 package org.geotools.data.complex;
 
 import java.util.List;
-
 import org.geotools.data.FeatureSource;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.xml.sax.helpers.NamespaceSupport;
+
 /**
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  */
 public class FeatureTypeMappingFactory {
 
-   public static  FeatureTypeMapping getInstance(FeatureSource source, AttributeDescriptor target,
-           List<AttributeMapping> mappings, NamespaceSupport namespaces,
-           String itemXpath, boolean isXmlDataStore, boolean isDenormalised) {
-       
-       if(isXmlDataStore) {
-           return new XmlFeatureTypeMapping(source, target,
-                   mappings, namespaces, itemXpath);           
-       } else {
-           return new FeatureTypeMapping(source, target,
-                   mappings, namespaces, isDenormalised);
-       }       
-   }
+    public static FeatureTypeMapping getInstance(
+            FeatureSource source,
+            AttributeDescriptor target,
+            String defaultGeometryXPath,
+            List<AttributeMapping> mappings,
+            NamespaceSupport namespaces,
+            String itemXpath,
+            boolean isXmlDataStore,
+            boolean isDenormalised) {
+
+        if (isXmlDataStore) {
+            return new XmlFeatureTypeMapping(source, target, mappings, namespaces, itemXpath);
+        } else {
+            return new FeatureTypeMapping(
+                    source, target, defaultGeometryXPath, mappings, namespaces, isDenormalised);
+        }
+    }
 }

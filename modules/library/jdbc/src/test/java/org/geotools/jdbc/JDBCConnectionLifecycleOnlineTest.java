@@ -19,7 +19,6 @@ package org.geotools.jdbc;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -27,15 +26,12 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport {
 
     protected MockListener mockListener = new MockListener();
-
-    
 
     JDBCFeatureStore featureStore;
 
@@ -46,15 +42,15 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
 
     /**
      * Check null encoding is working properly
-     * 
+     *
      * @throws IOException
      */
     public void testListenerCalled() throws IOException {
         dataStore.getConnectionLifecycleListeners().add(mockListener);
-        
+
         // read some features, this will force unwrapping in Oracle
-        try(SimpleFeatureIterator fi = featureStore.getFeatures().features()) {
-            while(fi.hasNext()) {
+        try (SimpleFeatureIterator fi = featureStore.getFeatures().features()) {
+            while (fi.hasNext()) {
                 fi.next();
             }
         }
@@ -62,42 +58,43 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
         assertTrue(mockListener.onReleaseCalled);
         assertFalse(mockListener.onCommitCalled);
         assertFalse(mockListener.onRollbackCalled);
-        
+
         // now write something within a transaction
-        try(Transaction t = new DefaultTransaction()) {
+        try (Transaction t = new DefaultTransaction()) {
             SimpleFeatureBuilder b = new SimpleFeatureBuilder(featureStore.getSchema());
-            DefaultFeatureCollection collection = new DefaultFeatureCollection(null,
-                    featureStore.getSchema());
+            DefaultFeatureCollection collection =
+                    new DefaultFeatureCollection(null, featureStore.getSchema());
             featureStore.setTransaction(t);
             for (int i = 3; i < 6; i++) {
                 b.set(aname("intProperty"), new Integer(i));
                 b.set(aname("geometry"), new GeometryFactory().createPoint(new Coordinate(i, i)));
                 collection.add(b.buildFeature(null));
             }
-            featureStore.addFeatures((SimpleFeatureCollection)collection);
+            featureStore.addFeatures((SimpleFeatureCollection) collection);
             t.commit();
             assertTrue(mockListener.onBorrowCalled);
             assertTrue(mockListener.onReleaseCalled);
             assertTrue(mockListener.onCommitCalled);
             assertFalse(mockListener.onRollbackCalled);
-            
+
             // and now do a rollback
             t.rollback();
             assertTrue(mockListener.onRollbackCalled);
-        }            
+        }
     }
-    
+
     public void testConnectionReleased() throws IOException {
         dataStore.getConnectionLifecycleListeners().add(new ExceptionListener());
-        
-        // get a count repeatedly, if we fail to release the connections this will eventually lock up
+
+        // get a count repeatedly, if we fail to release the connections this will eventually lock
+        // up
         for (int i = 0; i < 100; i++) {
             // we don't actually expect an exception to percolate up since it's happening
             // on the closeSafe method, that swallows exceptions
             featureStore.getCount(Query.ALL);
         }
     }
-    
+
     private static class MockListener implements ConnectionLifecycleListener {
 
         boolean onBorrowCalled = false;
@@ -118,16 +115,13 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
 
         public void onCommit(JDBCDataStore store, Connection cx) throws SQLException {
             onCommitCalled = true;
-            
         }
 
         public void onRollback(JDBCDataStore store, Connection cx) throws SQLException {
             onRollbackCalled = true;
-            
         }
-
     }
-    
+
     private static class ExceptionListener implements ConnectionLifecycleListener {
 
         public void onBorrow(JDBCDataStore store, Connection cx) throws SQLException {
@@ -145,7 +139,5 @@ public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport 
         public void onRollback(JDBCDataStore store, Connection cx) throws SQLException {
             // nothing to do
         }
-
     }
-
 }

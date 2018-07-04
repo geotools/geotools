@@ -23,12 +23,7 @@ import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.SLD;
 import org.geotools.xml.Binding;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LineStyleTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(LineSymbolizer.class, binding(KML.LineStyleType).getType());
@@ -39,8 +34,8 @@ public class LineStyleTypeBindingTest extends KMLTestSupport {
     }
 
     public void testParse() throws Exception {
-        String xml = "<LineStyle>" + "<color>ffff0000</color>" + "<width>2</width>"
-            + "</LineStyle>";
+        String xml =
+                "<LineStyle>" + "<color>ffff0000</color>" + "<width>2</width>" + "</LineStyle>";
 
         buildDocument(xml);
 

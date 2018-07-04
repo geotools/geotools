@@ -16,23 +16,18 @@
  */
 package org.geotools.imageio.netcdf.cv;
 
-import java.io.IOException;
-import java.util.AbstractList;
-import java.util.List;
-
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.util.Converter;
 import org.geotools.util.NumericConverterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import ucar.nc2.Attribute;
 import ucar.nc2.constants.AxisType;
-import ucar.nc2.dataset.CoordinateAxis1D;
+import ucar.nc2.dataset.CoordinateAxis;
 
 /**
  * @author Simone Giannecchini, GeoSolutions SAS
- * 
- *         TODO caching
+ * @author Niels Charlier
+ *     <p>TODO caching
  */
 class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> {
 
@@ -42,15 +37,13 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
 
     private Converter converter;
 
-    private CoordinateReferenceSystem crs;
-
-    private final static NumericConverterFactory CONVERTER_FACTORY = new NumericConverterFactory();
+    private static final NumericConverterFactory CONVERTER_FACTORY = new NumericConverterFactory();
 
     /**
      * @param binding
      * @param coordinateAxis
      */
-    public NumericCoordinateVariable(Class<T> binding, CoordinateAxis1D coordinateAxis) {
+    public NumericCoordinateVariable(Class<T> binding, CoordinateAxis coordinateAxis) {
         super(binding, coordinateAxis);
         // If the axis is not numeric, we can't process any further.
         if (!coordinateAxis.isNumeric()) {
@@ -71,77 +64,7 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
 
         // converter from double to binding
         this.converter = CONVERTER_FACTORY.createConverter(Double.class, this.binding, null);
-    }
-
-    @Override
-    public T getMinimum() throws IOException {
-        try {
-            return converter.convert(coordinateAxis.getMinValue(), this.binding);
-        } catch (Exception e) {
-            throw new IOException(e);
-        }
-    }
-
-    @Override
-    public T getMaximum() throws IOException {
-        try {
-            return converter.convert(coordinateAxis.getMaxValue(), this.binding);
-        } catch (Exception e) {
-            throw new IOException(e);
-        }
-    }
-
-    @Override
-    public T read(int index) throws IndexOutOfBoundsException {
-        if (index >= this.coordinateAxis.getSize()) {
-            throw new IndexOutOfBoundsException("index >= " + coordinateAxis.getSize());
-        }
-        double val = handleValues(index);
-        try {
-            return converter.convert(val, this.binding);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * @param index
-     * @return
-     */
-    private synchronized double handleValues(int index) {
-        // Made it synchronized since axis1D values retrieval
-        // does cached read on its underlying
-        double val = coordinateAxis.getCoordValue(index);
-        if (!Double.isNaN(scaleFactor)) {
-            val *= scaleFactor;
-        }
-        if (!Double.isNaN(offsetFactor)) {
-            val += offsetFactor;
-        }
-        return val;
-    }
-
-    @Override
-    public List<T> read() throws IndexOutOfBoundsException {
-
-        return new AbstractList<T>() {
-
-            @Override
-            public T get(int index) {
-                double val = handleValues(index);
-                try {
-                    return converter.convert(val, NumericCoordinateVariable.this.binding);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            @Override
-            public int size() {
-                return coordinateAxis.getShape()[0];
-            }
-        };
-
+        init();
     }
 
     @Override
@@ -150,23 +73,34 @@ class NumericCoordinateVariable<T extends Number> extends CoordinateVariable<T> 
     }
 
     @Override
-    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-        if (this.crs == null) {
-            synchronized (this) {
-                final AxisType axisType = coordinateAxis.getAxisType();
-                switch (axisType) {
-                case GeoZ:
-                case Height:
-                case Pressure:
-                    String axisName = getName();
-                    if (NetCDFCRSUtilities.VERTICAL_AXIS_NAMES.contains(axisName)) {
-                        this.crs = NetCDFCRSUtilities.buildVerticalCrs(coordinateAxis);
-                    }
-                    break;
+    protected synchronized CoordinateReferenceSystem buildCoordinateReferenceSystem() {
+        final AxisType axisType = coordinateAxis.getAxisType();
+        switch (axisType) {
+            case GeoZ:
+            case Height:
+            case Pressure:
+                String axisName = getName();
+                if (NetCDFCRSUtilities.VERTICAL_AXIS_NAMES.contains(axisName)) {
+                    return NetCDFCRSUtilities.buildVerticalCrs(coordinateAxis);
                 }
-
-            }
+            default:
+                return null;
         }
-        return crs;
+    }
+
+    @Override
+    protected T convertValue(Object o) {
+        double val = ((Number) o).doubleValue();
+        if (!Double.isNaN(scaleFactor)) {
+            val *= scaleFactor;
+        }
+        if (!Double.isNaN(offsetFactor)) {
+            val += offsetFactor;
+        }
+        try {
+            return converter.convert(val, this.binding);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

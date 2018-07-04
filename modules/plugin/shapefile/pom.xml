@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
 
 
@@ -140,7 +140,7 @@
 
     <dependency>
       <groupId>org.jdom</groupId>
-      <artifactId>jdom</artifactId>
+      <artifactId>jdom2</artifactId>
     </dependency>
 
     <dependency>

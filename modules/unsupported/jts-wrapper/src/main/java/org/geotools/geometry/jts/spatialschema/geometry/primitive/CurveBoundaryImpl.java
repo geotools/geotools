@@ -12,52 +12,43 @@ package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.geometry.complex.Complex;
 import org.opengis.geometry.primitive.CurveBoundary;
 import org.opengis.geometry.primitive.Point;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * This is Chris's implementation of a CurveBoundary.  I started it and
- * realized about halfway through that I won't necessarily need it.  So the
- * last few methods are still unimplemented (and just delegate to the
- * superclass, which currently does nothing).
- *
- *
- *
+ * This is Chris's implementation of a CurveBoundary. I started it and realized about halfway
+ * through that I won't necessarily need it. So the last few methods are still unimplemented (and
+ * just delegate to the superclass, which currently does nothing).
  *
  * @source $URL$
  */
 public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements CurveBoundary {
-    
-    //*************************************************************************
-    //  
-    //*************************************************************************
-    /**
-     * Comment for {@code EMPTY_COMPLEX_ARRAY}.
-     */
-    private static final Complex [] EMPTY_COMPLEX_ARRAY = new Complex[0];
 
-    //*************************************************************************
-    //  
-    //*************************************************************************
-    
+    // *************************************************************************
+    //
+    // *************************************************************************
+    /** Comment for {@code EMPTY_COMPLEX_ARRAY}. */
+    private static final Complex[] EMPTY_COMPLEX_ARRAY = new Complex[0];
+
+    // *************************************************************************
+    //
+    // *************************************************************************
+
     private Point startPoint;
-    
+
     private Point endPoint;
-    
+
     private Set pointSet;
 
-    //*************************************************************************
-    //  
-    //*************************************************************************
-    
+    // *************************************************************************
+    //
+    // *************************************************************************
+
     public CurveBoundaryImpl(
-            final CoordinateReferenceSystem crs, 
-            final Point startPoint, 
-            final Point endPoint) {
-        
+            final CoordinateReferenceSystem crs, final Point startPoint, final Point endPoint) {
+
         super(crs);
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -65,15 +56,15 @@ public class CurveBoundaryImpl extends PrimitiveBoundaryImpl implements CurveBou
         if (startPoint != null) {
             tempSet.add(startPoint);
         }
-        if (endPoint != null) { 
+        if (endPoint != null) {
             tempSet.add(endPoint);
         }
         this.pointSet = Collections.unmodifiableSet(tempSet);
     }
 
-    //*************************************************************************
-    //  
-    //*************************************************************************
+    // *************************************************************************
+    //
+    // *************************************************************************
 
     /**
      * @inheritDoc

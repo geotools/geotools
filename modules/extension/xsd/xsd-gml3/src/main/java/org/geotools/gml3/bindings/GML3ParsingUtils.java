@@ -17,11 +17,11 @@
 package org.geotools.gml3.bindings;
 
 import java.util.List;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.bindings.GML2ParsingUtils;
 import org.geotools.gml3.ArcParameters;
@@ -29,61 +29,57 @@ import org.geotools.gml3.Circle;
 import org.geotools.xml.BindingWalkerFactory;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-
 /**
  * Utility class for gml3 parsing.
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * 
- * 
- * 
- * 
  * @source $URL$
  */
 public class GML3ParsingUtils {
     /**
      * Utility method to implement Binding.parse for a binding which parses into A feature.
-     * 
+     *
      * @param instance The instance being parsed.
      * @param node The parse tree.
      * @param value The value from the last binding in the chain.
      * @param ftCache The feature type cache.
      * @param bwFactory Binding walker factory.
-     * 
      * @return A feature.
      */
-    public static SimpleFeature parseFeature(ElementInstance instance, Node node, Object value,
-            FeatureTypeCache ftCache, BindingWalkerFactory bwFactory) throws Exception {
+    public static SimpleFeature parseFeature(
+            ElementInstance instance,
+            Node node,
+            Object value,
+            FeatureTypeCache ftCache,
+            BindingWalkerFactory bwFactory)
+            throws Exception {
         return GML2ParsingUtils.parseFeature(instance, node, value, ftCache, bwFactory);
     }
 
     /**
      * Turns a xml type definition into a geotools feature type.
-     * 
+     *
      * @param type The xml schema tupe.
-     * 
      * @return The corresponding geotools feature type.
      */
-    public static SimpleFeatureType featureType(XSDElementDeclaration element,
-            BindingWalkerFactory bwFactory) throws Exception {
+    public static SimpleFeatureType featureType(
+            XSDElementDeclaration element, BindingWalkerFactory bwFactory) throws Exception {
         return GML2ParsingUtils.featureType(element, bwFactory);
     }
 
-    /**
-     * Turns a parse node + feature type + fid info a feature.
-     */
+    /** Turns a parse node + feature type + fid info a feature. */
     static SimpleFeature feature(SimpleFeatureType fType, String fid, Node node) throws Exception {
         return GML2ParsingUtils.feature(fType, fid, node);
     }
@@ -95,10 +91,10 @@ public class GML3ParsingUtils {
     /**
      * Returns the number of dimensions for the specified node, eventually recursing up to find the
      * parent node that has the indication of the dimensions (normally the top-most geometry element
-     * has it, not the posList). If no srsDimension can be found, check the srsName the same way
-     * and return the srsDimensions instead.
-     * Returns 2 if no srsDimension or srsName attribute could be found.
-     * 
+     * has it, not the posList). If no srsDimension can be found, check the srsName the same way and
+     * return the srsDimensions instead. Returns 2 if no srsDimension or srsName attribute could be
+     * found.
+     *
      * @param node
      * @return
      */
@@ -131,13 +127,13 @@ public class GML3ParsingUtils {
         return (LinearRing) line(node, gf, csf, true);
     }
 
-    static LineString line(Node node, GeometryFactory gf, CoordinateSequenceFactory csf,
-            boolean ring) {
+    static LineString line(
+            Node node, GeometryFactory gf, CoordinateSequenceFactory csf, boolean ring) {
         if (node.hasChild(DirectPosition.class)) {
             List dps = node.getChildValues(DirectPosition.class);
             DirectPosition dp = (DirectPosition) dps.get(0);
 
-            CoordinateSequence seq = csf.create(dps.size(), dp.getDimension());
+            CoordinateSequence seq = JTS.createCS(csf, dps.size(), dp.getDimension());
 
             for (int i = 0; i < dps.size(); i++) {
                 dp = (DirectPosition) dps.get(i);
@@ -174,9 +170,9 @@ public class GML3ParsingUtils {
             CoordinateSequence seq = null;
 
             if (dps.length == 0) {
-                seq = csf.create(0, 0);
+                seq = JTS.createCS(csf, 0, 0);
             } else {
-                seq = csf.create(dps.length, dps[0].getDimension());
+                seq = JTS.createCS(csf, dps.length, dps[0].getDimension());
 
                 for (int i = 0; i < dps.length; i++) {
                     DirectPosition dp = dps[i];
@@ -191,8 +187,8 @@ public class GML3ParsingUtils {
         }
 
         if (node.hasChild(CoordinateSequence.class)) {
-            CoordinateSequence seq = (CoordinateSequence) node
-                    .getChildValue(CoordinateSequence.class);
+            CoordinateSequence seq =
+                    (CoordinateSequence) node.getChildValue(CoordinateSequence.class);
 
             return ring ? gf.createLinearRing(seq) : gf.createLineString(seq);
         }
@@ -203,14 +199,14 @@ public class GML3ParsingUtils {
     /**
      * Returns a curved geometry factory given the linearization constraints, the original factory,
      * and a coordinate sequence representing the control points of a curved geometry
-     * 
+     *
      * @param arcParameters
      * @param gFactory
      * @param cs
      * @return
      */
-    public static CurvedGeometryFactory getCurvedGeometryFactory(ArcParameters arcParameters,
-            GeometryFactory gFactory, CoordinateSequence cs) {
+    public static CurvedGeometryFactory getCurvedGeometryFactory(
+            ArcParameters arcParameters, GeometryFactory gFactory, CoordinateSequence cs) {
         CurvedGeometryFactory factory;
         if (gFactory instanceof CurvedGeometryFactory) {
             factory = (CurvedGeometryFactory) gFactory;
@@ -227,5 +223,4 @@ public class GML3ParsingUtils {
         }
         return factory;
     }
-
 }

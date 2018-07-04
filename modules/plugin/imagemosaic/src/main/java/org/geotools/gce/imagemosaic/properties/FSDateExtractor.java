@@ -26,20 +26,13 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- * @author Niels Charlier
- * 
- */
+/** @author Niels Charlier */
 class FSDateExtractor extends PropertiesCollector {
 
-    private final static Logger LOGGER = Logging.getLogger(FSDateExtractor.class);
+    private static final Logger LOGGER = Logging.getLogger(FSDateExtractor.class);
 
     private Date date = null;
 
@@ -50,8 +43,8 @@ class FSDateExtractor extends PropertiesCollector {
     @Override
     public PropertiesCollector collect(final File file) {
         try {
-            BasicFileAttributes attributes = Files.readAttributes(file.toPath(),
-                    BasicFileAttributes.class);
+            BasicFileAttributes attributes =
+                    Files.readAttributes(file.toPath(), BasicFileAttributes.class);
             date = new Date(attributes.creationTime().to(TimeUnit.MILLISECONDS));
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.FINE)) {
@@ -80,5 +73,4 @@ class FSDateExtractor extends PropertiesCollector {
             }
         }
     }
-
 }

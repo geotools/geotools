@@ -17,22 +17,19 @@
 package org.geotools.gml3.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.LineString;
-
+import org.locationtech.jts.geom.LineString;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:CurveSegmentArrayPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="CurveSegmentArrayPropertyType"&gt;
  *      &lt;annotation&gt;
@@ -45,23 +42,18 @@ import com.vividsolutions.jts.geom.LineString;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class CurveSegmentArrayPropertyTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.CurveSegmentArrayPropertyType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -72,22 +64,22 @@ public class CurveSegmentArrayPropertyTypeBinding extends AbstractComplexBinding
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List lines = node.getChildValues(LineString.class);
 
         return lines.toArray(new LineString[lines.size()]);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
-        if ("_CurveSegment".equals(name.getLocalPart()) || 
-         /*gml 3.2*/   "AbstractCurveSegment".equals(name.getLocalPart())) {
+    public Object getProperty(Object object, QName name) throws Exception {
+        if ("_CurveSegment".equals(name.getLocalPart())
+                ||
+                /*gml 3.2*/ "AbstractCurveSegment".equals(name.getLocalPart())) {
             return object;
         }
 

@@ -5,7 +5,7 @@ The objects defined in the referencing module can be compared in a number of dif
 
 Related:
 
-* http://home.gdal.org/projects/opengis/wktproblems.html
+* http://gdal.org/wktproblems.html
 
 Compare Identifier
 ^^^^^^^^^^^^^^^^^^
@@ -53,7 +53,7 @@ Often it does not matter what name (ie metadata) the data structure goes by, so 
 
 You can check if two objects are equal, while ignoring metadata (such as the exact name used for the CoordinateReferenceSystem). This technique compares significant values only, i.e. mostly (with a few exception) the ones that would changes the numerical results when transforming a position from one CRS to the other.::
   
-  if( crs1.equals( crs2, false ) ){
+  if( CRS.equalsIgnoreMetadata(crs1, crs2)){
       
   }
 

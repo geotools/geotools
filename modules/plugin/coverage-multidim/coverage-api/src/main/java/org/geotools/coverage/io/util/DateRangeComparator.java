@@ -17,13 +17,10 @@
 package org.geotools.coverage.io.util;
 
 import java.util.Comparator;
-
 import org.geotools.util.DateRange;
 import org.geotools.util.Utilities;
 
-/**
- * A DateRange comparator
- */
+/** A DateRange comparator */
 public class DateRangeComparator implements Comparator<DateRange> {
 
     @Override
@@ -36,5 +33,4 @@ public class DateRangeComparator implements Comparator<DateRange> {
         final long endSecond = secondDateRange.getMaxValue().getTime();
         return NumberRangeComparator.doubleCompare(beginFirst, endFirst, beginSecond, endSecond);
     }
-
 }

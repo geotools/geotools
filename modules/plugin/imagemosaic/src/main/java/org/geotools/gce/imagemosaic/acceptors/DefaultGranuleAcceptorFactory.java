@@ -22,13 +22,12 @@ import java.util.List;
 
 /**
  * Factory to create the default granule acceptor.
- * 
- * The default mosaic do not accept granules with heterogeneous CRS and incompatible palettes.
+ *
+ * <p>The default mosaic do not accept granules with heterogeneous CRS and incompatible palettes.
  */
 public class DefaultGranuleAcceptorFactory implements GranuleAcceptorFactorySPI {
     @Override
     public List<GranuleAcceptor> create() {
         return Arrays.asList(new ColorCheckAcceptor(), new HomogeneousCRSAcceptor());
     }
-
 }

@@ -17,20 +17,18 @@
 package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.LinearRing;
-
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:LinearRingPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="LinearRingPropertyType"&gt;
  *      &lt;annotation&gt;
@@ -43,23 +41,18 @@ import com.vividsolutions.jts.geom.LinearRing;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class LinearRingPropertyTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.LinearRingPropertyType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -70,19 +63,19 @@ public class LinearRingPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(LinearRing.class);
     }
 
     public Object getProperty(Object object, QName name) {
         if (GML.LinearRing.equals(name)) {
-            //return the linear ring, which is the object passed in
+            // return the linear ring, which is the object passed in
             return object;
         }
 

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is an example of a GetCapabilities response that declares 
+	RESTful support for requesting tiles and FeatureInfo documents -->
+<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_response.xsd" version="1.0.0">
+	<ows:ServiceIdentification>
+		<ows:Title>World example Web Map Tile Service</ows:Title>
+		<ows:Abstract>Example service that contrains some world layers in the 
+				urn:ogc:def:wkss:OGC:1.0:GlobalCRS84Pixel Well-known scale set</ows:Abstract>
+		<ows:Keywords>
+			<ows:Keyword>World</ows:Keyword>
+			<ows:Keyword>Global</ows:Keyword>
+			<ows:Keyword>Digital Elevation Model</ows:Keyword>
+			<ows:Keyword>Administrative Boundaries</ows:Keyword>
+		</ows:Keywords>
+		<ows:ServiceType>OGC WMTS</ows:ServiceType>
+		<ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+		<ows:Fees>none</ows:Fees>
+		<ows:AccessConstraints>none</ows:AccessConstraints>
+	</ows:ServiceIdentification>
+	<ows:ServiceProvider>
+		<ows:ProviderName>UAB-CREAF-MiraMon</ows:ProviderName>
+		<ows:ProviderSite xlink:href="http://www.creaf.uab.es/miramon"/>
+		<ows:ServiceContact>
+			<ows:IndividualName>Joan Maso Pau</ows:IndividualName>
+			<ows:PositionName>Senior Software Engineer</ows:PositionName>
+			<ows:ContactInfo>
+				<ows:Phone>
+					<ows:Voice>+34 93 581 1312</ows:Voice>
+					<ows:Facsimile>+34 93 581 4151</ows:Facsimile>
+				</ows:Phone>
+				<ows:Address>
+					<ows:DeliveryPoint>Fac Ciencies UAB</ows:DeliveryPoint>
+					<ows:City>Bellaterra</ows:City>
+					<ows:AdministrativeArea>Barcelona</ows:AdministrativeArea>
+					<ows:PostalCode>08193</ows:PostalCode>
+					<ows:Country>Spain</ows:Country>
+					<ows:ElectronicMailAddress>joan.maso@uab.es</ows:ElectronicMailAddress>
+				</ows:Address>
+			</ows:ContactInfo>
+		</ows:ServiceContact>
+	</ows:ServiceProvider>
+	<ows:OperationsMetadata>
+		<ows:Operation name="GetCapabilities">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://www.opengis.uab.es/cgi-bin/world/MiraMon5_0.cgi?">
+						<ows:Constraint name="GetEncoding">
+							<ows:AllowedValues>
+								<ows:Value>KVP</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Get>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+		<ows:Operation name="GetTile">
+			<ows:DCP>
+				<ows:HTTP>
+					<ows:Get xlink:href="http://www.opengis.uab.es/cgi-bin/world/MiraMon5_0.cgi?">
+						<ows:Constraint name="GetEncoding">
+							<ows:AllowedValues>
+								<ows:Value>KVP</ows:Value>
+							</ows:AllowedValues>
+						</ows:Constraint>
+					</ows:Get>
+				</ows:HTTP>
+			</ows:DCP>
+		</ows:Operation>
+	</ows:OperationsMetadata>
+	<Contents>
+		<Layer>
+			<ows:Title>etopo2</ows:Title>
+			<ows:Abstract>ETOPO2 - 2 minute Worldwide Bathymetry/Topography
+			Data taken from National Geophysical Data Center(NGDC) CD-ROM, ETOPO2 
+			Global 2' Elevations, September 2001.
+			Author
+			Dr. Peter W. Sloss (Peter.W.Sloss@noaa.gov),
+			NOAA/NGDC
+			Mail Code E/GC3, 325 Broadway, Boulder, CO USA 80305
+			303-497-6119, fax 303-497-6513
+			Major Sources of Data :
+			  1. The seafloor data between latitudes 64— North and 72— South are
+			     from the work of Smith and Sandwell (1997). 
+			  2. Seafloor data southward of 72— South are from the US Naval
+			     Oceanographic Office's (NAVOCEANO) Digital Bathymetric Data Base
+			     Variable Resolution (DBDBV), version 4.1, gridded at 5 minute
+			     spacing; 
+			  3. Land topography is from the GLOBE Project, an internationally
+			     designed, developed, and independently peer-reviewed global digital
+			     elevation model (DEM), at a latitude-longitude grid spacing of 30
+			     arc-seconds (30"). 
+     
+			     The data are cell-centered, with an array size of 10800 columns x
+			     5400 rows; coverage is from 180— West to 179— 58' East and 90— North
+			     to 89— 58' South. A data record for the South Pole is not in these
+			     files -- assume 2810m as the elevation.
+			</ows:Abstract>
+			<ows:WGS84BoundingBox>
+				<ows:LowerCorner>-180 -90</ows:LowerCorner>
+				<ows:UpperCorner>180 90</ows:UpperCorner>
+			</ows:WGS84BoundingBox>
+			<ows:Identifier>etopo2</ows:Identifier>
+			<ows:Metadata xlink:href="http://www.opengis.uab.es/SITiled/world/etopo2/metadata.htm"/>
+			<Style isDefault="true">
+				<ows:Title>default</ows:Title>
+				<ows:Identifier>default</ows:Identifier>
+				<LegendURL format="image/png" xlink:href="http://www.opengis.uab.es/SITiled/world/etopo2/legend.png" />
+			</Style>
+			<Format>image/png</Format>
+			<InfoFormat>application/gml+xml; version=3.1</InfoFormat>
+			<TileMatrixSetLink>
+				<TileMatrixSet>WholeWorld_CRS_84</TileMatrixSet>
+			</TileMatrixSetLink>
+			<ResourceURL format="image/png" resourceType="tile" template="http://www.opengis.uab.es/SITiled/world/etopo2/default/WholeWorld_CRS_84/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+			<ResourceURL format="application/gml+xml; version=3.1" resourceType="FeatureInfo" template="http://www.opengis.uab.es/SITiled/world/etopo2/default/WholeWorld_CRS_84/{TileMatrix}/{TileRow}/{TileCol}/{J}/{I}.xml"/>
+		</Layer>
+		<Layer>
+			<ows:Title>Administrative Boundaries</ows:Title>
+			<ows:Abstract>The sub Country Administrative Units 1998 GeoDataset represents a 
+			small-scale political map of the world. The data are generalized and were designed 
+			for display at scales to about 1:10,000,000. The data were generalized from ESRI's 
+			ArcWorld Supplement Map data. Country codes are from U.S. Federal Information 
+			Processing Standards (FIPS) version 10-4. World sub Country Administrative Units 
+			represent 2605 first level administrative units such as states and provinces with 
+			14 descriptive fields.</ows:Abstract>
+			<ows:WGS84BoundingBox>
+				<ows:LowerCorner>-180 -90</ows:LowerCorner>
+				<ows:UpperCorner>180 84</ows:UpperCorner>
+			</ows:WGS84BoundingBox>
+			<ows:Identifier>AdminBoundaries</ows:Identifier>
+			<ows:Metadata xlink:href="http://www.opengis.uab.es/SITiled/world/AdminBoundaries/metadata.htm"/>
+			<Style isDefault="true">
+				<ows:Title>default</ows:Title>
+				<ows:Identifier>default</ows:Identifier>
+			</Style>
+			<Format>image/png</Format>
+			<TileMatrixSetLink>
+				<TileMatrixSet>World84-90_CRS_84</TileMatrixSet>
+			</TileMatrixSetLink>
+			<ResourceURL format="image/png" resourceType="tile" template="http://www.opengis.uab.es/SITiled/world/AdminBoundaries/default/World84-90_CRS_84/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+			<ResourceURL format="application/gml+xml; version=3.1" resourceType="FeatureInfo" template="http://www.opengis.uab.es/SITiled/world/AdminBoundaries/default/World84-90_CRS_84/{TileMatrix}/{TileRow}/{TileCol}/{J}/{I}.xml"/>
+		</Layer>
+		<TileMatrixSet>
+			<!-- optional bounding box of data in this CRS -->
+			<ows:Identifier>WholeWorld_CRS_84</ows:Identifier>
+			<ows:SupportedCRS>urn:ogc:def:crs:OGC:1.3:CRS84</ows:SupportedCRS>
+			<WellKnownScaleSet>urn:ogc:def:wkss:OGC:1.0:GlobalCRS84Pixel</WellKnownScaleSet>
+			<TileMatrix>
+				<ows:Identifier>2g</ows:Identifier>
+				<ScaleDenominator>795139219.951954</ScaleDenominator>
+				<!-- top left point of tile matrix bounding box -->
+				<TopLeftCorner>-180 90</TopLeftCorner>
+				<!-- width and height of each tile in pixel units -->
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<!-- width and height of matrix in tile units -->
+				<MatrixWidth>1</MatrixWidth>
+				<MatrixHeight>1</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>1g</ows:Identifier>
+				<ScaleDenominator>397569609.975977</ScaleDenominator>
+				<TopLeftCorner>-180 90</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>2</MatrixWidth>
+				<MatrixHeight>1</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>30m</ows:Identifier>
+				<ScaleDenominator>198784804.987989</ScaleDenominator>
+				<TopLeftCorner>-180 90</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>3</MatrixWidth>
+				<MatrixHeight>2</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>20m</ows:Identifier>
+				<ScaleDenominator>132523203.325326</ScaleDenominator>
+				<TopLeftCorner>-180 90</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>4</MatrixWidth>
+				<MatrixHeight>3</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>10m</ows:Identifier>
+				<ScaleDenominator>66261601.6626630</ScaleDenominator>
+				<TopLeftCorner>-180 90</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>7</MatrixWidth>
+				<MatrixHeight>6</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>5m</ows:Identifier>
+				<ScaleDenominator>33130800.8313314</ScaleDenominator>
+				<TopLeftCorner>-180 90</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>14</MatrixWidth>
+				<MatrixHeight>11</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>2m</ows:Identifier>
+				<ScaleDenominator>13252320.3325326</ScaleDenominator>
+				<TopLeftCorner>-180 90</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>34</MatrixWidth>
+				<MatrixHeight>28</MatrixHeight>
+			</TileMatrix>
+		</TileMatrixSet>
+		<TileMatrixSet>
+			<ows:Identifier>World84-90_CRS_84</ows:Identifier>
+			<ows:SupportedCRS>urn:ogc:def:crs:OGC:1.3:CRS84</ows:SupportedCRS>
+			<WellKnownScaleSet>urn:ogc:def:wkss:OGC:1.0:GlobalCRS84Pixel</WellKnownScaleSet>
+			<TileMatrix>
+				<ows:Identifier>2g</ows:Identifier>
+				<ScaleDenominator>795139219.951954</ScaleDenominator>
+				<TopLeftCorner>-180 84</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>1</MatrixWidth>
+				<MatrixHeight>1</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>1g</ows:Identifier>
+				<ScaleDenominator>397569609.975977</ScaleDenominator>
+				<TopLeftCorner>-180 84</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>2</MatrixWidth>
+				<MatrixHeight>1</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>30m</ows:Identifier>
+				<ScaleDenominator>198784804.987989</ScaleDenominator>
+				<TopLeftCorner>-180 84</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>3</MatrixWidth>
+				<MatrixHeight>2</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>20m</ows:Identifier>
+				<ScaleDenominator>132523203.325326</ScaleDenominator>
+				<TopLeftCorner>-180 83.6666666666667</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>4</MatrixWidth>
+				<MatrixHeight>3</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>10m</ows:Identifier>
+				<ScaleDenominator>66261601.6626630</ScaleDenominator>
+				<TopLeftCorner>-180 83.6666666666667</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>7</MatrixWidth>
+				<MatrixHeight>6</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>5m</ows:Identifier>
+				<ScaleDenominator>33130800.8313314</ScaleDenominator>
+				<TopLeftCorner>-180 83.6666666666667</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>14</MatrixWidth>
+				<MatrixHeight>11</MatrixHeight>
+			</TileMatrix>
+			<TileMatrix>
+				<ows:Identifier>2m</ows:Identifier>
+				<ScaleDenominator>13252320.3325326</ScaleDenominator>
+				<TopLeftCorner>-180 83.6333333333332</TopLeftCorner>
+				<TileWidth>320</TileWidth>
+				<TileHeight>200</TileHeight>
+				<MatrixWidth>34</MatrixWidth>
+				<MatrixHeight>27</MatrixHeight>
+			</TileMatrix>
+		</TileMatrixSet>
+	</Contents>
+	<Themes>
+		<Theme>
+			<ows:Title>Foundation</ows:Title>
+			<ows:Abstract>World reference data</ows:Abstract>
+			<ows:Identifier>Foundation</ows:Identifier>
+			<Theme>
+				<ows:Title>Digital Elevation Model</ows:Title>
+				<ows:Identifier>DEM</ows:Identifier>
+				<LayerRef>etopo2</LayerRef>
+			</Theme>
+			<Theme>
+				<ows:Title>Administrative Boundaries</ows:Title>
+				<ows:Identifier>AdmBoundaries</ows:Identifier>
+				<LayerRef>AdminBoundaries</LayerRef>
+			</Theme>
+		</Theme>
+	</Themes>
+	<ServiceMetadataURL xlink:href="http://www.opengis.uab.es/SITiled/world/1.0.0/WMTSCapabilities.xml"/>
+</Capabilities>

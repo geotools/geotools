@@ -17,27 +17,15 @@
 
 package org.geotools.data.sfs;
 
-
 import java.io.IOException;
 import java.io.StringReader;
-
 import java.util.ArrayList;
-
 import junit.framework.TestCase;
-
-import org.geotools.data.sfs.SFSDataStoreUtil;
 import org.geotools.geojson.feature.FeatureJSON;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
-
-import com.vividsolutions.jts.geom.Geometry;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SFSDataStoreFeatureReaderTest extends TestCase {
 
     public SFSDataStoreFeatureReaderTest(String testName) {
@@ -58,19 +46,19 @@ public class SFSDataStoreFeatureReaderTest extends TestCase {
     public String getFeatureWithPointGeometry() {
         String json =
                 "{"
-                + "   'type': 'Feature',"
-                + "   'geometry': {"
-                + "     'type': 'Point',"
-                + "     'coordinates': [1.5, 2.9]"
-                + "   },"
-                + "   'properties': {"
-                + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
-                + "     'int': 1,"
-                + "     'double': 1.1,"
-                + "     'string': 'one'"
-                + "   },"
-                + "   'id': 'feature.1'"
-                + " }";
+                        + "   'type': 'Feature',"
+                        + "   'geometry': {"
+                        + "     'type': 'Point',"
+                        + "     'coordinates': [1.5, 2.9]"
+                        + "   },"
+                        + "   'properties': {"
+                        + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
+                        + "     'int': 1,"
+                        + "     'double': 1.1,"
+                        + "     'string': 'one'"
+                        + "   },"
+                        + "   'id': 'feature.1'"
+                        + " }";
         return json;
     }
 
@@ -78,38 +66,38 @@ public class SFSDataStoreFeatureReaderTest extends TestCase {
     public String getFeatureWithLineStringGeometry() {
         String json =
                 "{"
-                + "   'type': 'Feature',"
-                + "   'geometry': {"
-                + "        'type': 'LineString',"
-                + "        'coordinates': [[1.1, 1.2], [1.3, 1.4]]"
-                + "   },"
-                + "   'properties': {"
-                + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
-                + "     'int': 1,"
-                + "     'double': 1.1,"
-                + "     'string': 'one'"
-                + "   },"
-                + "   'id': 'feature.1'"
-                + " }";
+                        + "   'type': 'Feature',"
+                        + "   'geometry': {"
+                        + "        'type': 'LineString',"
+                        + "        'coordinates': [[1.1, 1.2], [1.3, 1.4]]"
+                        + "   },"
+                        + "   'properties': {"
+                        + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
+                        + "     'int': 1,"
+                        + "     'double': 1.1,"
+                        + "     'string': 'one'"
+                        + "   },"
+                        + "   'id': 'feature.1'"
+                        + " }";
         return json;
     }
 
     public String getFeatureWithpolygonTyp1Geometry() {
         String json =
                 "{"
-                + "   'type': 'Feature',"
-                + "   'geometry': {"
-                + "        'type': 'Polygon',"
-                + "        'coordinates': [[100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ]"
-                + "   },"
-                + "   'properties': {"
-                + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
-                + "     'int': 1,"
-                + "     'double': 1.1,"
-                + "     'string': 'one'"
-                + "   },"
-                + "   'id': 'feature.1'"
-                + " }";
+                        + "   'type': 'Feature',"
+                        + "   'geometry': {"
+                        + "        'type': 'Polygon',"
+                        + "        'coordinates': [[100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ]"
+                        + "   },"
+                        + "   'properties': {"
+                        + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
+                        + "     'int': 1,"
+                        + "     'double': 1.1,"
+                        + "     'string': 'one'"
+                        + "   },"
+                        + "   'id': 'feature.1'"
+                        + " }";
         return json;
     }
 
@@ -117,114 +105,113 @@ public class SFSDataStoreFeatureReaderTest extends TestCase {
 
         String json =
                 "{"
-                + "   'type': 'Feature',"
-                + "   'geometry': {"
-                + "        'type': 'Polygon',"
-                + "        'coordinates': ["
-                + "      [ [100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ],"
-                + "      [ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]"
-                + "      ]"
-                + "   },"
-                + "   'properties': {"
-                + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
-                + "     'int': 1,"
-                + "     'double': 1.1,"
-                + "     'string': 'one'"
-                + "   },"
-                + "   'id': 'feature.1'"
-                + " }";
+                        + "   'type': 'Feature',"
+                        + "   'geometry': {"
+                        + "        'type': 'Polygon',"
+                        + "        'coordinates': ["
+                        + "      [ [100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ],"
+                        + "      [ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]"
+                        + "      ]"
+                        + "   },"
+                        + "   'properties': {"
+                        + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
+                        + "     'int': 1,"
+                        + "     'double': 1.1,"
+                        + "     'string': 'one'"
+                        + "   },"
+                        + "   'id': 'feature.1'"
+                        + " }";
         return json;
     }
 
     public String getFeatureWithMultiPointGeometry() {
         String json =
                 "{"
-                + "   'type': 'Feature',"
-                + "   'geometry': {"
-                + "        'type': 'MultiPoint',"
-                + "        'coordinates': [ [100.1, 0.1], [101.1, 1.1] ]"
-                + "   },"
-                + "   'properties': {"
-                + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
-                + "     'int': 1,"
-                + "     'double': 1.1,"
-                + "     'string': 'one'"
-                + "   },"
-                + "   'id': 'feature.1'"
-                + " }";
+                        + "   'type': 'Feature',"
+                        + "   'geometry': {"
+                        + "        'type': 'MultiPoint',"
+                        + "        'coordinates': [ [100.1, 0.1], [101.1, 1.1] ]"
+                        + "   },"
+                        + "   'properties': {"
+                        + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
+                        + "     'int': 1,"
+                        + "     'double': 1.1,"
+                        + "     'string': 'one'"
+                        + "   },"
+                        + "   'id': 'feature.1'"
+                        + " }";
         return json;
     }
 
     public String getFeatureWithMultiLineGeometry() {
         String json =
                 "{"
-                + "   'type': 'Feature',"
-                + "   'geometry': {"
-                + "        'type': 'MultiLineString',"
-                + "        'coordinates':["
-                + "        [ [100.1, 0.1], [101.1, 1.1] ],"
-                + "        [ [102.1, 2.1], [103.1, 3.1] ]"
-                + "      ]"
-                + "   },"
-                + "   'properties': {"
-                + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
-                + "     'int': 1,"
-                + "     'double': 1.1,"
-                + "     'string': 'one'"
-                + "   },"
-                + "   'id': 'feature.1'"
-                + " }";
+                        + "   'type': 'Feature',"
+                        + "   'geometry': {"
+                        + "        'type': 'MultiLineString',"
+                        + "        'coordinates':["
+                        + "        [ [100.1, 0.1], [101.1, 1.1] ],"
+                        + "        [ [102.1, 2.1], [103.1, 3.1] ]"
+                        + "      ]"
+                        + "   },"
+                        + "   'properties': {"
+                        + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
+                        + "     'int': 1,"
+                        + "     'double': 1.1,"
+                        + "     'string': 'one'"
+                        + "   },"
+                        + "   'id': 'feature.1'"
+                        + " }";
         return json;
     }
 
-     public String getFeatureWithMultiPolygonGeometry() {
+    public String getFeatureWithMultiPolygonGeometry() {
         String json =
                 "{"
-                + "   'type': 'Feature',"
-                + "   'geometry': {"
-                + "        'type': 'MultiPolygon',"
-                + "        'coordinates':["
-                + "      [[[102.1, 2.1], [103.1, 2.1], [103.1, 3.1], [102.1, 3.1], [102.1, 2.1]]],"
-                + "      [[[100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1]],"
-                + "       [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]"
-                + "      ]"
-                + "   },"
-                + "   'properties': {"
-                + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
-                + "     'int': 1,"
-                + "     'double': 1.1,"
-                + "     'string': 'one'"
-                + "   },"
-                + "   'id': 'feature.1'"
-                + " }";
+                        + "   'type': 'Feature',"
+                        + "   'geometry': {"
+                        + "        'type': 'MultiPolygon',"
+                        + "        'coordinates':["
+                        + "      [[[102.1, 2.1], [103.1, 2.1], [103.1, 3.1], [102.1, 3.1], [102.1, 2.1]]],"
+                        + "      [[[100.1, 0.1], [101.1, 0.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1]],"
+                        + "       [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]"
+                        + "      ]"
+                        + "   },"
+                        + "   'properties': {"
+                        + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
+                        + "     'int': 1,"
+                        + "     'double': 1.1,"
+                        + "     'string': 'one'"
+                        + "   },"
+                        + "   'id': 'feature.1'"
+                        + " }";
         return json;
     }
 
-     public String getFeatureWithGeometryCollectionGeometry() {
+    public String getFeatureWithGeometryCollectionGeometry() {
         String json =
                 "{"
-                + "   'type': 'Feature',"
-                + "   'geometry' : { "
-                + "     'type' : 'GeometryCollection',"
-                + "     'geometries': ["
-                + "          { 'type': 'Point',"
-                + "            'coordinates': [100.1, 0.1]"
-                + "          },"
-                + "          { 'type': 'LineString',"
-                + "            'coordinates': [ [101.1, 0.1], [102.1, 1.1]]"
-                + "          }]"
-                + "    },"
-                + "   'properties': {"
-                + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
-                + "     'int': 1,"
-                + "     'double': 1.1,"
-                + "     'string': 'one'"
-                + "   },"
-                + "   'id': 'feature.1'"
-                + " }";
+                        + "   'type': 'Feature',"
+                        + "   'geometry' : { "
+                        + "     'type' : 'GeometryCollection',"
+                        + "     'geometries': ["
+                        + "          { 'type': 'Point',"
+                        + "            'coordinates': [100.1, 0.1]"
+                        + "          },"
+                        + "          { 'type': 'LineString',"
+                        + "            'coordinates': [ [101.1, 0.1], [102.1, 1.1]]"
+                        + "          }]"
+                        + "    },"
+                        + "   'properties': {"
+                        + "     'boundedBy': [-1.1, -1.2, 1.3, 1.4],"
+                        + "     'int': 1,"
+                        + "     'double': 1.1,"
+                        + "     'string': 'one'"
+                        + "   },"
+                        + "   'id': 'feature.1'"
+                        + " }";
         return json;
     }
-
 
     /* Test feature flipping with point geometry*/
     public void testFeatureFlippingWithPointGeom() throws IOException {
@@ -239,7 +226,6 @@ public class SFSDataStoreFeatureReaderTest extends TestCase {
         assertEquals(fnG.getCoordinate().x, 2.9);
 
         assertEquals(fnG.getCoordinate().y, 1.5);
-
     }
 
     /* Test feature flipping with LineString geometry*/
@@ -291,7 +277,7 @@ public class SFSDataStoreFeatureReaderTest extends TestCase {
         SimpleFeature sf = fjson.readFeature(reader(strip(getFeatureWithpolygonTyp2Geometry())));
 
         Geometry fnG = (Geometry) sf.getDefaultGeometry();
-        
+
         SFSDataStoreUtil.flipFeatureYX(fnG);
 
         /* Check for first point*/
@@ -392,9 +378,9 @@ public class SFSDataStoreFeatureReaderTest extends TestCase {
         assertEquals(fnG.getCoordinates()[14].y, 100.2);
     }
 
-    
     /**
      * Test Whether the boundingbox params get flipped properly or not
+     *
      * @throws IOException
      */
     public void testForBBoxFlipping() throws IOException {
@@ -416,7 +402,7 @@ public class SFSDataStoreFeatureReaderTest extends TestCase {
 
         assertEquals(Double.parseDouble(al.get(3).toString()), 1.3);
     }
-   
+
     /* Methods used for testing*/
     protected StringReader reader(String json) throws IOException {
         return new StringReader(json);

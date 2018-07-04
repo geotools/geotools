@@ -4,7 +4,7 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2004-2007 Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.feature.type;
@@ -13,28 +13,22 @@ import org.opengis.feature.Association;
 
 /**
  * The type of an association; used to describe kind of relationship between two entities.
- * <p>
- * The notion of an "association" is similar to that of an association in UML
- * and is used to model a relationship among two attributes. See the javadoc for
- * {@link Association} for more info on the semantics of associations.
- * </p>
- * <p>
- * An association is used to relate one attribute to another. The type of the
- * association specifies the type of the related attribute with the
- * {@link #getRelatedType()} method.
- * </p>
+ *
+ * <p>The notion of an "association" is similar to that of an association in UML and is used to
+ * model a relationship among two attributes. See the javadoc for {@link Association} for more info
+ * on the semantics of associations.
+ *
+ * <p>An association is used to relate one attribute to another. The type of the association
+ * specifies the type of the related attribute with the {@link #getRelatedType()} method.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
  * @source $URL$
  */
 public interface AssociationType extends PropertyType {
 
     /**
-     * Override of {@link PropertyType#getSuper()} which type narrows to
-     * {@link AssociationType}.
+     * Override of {@link PropertyType#getSuper()} which type narrows to {@link AssociationType}.
      *
      * @see PropertyType#getSuper()
      */
@@ -48,9 +42,9 @@ public interface AssociationType extends PropertyType {
     AttributeType getRelatedType();
 
     /**
-     * Override of {@link PropertyType#getBinding()} which specifies that this
-     * method should return <code>getRelatedType().getBinding()</code>, that is
-     * it returns the binding of the related type.
+     * Override of {@link PropertyType#getBinding()} which specifies that this method should return
+     * <code>getRelatedType().getBinding()</code>, that is it returns the binding of the related
+     * type.
      */
     Class<?> getBinding();
 }

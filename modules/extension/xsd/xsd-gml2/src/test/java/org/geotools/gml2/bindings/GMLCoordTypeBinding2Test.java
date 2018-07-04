@@ -18,16 +18,10 @@ package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.Coordinate;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Coordinate;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLCoordTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Coordinate.class, binding(GML.CoordType).getType());

@@ -19,9 +19,7 @@ package org.geotools.gml3.bindings.ext;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.gml3.ArcParameters;
 import org.geotools.gml3.GML;
@@ -29,17 +27,17 @@ import org.geotools.gml3.bindings.GML3ParsingUtils;
 import org.geotools.gml3.bindings.LineStringTypeBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateList;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateList;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * Simple type binding for Composite Curve GML elements.
+ *
  * @source $URL$
  */
 public class CompositeCurveTypeBinding extends LineStringTypeBinding {
@@ -47,8 +45,9 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
     private final GeometryFactory gFactory;
 
     private ArcParameters arcParameters;
-    
-    public CompositeCurveTypeBinding(GeometryFactory gFactory, CoordinateSequenceFactory csFactory) {
+
+    public CompositeCurveTypeBinding(
+            GeometryFactory gFactory, CoordinateSequenceFactory csFactory) {
         super(gFactory, csFactory);
         this.gFactory = gFactory;
     }
@@ -68,11 +67,10 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
     }
 
     @Override
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List children = node.getChildren("curveMember");
         List<LineString> components = new ArrayList<>();
-        for (Iterator it = children.iterator(); it.hasNext();) {
+        for (Iterator it = children.iterator(); it.hasNext(); ) {
             Node child = (Node) it.next();
             if (child.getValue() instanceof LineString) {
                 LineString ls = (LineString) child.getValue();
@@ -84,15 +82,15 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
             return gFactory.createLineString(new Coordinate[0]);
         } else {
             CoordinateSequence cs = components.get(0).getCoordinateSequence();
-            CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(
-                    arcParameters, gFactory, cs);
+            CurvedGeometryFactory factory =
+                    GML3ParsingUtils.getCurvedGeometryFactory(arcParameters, gFactory, cs);
             return factory.createCurvedGeometry(components);
         }
     }
 
     /**
      * Construct a line string from CurveMembers coordinates.
-     * 
+     *
      * @param node
      * @return
      */
@@ -100,15 +98,12 @@ public class CompositeCurveTypeBinding extends LineStringTypeBinding {
         List curveMembers = node.getChildren("curveMember");
         CoordinateList clist = new CoordinateList();
         for (int i = 0; i < curveMembers.size(); i++) {
-            List curves = ((Node) curveMembers.get(i))
-                    .getChildren(MultiLineString.class);
+            List curves = ((Node) curveMembers.get(i)).getChildren(MultiLineString.class);
             for (int j = 0; j < curves.size(); j++) {
-                MultiLineString mls = (MultiLineString) ((Node) curves.get(j))
-                        .getValue();
+                MultiLineString mls = (MultiLineString) ((Node) curves.get(j)).getValue();
                 clist.add(mls.getCoordinates(), false);
             }
         }
         return clist;
     }
-
 }

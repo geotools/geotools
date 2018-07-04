@@ -18,13 +18,12 @@ package org.geotools.gml2.simple;
 
 import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Point;
 import org.xml.sax.helpers.AttributesImpl;
-
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * Encodes a GML2 point
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */

@@ -17,7 +17,6 @@
 package org.geotools.data.efeature;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
@@ -30,19 +29,15 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author kengu - 7. juli 2011
- *
- *
  * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class EFeatureSource extends ContentFeatureSource {
 
-    /**
-     * Cached {@link EFeatureInfo} instance
-     */
+    /** Cached {@link EFeatureInfo} instance */
     protected final EFeatureInfo eStructure;
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
 
@@ -61,25 +56,23 @@ public class EFeatureSource extends ContentFeatureSource {
         this.eStructure = getDataStore().eStructure().eGetFeatureInfo(entry.getTypeName());
         //
         // Cache schema
-        // 
+        //
         this.schema = eStructure.getFeatureType();
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Overridden methods
     // -----------------------------------------------------
 
-    /**
-     * The {@link EFeatureDataStore} that this {@link EFeatureSource} originated from.
-     */
+    /** The {@link EFeatureDataStore} that this {@link EFeatureSource} originated from. */
     @Override
     public EFeatureDataStore getDataStore() {
-        return (EFeatureDataStore)entry.getDataStore();
+        return (EFeatureDataStore) entry.getDataStore();
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  ContentFeatureSource implementation
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
 
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
@@ -87,7 +80,7 @@ public class EFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {        
+    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         return getBounds(getDataStore(), getSchema(), getReader(query));
     }
 
@@ -101,22 +94,24 @@ public class EFeatureSource extends ContentFeatureSource {
         return new EFeatureReader(getDataStore(), query);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Static helper methods
     // -----------------------------------------------------
 
     protected static ReferencedEnvelope getBounds(
-            EFeatureDataStore eDataStore, SimpleFeatureType eType, 
+            EFeatureDataStore eDataStore,
+            SimpleFeatureType eType,
             FeatureReader<SimpleFeatureType, SimpleFeature> eReader)
-    throws IOException {
+            throws IOException {
         //
-        // Calculate manually TODO: Optimize 
+        // Calculate manually TODO: Optimize
         //
         eDataStore.getLogger().fine("Calculating bounds manually");
         //
         // Grab the 2D-part of the CRS
         //
-        CoordinateReferenceSystem flatCRS = CRS.getHorizontalCRS(eType.getCoordinateReferenceSystem());
+        CoordinateReferenceSystem flatCRS =
+                CRS.getHorizontalCRS(eType.getCoordinateReferenceSystem());
         //
         // Initialize bounds
         //
@@ -152,15 +147,14 @@ public class EFeatureSource extends ContentFeatureSource {
     }
 
     protected static int getCount(
-            EFeatureDataStore eDataStore, 
-            FeatureReader<SimpleFeatureType, SimpleFeature> eReader) 
-    throws IOException {       
+            EFeatureDataStore eDataStore, FeatureReader<SimpleFeatureType, SimpleFeature> eReader)
+            throws IOException {
         //
         // Initialize
         //
         int count = 0;
         //
-        // Calculate manually TODO: Optimize 
+        // Calculate manually TODO: Optimize
         //
         eDataStore.getLogger().fine("Calculating feature count manually");
         //
@@ -184,7 +178,5 @@ public class EFeatureSource extends ContentFeatureSource {
         // Calculation finished
         //
         return count;
-    }    
-    
-    
+    }
 }

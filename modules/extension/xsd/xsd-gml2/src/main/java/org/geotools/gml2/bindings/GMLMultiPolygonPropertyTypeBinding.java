@@ -17,22 +17,20 @@
 package org.geotools.gml2.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.MultiPolygon;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:MultiPolygonPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="MultiPolygonPropertyType"&gt;
  *      &lt;annotation&gt;
@@ -53,23 +51,18 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLMultiPolygonPropertyTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.MULTIPOLYGONPROPERTYTYPE;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -80,24 +73,24 @@ public class GMLMultiPolygonPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue((MultiPolygon.class));
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        return GML2EncodingUtils.GeometryPropertyType_getProperty((MultiPolygon)object,name,false);
+        return GML2EncodingUtils.GeometryPropertyType_getProperty(
+                (MultiPolygon) object, name, false);
     }
-    
+
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
-        return GML2EncodingUtils.GeometryPropertyType_getProperties((MultiPolygon)object);
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+        return GML2EncodingUtils.GeometryPropertyType_getProperties((MultiPolygon) object);
     }
 }

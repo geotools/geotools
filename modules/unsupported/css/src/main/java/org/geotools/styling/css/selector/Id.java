@@ -55,18 +55,13 @@ public class Id extends Selector {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Id other = (Id) obj;
         if (ids == null) {
-            if (other.ids != null)
-                return false;
-        } else if (!ids.equals(other.ids))
-            return false;
+            if (other.ids != null) return false;
+        } else if (!ids.equals(other.ids)) return false;
         return true;
     }
 
@@ -83,10 +78,8 @@ public class Id extends Selector {
             return new Specificity(ids.size(), 0, 0);
         }
     }
-    
+
     public Object accept(SelectorVisitor visitor) {
-    	return visitor.visit(this);
+        return visitor.visit(this);
     }
-
-
 }

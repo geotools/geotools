@@ -16,26 +16,21 @@
  */
 package org.geotools.filter.function;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
-
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 
 /**
  * Test the Categorize function against the Symbology Encoding 1.1 specs.
- * 
+ *
  * @author Jody
  * @author mbedward
- *
- *
- *
  * @source $URL$
  */
 public class CategorizeFunctionTest extends SEFunctionTestBase {
@@ -74,8 +69,8 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
     }
 
     /**
-     * Test categorization with "succeeding" thresholds (the default behaviour).
-     * A succeeding threshold is whose value belongs to the next category.
+     * Test categorization with "succeeding" thresholds (the default behaviour). A succeeding
+     * threshold is whose value belongs to the next category.
      */
     @Test
     public void testSucceedingThresholds() throws Exception {
@@ -89,24 +84,26 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
 
         String result;
         int i;
-        for (i = 0 ;i < thresholds.length; i++) {
+        for (i = 0; i < thresholds.length; i++) {
             // below threshold: should be in category i
             result = fn.evaluate(feature(thresholds[i].intValue() - 1), String.class);
             assertEquals(categories[i], result);
 
             // at threshold boundary: should be in category i+1
             result = fn.evaluate(feature(thresholds[i].intValue()), String.class);
-            assertEquals(categories[i+1], result);
+            assertEquals(categories[i + 1], result);
         }
 
         // above last threshold
-        result = fn.evaluate(feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
+        result =
+                fn.evaluate(
+                        feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
         assertEquals(categories[categories.length - 1], result);
     }
 
     /**
-     * Test categorization with "preceding" thresholds (the default behaviour).
-     * A succeeding threshold is whose value belongs to the next category.
+     * Test categorization with "preceding" thresholds (the default behaviour). A succeeding
+     * threshold is whose value belongs to the next category.
      */
     @Test
     public void testPrecedingThresholds() throws Exception {
@@ -121,7 +118,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
 
         String result;
         int i;
-        for (i = 0 ;i < thresholds.length; i++) {
+        for (i = 0; i < thresholds.length; i++) {
             // below threshold: should be in category i
             result = fn.evaluate(feature(thresholds[i].intValue() - 1), String.class);
             assertEquals(categories[i], result);
@@ -132,7 +129,9 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
         }
 
         // above last threshold
-        result = fn.evaluate(feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
+        result =
+                fn.evaluate(
+                        feature(thresholds[thresholds.length - 1].intValue() + 1), String.class);
         assertEquals(categories[categories.length - 1], result);
     }
 
@@ -157,5 +156,4 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
         }
         parameters.add(ff2.literal(categories[categories.length - 1]));
     }
-
 }

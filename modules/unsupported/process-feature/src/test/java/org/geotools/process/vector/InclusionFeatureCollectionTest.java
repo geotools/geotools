@@ -26,28 +26,22 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.process.vector.InclusionFeatureCollection;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class InclusionFeatureCollectionTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     GeometryFactory gf = new GeometryFactory();
-    
+
     @Test
     public void testExecute() throws Exception {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -59,8 +53,8 @@ public class InclusionFeatureCollectionTest {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(tb.buildFeatureType());
 
         DefaultFeatureCollection features = new DefaultFeatureCollection(null, b.getFeatureType());
-        DefaultFeatureCollection secondFeatures = new DefaultFeatureCollection(null, b
-                .getFeatureType());
+        DefaultFeatureCollection secondFeatures =
+                new DefaultFeatureCollection(null, b.getFeatureType());
 
         Coordinate firstArray[] = new Coordinate[5];
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
@@ -74,7 +68,6 @@ public class InclusionFeatureCollectionTest {
             b.add(0);
 
             features.add(b.buildFeature(numFeatures + ""));
-
         }
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
             Coordinate array[] = new Coordinate[5];
@@ -97,7 +90,6 @@ public class InclusionFeatureCollectionTest {
         Geometry expected = (Geometry) features.features().next().getDefaultGeometry();
         SimpleFeature sf = iterator.next();
         assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
-
     }
 
     public void testExecute1() throws Exception {
@@ -110,8 +102,8 @@ public class InclusionFeatureCollectionTest {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(tb.buildFeatureType());
 
         DefaultFeatureCollection features = new DefaultFeatureCollection(null, b.getFeatureType());
-        DefaultFeatureCollection secondFeatures = new DefaultFeatureCollection(null, b
-                .getFeatureType());
+        DefaultFeatureCollection secondFeatures =
+                new DefaultFeatureCollection(null, b.getFeatureType());
 
         Coordinate firstArray[] = new Coordinate[5];
         for (int numFeatures = 0; numFeatures < 1; numFeatures++) {
@@ -125,11 +117,12 @@ public class InclusionFeatureCollectionTest {
             b.add(0);
 
             secondFeatures.add(b.buildFeature(numFeatures + ""));
-
         }
 
-        Coordinate centre = ((Polygon) secondFeatures.features().next().getDefaultGeometry())
-                .getCentroid().getCoordinate();
+        Coordinate centre =
+                ((Polygon) secondFeatures.features().next().getDefaultGeometry())
+                        .getCentroid()
+                        .getCoordinate();
         Point p = gf.createPoint(centre);
         b.add(p);
         b.add(0);
@@ -144,6 +137,5 @@ public class InclusionFeatureCollectionTest {
         Geometry expected = (Geometry) features.features().next().getDefaultGeometry();
         SimpleFeature sf = iterator.next();
         assertTrue(expected.equals((Geometry) sf.getDefaultGeometry()));
-
     }
 }

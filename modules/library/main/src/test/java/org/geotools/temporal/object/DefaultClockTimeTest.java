@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,8 @@
  */
 package org.geotools.temporal.object;
 
+import static org.junit.Assert.*;
+
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.temporal.reference.DefaultTemporalReferenceSystem;
@@ -24,15 +26,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.temporal.ClockTime;
 import org.opengis.temporal.TemporalReferenceSystem;
-import static org.junit.Assert.*;
-
 
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultClockTimeTest {
@@ -56,18 +52,14 @@ public class DefaultClockTimeTest {
         clockTime2 = null;
     }
 
-    /**
-     * Test of getClockTime method, of class DefaultClockTime.
-     */
+    /** Test of getClockTime method, of class DefaultClockTime. */
     @Test
     public void testGetClockTime() {
         Number[] result = clockTime1.getClockTime();
         assertFalse(clockTime2.getClockTime().equals(result));
     }
 
-    /**
-     * Test of setClockTime method, of class DefaultClockTime.
-     */
+    /** Test of setClockTime method, of class DefaultClockTime. */
     @Test
     public void testSetClockTime() {
         Number[] result = clockTime1.getClockTime();
@@ -76,27 +68,21 @@ public class DefaultClockTimeTest {
         assertFalse(clockTime1.getClockTime().equals(result));
     }
 
-    /**
-     * Test of equals method, of class DefaultClockTime.
-     */
+    /** Test of equals method, of class DefaultClockTime. */
     @Test
     public void testEquals() {
         assertFalse(clockTime1.equals(null));
         assertEquals(clockTime1, clockTime1);
     }
 
-    /**
-     * Test of hashCode method, of class DefaultClockTime.
-     */
+    /** Test of hashCode method, of class DefaultClockTime. */
     @Test
     public void testHashCode() {
         int result = clockTime1.hashCode();
         assertFalse(clockTime2.hashCode() == result);
     }
 
-    /**
-     * Test of toString method, of class DefaultClockTime.
-     */
+    /** Test of toString method, of class DefaultClockTime. */
     @Test
     public void testToString() {
         String result = clockTime1.toString();

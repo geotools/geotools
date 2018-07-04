@@ -22,40 +22,36 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 
-public class NetCDFFormat extends AbstractGridFormat{
+public class NetCDFFormat extends AbstractGridFormat {
 
-    public static final ParameterDescriptor<Filter> FILTER = new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
+    public static final ParameterDescriptor<Filter> FILTER =
+            new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
 
-    private final static Logger LOGGER = Logging
-            .getLogger("org.geotools.coverage.io.netcdf.NetCDFFormat");
+    private static final Logger LOGGER =
+            Logging.getLogger("org.geotools.coverage.io.netcdf.NetCDFFormat");
 
-    /**
-     * Creates an instance and sets the metadata.
-     */
+    /** Creates an instance and sets the metadata. */
     public NetCDFFormat() {
         setInfo();
     }
 
-    /**
-     * Sets the metadata information.
-     */
+    /** Sets the metadata information. */
     private void setInfo() {
-        final HashMap<String,String> info = new HashMap<String,String> ();
+        final HashMap<String, String> info = new HashMap<String, String>();
         info.put("name", "NetCDF");
         info.put("description", "NetCDF store plugin");
         info.put("vendor", "Geotools");
@@ -64,21 +60,24 @@ public class NetCDFFormat extends AbstractGridFormat{
         mInfo = info;
 
         // reading parameters
-        readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo,
-                new GeneralParameterDescriptor[]{
-                        READ_GRIDGEOMETRY2D,
-//                        INPUT_TRANSPARENT_COLOR,
-//                BACKGROUND_VALUES,
-//                SUGGESTED_TILE_SIZE,
-//                ALLOW_MULTITHREADING,
-//                MAX_ALLOWED_TILES,
-                TIME,
-                ELEVATION,
-                FILTER,
-//                SORT_BY,
-//                MERGE_BEHAVIOR
-                        BANDS
-        }));
+        readParameters =
+                new ParameterGroup(
+                        new DefaultParameterDescriptorGroup(
+                                mInfo,
+                                new GeneralParameterDescriptor[] {
+                                    READ_GRIDGEOMETRY2D,
+                                    //                        INPUT_TRANSPARENT_COLOR,
+                                    //                BACKGROUND_VALUES,
+                                    //                SUGGESTED_TILE_SIZE,
+                                    //                ALLOW_MULTITHREADING,
+                                    //                MAX_ALLOWED_TILES,
+                                    TIME,
+                                    ELEVATION,
+                                    FILTER,
+                                    //                SORT_BY,
+                                    //                MERGE_BEHAVIOR
+                                    BANDS
+                                }));
 
         // reading parameters
         writeParameters = null;
@@ -111,8 +110,8 @@ public class NetCDFFormat extends AbstractGridFormat{
     public boolean accepts(Object source, Hints hints) {
         File file = null;
         if (source instanceof URL) {
-            file = DataUtilities.urlToFile((URL) source);
-        } else if (source instanceof File ){
+            file = URLs.urlToFile((URL) source);
+        } else if (source instanceof File) {
             file = (File) source;
         }
         if (file != null) {
@@ -120,8 +119,8 @@ public class NetCDFFormat extends AbstractGridFormat{
                 return false;
             }
             String absolutePath = file.getAbsolutePath();
-                        
-            if (absolutePath.endsWith("nc")  || absolutePath.endsWith("ncml")){
+
+            if (absolutePath.endsWith("nc") || absolutePath.endsWith("ncml")) {
                 return true;
             }
         }
@@ -137,5 +136,4 @@ public class NetCDFFormat extends AbstractGridFormat{
     public GridCoverageWriter getWriter(Object destination, Hints hints) {
         throw new UnsupportedOperationException("Writing operation not implemented");
     }
-
 }

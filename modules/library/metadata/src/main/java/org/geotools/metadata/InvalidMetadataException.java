@@ -16,22 +16,17 @@
  */
 package org.geotools.metadata;
 
-
 /**
- * Thrown when a {@linkplain org.geotools.metadata.iso.MetadataEntity metadata entity}
- * is in a invalid state, usually because a mandatory attribute is missing.
+ * Thrown when a {@linkplain org.geotools.metadata.iso.MetadataEntity metadata entity} is in a
+ * invalid state, usually because a mandatory attribute is missing.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  */
 public class InvalidMetadataException extends IllegalStateException {
-    /**
-     * For cross-version compatibility.
-     */
+    /** For cross-version compatibility. */
     private static final long serialVersionUID = 3219759595538181102L;
 
     /**

@@ -17,10 +17,8 @@
 package org.geotools.coverageio.gdal.mrsid;
 
 import it.geosolutions.imageio.plugins.mrsid.MrSIDImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -29,21 +27,17 @@ import org.opengis.geometry.MismatchedDimensionException;
 
 /**
  * An implementation of {@link Format} for the MrSID format.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public final class MrSIDFormat extends BaseGDALGridFormat implements Format {
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.coverageio.gdal.mrsid");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.mrsid");
 
-    /**
-     * Creates an instance and sets the metadata.
-     */
+    /** Creates an instance and sets the metadata. */
     public MrSIDFormat() {
         super(new MrSIDImageReaderSpi());
 
@@ -56,16 +50,12 @@ public final class MrSIDFormat extends BaseGDALGridFormat implements Format {
 
     private static InfoWrapper INFO = new InfoWrapper("MrSID Coverage Format", "MrSID");
 
-    /**
-     * Sets the metadata information.
-     */
+    /** Sets the metadata information. */
     protected void setInfo() {
         setInfo(INFO);
     }
 
-    /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints)
-     */
+    /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
     public MrSIDReader getReader(Object source, Hints hints) {
         try {
             return new MrSIDReader(source, hints);

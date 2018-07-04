@@ -17,49 +17,41 @@
 package org.geotools.gce.geotiff;
 
 import java.util.Iterator;
-
 import junit.framework.TestCase;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 
 /**
  * Testing {@link GeoTiffFormatFactorySpi}.
- * 
+ *
  * @author Simone Giannecchini
- * 
- *
- *
- *
  * @source $URL$
  */
 public class GeoTiffServiceTest extends TestCase {
 
-	/**
-	 * @param arg0
-	 */
-	public GeoTiffServiceTest(String arg0) {
-		super(arg0);
-	}
+    /** @param arg0 */
+    public GeoTiffServiceTest(String arg0) {
+        super(arg0);
+    }
 
-	public static void main(java.lang.String[] args) {
-		junit.textui.TestRunner.run(GeoTiffServiceTest.class);
-	}
+    public static void main(java.lang.String[] args) {
+        junit.textui.TestRunner.run(GeoTiffServiceTest.class);
+    }
 
-	public void testIsAvailable() {
-		Iterator list = GridFormatFinder.getAvailableFormats().iterator();
-		boolean found = false;
+    public void testIsAvailable() {
+        Iterator list = GridFormatFinder.getAvailableFormats().iterator();
+        boolean found = false;
 
-		while (list.hasNext()) {
-			GridFormatFactorySpi fac = (GridFormatFactorySpi) list.next();
+        while (list.hasNext()) {
+            GridFormatFactorySpi fac = (GridFormatFactorySpi) list.next();
 
-			if (fac instanceof GeoTiffFormatFactorySpi) {
-				found = true;
+            if (fac instanceof GeoTiffFormatFactorySpi) {
+                found = true;
 
-				break;
-			}
-		}
+                break;
+            }
+        }
 
-		assertTrue("GeoTiffFormatFactorySpi not registered", found);
-	}
+        assertTrue("GeoTiffFormatFactorySpi not registered", found);
+    }
 }

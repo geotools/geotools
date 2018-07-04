@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,25 +17,18 @@
  */
 package org.geotools.ysld;
 
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-
 import org.geotools.styling.UomOgcMapping;
 
-/**
- * Maps YSLD uom names and aliases defined by {@link UomOgcMapping} to {@link Unit}s.
- */
+/** Maps YSLD uom names and aliases defined by {@link UomOgcMapping} to {@link Unit}s. */
 public class UomMapper {
-    final private Map<Unit<Length>, String> toId = new HashMap<>();
+    private final Map<Unit<Length>, String> toId = new HashMap<>();
 
-    final private Map<String, Unit<Length>> toUnit = new HashMap<>();
+    private final Map<String, Unit<Length>> toUnit = new HashMap<>();
 
     public static final String KEY = "uomMapper";
 

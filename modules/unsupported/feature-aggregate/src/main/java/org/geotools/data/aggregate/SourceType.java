@@ -16,8 +16,8 @@ package org.geotools.data.aggregate;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-import java.io.Serializable;
 
+import java.io.Serializable;
 import org.opengis.feature.type.Name;
 
 /**
@@ -34,6 +34,7 @@ public class SourceType implements Serializable {
 
     /**
      * Creates a new source feature type
+     *
      * @param storeName The source store name
      * @param typeName The source type name
      */
@@ -62,23 +63,16 @@ public class SourceType implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         SourceType other = (SourceType) obj;
         if (storeName == null) {
-            if (other.storeName != null)
-                return false;
-        } else if (!storeName.equals(other.storeName))
-            return false;
+            if (other.storeName != null) return false;
+        } else if (!storeName.equals(other.storeName)) return false;
         if (typeName == null) {
-            if (other.typeName != null)
-                return false;
-        } else if (!typeName.equals(other.typeName))
-            return false;
+            if (other.typeName != null) return false;
+        } else if (!typeName.equals(other.typeName)) return false;
         return true;
     }
 
@@ -86,5 +80,4 @@ public class SourceType implements Serializable {
     public String toString() {
         return "SourceType [sourceName=" + storeName + ", typeName=" + typeName + "]";
     }
-
 }

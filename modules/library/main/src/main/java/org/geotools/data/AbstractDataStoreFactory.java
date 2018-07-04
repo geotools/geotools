@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
@@ -33,20 +32,13 @@ import org.opengis.parameter.ParameterValue;
 @Deprecated
 /**
  * @deprecated Use org.geotools.data.store.ContentDataStore instead
- * 
- * A best of toolkit for DataStoreFactory implementors.
- * <p>
- * Will also allow me to mess with the interface API without breaking every
- * last DataStoreFactorySpi out there.
- * </p>
- * <p>
- * The default implementations often hinge around the use of
- * getParameterInfo and the correct use of Param by your subclass.
- * </p>
- * <p>
- * You still have to implement a few methods:
- * </p>
- * <pre><code>
+ *     <p>A best of toolkit for DataStoreFactory implementors.
+ *     <p>Will also allow me to mess with the interface API without breaking every last
+ *     DataStoreFactorySpi out there.
+ *     <p>The default implementations often hinge around the use of getParameterInfo and the correct
+ *     use of Param by your subclass.
+ *     <p>You still have to implement a few methods:
+ *     <pre><code>
  * public DataSourceMetadataEnity createMetadata( Map params ) throws IOException {
  * 	    String host = (String) HOST.lookUp(params);
  *      String user = (String) USER.lookUp(params);
@@ -58,48 +50,45 @@ import org.opengis.parameter.ParameterValue;
  * }</code></pre>
  *
  * @author Jody Garnett, Refractions Research
- *
- *
  * @source $URL$
  */
 public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {
-    
-    /** Default Implementation abuses the naming convention.
-     * <p>
-     * Will return <code>Foo</code> for
-     * <code>org.geotools.data.foo.FooFactory</code>.
-     * </p>
+
+    /**
+     * Default Implementation abuses the naming convention.
+     *
+     * <p>Will return <code>Foo</code> for <code>org.geotools.data.foo.FooFactory</code>.
+     *
      * @return return display name based on class name
      */
     public String getDisplayName() {
         String name = this.getClass().getName();
-        
-        name = name.substring( name.lastIndexOf('.') );
-        if( name.endsWith("Factory")){
-            name = name.substring(0, name.length()-7);
-        } else if( name.endsWith("FactorySpi")){
-            name = name.substring(0, name.length()-10);
+
+        name = name.substring(name.lastIndexOf('.'));
+        if (name.endsWith("Factory")) {
+            name = name.substring(0, name.length() - 7);
+        } else if (name.endsWith("FactorySpi")) {
+            name = name.substring(0, name.length() - 10);
         }
         return name;
     }
-    
+
     /**
      * Default implementation verifies the Map against the Param information.
-     * <p>
-     * It will ensure that:
+     *
+     * <p>It will ensure that:
+     *
      * <ul>
-     * <li>params is not null
-     * <li>Everything is of the correct type (or upcovertable
-     * to the correct type without Error)
-     * <li>Required Parameters are present
+     *   <li>params is not null
+     *   <li>Everything is of the correct type (or upcovertable to the correct type without Error)
+     *   <li>Required Parameters are present
      * </ul>
-     * </p>
+     *
      * <p>
-     * <p>
-     * Why would you ever want to override this method?
-     * If you want to check that a expected file exists and is a directory.
-     * </p>
-     * Overrride:
+     *
+     * <p>Why would you ever want to override this method? If you want to check that a expected file
+     * exists and is a directory. Overrride:
+     *
      * <pre><code>
      * public boolean canProcess( Map params ) {
      *     if( !super.canProcess( params ) ){
@@ -110,10 +99,12 @@ public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {
      *     return file.exists() && file.isDirectory();
      * }
      * </code></pre>
+     *
      * @param params
-     * @return true if params is in agreement with getParametersInfo, override for additional checks.
+     * @return true if params is in agreement with getParametersInfo, override for additional
+     *     checks.
      */
-    public boolean canProcess( Map params ) {
+    public boolean canProcess(Map params) {
         if (params == null) {
             return false;
         }
@@ -121,15 +112,15 @@ public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {
         for (int i = 0; i < arrayParameters.length; i++) {
             Param param = arrayParameters[i];
             Object value;
-            if( !params.containsKey( param.key ) ){
-                if( param.required ){
+            if (!params.containsKey(param.key)) {
+                if (param.required) {
                     return false; // missing required key!
                 } else {
                     continue;
                 }
             }
             try {
-                value = param.lookUp( params );
+                value = param.lookUp(params);
             } catch (IOException e) {
                 // could not upconvert/parse to expected type!
                 // even if this parameter is not required
@@ -137,19 +128,19 @@ public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {
                 // these params
                 return false;
             }
-            if( value == null ){
+            if (value == null) {
                 if (param.required) {
                     return (false);
                 }
             } else {
-                if ( !param.type.isInstance( value )){
+                if (!param.type.isInstance(value)) {
                     return false; // value was not of the required type
                 }
-                if( param.metadata != null ){
+                if (param.metadata != null) {
                     // check metadata
-                    if( param.metadata.containsKey(Param.OPTIONS)){
+                    if (param.metadata.containsKey(Param.OPTIONS)) {
                         List<Object> options = (List<Object>) param.metadata.get(Param.OPTIONS);
-                        if( options != null && !options.contains(value) ){
+                        if (options != null && !options.contains(value)) {
                             return false; // invalid option
                         }
                     }
@@ -158,7 +149,7 @@ public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {
         }
         return true;
     }
-    
+
     /**
      * Defaults to true, only a few datastores need to check for drivers.
      *
@@ -167,23 +158,21 @@ public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {
     public boolean isAvailable() {
         return true;
     }
-    
-    public ParameterDescriptorGroup getParameters(){
+
+    public ParameterDescriptorGroup getParameters() {
         Param params[] = getParametersInfo();
-        DefaultParameterDescriptor parameters[] = new DefaultParameterDescriptor[ params.length ];
-        for( int i=0; i<params.length; i++ ){
+        DefaultParameterDescriptor parameters[] = new DefaultParameterDescriptor[params.length];
+        for (int i = 0; i < params.length; i++) {
             Param param = params[i];
-            parameters[i] = new ParamDescriptor( params[i] );
+            parameters[i] = new ParamDescriptor(params[i]);
         }
         Map properties = new HashMap();
-        properties.put( "name", getDisplayName() );
-        properties.put( "remarks", getDescription() );
+        properties.put("name", getDisplayName());
+        properties.put("remarks", getDescription());
         return new DefaultParameterDescriptorGroup(properties, parameters);
     }
 
-    /**
-     * Returns the implementation hints. The default implementation returns en empty map.
-     */
+    /** Returns the implementation hints. The default implementation returns en empty map. */
     public Map<java.awt.RenderingHints.Key, ?> getImplementationHints() {
         return Collections.EMPTY_MAP;
     }
@@ -192,21 +181,25 @@ public abstract class AbstractDataStoreFactory implements DataStoreFactorySpi {
 class ParamDescriptor extends DefaultParameterDescriptor {
     private static final long serialVersionUID = 1L;
     Param param;
+
     public ParamDescriptor(Param param) {
-        super( DefaultParameterDescriptor.create(param.key, param.description, param.type,  param.sample, param.required ));
+        super(
+                DefaultParameterDescriptor.create(
+                        param.key, param.description, param.type, param.sample, param.required));
         this.param = param;
     }
+
     public ParameterValue createValue() {
-        if (Double.TYPE.equals( getValueClass())) {
-            return new FloatParameter(this){
+        if (Double.TYPE.equals(getValueClass())) {
+            return new FloatParameter(this) {
                 protected Object valueOf(String text) throws IOException {
-                    return param.handle( text );
+                    return param.handle(text);
                 }
             };
         }
-        return new Parameter(this){
+        return new Parameter(this) {
             protected Object valueOf(String text) throws IOException {
-                return param.handle( text );
+                return param.handle(text);
             }
         };
     }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,24 +18,23 @@ package org.geotools.geometry.jts;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * Utility methods for curved geometries
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class CurvedGeometries {
 
     /**
      * Returns true if the geometry is curved, or contains elements that are curved
-     * 
+     *
      * @param geometry
      * @return
      */
@@ -45,30 +44,30 @@ public class CurvedGeometries {
         }
 
         final AtomicBoolean curveFound = new AtomicBoolean(false);
-        geometry.apply(new GeometryComponentFilter() {
+        geometry.apply(
+                new GeometryComponentFilter() {
 
-            @Override
-            public void filter(Geometry geom) {
-                if (geom instanceof CurvedGeometry<?>) {
-                    curveFound.set(true);
-                }
-
-            }
-        });
+                    @Override
+                    public void filter(Geometry geom) {
+                        if (geom instanceof CurvedGeometry<?>) {
+                            curveFound.set(true);
+                        }
+                    }
+                });
 
         return curveFound.get();
     }
 
     /**
      * Checks if the specified geometry is a circle
-     * 
+     *
      * @param geom
      * @return
      */
     public static boolean isCircle(Geometry geom) {
-        if(geom.isEmpty()) {
+        if (geom.isEmpty()) {
             return false;
-        } 
+        }
         if (!(geom instanceof CircularRing) && !(geom instanceof CompoundRing)) {
             return false;
         }
@@ -134,33 +133,39 @@ public class CurvedGeometries {
 
     /**
      * Builds a circular arc out of the specified coordinate sequence
-     * 
+     *
      * @param cs
      * @param startCoordinate
      * @return
      */
     public static CircularArc getArc(CoordinateSequence cs, int startCoordinate) {
         if (cs.size() < (startCoordinate + 3)) {
-            throw new IllegalArgumentException("The coordinate sequence has " + cs.size()
-                    + " points, cannot extract a circular arc starting from coordinate "
-                    + startCoordinate);
+            throw new IllegalArgumentException(
+                    "The coordinate sequence has "
+                            + cs.size()
+                            + " points, cannot extract a circular arc starting from coordinate "
+                            + startCoordinate);
         } else if (startCoordinate < 0) {
-            throw new IllegalArgumentException("Start coordinate must be 0 or positive, not: "
-                    + startCoordinate);
+            throw new IllegalArgumentException(
+                    "Start coordinate must be 0 or positive, not: " + startCoordinate);
         }
 
-        return new CircularArc(cs.getOrdinate(0, 0), cs.getOrdinate(0, 1), //
-                cs.getOrdinate(1, 0), cs.getOrdinate(1, 1), //
-                cs.getOrdinate(2, 0), cs.getOrdinate(2, 1));
+        return new CircularArc(
+                cs.getOrdinate(0, 0),
+                cs.getOrdinate(0, 1), //
+                cs.getOrdinate(1, 0),
+                cs.getOrdinate(1, 1), //
+                cs.getOrdinate(2, 0),
+                cs.getOrdinate(2, 1));
     }
 
     /**
      * Returns the circle containing this arc
-     * 
+     *
      * @return
      */
-    public static CircularRing toCircle(CircularArc arc, GeometryFactory geometryFactory,
-            double tolerance) {
+    public static CircularRing toCircle(
+            CircularArc arc, GeometryFactory geometryFactory, double tolerance) {
         double radius = arc.getRadius();
         Coordinate center = arc.getCenter();
 
@@ -183,7 +188,7 @@ public class CurvedGeometries {
      * Extracts a {@link CurvedGeometryFactory} from the provided geometry, either by just returning
      * the one that is held by the geometry, if consistent with its tolerance, or by creating a new
      * one
-     * 
+     *
      * @param curved
      * @return
      */
@@ -197,5 +202,4 @@ public class CurvedGeometries {
         }
         return new CurvedGeometryFactory(factory, curved.getTolerance());
     }
-
 }

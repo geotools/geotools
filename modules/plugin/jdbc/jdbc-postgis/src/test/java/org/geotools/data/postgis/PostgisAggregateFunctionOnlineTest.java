@@ -17,18 +17,13 @@
 package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCAggregateFunctionOnlineTest;
-import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnlineTest {
 
     @Override
-    protected JDBCTestSetup createTestSetup() {
-        return new PostGISTestSetup();
+    protected JDBCAggregateTestSetup createTestSetup() {
+        return new PostGISAggregateTestSetup();
     }
-
 }

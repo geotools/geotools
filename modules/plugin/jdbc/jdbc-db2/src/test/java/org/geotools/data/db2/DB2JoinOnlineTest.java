@@ -25,5 +25,4 @@ public class DB2JoinOnlineTest extends JDBCJoinOnlineTest {
     protected JDBCJoinTestSetup createTestSetup() {
         return new DB2JoinTestSetup();
     }
-
 }

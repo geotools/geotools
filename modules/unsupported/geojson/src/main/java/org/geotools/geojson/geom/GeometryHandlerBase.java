@@ -22,26 +22,21 @@ import static org.geotools.geojson.GeoJSONUtil.createCoordinates;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.geotools.geojson.HandlerBase;
 import org.geotools.geojson.IContentHandler;
 import org.json.simple.parser.ParseException;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
+/** @source $URL$ */
+public class GeometryHandlerBase<G extends Geometry> extends HandlerBase
+        implements IContentHandler<G> {
 
-/**
- * 
- *
- * @source $URL$
- */
-public class GeometryHandlerBase<G extends Geometry> extends HandlerBase implements IContentHandler<G> {
-    
     protected GeometryFactory factory;
     protected List<Object> ordinates;
     protected G value;
-    
+
     public GeometryHandlerBase(GeometryFactory factory) {
         this.factory = factory;
     }
@@ -50,7 +45,7 @@ public class GeometryHandlerBase<G extends Geometry> extends HandlerBase impleme
         return value;
     }
 
-    protected Coordinate coordinate(List ordinates) {
+    protected Coordinate coordinate(List ordinates) throws ParseException {
         return createCoordinate(ordinates);
     }
 
@@ -60,7 +55,7 @@ public class GeometryHandlerBase<G extends Geometry> extends HandlerBase impleme
 
     public boolean primitive(Object value) throws ParseException, IOException {
         // we could be receiving the "type" attribute value
-        if(value instanceof Number) {
+        if (value instanceof Number) {
             return addOrdinate(ordinates, value);
         } else {
             return true;

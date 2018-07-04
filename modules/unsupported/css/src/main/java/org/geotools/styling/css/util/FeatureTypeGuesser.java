@@ -27,8 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * drive range based simplification in the {@link SimplifyingFilterVisitor} without knowing what the
  * target feature type is (which comes in handy if we really don't have it, e.g., when doing a blind
  * CSS to SLD translation)
- * 
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class FeatureTypeGuesser {
@@ -38,21 +37,23 @@ public class FeatureTypeGuesser {
     /**
      * Parses a rule selector structure and takes it into account when building the final feature
      * type
-     * 
+     *
      * @param rule
      */
     public void addRule(CssRule rule) {
         // apply duck typing on the selector
         if (rule.getSelector() != null) {
-            rule.getSelector().accept(new AbstractSelectorVisitor() {
-                @Override
-                public Object visit(Data data) {
-                    if (data.filter != null) {
-                        data.filter.accept(new FilterTypeVisitor(aggregator), null);
-                    }
-                    return null;
-                }
-            });
+            rule.getSelector()
+                    .accept(
+                            new AbstractSelectorVisitor() {
+                                @Override
+                                public Object visit(Data data) {
+                                    if (data.filter != null) {
+                                        data.filter.accept(new FilterTypeVisitor(aggregator), null);
+                                    }
+                                    return null;
+                                }
+                            });
         }
 
         // maybe we could apply duck typing to the

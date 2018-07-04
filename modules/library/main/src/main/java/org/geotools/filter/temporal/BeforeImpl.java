@@ -4,7 +4,7 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -22,11 +22,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.Before;
 import org.opengis.temporal.RelativePosition;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class BeforeImpl extends BinaryTemporalOperatorImpl implements Before {
 
     public BeforeImpl(Expression e1, Expression e2) {
@@ -45,5 +41,4 @@ public class BeforeImpl extends BinaryTemporalOperatorImpl implements Before {
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
-
 }

@@ -21,27 +21,24 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * Unit tests for the Geometries enum.
- * 
+ *
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -50,12 +47,12 @@ public class GeometriesTest {
     private static GeometryFactory geomFactory = new GeometryFactory();
 
     private static final Coordinate[] coords = {
-            new Coordinate(0, 0),
-            new Coordinate(0, 10),
-            new Coordinate(10, 10),
-            new Coordinate(10, 0),
-            new Coordinate(0, 0)
-        };
+        new Coordinate(0, 0),
+        new Coordinate(0, 10),
+        new Coordinate(10, 10),
+        new Coordinate(10, 0),
+        new Coordinate(0, 0)
+    };
 
     @Test
     public void testGetBinding() {
@@ -85,8 +82,8 @@ public class GeometriesTest {
         assertEquals(Geometries.LINESTRING, Geometries.get(line));
 
         LineString[] lines = {
-            geomFactory.createLineString(new Coordinate[]{coords[0], coords[1]}),
-            geomFactory.createLineString(new Coordinate[]{coords[2], coords[3]})
+            geomFactory.createLineString(new Coordinate[] {coords[0], coords[1]}),
+            geomFactory.createLineString(new Coordinate[] {coords[2], coords[3]})
         };
         Geometry multiLine = geomFactory.createMultiLineString(lines);
         assertEquals(Geometries.MULTILINESTRING, Geometries.get(multiLine));
@@ -131,9 +128,7 @@ public class GeometriesTest {
         assertEquals(Geometries.LINESTRING, Geometries.getForBinding(DerivedLine.class));
     }
 
-    /**
-     * Tests getName and getSimpleName
-     */
+    /** Tests getName and getSimpleName */
     @Test
     public void testGetName() {
         System.out.println("   getName and getSimpleName");
@@ -158,5 +153,4 @@ public class GeometriesTest {
             assertEquals(type, Geometries.getForSQLType(sqlType));
         }
     }
-
 }

@@ -2214,7 +2214,7 @@
       </eAnnotations>
     </eStructuralFeatures>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Envelope" instanceClassName="com.vividsolutions.jts.geom.Envelope"
+  <eClassifiers xsi:type="ecore:EClass" name="Envelope" instanceClassName="org.locationtech.jts.geom.Envelope"
       abstract="true" interface="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="GeneralEnvelope" instanceClassName="org.geotools.geometry.GeneralEnvelope"
       abstract="true" interface="true"/>

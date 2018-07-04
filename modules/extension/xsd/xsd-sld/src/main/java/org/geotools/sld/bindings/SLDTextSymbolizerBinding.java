@@ -17,16 +17,16 @@
 package org.geotools.sld.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
 import org.geotools.styling.Halo;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -34,12 +34,12 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
  * Binding object for the element http://www.opengis.net/sld:TextSymbolizer.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="TextSymbolizer" substitutionGroup="sld:Symbolizer"&gt;
  *      &lt;xsd:annotation&gt;
@@ -57,7 +57,7 @@ import org.picocontainer.MutablePicoContainer;
  *                      &lt;xsd:element ref="sld:LabelPlacement" minOccurs="0"/&gt;
  *                      &lt;xsd:element ref="sld:Halo" minOccurs="0"/&gt;
  *                      &lt;xsd:element ref="sld:Fill" minOccurs="0"/&gt;
- *                      
+ *
  *                      &lt;!-- geotools specific vendor option --&gt;
  *                      &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
  *                  &lt;/xsd:sequence&gt;
@@ -68,12 +68,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
@@ -83,14 +79,13 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
         this.styleFactory = styleFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.TEXTSYMBOLIZER;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -101,6 +96,7 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -111,28 +107,28 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         TextSymbolizer ts = styleFactory.createTextSymbolizer();
 
-        //&lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
-        if(node.hasChild("Geometry")) {
+        // &lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
+        if (node.hasChild("Geometry")) {
             Expression geometry = (Expression) node.getChildValue("Geometry");
-            if(geometry instanceof PropertyName) {
+            if (geometry instanceof PropertyName) {
                 PropertyName propertyName = (PropertyName) geometry;
                 ts.setGeometryPropertyName(propertyName.getPropertyName());
             } else {
@@ -140,38 +136,43 @@ public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
             }
         }
 
-        //&lt;xsd:element ref="sld:Label" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Label" minOccurs="0"/&gt;
         if (node.hasChild("Label")) {
             ts.setLabel((Expression) node.getChildValue("Label"));
         }
 
-        //&lt;xsd:element ref="sld:Font" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Font" minOccurs="0"/&gt;
         if (node.hasChild("Font")) {
-            ts.fonts().add( (Font) node.getChildValue("Font"));
+            ts.fonts().add((Font) node.getChildValue("Font"));
         }
 
-        //&lt;xsd:element ref="sld:LabelPlacement" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:LabelPlacement" minOccurs="0"/&gt;
         if (node.hasChild("LabelPlacement")) {
             ts.setLabelPlacement((LabelPlacement) node.getChildValue("LabelPlacement"));
         }
 
-        //&lt;xsd:element ref="sld:Halo" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Halo" minOccurs="0"/&gt;
         if (node.hasChild("Halo")) {
             ts.setHalo((Halo) node.getChildValue("Halo"));
         }
 
-        //&lt;xsd:element ref="sld:Fill" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Fill" minOccurs="0"/&gt;
         if (node.hasChild("Fill")) {
             ts.setFill((Fill) node.getChildValue("Fill"));
+        }
+
+        if (node.hasChild("Graphic") && ts instanceof TextSymbolizer2) {
+            ((TextSymbolizer2) ts).setGraphic((Graphic) node.getChildValue("Graphic"));
         }
 
         if (node.hasChild("Priority")) {
             ts.setPriority((Expression) node.getChildValue("Priority"));
         }
 
-        //&lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
+        // &lt;xsd:element ref="sld:VendorOption" minOccurs="0" maxOccurs="unbounded"/&gt;
         for (CssParameter param : (List<CssParameter>) node.getChildValues(CssParameter.class)) {
-            ts.getOptions().put(param.getName(), param.getExpression().evaluate(null, String.class));
+            ts.getOptions()
+                    .put(param.getName(), param.getExpression().evaluate(null, String.class));
         }
         return ts;
     }

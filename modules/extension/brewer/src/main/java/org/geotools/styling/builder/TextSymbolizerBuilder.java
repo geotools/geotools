@@ -18,10 +18,8 @@ package org.geotools.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.measure.unit.Unit;
-
 import org.geotools.Builder;
 import org.geotools.styling.Font;
 import org.geotools.styling.LabelPlacement;
@@ -31,11 +29,7 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     FillBuilder fill = new FillBuilder(this).unset();
 
@@ -130,8 +124,9 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
                 array[i] = fonts.get(i).build();
             }
         }
-        TextSymbolizer ts = sf.createTextSymbolizer(fill.build(), array, halo.build(), label,
-                placement.build(), null);
+        TextSymbolizer ts =
+                sf.createTextSymbolizer(
+                        fill.build(), array, halo.build(), label, placement.build(), null);
         ts.setGeometry(geometry);
         if (uom != null) {
             ts.setUnitOfMeasure(uom);
@@ -225,5 +220,4 @@ public class TextSymbolizerBuilder extends SymbolizerBuilder<TextSymbolizer> {
     public TextSymbolizerBuilder priority(int priority) {
         return priority(literal(priority));
     }
-
 }

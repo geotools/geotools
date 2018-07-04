@@ -16,32 +16,31 @@
  */
 package org.geotools.data.h2;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.sql.DataSource;
-
-import junit.framework.TestCase;
-
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.DataStore;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.h2.tools.Server;
+import org.junit.Before;
+import org.junit.Test;
 
-
-/**
- * 
- *
- * @source $URL$
- */
-public class H2DataStoreFactoryTest extends TestCase {
+/** @source $URL$ */
+public class H2DataStoreFactoryTest {
     H2DataStoreFactory factory;
     HashMap params;
-    
-    protected void setUp() throws Exception {
+
+    @Before
+    public void setUp() throws Exception {
         factory = new H2DataStoreFactory();
         params = new HashMap();
         params.put(JDBCDataStoreFactory.NAMESPACE.key, "http://www.geotools.org/test");
@@ -49,58 +48,88 @@ public class H2DataStoreFactoryTest extends TestCase {
         params.put(JDBCDataStoreFactory.DBTYPE.key, "h2");
     }
 
+    @Test
     public void testCanProcess() throws Exception {
         assertFalse(factory.canProcess(Collections.EMPTY_MAP));
         assertTrue(factory.canProcess(params));
     }
-    
-    public void testCreateDataStore() throws Exception {
-        JDBCDataStore ds = factory.createDataStore( params );
-        assertNotNull( ds );
-        assertTrue(ds.getDataSource() instanceof ManageableDataSource);
-    }
 
-    public void testCreateDataStoreMVCC() throws Exception {
-        Map clonedParams = new HashMap(params);
-        clonedParams.put(H2DataStoreFactory.MVCC.key, true);
-        JDBCDataStore ds = factory.createDataStore(clonedParams);
-        assertNotNull(ds);
-        final DataSource source = ds.getDataSource();
-        assertNotNull(source);
-        final DataSource wrapped = source.unwrap(DataSource.class);
-        assertNotNull(wrapped);
-        if (wrapped instanceof BasicDataSource) {
-            final BasicDataSource basicSource = (BasicDataSource) wrapped;
-            final String url = basicSource.getUrl();
-            assertTrue(url.contains("MVCC=true"));
+    @Test
+    public void testCreateDataStore() throws Exception {
+        JDBCDataStore ds = null;
+        try {
+            ds = factory.createDataStore(params);
+            assertNotNull(ds);
+            assertTrue(ds.getDataSource() instanceof ManageableDataSource);
+        } finally {
+            if (ds != null) {
+                ds.dispose();
+            }
         }
     }
 
+    @Test
+    public void testCreateDataStoreMVCC() throws Exception {
+        Map clonedParams = new HashMap(params);
+        clonedParams.put(H2DataStoreFactory.MVCC.key, true);
+        JDBCDataStore ds = null;
+        try {
+            ds = factory.createDataStore(clonedParams);
+            assertNotNull(ds);
+            final DataSource source = ds.getDataSource();
+            assertNotNull(source);
+            final DataSource wrapped = source.unwrap(DataSource.class);
+            assertNotNull(wrapped);
+            if (wrapped instanceof BasicDataSource) {
+                final BasicDataSource basicSource = (BasicDataSource) wrapped;
+                final String url = basicSource.getUrl();
+                assertTrue(url.contains("MVCC=true"));
+            }
+        } finally {
+            if (ds != null) {
+                ds.dispose();
+            }
+        }
+    }
+
+    @Test
     public void testTCP() throws Exception {
         HashMap params = new HashMap();
         params.put(H2DataStoreFactory.HOST.key, "localhost");
         params.put(H2DataStoreFactory.DATABASE.key, "geotools");
         params.put(H2DataStoreFactory.USER.key, "geotools");
         params.put(H2DataStoreFactory.PASSWD.key, "geotools");
-        
-        DataStore ds = factory.createDataStore(params);
+
+        DataStore ds = null;
         try {
-            ds.getTypeNames();
-            fail("Should not have made a connection.");
+            ds = factory.createDataStore(params);
+            try {
+                ds.getTypeNames();
+                fail("Should not have made a connection.");
+            } catch (Exception ok) {
+            }
+        } finally {
+            if (ds != null) {
+                ds.dispose();
+            }
         }
-        catch(Exception ok) {}
-        
-        Server server = Server.createTcpServer(new String[]{"-baseDir", "target"});
+
+        Server server = Server.createTcpServer(new String[] {"-baseDir", "target"});
         server.start();
         try {
-            while(!server.isRunning(false)) {
+            while (!server.isRunning(false)) {
                 Thread.sleep(100);
             }
-            
-            ds = factory.createDataStore(params);
-            ds.getTypeNames();
-        }
-        finally {
+            ds = null;
+            try {
+                ds = factory.createDataStore(params);
+                ds.getTypeNames();
+            } finally {
+                if (ds != null) {
+                    ds.dispose();
+                }
+            }
+        } finally {
             server.shutdown();
         }
     }

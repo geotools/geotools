@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.FileDataStoreFactorySpi;
@@ -34,29 +33,23 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
-
 /**
- * 
  * Utility class
- * 
- * 1) Validate xml config 2) generalize shape files
- * 
+ *
+ * <p>1) Validate xml config 2) generalize shape files
+ *
  * @author Chrisitan Mueller
- * 
- *
- *
- *
  * @source $URL$
  */
 public class Toolbox {
     /**
      * read args and delegate jobs
-     * 
+     *
      * @param args
      */
     static String MissingXMLConfig = "Missing XML config file ";
@@ -65,7 +58,8 @@ public class Toolbox {
 
     static String MissingTargetDir = "Missing target directory ";
 
-    static String MissingGeneralizations = "Missing generalization distances as comma seperated list ";
+    static String MissingGeneralizations =
+            "Missing generalization distances as comma seperated list ";
 
     public static void main(String[] args) {
         Toolbox toolBox = new Toolbox();
@@ -78,10 +72,8 @@ public class Toolbox {
             retval = false;
         }
 
-        if (retval)
-            System.exit(0);
-        else
-            System.exit(1);
+        if (retval) System.exit(0);
+        else System.exit(1);
     }
 
     public boolean parse(String args[]) throws IOException {
@@ -132,17 +124,15 @@ public class Toolbox {
         prov.getGeneralizationInfos(xmlLocation);
     }
 
-    protected void generalizeShapeFile(String shapeFileName, String targetDirName,
-            String generalizations) throws IOException {
+    protected void generalizeShapeFile(
+            String shapeFileName, String targetDirName, String generalizations) throws IOException {
         File shapeFile = new File(shapeFileName);
-        if (shapeFile.exists() == false)
-            throw new IOException("Could not find " + shapeFileName);
-        DataStore shapeDS = new ShapefileDataStoreFactory().createDataStore(shapeFile.toURI()
-                .toURL());
+        if (shapeFile.exists() == false) throw new IOException("Could not find " + shapeFileName);
+        DataStore shapeDS =
+                new ShapefileDataStoreFactory().createDataStore(shapeFile.toURI().toURL());
 
         File targetDir = new File(targetDirName);
-        if (targetDir.exists() == false)
-            throw new IOException("Could not find " + targetDir);
+        if (targetDir.exists() == false) throw new IOException("Could not find " + targetDir);
 
         String[] distanceStrings = generalizations.split(",");
         Double[] distanceArray = new Double[distanceStrings.length];
@@ -153,8 +143,9 @@ public class Toolbox {
         shapeDS.dispose();
     }
 
-    protected void generalizeShapeFile(File shapeFile, DataStore shapeDS, File targetDir,
-            Double[] distanceArray) throws IOException {
+    protected void generalizeShapeFile(
+            File shapeFile, DataStore shapeDS, File targetDir, Double[] distanceArray)
+            throws IOException {
         String typeName = shapeDS.getTypeNames()[0];
         SimpleFeatureSource fs = shapeDS.getFeatureSource(typeName);
         SimpleFeatureType ftype = fs.getSchema();
@@ -164,12 +155,13 @@ public class Toolbox {
         SimpleFeatureIterator it = fcoll.features();
         try {
             int countTotal = fcoll.size();
-    
-            List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers = new ArrayList<FeatureWriter<SimpleFeatureType, SimpleFeature>>();
+
+            List<FeatureWriter<SimpleFeatureType, SimpleFeature>> writers =
+                    new ArrayList<FeatureWriter<SimpleFeatureType, SimpleFeature>>();
             for (int i = 0; i < dataStores.length; i++) {
                 writers.add(dataStores[i].getFeatureWriter(typeName, Transaction.AUTO_COMMIT));
             }
-    
+
             int counter = 0;
             while (it.hasNext()) {
                 SimpleFeature feature = it.next();
@@ -177,41 +169,38 @@ public class Toolbox {
                     FeatureWriter<SimpleFeatureType, SimpleFeature> w = writers.get(i);
                     SimpleFeature genFeature = w.next();
                     genFeature.setAttributes(feature.getAttributes());
-                    Geometry newGeom = TopologyPreservingSimplifier.simplify((Geometry) feature
-                            .getDefaultGeometry(), distanceArray[i]);
+                    Geometry newGeom =
+                            TopologyPreservingSimplifier.simplify(
+                                    (Geometry) feature.getDefaultGeometry(), distanceArray[i]);
                     genFeature.setDefaultGeometry(newGeom);
                     w.write();
                 }
                 counter++;
                 showProgress(countTotal, counter);
-    
             }
-            for (FeatureWriter<SimpleFeatureType, SimpleFeature> w : writers){
+            for (FeatureWriter<SimpleFeatureType, SimpleFeature> w : writers) {
                 w.close();
             }
-        }
-        finally {
+        } finally {
             it.close();
         }
 
         for (DataStore ds : dataStores) {
             ds.dispose();
         }
-
     }
 
-    DataStore[] createDataStores(File shapeFile, File targetDir, SimpleFeatureType ft,
-            Double[] distanceArray) throws IOException {
+    DataStore[] createDataStores(
+            File shapeFile, File targetDir, SimpleFeatureType ft, Double[] distanceArray)
+            throws IOException {
 
         FileDataStoreFactorySpi factory = new ShapefileDataStoreFactory();
         String shapeFileName = shapeFile.getAbsolutePath();
 
         String newShapeFileRelativeName = null;
         int index = shapeFileName.lastIndexOf(File.separator);
-        if (index == -1)
-            newShapeFileRelativeName = shapeFileName;
-        else
-            newShapeFileRelativeName = shapeFileName.substring(index + 1);
+        if (index == -1) newShapeFileRelativeName = shapeFileName;
+        else newShapeFileRelativeName = shapeFileName.substring(index + 1);
 
         DataStore[] result = new DataStore[distanceArray.length];
 
@@ -223,8 +212,7 @@ public class Toolbox {
             newShapeFileDirName += distanceArray[i] + File.separator;
 
             File dir = new File(newShapeFileDirName);
-            if (dir.exists() == false)
-                dir.mkdir();
+            if (dir.exists() == false) dir.mkdir();
 
             File file = new File(newShapeFileDirName + newShapeFileRelativeName);
 
@@ -241,21 +229,20 @@ public class Toolbox {
         for (int i = 1; i < argv.length; i++) {
             String paramName = null;
             switch (i) {
-            case 1:
-                paramName = "Shape file";
-                break;
-            case 2:
-                paramName = "Target directory";
-                break;
-            case 3:
-                paramName = "Distances";
-                break;
-            default:
-                paramName = "?????";
+                case 1:
+                    paramName = "Shape file";
+                    break;
+                case 2:
+                    paramName = "Target directory";
+                    break;
+                case 3:
+                    paramName = "Distances";
+                    break;
+                default:
+                    paramName = "?????";
             }
-            System.out.printf("%-20s\t%s\n", new Object[] { paramName, argv[i] });
+            System.out.printf("%-20s\t%s\n", new Object[] {paramName, argv[i]});
         }
-
     }
 
     private int calculatePercentage(int countTotal, int counter) {
@@ -264,18 +251,13 @@ public class Toolbox {
 
     private void showProgress(int countTotal, int counter) {
 
-        if (counter == 1)
-            System.out.print("% |");
+        if (counter == 1) System.out.print("% |");
 
         int percentage = calculatePercentage(countTotal, counter);
         int prevPercentage = counter == 1 ? 0 : calculatePercentage(countTotal, counter - 1);
 
-        if (percentage != prevPercentage)
-            System.out.print("#");
+        if (percentage != prevPercentage) System.out.print("#");
 
-        if (counter == countTotal)
-            System.out.println("|");
-
+        if (counter == countTotal) System.out.println("|");
     }
-
 }

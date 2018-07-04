@@ -22,10 +22,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
-
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.factory.Hints;
@@ -33,42 +31,32 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
 
-
 /**
  * Tests the "filtered subsample" operation.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)
- *
  * @since 2.3
  */
 public final class FilteredSubsampleTest extends GridProcessingTestBase {
-    /**
-     * The processors to be used for all tests.
-     */
+    /** The processors to be used for all tests. */
     private CoverageProcessor processor;
 
-    /**
-     * Set up common objects used for all tests.
-     */
+    /** Set up common objects used for all tests. */
     @Before
     public void setUp() {
         processor = CoverageProcessor.getInstance();
     }
 
-    /**
-     * Tests the "SubsampleAverage" operation.
-     */
+    /** Tests the "SubsampleAverage" operation. */
     @Test
     public void testSubsampleAverage() {
-        final GridCoverage2D originallyIndexedCoverage       = EXAMPLES.get(0);
-        final GridCoverage2D indexedCoverage                 = EXAMPLES.get(2);
+        final GridCoverage2D originallyIndexedCoverage = EXAMPLES.get(0);
+        final GridCoverage2D indexedCoverage = EXAMPLES.get(2);
         final GridCoverage2D indexedCoverageWithTransparency = EXAMPLES.get(3);
-        final GridCoverage2D floatCoverage                   = EXAMPLES.get(4);
+        final GridCoverage2D floatCoverage = EXAMPLES.get(4);
 
         // On this one the Subsample average should do an RGB expansion
         float[] filter = new float[] {1};
@@ -88,8 +76,11 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         filteredSubsample(originallyIndexedCoverage, interp, filter);
 
         // On this one the Subsample average should do an RGB expansion.
-        filter = new float[] { 0.5F,  1.0F /  3.0F,
-                               0.0F, -1.0F / 12.0F };
+        filter =
+                new float[] {
+                    0.5F, 1.0F / 3.0F,
+                    0.0F, -1.0F / 12.0F
+                };
         interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
         filteredSubsample(indexedCoverage, interp, filter);
 
@@ -112,22 +103,21 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
 
         // On this one the subsample average should go back to the
         // geophysics view before being applied.
-        filteredSubsample(floatCoverage, interp, new float[]{1});
+        filteredSubsample(floatCoverage, interp, new float[] {1});
 
         // Play with a rotated coverage.
-        filteredSubsample(rotate(floatCoverage, Math.PI/4), interp, filter);
+        filteredSubsample(rotate(floatCoverage, Math.PI / 4), interp, filter);
     }
 
     /**
      * Tests the "FilteredSubsamble" operation.
      *
      * @param coverage The coverage on which to apply the operation.
-     * @param interp   The interpolation to use.
-     * @param filter   The filter to be used.
+     * @param interp The interpolation to use.
+     * @param filter The filter to be used.
      */
-    private void filteredSubsample(final GridCoverage2D coverage, final Interpolation interp,
-                                   final float[] filter)
-    {
+    private void filteredSubsample(
+            final GridCoverage2D coverage, final Interpolation interp, final float[] filter) {
         filteredSubsample(coverage, interp, filter, null);
     }
 
@@ -135,13 +125,15 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
      * Tests the "FilteredSubsamble" operation using the given hints.
      *
      * @param coverage The coverage on which to apply the operation.
-     * @param interp   The interpolation to use.
-     * @param filter   The filter to be used.
-     * @param hints    An optional set of hints, or {@code null} if none.
+     * @param interp The interpolation to use.
+     * @param filter The filter to be used.
+     * @param hints An optional set of hints, or {@code null} if none.
      */
-    private void filteredSubsample(final GridCoverage2D coverage, final Interpolation interp,
-                                   final float[] filter, final Hints hints)
-    {
+    private void filteredSubsample(
+            final GridCoverage2D coverage,
+            final Interpolation interp,
+            final float[] filter,
+            final Hints hints) {
         // Caching initial properties.
         RenderedImage originalImage = coverage.getRenderedImage();
         boolean isIndexed = originalImage.getColorModel() instanceof IndexColorModel;
@@ -149,10 +141,12 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         int h = originalImage.getHeight();
 
         // Creating a default processor.
-        final CoverageProcessor processor = (hints != null) ? CoverageProcessor.getInstance(hints) : this.processor;
+        final CoverageProcessor processor =
+                (hints != null) ? CoverageProcessor.getInstance(hints) : this.processor;
 
         // Getting parameters for the FilteredSubsample operation.
-        final ParameterValueGroup param = processor.getOperation("FilteredSubsample").getParameters();
+        final ParameterValueGroup param =
+                processor.getOperation("FilteredSubsample").getParameters();
         param.parameter("Source").setValue(coverage);
         param.parameter("scaleX").setValue(Integer.valueOf(2));
         param.parameter("scaleY").setValue(Integer.valueOf(2));
@@ -162,10 +156,11 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         // Scale a first time by 2.
         GridCoverage2D scaled = (GridCoverage2D) processor.doOperation(param);
         RenderedImage scaledImage = scaled.getRenderedImage();
-        assertEquals(w / 2.0, scaledImage.getWidth(),  EPS);
+        assertEquals(w / 2.0, scaledImage.getWidth(), EPS);
         assertEquals(h / 2.0, scaledImage.getHeight(), EPS);
-        assertTrue((interp instanceof InterpolationNearest)
-                || !(scaledImage.getColorModel() instanceof IndexColorModel));
+        assertTrue(
+                (interp instanceof InterpolationNearest)
+                        || !(scaledImage.getColorModel() instanceof IndexColorModel));
 
         isIndexed = scaledImage.getColorModel() instanceof IndexColorModel;
         w = scaledImage.getWidth();
@@ -181,13 +176,15 @@ public final class FilteredSubsampleTest extends GridProcessingTestBase {
         }
 
         // Scale a second time by 3.
-        scaled = (GridCoverage2D) Operations.DEFAULT.filteredSubsample(scaled, 3, 3, filter, interp);
+        scaled =
+                (GridCoverage2D) Operations.DEFAULT.filteredSubsample(scaled, 3, 3, filter, interp);
         scaledImage = scaled.getRenderedImage();
-        assertEquals(w / 3.0, scaledImage.getWidth(),  1.0/3 + EPS);
-        assertEquals(h / 3.0, scaledImage.getHeight(), 1.0/3 + EPS);
-        assertTrue(!isIndexed
-                || (interp instanceof InterpolationNearest)
-                || !(scaledImage.getColorModel() instanceof IndexColorModel));
+        assertEquals(w / 3.0, scaledImage.getWidth(), 1.0 / 3 + EPS);
+        assertEquals(h / 3.0, scaledImage.getHeight(), 1.0 / 3 + EPS);
+        assertTrue(
+                !isIndexed
+                        || (interp instanceof InterpolationNearest)
+                        || !(scaledImage.getColorModel() instanceof IndexColorModel));
         assertEnvelopeEquals(coverage, scaled);
         if (SHOW) {
             Viewer.show(scaled);

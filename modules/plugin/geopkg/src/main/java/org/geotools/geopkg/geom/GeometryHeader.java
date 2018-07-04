@@ -16,11 +16,11 @@
  */
 package org.geotools.geopkg.geom;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * The Geopackage Geometry BLOB Header (see Geopackage specs).
- * 
+ *
  * @author Justin Deoliveira
  * @author Niels Charlier
  */

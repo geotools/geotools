@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,7 +18,6 @@ package org.geotools.feature.visitor;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
@@ -31,10 +30,7 @@ import org.opengis.filter.expression.Expression;
  * Calculates the minimum value of an attribute.
  *
  * @author Cory Horner, Refractions
- *
  * @since 2.2.M2
- *
- *
  * @source $URL$
  */
 public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
@@ -47,15 +43,14 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr = factory.property(attributeTypeName);
     }
-    
+
     public MinVisitor(int attributeTypeIndex, SimpleFeatureType type)
-        throws IllegalFilterException {
+            throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr = factory.property(type.getDescriptor(attributeTypeIndex).getLocalName());
     }
 
-    public MinVisitor(String attrName, SimpleFeatureType type)
-        throws IllegalFilterException {
+    public MinVisitor(String attrName, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         expr = factory.property(type.getDescriptor(attrName).getLocalName());
     }
@@ -65,7 +60,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     public void init(SimpleFeatureCollection collection) {
-    	//do nothing
+        // do nothing
     }
 
     @Override
@@ -79,13 +74,14 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * @param feature the feature to be visited
      */
     public void visit(SimpleFeature feature) {
-        visit((org.opengis.feature.Feature)feature);
+        visit((org.opengis.feature.Feature) feature);
     }
+
     public void visit(org.opengis.feature.Feature feature) {
         Object attribValue = expr.evaluate(feature);
 
         if (attribValue == null) {
-            return; //attribute is null, therefore skip
+            return; // attribute is null, therefore skip
         }
 
         curvalue = (Comparable) attribValue;
@@ -99,25 +95,19 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * Get the min value.
      *
      * @return Minimum value
-     *
      * @throws IllegalStateException DOCUMENT ME!
      */
     public Comparable getMin() {
-        /**
-         * Return the minimum value derived from the collection
-         */
+        /** Return the minimum value derived from the collection */
         if (!visited) {
-            throw new IllegalStateException(
-                "Must visit before min value is ready!");
+            throw new IllegalStateException("Must visit before min value is ready!");
         }
 
         return minvalue;
     }
 
     public void reset() {
-        /**
-         * Reset the count and current minimum
-         */
+        /** Reset the count and current minimum */
         this.visited = false;
         this.minvalue = new Integer(0);
     }
@@ -135,12 +125,10 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     /**
-     * Overwrites the result stored by the visitor. This should only be used by
-     * optimizations which will tell the visitor the answer rather than
-     * visiting all features.
-     * 
-     * <p></p>
-     * For 'min', the value stored is of type 'Comparable'.
+     * Overwrites the result stored by the visitor. This should only be used by optimizations which
+     * will tell the visitor the answer rather than visiting all features.
+     *
+     * <p>For 'min', the value stored is of type 'Comparable'.
      *
      * @param result
      */
@@ -163,7 +151,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public boolean isCompatible(CalcResult targetResults) {
-            //list each calculation result which can merge with this type of result
+            // list each calculation result which can merge with this type of result
             if (targetResults instanceof MinResult || targetResults == CalcResult.NULL_RESULT) {
                 return true;
             }
@@ -173,25 +161,25 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
-                throw new IllegalArgumentException(
-                    "Parameter is not a compatible type");
+                throw new IllegalArgumentException("Parameter is not a compatible type");
             }
-            
-            if(resultsToAdd == CalcResult.NULL_RESULT) {
-        		return this;
-        	}
+
+            if (resultsToAdd == CalcResult.NULL_RESULT) {
+                return this;
+            }
 
             if (resultsToAdd instanceof MinResult) {
-                //take the smaller of the 2 values
+                // take the smaller of the 2 values
                 Comparable toAdd = (Comparable) resultsToAdd.getValue();
                 Comparable newMin = minValue;
 
-                if (newMin.getClass() != toAdd.getClass()) { //2 different data types, therefore convert
-                	Class bestClass = CalcUtil.bestClass(new Object[] {toAdd, newMin});
-            		if (bestClass != toAdd.getClass())
-            			toAdd = (Comparable) CalcUtil.convert(toAdd, bestClass);
-            		if (bestClass != newMin.getClass())
-            			newMin = (Comparable) CalcUtil.convert(newMin, bestClass);
+                if (newMin.getClass()
+                        != toAdd.getClass()) { // 2 different data types, therefore convert
+                    Class bestClass = CalcUtil.bestClass(new Object[] {toAdd, newMin});
+                    if (bestClass != toAdd.getClass())
+                        toAdd = (Comparable) CalcUtil.convert(toAdd, bestClass);
+                    if (bestClass != newMin.getClass())
+                        newMin = (Comparable) CalcUtil.convert(newMin, bestClass);
                 }
                 if (newMin.compareTo(toAdd) > 0) {
                     newMin = toAdd;
@@ -200,7 +188,7 @@ public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
                 return new MinResult(newMin);
             } else {
                 throw new IllegalArgumentException(
-                    "The CalcResults claim to be compatible, but the appropriate merge method has not been implemented.");
+                        "The CalcResults claim to be compatible, but the appropriate merge method has not been implemented.");
             }
         }
     }

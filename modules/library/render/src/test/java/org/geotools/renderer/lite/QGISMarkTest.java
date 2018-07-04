@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@ import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -68,9 +67,7 @@ public class QGISMarkTest {
                 "src/test/resources/org/geotools/renderer/lite/test-data/mark/" + name + ".png");
     }
 
-    /**
-     * Test all QGIS marks in a single image.
-     */
+    /** Test all QGIS marks in a single image. */
     @Test
     public void testQGIS() throws Exception {
         Style pStyle = RendererBaseTest.loadStyle(this, "qgis.sld");
@@ -84,9 +81,8 @@ public class QGISMarkTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        BufferedImage image = RendererBaseTest.showRender("QGIS Marks", renderer, DISPLAY_TIME,
-                bounds);
+        BufferedImage image =
+                RendererBaseTest.showRender("QGIS Marks", renderer, DISPLAY_TIME, bounds);
         ImageAssert.assertEquals(file("qgis"), image, 50);
     }
-
 }

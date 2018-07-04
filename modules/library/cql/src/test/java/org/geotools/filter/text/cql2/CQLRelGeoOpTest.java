@@ -22,6 +22,7 @@ import org.geotools.filter.text.commons.Language;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -29,28 +30,22 @@ import org.opengis.filter.spatial.Beyond;
 import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 
-import com.vividsolutions.jts.geom.Point;
-
 /**
  * Test RelGeo Operations
+ *
  * <p>
- * 
+ *
  * <pre>
  *   &lt;routine invocation &gt; ::=
  *       &lt;geoop name &gt; &lt;georoutine argument list &gt;
- *   |   &lt;relgeoop name &gt; &lt;relgeoop argument list &gt; 
+ *   |   &lt;relgeoop name &gt; &lt;relgeoop argument list &gt;
  *   |  &lt;routine name &gt; &lt;argument list &gt;
  *   &lt;relgeoop name &gt; ::=
  *       DWITHIN | BEYOND [*]
  * </pre>
- * 
- * </p>
- * 
+ *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public class CQLRelGeoOpTest {
@@ -74,33 +69,34 @@ public class CQLRelGeoOpTest {
         Filter resultFilter;
 
         // DWITHIN
-        resultFilter = CompilerUtil.parseFilter(language,
-                "DWITHIN(ATTR1, POINT(1 2), 10, kilometers)");
+        resultFilter =
+                CompilerUtil.parseFilter(language, "DWITHIN(ATTR1, POINT(1 2), 10, kilometers)");
 
         Assert.assertTrue(resultFilter instanceof DistanceBufferOperator);
 
         // test compound attribute gmd:aa:bb.gmd:cc.gmd:dd
         final String prop = "gmd:aa:bb.gmd:cc.gmd:dd";
         final String propExpected = "gmd:aa:bb/gmd:cc/gmd:dd";
-        resultFilter = CompilerUtil.parseFilter(language, "DWITHIN(" + prop
-                + ", POINT(1 2), 10, kilometers) ");
+        resultFilter =
+                CompilerUtil.parseFilter(
+                        language, "DWITHIN(" + prop + ", POINT(1 2), 10, kilometers) ");
 
-        Assert.assertTrue("DistanceBufferOperator filter was expected",
-                resultFilter instanceof DWithin);
+        Assert.assertTrue(
+                "DistanceBufferOperator filter was expected", resultFilter instanceof DWithin);
 
         DistanceBufferOperator filter = (DWithin) resultFilter;
         Expression property = filter.getExpression1();
 
         Assert.assertEquals(propExpected, property.toString());
-
     }
 
     @Test
     public void beyon() throws CQLException {
         Filter resultFilter;
         // Beyond
-        resultFilter = CompilerUtil.parseFilter(language,
-                "BEYOND(ATTR1, POINT(1.0 2.0), 10.0, kilometers)");
+        resultFilter =
+                CompilerUtil.parseFilter(
+                        language, "BEYOND(ATTR1, POINT(1.0 2.0), 10.0, kilometers)");
         Assert.assertTrue(resultFilter instanceof Beyond);
         Beyond beyondFilter = (Beyond) resultFilter;
 
@@ -117,16 +113,13 @@ public class CQLRelGeoOpTest {
         Point point = (Point) pointValue;
         Assert.assertEquals(point.getX(), 1.0, 0.1);
         Assert.assertEquals(point.getY(), 2.0, 0.1);
-
     }
 
     @Test(expected = CQLException.class)
     public void syntaxError() throws Exception {
 
-        CompilerUtil.parseFilter(language,
-                "EYOND(ATTR1, POINTS(1.0 2.0), 10.0, kilometers)");
+        CompilerUtil.parseFilter(language, "EYOND(ATTR1, POINTS(1.0 2.0), 10.0, kilometers)");
     }
-
 
     @Test
     public final void syntaxErrorMessage() {
@@ -145,8 +138,9 @@ public class CQLRelGeoOpTest {
 
     /**
      * Test RelGeo Operations [*]
+     *
      * <p>
-     * 
+     *
      * <pre>
      *   &lt;routine invocation &gt; ::=
      *       &lt;geoop name &gt; &lt;georoutine argument list &gt;
@@ -160,9 +154,7 @@ public class CQLRelGeoOpTest {
      *       &lt;literal&gt;
      *   |   &lt;attribute name&gt;
      * </pre>
-     * 
-     * </p>
-     * 
+     *
      * @throws Exception
      */
     @Ignore
@@ -172,5 +164,4 @@ public class CQLRelGeoOpTest {
         // Routine (Like functions in Expression). We could develop easily the
         // parser but we can not build a filter for CQL <Routine invocation>.
     }
-
 }

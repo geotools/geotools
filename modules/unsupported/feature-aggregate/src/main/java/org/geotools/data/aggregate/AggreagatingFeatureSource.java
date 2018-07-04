@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -31,21 +30,18 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 class AggregatingFeatureSource extends ContentFeatureSource {
 
-    /**
-     * The configuration for this feature type
-     */
+    /** The configuration for this feature type */
     AggregateTypeConfiguration config;
 
-    public AggregatingFeatureSource(ContentEntry entry, AggregatingDataStore store,
-            AggregateTypeConfiguration config) {
+    public AggregatingFeatureSource(
+            ContentEntry entry, AggregatingDataStore store, AggregateTypeConfiguration config) {
         super(entry, null);
         this.config = config;
     }
@@ -60,14 +56,15 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         AggregatingDataStore store = getStore();
         List<Future<ReferencedEnvelope>> allBounds = new ArrayList<Future<ReferencedEnvelope>>();
         for (SourceType st : config.getSourceTypes()) {
-            Future<ReferencedEnvelope> f = store.submit(new BoundsCallable(store, query, st
-                    .getStoreName(), st.getTypeName()));
+            Future<ReferencedEnvelope> f =
+                    store.submit(
+                            new BoundsCallable(store, query, st.getStoreName(), st.getTypeName()));
             allBounds.add(f);
         }
 
         // aggregate the envelopes
-        ReferencedEnvelope result = new ReferencedEnvelope(getSchema()
-                .getCoordinateReferenceSystem());
+        ReferencedEnvelope result =
+                new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
         for (Future<ReferencedEnvelope> future : allBounds) {
             try {
                 ReferencedEnvelope bound = future.get();
@@ -93,11 +90,13 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         AggregatingDataStore store = getStore();
         List<Future<Long>> counts = new ArrayList<Future<Long>>();
         for (SourceType st : config.getSourceTypes()) {
-            //Remove maxFeatures and startIndex from the query, these should be handled after aggregating
+            // Remove maxFeatures and startIndex from the query, these should be handled after
+            // aggregating
             Query q = new Query(query);
             q.setMaxFeatures(Query.DEFAULT_MAX);
             q.setStartIndex(0);
-            Future<Long> f = store.submit(new CountCallable(store, q, st.getStoreName(), st.getTypeName()));
+            Future<Long> f =
+                    store.submit(new CountCallable(store, q, st.getStoreName(), st.getTypeName()));
             counts.add(f);
         }
 
@@ -135,8 +134,9 @@ class AggregatingFeatureSource extends ContentFeatureSource {
             FeatureQueue queue = new FeatureQueue(config.getSourceTypes().size());
             AggregatingDataStore store = getStore();
             for (SourceType st : config.getSourceTypes()) {
-                FeatureCallable fc = new FeatureCallable(store, query, st.getStoreName(),
-                        st.getTypeName(), queue, target);
+                FeatureCallable fc =
+                        new FeatureCallable(
+                                store, query, st.getStoreName(), st.getTypeName(), queue, target);
                 queue.addSource(fc);
                 store.submit(fc);
             }
@@ -155,7 +155,8 @@ class AggregatingFeatureSource extends ContentFeatureSource {
         DataStore store = getStore().getStore(ps, false);
         SimpleFeatureType schema = store.getSchema(config.getPrimarySourceType().getTypeName());
         if (schema == null) {
-            throw new IOException("Could not find feature type " + schema + " in the primary store");
+            throw new IOException(
+                    "Could not find feature type " + schema + " in the primary store");
         }
 
         schema = retypeNameSchema(schema);
@@ -165,7 +166,7 @@ class AggregatingFeatureSource extends ContentFeatureSource {
 
     /**
      * Given a source store schema it renames it and forces in the right namespace
-     * 
+     *
      * @param schema
      * @return
      */
@@ -187,5 +188,4 @@ class AggregatingFeatureSource extends ContentFeatureSource {
     protected boolean canRetype() {
         return true;
     }
-
 }

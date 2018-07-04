@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -28,7 +28,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -45,24 +44,18 @@ import javax.swing.event.ListSelectionListener;
 /**
  * Swing does not provide a wizard construct (boo hiss) so this is a quick dialog that can step us
  * through a series of pages.
- * <p>
- * This code is based on <a
+ *
+ * <p>This code is based on <a
  * href="http://java.sun.com/developer/technicalArticles/GUI/swing/wizard/">Creating Wizard Dialogs
  * with Java</a>.
- * 
+ *
  * @author Jody, gdavis
- *
- *
- *
- *
  * @source $URL$
  */
 public class JWizard extends JDialog {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Indicates that the 'Finish' button was pressed to close the dialog.
-     */
+    /** Indicates that the 'Finish' button was pressed to close the dialog. */
     public static final int FINISH = 0;
 
     /**
@@ -71,9 +64,7 @@ public class JWizard extends JDialog {
      */
     public static final int CANCEL = 1;
 
-    /**
-     * Indicates that the dialog closed due to an internal error.
-     */
+    /** Indicates that the dialog closed due to an internal error. */
     public static final int ERROR = 2;
 
     Controller controller = new Controller();
@@ -134,11 +125,11 @@ public class JWizard extends JDialog {
         buttonBox.add(Box.createHorizontalStrut(10));
         buttonBox.add(nextButton);
         buttonBox.add(Box.createHorizontalStrut(30));
-        
+
         buttonBox.add(finishButton);
-        buttonBox.add(Box.createHorizontalStrut(10));        
+        buttonBox.add(Box.createHorizontalStrut(10));
         buttonBox.add(cancelButton);
-        
+
         buttonPanel.add(buttonBox, java.awt.BorderLayout.EAST);
         getContentPane().add(buttonPanel, java.awt.BorderLayout.SOUTH);
         getContentPane().add(new JScrollPane(cardPanel), java.awt.BorderLayout.CENTER);
@@ -150,7 +141,7 @@ public class JWizard extends JDialog {
 
     public void setCancelEnabled(Boolean isEnabled) {
         Boolean oldValue = cancelButton.isEnabled();
-        if (!isEnabled.equals( oldValue )) {
+        if (!isEnabled.equals(oldValue)) {
             firePropertyChange("isCancelEnabled", oldValue, isEnabled);
             cancelButton.setEnabled(isEnabled);
         }
@@ -162,25 +153,27 @@ public class JWizard extends JDialog {
 
     public void setNextEnabled(Boolean isEnabled) {
         Boolean oldValue = nextButton.isEnabled();
-        if (!isEnabled.equals( oldValue )) {
+        if (!isEnabled.equals(oldValue)) {
             firePropertyChange("isNextEnabled", oldValue, isEnabled);
             nextButton.setEnabled(isEnabled);
         }
     }
+
     public void setFinishEnabled(Boolean isEnabled) {
         Boolean oldValue = finishButton.isEnabled();
-        if (!isEnabled.equals( oldValue )) {
+        if (!isEnabled.equals(oldValue)) {
             firePropertyChange("isFinishEnabled", oldValue, isEnabled);
             finishButton.setEnabled(isEnabled);
         }
     }
+
     public Boolean isBackEnabled() {
         return backButton == null ? null : backButton.isEnabled();
     }
 
     public void setBackEnabled(Boolean isEnabled) {
         Boolean oldValue = backButton.isEnabled();
-        if (!isEnabled.equals( oldValue )) {
+        if (!isEnabled.equals(oldValue)) {
             firePropertyChange("isBackEnabled", oldValue, isEnabled);
             backButton.setEnabled(isEnabled);
         }
@@ -188,20 +181,19 @@ public class JWizard extends JDialog {
 
     /**
      * Closes the dialog and sets the return code to the integer parameter.
-     * 
-     * @param code
-     *            The return code.
+     *
+     * @param code The return code.
      */
     protected void close(int code) {
         returnCode = code;
-        for( Component card : cardPanel.getComponents() ){
+        for (Component card : cardPanel.getComponents()) {
             String id = card.getName();
             JPage page = model.get(id);
-            if( page != null ){
+            if (page != null) {
                 try {
                     page.dispose();
-                } catch (Throwable t ){
-                    System.out.println( id + " close: "+ t );
+                } catch (Throwable t) {
+                    System.out.println(id + " close: " + t);
                 }
             }
         }
@@ -214,9 +206,9 @@ public class JWizard extends JDialog {
 
     /**
      * Retrieves the last return code set by the dialog.
-     * 
+     *
      * @return An integer that identifies how the dialog was closed. See the *_RETURN_CODE constants
-     *         of this class for possible values.
+     *     of this class for possible values.
      */
     public int getReturnCode() {
         return returnCode;
@@ -225,7 +217,7 @@ public class JWizard extends JDialog {
     /**
      * Convenience method that displays a modal wizard dialog and blocks until the dialog has
      * completed.
-     * 
+     *
      * @return Indicates how the dialog was closed one of CANCEL, ERROR, FINISH
      */
     public int showModalDialog() {
@@ -237,8 +229,9 @@ public class JWizard extends JDialog {
 
     /**
      * Called to display a page.
+     *
      * <p>
-     * 
+     *
      * @param id
      */
     public void setCurrentPanel(String id) {
@@ -257,7 +250,7 @@ public class JWizard extends JDialog {
             close(ERROR);
         }
         current = page;
-        
+
         JPanel panel = null;
         // see if panel is already created
         for (Component card : cardPanel.getComponents()) {
@@ -277,17 +270,16 @@ public class JWizard extends JDialog {
         }
         controller.syncButtonsToPage();
         page.preDisplayPanel();
-        
+
         // Show the panel in the dialog.
         cardLayout.show(cardPanel, id);
         page.postDisplayPanel();
     }
     /**
-     * Registers the page with this JWizard. The page
-     * is stored by its identifier (so other pages can look it up).
-     * The page.setJWizard() method is also called so the page
-     * can refer to its containing wizard at runtime.
-     * 
+     * Registers the page with this JWizard. The page is stored by its identifier (so other pages
+     * can look it up). The page.setJWizard() method is also called so the page can refer to its
+     * containing wizard at runtime.
+     *
      * @param page
      */
     public void registerWizardPanel(JPage page) {
@@ -298,12 +290,11 @@ public class JWizard extends JDialog {
             setCurrentPanel(page.getPageIdentifier());
         }
     }
-    
+
     /**
-     * The controller can be hooked up to your own fields or lists; it will
-     * call syncWizardButtons() which will use validate to update the buttons
-     * in response to user input.
-     * 
+     * The controller can be hooked up to your own fields or lists; it will call syncWizardButtons()
+     * which will use validate to update the buttons in response to user input.
+     *
      * @return Controller
      */
     public Controller getController() {
@@ -311,25 +302,22 @@ public class JWizard extends JDialog {
     }
 
     /** The controller listens to everything and updates the buttons */
-    public class Controller implements ActionListener, KeyListener, DocumentListener, ListSelectionListener {
+    public class Controller
+            implements ActionListener, KeyListener, DocumentListener, ListSelectionListener {
         public boolean listen = true;
-        
+
         public void actionPerformed(ActionEvent e) {
-            if( !listen ) return;
-            
-            if (e.getSource() == cancelButton || e.getActionCommand().equals("Canel")){
+            if (!listen) return;
+
+            if (e.getSource() == cancelButton || e.getActionCommand().equals("Canel")) {
                 cancelButtonPressed();
-            }
-            else if (e.getSource() == backButton || e.getActionCommand().equals("Back")){
+            } else if (e.getSource() == backButton || e.getActionCommand().equals("Back")) {
                 backButtonPressed();
-            }
-            else if (e.getSource() == nextButton || e.getActionCommand().equals("Next")){
+            } else if (e.getSource() == nextButton || e.getActionCommand().equals("Next")) {
                 nextButtonPressed();
-            }
-            else if (e.getSource() == finishButton || e.getActionCommand().equals("Finish")){
-                finishButtonPressed();                
-            }
-            else {
+            } else if (e.getSource() == finishButton || e.getActionCommand().equals("Finish")) {
+                finishButtonPressed();
+            } else {
                 syncButtonsToPage();
             }
         }
@@ -347,14 +335,14 @@ public class JWizard extends JDialog {
                 close(ERROR);
                 return;
             }
-            if( !current.isValid() ){
+            if (!current.isValid()) {
                 syncButtonsToPage();
                 return; // not valid so we cannot go on
             }
-            current.preClosePanel();        
-            close(FINISH);            
+            current.preClosePanel();
+            close(FINISH);
         }
-        
+
         private void nextButtonPressed() {
             // get the ID that the current panel identifies as the next panel,
             // and display it.
@@ -363,12 +351,12 @@ public class JWizard extends JDialog {
                 close(ERROR);
                 return;
             }
-            if( !current.isValid() ){
+            if (!current.isValid()) {
                 syncButtonsToPage();
                 return; // not valid so we cannot go on
             }
             String nextId = current.getNextPageIdentifier();
-            setCurrentPanel(nextId);            
+            setCurrentPanel(nextId);
         }
 
         private void backButtonPressed() {
@@ -381,32 +369,30 @@ public class JWizard extends JDialog {
             setCurrentPanel(backId);
         }
         /**
-         * Set listen to false to update a field without the controller
-         * passing on a notification.
-         * 
+         * Set listen to false to update a field without the controller passing on a notification.
+         *
          * @param listen
          */
-        public void setListen( boolean listen ){
+        public void setListen(boolean listen) {
             this.listen = listen;
         }
-        
+
         public void syncButtonsToPage() {
             String backPageId = current.getBackPageIdentifier();
             String nextPageId = current.getNextPageIdentifier();
             boolean isValid = current.isValid();
-            
-            setBackEnabled(backPageId != null);            
-            if( nextPageId == null ){
+
+            setBackEnabled(backPageId != null);
+            if (nextPageId == null) {
                 // next page has not been sorted out yet
-                setNextEnabled( false );
-                setFinishEnabled( false );
-            }
-            else if (nextPageId == JPage.FINISH) {
                 setNextEnabled(false);
-                setFinishEnabled( isValid );
+                setFinishEnabled(false);
+            } else if (nextPageId == JPage.FINISH) {
+                setNextEnabled(false);
+                setFinishEnabled(isValid);
             } else {
-                setNextEnabled( isValid );
-                setFinishEnabled( false );
+                setNextEnabled(isValid);
+                setFinishEnabled(false);
             }
         }
 
@@ -438,5 +424,4 @@ public class JWizard extends JDialog {
             syncButtonsToPage();
         }
     }
-
 }

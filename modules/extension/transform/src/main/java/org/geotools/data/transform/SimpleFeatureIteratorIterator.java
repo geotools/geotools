@@ -17,20 +17,18 @@
 package org.geotools.data.transform;
 
 import java.util.Iterator;
-
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Turns a {@link SimpleFeatureIterator} into a Iterator<SimpleFeature>
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 class SimpleFeatureIteratorIterator implements Iterator<SimpleFeature>, SimpleFeatureIterator {
-    
+
     SimpleFeatureIterator fi;
-    
+
     public SimpleFeatureIteratorIterator(SimpleFeatureIterator fi) {
         super();
         this.fi = fi;
@@ -50,10 +48,9 @@ class SimpleFeatureIteratorIterator implements Iterator<SimpleFeature>, SimpleFe
     public void remove() {
         throw new UnsupportedOperationException();
     }
-    
+
     @Override
     public void close() {
         fi.close();
     }
-
 }

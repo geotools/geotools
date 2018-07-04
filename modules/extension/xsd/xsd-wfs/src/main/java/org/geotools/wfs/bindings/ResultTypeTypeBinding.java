@@ -17,19 +17,17 @@
 package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.ResultTypeType;
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:ResultTypeType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *         <code>
  *  &lt;xsd:simpleType name=&quot;ResultTypeType&quot;&gt;
@@ -59,29 +57,23 @@ import org.geotools.xml.InstanceComponent;
  *  &lt;/xsd:simpleType&gt;
  * </code>
  *         </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class ResultTypeTypeBinding extends AbstractSimpleBinding {
-    public ResultTypeTypeBinding(WfsFactory factory) {
-    }
+    public ResultTypeTypeBinding(WfsFactory factory) {}
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.ResultTypeType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -89,8 +81,10 @@ public class ResultTypeTypeBinding extends AbstractSimpleBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(InstanceComponent instance, Object value) throws Exception {

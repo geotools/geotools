@@ -21,16 +21,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureStore;
@@ -44,21 +41,18 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DirectoryDataStore implements DataStore {
-    
+
     DirectoryTypeCache cache;
     DirectoryLockingManager lm;
-    
+
     public DirectoryDataStore(File directory, FileStoreFactory dialect) throws IOException {
         cache = new DirectoryTypeCache(directory, dialect);
     }
@@ -69,12 +63,11 @@ public class DirectoryDataStore implements DataStore {
         return getDataStore(typeName).getFeatureReader(query, transaction);
     }
 
-    public SimpleFeatureSource getFeatureSource(
-            String typeName) throws IOException {
+    public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
         SimpleFeatureSource fs = getDataStore(typeName).getFeatureSource(typeName);
-        if(fs instanceof SimpleFeatureLocking) {
+        if (fs instanceof SimpleFeatureLocking) {
             return new DirectoryFeatureLocking((SimpleFeatureLocking) fs);
-        } else if(fs instanceof FeatureStore) {
+        } else if (fs instanceof FeatureStore) {
             return new DirectoryFeatureStore((SimpleFeatureStore) fs);
         } else {
             return new DirectoryFeatureSource((SimpleFeatureSource) fs);
@@ -82,8 +75,7 @@ public class DirectoryDataStore implements DataStore {
     }
 
     public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
-            String typeName, Filter filter, Transaction transaction)
-            throws IOException {
+            String typeName, Filter filter, Transaction transaction) throws IOException {
         return getDataStore(typeName).getFeatureWriter(typeName, filter, transaction);
     }
 
@@ -98,7 +90,7 @@ public class DirectoryDataStore implements DataStore {
     }
 
     public LockingManager getLockingManager() {
-        if(lm == null) {
+        if (lm == null) {
             lm = new DirectoryLockingManager(cache);
         }
         return lm;
@@ -113,29 +105,28 @@ public class DirectoryDataStore implements DataStore {
         return typeNames.toArray(new String[typeNames.size()]);
     }
 
-    public void updateSchema(String typeName, SimpleFeatureType featureType)
-            throws IOException {
+    public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
         getDataStore(typeName).updateSchema(typeName, featureType);
     }
 
     public void createSchema(SimpleFeatureType featureType) throws IOException {
-        File f = new File(cache.directory, featureType.getTypeName()+".shp");
-        
+        File f = new File(cache.directory, featureType.getTypeName() + ".shp");
+
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-        params.put("url", DataUtilities.fileToURL(f));
+        params.put("url", URLs.fileToUrl(f));
         params.put("filetype", "shapefile");
         DataStore ds = null;
         try {
             ds = DataStoreFinder.getDataStore(params);
-            if(ds != null) {
+            if (ds != null) {
                 ds.createSchema(featureType);
                 ds.dispose();
                 cache.refreshCacheContents();
-            } 
-        } catch(Exception e) {
+            }
+        } catch (Exception e) {
             throw (IOException) new IOException("Error creating new data store").initCause(e);
         }
-        if(ds == null) {
+        if (ds == null) {
             throw new IOException("Could not find the shapefile data store in the classpath");
         }
     }
@@ -144,18 +135,17 @@ public class DirectoryDataStore implements DataStore {
         cache.dispose();
     }
 
-    public SimpleFeatureSource getFeatureSource(
-            Name typeName) throws IOException {
+    public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
         return getFeatureSource(typeName.getLocalPart());
     }
 
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
-        info.setDescription("Features from Directory " + cache.directory );
-        info.setSchema( FeatureTypes.DEFAULT_NAMESPACE );
-        info.setSource( cache.directory.toURI() );
+        info.setDescription("Features from Directory " + cache.directory);
+        info.setSchema(FeatureTypes.DEFAULT_NAMESPACE);
+        info.setSource(cache.directory.toURI());
         try {
-            info.setPublisher( new URI(System.getProperty("user.name")) );
+            info.setPublisher(new URI(System.getProperty("user.name")));
         } catch (URISyntaxException e) {
         }
         return info;
@@ -174,13 +164,13 @@ public class DirectoryDataStore implements DataStore {
         return getSchema(name.getLocalPart());
     }
 
-    public void updateSchema(Name typeName, SimpleFeatureType featureType)
-            throws IOException {
+    public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
         updateSchema(typeName.getLocalPart(), featureType);
     }
-    
+
     /**
      * Returns the native store for a specified type name
+     *
      * @param typeName
      * @return
      * @throws IOException
@@ -188,20 +178,17 @@ public class DirectoryDataStore implements DataStore {
     public DataStore getDataStore(String typeName) throws IOException {
         // grab the store for a specific feature type, making sure it's actually there
         DataStore store = cache.getDataStore(typeName, true);
-        if(store == null)
-            throw new IOException("Feature type " + typeName + " is unknown");
+        if (store == null) throw new IOException("Feature type " + typeName + " is unknown");
         return store;
     }
 
     @Override
     public void removeSchema(Name name) throws IOException {
         removeSchema(name.getLocalPart());
-        
     }
 
     @Override
     public void removeSchema(String name) throws IOException {
         getDataStore(name).removeSchema(name);
     }
-
 }

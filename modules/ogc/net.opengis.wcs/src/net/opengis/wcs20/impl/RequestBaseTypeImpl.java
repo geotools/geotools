@@ -33,354 +33,354 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  */
 public abstract class RequestBaseTypeImpl extends EObjectImpl implements RequestBaseType {
     /**
-     * The cached value of the '{@link #getExtension() <em>Extension</em>}' containment reference.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getExtension() <em>Extension</em>}' containment reference.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getExtension()
-     * @generated
-     * @ordered
-     */
+	 * @see #getExtension()
+	 * @generated
+	 * @ordered
+	 */
     protected ExtensionType extension;
 
     /**
-     * The default value of the '{@link #getService() <em>Service</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getService() <em>Service</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getService()
-     * @generated
-     * @ordered
-     */
+	 * @see #getService()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String SERVICE_EDEFAULT = "WCS";
 
     /**
-     * The cached value of the '{@link #getService() <em>Service</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getService() <em>Service</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getService()
-     * @generated
-     * @ordered
-     */
+	 * @see #getService()
+	 * @generated
+	 * @ordered
+	 */
     protected String service = SERVICE_EDEFAULT;
 
     /**
-     * This is true if the Service attribute has been set.
-     * <!-- begin-user-doc -->
+	 * This is true if the Service attribute has been set.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+	 * @generated
+	 * @ordered
+	 */
     protected boolean serviceESet;
 
     /**
-     * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getVersion()
-     * @generated
-     * @ordered
-     */
+	 * @see #getVersion()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String VERSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getVersion() <em>Version</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getVersion()
-     * @generated
-     * @ordered
-     */
+	 * @see #getVersion()
+	 * @generated
+	 * @ordered
+	 */
     protected String version = VERSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getBaseUrl()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBaseUrl()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String BASE_URL_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBaseUrl() <em>Base Url</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getBaseUrl()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBaseUrl()
+	 * @generated
+	 * @ordered
+	 */
     protected String baseUrl = BASE_URL_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected RequestBaseTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.REQUEST_BASE_TYPE;
-    }
+		return Wcs20Package.Literals.REQUEST_BASE_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public ExtensionType getExtension() {
-        return extension;
-    }
+		return extension;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public NotificationChain basicSetExtension(ExtensionType newExtension, NotificationChain msgs) {
-        ExtensionType oldExtension = extension;
-        extension = newExtension;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__EXTENSION, oldExtension, newExtension);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
-    }
+		ExtensionType oldExtension = extension;
+		extension = newExtension;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__EXTENSION, oldExtension, newExtension);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setExtension(ExtensionType newExtension) {
-        if (newExtension != extension) {
-            NotificationChain msgs = null;
-            if (extension != null)
-                msgs = ((InternalEObject)extension).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.REQUEST_BASE_TYPE__EXTENSION, null, msgs);
-            if (newExtension != null)
-                msgs = ((InternalEObject)newExtension).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.REQUEST_BASE_TYPE__EXTENSION, null, msgs);
-            msgs = basicSetExtension(newExtension, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__EXTENSION, newExtension, newExtension));
-    }
+		if (newExtension != extension) {
+			NotificationChain msgs = null;
+			if (extension != null)
+				msgs = ((InternalEObject)extension).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.REQUEST_BASE_TYPE__EXTENSION, null, msgs);
+			if (newExtension != null)
+				msgs = ((InternalEObject)newExtension).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Wcs20Package.REQUEST_BASE_TYPE__EXTENSION, null, msgs);
+			msgs = basicSetExtension(newExtension, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__EXTENSION, newExtension, newExtension));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getService() {
-        return service;
-    }
+		return service;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setService(String newService) {
-        String oldService = service;
-        service = newService;
-        boolean oldServiceESet = serviceESet;
-        serviceESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__SERVICE, oldService, service, !oldServiceESet));
-    }
+		String oldService = service;
+		service = newService;
+		boolean oldServiceESet = serviceESet;
+		serviceESet = true;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__SERVICE, oldService, service, !oldServiceESet));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void unsetService() {
-        String oldService = service;
-        boolean oldServiceESet = serviceESet;
-        service = SERVICE_EDEFAULT;
-        serviceESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, Wcs20Package.REQUEST_BASE_TYPE__SERVICE, oldService, SERVICE_EDEFAULT, oldServiceESet));
-    }
+		String oldService = service;
+		boolean oldServiceESet = serviceESet;
+		service = SERVICE_EDEFAULT;
+		serviceESet = false;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.UNSET, Wcs20Package.REQUEST_BASE_TYPE__SERVICE, oldService, SERVICE_EDEFAULT, oldServiceESet));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public boolean isSetService() {
-        return serviceESet;
-    }
+		return serviceESet;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getVersion() {
-        return version;
-    }
+		return version;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setVersion(String newVersion) {
-        String oldVersion = version;
-        version = newVersion;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__VERSION, oldVersion, version));
-    }
+		String oldVersion = version;
+		version = newVersion;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__VERSION, oldVersion, version));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getBaseUrl() {
-        return baseUrl;
-    }
+		return baseUrl;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setBaseUrl(String newBaseUrl) {
-        String oldBaseUrl = baseUrl;
-        baseUrl = newBaseUrl;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__BASE_URL, oldBaseUrl, baseUrl));
-    }
+		String oldBaseUrl = baseUrl;
+		baseUrl = newBaseUrl;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.REQUEST_BASE_TYPE__BASE_URL, oldBaseUrl, baseUrl));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
-                return basicSetExtension(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID) {
+			case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
+				return basicSetExtension(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
-                return getExtension();
-            case Wcs20Package.REQUEST_BASE_TYPE__SERVICE:
-                return getService();
-            case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
-                return getVersion();
-            case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
-                return getBaseUrl();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
+				return getExtension();
+			case Wcs20Package.REQUEST_BASE_TYPE__SERVICE:
+				return getService();
+			case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
+				return getVersion();
+			case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
+				return getBaseUrl();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
-                setExtension((ExtensionType)newValue);
-                return;
-            case Wcs20Package.REQUEST_BASE_TYPE__SERVICE:
-                setService((String)newValue);
-                return;
-            case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
-                setVersion((String)newValue);
-                return;
-            case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
-                setBaseUrl((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
+				setExtension((ExtensionType)newValue);
+				return;
+			case Wcs20Package.REQUEST_BASE_TYPE__SERVICE:
+				setService((String)newValue);
+				return;
+			case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
+				setVersion((String)newValue);
+				return;
+			case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
+				setBaseUrl((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
-                setExtension((ExtensionType)null);
-                return;
-            case Wcs20Package.REQUEST_BASE_TYPE__SERVICE:
-                unsetService();
-                return;
-            case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
-                setVersion(VERSION_EDEFAULT);
-                return;
-            case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
-                setBaseUrl(BASE_URL_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
+				setExtension((ExtensionType)null);
+				return;
+			case Wcs20Package.REQUEST_BASE_TYPE__SERVICE:
+				unsetService();
+				return;
+			case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
+				setVersion(VERSION_EDEFAULT);
+				return;
+			case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
+				setBaseUrl(BASE_URL_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
-                return extension != null;
-            case Wcs20Package.REQUEST_BASE_TYPE__SERVICE:
-                return isSetService();
-            case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
-                return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
-            case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
-                return BASE_URL_EDEFAULT == null ? baseUrl != null : !BASE_URL_EDEFAULT.equals(baseUrl);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.REQUEST_BASE_TYPE__EXTENSION:
+				return extension != null;
+			case Wcs20Package.REQUEST_BASE_TYPE__SERVICE:
+				return isSetService();
+			case Wcs20Package.REQUEST_BASE_TYPE__VERSION:
+				return VERSION_EDEFAULT == null ? version != null : !VERSION_EDEFAULT.equals(version);
+			case Wcs20Package.REQUEST_BASE_TYPE__BASE_URL:
+				return BASE_URL_EDEFAULT == null ? baseUrl != null : !BASE_URL_EDEFAULT.equals(baseUrl);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (service: ");
-        if (serviceESet) result.append(service); else result.append("<unset>");
-        result.append(", version: ");
-        result.append(version);
-        result.append(", baseUrl: ");
-        result.append(baseUrl);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (service: ");
+		if (serviceESet) result.append(service); else result.append("<unset>");
+		result.append(", version: ");
+		result.append(version);
+		result.append(", baseUrl: ");
+		result.append(baseUrl);
+		result.append(')');
+		return result.toString();
+	}
 
 } //RequestBaseTypeImpl

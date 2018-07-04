@@ -17,23 +17,20 @@
 package org.geotools.gml3.bindings;
 
 import java.util.ArrayList;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * Binding object for the type http://www.opengis.net/gml/3.2:MultiGeometryType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  &lt;code&gt;
  *  &lt;complexType name=&quot;MultiGeometryType&quot;&gt;
@@ -45,37 +42,32 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  *              &lt;/sequence&gt;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
- *  &lt;/complexType&gt; 
- * 	
+ *  &lt;/complexType&gt;
+ *
  *   &lt;/code&gt;
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class MultiGeometryTypeBinding extends AbstractComplexBinding {
 
     GeometryFactory factory;
-    
-    public MultiGeometryTypeBinding( GeometryFactory factory ) {
+
+    public MultiGeometryTypeBinding(GeometryFactory factory) {
         this.factory = factory;
     }
-    
-    /**
-     * @generated
-     */
+
+    /** @generated */
     public QName getTarget() {
         return GML.MultiGeometryType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -85,14 +77,15 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
     public int getExecutionMode() {
         return BEFORE;
     }
-    
+
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         ArrayList geometries = new ArrayList();
 
@@ -103,16 +96,16 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
         if (node.hasChild(Geometry[].class)) {
             Geometry[] g = (Geometry[]) node.getChildValue(Geometry[].class);
 
-            for (int i = 0; i < g.length; i++)
-                geometries.add(g[i]);
+            for (int i = 0; i < g.length; i++) geometries.add(g[i]);
         }
 
-        return factory.createGeometryCollection((Geometry[]) geometries.toArray(new Geometry[geometries.size()]));
+        return factory.createGeometryCollection(
+                (Geometry[]) geometries.toArray(new Geometry[geometries.size()]));
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if (GML.geometryMember.equals(name)) {
+        if (GML.geometryMember.getLocalPart().equals(name.getLocalPart())) {
             GeometryCollection multiGeometry = (GeometryCollection) object;
             Geometry[] members = new Geometry[multiGeometry.getNumGeometries()];
 
@@ -127,5 +120,4 @@ public class MultiGeometryTypeBinding extends AbstractComplexBinding {
 
         return null;
     }
-
 }

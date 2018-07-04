@@ -22,7 +22,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.driver.TestDriver.TestCoverageAccess;
@@ -65,6 +64,5 @@ public class CoverageIOTest extends Assert {
         assertFalse(canConnect);
         access = CoverageIO.connect(connectionParams);
         assertNull(access);
-
     }
 }

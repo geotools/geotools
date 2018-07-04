@@ -18,24 +18,21 @@ package org.geotools.gml2.bindings;
 
 import java.net.URI;
 import java.util.logging.Logger;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml2.GML;
 import org.geotools.referencing.CRS;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Geometry;
-
 
 /**
  * Binding object for the type http://www.opengis.net/gml:AbstractGeometryType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="AbstractGeometryType" abstract="true"&gt;
  *      &lt;annotation&gt;
@@ -54,12 +51,8 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
@@ -69,14 +62,13 @@ public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
         this.logger = logger;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.ABSTRACTGEOMETRYTYPE;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -87,6 +79,7 @@ public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -97,17 +90,17 @@ public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         if (value instanceof Geometry) {
             Geometry geometry = (Geometry) value;
 
-            //&lt;attribute name="srsName" type="anyURI" use="optional"/&gt;
+            // &lt;attribute name="srsName" type="anyURI" use="optional"/&gt;
             if (node.hasAttribute("srsName")) {
                 URI srs = (URI) node.getAttributeValue("srsName");
                 CoordinateReferenceSystem crs = CRS.decode(srs.toString());
@@ -119,14 +112,13 @@ public class GMLAbstractGeometryTypeBinding extends AbstractComplexBinding {
                 }
             }
 
-            //TODO: process the ID attribute
+            // TODO: process the ID attribute
         }
 
         return value;
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         if ("srsName".equals(name.getLocalPart())) {
             Geometry geometry = (Geometry) object;
 

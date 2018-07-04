@@ -6,7 +6,7 @@
  */
 package net.opengis.wcs10.impl;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import java.util.Map;
 import net.opengis.gml.GmlPackage;
 

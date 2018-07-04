@@ -17,7 +17,6 @@
 package org.geotools.wfs;
 
 import java.util.AbstractCollection;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,12 +25,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
-import org.geotools.feature.collection.DecoratingFeatureCollection;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.xs.XS;
@@ -49,18 +47,28 @@ import org.opengis.filter.expression.PropertyName;
 
 /**
  * Wrapping feature collection used by GetPropertyValue operation.
- * <p>
- * This feature collection pulls only the specified property out of the delegate feature collection.
- * </p>
- * 
+ *
+ * <p>This feature collection pulls only the specified property out of the delegate feature
+ * collection.
+ *
  * @author Justin Deoliveira, OpenGeo
- * 
  */
 public class PropertyValueCollection extends AbstractCollection<Attribute> {
 
     static FeatureTypeFactory typeFactory = new FeatureTypeFactoryImpl();
 
     static FeatureFactory factory = CommonFactoryFinder.getFeatureFactory(null);
+
+    static final Name GML_IDENTIFIER = new NameImpl(GML.NAMESPACE, "identifier");
+
+    static final AttributeDescriptor ID_DESCRIPTOR;
+
+    static {
+        AttributeTypeBuilder ab = new AttributeTypeBuilder(typeFactory);
+        ab.setName("identifier");
+        ab.setBinding(String.class);
+        ID_DESCRIPTOR = ab.buildDescriptor("identifier");
+    }
 
     FeatureCollection delegate;
 
@@ -70,13 +78,18 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
 
     PropertyName propertyName;
 
-    public PropertyValueCollection(FeatureCollection delegate, AttributeDescriptor descriptor,
-            PropertyName propName) {
+    public PropertyValueCollection(
+            FeatureCollection delegate, AttributeDescriptor descriptor, PropertyName propName) {
         this.delegate = delegate;
         this.descriptor = descriptor;
         this.typeMappingProfiles.add(XS.getInstance().getTypeMappingProfile());
         this.typeMappingProfiles.add(GML.getInstance().getTypeMappingProfile());
         this.propertyName = propName;
+
+        // fallback for gml:id "property"
+        if (descriptor == null) {
+            this.descriptor = ID_DESCRIPTOR;
+        }
     }
 
     @Override
@@ -91,7 +104,6 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
     }
 
     class PropertyValueIterator implements Iterator {
-
         FeatureIterator it;
 
         Feature next;
@@ -144,25 +156,35 @@ public class PropertyValueCollection extends AbstractCollection<Attribute> {
             // create a new descriptor based on teh xml type
             AttributeType xmlType = findType(descriptor.getType().getBinding());
             if (xmlType == null) {
-                throw new RuntimeException("Unable to map attribute " + descriptor.getName()
-                        + " to xml type");
+                throw new RuntimeException(
+                        "Unable to map attribute " + descriptor.getName() + " to xml type");
             }
 
-            // because simple features don't carry around their namespace, create a descritor name
+            // because simple features don't carry around their namespace, create a descriptor name
             // that actually used the feature type schema namespace
-            Name name = new NameImpl(next.getType().getName().getNamespaceURI(),
-                    descriptor.getLocalName());
-            AttributeDescriptor newDescriptor = typeFactory.createAttributeDescriptor(xmlType,
-                    name, descriptor.getMinOccurs(), descriptor.getMaxOccurs(),
-                    descriptor.isNillable(), descriptor.getDefaultValue());
+            Name name;
+            if (descriptor == ID_DESCRIPTOR) {
+                name = GML_IDENTIFIER;
+            } else {
+                name =
+                        new NameImpl(
+                                next.getType().getName().getNamespaceURI(),
+                                descriptor.getLocalName());
+            }
+            AttributeDescriptor newDescriptor =
+                    typeFactory.createAttributeDescriptor(
+                            xmlType,
+                            name,
+                            descriptor.getMinOccurs(),
+                            descriptor.getMaxOccurs(),
+                            descriptor.isNillable(),
+                            descriptor.getDefaultValue());
 
             if (next instanceof SimpleFeature) {
                 return factory.createAttribute(value, newDescriptor, null);
             } else {
-                return factory
-                        .createComplexAttribute(
-                                Collections.<Property> singletonList((Property) value),
-                                newDescriptor, null);
+                return factory.createComplexAttribute(
+                        Collections.<Property>singletonList((Property) value), newDescriptor, null);
             }
         }
 

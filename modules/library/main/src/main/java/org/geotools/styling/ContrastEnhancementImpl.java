@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,7 +20,6 @@ package org.geotools.styling;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
@@ -28,8 +27,9 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
 /**
- * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image or for a color image. Its format is:
- * 
+ * The ContrastEnhancement object defines contrast enhancement for a channel of a false-color image
+ * or for a color image. Its format is:
+ *
  * <pre>
  * &lt;xs:element name=&quot;ContrastEnhancement&quot;&gt;
  *   &lt;xs:complexType&gt;
@@ -50,18 +50,21 @@ import org.opengis.style.ContrastMethod;
  * &lt;/xs:element&gt;
  * &lt;xs:element name=&quot;GammaValue&quot; type=&quot;xs:double&quot;/&gt;
  * </pre>
- * 
- * In the case of a color image, the relative grayscale brightness of a pixel color is used. ?Normalize? means to stretch the contrast so that the
- * dimmest color is stretched to black and the brightest color is stretched to white, with all colors in between stretched out linearly. ?Histogram?
- * means to stretch the contrast based on a histogram of how many colors are at each brightness level on input, with the goal of producing equal
- * number of pixels in the image at each brightness level on output. This has the effect of revealing many subtle ground features. A ?GammaValue?
- * tells how much to brighten (value greater than 1.0) or dim (value less than 1.0) an image. The default GammaValue is 1.0 (no change). If none of
- * Normalize, Histogram, or GammaValue are selected in a ContrastEnhancement, then no enhancement is performed.
- * 
+ *
+ * In the case of a color image, the relative grayscale brightness of a pixel color is used.
+ * ?Normalize? means to stretch the contrast so that the dimmest color is stretched to black and the
+ * brightest color is stretched to white, with all colors in between stretched out linearly.
+ * ?Histogram? means to stretch the contrast based on a histogram of how many colors are at each
+ * brightness level on input, with the goal of producing equal number of pixels in the image at each
+ * brightness level on output. This has the effect of revealing many subtle ground features. A
+ * ?GammaValue? tells how much to brighten (value greater than 1.0) or dim (value less than 1.0) an
+ * image. The default GammaValue is 1.0 (no change). If none of Normalize, Histogram, or GammaValue
+ * are selected in a ContrastEnhancement, then no enhancement is performed.
+ *
  * @author iant
- *
- *
- * @source $URL$ http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/ styling/ContrastEnhancementImpl.java $
+ * @source $URL$
+ *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
+ *     styling/ContrastEnhancementImpl.java $
  */
 public class ContrastEnhancementImpl implements ContrastEnhancement {
 
@@ -70,7 +73,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     private Expression gamma;
 
     private Expression type;
-    
+
     private ContrastMethod method;
 
     private Map<String, Expression> options;
@@ -80,10 +83,8 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     }
 
     public ContrastEnhancementImpl(FilterFactory factory) {
-        this(factory, (ContrastMethod)null);
+        this(factory, (ContrastMethod) null);
     }
-
-
 
     public ContrastEnhancementImpl(FilterFactory factory, ContrastMethod method) {
         filterFactory = factory;
@@ -93,14 +94,21 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     public ContrastEnhancementImpl(org.opengis.style.ContrastEnhancement contrastEnhancement) {
         filterFactory = CommonFactoryFinder.getFilterFactory2(null);
         org.opengis.style.ContrastMethod meth = contrastEnhancement.getMethod();
-        if(meth != null) {
+        if (meth != null) {
             this.method = ContrastMethod.valueOf(meth.name());
         }
         this.gamma = contrastEnhancement.getGammaValue();
+        if (contrastEnhancement instanceof ContrastEnhancement) {
+            ContrastEnhancement other = (ContrastEnhancement) contrastEnhancement;
+            if (other.getOptions() != null) {
+                this.options = new HashMap<>();
+                this.options.putAll(other.getOptions());
+            }
+        }
     }
 
-    public ContrastEnhancementImpl(FilterFactory2 factory, Expression gamma,
-            ContrastMethod method) {
+    public ContrastEnhancementImpl(
+            FilterFactory2 factory, Expression gamma, ContrastMethod method) {
         this.filterFactory = factory;
         this.gamma = gamma;
         this.method = method;
@@ -150,7 +158,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
 
     @Override
     public Map<String, Expression> getOptions() {
-        if(this.options == null) {
+        if (this.options == null) {
             this.options = new HashMap<String, Expression>();
         }
         return this.options;
@@ -158,7 +166,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
 
     @Override
     public boolean hasOption(String key) {
-        if(this.options == null) {
+        if (this.options == null) {
             this.options = new HashMap<String, Expression>();
         }
         return options.containsKey(key);
@@ -171,9 +179,9 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
 
     @Override
     public void addOption(String key, Expression value) {
-        if(this.options == null) {
+        if (this.options == null) {
             this.options = new HashMap<String, Expression>();
-        } 
+        }
         options.put(key, value);
     }
 
@@ -185,7 +193,7 @@ public class ContrastEnhancementImpl implements ContrastEnhancement {
     @Override
     public void setMethod(ContrastMethodStrategy method) {
         this.method = method.getMethod();
-        this.options = method.getOptions(); 
+        this.options = method.getOptions();
     }
 
     @Override

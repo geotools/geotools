@@ -1,0 +1,85 @@
+{
+  "version": 8,
+  "name": "Empty",
+  "metadata": {
+    "mapbox:autocomposite": true,
+    "mapbox:type": "template"
+  },
+  "center": [
+    -106.37942820066576,
+    39.62499260458827
+  ],
+  "zoom": 15.80212732929003,
+  "bearing": 0,
+  "pitch": 0,
+  "sources": {
+    "mapbox://mapbox.satellite": {
+      "url": "mapbox://mapbox.satellite",
+      "type": "raster",
+      "tileSize": 256
+    },
+    "composite": {
+      "url": "mapbox://test.cixwdy1nj001933p91a6wnxe0-2emxh,testuser.cixwc3qp2001l2wquza8ccz21-658xw",
+      "type": "vector"
+    }
+  },
+  "sprite": "mapbox://sprites/test/cixwe1jim001l2sp6his5j6ns",
+  "glyphs": "mapbox://fonts/test/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "country_label",
+      "type": "symbol",
+      "source": "mapbox",
+      "source-layer": "country_label",
+      "maxzoom": 12,
+      "filter": [
+        "==",
+        "$type",
+        "Point"
+      ],
+      "layout": {
+        "text-field": {
+          "base": 1,
+          "stops": [
+            [
+              0,
+              "test"
+            ],
+            [
+              22,
+              "test2"
+            ]
+          ]
+        },
+        "text-font": [
+          "Open Sans Regular",
+          "Arial Unicode MS Regular"
+        ],
+        "text-max-width": 10,
+        "text-size": {
+          "stops": [
+            [
+              3,
+              14
+            ],
+            [
+              8,
+              22
+            ]
+          ]
+        }
+      },
+      "paint": {
+        "text-color": "#666",
+        "text-halo-color": "rgba(255,255,255,0.75)",
+        "text-halo-width": 1,
+        "text-halo-blur": 1
+      }
+    }
+  ],
+  "created": "2017-01-13T22:41:15.108Z",
+  "id": "cixwe1jim001l2sp6his5j6ns",
+  "modified": "2017-02-08T16:37:48.232Z",
+  "owner": "test",
+  "draft": false
+}

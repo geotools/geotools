@@ -1,0 +1,387 @@
+{
+    "arrow": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 80,
+        "y": 400,
+        "height": 32
+    },
+    "semicircle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 80,
+        "y": 80,
+        "height": 32
+    },
+    "hexagon": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 80,
+        "y": 144,
+        "height": 32
+    },
+    "arrowhead": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 336,
+        "y": 400,
+        "height": 32
+    },
+    "qgis://circle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 464,
+        "y": 400,
+        "height": 32
+    },
+    "shape://slash": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 144,
+        "y": 464,
+        "height": 32
+    },
+    "qgis://line": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 144,
+        "y": 272,
+        "height": 32
+    },
+    "crossfill": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 208,
+        "y": 208,
+        "height": 32
+    },
+    "cross2": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 80,
+        "y": 336,
+        "height": 32
+    },
+    "qgis://regular_star": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 16,
+        "y": 208,
+        "height": 32
+    },
+    "pentagon": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 208,
+        "y": 272,
+        "height": 32
+    },
+    "qgis://filled_arrowhead": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 16,
+        "y": 272,
+        "height": 32
+    },
+    "qgis://triangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 144,
+        "y": 208,
+        "height": 32
+    },
+    "qgis://crossfill": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 272,
+        "y": 208,
+        "height": 32
+    },
+    "hatch": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 144,
+        "y": 400,
+        "height": 32
+    },
+    "diagonalhalfsquare": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 336,
+        "y": 208,
+        "height": 32
+    },
+    "quartersquare": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 336,
+        "y": 80,
+        "height": 32
+    },
+    "square": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 208,
+        "y": 400,
+        "height": 32
+    },
+    "qgis://quartersquare": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 400,
+        "y": 80,
+        "height": 32
+    },
+    "rectangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 336,
+        "y": 272,
+        "height": 32
+    },
+    "halfsquare": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 464,
+        "y": 208,
+        "height": 32
+    },
+    "qgis://arrow": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 272,
+        "y": 400,
+        "height": 32
+    },
+    "circle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 336,
+        "y": 464,
+        "height": 32
+    },
+    "qgis://righthalftriangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 400,
+        "y": 144,
+        "height": 32
+    },
+    "qgis://quartercircle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 16,
+        "y": 80,
+        "height": 32
+    },
+    "righthalftriangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 336,
+        "y": 144,
+        "height": 32
+    },
+    "line": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 80,
+        "y": 272,
+        "height": 32
+    },
+    "qgis://pentagon": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 272,
+        "y": 272,
+        "height": 32
+    },
+    "shape://vertline": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 16,
+        "y": 464,
+        "height": 32
+    },
+    "regular_star": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 464,
+        "y": 272,
+        "height": 32
+    },
+    "qgis://star": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 80,
+        "y": 208,
+        "height": 32
+    },
+    "triangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 400,
+        "y": 464,
+        "height": 32
+    },
+    "filled_arrowhead": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 464,
+        "y": 336,
+        "height": 32
+    },
+    "qgis://diamond": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 272,
+        "y": 336,
+        "height": 32
+    },
+    "quartercircle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 464,
+        "y": 144,
+        "height": 32
+    },
+    "qgis://halfsquare": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 16,
+        "y": 144,
+        "height": 32
+    },
+    "qgis://semicircle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 144,
+        "y": 80,
+        "height": 32
+    },
+    "qgis://cross": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 16,
+        "y": 336,
+        "height": 32
+    },
+    "qgis://arrowhead": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 400,
+        "y": 400,
+        "height": 32
+    },
+    "X": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 464,
+        "y": 464,
+        "height": 32
+    },
+    "qgis://rectangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 400,
+        "y": 272,
+        "height": 32
+    },
+    "thirdcircle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 208,
+        "y": 80,
+        "height": 32
+    },
+    "qgis://equilateral_triangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 400,
+        "y": 336,
+        "height": 32
+    },
+    "star": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 16,
+        "y": 400,
+        "height": 32
+    },
+    "cross": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 272,
+        "y": 464,
+        "height": 32
+    },
+    "qgis://hexagon": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 144,
+        "y": 144,
+        "height": 32
+    },
+    "qgis://thirdcircle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 272,
+        "y": 80,
+        "height": 32
+    },
+    "shape://backslash": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 208,
+        "y": 464,
+        "height": 32
+    },
+    "qgis://cross2": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 144,
+        "y": 336,
+        "height": 32
+    },
+    "diamond": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 208,
+        "y": 336,
+        "height": 32
+    },
+    "lefthalftriangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 208,
+        "y": 144,
+        "height": 32
+    },
+    "qgis://lefthalftriangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 272,
+        "y": 144,
+        "height": 32
+    },
+    "qgis://diagonalhalfsquare": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 400,
+        "y": 208,
+        "height": 32
+    },
+    "shape://horline": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 80,
+        "y": 464,
+        "height": 32
+    },
+    "equilateral_triangle": {
+        "pixelRatio": 1,
+        "width": 32,
+        "x": 336,
+        "y": 336,
+        "height": 32
+    }
+}

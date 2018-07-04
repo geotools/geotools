@@ -1,0 +1,39 @@
+{
+  "version": 8,
+  "name": "font-test",
+  "layers": [
+    {
+      "id": "fill-color",
+      "type": "fill",
+      "paint": {
+        "fill-color": {
+          "property": "POP_EST",
+          "type": "interval",
+          "stops": [
+            [10000, "red"],
+            [100000, "blue"],
+            [1000000, "green"],
+            [1000000000, "black"]
+          ]
+        }
+      }
+    },
+    {
+      "id": "text-font",
+      "type": "symbol",
+      "layout":{
+        "text-field": "{SOVEREIGNT}",
+        "text-font":{
+          "property": "POP_EST",
+          "type": "interval",
+          "stops":[
+            [10000, ["Apple-Chancery", "San-Serif"]],
+            [100000, ["AmericanTypewriter"]],
+            [1000000, ["AmericanTypewriter-Bold"]],
+            [10000000, ["BrushScriptMT"]]
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,9 +22,7 @@ import java.io.Reader;
 
 /**
  * Reads a multiline SQL file extracting each command separately. Skips empty lines, assumes
- * comments start with "--" and are on their own line 
- *
- *
+ * comments start with "--" and are on their own line
  *
  * @source $URL$
  */
@@ -36,48 +34,45 @@ public class SqlScriptReader {
     public SqlScriptReader(Reader reader) {
         this.reader = new BufferedReader(reader);
     }
-    
+
     public boolean hasNext() throws IOException {
         // do we have an un-fetched command?
-        if(!fetched) {
+        if (!fetched) {
             return builder.length() > 0;
         }
-        
+
         builder.setLength(0);
         String line = null;
-        while((line = reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null) {
             line = line.trim();
             // skip empty and comment lines
-            if(!"".equals(line) && !line.startsWith("--"))
-                builder.append(line).append("\n");
-            if(line.endsWith(";")) {
+            if (!"".equals(line) && !line.startsWith("--")) builder.append(line).append("\n");
+            if (line.endsWith(";")) {
                 fetched = false;
                 break;
             }
         }
-        
-        if(line == null && builder.length() > 0) {
+
+        if (line == null && builder.length() > 0) {
             throw new IOException("The file ends with a non ; terminated command");
         }
-        
+
         return line != null;
     }
-    
-    public String next() throws IOException  {
-        if(fetched)
+
+    public String next() throws IOException {
+        if (fetched)
             throw new IOException("hasNext was not called, or was called and it returned false");
-            
+
         fetched = true;
         return builder.toString();
     }
-    
+
     public void dispose() {
         try {
             reader.close();
-        } catch(IOException e) {
+        } catch (IOException e) {
             // never mind
         }
     }
-    
-
 }

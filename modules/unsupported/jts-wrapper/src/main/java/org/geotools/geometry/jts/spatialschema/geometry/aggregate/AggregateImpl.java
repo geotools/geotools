@@ -13,22 +13,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.geometry.aggregate.Aggregate;
-
-import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
 import org.geotools.geometry.jts.JTSGeometry;
 import org.geotools.geometry.jts.JTSUtils;
+import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
+import org.opengis.geometry.aggregate.Aggregate;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class AggregateImpl extends GeometryImpl implements Aggregate {
-    private Set/*<Primitive>*/ elements;
+    private Set /*<Primitive>*/ elements;
 
     public AggregateImpl() {
         super();
@@ -39,15 +32,15 @@ public abstract class AggregateImpl extends GeometryImpl implements Aggregate {
         this.elements = new HashSet();
     }
 
-    protected com.vividsolutions.jts.geom.Geometry computeJTSPeer() {
+    protected org.locationtech.jts.geom.Geometry computeJTSPeer() {
         ArrayList childParts = new ArrayList();
         Iterator children = elements.iterator();
         while (children.hasNext()) {
             JTSGeometry jtsGeom = (JTSGeometry) children.next();
             childParts.add(jtsGeom.getJTSGeometry());
         }
-        com.vividsolutions.jts.geom.Geometry result =
-            JTSUtils.GEOMETRY_FACTORY.buildGeometry(childParts);
+        org.locationtech.jts.geom.Geometry result =
+                JTSUtils.GEOMETRY_FACTORY.buildGeometry(childParts);
         return result;
     }
 

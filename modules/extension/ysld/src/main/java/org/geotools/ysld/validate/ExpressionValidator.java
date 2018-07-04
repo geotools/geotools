@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,23 +18,17 @@
 package org.geotools.ysld.validate;
 
 import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.ysld.parse.Factory;
 import org.geotools.ysld.parse.Util;
-import org.opengis.filter.Filter;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
 /**
  * Validator for expressions
- * 
+ *
  * @author Kevin Smith, Boundless
- * 
  */
 public class ExpressionValidator extends ScalarValidator {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
         try {

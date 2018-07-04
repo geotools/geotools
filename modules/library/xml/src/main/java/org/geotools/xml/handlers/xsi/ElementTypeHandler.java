@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,7 +17,6 @@
 package org.geotools.xml.handlers.xsi;
 
 import java.net.URI;
-
 import org.geotools.xml.XSIElementHandler;
 import org.geotools.xml.handlers.XMLTypeHelper;
 import org.geotools.xml.schema.Element;
@@ -27,27 +26,23 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-
 /**
  * ElementTypeHandler purpose.
- * 
- * <p>
- * Represtents an 'element' declaration.
- * </p>
+ *
+ * <p>Represtents an 'element' declaration.
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class ElementTypeHandler extends ElementGroupingHandler {
     /** 'element' */
-    public final static String LOCALNAME = "element";
+    public static final String LOCALNAME = "element";
 
     /** UNBOUNDED */
     private static int offset = 0;
+
     private String id;
     private String name;
     private String type;
@@ -75,21 +70,17 @@ public class ElementTypeHandler extends ElementGroupingHandler {
         return offset++;
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((ref == null)
-        ? 1 : ref.hashCode()) * ((name == null) ? 1 : name.hashCode()))
-        + hashCodeOffset;
+        return (LOCALNAME.hashCode()
+                        * ((id == null) ? 1 : id.hashCode())
+                        * ((ref == null) ? 1 : ref.hashCode())
+                        * ((name == null) ? 1 : name.hashCode()))
+                + hashCodeOffset;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName)
-        throws SAXException {
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
             //
@@ -101,7 +92,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
                     child = sth;
                 } else {
                     throw new SAXNotRecognizedException(
-                        "Extension may only have one 'simpleType' or 'complexType' declaration.");
+                            "Extension may only have one 'simpleType' or 'complexType' declaration.");
                 }
 
                 return sth;
@@ -115,7 +106,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
                     child = sth;
                 } else {
                     throw new SAXNotRecognizedException(
-                        "Extension may only have one 'simpleType' or 'complexType' declaration.");
+                            "Extension may only have one 'simpleType' or 'complexType' declaration.");
                 }
 
                 return sth;
@@ -151,11 +142,11 @@ public class ElementTypeHandler extends ElementGroupingHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts) throws SAXException {
+    public void startElement(String namespaceURI, String localName, Attributes atts)
+            throws SAXException {
         // abstract
         String abstracT1 = atts.getValue("", "abstracT");
 
@@ -265,7 +256,6 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             this.nillable = false;
         } else {
             this.nillable = Boolean.valueOf(nillable1).booleanValue();
-
         }
 
         // ref
@@ -289,43 +279,43 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             type = atts.getValue(namespaceURI, "type");
         }
 
-        if ((ref != null) || "".equalsIgnoreCase(ref)) {
-            if (!(((name == null) || "".equalsIgnoreCase(name))
-                    && ((type == null) || "".equalsIgnoreCase(type)))) {
+        if (ref != null && !ref.isEmpty()) {
+            if (name != null && !name.isEmpty()) {
                 throw new SAXException(
-                    "Elements cannot have both a 'ref' and a 'name' + 'type' attribute");
+                        String.format(
+                                "Schema element declaration cannot have both "
+                                        + "'ref' and 'name' attributes (ref=\"%s\", name=\"%s\")",
+                                ref, name));
             }
-
+            if (type != null && !type.isEmpty()) {
+                throw new SAXException(
+                        String.format(
+                                "Schema element declaration cannot have both "
+                                        + "'ref' and 'type' attributes (ref=\"%s\", type=\"%s\")",
+                                ref, type));
+            }
             name = type = ref;
         }
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
-    /**
-     * <p>
-     * returns the element name
-     * </p>
-     *
-     */
+    /** returns the element name */
     public String getName() {
         return name;
     }
 
     /**
-     * @see org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
+     * @see
+     *     org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
      */
-    protected ElementGrouping compress(SchemaHandler parent)
-        throws SAXException {
+    protected ElementGrouping compress(SchemaHandler parent) throws SAXException {
 
-        synchronized(this){
-            if (cache != null)
-            	return cache;
+        synchronized (this) {
+            if (cache != null) return cache;
             cache = new DefaultElement();
         }
 
@@ -358,8 +348,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             Element e = parent.lookUpElement(ref);
 
             if (e == null) {
-                throw new SAXException("Element '" + ref
-                    + "' was referenced and not found");
+                throw new SAXException("Element '" + ref + "' was referenced and not found");
             }
 
             cache.name = e.getName();
@@ -394,25 +383,18 @@ public class ElementTypeHandler extends ElementGroupingHandler {
         return cache;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 
     /**
-     * <p>
      * Default implementation of an element
-     * </p>
      *
      * @author dzwiers
      */
@@ -432,9 +414,7 @@ public class ElementTypeHandler extends ElementGroupingHandler {
         Element substitutionGroup;
         Type type;
 
-        /**
-         * @see org.geotools.xml.xsi.ElementGrouping#findChildElement(java.lang.String)
-         */
+        /** @see org.geotools.xml.xsi.ElementGrouping#findChildElement(java.lang.String) */
         public Element findChildElement(String name1) {
             if (this.name != null) {
                 if (this.name.equalsIgnoreCase(name1)) {
@@ -445,86 +425,62 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             return (type == null) ? null : type.findChildElement(name1);
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#isAbstract()
-         */
+        /** @see org.geotools.xml.xsi.Element#isAbstract() */
         public boolean isAbstract() {
             return abstracT;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#getBlock()
-         */
+        /** @see org.geotools.xml.xsi.Element#getBlock() */
         public int getBlock() {
             return block;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#getDefault()
-         */
+        /** @see org.geotools.xml.xsi.Element#getDefault() */
         public String getDefault() {
             return defaulT;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#getFinal()
-         */
+        /** @see org.geotools.xml.xsi.Element#getFinal() */
         public int getFinal() {
             return finaL;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#getFixed()
-         */
+        /** @see org.geotools.xml.xsi.Element#getFixed() */
         public String getFixed() {
             return fixed;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#isForm()
-         */
+        /** @see org.geotools.xml.xsi.Element#isForm() */
         public boolean isForm() {
             return form;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.ElementGrouping#getMaxOccurs()
-         */
+        /** @see org.geotools.xml.xsi.ElementGrouping#getMaxOccurs() */
         public int getMaxOccurs() {
             return maxOccurs;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.ElementGrouping#getMinOccurs()
-         */
+        /** @see org.geotools.xml.xsi.ElementGrouping#getMinOccurs() */
         public int getMinOccurs() {
             return minOccurs;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#getLocalName()
-         */
+        /** @see org.geotools.xml.xsi.Element#getLocalName() */
         public String getName() {
             return name;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#isNillable()
-         */
+        /** @see org.geotools.xml.xsi.Element#isNillable() */
         public boolean isNillable() {
             return nillable;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#getSubstitutionGroup()
-         */
+        /** @see org.geotools.xml.xsi.Element#getSubstitutionGroup() */
         public Element getSubstitutionGroup() {
             return substitutionGroup;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#getBinding()
-         */
+        /** @see org.geotools.xml.xsi.Element#getBinding() */
         public Type getType() {
             return type;
         }
@@ -533,28 +489,26 @@ public class ElementTypeHandler extends ElementGroupingHandler {
             return ELEMENT;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Element#getId()
-         */
+        /** @see org.geotools.xml.xsi.Element#getId() */
         public String getId() {
             return id;
         }
 
-        /**
-         * @see org.geotools.xml.schema.Element#getNamespace()
-         */
+        /** @see org.geotools.xml.schema.Element#getNamespace() */
         public URI getNamespace() {
             return namespace;
         }
 
-		public Element findChildElement(String localName, URI namespaceURI) {
-			 if (this.name != null) {
-	                if (this.name.equalsIgnoreCase(localName) && getNamespace().equals(namespaceURI)) {
-	                    return this;
-	                }
-	            }
+        public Element findChildElement(String localName, URI namespaceURI) {
+            if (this.name != null) {
+                if (this.name.equalsIgnoreCase(localName) && getNamespace().equals(namespaceURI)) {
+                    return this;
+                }
+            }
 
-	            return (type == null) ? null : XMLTypeHelper.findChildElement(type, localName, namespaceURI);
-		}
+            return (type == null)
+                    ? null
+                    : XMLTypeHelper.findChildElement(type, localName, namespaceURI);
+        }
     }
 }

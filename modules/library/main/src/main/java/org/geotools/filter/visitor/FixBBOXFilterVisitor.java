@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,24 +17,22 @@
 package org.geotools.filter.visitor;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Visit the BBOX filter elements and make sure they are valid.
- * <p>
- * Any BBOX filter using a literal geometry will be changed to be a literal envelope based on the
+ *
+ * <p>Any BBOX filter using a literal geometry will be changed to be a literal envelope based on the
  * geometry internal envelope. If a max bounding box has been provided it will be used to clip this
  * request envelope.
+ *
  * <p>
- * 
+ *
  * @author Jody
- *
- *
  * @source $URL$
  */
 public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
@@ -49,7 +47,7 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
 
     /**
      * Visitor used to "clean up" any BBOX expressions.
-     * 
+     *
      * @param max Max bounding box used to clip any BBox expressions to ensure they are vaild
      */
     public FixBBOXFilterVisitor(ReferencedEnvelope fsd) {
@@ -110,5 +108,4 @@ public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
             return super.visit(filter, extraData); // allow super class to make a direct copy
         }
     }
-
 }

@@ -1,4 +1,3 @@
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -19,16 +18,23 @@
 package org.geotools.data.sqlserver.jtds;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
-
+import org.geotools.data.Parameter;
 import org.geotools.data.sqlserver.SQLServerDataStoreFactory;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 
-
 public class JTDSSqlServerDataStoreFactory extends SQLServerDataStoreFactory {
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "jtds-sqlserver");
+    public static final Param DBTYPE =
+            new Param(
+                    "dbtype",
+                    String.class,
+                    "Type",
+                    true,
+                    "jtds-sqlserver",
+                    Collections.singletonMap(Parameter.LEVEL, "program"));
     /* (non-Javadoc)
      * @see org.geotools.data.sqlserver.SQLServerDataStoreFactory#getDescription()
      */
@@ -51,7 +57,6 @@ public class JTDSSqlServerDataStoreFactory extends SQLServerDataStoreFactory {
         return "net.sourceforge.jtds.jdbc.Driver";
     }
 
-
     /* (non-Javadoc)
      * @see org.geotools.data.sqlserver.SQLServerDataStoreFactory#getDatabaseID()
      */
@@ -66,24 +71,23 @@ public class JTDSSqlServerDataStoreFactory extends SQLServerDataStoreFactory {
     @SuppressWarnings("unchecked")
     @Override
     protected String getJDBCUrl(Map params) throws IOException {
-        //jdbc:jtds:<server_type>://<server>[:<port>][/<database>][;<property>=<value>[;...]]
+        // jdbc:jtds:<server_type>://<server>[:<port>][/<database>][;<property>=<value>[;...]]
         String host = (String) HOST.lookUp(params);
         Integer port = (Integer) PORT.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         String instance = (String) INSTANCE.lookUp(params);
 
         String url = "jdbc:jtds:sqlserver://" + host;
-        if ( port != null ) {
+        if (port != null) {
             url += ":" + port;
         }
 
-        if ( db != null ) {
+        if (db != null) {
             url += "/" + db;
         }
 
-
         if (instance != null) {
-            url += ";instance="+instance;
+            url += ";instance=" + instance;
         }
 
         Boolean intsec = (Boolean) INTSEC.lookUp(params);
@@ -93,5 +97,4 @@ public class JTDSSqlServerDataStoreFactory extends SQLServerDataStoreFactory {
 
         return url;
     }
-
 }

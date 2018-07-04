@@ -1,35 +1,31 @@
-/**
- * 
- */
+/** */
 package org.geotools.arcsde.data;
-
-import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 
 import com.esri.sde.sdk.client.SeRow;
 import com.esri.sde.sdk.client.SeShape;
 import com.esri.sde.sdk.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * This is an experimental implementation of {@link com.esri.sde.sdk.geom.GeometryFactory} that
  * creates JTS geometries directly by calling {@link SeRow#getGeometry(GeometryFactory, int)},
  * instead of fetching an {@link SeShape} through {@link SeRow#getShape(int)} and then converting it
  * to a JTS geometry. This is work in progress and _experimental_, though.
- * 
- *
  *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *         /geotools/arcsde/data/SeToJTSGeometryFactory.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
+ *     /geotools/arcsde/data/SeToJTSGeometryFactory.java $
  */
 public class SeToJTSGeometryFactory implements GeometryFactory {
 
-    protected static com.vividsolutions.jts.geom.GeometryFactory gf = new com.vividsolutions.jts.geom.GeometryFactory(
-            new LiteCoordinateSequenceFactory());
+    protected static org.locationtech.jts.geom.GeometryFactory gf =
+            new org.locationtech.jts.geom.GeometryFactory(new LiteCoordinateSequenceFactory());
 
     private SeToJTSGeometryFactory delegate;
 
@@ -80,10 +76,7 @@ public class SeToJTSGeometryFactory implements GeometryFactory {
         // System.out.println(Arrays.toString(partOffsets));
     }
 
-    /**
-     * 
-     * 
-     */
+    /** */
     private static final class PolygonFactory extends SeToJTSGeometryFactory {
 
         private LinearRing[] subparts;
@@ -126,7 +119,8 @@ public class SeToJTSGeometryFactory implements GeometryFactory {
             this.currPartNumPoints = numPoints;
             this.currPointNo = 0;
             final int dimension = 2;
-            this.currCoordSeq = gf.getCoordinateSequenceFactory().create(numPoints, dimension);
+            this.currCoordSeq =
+                    JTS.createCS(gf.getCoordinateSequenceFactory(), numPoints, dimension);
         }
 
         @Override
@@ -140,10 +134,7 @@ public class SeToJTSGeometryFactory implements GeometryFactory {
         }
     }
 
-    /**
-     * 
-     * 
-     */
+    /** */
     private static final class MultiPolygonFactory extends SeToJTSGeometryFactory {
 
         private SeToJTSGeometryFactory.PolygonFactory polygonFactory;

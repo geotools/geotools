@@ -1,7 +1,6 @@
 package org.geotools.wcs.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
@@ -21,11 +20,11 @@ import org.w3c.dom.Element;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:TimePeriodType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;complexType name=&quot;TimePeriodType&quot;&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt;This is a variation of the GML TimePeriod, which allows the beginning and end of a time-period to be expressed in short-form inline using the begin/endPosition element, which allows an identifiable TimeInstant to be defined simultaneously with using it, or by reference, using xlinks on the begin/end elements. &lt;/documentation&gt;
@@ -36,30 +35,26 @@ import org.w3c.dom.Element;
  *          &lt;element minOccurs=&quot;0&quot; name=&quot;timeResolution&quot; type=&quot;gml:TimeDurationType&quot;/&gt;
  *      &lt;/sequence&gt;
  *      &lt;attribute default=&quot;#ISO-8601&quot; name=&quot;frame&quot; type=&quot;anyURI&quot; use=&quot;optional&quot;/&gt;
- *  &lt;/complexType&gt; 
- * 	
+ *  &lt;/complexType&gt;
+ *
  * </code>
- *	 </pre>
- * 
- * </p>
- * 
+ *  </pre>
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class TimePeriodTypeBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WCS.TimePeriodType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -67,12 +62,13 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         String frameName = (String) node.getAttributeValue("frame", "#ISO-8601");
         NamedIdentifier frameID = new NamedIdentifier(Citations.CRS, frameName);
@@ -88,13 +84,12 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object,
      *      org.w3c.dom.Document, org.w3c.dom.Element)
      */
     @Override
-    public Element encode(Object object, Document document, Element value)
-            throws Exception {
+    public Element encode(Object object, Document document, Element value) throws Exception {
         Period timePeriod = (Period) object;
 
         if (timePeriod == null) {

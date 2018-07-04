@@ -17,20 +17,14 @@
 package org.geotools.swt.control;
 
 import java.io.IOException;
-
 import javax.swing.JOptionPane;
-
 import org.geotools.data.DataStore;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TypeNameChooser {
-    
-    public static String showTypeNameChooser( DataStore dataStore ){
-        if( dataStore == null ){
+
+    public static String showTypeNameChooser(DataStore dataStore) {
+        if (dataStore == null) {
             return null; // could not connect
         }
         String typeNames[];
@@ -39,15 +33,22 @@ public class TypeNameChooser {
         } catch (IOException e) {
             return null; // could not connect
         }
-        if( typeNames.length == 0 ){
+        if (typeNames.length == 0) {
             return null; // could not connect
         }
         if (typeNames.length == 1) {
             return typeNames[0]; // no need to choose only one option
         } else {
-            String typeName = (String) JOptionPane
-                    .showInputDialog(null, "Please select a type name.", "Type Name",
-                            JOptionPane.QUESTION_MESSAGE, null, typeNames, typeNames[0]);
+            String typeName =
+                    (String)
+                            JOptionPane.showInputDialog(
+                                    null,
+                                    "Please select a type name.",
+                                    "Type Name",
+                                    JOptionPane.QUESTION_MESSAGE,
+                                    null,
+                                    typeNames,
+                                    typeNames[0]);
             return typeName;
         }
     }

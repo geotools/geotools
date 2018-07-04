@@ -21,23 +21,18 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.Neighbor;
 import org.geotools.grid.TestBase;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Unit tests for the OblongGridBuilder class.
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */

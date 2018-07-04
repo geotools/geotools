@@ -17,17 +17,14 @@
 
 package org.geotools.gce.imagemosaic.granulehandler;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import static org.geotools.util.Utilities.toInstanceByClassNameMap;
 
+import java.util.Arrays;
+import java.util.Map;
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
 
-/**
- * Access the granule handler factories
- */
+/** Access the granule handler factories */
 public class GranuleHandlerFactoryFinder {
 
     private static FactoryCreator registry;
@@ -36,24 +33,20 @@ public class GranuleHandlerFactoryFinder {
         // get all GranuleHandlerFactorySPI implementations
         FactoryRegistry serviceRegistry = getServiceRegistry();
         serviceRegistry.scanForPlugins();
-        final Iterator<GranuleHandlerFactorySPI> it = serviceRegistry
-                .getServiceProviders(GranuleHandlerFactorySPI.class, true);
-        Map<String, GranuleHandlerFactorySPI> acceptorFactorySPIMap = new HashMap<>();
-        while (it.hasNext()) {
-            GranuleHandlerFactorySPI GranuleGeometryHandlerFactorySPI = it.next();
-            acceptorFactorySPIMap.put(GranuleGeometryHandlerFactorySPI.getClass().getName(),
-                    GranuleGeometryHandlerFactorySPI);
-        }
-        return acceptorFactorySPIMap;
+        return serviceRegistry
+                .getFactories(GranuleHandlerFactorySPI.class, true)
+                .collect(toInstanceByClassNameMap());
     }
 
     /**
-     * Returns the service registry. The registry will be created the first time this method is invoked.
+     * Returns the service registry. The registry will be created the first time this method is
+     * invoked.
      */
     private static FactoryRegistry getServiceRegistry() {
         if (registry == null) {
-            registry = new FactoryCreator(
-                    Arrays.asList(new Class<?>[] { GranuleHandlerFactorySPI.class }));
+            registry =
+                    new FactoryCreator(
+                            Arrays.asList(new Class<?>[] {GranuleHandlerFactorySPI.class}));
         }
         return registry;
     }

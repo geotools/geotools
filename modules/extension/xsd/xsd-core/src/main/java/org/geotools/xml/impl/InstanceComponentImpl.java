@@ -17,24 +17,17 @@
 package org.geotools.xml.impl;
 
 import org.eclipse.xsd.XSDNamedComponent;
-import org.eclipse.xsd.XSDSchemaContent;
-import org.geotools.xml.AttributeInstance;
 import org.geotools.xml.InstanceComponent;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class InstanceComponentImpl implements InstanceComponent {
-    /** namespace **/
+    /** namespace * */
     String namespace;
 
-    /** name **/
+    /** name * */
     String name;
 
-    /** text **/
+    /** text * */
     StringBuffer text;
 
     public XSDNamedComponent getDeclaration() {
@@ -82,17 +75,15 @@ public abstract class InstanceComponentImpl implements InstanceComponent {
         text.append(ch, start, length);
     }
 
-    /**
-     * By default indicate the elements name
-     */
+    /** By default indicate the elements name */
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append(name);
         buf.append(" ");
         buf.append(namespace);
-        if( text != null ){
+        if (text != null) {
             buf.append("\n\t");
-            buf.append( text );
+            buf.append(text);
         }
         return buf.toString();
     }

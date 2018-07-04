@@ -17,37 +17,27 @@
 package org.geotools.validation.spatial;
 
 import java.util.Map;
-
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
 
 /**
  * PolygonCoveredByPolygonValidation purpose.
- * 
- * <p>
- * Checks to ensure the Polygon is covered by the Polygon.
- * </p>
+ *
+ * <p>Checks to ensure the Polygon is covered by the Polygon.
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class PolygonCoveredByPolygonValidation
-    extends PolygonPolygonAbstractValidation {
+public class PolygonCoveredByPolygonValidation extends PolygonPolygonAbstractValidation {
     /**
      * PointCoveredByLineValidation constructor.
-     * 
-     * <p>
-     * Super
-     * </p>
+     *
+     * <p>Super
      */
     public PolygonCoveredByPolygonValidation() {
         super();
@@ -55,40 +45,38 @@ public class PolygonCoveredByPolygonValidation
 
     /**
      * Ensure Polygon is covered by the Polygon.
-     * 
-     * <p></p>
+     *
+     * <p>
      *
      * @param layers a HashMap of key="TypeName" value="FeatureSource"
      * @param envelope The bounding box of modified features
      * @param results Storage for the error and warning messages
-     *
-     * @return True if no features intersect. If they do then the validation
-     *         failed.
-     *
+     * @return True if no features intersect. If they do then the validation failed.
      * @throws Exception DOCUMENT ME!
-     *
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
-     *      com.vividsolutions.jts.geom.Envelope,
-     *      org.geotools.validation.ValidationResults)
+     *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope,
-        ValidationResults results) throws Exception {
+    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+            throws Exception {
         SimpleFeatureSource polySource1 = (SimpleFeatureSource) layers.get(getPolygonTypeRef());
-        SimpleFeatureSource polySource2 = (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+        SimpleFeatureSource polySource2 =
+                (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
 
         Object[] poly1 = polySource1.getFeatures().toArray();
         Object[] poly2 = polySource2.getFeatures().toArray();
 
         if (!envelope.contains(polySource1.getBounds())) {
-            results.error((SimpleFeature) poly1[0],
-                "Polygon Feature Source is not contained within the Envelope provided.");
+            results.error(
+                    (SimpleFeature) poly1[0],
+                    "Polygon Feature Source is not contained within the Envelope provided.");
 
             return false;
         }
 
         if (!envelope.contains(polySource2.getBounds())) {
-            results.error((SimpleFeature) poly1[0],
-                "Restricted Polygon Feature Source is not contained within the Envelope provided.");
+            results.error(
+                    (SimpleFeature) poly1[0],
+                    "Restricted Polygon Feature Source is not contained within the Envelope provided.");
 
             return false;
         }

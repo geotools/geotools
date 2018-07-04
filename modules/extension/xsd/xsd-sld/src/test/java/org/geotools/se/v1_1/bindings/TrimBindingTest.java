@@ -19,17 +19,13 @@ package org.geotools.se.v1_1.bindings;
 import org.geotools.se.v1_1.SETestSupport;
 import org.opengis.filter.expression.Function;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TrimBindingTest extends SETestSupport {
 
     public void testParse() throws Exception {
         SEMockData.trim(document, document);
         Function f = (Function) parse();
-        
+
         assertEquals("foobar", f.evaluate(null, String.class));
     }
 }

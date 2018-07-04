@@ -27,15 +27,11 @@ import org.geotools.swt.utils.Messages;
 
 /**
  * A map panning tool for {@link SwtMapPane}.
- * 
- * <p>Allows the user to drag the map
- * with the mouse.
- * 
+ *
+ * <p>Allows the user to drag the map with the mouse.
+ *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public class PanTool extends CursorTool {
@@ -51,12 +47,11 @@ public class PanTool extends CursorTool {
     boolean panning;
 
     /**
-     * Constructs a new pan tool. To activate the tool only on certain
-     * mouse events provide a single mask, e.g. {@link SWT#BUTTON1}, or
-     * a combination of multiple SWT-masks.
+     * Constructs a new pan tool. To activate the tool only on certain mouse events provide a single
+     * mask, e.g. {@link SWT#BUTTON1}, or a combination of multiple SWT-masks.
      *
-     * @param triggerButtonMask Mouse button which triggers the tool's activation
-     * or {@value #ANY_BUTTON} if the tool is to be triggered by any button
+     * @param triggerButtonMask Mouse button which triggers the tool's activation or {@value
+     *     #ANY_BUTTON} if the tool is to be triggered by any button
      */
     public PanTool(int triggerButtonMask) {
         super(triggerButtonMask);
@@ -66,22 +61,21 @@ public class PanTool extends CursorTool {
         panning = false;
     }
 
-    /**
-     * Constructs a new pan tool which is triggered by any mouse button.
-     */
+    /** Constructs a new pan tool which is triggered by any mouse button. */
     public PanTool() {
         this(CursorTool.ANY_BUTTON);
     }
 
     /**
-     * Respond to a mouse button press event from the map mapPane. This may
-     * signal the start of a mouse drag. Records the event's window position.
+     * Respond to a mouse button press event from the map mapPane. This may signal the start of a
+     * mouse drag. Records the event's window position.
+     *
      * @param ev the mouse event
      */
     @Override
-    public void onMousePressed( MapMouseEvent ev ) {
+    public void onMousePressed(MapMouseEvent ev) {
 
-        if ( ! isTriggerMouseButton(ev)) {
+        if (!isTriggerMouseButton(ev)) {
             return;
         }
 
@@ -91,10 +85,11 @@ public class PanTool extends CursorTool {
 
     /**
      * Respond to a mouse dragged event. Calls {@link org.geotools.swing.JMapPane#moveImage()}
+     *
      * @param ev the mouse event
      */
     @Override
-    public void onMouseDragged( MapMouseEvent ev ) {
+    public void onMouseDragged(MapMouseEvent ev) {
         if (panning) {
             Point pos = ev.getPoint();
             if (!pos.equals(panePos)) {
@@ -105,21 +100,20 @@ public class PanTool extends CursorTool {
     }
 
     /**
-     * If this button release is the end of a mouse dragged event, requests the
-     * map mapPane to repaint the display
+     * If this button release is the end of a mouse dragged event, requests the map mapPane to
+     * repaint the display
+     *
      * @param ev the mouse event
      */
     @Override
-    public void onMouseReleased( MapMouseEvent ev ) {
+    public void onMouseReleased(MapMouseEvent ev) {
         if (panning) {
             panning = false;
             getMapPane().redraw();
         }
     }
 
-    /**
-     * Get the mouse cursor for this tool
-     */
+    /** Get the mouse cursor for this tool */
     @Override
     public Cursor getCursor() {
         return cursor;

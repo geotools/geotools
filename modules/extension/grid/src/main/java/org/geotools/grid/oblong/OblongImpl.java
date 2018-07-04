@@ -19,21 +19,17 @@ package org.geotools.grid.oblong;
 
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.densify.Densifier;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.densify.Densifier;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Default implementation of {@code Oblong}.
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -44,50 +40,41 @@ public class OblongImpl implements Oblong {
 
     /**
      * Creates a new oblong.
-     * 
+     *
      * @param minX minimum X ordinate
-     *
      * @param minY minimum Y ordinate
-     *
      * @param width span in the X direction
-     *
      * @param height span in the Y direction
-     * 
      * @param crs coordinate reference system (may be {@code null})
      */
-    public OblongImpl(double minX, double minY, double width, double height, CoordinateReferenceSystem crs) {
-        if (width <=0 || height <= 0) {
+    public OblongImpl(
+            double minX, double minY, double width, double height, CoordinateReferenceSystem crs) {
+        if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException("width and height must both be positive");
         }
         envelope = new ReferencedEnvelope(minX, minX + width, minY, minY + height, crs);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public double getArea() {
         return envelope.getArea();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public ReferencedEnvelope getBounds() {
         return new ReferencedEnvelope(envelope);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public Coordinate getCenter() {
         return envelope.centre();
     }
 
     /**
      * {@inheritDoc}
-     * <p>
-     * Vertex 0 is at the min X and Y coordinate (lower left) with the
-     * subsequent vertices being indexed clockwise.
+     *
+     * <p>Vertex 0 is at the min X and Y coordinate (lower left) with the subsequent vertices being
+     * indexed clockwise.
      */
     public Coordinate[] getVertices() {
         Coordinate[] vertices = new Coordinate[4];
@@ -99,18 +86,13 @@ public class OblongImpl implements Oblong {
         return vertices;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public Geometry toGeometry() {
         return geomFactory.toGeometry(envelope);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public Geometry toDenseGeometry(double maxSpacing) {
         return Densifier.densify(this.toGeometry(), maxSpacing);
     }
-
 }

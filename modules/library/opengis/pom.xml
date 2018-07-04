@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
 
 
@@ -165,25 +165,19 @@
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
-    
-    <dependency>
-      <groupId>net.java.dev.jsr-275</groupId>
-      <artifactId>jsr-275</artifactId>
-    </dependency>
-    
+  
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     
-    <!-- Test dependencies -->
     <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-sample-data</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
+      <groupId>systems.uom</groupId>
+      <artifactId>systems-common-java8</artifactId>
     </dependency>
+    
+    <!-- Test dependencies -->
     <dependency>
       <!-- Required for ImageParameterDescriptor test. -->
       <groupId>javax.media</groupId>

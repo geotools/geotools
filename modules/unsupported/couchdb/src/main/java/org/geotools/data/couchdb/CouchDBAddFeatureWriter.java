@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,13 +16,12 @@
  */
 package org.geotools.data.couchdb;
 
-import org.geotools.data.couchdb.client.CouchDBUtils;
-import org.geotools.data.couchdb.client.CouchDBException;
 import java.io.IOException;
 import java.io.StringWriter;
 import org.geotools.data.FeatureWriter;
+import org.geotools.data.couchdb.client.CouchDBException;
+import org.geotools.data.couchdb.client.CouchDBUtils;
 import org.geotools.feature.LenientFeatureFactoryImpl;
-import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geojson.geom.GeometryJSON;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
@@ -30,10 +29,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
-/**
- *
- * @author Ian Schneider (OpenGeo)
- */
+/** @author Ian Schneider (OpenGeo) */
 class CouchDBAddFeatureWriter implements FeatureWriter {
 
     private final SimpleFeatureType featureType;
@@ -51,8 +47,10 @@ class CouchDBAddFeatureWriter implements FeatureWriter {
         this.json = new GeometryJSON();
         // @todo non scalable in memory buffer
         this.buffer = new StringWriter();
-        featureFactory = dataStore.getFeatureFactory() == null
-                ? new LenientFeatureFactoryImpl() : dataStore.getFeatureFactory();
+        featureFactory =
+                dataStore.getFeatureFactory() == null
+                        ? new LenientFeatureFactoryImpl()
+                        : dataStore.getFeatureFactory();
 
         String localName = featureType.getTypeName(); // this will actuall be the full name
         int idx = localName.lastIndexOf(':');

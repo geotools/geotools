@@ -47,7 +47,7 @@ You can list available drivers::
 
 To connect to an OGR layer there are two parameters:
 
-* DriverName = The name of the OGR Driver (http://www.gdal.org/ogr/ogr_formats.html). 
+* DriverName = The name of the OGR Driver (http://www.gdal.org/ogr_formats.html). 
 
 * DataSourceName = The name of the file or data source connection. This value depends on what driver you are using.
 
@@ -70,14 +70,14 @@ Here is how you would read a shapefile::
        it.close();
     }
 
-Here is how you would count the features in a GeoJSON file::
+Here is how you would count the features in a GeoJSON file. See the `GDAL GeoJSON documentation <http://www.gdal.org/drv_geojson.html>`_ for layer naming details::
 
     File file = new File("states.geojson");
     Map<String, String> connectionParams = new HashMap<String, String>();
     connectionParams.put("DriverName", "GeoJSON");
     connectionParams.put("DatasourceName", file.getAbsolutePath());
     DataStore dataStore = DataStoreFinder.getDataStore(connectionParams);
-    System.out.println(dataStore.getFeatureSource("OGRGeoJSON").getCount(Query.ALL));
+    System.out.println(dataStore.getFeatureSource(dataStore.getTypeNames()[0]).getCount(Query.ALL));
 
 Here is how you would write a GeoJSON file::
 

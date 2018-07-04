@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,16 +17,14 @@
  */
 package org.geotools.ysld.transform.sld;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.IOException;
-import java.io.Writer;
-
 import static javax.xml.stream.XMLStreamConstants.*;
 
-/**
- * Transforms an XML/SLD stream to a Yaml/Ysld stream.
- */
+import java.io.IOException;
+import java.io.Writer;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
+/** Transforms an XML/SLD stream to a Yaml/Ysld stream. */
 public class SldTransformer {
 
     XMLStreamReader xml;
@@ -52,45 +50,43 @@ public class SldTransformer {
 
             SldTransformHandler h = context.handlers.peek();
             switch (next) {
-            case PROCESSING_INSTRUCTION:
-            case COMMENT:
-            case SPACE:
-                break;
-            case START_DOCUMENT:
-                // h.document(xml, context);
-                break;
-            case START_ELEMENT:
-                if (root) {
-                    // root element, fill in some context
-                    String ver = xml.getAttributeValue(null, "version");
-                    if (ver != null) {
-                        context.version(ver);
+                case PROCESSING_INSTRUCTION:
+                case COMMENT:
+                case SPACE:
+                    break;
+                case START_DOCUMENT:
+                    // h.document(xml, context);
+                    break;
+                case START_ELEMENT:
+                    if (root) {
+                        // root element, fill in some context
+                        String ver = xml.getAttributeValue(null, "version");
+                        if (ver != null) {
+                            context.version(ver);
+                        }
                     }
-                }
-                root = false;
-                h.element(xml, context);
-                break;
-            case ATTRIBUTE:
-                h.attribute(xml, context);
-                break;
-            case CHARACTERS:
-                h.characters(xml, context);
-                break;
-            case END_ELEMENT:
-                h.endElement(xml, context);
-                break;
-            case END_DOCUMENT:
-                // h.endDocument(xml, context);
-                break;
+                    root = false;
+                    h.element(xml, context);
+                    break;
+                case ATTRIBUTE:
+                    h.attribute(xml, context);
+                    break;
+                case CHARACTERS:
+                    h.characters(xml, context);
+                    break;
+                case END_ELEMENT:
+                    h.endElement(xml, context);
+                    break;
+                case END_DOCUMENT:
+                    // h.endDocument(xml, context);
+                    break;
             }
 
             if (context.moveToNext) {
                 next = xml.hasNext() ? xml.next() : null;
             }
-
         }
 
         context.endDocument().endStream();
     }
-
 }

@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>modules</artifactId>
-		<version>17-SNAPSHOT</version>
+		<version>20-SNAPSHOT</version>
 	</parent>
 
 
@@ -56,6 +56,17 @@
 		<!-- These modules are included in the build and deploy -->
 		<!-- but have not passed our QA and Doc requirements -->
 		<!-- so you may/should consider them risky -->
+		<profile>
+			<id>gtopo30</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>gtopo30</module>
+			</modules>
+		</profile>
 		<profile>
 			<id>efeature</id>
 			<modules>
@@ -156,18 +167,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>tile</id>
-			<modules>
-				<module>tile-client</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>mongodb</id>
-			<modules>
-				<module>mongodb</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>geojsonstore</id>
 			<activation>
 				<property>
@@ -179,23 +178,35 @@
 				<module>geojson</module>
 			</modules>
 		</profile>
-		<profile>
-            <id>polylabel</id>
+        <profile>
+          <id>javafx</id>
+          <modules>
+            <module>javafx</module>
+          </modules>
+        </profile>
+        <profile>
+            <id>mbstyle</id>
             <activation>
                 <property>
                     <name>all</name>
                 </property>
             </activation>
             <modules>
-                <module>polylabel</module>
-            </modules>
-        </profile>
-        <profile>               
-            <id>mbstyle</id>
-            <modules>
                 <module>mbstyle</module>
             </modules>
         </profile>        
+        <profile>
+            <id>s3-geotiff</id>
+            <modules>
+                <module>s3-geotiff</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>ogr</id>
+            <modules>
+                <module>ogr</module>
+            </modules>
+        </profile>
 		<profile>
 			<id>unsupported</id>
 			<activation>
@@ -207,16 +218,23 @@
 				<module>csv</module>
 				<module>epsg-oracle</module>
 				<module>jdbc-ng</module>
-				<module>matfile5</module>
 				<module>sfs</module>
 				<module>feature-aggregate</module>
-				<module>mongodb</module>
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>
-				<module>polylabel</module>
+        <module>s3-geotiff</module>
+        <module>gtopo30</module>
 			</modules>
 		</profile>
+
+		<profile>
+			<id>arcgis-rest</id>
+			<modules>
+				<module>arcgis-rest</module>
+			</modules>
+		</profile>
+
 	</profiles>
 
 	<!-- Modules included in a normal build -->
@@ -230,7 +248,7 @@
 		<module>geojson</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
-		<module>polylabel</module>
+
 	</modules>
 
 </project>

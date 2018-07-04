@@ -16,26 +16,10 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
-import org.geotools.gml3.GML;
 import org.geotools.gml3.bindings.SurfaceTypeBinding;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.locationtech.jts.geom.GeometryFactory;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiPolygonTypeBinding extends org.geotools.gml3.bindings.MultiPolygonTypeBinding {
 
     public MultiPolygonTypeBinding(GeometryFactory gFactory) {
@@ -43,10 +27,9 @@ public class MultiPolygonTypeBinding extends org.geotools.gml3.bindings.MultiPol
     }
 
     /**
-     * Implement comparable because MultiPolygonBinding, MultiSurfaceBinding and Surface
-     * are bound to the same class, MultiPolygon. Since MultiPolygon is deprecated
-     * by gml3 and MultiSurface only has children that are also mapped to MultiPolygons,
-     * Surface always wins.
+     * Implement comparable because MultiPolygonBinding, MultiSurfaceBinding and Surface are bound
+     * to the same class, MultiPolygon. Since MultiPolygon is deprecated by gml3 and MultiSurface
+     * only has children that are also mapped to MultiPolygons, Surface always wins.
      */
     public int compareTo(Object o) {
         if (o instanceof SurfaceTypeBinding) {

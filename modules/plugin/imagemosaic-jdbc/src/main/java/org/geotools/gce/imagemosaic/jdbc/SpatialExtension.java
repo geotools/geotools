@@ -18,63 +18,65 @@ package org.geotools.gce.imagemosaic.jdbc;
 
 /**
  * Enum for support spatial extension
- * 
+ *
  * @author mcr
- * 
- *
- *
  * @source $URL$
  */
 public enum SpatialExtension {
-	DB2("DB2"), ORACLE("ORACLE"), POSTGIS("POSTGIS"), MYSQL("MYSQL"), UNIVERSAL(
-			"UNIVERSAL"), GEORASTER("GEORASTER"),PGRASTER("PGRASTER"), CUSTOM("CUSTOM");
-	private SpatialExtension(String name) {
-		this.name = name;
-	}
+    DB2("DB2"),
+    ORACLE("ORACLE"),
+    POSTGIS("POSTGIS"),
+    MYSQL("MYSQL"),
+    UNIVERSAL("UNIVERSAL"),
+    GEORASTER("GEORASTER"),
+    PGRASTER("PGRASTER"),
+    CUSTOM("CUSTOM");
 
-	private String name;
+    private SpatialExtension(String name) {
+        this.name = name;
+    }
 
-	public String toString() {
-		return name;
-	}
+    private String name;
 
-	/**
-	 * Factory method for obtaining a SpatialExtension object from a string
-	 * 
-	 * @param spatName
-	 *            The string representation for teh SpatialExtension object
-	 * @return the corresponding SpatialExtension object, null if spatname is
-	 *         unknown
-	 */
-	static SpatialExtension fromString(String spatName) {
-		if ("DB2".equalsIgnoreCase(spatName)) {
-			return DB2;
-		}
+    public String toString() {
+        return name;
+    }
 
-		if ("ORACLE".equalsIgnoreCase(spatName)) {
-			return ORACLE;
-		}
+    /**
+     * Factory method for obtaining a SpatialExtension object from a string
+     *
+     * @param spatName The string representation for teh SpatialExtension object
+     * @return the corresponding SpatialExtension object, null if spatname is unknown
+     */
+    static SpatialExtension fromString(String spatName) {
+        if ("DB2".equalsIgnoreCase(spatName)) {
+            return DB2;
+        }
 
-		if ("MYSQL".equalsIgnoreCase(spatName)) {
-			return MYSQL;
-		}
+        if ("ORACLE".equalsIgnoreCase(spatName)) {
+            return ORACLE;
+        }
 
-		if ("POSTGIS".equalsIgnoreCase(spatName)) {
-			return POSTGIS;
-		}
+        if ("MYSQL".equalsIgnoreCase(spatName)) {
+            return MYSQL;
+        }
 
-		if ("UNIVERSAL".equalsIgnoreCase(spatName)) {
-			return UNIVERSAL;
-		}
-                if ("GEORASTER".equalsIgnoreCase(spatName)) {
-                        return GEORASTER;
-                }
-                if ("PGRASTER".equalsIgnoreCase(spatName)) {
-                    return PGRASTER;
-                }
-                if ("CUSTOM".equalsIgnoreCase(spatName)) {
-                    return CUSTOM;
-                }
-		return null;
-	}
+        if ("POSTGIS".equalsIgnoreCase(spatName)) {
+            return POSTGIS;
+        }
+
+        if ("UNIVERSAL".equalsIgnoreCase(spatName)) {
+            return UNIVERSAL;
+        }
+        if ("GEORASTER".equalsIgnoreCase(spatName)) {
+            return GEORASTER;
+        }
+        if ("PGRASTER".equalsIgnoreCase(spatName)) {
+            return PGRASTER;
+        }
+        if ("CUSTOM".equalsIgnoreCase(spatName)) {
+            return CUSTOM;
+        }
+        return null;
+    }
 }

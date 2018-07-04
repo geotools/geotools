@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,7 +17,6 @@
 package org.geotools.data.memory;
 
 import java.io.IOException;
-
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
@@ -44,16 +43,14 @@ public class MemoryFeatureReaderTest extends DataTestCase {
         memoryDataStore = new MemoryDataStore(roadFeatures);
     }
 
-    public void testReaderIsNotBrokenWhileWritingFeatureDirectly()
-            throws IOException {
+    public void testReaderIsNotBrokenWhileWritingFeatureDirectly() throws IOException {
         // a write should not "destroy" readers
         int expectedFeatureCount = roadFeatures.length;
         int currentFeatureCount = 0;
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = memoryDataStore
-                .getFeatureReader(
-                        new Query(roadType.getTypeName(), Filter.INCLUDE),
-                        transaction);
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                memoryDataStore.getFeatureReader(
+                        new Query(roadType.getTypeName(), Filter.INCLUDE), transaction);
 
         // start iterating through content
         if (featureReader.hasNext()) {
@@ -67,16 +64,14 @@ public class MemoryFeatureReaderTest extends DataTestCase {
         assertReaderHasFeatureCount(expectedFeatureCount, currentFeatureCount, featureReader);
     }
 
-    public void testReaderIsNotBrokenWhileWritingWithWriterAndTransaction()
-            throws IOException {
+    public void testReaderIsNotBrokenWhileWritingWithWriterAndTransaction() throws IOException {
         // a write should not "destroy" readers
         int expectedFeatureCount = roadFeatures.length;
         int currentFeatureCount = 0;
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = memoryDataStore
-                .getFeatureReader(
-                        new Query(roadType.getTypeName(), Filter.INCLUDE),
-                        transaction);
+        FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                memoryDataStore.getFeatureReader(
+                        new Query(roadType.getTypeName(), Filter.INCLUDE), transaction);
 
         // start iterating through content
         if (featureReader.hasNext()) {
@@ -84,8 +79,8 @@ public class MemoryFeatureReaderTest extends DataTestCase {
             currentFeatureCount++;
         }
 
-        FeatureWriter<SimpleFeatureType, SimpleFeature> featureWriter = memoryDataStore
-                .getFeatureWriter(roadType.getTypeName(), transaction);
+        FeatureWriter<SimpleFeatureType, SimpleFeature> featureWriter =
+                memoryDataStore.getFeatureWriter(roadType.getTypeName(), transaction);
 
         while (featureWriter.hasNext()) {
             featureWriter.next();
@@ -103,15 +98,19 @@ public class MemoryFeatureReaderTest extends DataTestCase {
         transaction.close();
     }
 
-    private void assertReaderHasFeatureCount(int expectedFeatureCount,
+    private void assertReaderHasFeatureCount(
+            int expectedFeatureCount,
             int currentFeatureCount,
-            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader) throws IOException {
+            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader)
+            throws IOException {
         while (featureReader.hasNext()) {
             featureReader.next();
             currentFeatureCount++;
         }
 
-        assertEquals("a write in MemoryDataStore should not 'destroy' readers",
-                expectedFeatureCount, currentFeatureCount);
+        assertEquals(
+                "a write in MemoryDataStore should not 'destroy' readers",
+                expectedFeatureCount,
+                currentFeatureCount);
     }
 }

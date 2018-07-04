@@ -62,7 +62,7 @@ Supported Formats
 
 * raster formats and data access
   
-  arcsde, arcgrid, geotiff, grassraster, gtopo30, image (JPEG, TIFF, GIF, PNG), imageio-ext-gdal, 
+  arcsde, arcgrid, geotiff, grassraster, image (JPEG, TIFF, GIF, PNG), imageio-ext-gdal, 
   imagemosaic, imagepyramid, JP2K, matlab
   
 * Database "jdbc-ng" support
@@ -76,7 +76,7 @@ Supported Formats
 * XML Bindings
 
   Java data structures and bindings provided for the following:
-  xsd-core (xml simple types), fes, filter, gml2, gml3, kml, ows, sld, wcs, wfs, wms, wps, vpf.
+  xsd-core (xml simple types), fes, filter, gml2, gml3, kml, ows, sld, wcs, wfs, wms, wps.
   
   Additional Geometry, Filter and Style parser/encoders available for DOM and SAX applications.
   

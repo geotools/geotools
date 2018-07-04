@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Swing Action classes to use with controls such as toolbar buttons.
- */
+/** Swing Action classes to use with controls such as toolbar buttons. */
 package org.geotools.swing.action;

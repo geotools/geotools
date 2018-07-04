@@ -19,14 +19,13 @@ package org.geotools.data.wfs.internal.v2_0;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
+import net.opengis.wfs20.AbstractType;
+import net.opengis.wfs20.FeatureTypeType;
 import org.eclipse.emf.common.util.ECollections;
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import net.opengis.wfs20.AbstractType;
-import net.opengis.wfs20.FeatureTypeType;
 
 /**
  * Test class for {@link FeatureTypeInfoImpl}.
@@ -49,12 +48,11 @@ public class FeatureTypeInfoImplTest {
     // One parameter, no view params, no mappings => no parameters
     @Test
     public void testGetAbstractWhenFeatureTypeTypeAbstractIsEmpty() {
-        when(fttMock.getAbstract()).thenReturn(ECollections.<AbstractType> emptyEList());
+        when(fttMock.getAbstract()).thenReturn(ECollections.<AbstractType>emptyEList());
         String abstractExpected = "";
 
         String abstractResult = featureType.getAbstract();
 
         assertEquals(abstractExpected, abstractResult);
     }
-
 }

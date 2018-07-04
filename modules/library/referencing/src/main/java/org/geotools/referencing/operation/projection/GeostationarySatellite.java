@@ -19,6 +19,8 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import java.awt.geom.Point2D;
+import java.util.Collection;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.metadata.iso.citation.Citations;
@@ -29,23 +31,18 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-
-import javax.measure.unit.SI;
-
-import java.awt.geom.Point2D;
-import java.util.Collection;
+import si.uom.SI;
 
 /**
  * The Geostationary Satellite Projection
- * <p>
- * Adapted from https://github.com/OSGeo/proj.4/blob/4.9/src/PJ_geos.c
- * <p>
- * NOTE: Not all valid coordinates in this projection will transform to valid
- * terrestrial coordinates, this is especially true of "Full Disk" earth
- * coverages.  If one must deal with coverages in this projection with
- * generalized code which requires the coverage bounding-box coordinates
- * to transform to valid terrestrial values consider clipping to a rectangle
- * inscribing the ellipsoid.
+ *
+ * <p>Adapted from https://github.com/OSGeo/proj.4/blob/4.9/src/PJ_geos.c
+ *
+ * <p>NOTE: Not all valid coordinates in this projection will transform to valid terrestrial
+ * coordinates, this is especially true of "Full Disk" earth coverages. If one must deal with
+ * coverages in this projection with generalized code which requires the coverage bounding-box
+ * coordinates to transform to valid terrestrial values consider clipping to a rectangle inscribing
+ * the ellipsoid.
  *
  * @author Tom Kunicki
  */
@@ -58,10 +55,12 @@ public abstract class GeostationarySatellite extends MapProjection {
     final double radius_g_1;
     final double C;
 
-    public GeostationarySatellite(ParameterValueGroup parameters) throws ParameterNotFoundException {
+    public GeostationarySatellite(ParameterValueGroup parameters)
+            throws ParameterNotFoundException {
         super(parameters);
 
-        final Collection<GeneralParameterDescriptor> expected = getParameterDescriptors().descriptors();
+        final Collection<GeneralParameterDescriptor> expected =
+                getParameterDescriptors().descriptors();
 
         // from https://github.com/OSGeo/proj.4/blob/4.9/src/projects.h
         //  a,  /* major axis or radius if es==0 */
@@ -108,10 +107,11 @@ public abstract class GeostationarySatellite extends MapProjection {
         }
 
         @Override
-        protected Point2D transformNormalized(double lambda, double phi, Point2D p2d) throws ProjectionException {
+        protected Point2D transformNormalized(double lambda, double phi, Point2D p2d)
+                throws ProjectionException {
             // from https://github.com/OSGeo/proj.4/blob/4.9/src/PJ_geos.c
             /* Calculation of the three components of the vector from satellite to
-            ** position on earth surface (lon,lat).*/
+             ** position on earth surface (lon,lat).*/
             double tmp = Math.cos(phi);
             double Vx = Math.cos(lambda) * tmp;
             double Vy = Math.sin(lambda) * tmp;
@@ -131,7 +131,8 @@ public abstract class GeostationarySatellite extends MapProjection {
         }
 
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y, Point2D p2d) throws ProjectionException {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D p2d)
+                throws ProjectionException {
             // from https://github.com/OSGeo/proj.4/blob/4.9/src/PJ_geos.c
             /* Setting three components of vector from satellite to position.*/
             double Vx = -1.;
@@ -187,12 +188,13 @@ public abstract class GeostationarySatellite extends MapProjection {
         }
 
         @Override
-        protected Point2D transformNormalized(double lambda, double phi, Point2D p2d) throws ProjectionException {
+        protected Point2D transformNormalized(double lambda, double phi, Point2D p2d)
+                throws ProjectionException {
             // from https://github.com/OSGeo/proj.4/blob/4.9/src/PJ_geos.c
             /* Calculation of geocentric latitude. */
             phi = Math.atan(radius_p2 * Math.tan(phi));
             /* Calculation of the three components of the vector from satellite to
-            ** position on earth surface (lon,lat).*/
+             ** position on earth surface (lon,lat).*/
             double r = radius_p / Math.hypot(radius_p * Math.cos(phi), Math.sin(phi));
             double Vx = r * Math.cos(lambda) * Math.cos(phi);
             double Vy = r * Math.sin(lambda) * Math.cos(phi);
@@ -212,7 +214,8 @@ public abstract class GeostationarySatellite extends MapProjection {
         }
 
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y, Point2D p2d) throws ProjectionException {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D p2d)
+                throws ProjectionException {
             // from https://github.com/OSGeo/proj.4/blob/4.9/src/PJ_geos.c
             /* Setting three components of vector from satellite to position.*/
             double Vx = -1.;
@@ -241,16 +244,16 @@ public abstract class GeostationarySatellite extends MapProjection {
         }
     }
 
-    /**
-     * Circumscribed rectangle (smallest) for full disk earth image
-     */
-    public static Envelope2D circumscribeFullDisk(CoordinateReferenceSystem geosCRS) throws TransformException, FactoryException {
+    /** Circumscribed rectangle (smallest) for full disk earth image */
+    public static Envelope2D circumscribeFullDisk(CoordinateReferenceSystem geosCRS)
+            throws TransformException, FactoryException {
 
         if (!isGeostationaryCRS(geosCRS)) {
             return null;
         }
 
-        MathTransform mt = CRS.findMathTransform(geosCRS, CRS.getProjectedCRS(geosCRS).getBaseCRS(), true);
+        MathTransform mt =
+                CRS.findMathTransform(geosCRS, CRS.getProjectedCRS(geosCRS).getBaseCRS(), true);
         MathTransform imt = mt.inverse();
 
         ParameterValueGroup parameters = CRS.getMapProjection(geosCRS).getParameterValues();
@@ -283,23 +286,30 @@ public abstract class GeostationarySatellite extends MapProjection {
     }
 
     /**
-     * Inscribed rectangle for for full disk earth image (not largest inscribing rectangle but close, hence "Estimate")
+     * Inscribed rectangle for for full disk earth image (not largest inscribing rectangle but
+     * close, hence "Estimate")
      */
-    public static Envelope2D inscribeFullDiskEstimate(CoordinateReferenceSystem geosCRS) throws TransformException, FactoryException {
+    public static Envelope2D inscribeFullDiskEstimate(CoordinateReferenceSystem geosCRS)
+            throws TransformException, FactoryException {
         Envelope2D circumscribed = circumscribeFullDisk(geosCRS);
         return (circumscribed == null) ? null : doInscribeFullDisk(circumscribed);
     }
 
-    private final static double SQRT2 = Math.sqrt(2.);
+    private static final double SQRT2 = Math.sqrt(2.);
+
     static Envelope2D doInscribeFullDisk(Envelope2D circumscribed) {
         double dx = circumscribed.getWidth() / SQRT2;
         double dy = circumscribed.getHeight() / SQRT2;
-        return new Envelope2D(circumscribed.getCoordinateReferenceSystem(),
-                circumscribed.getCenterX() - dx / 2., circumscribed.getCenterY() - dy / 2., dx, dy);
+        return new Envelope2D(
+                circumscribed.getCoordinateReferenceSystem(),
+                circumscribed.getCenterX() - dx / 2.,
+                circumscribed.getCenterY() - dy / 2.,
+                dx,
+                dy);
     }
 
     static boolean isGeostationaryCRS(CoordinateReferenceSystem crs) {
-        if(crs == null) {
+        if (crs == null) {
             return false;
         }
         String code = crs.getName().getCode();
@@ -308,27 +318,30 @@ public abstract class GeostationarySatellite extends MapProjection {
 
     public static class Provider extends MapProjection.AbstractProvider {
 
-        final static ParameterDescriptor SATELLITE_HEIGHT = createDescriptor(
-                new NamedIdentifier[]{
-                        new NamedIdentifier(Citations.OGC, "satellite_height"),
-                },
-                35785831, // default
-                0.0, // minimum
-                Double.POSITIVE_INFINITY, // maximum
-                SI.METER);
+        static final ParameterDescriptor SATELLITE_HEIGHT =
+                createDescriptor(
+                        new NamedIdentifier[] {
+                            new NamedIdentifier(Citations.OGC, "satellite_height"),
+                        },
+                        35785831, // default
+                        0.0, // minimum
+                        Double.POSITIVE_INFINITY, // maximum
+                        SI.METRE);
 
-        final static ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
-                new NamedIdentifier[]{
-                        new NamedIdentifier(Citations.OGC, "GEOS"),
-                        new NamedIdentifier(Citations.OGC, "Geostationary_Satellite")
-                }, new ParameterDescriptor[]{
-                        SEMI_MAJOR,
-                        SEMI_MINOR,
-                        CENTRAL_MERIDIAN,
-                        SATELLITE_HEIGHT,
-                        FALSE_EASTING,
-                        FALSE_NORTHING
-                });
+        static final ParameterDescriptorGroup PARAMETERS =
+                createDescriptorGroup(
+                        new NamedIdentifier[] {
+                            new NamedIdentifier(Citations.OGC, "GEOS"),
+                            new NamedIdentifier(Citations.OGC, "Geostationary_Satellite")
+                        },
+                        new ParameterDescriptor[] {
+                            SEMI_MAJOR,
+                            SEMI_MINOR,
+                            CENTRAL_MERIDIAN,
+                            SATELLITE_HEIGHT,
+                            FALSE_EASTING,
+                            FALSE_NORTHING
+                        });
 
         public Provider() {
             super(PARAMETERS);

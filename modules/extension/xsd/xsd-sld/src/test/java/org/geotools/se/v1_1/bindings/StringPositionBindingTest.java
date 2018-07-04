@@ -19,17 +19,13 @@ package org.geotools.se.v1_1.bindings;
 import org.geotools.se.v1_1.SETestSupport;
 import org.opengis.filter.expression.Function;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class StringPositionBindingTest extends SETestSupport {
 
     public void testParse() throws Exception {
         SEMockData.stringPosition(document, document);
         Function f = (Function) parse();
-        
+
         assertEquals("4", f.evaluate(null, String.class));
     }
 }

@@ -18,25 +18,18 @@ package org.geotools.gml3.bindings.ext;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.gml3.bindings.CurvePropertyTypeBinding;
 import org.geotools.gml3.bindings.CurveTypeBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
+/** @source $URL$ */
+public class CurveArrayPropertyTypeBinding
+        extends org.geotools.gml3.bindings.CurveArrayPropertyTypeBinding implements Comparable {
 
-/**
- * 
- *
- * @source $URL$
- */
-public class CurveArrayPropertyTypeBinding 
-    extends org.geotools.gml3.bindings.CurveArrayPropertyTypeBinding 
-    implements Comparable {
-    
     public CurveArrayPropertyTypeBinding(GeometryFactory gf) {
         super(gf);
     }
@@ -47,35 +40,36 @@ public class CurveArrayPropertyTypeBinding
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+
         List<LineString> lineStrings = new ArrayList<LineString>();
 
         // This property element contains a list of curves.
-        // The order of the elements is significant and shall be preserved when processing the array.
-        for (Node child : (List<Node>)node.getChildren()) {
+        // The order of the elements is significant and shall be preserved when processing the
+        // array.
+        for (Node child : (List<Node>) node.getChildren()) {
             Object nodeValue = child.getValue();
             if (nodeValue instanceof MultiLineString) {
-                MultiLineString curve = (MultiLineString)nodeValue;
+                MultiLineString curve = (MultiLineString) nodeValue;
                 for (int i = 0; i < curve.getNumGeometries(); i++) {
-                    LineString lineString = (LineString)curve.getGeometryN(i);
+                    LineString lineString = (LineString) curve.getGeometryN(i);
                     lineStrings.add(lineString);
                 }
             } else if (nodeValue instanceof LineString) {
-                LineString lineString = (LineString)nodeValue;
+                LineString lineString = (LineString) nodeValue;
                 lineStrings.add(lineString);
             }
         }
-        
+
         return gf.createMultiLineString(GeometryFactory.toLineStringArray(lineStrings));
     }
-    
+
     public int compareTo(Object o) {
         if (o instanceof CurveTypeBinding || o instanceof CurvePropertyTypeBinding) {
             return 1;

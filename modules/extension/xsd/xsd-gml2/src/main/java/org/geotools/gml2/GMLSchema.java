@@ -21,43 +21,36 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.feature.type.ProfileImpl;
 import org.geotools.feature.type.SchemaImpl;
-import org.geotools.gml2.GML;
 import org.geotools.xs.XSSchema;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLSchema extends SchemaImpl {
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType abstract="true" name="AbstractGeometryType"&gt;
      *      &lt;annotation&gt;
@@ -77,17 +70,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType ABSTRACTGEOMETRYTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "AbstractGeometryType"), Geometry.class, false, true,
-            Collections.EMPTY_LIST, XSSchema.ANYTYPE_TYPE, null);
+    public static final AttributeType ABSTRACTGEOMETRYTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "AbstractGeometryType"),
+                    Geometry.class,
+                    false,
+                    true,
+                    Collections.EMPTY_LIST,
+                    XSSchema.ANYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType abstract="true" name="AbstractGeometryCollectionBaseType"&gt;
      *      &lt;annotation&gt;
@@ -106,18 +105,24 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType ABSTRACTGEOMETRYCOLLECTIONBASETYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "AbstractGeometryCollectionBaseType"),
-            GeometryCollection.class, false, true, Collections.EMPTY_LIST,
-            ABSTRACTGEOMETRYTYPE_TYPE, null);
+    public static final AttributeType ABSTRACTGEOMETRYCOLLECTIONBASETYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl(
+                            "http://www.opengis.net/gml", "AbstractGeometryCollectionBaseType"),
+                    GeometryCollection.class,
+                    false,
+                    true,
+                    Collections.EMPTY_LIST,
+                    ABSTRACTGEOMETRYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="GeometryAssociationType"&gt;
      *      &lt;annotation&gt;
@@ -140,17 +145,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType GEOMETRYASSOCIATIONTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "GeometryAssociationType"), Geometry.class, false,
-            false, Collections.EMPTY_LIST, XSSchema.ANYTYPE_TYPE, null);
+    public static final AttributeType GEOMETRYASSOCIATIONTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "GeometryAssociationType"),
+                    Geometry.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    XSSchema.ANYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="GeometryCollectionType"&gt;
      *      &lt;annotation&gt;
@@ -172,17 +183,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType GEOMETRYCOLLECTIONTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "GeometryCollectionType"), GeometryCollection.class,
-            false, false, Collections.EMPTY_LIST, ABSTRACTGEOMETRYCOLLECTIONBASETYPE_TYPE, null);
+    public static final AttributeType GEOMETRYCOLLECTIONTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "GeometryCollectionType"),
+                    GeometryCollection.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    ABSTRACTGEOMETRYCOLLECTIONBASETYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="CoordType"&gt;
      *      &lt;annotation&gt;
@@ -199,17 +216,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType COORDTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "CoordType"), Coordinate.class, false, false,
-            Collections.EMPTY_LIST, XSSchema.ANYTYPE_TYPE, null);
+    public static final AttributeType COORDTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "CoordType"),
+                    Coordinate.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    XSSchema.ANYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="CoordinatesType"&gt;
      *      &lt;annotation&gt;
@@ -232,17 +255,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType COORDINATESTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "CoordinatesType"), CoordinateSequence.class, false,
-            false, Collections.EMPTY_LIST, XSSchema.STRING_TYPE, null);
+    public static final AttributeType COORDINATESTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "CoordinatesType"),
+                    CoordinateSequence.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    XSSchema.STRING_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="LinearRingType"&gt;
      *      &lt;annotation&gt;
@@ -266,17 +295,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType LINEARRINGTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "LinearRingType"), LinearRing.class, false, false,
-            Collections.EMPTY_LIST, ABSTRACTGEOMETRYTYPE_TYPE, null);
+    public static final AttributeType LINEARRINGTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "LinearRingType"),
+                    LinearRing.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    ABSTRACTGEOMETRYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="LinearRingMemberType"&gt;
      *      &lt;annotation&gt;
@@ -295,17 +330,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType LINEARRINGMEMBERTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "LinearRingMemberType"), LinearRing.class, false,
-            false, Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType LINEARRINGMEMBERTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "LinearRingMemberType"),
+                    LinearRing.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="PolygonType"&gt;
      *      &lt;annotation&gt;
@@ -326,17 +367,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType POLYGONTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "PolygonType"), Polygon.class, false, false,
-            Collections.EMPTY_LIST, ABSTRACTGEOMETRYTYPE_TYPE, null);
+    public static final AttributeType POLYGONTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "PolygonType"),
+                    Polygon.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    ABSTRACTGEOMETRYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="PolygonMemberType"&gt;
      *      &lt;annotation&gt;
@@ -354,17 +401,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType POLYGONMEMBERTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "PolygonMemberType"), Polygon.class, false, false,
-            Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType POLYGONMEMBERTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "PolygonMemberType"),
+                    Polygon.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="MultiPolygonType"&gt;
      *      &lt;annotation&gt;
@@ -386,17 +439,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType MULTIPOLYGONTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "MultiPolygonType"), MultiPolygon.class, false,
-            false, Collections.EMPTY_LIST, GEOMETRYCOLLECTIONTYPE_TYPE, null);
+    public static final AttributeType MULTIPOLYGONTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "MultiPolygonType"),
+                    MultiPolygon.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYCOLLECTIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="MultiPolygonPropertyType"&gt;
      *      &lt;annotation&gt;
@@ -418,17 +477,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType MULTIPOLYGONPROPERTYTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "MultiPolygonPropertyType"), MultiPolygon.class,
-            false, false, Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType MULTIPOLYGONPROPERTYTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "MultiPolygonPropertyType"),
+                    MultiPolygon.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="MultiGeometryPropertyType"&gt;
      *      &lt;annotation&gt;
@@ -447,17 +512,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType MULTIGEOMETRYPROPERTYTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "MultiGeometryPropertyType"), MultiPolygon.class,
-            false, false, Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType MULTIGEOMETRYPROPERTYTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "MultiGeometryPropertyType"),
+                    MultiPolygon.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="LineStringType"&gt;
      *      &lt;annotation&gt;
@@ -480,17 +551,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType LINESTRINGTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "LineStringType"), LineString.class, false, false,
-            Collections.EMPTY_LIST, ABSTRACTGEOMETRYTYPE_TYPE, null);
+    public static final AttributeType LINESTRINGTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "LineStringType"),
+                    LineString.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    ABSTRACTGEOMETRYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="LineStringMemberType"&gt;
      *      &lt;annotation&gt;
@@ -508,17 +585,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType LINESTRINGMEMBERTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "LineStringMemberType"), LineString.class, false,
-            false, Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType LINESTRINGMEMBERTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "LineStringMemberType"),
+                    LineString.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="MultiLineStringType"&gt;
      *      &lt;annotation&gt;
@@ -540,17 +623,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType MULTILINESTRINGTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "MultiLineStringType"), MultiLineString.class, false,
-            false, Collections.EMPTY_LIST, GEOMETRYCOLLECTIONTYPE_TYPE, null);
+    public static final AttributeType MULTILINESTRINGTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "MultiLineStringType"),
+                    MultiLineString.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYCOLLECTIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="MultiLineStringPropertyType"&gt;
      *      &lt;annotation&gt;
@@ -572,18 +661,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType MULTILINESTRINGPROPERTYTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "MultiLineStringPropertyType"),
-            MultiLineString.class, false, false, Collections.EMPTY_LIST,
-            GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType MULTILINESTRINGPROPERTYTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "MultiLineStringPropertyType"),
+                    MultiLineString.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="BoxType"&gt;
      *      &lt;annotation&gt;
@@ -605,17 +699,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType BOXTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "BoxType"), Envelope.class, false, false,
-            Collections.EMPTY_LIST, ABSTRACTGEOMETRYTYPE_TYPE, null);
+    public static final AttributeType BOXTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "BoxType"),
+                    Envelope.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    ABSTRACTGEOMETRYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;simpleType name="NullType"&gt;
      *      &lt;annotation&gt;
@@ -638,17 +738,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType NULLTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "NullType"), java.lang.Object.class, false, false,
-            Collections.EMPTY_LIST, XSSchema.STRING_TYPE, null);
+    public static final AttributeType NULLTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "NullType"),
+                    java.lang.Object.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    XSSchema.STRING_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="BoundingShapeType"&gt;
      *      &lt;annotation&gt;
@@ -666,17 +772,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType BOUNDINGSHAPETYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "BoundingShapeType"), Envelope.class, false, false,
-            Collections.EMPTY_LIST, XSSchema.ANYTYPE_TYPE, null);
+    public static final AttributeType BOUNDINGSHAPETYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "BoundingShapeType"),
+                    Envelope.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    XSSchema.ANYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType abstract="true" name="AbstractFeatureType"&gt;
      *      &lt;annotation&gt;
@@ -698,29 +810,52 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
     private static List ABSTRACTFEATURETYPE_TYPE_schema = new ArrayList();
 
     static {
-        ABSTRACTFEATURETYPE_TYPE_schema.add(new AttributeDescriptorImpl(XSSchema.STRING_TYPE,
-                new NameImpl("http://www.opengis.net/gml", "description"), 1, 1, false, null));
-        ABSTRACTFEATURETYPE_TYPE_schema.add(new AttributeDescriptorImpl(XSSchema.STRING_TYPE,
-                new NameImpl("http://www.opengis.net/gml", "name"), 1, 1, false, null));
-        ABSTRACTFEATURETYPE_TYPE_schema.add(new AttributeDescriptorImpl(BOUNDINGSHAPETYPE_TYPE,
-                new NameImpl("http://www.opengis.net/gml", "boundedBy"), 1, 1, false, null));
+        ABSTRACTFEATURETYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        XSSchema.STRING_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "description"),
+                        1,
+                        1,
+                        false,
+                        null));
+        ABSTRACTFEATURETYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        XSSchema.STRING_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "name"),
+                        1,
+                        1,
+                        false,
+                        null));
+        ABSTRACTFEATURETYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        BOUNDINGSHAPETYPE_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "boundedBy"),
+                        1,
+                        1,
+                        false,
+                        null));
     }
 
-    public static final FeatureType ABSTRACTFEATURETYPE_TYPE = new FeatureTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "AbstractFeatureType"),
-            ABSTRACTFEATURETYPE_TYPE_schema, null, true, Collections.EMPTY_LIST,
-            XSSchema.ANYTYPE_TYPE, null);
+    public static final FeatureType ABSTRACTFEATURETYPE_TYPE =
+            new FeatureTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "AbstractFeatureType"),
+                    ABSTRACTFEATURETYPE_TYPE_schema,
+                    null,
+                    true,
+                    Collections.EMPTY_LIST,
+                    XSSchema.ANYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType abstract="true" name="AbstractFeatureCollectionBaseType"&gt;
      *      &lt;annotation&gt;
@@ -743,32 +878,52 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
     private static List ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema = new ArrayList();
 
     static {
-        ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema.add(new AttributeDescriptorImpl(
-                XSSchema.STRING_TYPE, new NameImpl("http://www.opengis.net/gml", "description"), 1, 1,
-                false, null));
-        ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema.add(new AttributeDescriptorImpl(
-                XSSchema.STRING_TYPE, new NameImpl("http://www.opengis.net/gml", "name"), 1, 1, false,
-                null));
-        ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema.add(new AttributeDescriptorImpl(
-                BOUNDINGSHAPETYPE_TYPE, new NameImpl("http://www.opengis.net/gml", "boundedBy"), 1, 1,
-                false, null));
+        ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        XSSchema.STRING_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "description"),
+                        1,
+                        1,
+                        false,
+                        null));
+        ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        XSSchema.STRING_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "name"),
+                        1,
+                        1,
+                        false,
+                        null));
+        ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        BOUNDINGSHAPETYPE_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "boundedBy"),
+                        1,
+                        1,
+                        false,
+                        null));
     }
 
-    public static final FeatureType ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE = new FeatureTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "AbstractFeatureCollectionBaseType"),
-            ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema, null, true, Collections.EMPTY_LIST,
-            ABSTRACTFEATURETYPE_TYPE, null);
+    public static final FeatureType ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE =
+            new FeatureTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "AbstractFeatureCollectionBaseType"),
+                    ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE_schema,
+                    null,
+                    true,
+                    Collections.EMPTY_LIST,
+                    ABSTRACTFEATURETYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="FeatureAssociationType"&gt;
      *      &lt;annotation&gt;
@@ -792,17 +947,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType FEATUREASSOCIATIONTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "FeatureAssociationType"), Feature.class, false,
-            false, Collections.EMPTY_LIST, XSSchema.ANYTYPE_TYPE, null);
+    public static final AttributeType FEATUREASSOCIATIONTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "FeatureAssociationType"),
+                    Feature.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    XSSchema.ANYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType abstract="true" name="AbstractFeatureCollectionType"&gt;
      *      &lt;annotation&gt;
@@ -821,35 +982,60 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
     private static List ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema = new ArrayList();
 
     static {
-        ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema.add(new AttributeDescriptorImpl(
-                XSSchema.STRING_TYPE, new NameImpl("http://www.opengis.net/gml", "description"), 1, 1,
-                false, null));
-        ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema.add(new AttributeDescriptorImpl(
-                XSSchema.STRING_TYPE, new NameImpl("http://www.opengis.net/gml", "name"), 1, 1, false,
-                null));
-        ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema.add(new AttributeDescriptorImpl(
-                BOUNDINGSHAPETYPE_TYPE, new NameImpl("http://www.opengis.net/gml", "boundedBy"), 1, 1,
-                false, null));
-        ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema.add(new AttributeDescriptorImpl(
-                FEATUREASSOCIATIONTYPE_TYPE,
-                new NameImpl("http://www.opengis.net/gml", "featureMember"), 1, 1, false, null));
+        ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        XSSchema.STRING_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "description"),
+                        1,
+                        1,
+                        false,
+                        null));
+        ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        XSSchema.STRING_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "name"),
+                        1,
+                        1,
+                        false,
+                        null));
+        ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        BOUNDINGSHAPETYPE_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "boundedBy"),
+                        1,
+                        1,
+                        false,
+                        null));
+        ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema.add(
+                new AttributeDescriptorImpl(
+                        FEATUREASSOCIATIONTYPE_TYPE,
+                        new NameImpl("http://www.opengis.net/gml", "featureMember"),
+                        1,
+                        1,
+                        false,
+                        null));
     }
 
-    public static final FeatureType ABSTRACTFEATURECOLLECTIONTYPE_TYPE = new FeatureTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "AbstractFeatureCollectionType"),
-            ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema, null, true, Collections.EMPTY_LIST,
-            ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE, null);
+    public static final FeatureType ABSTRACTFEATURECOLLECTIONTYPE_TYPE =
+            new FeatureTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "AbstractFeatureCollectionType"),
+                    ABSTRACTFEATURECOLLECTIONTYPE_TYPE_schema,
+                    null,
+                    true,
+                    Collections.EMPTY_LIST,
+                    ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="GeometryPropertyType"&gt;
      *      &lt;annotation&gt;
@@ -868,17 +1054,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType GEOMETRYPROPERTYTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "GeometryPropertyType"), Geometry.class, false,
-            false, Collections.EMPTY_LIST, XSSchema.ANYTYPE_TYPE, null);
+    public static final AttributeType GEOMETRYPROPERTYTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "GeometryPropertyType"),
+                    Geometry.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    XSSchema.ANYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="PolygonPropertyType"&gt;
      *      &lt;annotation&gt;
@@ -900,17 +1092,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType POLYGONPROPERTYTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "PolygonPropertyType"), Polygon.class, false, false,
-            Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType POLYGONPROPERTYTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "PolygonPropertyType"),
+                    Polygon.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="PointType"&gt;
      *      &lt;annotation&gt;
@@ -932,17 +1130,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType POINTTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "PointType"), Point.class, false, false,
-            Collections.EMPTY_LIST, ABSTRACTGEOMETRYTYPE_TYPE, null);
+    public static final AttributeType POINTTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "PointType"),
+                    Point.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    ABSTRACTGEOMETRYTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="PointPropertyType"&gt;
      *      &lt;annotation&gt;
@@ -964,17 +1168,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType POINTPROPERTYTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "PointPropertyType"), Point.class, false, false,
-            Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType POINTPROPERTYTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "PointPropertyType"),
+                    Point.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="PointMemberType"&gt;
      *      &lt;annotation&gt;
@@ -992,17 +1202,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType POINTMEMBERTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "PointMemberType"), Point.class, false, false,
-            Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType POINTMEMBERTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "PointMemberType"),
+                    Point.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="MultiPointType"&gt;
      *      &lt;annotation&gt;
@@ -1024,17 +1240,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType MULTIPOINTTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "MultiPointType"), MultiPoint.class, false, false,
-            Collections.EMPTY_LIST, GEOMETRYCOLLECTIONTYPE_TYPE, null);
+    public static final AttributeType MULTIPOINTTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "MultiPointType"),
+                    MultiPoint.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYCOLLECTIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="MultiPointPropertyType"&gt;
      *      &lt;annotation&gt;
@@ -1057,17 +1279,23 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType MULTIPOINTPROPERTYTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "MultiPointPropertyType"), MultiPoint.class, false,
-            false, Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType MULTIPOINTPROPERTYTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "MultiPointPropertyType"),
+                    MultiPoint.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;complexType name="LineStringPropertyType"&gt;
      *      &lt;annotation&gt;
@@ -1089,71 +1317,103 @@ public class GMLSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType LINESTRINGPROPERTYTYPE_TYPE = new AttributeTypeImpl(new NameImpl(
-                "http://www.opengis.net/gml", "LineStringPropertyType"), LineString.class, false,
-            false, Collections.EMPTY_LIST, GEOMETRYASSOCIATIONTYPE_TYPE, null);
+    public static final AttributeType LINESTRINGPROPERTYTYPE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.opengis.net/gml", "LineStringPropertyType"),
+                    LineString.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    GEOMETRYASSOCIATIONTYPE_TYPE,
+                    null);
 
     public GMLSchema() {
         super("http://www.opengis.net/gml");
 
-        put(new NameImpl("http://www.opengis.net/gml", "AbstractGeometryType"),
-            ABSTRACTGEOMETRYTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "AbstractGeometryCollectionBaseType"),
-            ABSTRACTGEOMETRYCOLLECTIONBASETYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "GeometryAssociationType"),
-            GEOMETRYASSOCIATIONTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "GeometryCollectionType"),
-            GEOMETRYCOLLECTIONTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "AbstractGeometryType"),
+                ABSTRACTGEOMETRYTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "AbstractGeometryCollectionBaseType"),
+                ABSTRACTGEOMETRYCOLLECTIONBASETYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "GeometryAssociationType"),
+                GEOMETRYASSOCIATIONTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "GeometryCollectionType"),
+                GEOMETRYCOLLECTIONTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "CoordType"), COORDTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "CoordinatesType"), COORDINATESTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "LinearRingType"), LINEARRINGTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "LinearRingMemberType"),
-            LINEARRINGMEMBERTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "LinearRingMemberType"),
+                LINEARRINGMEMBERTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "PolygonType"), POLYGONTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "PolygonMemberType"), POLYGONMEMBERTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "PolygonMemberType"),
+                POLYGONMEMBERTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "MultiPolygonType"), MULTIPOLYGONTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "MultiPolygonPropertyType"),
-            MULTIPOLYGONPROPERTYTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "MultiGeometryPropertyType"),
-            MULTIGEOMETRYPROPERTYTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "MultiPolygonPropertyType"),
+                MULTIPOLYGONPROPERTYTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "MultiGeometryPropertyType"),
+                MULTIGEOMETRYPROPERTYTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "LineStringType"), LINESTRINGTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "LineStringMemberType"),
-            LINESTRINGMEMBERTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "MultiLineStringType"), MULTILINESTRINGTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "MultiLineStringPropertyType"),
-            MULTILINESTRINGPROPERTYTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "LineStringMemberType"),
+                LINESTRINGMEMBERTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "MultiLineStringType"),
+                MULTILINESTRINGTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "MultiLineStringPropertyType"),
+                MULTILINESTRINGPROPERTYTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "BoxType"), BOXTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "NullType"), NULLTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "BoundingShapeType"), BOUNDINGSHAPETYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "AbstractFeatureType"), ABSTRACTFEATURETYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "AbstractFeatureCollectionBaseType"),
-            ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "FeatureAssociationType"),
-            FEATUREASSOCIATIONTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "AbstractFeatureCollectionType"),
-            ABSTRACTFEATURECOLLECTIONTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "GeometryPropertyType"),
-            GEOMETRYPROPERTYTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "PolygonPropertyType"), POLYGONPROPERTYTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "BoundingShapeType"),
+                BOUNDINGSHAPETYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "AbstractFeatureType"),
+                ABSTRACTFEATURETYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "AbstractFeatureCollectionBaseType"),
+                ABSTRACTFEATURECOLLECTIONBASETYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "FeatureAssociationType"),
+                FEATUREASSOCIATIONTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "AbstractFeatureCollectionType"),
+                ABSTRACTFEATURECOLLECTIONTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "GeometryPropertyType"),
+                GEOMETRYPROPERTYTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "PolygonPropertyType"),
+                POLYGONPROPERTYTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "PointType"), POINTTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "PointPropertyType"), POINTPROPERTYTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "PointPropertyType"),
+                POINTPROPERTYTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "PointMemberType"), POINTMEMBERTYPE_TYPE);
         put(new NameImpl("http://www.opengis.net/gml", "MultiPointType"), MULTIPOINTTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "MultiPointPropertyType"),
-            MULTIPOINTPROPERTYTYPE_TYPE);
-        put(new NameImpl("http://www.opengis.net/gml", "LineStringPropertyType"),
-            LINESTRINGPROPERTYTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "MultiPointPropertyType"),
+                MULTIPOINTPROPERTYTYPE_TYPE);
+        put(
+                new NameImpl("http://www.opengis.net/gml", "LineStringPropertyType"),
+                LINESTRINGPROPERTYTYPE_TYPE);
     }
-    
+
     /**
      * Profile of GMLSchema capturing a unique mapping of Java classes.
-     * <p>
-     * This profile mostly matches to JTS Geometry classes.
-     * 
+     *
+     * <p>This profile mostly matches to JTS Geometry classes.
+     *
      * @return Subset of GMLSchema capturing a unique mapping of Java classes
      */
     public ProfileImpl profile() {
@@ -1165,7 +1425,7 @@ public class GMLSchema extends SchemaImpl {
         profile.add(new NameImpl(GML.PolygonPropertyType));
         profile.add(new NameImpl(GML.MultiPolygonPropertyType));
         profile.add(new NameImpl(GML.GeometryPropertyType));
-        
-        return new ProfileImpl(this,profile);
+
+        return new ProfileImpl(this, profile);
     }
 }

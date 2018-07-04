@@ -17,30 +17,25 @@
 package org.geotools.coverageio.gdal.jp2mrsid;
 
 import it.geosolutions.imageio.plugins.jp2mrsid.JP2GDALMrSidImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
 import org.opengis.coverage.grid.Format;
 
-
 /**
- * Implementation of the {@link Format} service provider interface for JP2K
- * files.
+ * Implementation of the {@link Format} service provider interface for JP2K files.
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
-public final class JP2MrSIDFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
+public final class JP2MrSIDFormatFactory extends BaseGridFormatFactorySPI
+        implements GridFormatFactorySpi {
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.coverageio.gdal.jp2mrisd");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.jp2mrisd");
 
     /**
      * Tells me if the coverage plugin to access JP2K via MrSID driver is available or not.
@@ -58,14 +53,14 @@ public final class JP2MrSIDFormatFactory extends BaseGridFormatFactorySPI implem
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 if (available) {
-                    LOGGER.fine("JP2MrSIDFormatFactory is availaible.");
+                    LOGGER.fine("JP2MrSIDFormatFactory is available.");
                 } else {
-                    LOGGER.fine("JP2MrSIDFormatFactory is not availaible.");
+                    LOGGER.fine("JP2MrSIDFormatFactory is not available.");
                 }
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("JP2MrSIDFormatFactory is not availaible.");
+                LOGGER.fine("JP2MrSIDFormatFactory is not available.");
             }
 
             available = false;

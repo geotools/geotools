@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,7 +19,6 @@ package org.geotools.data.wms;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
-
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
@@ -33,24 +32,20 @@ import org.geotools.ows.ServiceException;
 
 /**
  * Provides support for the Web Map Server 1.1.1 Specificaiton.
- * <p>
- * WMS1_1_1 provides both name and version information that may be checked against a GetCapabilities document during
- * version negotiation.
- * </p>
- * 
+ *
+ * <p>WMS1_1_1 provides both name and version information that may be checked against a
+ * GetCapabilities document during version negotiation.
+ *
  * @author Jody Garnett, Refractions Research
  * @author rgould
- *
- *
  * @source $URL$
  */
 public class WMS1_1_1 extends WMS1_1_0 {
-    public WMS1_1_1() {
-    }
+    public WMS1_1_1() {}
 
     /**
      * Expected version attribute for root element.
-     * 
+     *
      * @return DOCUMENT ME!
      */
     public String getVersion() {
@@ -59,16 +54,16 @@ public class WMS1_1_1 extends WMS1_1_0 {
 
     /**
      * Factory method to create WMS 1.1.1 GetCapabilities Request
-     * 
+     *
      * @param server DOCUMENT ME!
      * @return DOCUMENT ME!
      */
-    public GetCapabilitiesRequest createGetCapabilitiesRequest( URL server ) {
+    public GetCapabilitiesRequest createGetCapabilitiesRequest(URL server) {
         return new GetCapsRequest(server);
     }
 
-    static public class GetCapsRequest extends WMS1_1_0.GetCapsRequest {
-        public GetCapsRequest( URL urlGetCapabilities ) {
+    public static class GetCapsRequest extends WMS1_1_0.GetCapsRequest {
+        public GetCapsRequest(URL urlGetCapabilities) {
             super(urlGetCapabilities);
         }
 
@@ -77,9 +72,9 @@ public class WMS1_1_1 extends WMS1_1_0 {
         }
     }
 
-    static public class GetMapRequest extends WMS1_1_0.GetMapRequest {
+    public static class GetMapRequest extends WMS1_1_0.GetMapRequest {
 
-        public GetMapRequest( URL onlineResource ) {
+        public GetMapRequest(URL onlineResource) {
             super(onlineResource);
         }
 
@@ -88,9 +83,10 @@ public class WMS1_1_1 extends WMS1_1_0 {
         }
     }
 
-    static public class GetFeatureInfoRequest extends WMS1_1_0.GetFeatureInfoRequest {
+    public static class GetFeatureInfoRequest extends WMS1_1_0.GetFeatureInfoRequest {
 
-        public GetFeatureInfoRequest( URL onlineResource, org.geotools.data.wms.request.GetMapRequest request) {
+        public GetFeatureInfoRequest(
+                URL onlineResource, org.geotools.data.wms.request.GetMapRequest request) {
             super(onlineResource, request);
         }
 
@@ -99,22 +95,23 @@ public class WMS1_1_1 extends WMS1_1_0 {
         }
     }
 
-    public org.geotools.data.wms.request.GetMapRequest createGetMapRequest( URL get ) {
+    public org.geotools.data.wms.request.GetMapRequest createGetMapRequest(URL get) {
         return new GetMapRequest(get);
     }
 
-    public org.geotools.data.wms.request.GetFeatureInfoRequest createGetFeatureInfoRequest( URL onlineResource, org.geotools.data.wms.request.GetMapRequest getMapRequest) {
+    public org.geotools.data.wms.request.GetFeatureInfoRequest createGetFeatureInfoRequest(
+            URL onlineResource, org.geotools.data.wms.request.GetMapRequest getMapRequest) {
         return new GetFeatureInfoRequest(onlineResource, getMapRequest);
     }
 
-    public GetStylesRequest createGetStylesRequest( URL onlineResource ) throws UnsupportedOperationException {
+    public GetStylesRequest createGetStylesRequest(URL onlineResource)
+            throws UnsupportedOperationException {
         return new InternalGetStylesRequest(onlineResource, null);
     }
 
-    /**
-     * @see org.geotools.data.wms.WMS1_0_0#createPutStylesRequest(java.net.URL)
-     */
-    public PutStylesRequest createPutStylesRequest( URL onlineResource) throws UnsupportedOperationException {
+    /** @see org.geotools.data.wms.WMS1_0_0#createPutStylesRequest(java.net.URL) */
+    public PutStylesRequest createPutStylesRequest(URL onlineResource)
+            throws UnsupportedOperationException {
         return new InternalPutStylesRequest(onlineResource);
     }
 
@@ -124,7 +121,7 @@ public class WMS1_1_1 extends WMS1_1_0 {
          * @param onlineResource
          * @param properties
          */
-        public InternalGetStylesRequest( URL onlineResource, Properties properties ) {
+        public InternalGetStylesRequest(URL onlineResource, Properties properties) {
             super(onlineResource, properties);
         }
         /* (non-Javadoc)
@@ -134,15 +131,15 @@ public class WMS1_1_1 extends WMS1_1_0 {
             setProperty(VERSION, "1.1.1");
         }
 
-
-        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
             return new GetStylesResponse(httpResponse);
         }
     }
 
     public static class InternalPutStylesRequest extends AbstractPutStylesRequest {
 
-        public InternalPutStylesRequest( URL onlineResource ) {
+        public InternalPutStylesRequest(URL onlineResource) {
             super(onlineResource, null);
         }
 
@@ -150,10 +147,9 @@ public class WMS1_1_1 extends WMS1_1_0 {
             setProperty(VERSION, "1.1.1");
         }
 
-        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+        public Response createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
             return new PutStylesResponse(httpResponse);
         }
     }
-
-
 }

@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Helper that loads a sidecar footprint file in a certain format
@@ -27,7 +27,7 @@ public interface FootprintLoader {
 
     /**
      * Tries to load the sidecar geometry given the granule path without extension.
-     * 
+     *
      * @param pathNoExtension
      * @return The footprint, or null if the file was not found
      * @throws Exception In case the file was found, but there were issues loading the geometry

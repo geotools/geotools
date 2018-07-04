@@ -27,46 +27,44 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class JDBCNoPrimaryKeyOnlineTest extends JDBCTestSupport {
 
     protected static final String LAKE = "lake";
     protected static final String ID = "id";
     protected static final String NAME = "name";
     protected static final String GEOM = "geom";
-    
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null); 
+
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     protected SimpleFeatureType lakeSchema;
 
     @Override
     protected abstract JDBCNoPrimaryKeyTestSetup createTestSetup();
-    
+
     @Override
     protected void connect() throws Exception {
         super.connect();
-        lakeSchema = DataUtilities.createType(dataStore.getNamespaceURI() + "." + LAKE, 
-                ID + ":0," + GEOM + ":Polygon," + NAME +":String");
+        lakeSchema =
+                DataUtilities.createType(
+                        dataStore.getNamespaceURI() + "." + LAKE,
+                        ID + ":0," + GEOM + ":Polygon," + NAME + ":String");
     }
-    
+
     public void testSchema() throws Exception {
-        SimpleFeatureType ft =  dataStore.getSchema(tname(LAKE));
+        SimpleFeatureType ft = dataStore.getSchema(tname(LAKE));
         assertFeatureTypesEqual(lakeSchema, ft);
     }
-    
+
     public void testReadFeatures() throws Exception {
-    	SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(LAKE)).getFeatures();
+        SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(LAKE)).getFeatures();
         assertEquals(1, fc.size());
-        try(SimpleFeatureIterator fr = fc.features()) {
+        try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
             SimpleFeature f = fr.next();
             assertFalse(fr.hasNext());
         }
     }
-    
+
     public void testGetBounds() throws Exception {
         // GEOT-2067 Make sure it's possible to compute bounds out of a view
         ReferencedEnvelope reference = dataStore.getFeatureSource(tname(LAKE)).getBounds();
@@ -75,22 +73,21 @@ public abstract class JDBCNoPrimaryKeyOnlineTest extends JDBCTestSupport {
         assertEquals(4.0, reference.getMinY());
         assertEquals(8.0, reference.getMaxY());
     }
-    
+
     /**
-     * Subclasses may want to override this in case the database has a native way, other
-     * than the pk, to identify a row
+     * Subclasses may want to override this in case the database has a native way, other than the
+     * pk, to identify a row
+     *
      * @throws Exception
      */
     public void testReadOnly() throws Exception {
-        try { 
+        try {
             dataStore.getFeatureWriter(tname(LAKE), Transaction.AUTO_COMMIT);
             fail("Should not be able to pick a writer without a pk");
-        } catch(Exception e) {
+        } catch (Exception e) {
             // ok, fine
         }
-        
+
         assertFalse(dataStore.getFeatureSource(tname(LAKE)) instanceof FeatureStore);
     }
-    
-
 }

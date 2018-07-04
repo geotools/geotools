@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,21 +19,22 @@ package org.geotools.data.memory;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
+import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureImpl;
+import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.opengis.filter.identity.FeatureId;
 
-/**
- * Update contents of MemoryDataStore. 
- */
-public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature>{
+/** Update contents of MemoryDataStore. */
+public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
     MemoryState state;
     SimpleFeatureType featureType;
     Name typeName;
@@ -41,19 +42,17 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
     Iterator<SimpleFeature> iterator;
 
     SimpleFeature live = null;
-    SimpleFeature current = null; // current Feature returned to user        
-    
+    SimpleFeature current = null; // current Feature returned to user
+
     public MemoryFeatureWriter(MemoryState state, Query query) throws IOException {
         this.state = state;
         this.typeName = state.getEntry().getName();
         this.featureType = state.getFeatureType();
-        
+
         MemoryEntry entry = state.getEntry();
-        synchronized (entry) {
-            iterator = entry.memory.values().iterator();
-        }
+        iterator = entry.getMemory().values().iterator();
     }
-    
+
     public SimpleFeatureType getFeatureType() {
         return state.getFeatureType();
     }
@@ -66,8 +65,7 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
             try {
                 current = SimpleFeatureBuilder.copy(live);
             } catch (IllegalAttributeException e) {
-                throw new DataSourceException("Unable to edit " + live.getID() + " of "
-                    + typeName);
+                throw new DataSourceException("Unable to edit " + live.getID() + " of " + typeName);
             }
         } else {
             // new content
@@ -76,15 +74,13 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
             try {
                 current = SimpleFeatureBuilder.template(featureType, null);
             } catch (IllegalAttributeException e) {
-                throw new DataSourceException("Unable to add additional Features of "
-                    + typeName);
+                throw new DataSourceException("Unable to add additional Features of " + typeName);
             }
         }
-        
+
         return current;
     }
 
-    
     public void remove() throws IOException {
         if (iterator == null) {
             throw new IOException("FeatureWriter has been closed");
@@ -104,16 +100,26 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
             current = null;
         }
     }
-    
+
     public void write() throws IOException {
         if (iterator == null) {
             throw new IOException("FeatureWriter has been closed");
         }
-    
+
         if (current == null) {
             throw new IOException("No feature available to write");
         }
-    
+        // preserve FeatureIDs during insert feature
+        if (Boolean.TRUE.equals(current.getUserData().get(Hints.USE_PROVIDED_FID))) {
+            if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
+                String fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
+                FeatureId id = new FeatureIdImpl(fid);
+                current =
+                        new SimpleFeatureImpl(
+                                current.getAttributes(), current.getFeatureType(), id);
+            }
+        }
+
         if (live != null) {
             if (live.equals(current)) {
                 // no modifications made to current
@@ -126,10 +132,13 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
                 try {
                     live.setAttributes(current.getAttributes());
                 } catch (Exception e) {
-                    throw new DataSourceException("Unable to accept modifications to "
-                        + live.getID() + " on " + typeName);
+                    throw new DataSourceException(
+                            "Unable to accept modifications to "
+                                    + live.getID()
+                                    + " on "
+                                    + typeName);
                 }
-    
+
                 ReferencedEnvelope bounds = new ReferencedEnvelope();
                 bounds.expandToInclude(new ReferencedEnvelope(live.getBounds()));
                 bounds.expandToInclude(new ReferencedEnvelope(current.getBounds()));
@@ -139,25 +148,23 @@ public class MemoryFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
         } else {
             // add new content
             MemoryEntry entry = state.getEntry();
-            synchronized (entry) {
-                entry.memory.put(current.getID(), current);    
-            }
+            entry.addFeature(current);
             current = null;
         }
     }
-    
+
     public boolean hasNext() throws IOException {
         if (iterator == null) {
             throw new IOException("FeatureWriter has been closed");
         }
         return (iterator != null) && iterator.hasNext();
     }
-    
-    public void close(){
+
+    public void close() {
         if (iterator != null) {
             iterator = null;
         }
-        
+
         if (featureType != null) {
             featureType = null;
         }

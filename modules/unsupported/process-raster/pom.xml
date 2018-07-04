@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>unsupported</artifactId>
-        <version>17-SNAPSHOT</version>
+        <version>20-SNAPSHOT</version>
     </parent>
 
 
@@ -91,26 +91,67 @@
           <groupId>org.jaitools</groupId>
           <artifactId>jt-zonalstats</artifactId>
           <version>${jt.version}</version>
+          <exclusions>
+            <exclusion>
+               <groupId>org.locationtech.jts</groupId>
+               <artifactId>jts</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>org.jaitools</groupId>
           <artifactId>jt-rangelookup</artifactId>
           <version>${jt.version}</version>
+          <exclusions>
+            <exclusion>
+               <groupId>org.locationtech.jts</groupId>
+               <artifactId>jts</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>org.jaitools</groupId>
           <artifactId>jt-contour</artifactId>
           <version>${jt.version}</version>
-        </dependency>    
+          <exclusions>
+            <exclusion>
+               <groupId>org.locationtech.jts</groupId>
+               <artifactId>jts</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
         <dependency>
           <groupId>org.jaitools</groupId>
           <artifactId>jt-vectorize</artifactId>
           <version>${jt.version}</version>
-        </dependency>            
+          <exclusions>
+            <exclusion>
+               <groupId>org.locationtech.jts</groupId>
+               <artifactId>jts</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
         <dependency>
           <groupId>org.jaitools</groupId>
           <artifactId>jt-utils</artifactId>
           <version>${jt.version}</version>
+          <exclusions>
+            <exclusion>
+               <groupId>org.locationtech.jts</groupId>
+               <artifactId>jts</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>it.geosolutions.jaiext.jiffle</groupId>
+            <artifactId>jt-jiffle-op</artifactId>
+            <version>${jaiext.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vividsolutions</groupId>
+                    <artifactId>jts</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         
         <!-- Test dependencies -->

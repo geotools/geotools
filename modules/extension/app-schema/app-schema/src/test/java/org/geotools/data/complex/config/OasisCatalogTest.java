@@ -17,6 +17,9 @@
 
 package org.geotools.data.complex.config;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.net.URL;
 import org.apache.xml.resolver.Catalog;
 import org.apache.xml.resolver.tools.ResolvingXMLReader;
@@ -24,17 +27,11 @@ import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OasisCatalogTest extends AppSchemaTestSupport {
     org.apache.xml.resolver.Catalog catalog;
-    
+
     @Before
     public void setUp() throws Exception {
         catalog = new Catalog();
@@ -42,7 +39,7 @@ public class OasisCatalogTest extends AppSchemaTestSupport {
     }
 
     @Test
-    public void testParseCatalog() throws Exception{
+    public void testParseCatalog() throws Exception {
         URL file = TestData.url(this, "commonSchemas_new.oasis.xml");
 
         ResolvingXMLReader reader = new ResolvingXMLReader();
@@ -50,11 +47,11 @@ public class OasisCatalogTest extends AppSchemaTestSupport {
         catalog.getCatalogManager().setVerbosity(9);
 
         catalog.parseCatalog(file);
-        
+
         final URL baseUri = new URL("http://schemas.opengis.net/gml/");
-        //the system override defined in the catalog
+        // the system override defined in the catalog
         final URL override = new URL("file:///schemas/gml/trunk/gml/");
-        
+
         final String extraPath = "3.1.1/basicTypes.xsd";
         final String uri = new URL(baseUri, extraPath).toExternalForm();
         final String expected = new URL(override, extraPath).toExternalForm();
@@ -62,7 +59,7 @@ public class OasisCatalogTest extends AppSchemaTestSupport {
         String resolved = catalog.resolveSystem(uri);
         assertNotNull(resolved);
 
-        final String actual = new URL(resolved).toExternalForm();        
+        final String actual = new URL(resolved).toExternalForm();
         assertEquals(expected, actual);
     }
 }

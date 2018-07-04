@@ -17,31 +17,27 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.Equals;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.locationtech.jts.geom.GeometryFactory;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.spatial.Equals;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:Equals.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Equals" substitutionGroup="ogc:spatialOps" type="ogc:BinarySpatialOpType"/&gt;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCEqualsBinding extends AbstractComplexBinding {
@@ -53,9 +49,7 @@ public class OGCEqualsBinding extends AbstractComplexBinding {
         this.geometryFactory = geometryFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.Equals;
     }
@@ -65,6 +59,7 @@ public class OGCEqualsBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -75,13 +70,13 @@ public class OGCEqualsBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] operands = OGCUtils.spatial(node, filterFactory, geometryFactory);
 
         return filterFactory.equal(operands[0], operands[1]);

@@ -1,10 +1,10 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  *    (C) 2001-2006  Vivid Solutions
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,37 +17,30 @@
  */
 package org.geotools.geometry.iso.topograph2D;
 
-
 /**
- * Indicates an invalid or inconsistent topological situation encountered during
- * processing
- *
- *
- *
+ * Indicates an invalid or inconsistent topological situation encountered during processing
  *
  * @source $URL$
  */
 public class TopologyException extends RuntimeException {
 
-	private static String msgWithCoord(String msg, Coordinate pt) {
-		if (pt != null)
-			return msg + " [ " + pt + " ]";
-		return msg;
-	}
+    private static String msgWithCoord(String msg, Coordinate pt) {
+        if (pt != null) return msg + " [ " + pt + " ]";
+        return msg;
+    }
 
-	private Coordinate pt = null;
+    private Coordinate pt = null;
 
-	public TopologyException(String msg) {
-		super(msg);
-	}
+    public TopologyException(String msg) {
+        super(msg);
+    }
 
-	public TopologyException(String msg, Coordinate pt) {
-		super(msgWithCoord(msg, pt));
-		this.pt = new Coordinate(pt);
-	}
+    public TopologyException(String msg, Coordinate pt) {
+        super(msgWithCoord(msg, pt));
+        this.pt = new Coordinate(pt);
+    }
 
-	public Coordinate getCoordinate() {
-		return pt;
-	}
-
+    public Coordinate getCoordinate() {
+        return pt;
+    }
 }

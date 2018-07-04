@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,18 +19,15 @@ package org.geotools.renderer.lite;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.data.FeatureSource;
 import org.geotools.renderer.lite.StreamingRenderer.RenderableFeature;
 import org.opengis.feature.Feature;
 import org.opengis.filter.sort.SortBy;
 
 /**
- * Paints a group of {@link LiteFeatureTypeStyle} all associated with the same
- * {@link FeatureSource}
- * 
- * @author Andrea Aime - GeoSolutions
+ * Paints a group of {@link LiteFeatureTypeStyle} all associated with the same {@link FeatureSource}
  *
+ * @author Andrea Aime - GeoSolutions
  */
 class ZGroupLayerPainter {
 
@@ -50,8 +47,12 @@ class ZGroupLayerPainter {
 
     boolean complete = false;
 
-    public ZGroupLayerPainter(MarkFeatureIterator iterator, List<LiteFeatureTypeStyle> lfts,
-            StreamingRenderer renderer, String layerId) throws IOException {
+    public ZGroupLayerPainter(
+            MarkFeatureIterator iterator,
+            List<LiteFeatureTypeStyle> lfts,
+            StreamingRenderer renderer,
+            String layerId)
+            throws IOException {
         super();
         this.iterator = iterator;
         this.lfts = lfts;
@@ -131,15 +132,23 @@ class ZGroupLayerPainter {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        return "ZGroupLayerPainter [currentFeature=" + currentFeature + ", iterator=" + iterator
-                + ", lfts=" + lfts + ", currentKey=" + currentKey + ", sortBy="
-                + Arrays.toString(sortBy) + ", complete=" + complete + "]";
+        return "ZGroupLayerPainter [currentFeature="
+                + currentFeature
+                + ", iterator="
+                + iterator
+                + ", lfts="
+                + lfts
+                + ", currentKey="
+                + currentKey
+                + ", sortBy="
+                + Arrays.toString(sortBy)
+                + ", complete="
+                + complete
+                + "]";
     }
-
-
 }

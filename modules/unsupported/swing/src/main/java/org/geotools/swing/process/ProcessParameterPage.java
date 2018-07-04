@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,12 +24,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import org.geotools.data.Parameter;
 import org.geotools.process.ProcessFactory;
 import org.geotools.swing.wizard.JDoubleField;
@@ -37,32 +35,24 @@ import org.geotools.swing.wizard.JField;
 import org.geotools.swing.wizard.JGeometryField;
 import org.geotools.swing.wizard.JPage;
 import org.geotools.swing.wizard.ParamField;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.Name;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * This page is responsible making a user interface based on the provided ProcessFactory.
- * 
+ *
  * @author Jody, gdavis
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
 public class ProcessParameterPage extends JPage {
-    /**
-     * The selected factory we are working on.
-     */
+    /** The selected factory we are working on. */
     ProcessFactory factory;
-    
-    /**
-     * Name of the process we are working with.
-     */
+
+    /** Name of the process we are working with. */
     Name name;
-    /**
-     * The user supplied input parameters.
-     */
+    /** The user supplied input parameters. */
     Map<String, Object> input;
 
     // map of ParamField to keys, but value is a list of ParamFields
@@ -129,7 +119,6 @@ public class ProcessParameterPage extends JPage {
                     paramMap.put(key, ParamField.getValue());
                 }
             }
-
         }
     }
 
@@ -149,8 +138,7 @@ public class ProcessParameterPage extends JPage {
             // if the minOccurs of the param is -1, it can be any number so default
             // with 1 for now.
             int min = parameter.minOccurs;
-            if (min < 1)
-                min = 1;
+            if (min < 1) min = 1;
 
             // if the maxOccurs of the parameter is -1, then it can have any number
             // of widgets equal to or greater than the minOccurs. So add + buttons
@@ -179,23 +167,24 @@ public class ProcessParameterPage extends JPage {
         page.add(buttLabel);
 
         JButton butt = new JButton("+");
-        butt.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                createNewField(parameter, true);
-            }
-        });
+        butt.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        createNewField(parameter, true);
+                    }
+                });
         page.add(butt);
     }
 
     /**
      * Create a new widget and label for the given parameter
-     * 
+     *
      * @param parameter
      * @param resize whether to resize the wizard after adding or not
      */
     private ParamField createNewField(Parameter<?> parameter, boolean resize) {
         JPanel page = getPanel();
-        
+
         JLabel label;
         label = new JLabel(parameter.title.toString());
         page.add(label);

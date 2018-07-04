@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,41 +16,35 @@
  */
 package org.geotools.temporal.object;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.geotools.util.Utilities;
 import org.opengis.temporal.IntervalLength;
 
 /**
- *A data type for intervals of time which supports the expression of duration in
- * terms of a specified multiple of a single unit of time.
- * 
+ * A data type for intervals of time which supports the expression of duration in terms of a
+ * specified multiple of a single unit of time.
+ *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultIntervalLength extends DefaultDuration implements IntervalLength {
 
-    /**
-     * This is the name of the unit of measure used to express the length of the interval.
-     */
+    /** This is the name of the unit of measure used to express the length of the interval. */
     private Unit unit;
-    /**
-     * This is the base of the multiplier of the unit.
-     */
+    /** This is the base of the multiplier of the unit. */
     private int radix;
-    /**
-     * This is the exponent of the base.
-     */
+    /** This is the exponent of the base. */
     private int factor;
     /**
-     * This is the length of the time interval as an integer multiple of one radix(exp -factor) of the specified unit.
+     * This is the length of the time interval as an integer multiple of one radix(exp -factor) of
+     * the specified unit.
      */
     private int value;
 
     /**
-     * Creates a new instance of IntervalUnit example : Unit="second" radix=10 factor=3 value=7 specifies a time interval length of 7ms.
+     * Creates a new instance of IntervalUnit example : Unit="second" radix=10 factor=3 value=7
+     * specifies a time interval length of 7ms.
+     *
      * @param unit
      * @param radix
      * @param factor
@@ -63,23 +57,17 @@ public class DefaultIntervalLength extends DefaultDuration implements IntervalLe
         this.value = value;
     }
 
-    /**
-     * The unit of measure used to express the length of the interval.
-     */
+    /** The unit of measure used to express the length of the interval. */
     public Unit getUnit() {
         return unit;
     }
 
-    /**
-     * A positive integer that is the base of the mulitplier of the unit.
-     */
+    /** A positive integer that is the base of the mulitplier of the unit. */
     public int getRadix() {
         return radix;
     }
 
-    /**
-     * The exponent of the base.
-     */
+    /** The exponent of the base. */
     public int getFactor() {
         return factor;
     }
@@ -101,10 +89,10 @@ public class DefaultIntervalLength extends DefaultDuration implements IntervalLe
         if (object instanceof DefaultIntervalLength) {
             final DefaultIntervalLength that = (DefaultIntervalLength) object;
 
-            return Utilities.equals(this.factor, that.factor) &&
-                    Utilities.equals(this.radix, that.radix) &&
-                    Utilities.equals(this.unit, that.unit) &&
-                    Utilities.equals(this.value, that.unit);
+            return Utilities.equals(this.factor, that.factor)
+                    && Utilities.equals(this.radix, that.radix)
+                    && Utilities.equals(this.unit, that.unit)
+                    && Utilities.equals(this.value, that.unit);
         }
         return false;
     }

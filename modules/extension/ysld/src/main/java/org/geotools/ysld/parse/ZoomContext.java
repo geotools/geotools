@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,9 +21,8 @@ import javax.annotation.Nullable;
 
 /**
  * Represents a mapping between zoom level and scale.
- * 
- * @author Kevin Smith, Boundless
  *
+ * @author Kevin Smith, Boundless
  */
 public interface ZoomContext {
 
@@ -31,7 +30,7 @@ public interface ZoomContext {
 
     /**
      * Find the reciprocal of the scale at a specified zoom level in this context.
-     * 
+     *
      * @param level The level
      * @return The scale denominator
      */
@@ -39,7 +38,7 @@ public interface ZoomContext {
 
     /**
      * Return a scale range covering the specified zoom level but no others.
-     * 
+     *
      * @param min Minimum zoom level. Absent for open ended.
      * @param max Maximum zoom level. Absent for open ended.
      * @return
@@ -48,7 +47,7 @@ public interface ZoomContext {
 
     /**
      * Is the given level within the range for which the context has clearly defined scales.
-     * 
+     *
      * @param level
      * @return
      */

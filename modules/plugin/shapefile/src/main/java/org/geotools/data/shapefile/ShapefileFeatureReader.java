@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
@@ -35,6 +34,10 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.renderer.ScreenMap;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -42,23 +45,18 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
 class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     static final Logger LOGGER = Logging.getLogger(ShapefileFeatureReader.class);
 
-    protected static final Geometry SKIP = new Point(new LiteCoordinateSequence(Double.NaN,
-            Double.NaN), new GeometryFactory()) {
-        private static final long serialVersionUID = 6311215718936799001L;
+    protected static final Geometry SKIP =
+            new Point(new LiteCoordinateSequence(Double.NaN, Double.NaN), new GeometryFactory()) {
+                private static final long serialVersionUID = 6311215718936799001L;
 
-        public String toString() {
-            return "SKIP";
-        };
-    };
+                public String toString() {
+                    return "SKIP";
+                };
+            };
 
     SimpleFeatureType schema;
 
@@ -86,14 +84,18 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
     Filter filter;
 
-    public ShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp, DbaseFileReader dbf, IndexedFidReader fidReader)
+    public ShapefileFeatureReader(
+            SimpleFeatureType schema,
+            ShapefileReader shp,
+            DbaseFileReader dbf,
+            IndexedFidReader fidReader)
             throws IOException {
         this.schema = schema;
         this.shp = shp;
         this.dbf = dbf;
         this.fidReader = fidReader;
         this.builder = new SimpleFeatureBuilder(schema);
-        
+
         idxBuffer = new StringBuffer(schema.getTypeName());
         idxBuffer.append('.');
         idxBaseLen = idxBuffer.length();
@@ -114,8 +116,10 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                     Map<Object, Object> userData = att.getUserData();
                     if (userData.get(ShapefileDataStore.ORIGINAL_FIELD_NAME) != null) {
                         attName = (String) userData.get(ShapefileDataStore.ORIGINAL_FIELD_NAME);
-                        count = (Integer) userData
-                                .get(ShapefileDataStore.ORIGINAL_FIELD_DUPLICITY_COUNT);
+                        count =
+                                (Integer)
+                                        userData.get(
+                                                ShapefileDataStore.ORIGINAL_FIELD_DUPLICITY_COUNT);
                     }
 
                     boolean found = false;
@@ -127,8 +131,8 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                         }
                     }
                     if (!found) {
-                        throw new IOException("Could not find attribute " + attName
-                                + " (mul count: " + count);
+                        throw new IOException(
+                                "Could not find attribute " + attName + " (mul count: " + count);
                     }
                 }
             }
@@ -141,8 +145,8 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     }
 
     @Override
-    public SimpleFeature next() throws IOException, IllegalArgumentException,
-            NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         if (hasNext()) {
             SimpleFeature result = nextFeature;
             nextFeature = null;
@@ -154,7 +158,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
     /**
      * Returns true if the lower level readers, shp and dbf, have one more record to read
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -185,7 +189,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                 Row row;
                 if (dbf != null) {
                     row = dbf.readRow();
-                    if(row.isDeleted()) {
+                    if (row.isDeleted()) {
                         continue;
                     }
                 } else {
@@ -206,7 +210,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     /**
      * Reads the geometry, it will return {@link #SKIP} if the records is to be skipped because of
      * the screenmap or because it does not match the target bbox
-     * 
+     *
      * @param record
      * @return
      */
@@ -219,7 +223,8 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
             if (targetBBox != null && !targetBBox.isNull() && !targetBBox.intersects(envelope)) {
                 geometry = SKIP;
                 // ... if the geometry is awfully small avoid reading it (unless it's a point)
-            } else if (simplificationDistance > 0 && envelope.getWidth() < simplificationDistance
+            } else if (simplificationDistance > 0
+                    && envelope.getWidth() < simplificationDistance
                     && envelope.getHeight() < simplificationDistance) {
                 try {
                     // if we have the screenmap, we either have no filter, and we
@@ -254,7 +259,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                     builder.add(row.read(dbfindexes[i]));
                 }
             }
-        } else if(geometry != null) {
+        } else if (geometry != null) {
             builder.add(geometry);
         }
         // build the feature id
@@ -283,9 +288,9 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
         return feature;
     }
-    
+
     protected String buildFeatureId(int number) throws IOException {
-        if(fidReader == null) {
+        if (fidReader == null) {
             idxBuffer.delete(idxBaseLen, idxBuffer.length());
             idxBuffer.append(number);
             return idxBuffer.toString();
@@ -307,31 +312,33 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
                     dbf.close();
                 }
             } finally {
-            	try {
-	            	if(fidReader != null) {
-	            		fidReader.close();
-	            	}
-            	} finally {
-	                shp = null;
-	                dbf = null;
-            	}
+                try {
+                    if (fidReader != null) {
+                        fidReader.close();
+                    }
+                } finally {
+                    shp = null;
+                    dbf = null;
+                }
             }
         }
-
     }
-    
+
     @Override
     protected void finalize() throws Throwable {
-        if(shp != null) {
-            LOGGER.log(Level.WARNING, "There is code leaving shapefile readers unclosed, "
-                    + "this might result in file system locks not being cleared. File is: " + schema.getTypeName());
+        if (shp != null) {
+            LOGGER.log(
+                    Level.WARNING,
+                    "There is code leaving shapefile readers unclosed, "
+                            + "this might result in file system locks not being cleared. File is: "
+                            + schema.getTypeName());
             close();
         }
     }
 
     /**
      * Sets the target bbox, will be used to skip over features we do not need
-     * 
+     *
      * @param targetBBox
      */
     public void setTargetBBox(Envelope targetBBox) {
@@ -340,7 +347,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
     /**
      * Sets the simplification distance, the reader will subsample pixels on the go
-     * 
+     *
      * @param simplificationDistance
      */
     public void setSimplificationDistance(double simplificationDistance) {
@@ -349,7 +356,7 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
     /**
      * Sets the screen map, will be used to skip over features that are too small
-     * 
+     *
      * @param screenMap
      */
     public void setScreenMap(ScreenMap screenMap) {
@@ -358,7 +365,6 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
 
     void disableShxUsage() throws IOException {
         this.shp.disableShxUsage();
-
     }
 
     ShapeType getShapeType() {
@@ -372,5 +378,4 @@ class ShapefileFeatureReader implements FeatureReader<SimpleFeatureType, SimpleF
     public void setFilter(Filter filter) {
         this.filter = filter;
     }
-
 }

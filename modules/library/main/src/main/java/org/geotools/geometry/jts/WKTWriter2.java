@@ -1,10 +1,10 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *   (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *   (C) 2001, Vivid Solutions
- *   
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -14,9 +14,9 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *    
+ *
  *    This is a port of the JTS WKTWriter to handle SQL MM types such as Curve.
- *    We have subclassed so that our implementation can be used anywhere 
+ *    We have subclassed so that our implementation can be used anywhere
  *    a WKTWriter is needed. We would of tried for more code reuse  except
  *    the base class has reduced everything to private methods.
  */
@@ -28,21 +28,20 @@ import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.io.WKTWriter;
-import com.vividsolutions.jts.util.Assert;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.io.WKTWriter;
+import org.locationtech.jts.util.Assert;
 
 /**
  * A fork of JTS own {@link WKTWriter} that can write curved geometries using SQL Multi-Media
@@ -56,7 +55,6 @@ public class WKTWriter2 extends WKTWriter {
      * Generates the WKT for a <tt>POINT</tt> specified by a {@link Coordinate}.
      *
      * @param p0 the point coordinate
-     *
      * @return the WKT
      */
     public static String toPoint(Coordinate p0) {
@@ -67,19 +65,16 @@ public class WKTWriter2 extends WKTWriter {
      * Generates the WKT for a <tt>LINESTRING</tt> specified by a {@link CoordinateSequence}.
      *
      * @param seq the sequence to write
-     *
      * @return the WKT string
      */
     public static String toLineString(CoordinateSequence seq) {
         StringBuffer buf = new StringBuffer();
         buf.append("LINESTRING ");
-        if (seq.size() == 0)
-            buf.append(" EMPTY");
+        if (seq.size() == 0) buf.append(" EMPTY");
         else {
             buf.append("(");
             for (int i = 0; i < seq.size(); i++) {
-                if (i > 0)
-                    buf.append(", ");
+                if (i > 0) buf.append(", ");
                 buf.append(seq.getX(i) + " " + seq.getY(i));
             }
             buf.append(")");
@@ -92,7 +87,6 @@ public class WKTWriter2 extends WKTWriter {
      *
      * @param p0 the first coordinate
      * @param p1 the second coordinate
-     *
      * @return the WKT
      */
     public static String toLineString(Coordinate p0, Coordinate p1) {
@@ -106,9 +100,9 @@ public class WKTWriter2 extends WKTWriter {
      * number of decimal places.
      *
      * @param precisionModel the <code>PrecisionModel</code> used to determine the number of decimal
-     *        places to write.
+     *     places to write.
      * @return a <code>DecimalFormat</code> that write <code>double</code> s without scientific
-     *         notation.
+     *     notation.
      */
     private static DecimalFormat createFormatter(PrecisionModel precisionModel) {
         // the default number of decimal places is 16, which is sufficient
@@ -150,11 +144,8 @@ public class WKTWriter2 extends WKTWriter {
 
     private String indentTabStr = "  ";
 
-    /**
-     * Creates a new WKTWriter with default settings
-     */
-    public WKTWriter2() {
-    }
+    /** Creates a new WKTWriter with default settings */
+    public WKTWriter2() {}
 
     /**
      * Creates a writer that writes {@link Geometry}s with the given output dimension (2 or 3). If
@@ -196,8 +187,7 @@ public class WKTWriter2 extends WKTWriter {
      * @throws IllegalArgumentException if the size is non-positive
      */
     public void setTab(int size) {
-        if (size <= 0)
-            throw new IllegalArgumentException("Tab count must be positive");
+        if (size <= 0) throw new IllegalArgumentException("Tab count must be positive");
         this.indentTabStr = stringOfChar(' ', size);
     }
 
@@ -232,7 +222,7 @@ public class WKTWriter2 extends WKTWriter {
      *
      * @param geometry a <code>Geometry</code> to process
      * @return a <Geometry Tagged Text> string (see the OpenGIS Simple Features Specification), with
-     *         newlines and spaces
+     *     newlines and spaces
      */
     public String writeFormatted(Geometry geometry) {
         Writer sw = new StringWriter();
@@ -309,8 +299,8 @@ public class WKTWriter2 extends WKTWriter {
         } else if (geometry instanceof GeometryCollection) {
             appendGeometryCollectionTaggedText((GeometryCollection) geometry, level, writer);
         } else {
-            Assert.shouldNeverReachHere("Unsupported Geometry implementation:"
-                    + geometry.getClass());
+            Assert.shouldNeverReachHere(
+                    "Unsupported Geometry implementation:" + geometry.getClass());
         }
     }
 
@@ -321,10 +311,11 @@ public class WKTWriter2 extends WKTWriter {
      * @param coordinate the <code>Coordinate</code> to process
      * @param writer the output writer to append to
      * @param precisionModel the <code>PrecisionModel</code> to use to convert from a precise
-     *        coordinate to an external coordinate
+     *     coordinate to an external coordinate
      */
-    private void appendPointTaggedText(Coordinate coordinate, int level, Writer writer,
-            PrecisionModel precisionModel) throws IOException {
+    private void appendPointTaggedText(
+            Coordinate coordinate, int level, Writer writer, PrecisionModel precisionModel)
+            throws IOException {
         writer.write("POINT ");
         appendPointText(coordinate, level, writer, precisionModel);
     }
@@ -336,8 +327,8 @@ public class WKTWriter2 extends WKTWriter {
      * @param lineString the <code>LineString</code> to process
      * @param writer the output writer to append to
      */
-    private void appendCircularStringTaggedText(SingleCurvedGeometry circularString, int level,
-            Writer writer) throws IOException {
+    private void appendCircularStringTaggedText(
+            SingleCurvedGeometry circularString, int level, Writer writer) throws IOException {
         writer.write("CIRCULARSTRING ");
         appendControlPointText(circularString, level, false, writer);
     }
@@ -401,8 +392,8 @@ public class WKTWriter2 extends WKTWriter {
      * @param multiLineString the <code>MultiLineString</code> to process
      * @param writer the output writer to append to
      */
-    private void appendMultiLineStringTaggedText(MultiLineString multiLineString, int level,
-            Writer writer) throws IOException {
+    private void appendMultiLineStringTaggedText(
+            MultiLineString multiLineString, int level, Writer writer) throws IOException {
         writer.write("MULTILINESTRING ");
         appendMultiLineStringText(multiLineString, level, false, writer);
     }
@@ -427,8 +418,8 @@ public class WKTWriter2 extends WKTWriter {
      * @param geometryCollection the <code>GeometryCollection</code> to process
      * @param writer the output writer to append to
      */
-    private void appendGeometryCollectionTaggedText(GeometryCollection geometryCollection,
-            int level, Writer writer) throws IOException {
+    private void appendGeometryCollectionTaggedText(
+            GeometryCollection geometryCollection, int level, Writer writer) throws IOException {
         writer.write("GEOMETRYCOLLECTION ");
         appendGeometryCollectionText(geometryCollection, level, writer);
     }
@@ -440,10 +431,11 @@ public class WKTWriter2 extends WKTWriter {
      * @param coordinate the <code>Coordinate</code> to process
      * @param writer the output writer to append to
      * @param precisionModel the <code>PrecisionModel</code> to use to convert from a precise
-     *        coordinate to an external coordinate
+     *     coordinate to an external coordinate
      */
-    private void appendPointText(Coordinate coordinate, int level, Writer writer,
-            PrecisionModel precisionModel) throws IOException {
+    private void appendPointText(
+            Coordinate coordinate, int level, Writer writer, PrecisionModel precisionModel)
+            throws IOException {
         if (coordinate == null) {
             writer.write("EMPTY");
         } else {
@@ -514,13 +506,12 @@ public class WKTWriter2 extends WKTWriter {
      * @param lineString the <code>LineString</code> to process
      * @param writer the output writer to append to
      */
-    private void appendSequenceText(CoordinateSequence seq, int level, boolean doIndent,
-            Writer writer) throws IOException {
+    private void appendSequenceText(
+            CoordinateSequence seq, int level, boolean doIndent, Writer writer) throws IOException {
         if (seq.size() == 0) {
             writer.write("EMPTY");
         } else {
-            if (doIndent)
-                indent(level, writer);
+            if (doIndent) indent(level, writer);
             writer.write("(");
             for (int i = 0; i < seq.size(); i++) {
                 if (i > 0) {
@@ -541,13 +532,13 @@ public class WKTWriter2 extends WKTWriter {
      * @param cg the <code>SingleCurvedGeometry</code> to process
      * @param writer the output writer to append to
      */
-    private void appendControlPointText(SingleCurvedGeometry cg, int level, boolean doIndent,
-            Writer writer) throws IOException {
+    private void appendControlPointText(
+            SingleCurvedGeometry cg, int level, boolean doIndent, Writer writer)
+            throws IOException {
         if (((Geometry) cg).isEmpty()) {
             writer.write("EMPTY");
         } else {
-            if (doIndent)
-                indent(level, writer);
+            if (doIndent) indent(level, writer);
             writer.write("(");
             double[] controlPoints = cg.getControlPoints();
             for (int i = 0; i < controlPoints.length; i += 2) {
@@ -570,13 +561,12 @@ public class WKTWriter2 extends WKTWriter {
      * @param lineString the <code>LineString</code> to process
      * @param writer the output writer to append to
      */
-    private void appendLineStringText(LineString lineString, int level, boolean doIndent,
-            Writer writer) throws IOException {
+    private void appendLineStringText(
+            LineString lineString, int level, boolean doIndent, Writer writer) throws IOException {
         if (lineString.isEmpty()) {
             writer.write("EMPTY");
         } else {
-            if (doIndent)
-                indent(level, writer);
+            if (doIndent) indent(level, writer);
             writer.write("(");
             for (int i = 0; i < lineString.getNumPoints(); i++) {
                 if (i > 0) {
@@ -622,7 +612,6 @@ public class WKTWriter2 extends WKTWriter {
             }
             writer.write(")");
         }
-
     }
 
     private void appendMultiSurfaceTaggedText(MultiSurface ms, int level, Writer writer)
@@ -633,15 +622,14 @@ public class WKTWriter2 extends WKTWriter {
         } else {
             writer.write("(");
             for (int i = 0; i < ms.getNumGeometries(); i++) {
-                appendPotentialCurvePolygonText((Polygon) ms.getGeometryN(i), level + 1, true,
-                        writer);
+                appendPotentialCurvePolygonText(
+                        (Polygon) ms.getGeometryN(i), level + 1, true, writer);
                 if (i < ms.getNumGeometries() - 1) {
                     writer.write(", ");
                 }
             }
             writer.write(")");
         }
-
     }
 
     /**
@@ -656,8 +644,7 @@ public class WKTWriter2 extends WKTWriter {
         if (polygon.isEmpty()) {
             writer.write("EMPTY");
         } else {
-            if (indentFirst)
-                indent(level, writer);
+            if (indentFirst) indent(level, writer);
             writer.write("(");
             appendLineStringText(polygon.getExteriorRing(), level, false, writer);
             for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
@@ -694,8 +681,9 @@ public class WKTWriter2 extends WKTWriter {
         }
     }
 
-    private void appendCompoundCurveTaggedText(CompoundCurvedGeometry<LineString> multiLineString,
-            int level, Writer writer) throws IOException {
+    private void appendCompoundCurveTaggedText(
+            CompoundCurvedGeometry<LineString> multiLineString, int level, Writer writer)
+            throws IOException {
         writer.write("COMPOUNDCURVE ");
         if (((Geometry) multiLineString).isEmpty()) {
             writer.write("EMPTY");
@@ -717,8 +705,8 @@ public class WKTWriter2 extends WKTWriter {
         }
     }
 
-    private void appendPotentialCurveText(LineString component, int level, boolean doIndent,
-            Writer writer) throws IOException {
+    private void appendPotentialCurveText(
+            LineString component, int level, boolean doIndent, Writer writer) throws IOException {
         if (component instanceof SingleCurvedGeometry) {
             appendCircularStringTaggedText((SingleCurvedGeometry) component, level, writer);
         } else if (component instanceof CompoundCurvedGeometry) {
@@ -728,8 +716,8 @@ public class WKTWriter2 extends WKTWriter {
         }
     }
 
-    private void appendPotentialCurvePolygonText(Polygon component, int level, boolean doIndent,
-            Writer writer) throws IOException {
+    private void appendPotentialCurvePolygonText(
+            Polygon component, int level, boolean doIndent, Writer writer) throws IOException {
         if (component instanceof CurvePolygon) {
             appendCurvePolygonTaggedText((CurvePolygon) component, level, writer);
         } else {
@@ -744,8 +732,9 @@ public class WKTWriter2 extends WKTWriter {
      * @param multiLineString the <code>MultiLineString</code> to process
      * @param writer the output writer to append to
      */
-    private void appendMultiLineStringText(MultiLineString multiLineString, int level,
-            boolean indentFirst, Writer writer) throws IOException {
+    private void appendMultiLineStringText(
+            MultiLineString multiLineString, int level, boolean indentFirst, Writer writer)
+            throws IOException {
         if (multiLineString.isEmpty()) {
             writer.write("EMPTY");
         } else {
@@ -758,8 +747,8 @@ public class WKTWriter2 extends WKTWriter {
                     level2 = level + 1;
                     doIndent = true;
                 }
-                appendLineStringText((LineString) multiLineString.getGeometryN(i), level2,
-                        doIndent, writer);
+                appendLineStringText(
+                        (LineString) multiLineString.getGeometryN(i), level2, doIndent, writer);
             }
             writer.write(")");
         }
@@ -799,8 +788,8 @@ public class WKTWriter2 extends WKTWriter {
      * @param geometryCollection the <code>GeometryCollection</code> to process
      * @param writer the output writer to append to
      */
-    private void appendGeometryCollectionText(GeometryCollection geometryCollection, int level,
-            Writer writer) throws IOException {
+    private void appendGeometryCollectionText(
+            GeometryCollection geometryCollection, int level, Writer writer) throws IOException {
         if (geometryCollection.isEmpty()) {
             writer.write("EMPTY");
         } else {
@@ -818,18 +807,15 @@ public class WKTWriter2 extends WKTWriter {
     }
 
     private void indentCoords(int coordIndex, int level, Writer writer) throws IOException {
-        if (coordsPerLine <= 0 || coordIndex % coordsPerLine != 0)
-            return;
+        if (coordsPerLine <= 0 || coordIndex % coordsPerLine != 0) return;
         indent(level, writer);
     }
 
     private void indent(int level, Writer writer) throws IOException {
-        if (!useFormatting || level <= 0)
-            return;
+        if (!useFormatting || level <= 0) return;
         writer.write("\n");
         for (int i = 0; i < level; i++) {
             writer.write(indentTabStr);
         }
     }
-
 }

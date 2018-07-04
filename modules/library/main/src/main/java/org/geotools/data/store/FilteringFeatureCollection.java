@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.collection.DelegateFeatureReader;
@@ -37,100 +36,91 @@ import org.opengis.filter.sort.SortBy;
 
 /**
  * Decorates a feature collection with one that filters content.
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
-public class FilteringFeatureCollection<T extends FeatureType, F extends Feature> extends DecoratingFeatureCollection<T, F>  {
+public class FilteringFeatureCollection<T extends FeatureType, F extends Feature>
+        extends DecoratingFeatureCollection<T, F> {
 
-	/**
-	 * The original feature collection.
-	 */
-	FeatureCollection<T, F> delegate;
-	/**
-	 * the filter
-	 */
-	Filter filter;
-	
-	public FilteringFeatureCollection( FeatureCollection<T, F> delegate, Filter filter ) {
-		super(delegate);
-		this.delegate = delegate;
+    /** The original feature collection. */
+    FeatureCollection<T, F> delegate;
+    /** the filter */
+    Filter filter;
+
+    public FilteringFeatureCollection(FeatureCollection<T, F> delegate, Filter filter) {
+        super(delegate);
+        this.delegate = delegate;
         this.filter = (Filter) filter.accept(new BindingFilterVisitor(delegate.getSchema()), null);
-	}
-	
-	public FeatureCollection<T, F> subCollection(Filter filter) {
-		throw new UnsupportedOperationException();
-	}
+    }
 
-	public FeatureCollection<T, F> sort(SortBy order) {
-		throw new UnsupportedOperationException();
-	}
+    public FeatureCollection<T, F> subCollection(Filter filter) {
+        throw new UnsupportedOperationException();
+    }
 
-	public int size() {
-		int count = 0;
-		FeatureIterator<F> i = features();
-		try {
-			while( i.hasNext() ) {
-				count++; i.next();
-			}
-			
-			return count;
-		}
-		finally {
-			i.close();
-		}
-	}
+    public FeatureCollection<T, F> sort(SortBy order) {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean isEmpty() {
-		return size() == 0;
-	}
+    public int size() {
+        int count = 0;
+        FeatureIterator<F> i = features();
+        try {
+            while (i.hasNext()) {
+                count++;
+                i.next();
+            }
 
-	public Object[] toArray() {
-		return toArray( new Object[ size() ] );
-	}
+            return count;
+        } finally {
+            i.close();
+        }
+    }
 
-	public <O> O[] toArray(O[] a) {
-		List<F> list = new ArrayList<F>();
-		FeatureIterator<F> i = features();
-		try {
-			while( i.hasNext() ) {
-				list.add( i.next() );
-			}			
-			return list.toArray( a );
-		}
-		finally {
-			i.close();
-		}
-	}
-	
-	public boolean contains(Object o) {
-		return delegate.contains( o ) && filter.evaluate( o );
-	}
+    public boolean isEmpty() {
+        return size() == 0;
+    }
 
-	public boolean containsAll(Collection<?> c) {
-		for ( Iterator<?> i = c.iterator(); i.hasNext(); ) {
-			if ( !contains( i.next() ) ) {
-				return false;
-			}
-		}		
-		return true;
-	}
+    public Object[] toArray() {
+        return toArray(new Object[size()]);
+    }
 
-	public FeatureIterator<F> features() {
-	    return new FilteringFeatureIterator<F>(delegate.features(), filter);
-	}
+    public <O> O[] toArray(O[] a) {
+        List<F> list = new ArrayList<F>();
+        FeatureIterator<F> i = features();
+        try {
+            while (i.hasNext()) {
+                list.add(i.next());
+            }
+            return list.toArray(a);
+        } finally {
+            i.close();
+        }
+    }
 
-	public  FeatureReader<T, F> reader() throws IOException {
-		return new DelegateFeatureReader<T, F>( getSchema(), features() );
-	}
+    public boolean contains(Object o) {
+        return delegate.contains(o) && filter.evaluate(o);
+    }
 
-	public ReferencedEnvelope getBounds() {
-		//calculate manually
-		return DataUtilities.bounds( this );
-	}
+    public boolean containsAll(Collection<?> c) {
+        for (Iterator<?> i = c.iterator(); i.hasNext(); ) {
+            if (!contains(i.next())) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    public FeatureIterator<F> features() {
+        return new FilteringFeatureIterator<F>(delegate.features(), filter);
+    }
+
+    public FeatureReader<T, F> reader() throws IOException {
+        return new DelegateFeatureReader<T, F>(getSchema(), features());
+    }
+
+    public ReferencedEnvelope getBounds() {
+        // calculate manually
+        return DataUtilities.bounds(this);
+    }
 }

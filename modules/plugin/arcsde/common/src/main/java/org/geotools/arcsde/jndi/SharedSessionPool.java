@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.logging.Loggers;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.arcsde.session.ISession;
@@ -34,15 +33,11 @@ import org.geotools.arcsde.session.UnavailableConnectionException;
 /**
  * A {@link ISessionPool session pool} that is not closable and hence can be shared between
  * different applications/datastores when referenced by a JNDI context.
- * 
- * 
+ *
  * @author Gabriel Roldan (OpenGeo)
- *
- *
  * @source $URL$
  * @version $Id$
  * @since 2.5.7
- * 
  */
 public final class SharedSessionPool implements ISessionPool {
 
@@ -54,16 +49,18 @@ public final class SharedSessionPool implements ISessionPool {
 
     private final ISessionPool delegate;
 
-    private static final Map<ArcSDEConnectionConfig, SharedSessionPool> instances = Collections
-            .synchronizedMap(new WeakHashMap<ArcSDEConnectionConfig, SharedSessionPool>());
+    private static final Map<ArcSDEConnectionConfig, SharedSessionPool> instances =
+            Collections.synchronizedMap(
+                    new WeakHashMap<ArcSDEConnectionConfig, SharedSessionPool>());
 
     protected SharedSessionPool(final ISessionPool delegate) throws IOException {
         this.delegate = delegate;
         this.instanceNumber = instanceCounter.incrementAndGet();
     }
 
-    public static ISessionPool getInstance(final ArcSDEConnectionConfig config,
-            final ISessionPoolFactory factory) throws IOException {
+    public static ISessionPool getInstance(
+            final ArcSDEConnectionConfig config, final ISessionPoolFactory factory)
+            throws IOException {
         LOGGER.info("Getting shared session pool for " + config);
         if (!instances.containsKey(config)) {
             synchronized (instances) {
@@ -89,59 +86,43 @@ public final class SharedSessionPool implements ISessionPool {
         delegate.close();
     }
 
-    /**
-     * @see ISessionPool#close()
-     */
+    /** @see ISessionPool#close() */
     public void close() {
         LOGGER.info("Ignoring SessionPool close, this is a shared pool");
     }
 
-    /**
-     * @see ISessionPool#getAvailableCount()
-     */
+    /** @see ISessionPool#getAvailableCount() */
     public int getAvailableCount() {
         return delegate.getAvailableCount();
     }
 
-    /**
-     * @see ISessionPool#getConfig()
-     */
+    /** @see ISessionPool#getConfig() */
     public ArcSDEConnectionConfig getConfig() {
         return delegate.getConfig();
     }
 
-    /**
-     * @see ISessionPool#getInUseCount()
-     */
+    /** @see ISessionPool#getInUseCount() */
     public int getInUseCount() {
         return delegate.getInUseCount();
     }
 
-    /**
-     * @see ISessionPool#getPoolSize()
-     */
+    /** @see ISessionPool#getPoolSize() */
     public int getPoolSize() {
         return delegate.getPoolSize();
     }
 
-    /**
-     * @see org.geotools.arcsde.session.ISessionPool#getSession()
-     */
+    /** @see org.geotools.arcsde.session.ISessionPool#getSession() */
     public ISession getSession() throws IOException, UnavailableConnectionException {
         return getSession(true);
     }
 
-    /**
-     * @see ISessionPool#getSession(boolean)
-     */
-    public ISession getSession(final boolean transactional) throws IOException,
-            UnavailableConnectionException {
+    /** @see ISessionPool#getSession(boolean) */
+    public ISession getSession(final boolean transactional)
+            throws IOException, UnavailableConnectionException {
         return delegate.getSession(transactional);
     }
 
-    /**
-     * @see ISessionPool#isClosed()
-     */
+    /** @see ISessionPool#isClosed() */
     public boolean isClosed() {
         return delegate.isClosed();
     }

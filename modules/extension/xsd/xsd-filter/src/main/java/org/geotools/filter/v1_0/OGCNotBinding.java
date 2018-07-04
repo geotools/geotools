@@ -17,37 +17,33 @@
 package org.geotools.filter.v1_0;
 
 import java.util.Collections;
-
 import javax.xml.namespace.QName;
+import org.geotools.filter.v1_1.OGC;
+import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Not;
+import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.spatial.BinarySpatialOperator;
-import org.geotools.filter.v1_1.OGC;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:Not.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Not" substitutionGroup="ogc:logicOps" type="ogc:UnaryLogicOpType"/&gt;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCNotBinding extends AbstractComplexBinding {
@@ -57,14 +53,13 @@ public class OGCNotBinding extends AbstractComplexBinding {
         this.filterfactory = filterfactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.Not;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -75,27 +70,27 @@ public class OGCNotBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Filter filter = (Filter) node.getChildValue(Filter.class);
-        if ( filter == null ) {
-            //look for an Identifier, not in the spec but something we handle
-            Identifier id = (Identifier) node.getChildValue( Identifier.class );
-            if ( id != null ) {
-                filter = filterfactory.id( Collections.singleton( id ) );
+        if (filter == null) {
+            // look for an Identifier, not in the spec but something we handle
+            Identifier id = (Identifier) node.getChildValue(Identifier.class);
+            if (id != null) {
+                filter = filterfactory.id(Collections.singleton(id));
             }
         }
 
         return filterfactory.not(filter);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    @Override
+    public Object getProperty(Object object, QName name) throws Exception {
         Not not = (Not) object;
 
         if (OGC.spatialOps.equals(name) && not.getFilter() instanceof BinarySpatialOperator) {
@@ -110,6 +105,9 @@ public class OGCNotBinding extends AbstractComplexBinding {
             return not.getFilter();
         }
 
+        if (OGC.comparisonOps.equals(name) && not.getFilter() instanceof PropertyIsNull) {
+            return not.getFilter();
+        }
         return null;
     }
 }

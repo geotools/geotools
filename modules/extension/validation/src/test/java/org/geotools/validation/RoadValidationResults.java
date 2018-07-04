@@ -17,95 +17,90 @@
 package org.geotools.validation;
 
 import java.util.ArrayList;
-
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * RoadValidationResults purpose.
- * <p>
- * Description of RoadValidationResults ...
- * <p>
- * Capabilities:
+ *
+ * <p>Description of RoadValidationResults ...
+ *
+ * <p>Capabilities:
+ *
  * <ul>
- * </li></li>
  * </ul>
+ *
  * Example Use:
+ *
  * <pre><code>
  * RoadValidationResults x = new RoadValidationResults(...);
  * </code></pre>
- * 
+ *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class RoadValidationResults implements ValidationResults {
 
-	public ArrayList validationList;
-	public ArrayList failedFeatures;
-	public ArrayList warningFeatures;
-	public ArrayList failureMessages;
-	public ArrayList warningMessages;
+    public ArrayList validationList;
+    public ArrayList failedFeatures;
+    public ArrayList warningFeatures;
+    public ArrayList failureMessages;
+    public ArrayList warningMessages;
 
+    /**
+     * RoadValidationResults constructor.
+     *
+     * <p>Description
+     */
+    public RoadValidationResults() {
+        validationList = new ArrayList();
+        failedFeatures = new ArrayList();
+        warningFeatures = new ArrayList();
+        failureMessages = new ArrayList();
+        warningMessages = new ArrayList();
+    }
 
-	/**
-	 * RoadValidationResults constructor.
-	 * <p>
-	 * Description
-	 * </p>
-	 * 
-	 */
-	public RoadValidationResults() {
-		validationList = new ArrayList();
-		failedFeatures = new ArrayList();
-		warningFeatures = new ArrayList();
-		failureMessages = new ArrayList();
-		warningMessages = new ArrayList();
-	}
+    /**
+     * Override setValidation.
+     *
+     * <p>Description ...
+     *
+     * @see
+     *     org.geotools.validation.ValidationResults#setValidation(org.geotools.validation.Validation)
+     * @param validation
+     */
+    public void setValidation(Validation validation) {
+        validationList.add(validation);
+    }
 
-	/**
-	 * Override setValidation.
-	 * <p>
-	 * Description ...
-	 * </p>
-	 * @see org.geotools.validation.ValidationResults#setValidation(org.geotools.validation.Validation)
-	 * 
-	 * @param validation
-	 */
-	public void setValidation(Validation validation) {
-		validationList.add(validation);
-	}
+    /**
+     * Override error.
+     *
+     * <p>Description ...
+     *
+     * @see org.geotools.validation.ValidationResults#error(org.geotools.feature.Feature,
+     *     java.lang.String)
+     * @param feature
+     * @param message
+     */
+    public void error(SimpleFeature feature, String message) {
+        failedFeatures.add(feature);
+        failureMessages.add(feature.getID() + ": " + message);
+    }
 
-	/**
-	 * Override error.
-	 * <p>
-	 * Description ...
-	 * </p>
-	 * @see org.geotools.validation.ValidationResults#error(org.geotools.feature.Feature, java.lang.String)
-	 * 
-	 * @param feature
-	 * @param message
-	 */
-	public void error(SimpleFeature feature, String message) {
-		failedFeatures.add(feature);
-		failureMessages.add(feature.getID() + ": " + message);
-	}
-
-	/**
-	 * Override warning.
-	 * <p>
-	 * Description ...
-	 * </p>
-	 * @see org.geotools.validation.ValidationResults#warning(org.geotools.feature.Feature, java.lang.String)
-	 * 
-	 * @param feature
-	 * @param message
-	 */
-	public void warning(SimpleFeature feature, String message) {
-		warningFeatures.add(feature);
-		warningMessages.add(feature.getID() + ": " + message);
-	}
-
+    /**
+     * Override warning.
+     *
+     * <p>Description ...
+     *
+     * @see org.geotools.validation.ValidationResults#warning(org.geotools.feature.Feature,
+     *     java.lang.String)
+     * @param feature
+     * @param message
+     */
+    public void warning(SimpleFeature feature, String message) {
+        warningFeatures.add(feature);
+        warningMessages.add(feature.getID() + ": " + message);
+    }
 }

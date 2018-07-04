@@ -228,7 +228,7 @@ The following configuration parameters apply only to the **generate** goal:
       </bindingConstructorArgument>
       <bindingConstructorArgument>
         <name>geometryFactory</name>
-        <value>com.vividsolutions.jts.geom.GeometryFactory</value>
+        <value>org.locationtech.jts.geom.GeometryFactory</value>
       </bindingConstructorArgument>
     <bindingConstructorArguments>
 
@@ -279,10 +279,10 @@ The following configuration parameters apply only to the generateSchema goal:
     <typeBindings>
        <typeBinding>
             <name>PointPropertyType</name>
-            <binding>com.vividsolutions.jts.geom.Point</binding>
+            <binding>org.locationtech.jts.geom.Point</binding>
         </typeBinding>
         <typeBinding>
             <name>PointType</name>
-            <binding>com.vividsolutions.jts.geom.Point</binding>
+            <binding>org.locationtech.jts.geom.Point</binding>
          </typeBinding>
     </typeBindings>

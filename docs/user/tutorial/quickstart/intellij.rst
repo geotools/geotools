@@ -106,7 +106,7 @@ Maven downloads jars from public repositories on the internet where projects suc
    properties element defining the version of GeoTools we wish to use. This workbook was written for |release| 
    although you may wish to try a different version.
    
-   For production a stable release is recommended:
+   For production a stable release of |branch| should be used for `geotools.version`:
     
    .. literalinclude:: artifacts/pom.xml
         :language: xml
@@ -136,12 +136,7 @@ Maven downloads jars from public repositories on the internet where projects suc
         :start-after: </dependencies>
         :end-before: <build>
 
-   If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
-   
-   .. literalinclude:: artifacts/pom2.xml
-     :language: xml
-     :start-after: </dependencies>
-     :end-before: <build>
+   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
 #. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
 
@@ -210,7 +205,9 @@ Things to Try
 =============
 
 Each tutorial consists of very detailed steps followed by a series of extra questions. If you get
-stuck at any point please ask your instructor; or sign up to the geotools-users email list.
+stuck at any point please ask your instructor; or sign up to the geotools-users_ email list.
+
+.. _geotools-users: http://docs.geotools.org/latest/developer/communication.html
 
 Here are some additional challenges for you to try:
 

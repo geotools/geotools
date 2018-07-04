@@ -20,30 +20,25 @@ import org.geotools.filter.visitor.SimplifyingFilterVisitor.FIDValidator;
 
 /**
  * Fid validator which validates with respect to a primary key.
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
- *
- *
- *
- *
  * @source $URL$
  */
 public class PrimaryKeyFIDValidator implements FIDValidator {
 
     JDBCFeatureSource featureSource;
-    
-    public PrimaryKeyFIDValidator( JDBCFeatureSource featureSource ) {
+
+    public PrimaryKeyFIDValidator(JDBCFeatureSource featureSource) {
         this.featureSource = featureSource;
     }
+
     public boolean isValid(String fid) {
         PrimaryKey key = featureSource.getPrimaryKey();
         try {
-            featureSource.getDataStore().decodeFID( key, fid, true );
+            featureSource.getDataStore().decodeFID(key, fid, true);
             return true;
-        }
-        catch( Exception e ) {
+        } catch (Exception e) {
             return false;
         }
     }
-
 }

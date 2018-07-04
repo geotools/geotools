@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,31 +17,30 @@
 package org.geotools.geometry.jts;
 
 import java.util.List;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateFilter;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceComparator;
-import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.GeometryFilter;
-import com.vividsolutions.jts.geom.IntersectionMatrix;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateFilter;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceComparator;
+import org.locationtech.jts.geom.CoordinateSequenceFilter;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFilter;
+import org.locationtech.jts.geom.IntersectionMatrix;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * A CompoundRing is a connected sequence of circular arcs and linear segments forming a closed
  * line.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
-public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<LinearRing>,
-        CurvedRing {
+public class CompoundRing extends LinearRing
+        implements CompoundCurvedGeometry<LinearRing>, CurvedRing {
 
     private static final long serialVersionUID = -5796254063449438787L;
 
@@ -71,7 +70,7 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     /**
      * Returns the components of this compound curve, which will be a list of straight LineString
      * objects and CircularString/CircularRing
-     * 
+     *
      * @return
      */
     public List<LineString> getComponents() {
@@ -93,7 +92,6 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
         CoordinateSequence cs = delegate.getLinearizedCoordinateSequence(tolerance);
         return getFactory().createLinearRing(cs);
     }
-
 
     /* Optimized overridden methods */
 
@@ -226,9 +224,9 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     public boolean equalsNorm(Geometry g) {
         return super.equalsNorm(g);
     }
-    
+
     public Point getPointN(int n) {
-        if(n == 0) {
+        if (n == 0) {
             return getStartPoint();
         }
         return linearize().getPointN(n);
@@ -242,12 +240,9 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
         return delegate.getEndPoint();
     }
 
-
-
     /*
      * Simple linearized delegate methods
      */
-
 
     public Coordinate[] getCoordinates() {
         return linearize().getCoordinates();
@@ -320,6 +315,11 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
         linearize().apply(filter);
     }
 
+    @Override
+    public CompoundRing copyInternal() {
+        return new CompoundRing(delegate);
+    }
+
     public void normalize() {
         linearize().normalize();
     }
@@ -339,7 +339,6 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     public boolean isWithinDistance(Geometry geom, double distance) {
         return linearize().isWithinDistance(geom, distance);
     }
-
 
     public double getArea() {
         return linearize().getArea();
@@ -449,5 +448,4 @@ public class CompoundRing extends LinearRing implements CompoundCurvedGeometry<L
     public String toText() {
         return linearize().toText();
     }
-
 }

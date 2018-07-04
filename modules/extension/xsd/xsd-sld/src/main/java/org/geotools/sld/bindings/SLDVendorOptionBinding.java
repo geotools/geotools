@@ -1,7 +1,6 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.sld.CssParameter;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -10,12 +9,12 @@ import org.opengis.filter.FilterFactory;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:VendorOption.
- * 
+ *
  * <pre>
  * &lt;xsd:element name="VendorOption">
  *   &lt;xsd:annotation>
  *     &lt;xsd:documentation>
- *     GeoTools specific vendor extensions that allow for implementation 
+ *     GeoTools specific vendor extensions that allow for implementation
  *     specific features not necessarily supported by the core SLD spec.
  *     &lt;/xsd:documentation>
  *   &lt;/xsd:annotation>
@@ -28,20 +27,18 @@ import org.opengis.filter.FilterFactory;
  *   &lt;/xsd:complexType>
  * &lt;/xsd:element>
  * </pre>
+ *
  * @author Justin Deoliveira, OpenGeo
- *
- *
- *
  * @source $URL$
  */
 public class SLDVendorOptionBinding extends AbstractComplexBinding {
 
     FilterFactory filterFactory;
-    
+
     public SLDVendorOptionBinding(FilterFactory filterFactory) {
         this.filterFactory = filterFactory;
     }
-    
+
     public QName getTarget() {
         return SLD.VENDOROPTION;
     }

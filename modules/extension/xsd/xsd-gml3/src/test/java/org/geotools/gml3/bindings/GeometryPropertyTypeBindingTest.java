@@ -22,20 +22,26 @@ import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.geotools.gml3.GMLConfiguration;
+import org.geotools.xml.Configuration;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.io.WKTReader;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.LineString;
-
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
 
     @Override
     protected boolean enableExtendedArcSurfaceSupport() {
         return true;
+    }
+
+    protected Configuration createConfiguration() {
+        GMLConfiguration configuration = new GMLConfiguration(enableExtendedArcSurfaceSupport());
+        // configure a small number of decimals for testing purposes
+        configuration.setNumDecimals(2);
+        return configuration;
     }
 
     public void testEncode() throws Exception {
@@ -44,18 +50,29 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
     }
 
     public void testEncodeCurve() throws Exception {
-        LineString curve = new CurvedGeometryFactory(0.1)
-                .createCurvedGeometry(new LiteCoordinateSequence(new double[] { 1, 1, 2, 2, 3, 1,
-                        5, 5, 7, 3 }));
+        LineString curve =
+                new CurvedGeometryFactory(0.1)
+                        .createCurvedGeometry(
+                                new LiteCoordinateSequence(
+                                        new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
 
         Document dom = encode(curve, GML.geometryMember);
-        print(dom);
+        // print(dom);
         XpathEngine xpath = XMLUnit.newXpathEngine();
         String basePath = "/gml:geometryMember/gml:Curve/gml:segments/gml:ArcString";
-        assertEquals(1,
+        assertEquals(
+                1,
                 xpath.getMatchingNodes(basePath + "[@interpolation='circularArc3Points']", dom)
                         .getLength());
-        assertEquals("1.0 1.0 2.0 2.0 3.0 1.0 5.0 5.0 7.0 3.0",
-                xpath.evaluate(basePath + "/gml:posList", dom));
+        assertEquals("1 1 2 2 3 1 5 5 7 3", xpath.evaluate(basePath + "/gml:posList", dom));
+    }
+
+    public void testEncodePointWithDecimals() throws Exception {
+        Geometry geometry = new WKTReader().read("POINT(1.234 5.678)");
+
+        Document dom = encode(geometry, GML.geometryMember);
+        // print(dom);
+        XpathEngine xpath = XMLUnit.newXpathEngine();
+        assertEquals("1.23 5.68", xpath.evaluate("/gml:geometryMember/gml:Point/gml:pos", dom));
     }
 }

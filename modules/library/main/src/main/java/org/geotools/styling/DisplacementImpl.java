@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-
 // OpenGIS dependencies
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.util.Utilities;
@@ -26,32 +26,31 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.style.StyleVisitor;
 import org.opengis.util.Cloneable;
 
-
 /**
  * DOCUMENT ME!
  *
  * @author Ian Turton, CCG
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class DisplacementImpl implements Displacement, Cloneable {
     /** The logger for the default core module. */
-    private static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    private static final java.util.logging.Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+
     private FilterFactory filterFactory;
     private Expression displacementX = null;
     private Expression displacementY = null;
 
     public DisplacementImpl() {
-        this( CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints() ));
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
     }
 
     public DisplacementImpl(FilterFactory factory) {
         filterFactory = factory;
 
         try {
-            displacementX = filterFactory.literal( 0 );
+            displacementX = filterFactory.literal(0);
             displacementY = filterFactory.literal(0);
         } catch (org.geotools.filter.IllegalFilterException ife) {
             LOGGER.severe("Failed to build defaultDisplacement: " + ife);
@@ -68,8 +67,8 @@ public class DisplacementImpl implements Displacement, Cloneable {
         filterFactory = factory;
 
         try {
-            displacementX = filterFactory.literal( 0 );
-            displacementY = filterFactory.literal( 0 );
+            displacementX = filterFactory.literal(0);
+            displacementY = filterFactory.literal(0);
         } catch (org.geotools.filter.IllegalFilterException ife) {
             LOGGER.severe("Failed to build defaultDisplacement: " + ife);
         }
@@ -88,8 +87,8 @@ public class DisplacementImpl implements Displacement, Cloneable {
      *
      * @param displacementX New value of property displacementX.
      */
-    public void setDisplacementX(double displacementX ){
-        this.displacementX = filterFactory.literal( displacementX );
+    public void setDisplacementX(double displacementX) {
+        this.displacementX = filterFactory.literal(displacementX);
     }
     /**
      * Setter for property displacementY.
@@ -104,8 +103,8 @@ public class DisplacementImpl implements Displacement, Cloneable {
      *
      * @param displacementY New value of property displacementX.
      */
-    public void setDisplacementY(double displacementY ){
-        this.displacementY = filterFactory.literal( displacementY );
+    public void setDisplacementY(double displacementY) {
+        this.displacementY = filterFactory.literal(displacementY);
     }
 
     /**
@@ -126,14 +125,14 @@ public class DisplacementImpl implements Displacement, Cloneable {
         return displacementY;
     }
 
-    public Object accept(StyleVisitor visitor,Object data) {
-        return visitor.visit(this,data);
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
     }
 
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
-    
+
     /* (non-Javadoc)
      * @see org.opengis.util.Cloneable#clone()
      */
@@ -157,7 +156,7 @@ public class DisplacementImpl implements Displacement, Cloneable {
             DisplacementImpl other = (DisplacementImpl) obj;
 
             return Utilities.equals(displacementX, other.displacementX)
-            && Utilities.equals(displacementY, other.displacementY);
+                    && Utilities.equals(displacementY, other.displacementY);
         }
 
         return false;
@@ -194,5 +193,4 @@ public class DisplacementImpl implements Displacement, Cloneable {
             return copy;
         }
     }
-    
 }

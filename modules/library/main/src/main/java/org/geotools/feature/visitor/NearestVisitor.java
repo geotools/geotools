@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,25 +16,22 @@
  */
 package org.geotools.feature.visitor;
 
+import java.util.Arrays;
 import java.util.Date;
-
-import org.geotools.factory.CommonFactoryFinder;
+import java.util.List;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.PropertyDescriptor;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Finds the nearest value to the provided one in the attribute domain.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  * @author Ilkka Rinne / Spatineo Inc for the Finnish Meteorological Institute
- * 
  * @param <T>
  */
-public class NearestVisitor implements FeatureCalc {
+public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
 
     private Class attributeClass;
@@ -46,12 +43,12 @@ public class NearestVisitor implements FeatureCalc {
     double shortestDistance = Double.MAX_VALUE;
 
     private Object valueToMatch;
-    
+
     private Object nearest;
 
     /**
      * Creates a NearestVisitor instance for the given attribute and a value to match.
-     * 
+     *
      * @param expression
      * @param valueToMatch The target value to match
      */
@@ -63,7 +60,7 @@ public class NearestVisitor implements FeatureCalc {
     /**
      * Visitor function, which looks at each feature and finds the value of the attribute given
      * attribute nearest to the given comparison value.
-     * 
+     *
      * @param feature the feature to be visited
      */
     @SuppressWarnings("unchecked")
@@ -72,11 +69,11 @@ public class NearestVisitor implements FeatureCalc {
         if (visited) {
             return;
         }
-        
-        if(attributeClass == null) {
+
+        if (attributeClass == null) {
             PropertyDescriptor desc = (PropertyDescriptor) expr.evaluate(feature.getType());
             attributeClass = desc.getType().getBinding();
-            if(accumulator == null) {
+            if (accumulator == null) {
                 accumulator = getAccumulator(attributeClass);
             }
         }
@@ -91,23 +88,25 @@ public class NearestVisitor implements FeatureCalc {
     }
 
     private NearestAccumulator getAccumulator(Class attributeClass) {
-        if(Number.class.isAssignableFrom(attributeClass)) {
+        if (Number.class.isAssignableFrom(attributeClass)) {
             Double convertedTarget = Converters.convert(valueToMatch, Double.class);
             return new NumberAccumulator(convertedTarget);
-        } else if(Date.class.isAssignableFrom(attributeClass)) {
+        } else if (Date.class.isAssignableFrom(attributeClass)) {
             Date convertedTarget = Converters.convert(valueToMatch, Date.class);
             return new DateAccumulator(convertedTarget);
-        } else if(Geometry.class.isAssignableFrom(attributeClass)) {
+        } else if (Geometry.class.isAssignableFrom(attributeClass)) {
             Geometry convertedTarget = Converters.convert(valueToMatch, Geometry.class);
             return new GeometryAccumulator(convertedTarget);
-        } else if(Comparable.class.isAssignableFrom(attributeClass)) {
-            Comparable convertedTarget = (Comparable) Converters.convert(valueToMatch, attributeClass);
+        } else if (Comparable.class.isAssignableFrom(attributeClass)) {
+            Comparable convertedTarget =
+                    (Comparable) Converters.convert(valueToMatch, attributeClass);
             return new ComparableAccumulator(convertedTarget);
         }
-        // TODO: we should probably create a custom one for strings, there are various 
+        // TODO: we should probably create a custom one for strings, there are various
         // string distance algorithms described on the net
-        
-        throw new IllegalArgumentException("Don't know how to compute nearest for target class " + attributeClass);
+
+        throw new IllegalArgumentException(
+                "Don't know how to compute nearest for target class " + attributeClass);
     }
 
     public void reset() {
@@ -116,16 +115,16 @@ public class NearestVisitor implements FeatureCalc {
         attributeClass = null;
         nearest = null;
     }
-    
+
     public void setValue(Object nearest) {
         this.nearest = nearest;
         this.visited = true;
     }
 
     public void setValue(Object maxBelow, Object minAbove) {
-        if(maxBelow == null) {
+        if (maxBelow == null) {
             this.nearest = minAbove;
-        } else if(minAbove == null) {
+        } else if (minAbove == null) {
             this.nearest = maxBelow;
         } else {
             NearestAccumulator accumulator = getAccumulator(maxBelow.getClass());
@@ -137,17 +136,17 @@ public class NearestVisitor implements FeatureCalc {
 
     /**
      * Returns the match after {@link #visit}.
-     * 
+     *
      * @return
      * @throws IllegalStateException
      */
     public Object getNearestMatch() throws IllegalStateException {
-        if(nearest == null) {
-            if(accumulator != null) {
+        if (nearest == null) {
+            if (accumulator != null) {
                 this.nearest = accumulator.getNearest();
             }
         }
-        
+
         return nearest;
     }
 
@@ -163,20 +162,25 @@ public class NearestVisitor implements FeatureCalc {
 
     /**
      * Expression used to access collection content.
-     * 
+     *
      * @return expr used to access collection
      */
     public Expression getExpression() {
         return expr;
     }
-    
+
     /**
      * Provided value to match against.
-     * 
+     *
      * @return value to match against.
      */
     public Object getValueToMatch() {
         return valueToMatch;
+    }
+
+    @Override
+    public List<Expression> getExpressions() {
+        return Arrays.asList(expr);
     }
 
     static interface NearestAccumulator<T> {
@@ -221,16 +225,16 @@ public class NearestVisitor implements FeatureCalc {
         }
 
         public Comparable getNearest() {
-            if(maxBelow == null) {
+            if (maxBelow == null) {
                 return minAbove;
-            } else if(minAbove == null) {
+            } else if (minAbove == null) {
                 return maxBelow;
             } else {
                 // No real guarantee this will return the closest, but this is the best we can do
                 // not knowing anything else about the target class
                 int diffAbove = Math.abs(targetValue.compareTo(minAbove));
                 int diffBelow = Math.abs(targetValue.compareTo(maxBelow));
-    
+
                 if (diffAbove < diffBelow) {
                     return minAbove;
                 } else {
@@ -238,7 +242,6 @@ public class NearestVisitor implements FeatureCalc {
                 }
             }
         }
-
     }
 
     class NumberAccumulator implements NearestAccumulator<Number> {
@@ -263,14 +266,12 @@ public class NearestVisitor implements FeatureCalc {
             }
 
             return d == 0;
-
         }
 
         @Override
         public Number getNearest() {
             return nearest;
         }
-
     }
 
     class DateAccumulator implements NearestAccumulator<Date> {
@@ -293,7 +294,7 @@ public class NearestVisitor implements FeatureCalc {
                 difference = d;
                 nearest = value;
             }
-            
+
             return d == 0;
         }
 
@@ -301,7 +302,6 @@ public class NearestVisitor implements FeatureCalc {
         public Date getNearest() {
             return nearest;
         }
-
     }
 
     class GeometryAccumulator implements NearestAccumulator<Geometry> {
@@ -330,7 +330,5 @@ public class NearestVisitor implements FeatureCalc {
         public Geometry getNearest() {
             return nearest;
         }
-
     }
-
 }

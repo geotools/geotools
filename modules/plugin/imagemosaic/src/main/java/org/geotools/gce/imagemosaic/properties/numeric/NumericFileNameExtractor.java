@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.factory.GeoTools;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
@@ -32,83 +31,83 @@ import org.opengis.feature.simple.SimpleFeature;
 abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
         extends RegExPropertiesCollector {
 
-    final static NumericConverterFactory factory = new NumericConverterFactory();
+    static final NumericConverterFactory factory = new NumericConverterFactory();
 
     static class IntegerFileNameExtractor extends NumericFileNameExtractor<Integer> {
 
-        public IntegerFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-                String regex) {
+        public IntegerFileNameExtractor(
+                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Integer.class);
         }
-
     }
 
     static class ShortFileNameExtractor extends NumericFileNameExtractor<Short> {
 
-        public ShortFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-                String regex) {
+        public ShortFileNameExtractor(
+                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Short.class);
         }
-
     }
 
     static class DoubleFileNameExtractor extends NumericFileNameExtractor<Double> {
 
-        public DoubleFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-                String regex) {
+        public DoubleFileNameExtractor(
+                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Double.class);
         }
-
     }
 
     static class FloatFileNameExtractor extends NumericFileNameExtractor<Float> {
 
-        public FloatFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-                String regex) {
+        public FloatFileNameExtractor(
+                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Float.class);
         }
-
     }
 
     static class ByteFileNameExtractor extends NumericFileNameExtractor<Byte> {
 
-        public ByteFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-                String regex) {
+        public ByteFileNameExtractor(
+                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Byte.class);
         }
-
     }
 
     static class LongFileNameExtractor extends NumericFileNameExtractor<Long> {
 
-        public LongFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-                String regex) {
+        public LongFileNameExtractor(
+                PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
             super(spi, propertyNames, regex, Long.class);
         }
-
     }
 
-    private final static Logger LOGGER = Logging.getLogger(NumericFileNameExtractor.class);
+    private static final Logger LOGGER = Logging.getLogger(NumericFileNameExtractor.class);
 
     private Class<? extends Number> targetClasse;
 
     private Converter converter;
 
-    public NumericFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-            String regex, final Class<N> targetClass) {
+    public NumericFileNameExtractor(
+            PropertiesCollectorSPI spi,
+            List<String> propertyNames,
+            String regex,
+            final Class<N> targetClass) {
         super(spi, propertyNames, regex);
 
         this.targetClasse = targetClass;
-        this.converter = factory.createConverter(String.class, targetClasse,
-                GeoTools.getDefaultHints());
+        this.converter =
+                factory.createConverter(String.class, targetClasse, GeoTools.getDefaultHints());
         // if (targetClasse != null) {
         // // look up a converter
-        // final Set<ConverterFactory> converters = Converters.getConverterFactories(String.class, targetClasse);
+        // final Set<ConverterFactory> converters = Converters.getConverterFactories(String.class,
+        // targetClasse);
         // if (!converters.isEmpty()) {
-        // this.converter = converters.iterator().next().createConverter(String.class, targetClasse, GeoTools.getDefaultHints());
+        // this.converter = converters.iterator().next().createConverter(String.class, targetClasse,
+        // GeoTools.getDefaultHints());
         // return;
         // }
-        // throw new IllegalArgumentException("Unable to find a proper converter from String to the class:" + targetClasse);
+        // throw new IllegalArgumentException("Unable to find a proper converter from String to the
+        // class:" + targetClasse);
         // }
 
     }
@@ -126,7 +125,6 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
                 if (LOGGER.isLoggable(Level.INFO))
                     LOGGER.log(Level.INFO, e.getLocalizedMessage(), e);
             }
-
         }
 
         // set the properties, if we have some
@@ -140,9 +138,7 @@ abstract class NumericFileNameExtractor<N extends Number & Comparable<N>>
             feature.setAttribute(propertyName, values.get(index++));
 
             // do we have more dates?
-            if (index >= values.size())
-                return;
+            if (index >= values.size()) return;
         }
     }
-
 }

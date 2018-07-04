@@ -16,6 +16,9 @@
  */
 package org.geotools.caching.grid.featurecache;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.LineString;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -28,25 +31,14 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
-
 import javax.swing.JPanel;
-
 import org.geotools.caching.spatialindex.Data;
 import org.geotools.caching.spatialindex.Node;
 import org.geotools.caching.spatialindex.Region;
 import org.geotools.caching.spatialindex.Visitor;
 import org.opengis.feature.simple.SimpleFeature;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.LineString;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class CacheDisplayPanel extends JPanel {
     GridFeatureCache cache;
     HashMap<String, Envelope> queries = new HashMap<String, Envelope>();
@@ -86,8 +78,8 @@ public class CacheDisplayPanel extends JPanel {
 
         try {
             cache.tracker.setDoRecordAccess(false);
-            cache.tracker.intersectionQuery(new Region(new double[] { 0, 0 }, new double[] { 1, 1 }),
-                v);
+            cache.tracker.intersectionQuery(
+                    new Region(new double[] {0, 0}, new double[] {1, 1}), v);
         } finally {
             cache.tracker.setDoRecordAccess(true);
             cache.readUnLock();
@@ -95,19 +87,24 @@ public class CacheDisplayPanel extends JPanel {
 
         if (!queries.isEmpty()) {
             for (Iterator<Entry<String, Envelope>> it = queries.entrySet().iterator();
-                    it.hasNext();) {
+                    it.hasNext(); ) {
                 Entry<String, Envelope> next = it.next();
                 Envelope query = next.getValue();
                 g2d.setColor(Color.BLUE);
                 g2d.setStroke(new BasicStroke(0.005f));
 
-                Rectangle2D.Double window = new Rectangle2D.Double(query.getMinX(),
-                        query.getMinY(), query.getWidth(), query.getHeight());
+                Rectangle2D.Double window =
+                        new Rectangle2D.Double(
+                                query.getMinX(),
+                                query.getMinY(),
+                                query.getWidth(),
+                                query.getHeight());
                 g2d.draw(window);
                 g2d.setTransform(saveAT);
 
-                Point2D.Double p = new Point2D.Double(window.x + (0.5 * window.width),
-                        window.y + (0.5 * window.height));
+                Point2D.Double p =
+                        new Point2D.Double(
+                                window.x + (0.5 * window.width), window.y + (0.5 * window.height));
                 Point2D pt = trans.transform(p, new Point2D.Double(0, 0));
                 g2d.drawString(next.getKey(), (int) pt.getX(), (int) pt.getY());
                 g2d.setTransform(trans);
@@ -119,11 +116,10 @@ public class CacheDisplayPanel extends JPanel {
     }
 }
 
-
 class DrawingVisitor implements Visitor {
-    final static Stroke VALID_STROKE = new BasicStroke(0.005f);
-    final static Stroke INVALID_STROKE = new BasicStroke(0.002f);
-    final static Stroke DATA_STROKE = new BasicStroke(0.002f);
+    static final Stroke VALID_STROKE = new BasicStroke(0.005f);
+    static final Stroke INVALID_STROKE = new BasicStroke(0.002f);
+    static final Stroke DATA_STROKE = new BasicStroke(0.002f);
     Graphics2D graph;
 
     DrawingVisitor(Graphics2D graph) {
@@ -161,7 +157,11 @@ class DrawingVisitor implements Visitor {
             graph.setColor(Color.RED);
         }
 
-        graph.draw(new Rectangle2D.Double(region.getLow(0), region.getLow(1),
-                region.getHigh(0) - region.getLow(0), region.getHigh(1) - region.getLow(1)));
+        graph.draw(
+                new Rectangle2D.Double(
+                        region.getLow(0),
+                        region.getLow(1),
+                        region.getHigh(0) - region.getLow(0),
+                        region.getHigh(1) - region.getLow(1)));
     }
 }

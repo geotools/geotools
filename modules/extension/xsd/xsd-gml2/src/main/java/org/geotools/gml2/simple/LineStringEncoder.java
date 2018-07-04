@@ -18,13 +18,12 @@ package org.geotools.gml2.simple;
 
 import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.LineString;
 import org.xml.sax.helpers.AttributesImpl;
-
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * Encodes a GML2 linestring
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
@@ -49,5 +48,4 @@ class LineStringEncoder extends GeometryEncoder<LineString> {
         handler.coordinates(geometry.getCoordinateSequence());
         handler.endElement(element);
     }
-
 }

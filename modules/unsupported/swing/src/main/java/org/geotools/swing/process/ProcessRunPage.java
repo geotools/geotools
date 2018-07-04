@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,11 +19,9 @@ package org.geotools.swing.process;
 import java.awt.GridLayout;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import org.geotools.data.Parameter;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessFactory;
@@ -34,18 +32,16 @@ import org.geotools.swing.wizard.JGeometryField;
 import org.geotools.swing.wizard.JPage;
 import org.geotools.swing.wizard.ParamField;
 import org.geotools.text.Text;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.Name;
 import org.opengis.util.ProgressListener;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * This page is responsible for actually executing the process with the given parameters and then
  * displaying the result.
- * 
+ *
  * @author gdavis
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
@@ -96,8 +92,12 @@ public class ProcessRunPage extends JPage {
         JLabel description = new JLabel("Your process results are below:");
         page.add(description);
         for (Entry<String, Object> entry : resultMap.entrySet()) {
-            Parameter<?> parameter = new Parameter(entry.getKey(), entry.getValue().getClass(),
-                    Text.text("Result"), Text.text("Result of process"));
+            Parameter<?> parameter =
+                    new Parameter(
+                            entry.getKey(),
+                            entry.getValue().getClass(),
+                            Text.text("Result"),
+                            Text.text("Result of process"));
             JLabel label = new JLabel(entry.getKey());
             page.add(label);
 
@@ -113,7 +113,6 @@ public class ProcessRunPage extends JPage {
             JComponent field = widget.doLayout();
             widget.setValue(entry.getValue());
             page.add(field);
-
         }
     }
 }

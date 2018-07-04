@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,53 +17,42 @@
  */
 package org.geotools.ysld.encode;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.SelectedChannelType;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.Tuple;
-import org.geotools.ysld.parse.Util;
-import org.geotools.styling.ChannelSelection;
-import org.geotools.styling.SelectedChannelType;
 import org.opengis.style.ContrastMethod;
 
-import java.util.Arrays;
-import java.util.Iterator;
-
-/**
- * Encodes a {@link RasterSymbolizer} as YSLD.
- */
+/** Encodes a {@link RasterSymbolizer} as YSLD. */
 public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer> {
     public RasterSymbolizerEncoder(RasterSymbolizer sym) {
         super(sym);
     }
 
     private boolean emptyColourMap(ColorMap map) {
-        if (map == null)
-            return true;
+        if (map == null) return true;
         ColorMapEntry[] entries = map.getColorMapEntries();
-        if (entries == null)
-            return true;
+        if (entries == null) return true;
         return map.getColorMapEntries().length == 0;
     }
 
     private boolean emptyContrastEnhancement(ContrastEnhancement ch) {
-        if (ch == null)
-            return true;
-        if (ch.getMethod() != null && ch.getMethod() != ContrastMethod.NONE)
-            return false;
-        if (ch.getGammaValue() != null)
-            return false;
+        if (ch == null) return true;
+        if (ch.getMethod() != null && ch.getMethod() != ContrastMethod.NONE) return false;
+        if (ch.getGammaValue() != null) return false;
         return true;
     }
 
     private boolean emptyChannelSelection(ChannelSelection ch) {
-        if (ch == null)
-            return true;
+        if (ch == null) return true;
         for (Band b : Band.values()) {
-            if (b.getFrom(ch) != null)
-                return false;
+            if (b.getFrom(ch) != null) return false;
         }
         return true;
     }
@@ -95,15 +84,15 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         protected void encode(ColorMap colorMap) {
             push("color-map");
             switch (colorMap.getType()) {
-            case ColorMap.TYPE_INTERVALS:
-                put("type", "intervals");
-                break;
-            case ColorMap.TYPE_RAMP:
-                put("type", "ramp");
-                break;
-            case ColorMap.TYPE_VALUES:
-                put("type", "values");
-                break;
+                case ColorMap.TYPE_INTERVALS:
+                    put("type", "intervals");
+                    break;
+                case ColorMap.TYPE_RAMP:
+                    put("type", "ramp");
+                    break;
+                case ColorMap.TYPE_VALUES:
+                    put("type", "values");
+                    break;
             }
 
             put("entries", new ColorMapEntryIterator(colorMap));
@@ -127,8 +116,11 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         public Tuple next() {
             ColorMapEntry entry = entries.next();
 
-            return Tuple.of(toColorOrNull(entry.getColor()), toObjOrNull(entry.getOpacity()),
-                    toObjOrNull(entry.getQuantity()), entry.getLabel());
+            return Tuple.of(
+                    toColorOrNull(entry.getColor()),
+                    toObjOrNull(entry.getOpacity()),
+                    toObjOrNull(entry.getQuantity()),
+                    entry.getLabel());
         }
 
         @Override
@@ -168,7 +160,6 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
                 }
             }
         }
-
     }
 
     class SelectedChannelTypeEncoder extends YsldEncodeHandler<SelectedChannelType> {
@@ -183,11 +174,10 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         @Override
         protected void encode(SelectedChannelType channel) {
             push(band.key);
-            put("name", channel.getChannelName());
+            put("name", channel.getChannelName().evaluate(null, String.class));
             if (!emptyContrastEnhancement(channel.getContrastEnhancement())) {
                 inline(new ContrastEnhancementEncoder(channel.getContrastEnhancement()));
             }
         }
     }
-
 }

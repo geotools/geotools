@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,11 +21,10 @@ import java.awt.geom.NoninvertibleTransformException;
 /**
  * Matrix is singular, and thus an inverse is not available.
  *
- * This is a Throwable version of !@link java.awt.geom.NoninvertibleTransformException}
- * 
+ * <p>This is a Throwable version of !@link java.awt.geom.NoninvertibleTransformException}
+ *
  * @see java.awt.geom.NoninvertibleTransformException
  * @author jody
- *
  */
 public class SingularMatrixException extends RuntimeException {
     private static final long serialVersionUID = 7539276472682701858L;
@@ -37,7 +36,7 @@ public class SingularMatrixException extends RuntimeException {
 
     /**
      * Construct using provided message and cause
-     * 
+     *
      * @param message
      * @param cause
      */

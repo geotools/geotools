@@ -8,8 +8,8 @@
  */
 package org.geotools.tutorial.csv2;
 
+import com.csvreader.CsvReader;
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
@@ -17,16 +17,15 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-import com.csvreader.CsvReader;
-import com.vividsolutions.jts.geom.Point;
 /**
  * Read-only access to CSV File.
- * 
+ *
  * @author Jody Garnett (Boundless)
  */
 public class CSVFeatureSource extends ContentFeatureSource {
@@ -36,9 +35,7 @@ public class CSVFeatureSource extends ContentFeatureSource {
     }
 
     // getDataStore start
-    /**
-     * Access parent CSVDataStore.
-     */
+    /** Access parent CSVDataStore. */
     public CSVDataStore getDataStore() {
         return (CSVDataStore) super.getDataStore();
     }
@@ -76,7 +73,8 @@ public class CSVFeatureSource extends ContentFeatureSource {
 
     // bounds start
     /**
-     * Implementation that generates the total bounds (many file formats record this information in the header)
+     * Implementation that generates the total bounds (many file formats record this information in
+     * the header)
      */
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         return null; // feature by feature scan required to establish bounds
@@ -121,11 +119,11 @@ public class CSVFeatureSource extends ContentFeatureSource {
         }
     }
     // schema end
-    
+
     // visitor start
     /**
-     * Make handleVisitor package visible allowing CSVFeatureStore to delegate to
-     * this implementation.
+     * Make handleVisitor package visible allowing CSVFeatureStore to delegate to this
+     * implementation.
      */
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {

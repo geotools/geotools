@@ -16,17 +16,12 @@
  */
 package org.geotools.kml.bindings;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.Envelope;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LatLonBoxTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Envelope.class, binding(KML.LatLonBoxType).getType());
@@ -37,8 +32,13 @@ public class LatLonBoxTypeBindingTest extends KMLTestSupport {
     }
 
     public void testParse() throws Exception {
-        String xml = "<LatLonBox>" + "<north>1</north>" + "<south>-1</south>" + "<east>1</east>"
-            + "<west>-1</west>" + "</LatLonBox>";
+        String xml =
+                "<LatLonBox>"
+                        + "<north>1</north>"
+                        + "<south>-1</south>"
+                        + "<east>1</east>"
+                        + "<west>-1</west>"
+                        + "</LatLonBox>";
 
         buildDocument(xml);
 

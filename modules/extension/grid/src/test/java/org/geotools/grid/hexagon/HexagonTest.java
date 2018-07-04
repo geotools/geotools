@@ -24,23 +24,18 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.geotools.grid.PolygonElement;
 import org.junit.Test;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Unit tests for the Hexagon class.
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -50,17 +45,18 @@ public class HexagonTest extends HexagonTestBase {
     public void getVerticesFlat() {
         double minx = 1.0;
         double miny = -1.0;
-        PolygonElement hexagon = new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.FLAT, null);
+        PolygonElement hexagon =
+                new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.FLAT, null);
 
         assertVertices(hexagon, minx, miny, SIDE_LEN, HexagonOrientation.FLAT);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badSideLen() throws Exception {
         PolygonElement h = new HexagonImpl(0.0, 0.0, 0.0, HexagonOrientation.FLAT, null);
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void badOrientation() throws Exception {
         PolygonElement h = new HexagonImpl(0.0, 0.0, SIDE_LEN, null, null);
     }
@@ -78,7 +74,8 @@ public class HexagonTest extends HexagonTestBase {
     public void getVerticesAngled() {
         double minx = 1.0;
         double miny = -1.0;
-        PolygonElement hexagon = new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        PolygonElement hexagon =
+                new HexagonImpl(minx, miny, SIDE_LEN, HexagonOrientation.ANGLED, null);
 
         assertVertices(hexagon, minx, miny, SIDE_LEN, HexagonOrientation.ANGLED);
     }
@@ -94,7 +91,8 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test
     public void getCenterAngled() {
-        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        PolygonElement hexagon =
+                new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
         Coordinate expected = new Coordinate(0.5 * Math.sqrt(3.0) * SIDE_LEN, SIDE_LEN);
         Coordinate result = hexagon.getCenter();
 
@@ -105,11 +103,7 @@ public class HexagonTest extends HexagonTestBase {
     public void getBoundsFlat() {
         PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.FLAT, null);
 
-        Envelope expected = new Envelope(
-                0.0,
-                2.0 * SIDE_LEN,
-                0.0,
-                Math.sqrt(3.0) * SIDE_LEN);
+        Envelope expected = new Envelope(0.0, 2.0 * SIDE_LEN, 0.0, Math.sqrt(3.0) * SIDE_LEN);
 
         Envelope result = hexagon.getBounds();
 
@@ -118,13 +112,10 @@ public class HexagonTest extends HexagonTestBase {
 
     @Test
     public void getBoundsAngled() {
-        PolygonElement hexagon = new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
+        PolygonElement hexagon =
+                new HexagonImpl(0.0, 0.0, SIDE_LEN, HexagonOrientation.ANGLED, null);
 
-        Envelope expected = new Envelope(
-                0.0,
-                Math.sqrt(3.0) * SIDE_LEN,
-                0.0,
-                2.0 * SIDE_LEN);
+        Envelope expected = new Envelope(0.0, Math.sqrt(3.0) * SIDE_LEN, 0.0, 2.0 * SIDE_LEN);
 
         Envelope result = hexagon.getBounds();
 
@@ -138,7 +129,8 @@ public class HexagonTest extends HexagonTestBase {
         assertNotNull(polygon);
         assertTrue(polygon instanceof Polygon);
 
-        Set<Coordinate> polyCoords = new HashSet<Coordinate>(Arrays.asList(polygon.getCoordinates()));
+        Set<Coordinate> polyCoords =
+                new HashSet<Coordinate>(Arrays.asList(polygon.getCoordinates()));
         for (Coordinate c : hexagon.getVertices()) {
             assertTrue(polyCoords.contains(c));
         }
@@ -156,5 +148,4 @@ public class HexagonTest extends HexagonTestBase {
         assertTrue(polygon instanceof Polygon);
         assertTrue(polygon.getCoordinates().length - 1 >= 6 * density);
     }
-
 }

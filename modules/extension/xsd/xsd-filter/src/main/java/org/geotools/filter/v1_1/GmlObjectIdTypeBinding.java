@@ -17,18 +17,18 @@
 package org.geotools.filter.v1_1;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.identity.GmlObjectId;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.identity.GmlObjectId;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:GmlObjectIdType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="GmlObjectIdType"&gt;
  *      &lt;xsd:complexContent&gt;
@@ -40,12 +40,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GmlObjectIdTypeBinding extends AbstractComplexBinding {
@@ -55,14 +51,13 @@ public class GmlObjectIdTypeBinding extends AbstractComplexBinding {
         this.filterfactory = filterfactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.GmlObjectIdType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -73,19 +68,18 @@ public class GmlObjectIdTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //&lt;xsd:attribute ref="gml:id" use="required"/&gt;
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // &lt;xsd:attribute ref="gml:id" use="required"/&gt;
         return filterfactory.gmlObjectId((String) node.getAttributeValue("id"));
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         if ("id".equals(name.getLocalPart())) {
             GmlObjectId id = (GmlObjectId) object;
 

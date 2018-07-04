@@ -18,53 +18,52 @@
 package org.geotools.gce.imagemosaic.jdbc;
 
 import java.net.URL;
-
 import org.geotools.gce.imagemosaic.jdbc.Import.ImportTyp;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ImportParam {
 
-	private String spatialTableName;
+    private String spatialTableName;
 
-	private String tileTableName;
+    private String tileTableName;
 
-	private URL sourceURL;
+    private URL sourceURL;
 
-	private String sourceParam;
+    private String sourceParam;
 
-	private ImportTyp typ;
+    private ImportTyp typ;
 
-	public ImportParam(String spatialTableName, String tileTableName,
-			URL sourceURL, String sourceParam, ImportTyp typ) {
-		super();
-		this.spatialTableName = spatialTableName;
-		this.tileTableName = tileTableName;
-		this.sourceURL = sourceURL;
-		this.sourceParam = sourceParam;
-		this.typ = typ;
-	}
+    public ImportParam(
+            String spatialTableName,
+            String tileTableName,
+            URL sourceURL,
+            String sourceParam,
+            ImportTyp typ) {
+        super();
+        this.spatialTableName = spatialTableName;
+        this.tileTableName = tileTableName;
+        this.sourceURL = sourceURL;
+        this.sourceParam = sourceParam;
+        this.typ = typ;
+    }
 
-	public String getSourceParam() {
-		return sourceParam;
-	}
+    public String getSourceParam() {
+        return sourceParam;
+    }
 
-	public URL getSourceURL() {
-		return sourceURL;
-	}
+    public URL getSourceURL() {
+        return sourceURL;
+    }
 
-	public String getSpatialTableName() {
-		return spatialTableName;
-	}
+    public String getSpatialTableName() {
+        return spatialTableName;
+    }
 
-	public String getTileTableName() {
-		return tileTableName;
-	}
+    public String getTileTableName() {
+        return tileTableName;
+    }
 
-	public ImportTyp getTyp() {
-		return typ;
-	}
+    public ImportTyp getTyp() {
+        return typ;
+    }
 }

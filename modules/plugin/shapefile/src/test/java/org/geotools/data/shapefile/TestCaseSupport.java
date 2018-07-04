@@ -25,32 +25,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.geotools.TestData;
 import org.geotools.data.shapefile.index.CloseableIterator;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.After;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-
 /**
- * Base class for test suite. This class is not abstract for the purpose of
- * {@link TestCaseSupportTest}, but should not be instantiated otherwise. It
- * should be extented (which is why the constructor is protected).
- * <p>
- * Note: a nearly identical copy of this file exists in the {@code ext/shape}
- * module.
- * 
+ * Base class for test suite. This class is not abstract for the purpose of {@link
+ * TestCaseSupportTest}, but should not be instantiated otherwise. It should be extented (which is
+ * why the constructor is protected).
  *
+ * <p>Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
  *
  * @source $URL$
  * @version $Id$
@@ -58,43 +52,40 @@ import com.vividsolutions.jts.io.WKTReader;
  * @author Martin Desruisseaux
  */
 public class TestCaseSupport {
-    
 
     /** References a known test file provided by sample data. */
-    final static String STATE_POP = "shapes/statepop.shp";
-    
-    /** References a known test file provided by sample data. */
-    final static String STREAM = "shapes/stream.shp";
-    
-    /** References a known test file provided by sample data. */
-    final static String DANISH = "shapes/danish_point.shp";
-    
-    /** References a known test file provided by sample data. */
-    final static String CHINESE = "shapes/chinese_poly.shp";
-    
-    /** References a known test file provided by sample data. */
-    final static String RUSSIAN = "shapes/rus-windows-1251.shp";
+    static final String STATE_POP = "shapes/statepop.shp";
 
     /** References a known test file provided by sample data. */
-    final static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-    
+    static final String STREAM = "shapes/stream.shp";
+
+    /** References a known test file provided by sample data. */
+    static final String DANISH = "shapes/danish_point.shp";
+
+    /** References a known test file provided by sample data. */
+    static final String CHINESE = "shapes/chinese_poly.shp";
+
+    /** References a known test file provided by sample data. */
+    static final String RUSSIAN = "shapes/rus-windows-1251.shp";
+
+    /** References a known test file provided by sample data. */
+    static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+
     /**
-     * Set to {@code true} if {@code println} are wanted during normal
-     * execution. It doesn't apply to message displayed in case of errors.
+     * Set to {@code true} if {@code println} are wanted during normal execution. It doesn't apply
+     * to message displayed in case of errors.
      */
     // protected static boolean verbose = false;
-    /**
-     * Stores all temporary files here - delete on tear down.
-     */
+    /** Stores all temporary files here - delete on tear down. */
     private final List<File> tmpFiles = new ArrayList<File>();
 
     /**
-     * Deletes all temporary files created by {@link #getTempFile}. This method
-     * is automatically run after each test.
+     * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run
+     * after each test.
      */
     @After
     public void tearDown() throws Exception {
-        
+
         Runtime.getRuntime().runFinalization();
         // it seems that not all files marked as temp will get erased, perhaps
         // this is because they have been rewritten? Don't know, don't _really_
@@ -125,22 +116,18 @@ public class TestCaseSupport {
             if (file.delete()) {
                 // dead
             } else {
-                System.out.println("Couldn't delete "+file);
+                System.out.println("Couldn't delete " + file);
                 file.deleteOnExit(); // dead later
             }
         }
     }
 
-    /**
-     * Helper method for {@link #tearDown}.
-     */
+    /** Helper method for {@link #tearDown}. */
     protected static File sibling(final File f, final String ext) {
         return new File(f.getParent(), sibling(f.getName(), ext));
     }
 
-    /**
-     * Helper method for {@link #copyShapefiles}.
-     */
+    /** Helper method for {@link #copyShapefiles}. */
     private static String sibling(String name, final String ext) {
         final int s = name.lastIndexOf('.');
         if (s >= 0) {
@@ -151,25 +138,19 @@ public class TestCaseSupport {
 
     /**
      * Read a geometry of the given name.
-     * 
-     * @param wktResource
-     *                The resource name to load, without its {@code .wkt}
-     *                extension.
+     *
+     * @param wktResource The resource name to load, without its {@code .wkt} extension.
      * @return The geometry.
-     * @throws IOException
-     *                 if reading failed.
+     * @throws IOException if reading failed.
      */
-    protected Geometry readGeometry(final String wktResource)
-            throws IOException {
-        final BufferedReader stream = TestData.openReader("wkt/" + wktResource
-                + ".wkt");
+    protected Geometry readGeometry(final String wktResource) throws IOException {
+        final BufferedReader stream = TestData.openReader("wkt/" + wktResource + ".wkt");
         final WKTReader reader = new WKTReader();
         final Geometry geom;
         try {
             geom = reader.read(stream);
         } catch (ParseException pe) {
-            IOException e = new IOException("parsing error in resource "
-                    + wktResource);
+            IOException e = new IOException("parsing error in resource " + wktResource);
             e.initCause(pe);
             throw e;
         }
@@ -177,9 +158,7 @@ public class TestCaseSupport {
         return geom;
     }
 
-    /**
-     * Returns the first feature in the given feature collection.
-     */
+    /** Returns the first feature in the given feature collection. */
     protected SimpleFeature firstFeature(SimpleFeatureCollection fc) {
         SimpleFeatureIterator features = fc.features();
         SimpleFeature next = features.next();
@@ -187,10 +166,7 @@ public class TestCaseSupport {
         return next;
     }
 
-    /**
-     * Creates a temporary file, to be automatically deleted at the end of the
-     * test suite.
-     */
+    /** Creates a temporary file, to be automatically deleted at the end of the test suite. */
     protected File getTempFile() throws IOException {
         // force in some valid but weird chars into teh path to be on par with OSX that does it
         // on its own
@@ -209,9 +185,8 @@ public class TestCaseSupport {
     }
 
     /**
-     * Copies the specified shape file into the {@code test-data} directory,
-     * together with its sibling ({@code .dbf}, {@code .shp}, {@code .shx}
-     * and {@code .prj} files).
+     * Copies the specified shape file into the {@code test-data} directory, together with its
+     * sibling ({@code .dbf}, {@code .shp}, {@code .shx} and {@code .prj} files).
      */
     protected File copyShapefiles(final String name) throws IOException {
         assertTrue(TestData.copy(TestCaseSupport.class, sibling(name, "dbf")).canRead());
@@ -248,28 +223,26 @@ public class TestCaseSupport {
         }
         File copy = TestData.copy(TestCaseSupport.class, name);
         markTempFile(copy);
-        
+
         return copy;
     }
-    
-    protected int countIterator(CloseableIterator it)  {
+
+    protected int countIterator(CloseableIterator it) {
         int count = 0;
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             count++;
             it.next();
         }
         try {
             it.close();
-        } catch(IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        
+
         return count;
     }
 
-    /**
-     * Returns the test suite for the given class.
-     */
+    /** Returns the test suite for the given class. */
     public static Test suite(Class<?> c) {
         return new TestSuite(c);
     }

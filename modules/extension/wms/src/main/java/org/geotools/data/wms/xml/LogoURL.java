@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,8 +19,9 @@ package org.geotools.data.wms.xml;
 import java.net.URL;
 
 /**
- * This class is used for representing the LogoURL element inside the Attribution element of a Layer when parsing a GetCapabilities response.
- * 
+ * This class is used for representing the LogoURL element inside the Attribution element of a Layer
+ * when parsing a GetCapabilities response.
+ *
  * @author Nicola Lagomarsini GeoSolutions S.A.S.
  */
 public class LogoURL {
@@ -78,7 +79,14 @@ public class LogoURL {
 
     @Override
     public String toString() {
-        return "LogoURL [format=" + format + ", onlineResource=" + onlineResource + ", width="
-                + width + ", height=" + height + "]";
+        return "LogoURL [format="
+                + format
+                + ", onlineResource="
+                + onlineResource
+                + ", width="
+                + width
+                + ", height="
+                + height
+                + "]";
     }
 }

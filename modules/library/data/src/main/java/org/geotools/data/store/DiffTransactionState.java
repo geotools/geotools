@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,7 +17,6 @@
 package org.geotools.data.store;
 
 import java.io.IOException;
-
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Diff;
 import org.geotools.data.FeatureReader;
@@ -30,43 +29,41 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
-/**
- * Transaction state responsible for holding an in memory {@link Diff} of any modifications.
- */
+/** Transaction state responsible for holding an in memory {@link Diff} of any modifications. */
 public class DiffTransactionState implements Transaction.State {
     protected Diff diff;
-    
+
     /** The transaction (ie session) associated with this state */
     protected Transaction transaction;
 
     /**
-     * ContentState for this transaction used to hold information for
-     * FeatureReader implementations
+     * ContentState for this transaction used to hold information for FeatureReader implementations
      */
     protected ContentState state;
 
     /**
      * Transaction state responsible for holding an in memory {@link Diff}.
-     * 
+     *
      * @param state ContentState for the transaction
      */
     public DiffTransactionState(ContentState state) {
         this.state = state;
         this.diff = new Diff();
     }
-    
+
     /**
      * Transaction state responsible for holding an in memory {@link Diff}.
-     * 
+     *
      * @param state ContentState for the transaction
      */
-    protected DiffTransactionState(ContentState state, Diff diff ) {
+    protected DiffTransactionState(ContentState state, Diff diff) {
         this.state = state;
         this.diff = diff;
     }
-    
+
     /**
      * Access the in memory Diff.
+     *
      * @return in memory diff.
      */
     public Diff getDiff() {
@@ -74,11 +71,10 @@ public class DiffTransactionState implements Transaction.State {
     }
 
     @Override
-    
+
     /**
-     * We are already holding onto our transaction from
-     * ContentState; however this method does check that
-     * the transaction is correct.
+     * We are already holding onto our transaction from ContentState; however this method does check
+     * that the transaction is correct.
      */
     public synchronized void setTransaction(Transaction transaction) {
         if (this.transaction != null && transaction == null) {
@@ -89,34 +85,23 @@ public class DiffTransactionState implements Transaction.State {
     }
 
     @Override
-    
+
     /**
      * Will apply differences to store.
-     * 
-     * <p>
-     * The provided diff will be modified as the differences are applied,
-     * If the operations are all successful diff will be empty at
-     * the end of this process.
-     * </p>
-     * 
-     * <p>
-     * diff can be used to represent the following operations:
-     * </p>
-     * 
+     *
+     * <p>The provided diff will be modified as the differences are applied, If the operations are
+     * all successful diff will be empty at the end of this process.
+     *
+     * <p>diff can be used to represent the following operations:
+     *
      * <ul>
-     * <li>
-     * fid|null: represents a fid being removed</li>
-     * 
-     * <li>
-     * fid|feature: where fid exists, represents feature modification</li>
-     * <li>
-     * fid|feature: where fid does not exist, represents feature being modified</li>
+     *   <li>fid|null: represents a fid being removed
+     *   <li>fid|feature: where fid exists, represents feature modification
+     *   <li>fid|feature: where fid does not exist, represents feature being modified
      * </ul>
-     * 
-     * 
+     *
      * @param typeName typeName being updated
      * @param diff differences to apply to FeatureWriter
-     * 
      * @throws IOException If the entire diff cannot be writen out
      * @t
      * @see org.geotools.data.Transaction.State#commit()
@@ -183,12 +168,13 @@ public class DiffTransactionState implements Transaction.State {
                             // addedFeature.getUserData().get(Hints.USE_PROVIDED_FID)) ){
                             nextFeature.getUserData().put(Hints.USE_PROVIDED_FID, true);
                             if (addedFeature.getUserData().containsKey(Hints.PROVIDED_FID)) {
-                                String providedFid = (String) addedFeature.getUserData().get(
-                                        Hints.PROVIDED_FID);
+                                String providedFid =
+                                        (String) addedFeature.getUserData().get(Hints.PROVIDED_FID);
                                 nextFeature.getUserData().put(Hints.PROVIDED_FID, providedFid);
                             } else {
-                                nextFeature.getUserData().put(Hints.PROVIDED_FID,
-                                        addedFeature.getID());
+                                nextFeature
+                                        .getUserData()
+                                        .put(Hints.PROVIDED_FID, addedFeature.getID());
                             }
                             // }
                             writer.write();
@@ -225,35 +211,30 @@ public class DiffTransactionState implements Transaction.State {
     }
 
     @Override
-    /**
-     * @see org.geotools.data.Transaction.State#rollback()
-     */
+    /** @see org.geotools.data.Transaction.State#rollback() */
     public synchronized void rollback() throws IOException {
         diff.clear(); // rollback differences
         state.fireBatchFeatureEvent(false);
     }
 
     @Override
-    
-    /**
-     * @see org.geotools.data.Transaction.State#addAuthorization(java.lang.String)
-     */
+
+    /** @see org.geotools.data.Transaction.State#addAuthorization(java.lang.String) */
     public synchronized void addAuthorization(String AuthID) throws IOException {
         // not required for TransactionStateDiff
     }
-    
+
     /**
      * Provides a wrapper on the provided reader which gives a diff writer.
      *
-     * @param contentFeatureStore ContentFeatureStore 
+     * @param contentFeatureStore ContentFeatureStore
      * @param reader FeatureReader requiring diff support
-     *
      * @return FeatureWriter with diff support
      */
     public FeatureWriter<SimpleFeatureType, SimpleFeature> diffWriter(
             ContentFeatureStore contentFeatureStore,
             FeatureReader<SimpleFeatureType, SimpleFeature> reader) {
-        
-        return new DiffContentFeatureWriter( contentFeatureStore, diff, reader);
+
+        return new DiffContentFeatureWriter(contentFeatureStore, diff, reader);
     }
 }

@@ -16,10 +16,7 @@
  */
 package org.geotools.kml.bindings;
 
-import java.util.Collection;
 import javax.xml.namespace.QName;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -28,13 +25,15 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:FolderType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType final="#all" name="FolderType"&gt;
  *      &lt;complexContent&gt;
@@ -48,16 +47,13 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class FolderTypeBinding extends AbstractComplexBinding {
     public static final SimpleFeatureType FeatureType;
+
     static {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.init(FeatureTypeBinding.FeatureType);
@@ -66,20 +62,19 @@ public class FolderTypeBinding extends AbstractComplexBinding {
         tb.add("name", String.class);
         tb.add("description", String.class);
 
-        //&lt;element maxOccurs="unbounded" minOccurs="0" ref="kml:Feature"/&gt;
+        // &lt;element maxOccurs="unbounded" minOccurs="0" ref="kml:Feature"/&gt;
         tb.add("Feature", FeatureCollection.class);
 
         FeatureType = tb.buildFeatureType();
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.FolderType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -94,13 +89,13 @@ public class FolderTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(FeatureType);
 
         SimpleFeature feature = (SimpleFeature) value;
@@ -108,10 +103,10 @@ public class FolderTypeBinding extends AbstractComplexBinding {
 
         b.set("name", node.getChildValue("name"));
         b.set("description", node.getChildValue("description"));
-        
-        //&lt;element maxOccurs="unbounded" minOccurs="0" ref="kml:Feature"/&gt;
+
+        // &lt;element maxOccurs="unbounded" minOccurs="0" ref="kml:Feature"/&gt;
         b.set("Feature", node.getChildValues(SimpleFeature.class));
-        
+
         return b.buildFeature(feature.getID());
     }
 }

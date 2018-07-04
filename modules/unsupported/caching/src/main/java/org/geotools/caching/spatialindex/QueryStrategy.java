@@ -25,11 +25,7 @@
 //    marioh@cs.ucr.edu
 package org.geotools.caching.spatialindex;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public interface QueryStrategy {
     public NodeIdentifier getNextNode(Node n, boolean[] hasNext);
 } // IQueryStrategy

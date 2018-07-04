@@ -18,26 +18,24 @@ package org.geotools.gml2.simple;
 
 import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
 import org.xml.sax.helpers.AttributesImpl;
-
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
 
 /**
  * Encodes a GML2 multi line string
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
-
 class MultiLineStringEncoder extends GeometryEncoder<MultiLineString> {
 
-    static final QualifiedName MULTI_LINE_STRING = new QualifiedName(GML.NAMESPACE,
-            "MultiLineString", "gml");
+    static final QualifiedName MULTI_LINE_STRING =
+            new QualifiedName(GML.NAMESPACE, "MultiLineString", "gml");
 
-    static final QualifiedName LINE_STRING_MEMBER = new QualifiedName(GML.NAMESPACE,
-            "lineStringMember", "gml");
+    static final QualifiedName LINE_STRING_MEMBER =
+            new QualifiedName(GML.NAMESPACE, "lineStringMember", "gml");
 
     LineStringEncoder lse;
 
@@ -73,5 +71,4 @@ class MultiLineStringEncoder extends GeometryEncoder<MultiLineString> {
 
         handler.endElement(multiLineString);
     }
-
 }

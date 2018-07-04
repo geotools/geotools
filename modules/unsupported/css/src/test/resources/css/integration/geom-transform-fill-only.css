@@ -1,0 +1,6 @@
+* {
+    stroke: #000000;
+    fill: #7F7F7F;
+    fill-opacity: 0.3;
+    fill-geometry: [buffer(the_geom, 200)];
+}

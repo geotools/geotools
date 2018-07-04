@@ -16,12 +16,10 @@
  */
 package org.geotools.filter.v1_0.capabilities;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.ArithmeticOperators;
 import org.opengis.filter.capability.ComparisonOperators;
@@ -33,14 +31,11 @@ import org.opengis.filter.capability.ScalarCapabilities;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperator;
 import org.opengis.filter.capability.SpatialOperators;
-import org.geotools.factory.CommonFactoryFinder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FilterMockData {
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -57,7 +52,8 @@ public class FilterMockData {
     }
 
     static Element functionNames(Document document, Node parent) {
-        Element functionNames = element(document, parent, new QName(OGC.NAMESPACE, "Function_Names"));
+        Element functionNames =
+                element(document, parent, new QName(OGC.NAMESPACE, "Function_Names"));
         functionName(document, functionNames, "foo", 2);
         functionName(document, functionNames, "bar", 3);
 
@@ -80,7 +76,7 @@ public class FilterMockData {
     }
 
     static FunctionName[] functionNames() {
-        return new FunctionName[] { functionName("foo", 2), functionName("bar", 3) };
+        return new FunctionName[] {functionName("foo", 2), functionName("bar", 3)};
     }
 
     static Functions functions() {
@@ -88,8 +84,8 @@ public class FilterMockData {
     }
 
     static Element arithmetic(Document document, Node parent, boolean simple) {
-        Element arithmetic = element(document, parent,
-                new QName(OGC.NAMESPACE, "Arithmetic_Operators"));
+        Element arithmetic =
+                element(document, parent, new QName(OGC.NAMESPACE, "Arithmetic_Operators"));
 
         if (simple) {
             element(document, arithmetic, OGC.Simple_Arithmetic);
@@ -117,8 +113,8 @@ public class FilterMockData {
     }
 
     static Element comparison(Document document, Node parent, boolean simple) {
-        Element comparison = element(document, parent,
-                new QName(OGC.NAMESPACE, "Comparison_Operators"));
+        Element comparison =
+                element(document, parent, new QName(OGC.NAMESPACE, "Comparison_Operators"));
 
         if (simple) {
             element(document, comparison, OGC.Simple_Comparisons);
@@ -219,15 +215,16 @@ public class FilterMockData {
     }
 
     static Element spatialCapabilities(Document document, Node parent) {
-        Element spatial = element(document, parent, new QName(OGC.NAMESPACE, "Spatial_Capabilities"));
+        Element spatial =
+                element(document, parent, new QName(OGC.NAMESPACE, "Spatial_Capabilities"));
         spatial(document, spatial);
 
         return spatial;
     }
 
     static FilterCapabilities capabilities() {
-        return ff.capabilities(FilterCapabilities.VERSION_100, scalarCapabilities(),
-            spatialCapabilities(), null);
+        return ff.capabilities(
+                FilterCapabilities.VERSION_100, scalarCapabilities(), spatialCapabilities(), null);
     }
 
     static Element capabilities(Document document, Node parent) {

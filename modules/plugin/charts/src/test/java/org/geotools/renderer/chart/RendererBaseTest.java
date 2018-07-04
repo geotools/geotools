@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -29,7 +29,6 @@ import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.GTRenderer;
@@ -40,38 +39,32 @@ import org.geotools.test.TestData;
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @author Simone Giannecchini
- *
- *
- *
  * @source $URL$
  */
 public abstract class RendererBaseTest {
 
-	public RendererBaseTest() {
+    public RendererBaseTest() {}
 
-	}
-
-	/**
-	 * bounds may be null
-	 * 
-	 * @param testName
-	 *            DOCUMENT ME!
-	 * @param renderer
-	 *            DOCUMENT ME!
-	 * @param timeOut
-	 *            DOCUMENT ME!
-	 * @param bounds
-	 *            DOCUMENT ME!
-	 * 
-	 * @throws Exception
-	 *             DOCUMENT ME!
-	 */
-    protected static void showRender(String testName, Object renderer,
-            long timeOut, ReferencedEnvelope bounds, final int w, final int h) throws Exception {
-        final BufferedImage image = new BufferedImage(w, h,
-                BufferedImage.TYPE_INT_ARGB);
+    /**
+     * bounds may be null
+     *
+     * @param testName DOCUMENT ME!
+     * @param renderer DOCUMENT ME!
+     * @param timeOut DOCUMENT ME!
+     * @param bounds DOCUMENT ME!
+     * @throws Exception DOCUMENT ME!
+     */
+    protected static void showRender(
+            String testName,
+            Object renderer,
+            long timeOut,
+            ReferencedEnvelope bounds,
+            final int w,
+            final int h)
+            throws Exception {
+        final BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics g = image.getGraphics();
         g.setColor(Color.white);
         g.fillRect(0, 0, w, h);
@@ -81,28 +74,28 @@ public abstract class RendererBaseTest {
         if (!headless.equalsIgnoreCase("true") && TestData.isInteractiveTest()) {
             try {
                 Frame frame = new Frame(testName);
-                frame.addWindowListener(new WindowAdapter() {
+                frame.addWindowListener(
+                        new WindowAdapter() {
 
-                    public void windowClosing(WindowEvent e) {
-                        e.getWindow().dispose();
-                    }
-                });
+                            public void windowClosing(WindowEvent e) {
+                                e.getWindow().dispose();
+                            }
+                        });
 
-                Panel p = new Panel() {
+                Panel p =
+                        new Panel() {
 
-                    /** <code>serialVersionUID</code> field */
-                    private static final long serialVersionUID = 1L;
-                    
-                    {
-                        setPreferredSize(new Dimension(w, h));
-                    }
+                            /** <code>serialVersionUID</code> field */
+                            private static final long serialVersionUID = 1L;
 
-                    public void paint(Graphics g) {
-                        g.drawImage(image, 0, 0, this);
-                    }
-                    
-                    
-                };
+                            {
+                                setPreferredSize(new Dimension(w, h));
+                            }
+
+                            public void paint(Graphics g) {
+                                g.drawImage(image, 0, 0, this);
+                            }
+                        };
 
                 frame.add(p);
                 frame.pack();
@@ -128,30 +121,27 @@ public abstract class RendererBaseTest {
         assert (hasData);
     }
 
-	/**
-	 * responsible for actually rendering.
-	 * 
-	 * @param obj
-	 *            DOCUMENT ME!
-	 * @param g
-	 * @param rect
-	 *            DOCUMENT ME!
-	 * @param bounds
-	 */
-	private static void render(Object obj, Graphics g, Rectangle rect,
-			ReferencedEnvelope bounds) {
-		if (obj instanceof GTRenderer) {
-			GTRenderer renderer = (GTRenderer) obj;
+    /**
+     * responsible for actually rendering.
+     *
+     * @param obj DOCUMENT ME!
+     * @param g
+     * @param rect DOCUMENT ME!
+     * @param bounds
+     */
+    private static void render(Object obj, Graphics g, Rectangle rect, ReferencedEnvelope bounds) {
+        if (obj instanceof GTRenderer) {
+            GTRenderer renderer = (GTRenderer) obj;
 
-			if (bounds == null) {
-				renderer.paint((Graphics2D) g, rect, new AffineTransform());
-			} else {
-				renderer.paint((Graphics2D) g, rect, bounds);
-			}
-		}
-	}
-	
-	protected static Style loadStyle(Object loader, String sldFilename) throws IOException {
+            if (bounds == null) {
+                renderer.paint((Graphics2D) g, rect, new AffineTransform());
+            } else {
+                renderer.paint((Graphics2D) g, rect, bounds);
+            }
+        }
+    }
+
+    static Style loadStyle(Object loader, String sldFilename) throws IOException {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
 
         java.net.URL surl = TestData.getResource(loader, sldFilename);

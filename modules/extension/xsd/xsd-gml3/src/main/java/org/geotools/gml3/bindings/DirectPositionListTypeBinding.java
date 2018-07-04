@@ -17,30 +17,27 @@
 package org.geotools.gml3.bindings;
 
 import java.math.BigInteger;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.DirectPosition3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.CoordinateSequence;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-
 /**
- * Binding object for the type
- * http://www.opengis.net/gml:DirectPositionListType.
- * 
+ * Binding object for the type http://www.opengis.net/gml:DirectPositionListType.
+ *
  * <p>
- * 
+ *
  * <pre>
  *         <code>
  *  &lt;complexType name=&quot;DirectPositionListType&quot;&gt;
@@ -62,20 +59,23 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
  *  &lt;/complexType&gt;
  * </code>
  *         </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class DirectPositionListTypeBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    CoordinateFormatter formatter;
+
+    public DirectPositionListTypeBinding(CoordinateFormatter formatter) {
+        this.formatter = formatter;
+    }
+
+    public DirectPositionListTypeBinding() {
+        // no formatter
+    }
+
+    /** @generated */
     public QName getTarget() {
         return GML.DirectPositionListType;
     }
@@ -85,8 +85,10 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -94,8 +96,10 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
@@ -117,7 +121,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
 
         int dim = values.length / coordCount;
 
-        //if ((dim < 1) || (dim > 2)) {
+        // if ((dim < 1) || (dim > 2)) {
         if (dim < 1) {
             throw new IllegalArgumentException("dimension must be greater or equal to 1");
         }
@@ -129,7 +133,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
                 dps[i] = new DirectPosition1D(crs);
                 dps[i].setOrdinate(0, values[i].doubleValue());
             }
-        } else if(dim == 2){
+        } else if (dim == 2) {
             int ordinateIdx = 0;
             // HACK: not sure if its correct to assign ordinates 0 to 0 and 1 to
             // 1 or it should be inferred from the crs
@@ -144,26 +148,23 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
             // HACK: not sure if its correct to assign ordinates 0 to 0 and 1 to
             // 1 or it should be inferred from the crs
             for (int coordIndex = 0; coordIndex < coordCount; coordIndex++) {
-                dps[coordIndex] = new DirectPosition3D(crs); 
+                dps[coordIndex] = new DirectPosition3D(crs);
                 dps[coordIndex].setOrdinate(0, values[ordinateIdx].doubleValue());
                 dps[coordIndex].setOrdinate(1, values[ordinateIdx + 1].doubleValue());
                 dps[coordIndex].setOrdinate(2, values[ordinateIdx + 2].doubleValue());
                 ordinateIdx += crsDimension;
             }
-
         }
 
         return dps;
     }
 
     /**
-     * 
      * @param object a CoordinateSequence
-     * 
-     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document, org.w3c.dom.Element)
+     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
+     *     org.w3c.dom.Element)
      */
     public Element encode(Object object, Document document, Element value) throws Exception {
-        // TODO: remove this when the parser can do lists
         CoordinateSequence cs = (CoordinateSequence) object;
         StringBuffer sb = new StringBuffer();
 
@@ -172,20 +173,23 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
         int nOrdWithSpace = size * dim - 1;
         int count = 0;
         for (int i = 0; i < size; i++) {
-        	for (int d = 0; d < dim; d++) {
-	            sb.append(cs.getOrdinate(i, d));
-	
-	            if (count < nOrdWithSpace) {
-	                sb.append(" ");
-	            }
-	            count++;
+            for (int d = 0; d < dim; d++) {
+                double ordinate = cs.getOrdinate(i, d);
+                if (formatter != null) {
+                    formatter.format(ordinate, sb);
+                } else {
+                    sb.append(ordinate);
+                }
 
-        	}
+                if (count < nOrdWithSpace) {
+                    sb.append(" ");
+                }
+                count++;
+            }
         }
 
         value.appendChild(document.createTextNode(sb.toString()));
 
         return value;
     }
-      
 }

@@ -20,14 +20,10 @@ import org.geotools.filter.v1_1.OGCConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 
-
 /**
  * Base test class for the http://www.opengis.net/ogc schema.
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public abstract class OGCTestSupport extends XMLTestSupport {

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,22 +18,17 @@ package org.geotools.util.logging;
 
 import java.util.logging.Logger;
 
-
 /**
- * A factory for loggers that redirect all Java logging events to the Apache's
- * <A HREF="http://logging.apache.org/log4j">Log4J</A> framework.
+ * A factory for loggers that redirect all Java logging events to the Apache's <A
+ * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public class Log4JLoggerFactory extends LoggerFactory<org.apache.log4j.Logger> {
-    /**
-     * The unique instance of this factory.
-     */
+    /** The unique instance of this factory. */
     private static Log4JLoggerFactory factory;
 
     /**
@@ -58,16 +53,14 @@ public class Log4JLoggerFactory extends LoggerFactory<org.apache.log4j.Logger> {
     }
 
     /**
-     * Returns the implementation to use for the logger of the specified name,
-     * or {@code null} if the logger would delegates to Java logging anyway.
+     * Returns the implementation to use for the logger of the specified name, or {@code null} if
+     * the logger would delegates to Java logging anyway.
      */
     protected org.apache.log4j.Logger getImplementation(final String name) {
         return org.apache.log4j.Logger.getLogger(name);
     }
 
-    /**
-     * Wraps the specified {@linkplain #getImplementation implementation} in a Java logger.
-     */
+    /** Wraps the specified {@linkplain #getImplementation implementation} in a Java logger. */
     protected Logger wrap(String name, org.apache.log4j.Logger implementation) {
         return new Log4JLogger(name, implementation);
     }

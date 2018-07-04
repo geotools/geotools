@@ -17,21 +17,20 @@
 package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
 import org.geotools.kml.KML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:LinearRingType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType final="#all" name="LinearRingType"&gt;
  *      &lt;complexContent&gt;
@@ -46,12 +45,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class LinearRingTypeBinding extends AbstractComplexBinding {
@@ -61,14 +56,13 @@ public class LinearRingTypeBinding extends AbstractComplexBinding {
         this.geometryFactory = geometryFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.LinearRingType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -79,24 +73,25 @@ public class LinearRingTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        CoordinateSequence coordinates = (CoordinateSequence) node.getChildValue(KML.coordinates.getLocalPart());
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        CoordinateSequence coordinates =
+                (CoordinateSequence) node.getChildValue(KML.coordinates.getLocalPart());
 
         return geometryFactory.createLinearRing(coordinates);
     }
-    
+
     public Object getProperty(Object object, QName name) throws Exception {
-        if ( KML.coordinates.getLocalPart().equals( name.getLocalPart() ) ) {
+        if (KML.coordinates.getLocalPart().equals(name.getLocalPart())) {
             LinearRing l = (LinearRing) object;
             return l.getCoordinateSequence();
         }
-        
+
         return null;
     }
 }

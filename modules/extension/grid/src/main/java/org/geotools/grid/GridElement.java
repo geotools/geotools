@@ -18,18 +18,14 @@
 package org.geotools.grid;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * The base interface for vector grid elements.
- * 
+ *
  * @author mbedward
  * @since 8.0
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -51,7 +47,7 @@ public interface GridElement {
 
     /**
      * Creates a new {@code Geometry} from this grid element.
-     * 
+     *
      * @return a new {@code Geometry}
      */
     Geometry toGeometry();
@@ -60,9 +56,7 @@ public interface GridElement {
      * Creates a new, densified {@code Geometry} from this grid element.
      *
      * @param maxSpacing the maximum distance between adjacent vertices
-     *
      * @return a new {@code Geometry}
-     *
      * @throws IllegalArgumentException if maxSpacing is {@code <=} 0
      */
     Geometry toDenseGeometry(double maxSpacing);

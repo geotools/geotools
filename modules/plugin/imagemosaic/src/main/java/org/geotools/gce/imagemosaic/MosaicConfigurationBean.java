@@ -21,7 +21,6 @@ import java.awt.image.IndexColorModel;
 import java.awt.image.SampleModel;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
@@ -31,22 +30,19 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Very simple bean to hold the configuration of the mosaic.
- * 
- * @author Simone Giannecchini, GeoSolutions S.A.S.
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
  *
+ * @author Simone Giannecchini, GeoSolutions S.A.S.
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
+ *     jar:file:foo.jar/bar.properties URLs
  * @source $URL$
  */
 public class MosaicConfigurationBean {
 
     private Indexer indexer;
+    private Double noData;
 
-    /**
-     * Default constructor
-     */
-    public MosaicConfigurationBean() {
-
-    }
+    /** Default constructor */
+    public MosaicConfigurationBean() {}
 
     public MosaicConfigurationBean(final MosaicConfigurationBean that) {
         Utilities.ensureNonNull("MosaicConfigurationBean", that);
@@ -58,13 +54,12 @@ public class MosaicConfigurationBean {
     }
 
     /**
-     * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a different {@link IndexColorModel}.
+     * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a
+     * different {@link IndexColorModel}.
      */
     private boolean expandToRGB;
 
-    /**
-     * <code>true</code> if we need to look for Auxiliary Metadata PAM XML files
-     */
+    /** <code>true</code> if we need to look for Auxiliary Metadata PAM XML files */
     private boolean checkAuxiliaryMetadata;
 
     /** OverviewLevel levels */
@@ -82,14 +77,27 @@ public class MosaicConfigurationBean {
     /** elevation attribute name. <code>null</code> if absent. */
     private String elevationAttribute;
 
+    /** crs attribute name, or <code>null</code> if absent */
+    private String crsAttribute;
+
+    /** resolution attribute name, or <code>null</code> if absent */
+    private String resolutionAttribute;
+
+    /** resolutionX attribute name, or <code>null</code> if absent */
+    private String resolutionXAttribute;
+
+    /** resolutionY attribute name, or <code>null</code> if absent */
+    private String resolutionYAttribute;
+
     /** additional domain attributes names. <code>null</code> if absent. */
     private String additionalDomainAttributes;
 
     private CoordinateReferenceSystem crs;
 
     /**
-     * mosaic's dummy sample model useful to store dataType and number of bands. All the other fields shouldn't be queried since they are meaningless
-     * for the whole mosaic (width, height, ...)
+     * mosaic's dummy sample model useful to store dataType and number of bands. All the other
+     * fields shouldn't be queried since they are meaningless for the whole mosaic (width, height,
+     * ...)
      */
     private SampleModel sampleModel;
 
@@ -157,6 +165,38 @@ public class MosaicConfigurationBean {
 
     public void setTimeAttribute(final String timeAttribute) {
         this.timeAttribute = timeAttribute;
+    }
+
+    public String getCRSAttribute() {
+        return crsAttribute;
+    }
+
+    public void setCRSAttribute(final String crsAttribute) {
+        this.crsAttribute = crsAttribute;
+    }
+
+    public String getResolutionAttribute() {
+        return resolutionAttribute;
+    }
+
+    public void setResolutionAttribute(String resolutionAttribute) {
+        this.resolutionAttribute = resolutionAttribute;
+    }
+
+    public String getResolutionXAttribute() {
+        return resolutionXAttribute;
+    }
+
+    public void setResolutionXAttribute(String resolutionXAttribute) {
+        this.resolutionXAttribute = resolutionXAttribute;
+    }
+
+    public String getResolutionYAttribute() {
+        return resolutionYAttribute;
+    }
+
+    public void setResolutionYAttribute(String resolutionYAttribute) {
+        this.resolutionYAttribute = resolutionYAttribute;
     }
 
     public String getAdditionalDomainAttributes() {
@@ -255,21 +295,71 @@ public class MosaicConfigurationBean {
         this.auxiliaryDatastorePath = auxiliaryDatastorePath;
     }
 
-    @Override
-    public String toString() {
-        return "MosaicConfigurationBean [expandToRGB=" + expandToRGB + ", levels="
-                + Arrays.toString(levels) + ", name=" + name + ", levelsNum=" + levelsNum
-                + ", timeAttribute=" + timeAttribute + ", elevationAttribute=" + elevationAttribute
-                + ",sampleModel=" + sampleModel + ", envelope=" + envelope
-                + ", footprintManagement=" + footprintManagement + ", checkAuxiliaryMetadata="
-                + checkAuxiliaryMetadata + "]";
-    }
-
     public void setIndexer(Indexer indexer) {
         this.indexer = indexer;
     }
 
     public Indexer getIndexer() {
         return indexer;
+    }
+
+    public Double getNoData() {
+        return noData;
+    }
+
+    public void setNoData(Double noData) {
+        this.noData = noData;
+    }
+
+    @Override
+    public String toString() {
+        return "MosaicConfigurationBean{"
+                + "noData="
+                + noData
+                + ", expandToRGB="
+                + expandToRGB
+                + ", checkAuxiliaryMetadata="
+                + checkAuxiliaryMetadata
+                + ", levels="
+                + Arrays.toString(levels)
+                + ", name='"
+                + name
+                + '\''
+                + ", levelsNum="
+                + levelsNum
+                + ", timeAttribute='"
+                + timeAttribute
+                + '\''
+                + ", elevationAttribute='"
+                + elevationAttribute
+                + '\''
+                + ", crsAttribute='"
+                + crsAttribute
+                + '\''
+                + ", additionalDomainAttributes='"
+                + additionalDomainAttributes
+                + '\''
+                + ", crs="
+                + crs
+                + ", sampleModel="
+                + sampleModel
+                + ", colorModel="
+                + colorModel
+                + ", palette="
+                + Arrays.toString(palette)
+                + ", envelope="
+                + envelope
+                + ", auxiliaryFilePath='"
+                + auxiliaryFilePath
+                + '\''
+                + ", auxiliaryDatastorePath='"
+                + auxiliaryDatastorePath
+                + '\''
+                + ", coverageNameCollectorSpi='"
+                + coverageNameCollectorSpi
+                + '\''
+                + ", footprintManagement="
+                + footprintManagement
+                + '}';
     }
 }

@@ -19,11 +19,9 @@ package org.geotools.styling.visitor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.Unit;
-
+import org.geotools.measure.Units;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -39,24 +37,23 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.GraphicalSymbol;
 
 /**
  * Visitor used for rescaling a Style given a map scale (e.g., meters per pixel) and taking into
- * consideration the Unit of Measure (UOM, e.g., SI.METER, NonSI.FOOT) of each symbolizer. The
+ * consideration the Unit of Measure (UOM, e.g., SI.METRE, USCustomary.FOOT) of each symbolizer. The
  * resulting Style's Symbolizer sizes will all be given in PIXELS, so that they can be directly used
  * by a renderer that is unaware of units of measure or the current map scale. For example, points
  * with size == 100 meters could be rescaled to 10 pixels for higher levels of zoom and 2 pixels for
  * a lower level of zoom.
- * <p>
- * This visitor extends {@link DuplicatingStyleVisitor} and as such yields a copy of the original
+ *
+ * <p>This visitor extends {@link DuplicatingStyleVisitor} and as such yields a copy of the original
  * Style. Usage is simply to call the desired visit() method and then call getCopy() to retrieve the
  * result.
- * 
+ *
  * @author milton
  * @author Andrea Aime - GeoSolutions
- * 
- * 
  * @source $URL$
  */
 public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
@@ -65,22 +62,24 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
 
     /**
      * Constructor: requires the current mapScale to inform the window to viewport (world to screen)
-     * relation in order to correctly rescale sizes according to units of measure given in world
-     * units (e.g., SI.METER, NonSI.FOOT, etc).
-     * 
+     * relation in order to correctly rescaleDashArray sizes according to units of measure given in
+     * world units (e.g., SI.METRE, USCustomary.FOOT, etc).
+     *
      * @param mapScale The specified map scale, given in pixels per meter.
      */
     public UomRescaleStyleVisitor(double mapScale) {
         if (mapScale <= 0)
-            throw new IllegalArgumentException("The mapScale is out of range. Value is "
-                    + Double.toString(mapScale) + ". It must be positive.");
+            throw new IllegalArgumentException(
+                    "The mapScale is out of range. Value is "
+                            + Double.toString(mapScale)
+                            + ". It must be positive.");
 
         this.mapScale = mapScale;
     }
 
     /**
-     * Used to rescale the provided unscaled value.
-     * 
+     * Used to rescaleDashArray the provided unscaled value.
+     *
      * @param unscaled the unscaled value.
      * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
@@ -95,23 +94,28 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         return RescalingMode.RealWorld.rescaleToExpression(ff.literal(mapScale), m);
     }
 
-    /**
-     * Rescale a list of expressions, can handle null.
-     */
-    protected List<Expression> rescale(List<Expression> expressions, Unit<Length> uom) {
-        if(expressions == null || expressions.isEmpty()) {
+    /** Rescale a list of expressions, can handle null. */
+    protected List<Expression> rescaleDashArray(List<Expression> expressions, Unit<Length> uom) {
+        if (expressions == null || expressions.isEmpty()) {
             return expressions;
         }
         List<Expression> rescaled = new ArrayList<>(expressions.size());
-        for(Expression expression: expressions) {
-            rescaled.add(rescale(expression, uom));
+        final Expression scale = rescale(ff.literal(1), uom);
+
+        for (Expression expression : expressions) {
+            Expression rescale = ff.function("listMultiply", scale, expression);
+            if (expression instanceof Literal) {
+                rescaled.add(ff.literal(rescale.evaluate(null)));
+            } else {
+                rescaled.add(rescale);
+            }
         }
         return rescaled;
     }
 
     /**
-     * Used to rescale the provided unscaled value.
-     * 
+     * Used to rescaleDashArray the provided unscaled value.
+     *
      * @param unscaled the unscaled value.
      * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
@@ -127,8 +131,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     /**
-     * Used to rescale the provided stroke.
-     * 
+     * Used to rescaleDashArray the provided stroke.
+     *
      * @param stroke the unscaled stroke, which will be modified in-place.
      * @param mapScale the mapScale in pixels per meter.
      * @param uom the unit of measure that will be used to scale.
@@ -136,7 +140,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     protected void rescaleStroke(Stroke stroke, Unit<Length> uom) {
         if (stroke != null) {
             stroke.setWidth(rescale(stroke.getWidth(), uom));
-            stroke.setDashArray(rescale(stroke.dashArray(), uom));
+            stroke.setDashArray(rescaleDashArray(stroke.dashArray(), uom));
             stroke.setDashOffset(rescale(stroke.getDashOffset(), uom));
             rescale(stroke.getGraphicFill(), uom);
             rescale(stroke.getGraphicStroke(), uom);
@@ -151,7 +155,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         Unit<Length> uom = copy.getUnitOfMeasure();
         Graphic copyGraphic = copy.getGraphic();
         rescale(copyGraphic, uom);
-        copy.setUnitOfMeasure(NonSI.PIXEL);
+        copy.setUnitOfMeasure(Units.PIXEL);
     }
 
     private void rescale(Graphic graphic, Unit<Length> unit) {
@@ -186,7 +190,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         Stroke copyStroke = copy.getStroke();
         rescaleStroke(copyStroke, uom);
         copy.setPerpendicularOffset(rescale(copy.getPerpendicularOffset(), uom));
-        copy.setUnitOfMeasure(NonSI.PIXEL);
+        copy.setUnitOfMeasure(Units.PIXEL);
     }
 
     @Override
@@ -198,7 +202,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         rescaleStroke(copy.getStroke(), uom);
         rescaleFill(copy.getFill(), uom);
         scaleIntArrayOption(copy.getOptions(), PolygonSymbolizer.GRAPHIC_MARGIN_KEY, uom);
-        copy.setUnitOfMeasure(NonSI.PIXEL);
+        copy.setUnitOfMeasure(Units.PIXEL);
     }
 
     private void rescaleFill(Fill copyFill, Unit<Length> unit) {
@@ -219,7 +223,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         for (Font font : copy.fonts()) {
             font.setSize(rescale(font.getSize(), uom));
         }
-        
+
         // rescales label placement
         LabelPlacement placement = copy.getLabelPlacement();
         if (placement instanceof PointPlacement) {
@@ -236,8 +240,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             LinePlacement linePlacement = (LinePlacement) placement;
             linePlacement.setGap(rescale(linePlacement.getGap(), uom));
             linePlacement.setInitialGap(rescale(linePlacement.getInitialGap(), uom));
-            linePlacement.setPerpendicularOffset(rescale(linePlacement.getPerpendicularOffset(),
-                    uom));
+            linePlacement.setPerpendicularOffset(
+                    rescale(linePlacement.getPerpendicularOffset(), uom));
         }
         copy.setLabelPlacement(placement);
 
@@ -261,7 +265,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         scaleIntOption(options, TextSymbolizer.AUTO_WRAP_KEY, uom);
         scaleIntArrayOption(options, TextSymbolizer.GRAPHIC_MARGIN_KEY, uom);
 
-        copy.setUnitOfMeasure(NonSI.PIXEL);
+        copy.setUnitOfMeasure(Units.PIXEL);
     }
 
     private void scaleIntOption(Map<String, String> options, String optionName, Unit<Length> uom) {
@@ -272,8 +276,8 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         }
     }
 
-    private void scaleIntArrayOption(Map<String, String> options, String optionName,
-            Unit<Length> uom) {
+    private void scaleIntArrayOption(
+            Map<String, String> options, String optionName, Unit<Length> uom) {
         if (options.containsKey(optionName)) {
             String strValue = options.get(optionName);
             String[] splitted = strValue.split("\\s+");
@@ -286,7 +290,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
             options.put(optionName, sb.toString());
         }
     }
-    
+
     String toInt(String value) {
         Double dv = Double.valueOf(value);
         return String.valueOf(dv.intValue());

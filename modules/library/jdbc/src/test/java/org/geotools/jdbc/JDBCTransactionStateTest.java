@@ -28,7 +28,6 @@ import java.sql.SQLException;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-
 import org.geotools.data.Transaction;
 import org.junit.After;
 import org.junit.Assert;
@@ -39,7 +38,7 @@ import org.mockito.stubbing.Answer;
 
 /**
  * Tests for {@link JDBCTransactionState}.
- * 
+ *
  * @author awaterme
  */
 public class JDBCTransactionStateTest {
@@ -54,22 +53,24 @@ public class JDBCTransactionStateTest {
 
     private int warningsCount;
 
-    /**
-     * Setup a log handler counting {@link LogRecord} having {@link Level#WARNING}.
-     */
+    /** Setup a log handler counting {@link LogRecord} having {@link Level#WARNING}. */
     @Before
     public void setUp() {
         // when(mockLogHandler.publish(any(LogRecord.class)));
-        doAnswer(new Answer<Object>() {
-            public Object answer(InvocationOnMock invocation) {
-                Object[] arguments = invocation.getArguments();
-                LogRecord logRecord = (LogRecord) arguments[0];
-                if (logRecord.getLevel() == Level.WARNING) {
-                    warningsCount++;
-                }
-                return null;
-            }
-        }).when(mockLogHandler).publish(any(LogRecord.class));
+        doAnswer(
+                        new Answer<Object>() {
+                            public Object answer(InvocationOnMock invocation) {
+                                Object[] arguments = invocation.getArguments();
+                                LogRecord logRecord = (LogRecord) arguments[0];
+                                if (logRecord.getLevel() == Level.WARNING
+                                        && !logRecord.getSourceMethodName().equals("finalize")) {
+                                    warningsCount++;
+                                }
+                                return null;
+                            }
+                        })
+                .when(mockLogHandler)
+                .publish(any(LogRecord.class));
         dataStore = new JDBCDataStore();
         dataStore.getLogger().addHandler(mockLogHandler);
     }
@@ -81,8 +82,9 @@ public class JDBCTransactionStateTest {
     }
 
     /**
-     * Tests if connection gets closed on internally managed connections and creation of log statements.
-     * 
+     * Tests if connection gets closed on internally managed connections and creation of log
+     * statements.
+     *
      * @throws IOException
      * @throws SQLException
      */

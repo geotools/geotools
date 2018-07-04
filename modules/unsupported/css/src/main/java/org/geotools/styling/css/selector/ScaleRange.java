@@ -17,7 +17,6 @@
 package org.geotools.styling.css.selector;
 
 import java.util.List;
-
 import org.geotools.util.Range;
 
 public class ScaleRange extends Selector {
@@ -61,21 +60,15 @@ public class ScaleRange extends Selector {
         return result;
     }
 
-
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         ScaleRange other = (ScaleRange) obj;
         if (range == null) {
-            if (other.range != null)
-                return false;
-        } else if (!range.equals(other.range))
-            return false;
+            if (other.range != null) return false;
+        } else if (!range.equals(other.range)) return false;
         return true;
     }
 
@@ -83,10 +76,8 @@ public class ScaleRange extends Selector {
     public String toString() {
         return "ScaleRange " + range;
     }
-    
+
     public Object accept(SelectorVisitor visitor) {
-    	return visitor.visit(this);
+        return visitor.visit(this);
     }
-
-
 }

@@ -23,16 +23,13 @@ import org.geotools.feature.type.SchemaImpl;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.type.AttributeType;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class XLINKSchema extends SchemaImpl {
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;simpleType name="_show"&gt;
      *      &lt;restriction base="string"&gt;
@@ -46,19 +43,23 @@ public class XLINKSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType _SHOW_TYPE = 
-        new AttributeTypeImpl(
-            new NameImpl("http://www.w3.org/1999/xlink","_show"), java.lang.Object.class, false,
-            false,Collections.EMPTY_LIST,XSSchema.STRING_TYPE, null
-        );
+    public static final AttributeType _SHOW_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.w3.org/1999/xlink", "_show"),
+                    java.lang.Object.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    XSSchema.STRING_TYPE,
+                    null);
 
     /**
-     * <p>
-     *  <pre>
+     *
+     *
+     * <pre>
      *   <code>
      *  &lt;simpleType name="_actuate"&gt;
      *      &lt;restriction base="string"&gt;
@@ -71,21 +72,23 @@ public class XLINKSchema extends SchemaImpl {
      *
      *    </code>
      *   </pre>
-     * </p>
      *
      * @generated
      */
-    public static final AttributeType _ACTUATE_TYPE = 
-        new AttributeTypeImpl(
-            new NameImpl("http://www.w3.org/1999/xlink","_actuate"), java.lang.Object.class, false,
-            false,Collections.EMPTY_LIST,XSSchema.STRING_TYPE, null
-        );
-
+    public static final AttributeType _ACTUATE_TYPE =
+            new AttributeTypeImpl(
+                    new NameImpl("http://www.w3.org/1999/xlink", "_actuate"),
+                    java.lang.Object.class,
+                    false,
+                    false,
+                    Collections.EMPTY_LIST,
+                    XSSchema.STRING_TYPE,
+                    null);
 
     public XLINKSchema() {
         super("http://www.w3.org/1999/xlink");
-        
-        put(new NameImpl("http://www.w3.org/1999/xlink","_show"),_SHOW_TYPE);
-        put(new NameImpl("http://www.w3.org/1999/xlink","_actuate"),_ACTUATE_TYPE);
+
+        put(new NameImpl("http://www.w3.org/1999/xlink", "_show"), _SHOW_TYPE);
+        put(new NameImpl("http://www.w3.org/1999/xlink", "_actuate"), _ACTUATE_TYPE);
     }
 }

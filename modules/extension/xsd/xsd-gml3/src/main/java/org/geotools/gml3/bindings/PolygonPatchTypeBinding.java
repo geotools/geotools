@@ -17,20 +17,18 @@
 package org.geotools.gml3.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:PolygonPatchType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  &lt;code&gt;
  *  &lt;complexType name=&quot;PolygonPatchType&quot;&gt;
@@ -40,7 +38,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *              a set of boundary curves and an underlying surface to
  *              which these curves adhere. The curves are coplanar and
  *              the polygon uses planar interpolation in its interior.
- *              Implements GM_Polygon of ISO 19107. 
+ *              Implements GM_Polygon of ISO 19107.
  *           &lt;/documentation&gt;
  *      &lt;/annotation&gt;
  *      &lt;complexContent&gt;
@@ -65,37 +63,32 @@ import com.vividsolutions.jts.geom.Polygon;
  *              &lt;/attribute&gt;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
- *  &lt;/complexType&gt; 
- * 	
+ *  &lt;/complexType&gt;
+ *
  *   &lt;/code&gt;
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class PolygonPatchTypeBinding extends AbstractComplexBinding {
 
     protected GeometryFactory gf;
-    
+
     public PolygonPatchTypeBinding(GeometryFactory gf) {
         this.gf = gf;
     }
-    
-    /**
-     * @generated
-     */
+
+    /** @generated */
     public QName getTarget() {
         return GML.PolygonPatchType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -103,12 +96,13 @@ public class PolygonPatchTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        return new PolygonTypeBinding( gf ).parse( instance, node, value);
+        return new PolygonTypeBinding(gf).parse(instance, node, value);
     }
-
 }

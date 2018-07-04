@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,10 +23,17 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.geotools.filter.LengthFunction;
 import org.geotools.xml.transform.TransformerBase;
 import org.geotools.xml.transform.Translator;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -39,28 +46,20 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
-
 /**
- * Transformer that transforms feature types into (hopefully) valid XML
- * schemas. This class may be used by geoserver in the future to automatically
- * create XML schemas for the  DescribeFeatureType request.
+ * Transformer that transforms feature types into (hopefully) valid XML schemas. This class may be
+ * used by geoserver in the future to automatically create XML schemas for the DescribeFeatureType
+ * request.
+ *
  * <pre>
  *   FeatureType type = ...; // you have it from somewhere
  *   FeatureTypeTransformer t = new FeatureTypeTransformer();
  *   t.transform(type, System.out);
  * </pre>
- * The following table lists the mapping between java types and xml schema data
- * types for attribute types.
- * 
+ *
+ * The following table lists the mapping between java types and xml schema data types for attribute
+ * types.
+ *
  * <table>
  * <tr><th>
  * Java
@@ -128,32 +127,32 @@ import com.vividsolutions.jts.geom.Polygon;
  * xs:boolean
  * </td></tr>
  * <tr><td>
- * com.vividsolutions.jts.geom.Point
+ * org.locationtech.jts.geom.Point
  * </td><td>
  * gml:PointPropertyType
  * </td></tr>
  * <tr><td>
- * com.vividsolutions.jts.geom.LineString
+ * org.locationtech.jts.geom.LineString
  * </td><td>
  * gml:LineStringPropertyType
  * </td></tr>
  * <tr><td>
- * com.vividsolutions.jts.geom.Polygon
+ * org.locationtech.jts.geom.Polygon
  * </td><td>
  * gml:PolygonPropertyType
  * </td></tr>
  * <tr><td>
- * com.vividsolutions.jts.geom.MultiPoint
+ * org.locationtech.jts.geom.MultiPoint
  * </td><td>
  * gml:MultiPointPropertyType
  * </td></tr>
  * <tr><td>
- * com.vividsolutions.jts.geom.MultiLineString
+ * org.locationtech.jts.geom.MultiLineString
  * </td><td>
  * gml:MutliLineStringPropertyType
  * </td></tr>
  * <tr><td>
- * com.vividsolutions.jts.geom.MultiPolygon
+ * org.locationtech.jts.geom.MultiPolygon
  * </td><td>
  * gml:MultiPolygonPropertyType
  * </td></tr>
@@ -165,29 +164,25 @@ import com.vividsolutions.jts.geom.Polygon;
  * </table>
  *
  * @author Simon Raess
- *
- *
  * @source $URL$
  * @version $Id$
- *
  * @task TODO: Support GeometryCollection.
- * @task REVISIT: Should support a bit more for the header, like being able to
- *       set the schemaLocation.  It also should declare and import the gml
- *       namespace - it's always used as all extend gml:AbstractFeatureType.
- *       Also should be able to set the global substitution group, so that
- *       this type can be used directly as a feature.
+ * @task REVISIT: Should support a bit more for the header, like being able to set the
+ *     schemaLocation. It also should declare and import the gml namespace - it's always used as all
+ *     extend gml:AbstractFeatureType. Also should be able to set the global substitution group, so
+ *     that this type can be used directly as a feature.
  */
 public class FeatureTypeTransformer extends TransformerBase {
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.gml.producer.FeatureTypeTransformer");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(
+                    "org.geotools.gml.producer.FeatureTypeTransformer");
     private static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
 
     /**
-     * Creates a Translator that is capable to translate FeatureType objects
-     * into a XML schema fragment.
+     * Creates a Translator that is capable to translate FeatureType objects into a XML schema
+     * fragment.
      *
      * @param handler the content handler to use
-     *
      * @return DOCUMENT ME!
      */
     public Translator createTranslator(ContentHandler handler) {
@@ -197,16 +192,14 @@ public class FeatureTypeTransformer extends TransformerBase {
     }
 
     /**
-     * A FeatureTypeTranslator encodes FeatureTypes as a (hopefully) valid XML
-     * schema.
+     * A FeatureTypeTranslator encodes FeatureTypes as a (hopefully) valid XML schema.
      *
      * @see TransformerBase.TranslatorSupport
      */
-    public static class FeatureTypeTranslator
-        extends TransformerBase.TranslatorSupport {
+    public static class FeatureTypeTranslator extends TransformerBase.TranslatorSupport {
         /**
-         * Creates a new FeatureTypeTranslator. The default prefix is "xs" and
-         * the default namespace is "http://www.w3.org/2001/XMLSchema".
+         * Creates a new FeatureTypeTranslator. The default prefix is "xs" and the default namespace
+         * is "http://www.w3.org/2001/XMLSchema".
          *
          * @param handler the content handler that receives the SAX events
          */
@@ -215,14 +208,11 @@ public class FeatureTypeTransformer extends TransformerBase {
         }
 
         /**
-         * Encode object o, which must be an instance of FeatureType. If it is
-         * not an IllegalArgumentException will be thrown.
+         * Encode object o, which must be an instance of FeatureType. If it is not an
+         * IllegalArgumentException will be thrown.
          *
          * @param o DOCUMENT ME!
-         *
-         * @throws IllegalArgumentException if supplied object is not an
-         *         instance of FeatureType
-         *
+         * @throws IllegalArgumentException if supplied object is not an instance of FeatureType
          * @see org.geotools.xml.transform.Translator#encode(java.lang.Object)
          */
         public void encode(Object o) throws IllegalArgumentException {
@@ -230,8 +220,7 @@ public class FeatureTypeTransformer extends TransformerBase {
                 encode((SimpleFeatureType) o);
             } else {
                 throw new IllegalArgumentException(
-                    "Translator does not know how to translate "
-                    + o.getClass().getName());
+                        "Translator does not know how to translate " + o.getClass().getName());
             }
         }
 
@@ -239,7 +228,6 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode the supplied feature type.
          *
          * @param type the feature type to encode
-         *
          * @throws RuntimeException DOCUMENT ME!
          */
         protected void encode(SimpleFeatureType type) {
@@ -263,30 +251,25 @@ public class FeatureTypeTransformer extends TransformerBase {
          *
          * @param name
          * @param namespace DOCUMENT ME!
-         *
          * @throws SAXException
          */
-        protected final void startSchemaType(String name, String namespace)
-            throws SAXException {
+        protected final void startSchemaType(String name, String namespace) throws SAXException {
             AttributesImpl atts = new AttributesImpl();
 
             atts.addAttribute("", "name", "name", "", name + "_Type");
 
-            contentHandler.startElement(SCHEMA_NS, "complexType",
-                "xs:complexType", atts);
+            contentHandler.startElement(SCHEMA_NS, "complexType", "xs:complexType", atts);
 
-            contentHandler.startElement(SCHEMA_NS, "complexContent",
-                "xs:complexContent", new AttributesImpl());
+            contentHandler.startElement(
+                    SCHEMA_NS, "complexContent", "xs:complexContent", new AttributesImpl());
 
             atts = new AttributesImpl();
 
             atts.addAttribute("", "base", "base", "", "gml:AbstractFeatureType");
 
-            contentHandler.startElement(SCHEMA_NS, "extension", "xs:extension",
-                atts);
+            contentHandler.startElement(SCHEMA_NS, "extension", "xs:extension", atts);
 
-            contentHandler.startElement(SCHEMA_NS, "sequence", "xs:sequence",
-                new AttributesImpl());
+            contentHandler.startElement(SCHEMA_NS, "sequence", "xs:sequence", new AttributesImpl());
         }
 
         /**
@@ -299,8 +282,7 @@ public class FeatureTypeTransformer extends TransformerBase {
 
             contentHandler.endElement(SCHEMA_NS, "extension", "xs:extension");
 
-            contentHandler.endElement(SCHEMA_NS, "complexContent",
-                "xs:complexContent");
+            contentHandler.endElement(SCHEMA_NS, "complexContent", "xs:complexContent");
 
             contentHandler.endElement(SCHEMA_NS, "complexType", "xs:complexType");
         }
@@ -309,12 +291,10 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode an AttributeType.
          *
          * @param attribute
-         *
          * @throws SAXException
          * @throws RuntimeException DOCUMENT ME!
          */
-        protected void encode(AttributeDescriptor attribute)
-            throws SAXException {
+        protected void encode(AttributeDescriptor attribute) throws SAXException {
             Class type = attribute.getType().getBinding();
 
             if (Number.class.isAssignableFrom(type)) {
@@ -329,8 +309,8 @@ public class FeatureTypeTransformer extends TransformerBase {
                 encodeBoolean(attribute);
 
                 /*} else if (FeatureType.class.isAssignableFrom(type)) {
-                
-                                      encodeFeature(attribute);*/
+
+                encodeFeature(attribute);*/
             } else {
                 throw new RuntimeException("Cannot encode " + type.getName());
             }
@@ -340,11 +320,9 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode an AttributeType whose value type is a Boolean.
          *
          * @param attribute
-         *
          * @throws SAXException
          */
-        protected void encodeBoolean(AttributeDescriptor attribute)
-            throws SAXException {
+        protected void encodeBoolean(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
 
             atts.addAttribute("", "type", "type", "", "xs:boolean");
@@ -353,38 +331,41 @@ public class FeatureTypeTransformer extends TransformerBase {
 
             contentHandler.endElement(SCHEMA_NS, "element", "xs:element");
         }
-        
+
         /**
          * Encode an AttributeType whose value type is a String.
          *
          * @param attribute the attribute to encode
-         *
          * @throws SAXException
          */
-        protected void encodeString(AttributeDescriptor attribute)
-            throws SAXException {
+        protected void encodeString(AttributeDescriptor attribute) throws SAXException {
             int length = Integer.MAX_VALUE;
-            
-            for ( Filter f : attribute.getType().getRestrictions() ) {
-            	if ( f == Filter.INCLUDE || f == Filter.EXCLUDE ) 
-            	    continue;
-            	
-                try{
-                	if(f instanceof PropertyIsLessThan ||
-                       f instanceof PropertyIsLessThanOrEqualTo ){
-                		BinaryComparisonOperator cf = (BinaryComparisonOperator) f;
-                		Expression e = cf.getExpression1();
-                		if(e!= null && e instanceof LengthFunction){
-                			length = Integer.parseInt(((Literal)cf.getExpression2()).getValue().toString());
-                		}else{
-                			if(cf.getExpression2() instanceof LengthFunction){
-                				length = Integer.parseInt(((Literal)cf.getExpression1()).getValue().toString());
-                			}
-                		}
-                	}
-            	}catch(Throwable t){
-            		length = Integer.MAX_VALUE;
-            	}
+
+            for (Filter f : attribute.getType().getRestrictions()) {
+                if (f == Filter.INCLUDE || f == Filter.EXCLUDE) continue;
+
+                try {
+                    if (f instanceof PropertyIsLessThan
+                            || f instanceof PropertyIsLessThanOrEqualTo) {
+                        BinaryComparisonOperator cf = (BinaryComparisonOperator) f;
+                        Expression e = cf.getExpression1();
+                        if (e != null && e instanceof LengthFunction) {
+                            length =
+                                    Integer.parseInt(
+                                            ((Literal) cf.getExpression2()).getValue().toString());
+                        } else {
+                            if (cf.getExpression2() instanceof LengthFunction) {
+                                length =
+                                        Integer.parseInt(
+                                                ((Literal) cf.getExpression1())
+                                                        .getValue()
+                                                        .toString());
+                            }
+                        }
+                    }
+                } catch (Throwable t) {
+                    length = Integer.MAX_VALUE;
+                }
             }
 
             AttributesImpl atts = createStandardAttributes(attribute);
@@ -392,38 +373,32 @@ public class FeatureTypeTransformer extends TransformerBase {
             if (length == 0) {
                 atts.addAttribute("", "type", "type", "", "xs:string");
 
-                contentHandler.startElement(SCHEMA_NS, "element", "xs:element",
-                    atts);
+                contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
 
                 contentHandler.endElement(SCHEMA_NS, "element", "xs:element");
             } else {
-                contentHandler.startElement(SCHEMA_NS, "element", "xs:element",
-                    atts);
+                contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
 
-                contentHandler.startElement(SCHEMA_NS, "simpleType",
-                    "xs:simpleType", new AttributesImpl());
+                contentHandler.startElement(
+                        SCHEMA_NS, "simpleType", "xs:simpleType", new AttributesImpl());
 
                 atts = new AttributesImpl();
 
                 atts.addAttribute("", "base", "base", "", "xs:string");
 
-                contentHandler.startElement(SCHEMA_NS, "restriction",
-                    "xs:restriction", atts);
+                contentHandler.startElement(SCHEMA_NS, "restriction", "xs:restriction", atts);
 
                 atts = new AttributesImpl();
 
                 atts.addAttribute("", "value", "value", "", "" + length);
 
-                contentHandler.startElement(SCHEMA_NS, "maxLength",
-                    "xs:maxLength", atts);
+                contentHandler.startElement(SCHEMA_NS, "maxLength", "xs:maxLength", atts);
 
                 contentHandler.endElement(SCHEMA_NS, "maxLength", "xs:maxLength");
 
-                contentHandler.endElement(SCHEMA_NS, "restriction",
-                    "xs:restriction");
+                contentHandler.endElement(SCHEMA_NS, "restriction", "xs:restriction");
 
-                contentHandler.endElement(SCHEMA_NS, "simpleType",
-                    "xs:simpleType");
+                contentHandler.endElement(SCHEMA_NS, "simpleType", "xs:simpleType");
 
                 contentHandler.endElement(SCHEMA_NS, "element", "xs:element");
             }
@@ -433,12 +408,10 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode an AttributeType whose value type is a Number.
          *
          * @param attribute
-         *
          * @throws SAXException
          * @throws RuntimeException DOCUMENT ME!
          */
-        protected void encodeNumber(AttributeDescriptor attribute)
-            throws SAXException {
+        protected void encodeNumber(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
 
             Class type = attribute.getType().getBinding();
@@ -464,8 +437,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             } else if (Number.class.isAssignableFrom(type)) {
                 typeString = "xs:decimal";
             } else {
-                throw new RuntimeException(
-                    "Called encode number with invalid attribute type.");
+                throw new RuntimeException("Called encode number with invalid attribute type.");
             }
 
             atts.addAttribute("", "type", "type", "", typeString);
@@ -479,20 +451,17 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode an AttributeType whose value type is a Date.
          *
          * @param attribute
-         *
          * @throws SAXException
          */
-        protected void encodeDate(AttributeDescriptor attribute)
-            throws SAXException {
+        protected void encodeDate(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
 
             Class binding = attribute.getType().getBinding();
-            if(java.sql.Date.class.isAssignableFrom(binding))
+            if (java.sql.Date.class.isAssignableFrom(binding))
                 atts.addAttribute("", "type", "type", "", "xs:date");
-            else if(java.sql.Time.class.isAssignableFrom(binding))
+            else if (java.sql.Time.class.isAssignableFrom(binding))
                 atts.addAttribute("", "type", "type", "", "xs:time");
-            else
-                atts.addAttribute("", "type", "type", "", "xs:dateTime");
+            else atts.addAttribute("", "type", "type", "", "xs:dateTime");
 
             contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
 
@@ -503,12 +472,10 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode an AttributeType whose value type is a Geometry.
          *
          * @param attribute
-         *
          * @throws SAXException
          * @throws RuntimeException DOCUMENT ME!
          */
-        protected void encodeGeometry(AttributeDescriptor attribute)
-            throws SAXException {
+        protected void encodeGeometry(AttributeDescriptor attribute) throws SAXException {
             AttributesImpl atts = createStandardAttributes(attribute);
 
             Class type = attribute.getType().getBinding();
@@ -534,8 +501,7 @@ public class FeatureTypeTransformer extends TransformerBase {
             } else if (type == Geometry.class) {
                 typeString = "gml:GeometryAssociationType";
             } else {
-                throw new RuntimeException("Unsupported type: "
-                    + type.getName());
+                throw new RuntimeException("Unsupported type: " + type.getName());
             }
 
             atts.addAttribute("", "type", "type", "", typeString);
@@ -549,36 +515,32 @@ public class FeatureTypeTransformer extends TransformerBase {
          * Encode an AttributeType whose value type is a Feature.
          *
          * @param attribute
-         *
          */
 
         /*protected void encodeFeature(AttributeType attribute) throws SAXException {
-        
-                      AttributesImpl atts = createStandardAttributes(attribute);
-        
-                      //atts.addAttribute("", "type", "type", "", "gml:AbstractFeatureType");
-        
-        
-                      contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
-        
-                      encode("");
-        
-                      contentHandler.endElement(SCHEMA_NS, "element", "xs:element");
-        
-                      }*/
+
+        AttributesImpl atts = createStandardAttributes(attribute);
+
+        //atts.addAttribute("", "type", "type", "", "gml:AbstractFeatureType");
+
+
+        contentHandler.startElement(SCHEMA_NS, "element", "xs:element", atts);
+
+        encode("");
+
+        contentHandler.endElement(SCHEMA_NS, "element", "xs:element");
+
+        }*/
 
         /**
-         * Creates standard xml attributes present on all xs:element elements.
-         * These are name, maxOccurs, minOccurs and nillable.
+         * Creates standard xml attributes present on all xs:element elements. These are name,
+         * maxOccurs, minOccurs and nillable.
          *
-         * @param attribute the attribute type from which the information is
-         *        retrieved
-         *
-         * @return an org.xml.sax.helpers.AttributesImpl object that contains
-         *         the standard attributes
+         * @param attribute the attribute type from which the information is retrieved
+         * @return an org.xml.sax.helpers.AttributesImpl object that contains the standard
+         *     attributes
          */
-        protected AttributesImpl createStandardAttributes(
-            AttributeDescriptor attribute) {
+        protected AttributesImpl createStandardAttributes(AttributeDescriptor attribute) {
             AttributesImpl atts = new AttributesImpl();
 
             atts.addAttribute("", "name", "name", "", attribute.getLocalName());

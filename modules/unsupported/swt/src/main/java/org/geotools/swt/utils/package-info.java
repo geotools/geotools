@@ -14,7 +14,5 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-/**
- * Helper classes for swt module components
- */
+/** Helper classes for swt module components */
 package org.geotools.swt.utils;

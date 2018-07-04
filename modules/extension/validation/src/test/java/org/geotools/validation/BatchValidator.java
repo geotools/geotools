@@ -27,38 +27,32 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.URLs;
 import org.geotools.validation.dto.ArgumentDTO;
 import org.geotools.validation.dto.PlugInDTO;
 import org.geotools.validation.dto.TestDTO;
 import org.geotools.validation.dto.TestSuiteDTO;
 import org.geotools.validation.xml.ValidationException;
 import org.geotools.validation.xml.XMLReader;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
-
-import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Validator purpose.
- * 
- * <p>
- * Description of Validator ...
- * </p>
- * 
+ *
+ * <p>Description of Validator ...
+ *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
  * @author bowens
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/trunk/modules/extension/validation/src/test/java/org/geotools
- *         /validation/BatchValidator.java $
+ *     http://svn.geotools.org/trunk/modules/extension/validation/src/test/java/org/geotools
+ *     /validation/BatchValidator.java $
  * @version $Id$
  */
 public class BatchValidator {
@@ -106,11 +100,11 @@ public class BatchValidator {
             }
         }
         validator = new Validator(dataRepository, v);
-        
+
         /** validator is now ready to go */
 
         /** do the feature type validation dance */
-        for( DataStore store : dataRepository.getDataStores()){
+        for (DataStore store : dataRepository.getDataStores()) {
             String typeNames[] = null;
             try {
                 typeNames = store.getTypeNames();
@@ -121,15 +115,14 @@ public class BatchValidator {
             // this is really really slow and will be fixed
             for (int p = 0; p < typeNames.length; p++) {
                 try {
-                    validator.featureValidation(typeNames[p], store.getFeatureSource(typeNames[p])
-                            .getFeatures(), null);
+                    validator.featureValidation(
+                            typeNames[p], store.getFeatureSource(typeNames[p]).getFeatures(), null);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
             }
-
         }
 
         ReferencedEnvelope envelope = makeEnvelope();
@@ -144,7 +137,7 @@ public class BatchValidator {
         }
 
         if (true) // HACK premature evacuation
-            return;
+        return;
 
         // --------------------------------------------------
         // start of the old code
@@ -193,8 +186,12 @@ public class BatchValidator {
             }
 
             if (env == null) {
-                env = new Envelope(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE,
-                        Integer.MAX_VALUE);
+                env =
+                        new Envelope(
+                                Integer.MIN_VALUE,
+                                Integer.MIN_VALUE,
+                                Integer.MAX_VALUE,
+                                Integer.MAX_VALUE);
             }
 
             try {
@@ -223,8 +220,13 @@ public class BatchValidator {
         }
 
         if (env == null) {
-            env = new ReferencedEnvelope(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE,
-                    Integer.MAX_VALUE, null);
+            env =
+                    new ReferencedEnvelope(
+                            Integer.MIN_VALUE,
+                            Integer.MIN_VALUE,
+                            Integer.MAX_VALUE,
+                            Integer.MAX_VALUE,
+                            null);
         }
 
         return env;
@@ -234,8 +236,12 @@ public class BatchValidator {
         File dsProp = null;
         File trProp = null;
 
-        dsProp = DataUtilities.urlToFile(ClassLoader.getSystemResource("org/geotools/demos/DataStore.properties"));
-        trProp = DataUtilities.urlToFile(ClassLoader.getSystemResource("org/geotools/demos/Transaction.properties"));
+        dsProp =
+                URLs.urlToFile(
+                        ClassLoader.getSystemResource("org/geotools/demos/DataStore.properties"));
+        trProp =
+                URLs.urlToFile(
+                        ClassLoader.getSystemResource("org/geotools/demos/Transaction.properties"));
 
         if (args.length > 0) {
             int i = 0;
@@ -246,7 +252,7 @@ public class BatchValidator {
 
                 if ("-data".equals(param)) {
                     File tmp = null;
-                    tmp = DataUtilities.urlToFile((ClassLoader.getSystemResource(value)));
+                    tmp = URLs.urlToFile((ClassLoader.getSystemResource(value)));
 
                     if (tmp != null) {
                         dsProp = tmp;
@@ -258,13 +264,13 @@ public class BatchValidator {
                 } else {
                     if ("-trans".equals(param)) {
                         File tmp = null;
-                        tmp =  DataUtilities.urlToFile(ClassLoader.getSystemResource(value));
+                        tmp = URLs.urlToFile(ClassLoader.getSystemResource(value));
 
                         if (tmp != null) {
                             trProp = tmp;
                         } else {
-                            System.err
-                                    .println("Error: The transaction property file could not be found.");
+                            System.err.println(
+                                    "Error: The transaction property file could not be found.");
                             System.err.println("Data file:" + value);
                             System.exit(1);
                         }
@@ -385,7 +391,7 @@ public class BatchValidator {
         }
     }
 
-    private synchronized static Map loadDataStores() {
+    private static synchronized Map loadDataStores() {
         String dsIds = dataStoreProp.getProperty("DataStoreIds");
         String[] ids = dsIds.split(",");
         Map result = new HashMap();
@@ -405,11 +411,11 @@ public class BatchValidator {
                 if (vals.length == 2) {
                     m.put(vals[0].trim(), vals[1].trim());
                 } else {
-                    System.err.println("DataStore " + ids[i]
-                            + " incured an error loading a parameter.");
+                    System.err.println(
+                            "DataStore " + ids[i] + " incured an error loading a parameter.");
                     System.err.println("This DataStore may not be loaded correctly.");
-                    System.err
-                            .println("Parameters should be specified in a comma delimited list key=value");
+                    System.err.println(
+                            "Parameters should be specified in a comma delimited list key=value");
                     System.err.println("You specified:" + tmp);
                 }
             }
@@ -420,17 +426,17 @@ public class BatchValidator {
                 dataStore = DataStoreFinder.getDataStore(m);
             } catch (Throwable ex) {
                 ex.printStackTrace();
-                System.err.println("DataStore " + ids[i]
-                        + " incured an error and will not be used.");
+                System.err.println(
+                        "DataStore " + ids[i] + " incured an error and will not be used.");
             }
 
             if (dataStore != null) {
                 result.put(ids[i], dataStore);
             } else {
-                System.err.println("DataStore " + ids[i]
-                        + " incured an error and will not be used.");
+                System.err.println(
+                        "DataStore " + ids[i] + " incured an error and will not be used.");
             }
-        }// end for ids
+        } // end for ids
 
         return result;
     }
@@ -601,17 +607,15 @@ public class BatchValidator {
 
 /*
  * Created on Feb 9, 2004
- * 
+ *
  * To change the template for this generated file go to Window - Preferences - Java - Code
  * Generation - Code and Comments
  */
 class BatchValidatorProcessor extends ValidationProcessor {
     /**
      * BatchValidator constructor.
-     * 
-     * <p>
-     * super();
-     * </p>
+     *
+     * <p>super();
      */
     public BatchValidatorProcessor() {
         super();
@@ -619,16 +623,11 @@ class BatchValidatorProcessor extends ValidationProcessor {
 
     /**
      * ValidationProcessor constructor.
-     * 
-     * <p>
-     * Builds a ValidationProcessor with the DTO provided.
-     * </p>
-     * 
-     * @param testSuites
-     *            Map a map of names -> TestSuiteDTO objects
-     * @param plugIns
-     *            Map a map of names -> PlugInDTO objects
-     * 
+     *
+     * <p>Builds a ValidationProcessor with the DTO provided.
+     *
+     * @param testSuites Map a map of names -> TestSuiteDTO objects
+     * @param plugIns Map a map of names -> PlugInDTO objects
      * @see load(Map,Map)
      */
     public BatchValidatorProcessor(Map testSuites, Map plugIns) {
@@ -638,11 +637,9 @@ class BatchValidatorProcessor extends ValidationProcessor {
 
     /**
      * load purpose.
-     * 
-     * <p>
-     * loads this instance data into this instance.
-     * </p>
-     * 
+     *
+     * <p>loads this instance data into this instance.
+     *
      * @param testSuites
      * @param plugIns
      */
@@ -666,8 +663,7 @@ class BatchValidatorProcessor extends ValidationProcessor {
         Map errors = new HashMap();
 
         // go through each plugIn and add it to errors
-        while (i.hasNext())
-            errors.put(i.next(), Boolean.FALSE);
+        while (i.hasNext()) errors.put(i.next(), Boolean.FALSE);
 
         // step 2 configure plug-ins with defaults
         Map defaultPlugIns = new HashMap(plugInNames.size());
@@ -698,8 +694,9 @@ class BatchValidatorProcessor extends ValidationProcessor {
             }
 
             try {
-                PlugIn plugIn = new org.geotools.validation.PlugIn(plugInName, plugInClass, dto
-                        .getDescription(), plugInArgs);
+                PlugIn plugIn =
+                        new org.geotools.validation.PlugIn(
+                                plugInName, plugInClass, dto.getDescription(), plugInArgs);
                 defaultPlugIns.put(plugInName, plugIn);
             } catch (ValidationException e) {
                 e.printStackTrace();
@@ -742,10 +739,11 @@ class BatchValidatorProcessor extends ValidationProcessor {
                 }
 
                 try {
-                    PlugIn plugIn = (org.geotools.validation.PlugIn) defaultPlugIns.get(dto
-                            .getPlugIn().getName());
-                    Validation validation = plugIn.createValidation(dto.getName(), dto
-                            .getDescription(), testArgs);
+                    PlugIn plugIn =
+                            (org.geotools.validation.PlugIn)
+                                    defaultPlugIns.get(dto.getPlugIn().getName());
+                    Validation validation =
+                            plugIn.createValidation(dto.getName(), dto.getDescription(), testArgs);
 
                     if (validation instanceof FeatureValidation) {
                         addValidation((FeatureValidation) validation);
@@ -767,6 +765,5 @@ class BatchValidatorProcessor extends ValidationProcessor {
 
             errors.put(tdto, Boolean.TRUE);
         } // end while each test suite
-    }// end load method
-
+    } // end load method
 }

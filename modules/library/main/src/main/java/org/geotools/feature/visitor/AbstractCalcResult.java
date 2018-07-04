@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,21 +23,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
-
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 
 /**
- * An abstract implementation for CalcResults. Each subclass should implement
- * its own getValue(), merge(), and constructor methods.
- * 
+ * An abstract implementation for CalcResults. Each subclass should implement its own getValue(),
+ * merge(), and constructor methods.
+ *
  * @author Cory Horner, Refractions
- * 
  * @since 2.2.M2
- *
- *
  * @source $URL$
  */
 public class AbstractCalcResult implements CalcResult {
@@ -46,18 +41,17 @@ public class AbstractCalcResult implements CalcResult {
     }
 
     public CalcResult merge(CalcResult resultsToAdd) {
-    	if(resultsToAdd == CalcResult.NULL_RESULT) {
-    		return this;
-    	} else {
-    		if (!isCompatible(resultsToAdd)) {
-                throw new IllegalArgumentException(
-                    "Parameter is not a compatible type");
+        if (resultsToAdd == CalcResult.NULL_RESULT) {
+            return this;
+        } else {
+            if (!isCompatible(resultsToAdd)) {
+                throw new IllegalArgumentException("Parameter is not a compatible type");
             } else {
-            	throw new IllegalArgumentException(
-				"The CalcResults claim to be compatible, but the appropriate merge " +
-				"method has not been implemented.");
+                throw new IllegalArgumentException(
+                        "The CalcResults claim to be compatible, but the appropriate merge "
+                                + "method has not been implemented.");
             }
-    	}
+        }
     }
 
     public Object getValue() {
@@ -67,59 +61,55 @@ public class AbstractCalcResult implements CalcResult {
     public int toInt() {
         Object value = getValue();
         if (value instanceof Number) {
-        	Number number = (Number) value;
-        	return number.intValue();
+            Number number = (Number) value;
+            return number.intValue();
         } else {
-        	return (int) 0;
+            return (int) 0;
         }
     }
 
     public double toDouble() {
         Object value = getValue();
         if (value instanceof Number) {
-        	Number number = (Number) value;
-        	return number.doubleValue();
+            Number number = (Number) value;
+            return number.doubleValue();
         } else {
-        	return (double) 0;
+            return (double) 0;
         }
     }
 
     public long toLong() {
         Object value = getValue();
         if (value instanceof Number) {
-        	Number number = (Number) value;
-        	return number.longValue();
+            Number number = (Number) value;
+            return number.longValue();
         } else {
-        	return (long) 0;
+            return (long) 0;
         }
     }
 
     public float toFloat() {
         Object value = getValue();
         if (value instanceof Number) {
-        	Number number = (Number) value;
-        	return number.floatValue();
+            Number number = (Number) value;
+            return number.floatValue();
         } else {
-        	return (float) 0;
+            return (float) 0;
         }
     }
 
     public Geometry toGeometry() {
-    	Object value = getValue();
-    	if (value instanceof Geometry)
-    		return (Geometry) getValue();
-    	else
-    		return null;
+        Object value = getValue();
+        if (value instanceof Geometry) return (Geometry) getValue();
+        else return null;
     }
 
     public Envelope toEnvelope() {
-    	Object value = getValue();
-    	if (value instanceof Envelope)
-    		return (Envelope) value;
-    	else
-    		return null;
+        Object value = getValue();
+        if (value instanceof Envelope) return (Envelope) value;
+        else return null;
     }
-    
+
     public Point toPoint() {
         Geometry geometry = toGeometry();
         return geometry.getCentroid();
@@ -154,38 +144,38 @@ public class AbstractCalcResult implements CalcResult {
     }
 
     public List toList() {
-		Object value = getValue();
+        Object value = getValue();
 
-		if (value == null) {
-			return null;
-		}
+        if (value == null) {
+            return null;
+        }
 
-		if (value instanceof List) {
-			List list = (List) value;
+        if (value instanceof List) {
+            List list = (List) value;
 
-			return list;
-		}
+            return list;
+        }
 
-		if (value.getClass().isArray()) {
-			return Arrays.asList((Object[]) value);
-		}
+        if (value.getClass().isArray()) {
+            return Arrays.asList((Object[]) value);
+        }
 
-		if (value instanceof HashSet) {
-			Set set = (HashSet) value;
-			// Object[] values = set.toArray();
-			return Arrays.asList(set.toArray());
-			// List list = new ArrayList();
-			// for (int i = 0; i < values.length; i++)
-			// list.add(values[i]);
-			// return list;
-		}
+        if (value instanceof HashSet) {
+            Set set = (HashSet) value;
+            // Object[] values = set.toArray();
+            return Arrays.asList(set.toArray());
+            // List list = new ArrayList();
+            // for (int i = 0; i < values.length; i++)
+            // list.add(values[i]);
+            // return list;
+        }
 
-		if (value instanceof Collection) {
-			return new ArrayList((Collection) value);
-		}
+        if (value instanceof Collection) {
+            return new ArrayList((Collection) value);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     public Object[] toArray() {
         List list = toList();

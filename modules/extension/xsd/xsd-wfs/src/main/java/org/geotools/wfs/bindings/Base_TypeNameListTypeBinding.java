@@ -17,19 +17,17 @@
 package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
-
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:Base_TypeNameListType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:simpleType name="Base_TypeNameListType"&gt;
  *      &lt;xsd:list itemType="xsd:QName"/&gt;
@@ -37,26 +35,20 @@ import org.geotools.xml.InstanceComponent;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class Base_TypeNameListTypeBinding extends AbstractSimpleBinding {
-    public Base_TypeNameListTypeBinding(WfsFactory factory) {
-    }
+    public Base_TypeNameListTypeBinding(WfsFactory factory) {}
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.Base_TypeNameListType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -67,14 +59,14 @@ public class Base_TypeNameListTypeBinding extends AbstractSimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
-        //TODO: implement and remove call to super
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
+        // TODO: implement and remove call to super
         return super.parse(instance, value);
     }
 }

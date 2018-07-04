@@ -20,23 +20,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.sfs.SFSDataStore;
-import org.geotools.data.sfs.SFSDataStoreFactory;
-import org.geotools.data.sfs.SFSLayer;
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.type.Name;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SFSDataStoreTest extends OnlineTest {
 
     protected void setUp() throws Exception {
@@ -57,8 +48,8 @@ public class SFSDataStoreTest extends OnlineTest {
         DataStoreFactorySpi spi = null;
 
         while (it.hasNext()) {
-        	spi=it.next();
-            if ( spi instanceof SFSDataStoreFactory) {
+            spi = it.next();
+            if (spi instanceof SFSDataStoreFactory) {
                 break;
             }
         }
@@ -67,7 +58,6 @@ public class SFSDataStoreTest extends OnlineTest {
 
         /* try with params */
         assertTrue(spi.canProcess(createParams()));
-    
     }
 
     /*
@@ -89,25 +79,25 @@ public class SFSDataStoreTest extends OnlineTest {
         }
     }
 
-
     /*
      * This test is just with JSON response from the URL
      */
     public void testConstructorWithJSON() throws Exception {
-        String _jsonText = "[{"
-                + "   \"name\": \"layerAsia\","
-                + "   \"bbox\": [-10,-40,30,80],"
-                + "   \"crs\": \"urn:ogc:def:crs:EPSG:4326\","
-                + "   \"axisorder\": \"yx\"},"
-                + "{"
-                + "   \"name\": \"layerAmerica\","
-                + "   \"crs\": \"urn:ogc:def:crs:EPSG:32632\" ,"
-                + "   \"axisorder\": \"xy\" },"
-                + "{"
-                + "   \"name\": \"layerEurope\","
-                + "   \"bbox\": [15000000,49000000,18000000,52000000],"
-                + "   \"crs\": \"urn:ogc:def:crs:EPSG:32632\" "
-                + " }]";
+        String _jsonText =
+                "[{"
+                        + "   \"name\": \"layerAsia\","
+                        + "   \"bbox\": [-10,-40,30,80],"
+                        + "   \"crs\": \"urn:ogc:def:crs:EPSG:4326\","
+                        + "   \"axisorder\": \"yx\"},"
+                        + "{"
+                        + "   \"name\": \"layerAmerica\","
+                        + "   \"crs\": \"urn:ogc:def:crs:EPSG:32632\" ,"
+                        + "   \"axisorder\": \"xy\" },"
+                        + "{"
+                        + "   \"name\": \"layerEurope\","
+                        + "   \"bbox\": [15000000,49000000,18000000,52000000],"
+                        + "   \"crs\": \"urn:ogc:def:crs:EPSG:32632\" "
+                        + " }]";
 
         SFSDataStore ods = new SFSDataStore(_jsonText, NAMESPACE);
         process(ods);
@@ -136,13 +126,13 @@ public class SFSDataStoreTest extends OnlineTest {
         assertEquals(false, layerAsia.isXYOrder());
         assertEquals(CRS.decode("EPSG:4326", true), layerAsia.getCoordinateReferenceSystem());
         assertEquals(new Envelope(-40, 80, -10, 30), layerAsia.getBounds());
-        
+
         SFSLayer layerAmerica = ods.getLayer(new NameImpl(NAMESPACE, "layerAmerica"));
         assertEquals("urn:ogc:def:crs:EPSG:32632", layerAmerica.getLayerSRS());
         assertEquals(true, layerAmerica.isXYOrder());
         assertEquals(CRS.decode("EPSG:32632", true), layerAmerica.getCoordinateReferenceSystem());
         assertNull(layerAmerica.getBounds());
-        
+
         SFSLayer layerEurope = ods.getLayer(new NameImpl(NAMESPACE, "layerEurope"));
         assertEquals("urn:ogc:def:crs:EPSG:32632", layerEurope.getLayerSRS());
         assertEquals(true, layerEurope.isXYOrder());

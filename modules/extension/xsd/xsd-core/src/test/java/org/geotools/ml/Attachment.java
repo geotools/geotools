@@ -16,11 +16,7 @@
  */
 package org.geotools.ml;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class Attachment {
     String name;
     MimeType mimeType;

@@ -18,16 +18,10 @@ package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.MultiLineString;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.MultiLineString;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLMultiLineStringTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(MultiLineString.class, binding(GML.MultiLineStringType).getType());
@@ -47,8 +41,9 @@ public class GMLMultiLineStringTypeBinding2Test extends GMLTestSupport {
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.multiLineString(), GML.MultiLineString);
 
-        assertEquals(2,
-            doc.getElementsByTagNameNS(GML.NAMESPACE, GML.lineStringMember.getLocalPart())
-               .getLength());
+        assertEquals(
+                2,
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.lineStringMember.getLocalPart())
+                        .getLength());
     }
 }

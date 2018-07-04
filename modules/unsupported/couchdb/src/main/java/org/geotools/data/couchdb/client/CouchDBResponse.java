@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -29,9 +29,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 /**
- *
  * @author Ian Schneider (OpenGeo)
- *
  * @source $URL$
  */
 public final class CouchDBResponse {
@@ -40,19 +38,20 @@ public final class CouchDBResponse {
     private final IOException exception;
     private final Object json;
     private final boolean isArray;
-    private static final Logger logger =  Logging.getLogger(CouchDBResponse.class);
+    private static final Logger logger = Logging.getLogger(CouchDBResponse.class);
 
-    public CouchDBResponse(HttpMethod request, int result, IOException exception) throws IOException {
+    public CouchDBResponse(HttpMethod request, int result, IOException exception)
+            throws IOException {
         this.request = request;
         this.result = result;
         this.exception = exception;
-        
+
         boolean err = !isHttpOK();
-        
+
         InputStream response = request.getResponseBodyAsStream();
         if (err) {
             if (exception != null) {
-                throw new IOException("HTTP error",exception);
+                throw new IOException("HTTP error", exception);
             }
             if (response == null) {
                 throw new IOException("HTTP error : " + result);
@@ -65,22 +64,25 @@ public final class CouchDBResponse {
             isArray = json instanceof JSONArray;
         }
     }
-    
+
     public void checkOK(String msg) throws CouchDBException {
         if (!isHttpOK()) {
             String fullMsg = msg + "," + getErrorAndReason();
             try {
                 if (logger.isLoggable(Level.FINE)) {
-                    logger.log(Level.FINE,"Request URI : " + request.getURI());
+                    logger.log(Level.FINE, "Request URI : " + request.getURI());
                 }
             } catch (URIException ex) {
-                logger.warning("An invalid URI was used " + request.getPath() + 
-                        "," + request.getQueryString());
+                logger.warning(
+                        "An invalid URI was used "
+                                + request.getPath()
+                                + ","
+                                + request.getQueryString());
             }
-            throw new CouchDBException(fullMsg,exception);
-        } 
+            throw new CouchDBException(fullMsg, exception);
+        }
     }
-    
+
     private String getErrorAndReason() {
         if (!isHttpOK()) {
             JSONObject err = (JSONObject) json;
@@ -104,7 +106,7 @@ public final class CouchDBResponse {
     public boolean isHttpOK() {
         return result >= 200 && result < 300;
     }
-    
+
     public boolean isCouchOK() {
         boolean ok = false;
         JSONObject obj = (JSONObject) json;
@@ -114,7 +116,7 @@ public final class CouchDBResponse {
     public Throwable getException() {
         return exception;
     }
-    
+
     public JSONArray getBodyAsJSONArray() throws IOException {
         if (!isArray) {
             throw new IllegalStateException("Response is not an array");
@@ -128,8 +130,4 @@ public final class CouchDBResponse {
         }
         return (JSONObject) json;
     }
-    
-    
-
-    
 }

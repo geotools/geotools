@@ -19,107 +19,129 @@
  */
 package org.geotools.referencing.wkt;
 
-import java.lang.reflect.Modifier;
-import java.util.Set;
-
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-import javax.measure.unit.UnitFormat;
-
+import java.util.HashMap;
+import java.util.Map;
+import javax.measure.Unit;
+import javax.measure.format.UnitFormat;
 import org.geotools.measure.Units;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.opengis.metadata.citation.Citation;
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
+import tec.uom.se.format.SimpleUnitFormat;
 
 /**
  * Provides unit formatting for EPSG and ESRI WKT dialects
+ *
  * @author Andrea Aime - GeoSolutions
  */
-abstract class GeoToolsUnitFormat extends UnitFormat {
+abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
+
+    /** Holds the standard unit format. */
+    private static final ESRIFormat ESRI = new ESRIFormat();
+
+    /** Holds the ASCIIFormat unit format. */
+    private static final EPSGFormat EPSG = new EPSGFormat();
 
     public static UnitFormat getInstance(Citation citation) {
         if (CRS.equalsIgnoreMetadata(Citations.ESRI, citation)) {
-            return new ESRIFormat();
+            return ESRI;
         } else {
-            return new EPSGFormat();
+            return EPSG;
         }
     }
 
     /**
      * Base class that just copies {@link UnitFormat} default instance contents
+     *
      * @author Andrea Aime - GeoSolutions
      */
-    static abstract class BaseGT2Format extends DefaultFormat {
+    abstract static class BaseGT2Format extends DefaultFormat {
+        protected void initUnits() {
+            /**
+             * Labels and alias are only defined on the DEFAULT format instance, so these
+             * definitions are not inherited by subclassing DefaultFormat. Therefore, we need to
+             * clone these definitions in our GT formats
+             */
+            DefaultFormat base = (DefaultFormat) Units.getDefaultFormat();
+            try {
 
-        public BaseGT2Format() {
-            // make sure Units registers the extar units in the default format
-            Unit<?> forceInit = Units.SEXAGESIMAL_DMS;
+                java.lang.reflect.Field nameToUnitField =
+                        DefaultFormat.class.getDeclaredField("_nameToUnit");
+                nameToUnitField.setAccessible(true);
+                HashMap<String, Unit<?>> nameToUnitMap =
+                        (HashMap<String, Unit<?>>) nameToUnitField.get(base);
 
-            DefaultFormat base = (DefaultFormat) UnitFormat.getInstance();
-
-            // clone non si units
-            Set<Unit<?>> nonSiUnits = NonSI.getInstance().getUnits();
-            for (Unit<?> unit : nonSiUnits) {
-                String name = base.nameFor(unit);
-                if (name != null) {
-                    label(unit, name);
-                }
-            }
-            // clone si units
-            Set<Unit<?>> siUnits = SI.getInstance().getUnits();
-            for (Unit<?> unit : siUnits) {
-                String name = base.nameFor(unit);
-                if (name != null) {
-                    label(unit, name);
-                }
-            }
-
-            // clone extra gt units
-            for (java.lang.reflect.Field field : Units.class.getFields()) {
-                if (Modifier.isStatic(field.getModifiers())
-                        && Unit.class.isAssignableFrom(field.getType())) {
-                    try {
-                        field.setAccessible(true);
-                        Unit unit = (Unit) field.get(null);
-                        String name = base.nameFor(unit);
-                        if (name != null) {
-                            label(unit, name);
-                        }
-                    } catch (Throwable t) {
-                        // we tried...
+                java.lang.reflect.Field unitToNameField =
+                        DefaultFormat.class.getDeclaredField("_unitToName");
+                unitToNameField.setAccessible(true);
+                HashMap<String, Unit<?>> unitToNameMap =
+                        (HashMap<String, Unit<?>>) unitToNameField.get(base);
+                for (Map.Entry<String, Unit<?>> entry : nameToUnitMap.entrySet()) {
+                    String name = entry.getKey();
+                    Unit<?> unit = entry.getValue();
+                    if (unitToNameMap.containsKey(unit) && name.equals(unitToNameMap.get(unit))) {
+                        label(unit, name);
+                        addUnit(unit);
+                    } else {
+                        alias(unit, name);
                     }
                 }
+            } catch (Throwable t) {
+                // we tried...
             }
-
         }
+
+        protected static void esriLabelsAndAliases(BaseGT2Format format) {
+            format.label(NonSI.DEGREE_ANGLE, "Degree");
+            format.label(SI.METRE, "Meter");
+            format.label(SI.METRE.multiply(0.3047997101815088), "Foot_Gold_Coast");
+            format.label(USCustomary.FOOT, "Foot");
+            format.label(USCustomary.FOOT_SURVEY, "Foot_US");
+        }
+
+        protected static void epsgLabelsAndAliases(BaseGT2Format format) {
+            format.label(NonSI.DEGREE_ANGLE, "degree");
+        }
+
+        protected abstract void addUnit(Unit<?> unit);
     }
 
     /**
      * Subclass adding overrides for the EPSG dialect
+     *
      * @author Andrea Aime - GeoSolutions
      */
-    static class EPSGFormat extends GeoToolsUnitFormat.BaseGT2Format {
+    static class EPSGFormat extends BaseGT2Format {
         private static final long serialVersionUID = -1207705344688824557L;
 
         public EPSGFormat() {
-            label(NonSI.DEGREE_ANGLE, "degree");
+            super();
+            initUnits();
+            epsgLabelsAndAliases(this);
         }
+
+        @Override
+        protected void addUnit(Unit<?> unit) {}
     }
 
     /**
      * Subclass adding overrides for the ESRI dialect
+     *
      * @author Andrea Aime - GeoSolutions
      */
-    static class ESRIFormat extends DefaultFormat {
+    static class ESRIFormat extends BaseGT2Format {
         private static final long serialVersionUID = 5769662824845469523L;
 
         public ESRIFormat() {
-            label(NonSI.DEGREE_ANGLE, "Degree");
-            label(SI.METER, "Meter");
-            label(SI.METER.times(0.3047997101815088), "Foot_Gold_Coast");
-            label(NonSI.FOOT, "Foot");
-            label(NonSI.FOOT_SURVEY_US, "Foot_US");
+            super();
+            initUnits();
+            esriLabelsAndAliases(this);
         }
+
+        @Override
+        protected void addUnit(Unit<?> unit) {}
     }
 }

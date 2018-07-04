@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>unsupported</artifactId>
 		<groupId>org.geotools</groupId>
-		<version>17-SNAPSHOT</version>
+		<version>20-SNAPSHOT</version>
 	</parent>
 	<groupId>org.geotools</groupId>
 	<artifactId>gt-geojsondatastore</artifactId>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
+			<version>2.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>

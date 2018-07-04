@@ -23,48 +23,40 @@ import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LinearRing;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LinearRingTypeBindingTest extends GML32TestSupport {
-//    public void testPos() throws Exception {
-//        document.appendChild(GML3MockData.linearRingWithPos(document, null));
-//
-//        LinearRing line = (LinearRing) parse();
-//        assertNotNull(line);
-//
-//        assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
-//        assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
-//        assertEquals(new Coordinate(5d, 6d), line.getPointN(2).getCoordinate());
-//        assertEquals(new Coordinate(1d, 2d), line.getPointN(3).getCoordinate());
-//    }
-//
-//    public void testPosList() throws Exception {
-//        document.appendChild(GML3MockData.linearRingWithPosList(document, null));
-//
-//        LinearRing line = (LinearRing) parse();
-//        assertNotNull(line);
-//
-//        assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
-//        assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
-//        assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
-//        assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
-//        assertEquals(new Coordinate(5d, 6d), line.getPointN(2).getCoordinate());
-//        assertEquals(new Coordinate(1d, 2d), line.getPointN(3).getCoordinate());
-//    }
-    
+    //    public void testPos() throws Exception {
+    //        document.appendChild(GML3MockData.linearRingWithPos(document, null));
+    //
+    //        LinearRing line = (LinearRing) parse();
+    //        assertNotNull(line);
+    //
+    //        assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
+    //        assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
+    //        assertEquals(new Coordinate(5d, 6d), line.getPointN(2).getCoordinate());
+    //        assertEquals(new Coordinate(1d, 2d), line.getPointN(3).getCoordinate());
+    //    }
+    //
+    //    public void testPosList() throws Exception {
+    //        document.appendChild(GML3MockData.linearRingWithPosList(document, null));
+    //
+    //        LinearRing line = (LinearRing) parse();
+    //        assertNotNull(line);
+    //
+    //        assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
+    //        assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
+    //        assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
+    //        assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
+    //        assertEquals(new Coordinate(5d, 6d), line.getPointN(2).getCoordinate());
+    //        assertEquals(new Coordinate(1d, 2d), line.getPointN(3).getCoordinate());
+    //    }
+
     public void testEncode() throws Exception {
         Document d = encode(GML3MockData.linearRing(), GML.LinearRing);
-        
+
         assertEquals("gml:LinearRing", d.getDocumentElement().getNodeName());
         assertXpathExists("/gml:LinearRing/gml:posList", d);
-        
-        print(d);
+
+        // print(d);
     }
 }

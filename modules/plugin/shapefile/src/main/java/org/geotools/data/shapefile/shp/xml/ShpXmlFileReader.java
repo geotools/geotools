@@ -18,32 +18,25 @@ package org.geotools.data.shapefile.shp.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.locationtech.jts.geom.Envelope;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class ShpXmlFileReader implements FileReader {
 
     Document dom;
 
     /**
      * Parse metadataFile (currently for bounding box information).
+     *
      * <p>
-     * 
-     * </p>
-     * 
+     *
      * @param shapefileFiles
      * @throws JDOMException
      * @throws IOException
@@ -83,8 +76,7 @@ public class ShpXmlFileReader implements FileReader {
     }
 
     protected Envelope parseBounding(Element bounding) {
-        if (bounding == null)
-            return new Envelope();
+        if (bounding == null) return new Envelope();
 
         double minX = Double.parseDouble(bounding.getChildText("westbc"));
         double maxX = Double.parseDouble(bounding.getChildText("eastbc"));
@@ -97,5 +89,4 @@ public class ShpXmlFileReader implements FileReader {
     public String id() {
         return "Shp Xml Reader";
     }
-
 }

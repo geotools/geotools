@@ -21,9 +21,10 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeTable;
 import java.io.Serializable;
 import java.util.Map;
-
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.data.DataStoreFinder;
@@ -39,32 +40,25 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeTable;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.WKTReader;
-
 /**
  * Functional tests for {@link ArcSdeFeatureStore} when working with versioned tables
- * 
+ *
  * @author Gabriel Roldan
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/da/src/test/java/org
- *         /geotools/arcsde/data/ArcSDEFeatureStoreTest.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/da/src/test/java/org
+ *     /geotools/arcsde/data/ArcSDEFeatureStoreTest.java $
  * @version $Id$
  */
 public class ArcSDEFeatureStoreVersionedTest {
 
     private TestData testData;
 
-    /**
-     * Qualified name of the versioned table used for tests
-     */
+    /** Qualified name of the versioned table used for tests */
     private String tableName;
 
     /**
@@ -304,5 +298,4 @@ public class ArcSDEFeatureStoreVersionedTest {
         assertEquals(1, store1.getCount(Query.ALL));
         assertEquals(1, store2.getCount(Query.ALL));
     }
-
 }

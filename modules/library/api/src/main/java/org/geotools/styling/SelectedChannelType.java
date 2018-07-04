@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,9 +18,9 @@ package org.geotools.styling;
 
 import org.opengis.filter.expression.Expression;
 
-
 /**
  * A class to hold Channel information for use in ChannelSelction objects.
+ *
  * <pre>
  * &lt;xs:complexType name="SelectedChannelType"&gt;
  *   &lt;xs:sequence&gt;
@@ -32,16 +32,17 @@ import org.opengis.filter.expression.Expression;
  *  </pre>
  *
  * @author iant
- *
- *
  * @source $URL$
  */
 public interface SelectedChannelType extends org.opengis.style.SelectedChannelType {
-    
+
     /**
      * Set the source channel name.
+     *
      * @param name name of the source channel
      */
+    public void setChannelName(Expression name);
+
     public void setChannelName(String name);
 
     /**
@@ -49,11 +50,9 @@ public interface SelectedChannelType extends org.opengis.style.SelectedChannelTy
      *
      * @return Source channel name
      */
-    public String getChannelName();
+    public Expression getChannelName();
 
-    /**
-     * @deprecated Use {@link #setContrastEnhancement(ContrastEnhancement))} instead.
-     */
+    /** @deprecated Use {@link #setContrastEnhancement(ContrastEnhancement))} instead. */
     public void setContrastEnhancement(Expression gammaValue);
 
     public void setContrastEnhancement(org.opengis.style.ContrastEnhancement enhancement);
@@ -61,5 +60,4 @@ public interface SelectedChannelType extends org.opengis.style.SelectedChannelTy
     public ContrastEnhancement getContrastEnhancement();
 
     public void accept(org.geotools.styling.StyleVisitor visitor);
-    
 }

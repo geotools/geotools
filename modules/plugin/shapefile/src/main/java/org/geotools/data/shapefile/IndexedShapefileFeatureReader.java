@@ -17,7 +17,6 @@
 package org.geotools.data.shapefile;
 
 import java.io.IOException;
-
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader.Row;
@@ -26,14 +25,13 @@ import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.shapefile.shp.ShapefileReader.Record;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * The indexed version of the shapefile feature reader, will only read the records specified in the
  * constructor
- * 
+ *
  * @source $URL$
  */
 class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
@@ -46,15 +44,20 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 
     /**
      * Create the shape reader
-     * 
+     *
      * @param atts - the attributes that we are going to read.
      * @param shp - the shape reader, required
      * @param dbf - the dbf file reader. May be null, in this case no attributes will be read from
-     *        the dbf file
+     *     the dbf file
      * @param goodRecs Collection of good indexes that match the query.
      */
-    public IndexedShapefileFeatureReader(SimpleFeatureType schema, ShapefileReader shp,
-            DbaseFileReader dbf, IndexedFidReader fidReader, CloseableIterator<Data> goodRecs) throws IOException {
+    public IndexedShapefileFeatureReader(
+            SimpleFeatureType schema,
+            ShapefileReader shp,
+            DbaseFileReader dbf,
+            IndexedFidReader fidReader,
+            CloseableIterator<Data> goodRecs)
+            throws IOException {
         super(schema, shp, dbf, fidReader);
         this.goodRecs = goodRecs;
         this.fidReader = fidReader;
@@ -100,7 +103,4 @@ class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 
         return nextFeature != null;
     }
-    
-    
-
 }

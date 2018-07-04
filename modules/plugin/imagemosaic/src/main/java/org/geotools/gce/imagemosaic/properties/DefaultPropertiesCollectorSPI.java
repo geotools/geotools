@@ -24,15 +24,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import org.geotools.data.DataUtilities;
 import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.util.URLs;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollectorSPI {
 
     private final String name;
@@ -53,7 +48,7 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
         return Collections.emptyMap();
     }
 
-    public final static String REGEX_PREFIX = "regex=";
+    public static final String REGEX_PREFIX = "regex=";
 
     public PropertiesCollector create(final Object o, final List<String> propertyNames) {
         URL source = null;
@@ -61,7 +56,7 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
         if (o instanceof URL) {
             source = (URL) o;
         } else if (o instanceof File) {
-            source = DataUtilities.fileToURL((File) o);
+            source = URLs.fileToUrl((File) o);
         } else if (o instanceof String) {
             try {
                 source = new URL((String) o);
@@ -90,10 +85,8 @@ public abstract class DefaultPropertiesCollectorSPI implements PropertiesCollect
         }
 
         return null;
-
     }
 
-    abstract protected PropertiesCollector createInternal(
+    protected abstract PropertiesCollector createInternal(
             PropertiesCollectorSPI fileNameExtractorSPI, List<String> propertyNames, String string);
-
 }

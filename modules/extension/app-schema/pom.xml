@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>extension</artifactId>
-        <version>17-SNAPSHOT</version>
+        <version>20-SNAPSHOT</version>
     </parent>
 
     <groupId>org.geotools</groupId>
@@ -15,20 +15,19 @@
     <packaging>pom</packaging>
     <name>Application Schema Support</name>
 
-
     <description>Modules to support creation of complex feature types defined in a GML application schema</description>
 
     <developers>
         <developer>
             <name>Ben Caradoc-Davies</name>
             <id>bencaradocdavies</id>
-            <email>Ben.Caradoc-Davies@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering</organization>
+            <email>ben@transient.nz</email>
+            <organization>Transient Software Limited</organization>
             <roles>
                 <role>Module Maintainer</role>
                 <role>Java Developer</role>
             </roles>
-            <timezone>8</timezone>
+            <timezone>Pacific/Auckland</timezone>
         </developer>
         <developer>
             <name>Rini Angreani</name>

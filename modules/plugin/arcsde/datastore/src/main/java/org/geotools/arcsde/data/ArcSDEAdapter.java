@@ -17,37 +17,6 @@
  */
 package org.geotools.arcsde.data;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import net.sf.jsqlparser.statement.select.PlainSelect;
-
-import org.geotools.arcsde.ArcSdeException;
-import org.geotools.arcsde.session.Command;
-import org.geotools.arcsde.session.ISession;
-import org.geotools.data.DataSourceException;
-import org.geotools.feature.AttributeTypeBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.util.logging.Logging;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.Identifier;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import com.esri.sde.sdk.client.SeColumnDefinition;
 import com.esri.sde.sdk.client.SeConnection;
 import com.esri.sde.sdk.client.SeCoordinateReference;
@@ -61,25 +30,51 @@ import com.esri.sde.sdk.client.SeRegistration;
 import com.esri.sde.sdk.client.SeRow;
 import com.esri.sde.sdk.client.SeShape;
 import com.esri.sde.sdk.client.SeTable;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.jsqlparser.statement.select.PlainSelect;
+import org.geotools.arcsde.ArcSdeException;
+import org.geotools.arcsde.session.Command;
+import org.geotools.arcsde.session.ISession;
+import org.geotools.data.DataSourceException;
+import org.geotools.feature.AttributeTypeBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.identity.Identifier;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CRSFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Utility class to deal with SDE specifics such as creating SeQuery objects from geotool's Query's,
  * mapping SDE types to Java ones and JTS Geometries, etc.
- * 
+ *
  * @author Gabriel Roldan
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
- *         /java/org/geotools/arcsde/data/ArcSDEAdapter.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
+ *     /java/org/geotools/arcsde/data/ArcSDEAdapter.java $
  * @version $Id$
  */
 @SuppressWarnings("deprecation")
@@ -91,7 +86,8 @@ public class ArcSDEAdapter {
     private static final Map<Integer, Class<?>> sde2JavaTypes = new HashMap<Integer, Class<?>>();
 
     /** inverse of sdeTypes, maps Java types to SDE ones */
-    private static final Map<Class<?>, SdeTypeDef> java2SDETypes = new HashMap<Class<?>, SdeTypeDef>();
+    private static final Map<Class<?>, SdeTypeDef> java2SDETypes =
+            new HashMap<Class<?>, SdeTypeDef>();
 
     static {
         sde2JavaTypes.put(Integer.valueOf(SeColumnDefinition.TYPE_NSTRING), String.class);
@@ -175,8 +171,11 @@ public class ArcSDEAdapter {
                 shapeTypes |= SeLayer.SE_AREA_TYPE_MASK;
             } else if (geometryClass == Geometry.class) {
                 LOGGER.fine("Creating SeShape types for all types of geometries.");
-                shapeTypes |= (SeLayer.SE_MULTIPART_TYPE_MASK | SeLayer.SE_POINT_TYPE_MASK
-                        | SeLayer.SE_LINE_TYPE_MASK | SeLayer.SE_AREA_TYPE_MASK);
+                shapeTypes |=
+                        (SeLayer.SE_MULTIPART_TYPE_MASK
+                                | SeLayer.SE_POINT_TYPE_MASK
+                                | SeLayer.SE_LINE_TYPE_MASK
+                                | SeLayer.SE_AREA_TYPE_MASK);
             } else {
                 throw new IllegalArgumentException("no SDE geometry mapping for " + geometryClass);
             }
@@ -187,13 +186,12 @@ public class ArcSDEAdapter {
 
     /**
      * Creates the column definition as used by the ArcSDE Java API, for the given AttributeType.
-     * 
-     * @param type
-     *            the source attribute definition.
+     *
+     * @param type the source attribute definition.
      * @return an <code>SeColumnDefinition</code> object matching the properties of the source
-     *         AttributeType.
-     * @throws SeException
-     *             if the SeColumnDefinition constructor throws it due to some invalid parameter
+     *     AttributeType.
+     * @throws SeException if the SeColumnDefinition constructor throws it due to some invalid
+     *     parameter
      */
     public static SeColumnDefinition createSeColumnDefinition(AttributeDescriptor type)
             throws SeException {
@@ -213,7 +211,6 @@ public class ArcSDEAdapter {
     }
 
     /**
-     * 
      * @param attClass
      * @return an SdeTypeDef instance with default values for the given class
      * @throws IllegalArgumentException
@@ -243,14 +240,14 @@ public class ArcSDEAdapter {
     /**
      * Fetches the schema of a given ArcSDE featureclass and creates its corresponding Geotools
      * FeatureType
-     * 
+     *
      * @return the feature type info representing the ArcSDE feature class given by the layer and
-     *         table.
-     * @throws IOException
-     *             if an exception is caught accessing the sde feature class metadata.
+     *     table.
+     * @throws IOException if an exception is caught accessing the sde feature class metadata.
      */
-    public static FeatureTypeInfo fetchSchema(final String typeName, final String namespace,
-            final ISession session) throws IOException {
+    public static FeatureTypeInfo fetchSchema(
+            final String typeName, final String namespace, final ISession session)
+            throws IOException {
         final SeTable table = session.getTable(typeName);
         SeLayer layer = null;
 
@@ -262,8 +259,8 @@ public class ArcSDEAdapter {
             }
         }
 
-        final List<AttributeDescriptor> properties = createAttributeDescriptors(layer, namespace,
-                seColumns);
+        final List<AttributeDescriptor> properties =
+                createAttributeDescriptors(layer, namespace, seColumns);
 
         final SimpleFeatureType featureType = createSchema(typeName, namespace, properties);
 
@@ -275,34 +272,40 @@ public class ArcSDEAdapter {
         fidStrategy = FIDReader.getFidReader(session, table, layer, registration);
         final boolean canDoTransactions;
         {
-            final Integer permMask = session.issue(new Command<Integer>() {
-                @Override
-                public Integer execute(ISession session, SeConnection connection)
-                        throws SeException, IOException {
-                    return new Integer(table.getPermissions());
-                }
-            });
+            final Integer permMask =
+                    session.issue(
+                            new Command<Integer>() {
+                                @Override
+                                public Integer execute(ISession session, SeConnection connection)
+                                        throws SeException, IOException {
+                                    return new Integer(table.getPermissions());
+                                }
+                            });
             final boolean hasWritePermissions = userHasWritePermissions(permMask.intValue());
-            canDoTransactions = hasWritePermissions
-                    && (fidStrategy instanceof FIDReader.SdeManagedFidReader || fidStrategy instanceof FIDReader.UserManagedFidReader)
-                    && !hasReadOnlyColumn(seColumns);
+            canDoTransactions =
+                    hasWritePermissions
+                            && (fidStrategy instanceof FIDReader.SdeManagedFidReader
+                                    || fidStrategy instanceof FIDReader.UserManagedFidReader)
+                            && !hasReadOnlyColumn(seColumns);
             if (hasWritePermissions && !canDoTransactions) {
-                LOGGER.fine(typeName + " is writable bu has no primary key, thus we're using it "
-                        + "read-only as can't get a propper feature id out of it");
+                LOGGER.fine(
+                        typeName
+                                + " is writable bu has no primary key, thus we're using it "
+                                + "read-only as can't get a propper feature id out of it");
             }
         }
-        FeatureTypeInfo typeInfo = new FeatureTypeInfo(featureType, fidStrategy, canDoTransactions,
-                isMultiVersioned, isView);
+        FeatureTypeInfo typeInfo =
+                new FeatureTypeInfo(
+                        featureType, fidStrategy, canDoTransactions, isMultiVersioned, isView);
         return typeInfo;
-
     }
 
     /**
      * Check if any of the column types are read-only (such as CLOB).
-     * <p>
-     * This check should be temporary; currently writing CLOB types is producing a segmentation
+     *
+     * <p>This check should be temporary; currently writing CLOB types is producing a segmentation
      * fault (gasp!) in ArcSDE 9.3. We imagine the java encoding is not quite what ArcSDE expected.
-     * 
+     *
      * @param seColumns
      * @return true if any of the columns are read-only
      */
@@ -318,17 +321,14 @@ public class ArcSDEAdapter {
 
     /**
      * Checks wether the user can write to the given {@code table}.
-     * <p>
-     * Depends on the proviledges of the user the connection the table was created with.
-     * </p>
-     * 
-     * @param permissions
-     *            the sde table permissions mask (as per SeTable.getPermissions())to check for write
-     *            permissions
+     *
+     * <p>Depends on the proviledges of the user the connection the table was created with.
+     *
+     * @param permissions the sde table permissions mask (as per SeTable.getPermissions())to check
+     *     for write permissions
      * @return {@code true} if the table's connection user has both insert, update and delete
-     *         priviledges.
-     * @throws ArcSdeException
-     *             if an SeException is thrown asking the table for the permissions
+     *     priviledges.
+     * @throws ArcSdeException if an SeException is thrown asking the table for the permissions
      */
     private static boolean userHasWritePermissions(final int permissions) throws ArcSdeException {
 
@@ -344,12 +344,14 @@ public class ArcSDEAdapter {
         return canWrite;
     }
 
-    /**
-     * Creates a schema for the "SQL SELECT" like view definition
-     */
-    public static FeatureTypeInfo createInprocessViewSchema(final ISession session,
-            final String typeName, final String namespace, final PlainSelect qualifiedSelect,
-            final SeQueryInfo queryInfo) throws IOException {
+    /** Creates a schema for the "SQL SELECT" like view definition */
+    public static FeatureTypeInfo createInprocessViewSchema(
+            final ISession session,
+            final String typeName,
+            final String namespace,
+            final PlainSelect qualifiedSelect,
+            final SeQueryInfo queryInfo)
+            throws IOException {
 
         List<AttributeDescriptor> attributeDescriptors;
 
@@ -370,31 +372,32 @@ public class ArcSDEAdapter {
         }
         LOGGER.fine("testing query");
 
-        final Command<SeColumnDefinition[]> testQueryCmd = new Command<SeColumnDefinition[]>() {
-            @Override
-            public SeColumnDefinition[] execute(ISession session, SeConnection connection)
-                    throws SeException, IOException {
-                final SeQuery testQuery = new SeQuery(connection);
+        final Command<SeColumnDefinition[]> testQueryCmd =
+                new Command<SeColumnDefinition[]>() {
+                    @Override
+                    public SeColumnDefinition[] execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
+                        final SeQuery testQuery = new SeQuery(connection);
 
-                try {
-                    testQuery.prepareQueryInfo(queryInfo);
-                    testQuery.execute();
-                    LOGGER.fine("definition query executed successfully");
+                        try {
+                            testQuery.prepareQueryInfo(queryInfo);
+                            testQuery.execute();
+                            LOGGER.fine("definition query executed successfully");
 
-                    LOGGER.fine("fetching row to obtain view's types");
+                            LOGGER.fine("fetching row to obtain view's types");
 
-                    SeRow testRow = testQuery.fetch();
-                    SeColumnDefinition[] colDefs = testRow.getColumns();
-                    return colDefs;
-                } finally {
-                    try {
-                        testQuery.close();
-                    } catch (SeException e) {
-                        throw new ArcSdeException(e);
+                            SeRow testRow = testQuery.fetch();
+                            SeColumnDefinition[] colDefs = testRow.getColumns();
+                            return colDefs;
+                        } finally {
+                            try {
+                                testQuery.close();
+                            } catch (SeException e) {
+                                throw new ArcSdeException(e);
+                            }
+                        }
                     }
-                }
-            }
-        };
+                };
 
         final SeColumnDefinition[] colDefs = session.issue(testQueryCmd);
         attributeDescriptors = createAttributeDescriptors(layer, namespace, colDefs);
@@ -408,8 +411,9 @@ public class ArcSDEAdapter {
         return typeInfo;
     }
 
-    private static List<AttributeDescriptor> createAttributeDescriptors(SeLayer sdeLayer,
-            String namespace, SeColumnDefinition[] seColumns) throws DataSourceException {
+    private static List<AttributeDescriptor> createAttributeDescriptors(
+            SeLayer sdeLayer, String namespace, SeColumnDefinition[] seColumns)
+            throws DataSourceException {
         String attName;
         boolean isNilable;
         int fieldLen;
@@ -446,8 +450,12 @@ public class ArcSDEAdapter {
             } else {
                 typeClass = getJavaBinding(sdeType);
                 if (typeClass == null) {
-                    LOGGER.info("Found an unsupported ArcSDE data type: " + sdeType
-                            + " for column " + attName + ". Ignoring it.");
+                    LOGGER.info(
+                            "Found an unsupported ArcSDE data type: "
+                                    + sdeType
+                                    + " for column "
+                                    + attName
+                                    + ". Ignoring it.");
                     continue;
                 }
                 // @TODO: add restrictions once the Restrictions utility methods
@@ -485,35 +493,34 @@ public class ArcSDEAdapter {
 
     /**
      * Returns the Java class binding for a given SDE column type.
-     * <p>
-     * Mappings are:
+     *
+     * <p>Mappings are:
+     *
      * <ul>
-     * <li>{@link SeColumnDefinition#TYPE_BLOB}: byte[].class <b>this one is pending further
-     * development, not supported currently but just ignored</b>
-     * <li>{@link SeColumnDefinition#TYPE_CLOB}: {@link String}.class
-     * <li>{@link SeColumnDefinition#TYPE_DATE}: {@link Date}.class
-     * <li>{@link SeColumnDefinition#TYPE_FLOAT32}: {@link Float}.class
-     * <li>{@link SeColumnDefinition#TYPE_FLOAT64}: {@link Double}.class
-     * <li>{@link SeColumnDefinition#TYPE_INT16}: {@link Short}.class
-     * <li>{@link SeColumnDefinition#TYPE_INT32}: {@link Integer}.class
-     * <li>{@link SeColumnDefinition#TYPE_INT64}: {@link Long}.class
-     * <li>{@link SeColumnDefinition#TYPE_NCLOB}: {@link String}.class
-     * <li>{@link SeColumnDefinition#TYPE_NSTRING}: {@link String}.class
-     * <li>{@link SeColumnDefinition#TYPE_UUID}: {@link String}.class
+     *   <li>{@link SeColumnDefinition#TYPE_BLOB}: byte[].class <b>this one is pending further
+     *       development, not supported currently but just ignored</b>
+     *   <li>{@link SeColumnDefinition#TYPE_CLOB}: {@link String}.class
+     *   <li>{@link SeColumnDefinition#TYPE_DATE}: {@link Date}.class
+     *   <li>{@link SeColumnDefinition#TYPE_FLOAT32}: {@link Float}.class
+     *   <li>{@link SeColumnDefinition#TYPE_FLOAT64}: {@link Double}.class
+     *   <li>{@link SeColumnDefinition#TYPE_INT16}: {@link Short}.class
+     *   <li>{@link SeColumnDefinition#TYPE_INT32}: {@link Integer}.class
+     *   <li>{@link SeColumnDefinition#TYPE_INT64}: {@link Long}.class
+     *   <li>{@link SeColumnDefinition#TYPE_NCLOB}: {@link String}.class
+     *   <li>{@link SeColumnDefinition#TYPE_NSTRING}: {@link String}.class
+     *   <li>{@link SeColumnDefinition#TYPE_UUID}: {@link String}.class
      * </ul>
-     * </p>
-     * <p>
-     * Currently <b>there're no</b> bindings defined for:
+     *
+     * <p>Currently <b>there're no</b> bindings defined for:
+     *
      * <ul>
-     * <li>{@link SeColumnDefinition#TYPE_XML}
-     * <li>{@link SeColumnDefinition#TYPE_RASTER}
+     *   <li>{@link SeColumnDefinition#TYPE_XML}
+     *   <li>{@link SeColumnDefinition#TYPE_RASTER}
      * </ul>
-     * </p>
-     * <p>
-     * To obtain the JTS Geometry class binding for an sde column of type
-     * {@link SeColumnDefinition#TYPE_SHAPE} use {@link #getGeometryTypeFromLayerMask(int)}.
-     * </p>
-     * 
+     *
+     * <p>To obtain the JTS Geometry class binding for an sde column of type {@link
+     * SeColumnDefinition#TYPE_SHAPE} use {@link #getGeometryTypeFromLayerMask(int)}.
+     *
      * @param sdeType
      * @return the java binding for the given sde data type or {@code null} if its not supported
      */
@@ -522,8 +529,11 @@ public class ArcSDEAdapter {
         return javaClass;
     }
 
-    private static SimpleFeatureType createSchema(final String typeName, final String namespace,
-            final List<AttributeDescriptor> properties) throws IOException {
+    private static SimpleFeatureType createSchema(
+            final String typeName,
+            final String namespace,
+            final List<AttributeDescriptor> properties)
+            throws IOException {
 
         // TODO: use factory lookup mechanism once its in place
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
@@ -531,7 +541,7 @@ public class ArcSDEAdapter {
         builder.setName(typeName);
         builder.setNamespaceURI(namespace);
 
-        for (Iterator<AttributeDescriptor> it = properties.iterator(); it.hasNext();) {
+        for (Iterator<AttributeDescriptor> it = properties.iterator(); it.hasNext(); ) {
             AttributeDescriptor attType = it.next();
             builder.add(attType);
         }
@@ -542,13 +552,11 @@ public class ArcSDEAdapter {
     /**
      * Obtains the <code>SeCoordinateReference</code> of the given <code>SeLayer</code> and tries to
      * create a <code>org.opengis.referencing.crs.CoordinateReferenceSystem</code> from its WKT.
-     * 
-     * @param sdeLayer
-     *            the SeLayer from which to query the CRS in ArcSDE form.
+     *
+     * @param sdeLayer the SeLayer from which to query the CRS in ArcSDE form.
      * @return the actual CRS or null if <code>sdeLayer</code> does not defines its coordinate
-     *         system.
-     * @throws DataSourceException
-     *             if the WKT can't be parsed to an opengis CRS using the CRSFactory
+     *     system.
+     * @throws DataSourceException if the WKT can't be parsed to an opengis CRS using the CRSFactory
      */
     private static CoordinateReferenceSystem parseCRS(SeLayer sdeLayer) throws DataSourceException {
         CoordinateReferenceSystem crs = null;
@@ -563,32 +571,37 @@ public class ArcSDEAdapter {
         }
 
         if ("UNKNOWN".equalsIgnoreCase(WKT)) {
-            LOGGER.fine("ArcSDE layer " + sdeLayer.getName()
-                    + " does not provides a Coordinate Reference System");
+            LOGGER.fine(
+                    "ArcSDE layer "
+                            + sdeLayer.getName()
+                            + " does not provides a Coordinate Reference System");
         } else {
             try {
                 CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
                 crs = crsFactory.createFromWKT(WKT);
                 LOGGER.fine("ArcSDE CRS correctly parsed from layer " + sdeLayer.getName());
             } catch (FactoryException e) {
-                String msg = "CRS factory does not knows how to parse the " + "CRS for layer "
-                        + sdeLayer.getName() + ": " + WKT;
+                String msg =
+                        "CRS factory does not knows how to parse the "
+                                + "CRS for layer "
+                                + sdeLayer.getName()
+                                + ": "
+                                + WKT;
                 LOGGER.log(Level.CONFIG, msg, e);
                 // throw new DataSourceException(msg, e);
             }
-
         }
 
         return crs;
     }
 
     /**
-     * Returns the mapping JTS geometry type for the ArcSDE Shape type given by the bitmask
-     * <code>seShapeType</code>
-     * <p>
-     * This bitmask is composed of a combination of the following shape types, as defined in the
+     * Returns the mapping JTS geometry type for the ArcSDE Shape type given by the bitmask <code>
+     * seShapeType</code>
+     *
+     * <p>This bitmask is composed of a combination of the following shape types, as defined in the
      * ArcSDE Java API:
-     * 
+     *
      * <pre>
      * SE_NIL_TYPE_MASK = 1;
      * SE_POINT_TYPE_MASK = 2;
@@ -596,16 +609,15 @@ public class ArcSDEAdapter {
      * SE_AREA_TYPE_MASK = 16;
      * SE_MULTIPART_TYPE_MASK = 262144;
      * </pre>
-     * 
+     *
      * (Note that the type SE_SIMPLE_LINE_TYPE_MASK is not used)
-     * </p>
-     * 
+     *
      * @param seShapeType
      * @return
      * @throws IllegalArgumentException
      */
     public static Class<? extends Geometry> getGeometryTypeFromLayerMask(int seShapeType) {
-        Class<? extends Geometry> clazz = com.vividsolutions.jts.geom.Geometry.class;
+        Class<? extends Geometry> clazz = org.locationtech.jts.geom.Geometry.class;
         final int MULTIPART_MASK = SeLayer.SE_MULTIPART_TYPE_MASK;
         final int POINT_MASK = SeLayer.SE_POINT_TYPE_MASK;
         final int SIMPLE_LINE_MASK = SeLayer.SE_SIMPLE_LINE_TYPE_MASK;
@@ -636,8 +648,11 @@ public class ArcSDEAdapter {
 
         final int isPoint = ((seShapeType & POINT_MASK) == POINT_MASK) ? 1 : 0;
 
-        final int isLineString = (((seShapeType & SIMPLE_LINE_MASK) == SIMPLE_LINE_MASK) || ((seShapeType & LINESTRING_MASK) == LINESTRING_MASK)) ? 1
-                : 0;
+        final int isLineString =
+                (((seShapeType & SIMPLE_LINE_MASK) == SIMPLE_LINE_MASK)
+                                || ((seShapeType & LINESTRING_MASK) == LINESTRING_MASK))
+                        ? 1
+                        : 0;
 
         final int isPolygon = ((seShapeType & AREA_MASK) == AREA_MASK) ? 1 : 0;
 
@@ -653,11 +668,18 @@ public class ArcSDEAdapter {
             clazz = Geometry.class;
 
             if (4 < (isCollection + isPoint + isLineString + isPolygon)) {
-                LOGGER.warning("Be careful!! we're mapping an ArcSDE Shape type "
-                        + "to the generic Geometry class, but the shape type "
-                        + "does not really allows all geometry types!: " + "isCollection="
-                        + isCollection + ", isPoint=" + isPoint + ", isLineString=" + isLineString
-                        + ", isPolygon=" + isPolygon);
+                LOGGER.warning(
+                        "Be careful!! we're mapping an ArcSDE Shape type "
+                                + "to the generic Geometry class, but the shape type "
+                                + "does not really allows all geometry types!: "
+                                + "isCollection="
+                                + isCollection
+                                + ", isPoint="
+                                + isPoint
+                                + ", isLineString="
+                                + isLineString
+                                + ", isPolygon="
+                                + isPolygon);
             } else {
                 LOGGER.fine("safely mapping SeShapeType to abstract Geometry");
             }
@@ -689,16 +711,13 @@ public class ArcSDEAdapter {
 
     /**
      * Returns the most appropriate {@link Geometry} class that matches the shape's type.
-     * 
-     * @param shape
-     *            SeShape instance for which to infer the matching geometry class, can't be null
+     *
+     * @param shape SeShape instance for which to infer the matching geometry class, can't be null
      * @return the Geometry subclass corresponding to the shape type
-     * @throws SeException
-     *             propagated if thrown by {@link SeShape#getType()}
-     * @throws IllegalArgumentException
-     *             if none of the JTS geometry classes can be matched to the shape type (shouldnt
-     *             happen as for the {@link SeShape#getType() types} defined in the esri arcsde java
-     *             api 9.0)
+     * @throws SeException propagated if thrown by {@link SeShape#getType()}
+     * @throws IllegalArgumentException if none of the JTS geometry classes can be matched to the
+     *     shape type (shouldnt happen as for the {@link SeShape#getType() types} defined in the
+     *     esri arcsde java api 9.0)
      */
     public static Class<? extends Geometry> getGeometryTypeFromSeShape(SeShape shape)
             throws SeException {
@@ -720,8 +739,8 @@ public class ArcSDEAdapter {
         } else if (seShapeType == SeShape.TYPE_POLYGON) {
             clazz = Polygon.class;
         } else {
-            throw new IllegalArgumentException("Cannot map the shape type '" + seShapeType
-                    + "' to any known SeShape.TYPE_*");
+            throw new IllegalArgumentException(
+                    "Cannot map the shape type '" + seShapeType + "' to any known SeShape.TYPE_*");
         }
         return clazz;
     }
@@ -729,12 +748,11 @@ public class ArcSDEAdapter {
     /**
      * Returns the numeric identifier of a FeatureId, given by the full qualified name of the
      * featureclass prepended to the ArcSDE feature id. ej: SDE.SDE.SOME_LAYER.1
-     * 
-     * @param id
-     *            a geotools FeatureID
+     *
+     * @param id a geotools FeatureID
      * @return an ArcSDE feature ID
-     * @throws IllegalArgumentException
-     *             If the given string is not properly formatted [anystring].[long value]
+     * @throws IllegalArgumentException If the given string is not properly formatted
+     *     [anystring].[long value]
      */
     public static long getNumericFid(Identifier id) throws IllegalArgumentException {
         if (!(id instanceof FeatureId))
@@ -749,20 +767,19 @@ public class ArcSDEAdapter {
     /**
      * Returns the numeric identifier of a FeatureId, given by the full qualified name of the
      * featureclass prepended to the ArcSDE feature id. ej: SDE.SDE.SOME_LAYER.1
-     * 
-     * @param id
-     *            a geotools FeatureID
+     *
+     * @param id a geotools FeatureID
      * @return an ArcSDE feature ID
-     * @throws IllegalArgumentException
-     *             If the given string is not properly formatted [anystring].[long value]
+     * @throws IllegalArgumentException If the given string is not properly formatted
+     *     [anystring].[long value]
      */
     public static long getNumericFid(String fid) throws IllegalArgumentException {
         int dotIndex = fid.lastIndexOf('.');
         try {
             return Long.decode(fid.substring(++dotIndex)).longValue();
         } catch (Exception ex) {
-            throw new IllegalArgumentException("FeatureID " + fid
-                    + " does not seems as a valid ArcSDE FID");
+            throw new IllegalArgumentException(
+                    "FeatureID " + fid + " does not seems as a valid ArcSDE FID");
         }
     }
 
@@ -782,7 +799,7 @@ public class ArcSDEAdapter {
     /**
      * Holds default values for the properties (size and scale) of a SeColumnDefinition, given by
      * its column type (SeColumnDefinition.SE_STRING, etc).
-     * 
+     *
      * @author Gabriel Roldan, Axios Engineering
      * @version $Revision: 1.4 $
      */
@@ -800,13 +817,10 @@ public class ArcSDEAdapter {
 
         /**
          * Creates a new SdeTypeDef object.
-         * 
-         * @param colDefType
-         *            Constant provided by SeColumnDefinition
-         * @param size
-         *            Field size
-         * @param scale
-         *            Field scale
+         *
+         * @param colDefType Constant provided by SeColumnDefinition
+         * @param size Field size
+         * @param scale Field scale
          */
         public SdeTypeDef(int colDefType, int size, int scale) {
             this.colDefType = colDefType;
@@ -816,13 +830,18 @@ public class ArcSDEAdapter {
 
         /**
          * Text representation
-         * 
+         *
          * @return Text represenation for debugging
          */
         @Override
         public String toString() {
-            return "SdeTypeDef[colDefType=" + this.colDefType + ", size=" + this.size + ", scale="
-                    + this.scale + "]";
+            return "SdeTypeDef[colDefType="
+                    + this.colDefType
+                    + ", size="
+                    + this.size
+                    + ", scale="
+                    + this.scale
+                    + "]";
         }
     }
 
@@ -875,7 +894,7 @@ public class ArcSDEAdapter {
      * <td>null</td>
      * </tr>
      * </p>
-     * 
+     *
      * @param featureType
      *            the feature type containing the name, attributes and coordinate reference system
      *            of the new ArcSDE layer.
@@ -898,143 +917,168 @@ public class ArcSDEAdapter {
      *             connection pool), or an SeException exception is catched while creating the
      *             feature type at the ArcSDE instance (e.g. a table with that name already exists).
      */
-    public static void createSchema(final SimpleFeatureType featureType,
-            final Map<String, String> hints, final ISession session) throws IOException,
-            IllegalArgumentException {
+    public static void createSchema(
+            final SimpleFeatureType featureType,
+            final Map<String, String> hints,
+            final ISession session)
+            throws IOException, IllegalArgumentException {
 
         if (featureType == null) {
             throw new NullPointerException("You have to provide a FeatureType instance");
         }
 
-        final Command<Void> createSchemaCmd = new Command<Void>() {
-            @Override
-            public Void execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
+        final Command<Void> createSchemaCmd =
+                new Command<Void>() {
+                    @Override
+                    public Void execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
 
-                final String[] typeNameParts = featureType.getTypeName().split("\\.");
-                final String unqualifiedTypeName = typeNameParts[typeNameParts.length - 1];
+                        final String[] typeNameParts = featureType.getTypeName().split("\\.");
+                        final String unqualifiedTypeName = typeNameParts[typeNameParts.length - 1];
 
-                // Create a new SeTable/SeLayer with the specified attributes....
-                SeTable table = null;
-                SeLayer layer = null;
+                        // Create a new SeTable/SeLayer with the specified attributes....
+                        SeTable table = null;
+                        SeLayer layer = null;
 
-                // flag to know if the table was created by us when catching an
-                // exception.
-                boolean tableCreated = false;
+                        // flag to know if the table was created by us when catching an
+                        // exception.
+                        boolean tableCreated = false;
 
-                // table/layer creation hints information
-                int rowIdType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE;
-                String rowIdColumn = null;
-                String configKeyword = "DEFAULTS";
-                if (hints.containsKey("configuration.keyword")) {
-                    configKeyword = String.valueOf(hints.get("configuration.keyword"));
-                }
-                if (hints.get("rowid.column.type") instanceof String) {
-                    String rowIdStr = (String) hints.get("rowid.column.type");
-                    if (rowIdStr.equalsIgnoreCase("NONE")) {
-                        rowIdType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE;
-                    } else if (rowIdStr.equalsIgnoreCase("USER")) {
-                        rowIdType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_USER;
-                    } else if (rowIdStr.equalsIgnoreCase("SDE")) {
-                        rowIdType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_SDE;
-                    } else {
-                        throw new DataSourceException(
-                                "createSchema hint 'rowid.column.type' must be one of 'NONE', 'USER' or 'SDE'");
-                    }
-                }
-                if (hints.get("rowid.column.name") instanceof String) {
-                    rowIdColumn = (String) hints.get("rowid.column.name");
-                }
-
-                // placeholder to a catched exception to know in the finally block
-                // if we should cleanup the crap we left in the database
-                Exception error = null;
-
-                try {
-                    // create a table with provided username
-                    String qualifiedName = null;
-
-                    if (unqualifiedTypeName.indexOf('.') == -1) {
-                        // Use the already parsed name (unqualifiedTypeName)
-                        qualifiedName = connection.getUser() + "." + unqualifiedTypeName; // featureType.getTypeName();
-                        LOGGER.finer("new full qualified type name: " + qualifiedName);
-                    } else {
-                        qualifiedName = unqualifiedTypeName;
-                        LOGGER.finer("full qualified type name provided by user: " + qualifiedName);
-                    }
-
-                    layer = new SeLayer(connection);
-                    layer.setTableName(qualifiedName);
-                    layer.setCreationKeyword(configKeyword);
-
-                    final String HACK_COL_NAME = "gt_workaround_col_";
-
-                    table = createSeTable(connection, qualifiedName, HACK_COL_NAME, configKeyword);
-                    tableCreated = true;
-
-                    final List<AttributeDescriptor> atts = featureType.getAttributeDescriptors();
-                    AttributeDescriptor currAtt;
-
-                    for (Iterator<AttributeDescriptor> it = atts.iterator(); it.hasNext();) {
-                        currAtt = it.next();
-
-                        if (currAtt instanceof GeometryDescriptor) {
-                            GeometryDescriptor geometryAtt = (GeometryDescriptor) currAtt;
-                            createSeLayer(layer, qualifiedName, geometryAtt);
-                        } else {
-                            LOGGER.fine("Creating column definition for " + currAtt);
-
-                            SeColumnDefinition newCol = ArcSDEAdapter
-                                    .createSeColumnDefinition(currAtt);
-
-                            // /////////////////////////////////////////////////////////////
-                            // HACK!!!!: this hack is just to avoid the error that
-                            // occurs //
-                            // when adding a column wich is not nillable. Need to fix
-                            // this//
-                            // but by now it conflicts with the requirement of creating
-                            // //
-                            // the schema with the correct attribute order. //
-                            // /////////////////////////////////////////////////////////////
-                            newCol = new SeColumnDefinition(newCol.getName(), newCol.getType(),
-                                    newCol.getSize(), newCol.getScale(), true);
-
-                            // /////////////////////////////////////////////////////////////
-                            // END of horrible HACK //
-                            // /////////////////////////////////////////////////////////////
-                            LOGGER.fine("Adding column " + newCol.getName()
-                                    + " to the actual table.");
-                            table.addColumn(newCol);
+                        // table/layer creation hints information
+                        int rowIdType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE;
+                        String rowIdColumn = null;
+                        String configKeyword = "DEFAULTS";
+                        if (hints.containsKey("configuration.keyword")) {
+                            configKeyword = String.valueOf(hints.get("configuration.keyword"));
                         }
+                        if (hints.get("rowid.column.type") instanceof String) {
+                            String rowIdStr = (String) hints.get("rowid.column.type");
+                            if (rowIdStr.equalsIgnoreCase("NONE")) {
+                                rowIdType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE;
+                            } else if (rowIdStr.equalsIgnoreCase("USER")) {
+                                rowIdType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_USER;
+                            } else if (rowIdStr.equalsIgnoreCase("SDE")) {
+                                rowIdType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_SDE;
+                            } else {
+                                throw new DataSourceException(
+                                        "createSchema hint 'rowid.column.type' must be one of 'NONE', 'USER' or 'SDE'");
+                            }
+                        }
+                        if (hints.get("rowid.column.name") instanceof String) {
+                            rowIdColumn = (String) hints.get("rowid.column.name");
+                        }
+
+                        // placeholder to a catched exception to know in the finally block
+                        // if we should cleanup the crap we left in the database
+                        Exception error = null;
+
+                        try {
+                            // create a table with provided username
+                            String qualifiedName = null;
+
+                            if (unqualifiedTypeName.indexOf('.') == -1) {
+                                // Use the already parsed name (unqualifiedTypeName)
+                                qualifiedName =
+                                        connection.getUser()
+                                                + "."
+                                                + unqualifiedTypeName; // featureType.getTypeName();
+                                LOGGER.finer("new full qualified type name: " + qualifiedName);
+                            } else {
+                                qualifiedName = unqualifiedTypeName;
+                                LOGGER.finer(
+                                        "full qualified type name provided by user: "
+                                                + qualifiedName);
+                            }
+
+                            layer = new SeLayer(connection);
+                            layer.setTableName(qualifiedName);
+                            layer.setCreationKeyword(configKeyword);
+
+                            final String HACK_COL_NAME = "gt_workaround_col_";
+
+                            table =
+                                    createSeTable(
+                                            connection,
+                                            qualifiedName,
+                                            HACK_COL_NAME,
+                                            configKeyword);
+                            tableCreated = true;
+
+                            final List<AttributeDescriptor> atts =
+                                    featureType.getAttributeDescriptors();
+                            AttributeDescriptor currAtt;
+
+                            for (Iterator<AttributeDescriptor> it = atts.iterator();
+                                    it.hasNext(); ) {
+                                currAtt = it.next();
+
+                                if (currAtt instanceof GeometryDescriptor) {
+                                    GeometryDescriptor geometryAtt = (GeometryDescriptor) currAtt;
+                                    createSeLayer(layer, qualifiedName, geometryAtt);
+                                } else {
+                                    LOGGER.fine("Creating column definition for " + currAtt);
+
+                                    SeColumnDefinition newCol =
+                                            ArcSDEAdapter.createSeColumnDefinition(currAtt);
+
+                                    // /////////////////////////////////////////////////////////////
+                                    // HACK!!!!: this hack is just to avoid the error that
+                                    // occurs //
+                                    // when adding a column wich is not nillable. Need to fix
+                                    // this//
+                                    // but by now it conflicts with the requirement of creating
+                                    // //
+                                    // the schema with the correct attribute order. //
+                                    // /////////////////////////////////////////////////////////////
+                                    newCol =
+                                            new SeColumnDefinition(
+                                                    newCol.getName(),
+                                                    newCol.getType(),
+                                                    newCol.getSize(),
+                                                    newCol.getScale(),
+                                                    true);
+
+                                    // /////////////////////////////////////////////////////////////
+                                    // END of horrible HACK //
+                                    // /////////////////////////////////////////////////////////////
+                                    LOGGER.fine(
+                                            "Adding column "
+                                                    + newCol.getName()
+                                                    + " to the actual table.");
+                                    table.addColumn(newCol);
+                                }
+                            }
+
+                            LOGGER.fine("deleting the 'workaround' column...");
+                            table.dropColumn(HACK_COL_NAME);
+
+                            LOGGER.fine("setting up table registration with ArcSDE...");
+                            SeRegistration reg = new SeRegistration(connection, table.getName());
+                            if (rowIdColumn != null) {
+                                LOGGER.fine(
+                                        "setting rowIdColumnName to "
+                                                + rowIdColumn
+                                                + " in table "
+                                                + reg.getTableName());
+                                reg.setRowIdColumnName(rowIdColumn);
+                                reg.setRowIdColumnType(rowIdType);
+                                reg.alter();
+                                reg = null;
+                            }
+
+                            LOGGER.fine("Schema correctly created: " + featureType);
+
+                        } catch (SeException e) {
+                            LOGGER.log(Level.WARNING, e.getSeError().getErrDesc(), e);
+                            throw e;
+                        } finally {
+                            if ((error != null) && tableCreated) {
+                                // TODO: remove table if created and then failed
+                            }
+                        }
+                        return null;
                     }
-
-                    LOGGER.fine("deleting the 'workaround' column...");
-                    table.dropColumn(HACK_COL_NAME);
-
-                    LOGGER.fine("setting up table registration with ArcSDE...");
-                    SeRegistration reg = new SeRegistration(connection, table.getName());
-                    if (rowIdColumn != null) {
-                        LOGGER.fine("setting rowIdColumnName to " + rowIdColumn + " in table "
-                                + reg.getTableName());
-                        reg.setRowIdColumnName(rowIdColumn);
-                        reg.setRowIdColumnType(rowIdType);
-                        reg.alter();
-                        reg = null;
-                    }
-
-                    LOGGER.fine("Schema correctly created: " + featureType);
-
-                } catch (SeException e) {
-                    LOGGER.log(Level.WARNING, e.getSeError().getErrDesc(), e);
-                    throw e;
-                } finally {
-                    if ((error != null) && tableCreated) {
-                        // TODO: remove table if created and then failed
-                    }
-                }
-                return null;
-            }
-        };
+                };
 
         session.issue(createSchemaCmd);
     }
@@ -1042,7 +1086,7 @@ public class ArcSDEAdapter {
     /**
      * Creates a new table in the server. Warning warning, this method shall only be called from
      * inside a {@link Command}
-     * 
+     *
      * @param connection
      * @param qualifiedName
      * @param hackColName
@@ -1051,8 +1095,12 @@ public class ArcSDEAdapter {
      * @throws IOException
      * @throws SeException
      */
-    private static SeTable createSeTable(final SeConnection connection, final String qualifiedName,
-            final String hackColName, final String configKeyword) throws SeException {
+    private static SeTable createSeTable(
+            final SeConnection connection,
+            final String qualifiedName,
+            final String hackColName,
+            final String configKeyword)
+            throws SeException {
 
         final SeTable table;
         final SeColumnDefinition[] tmpCol = new SeColumnDefinition[1];
@@ -1070,8 +1118,9 @@ public class ArcSDEAdapter {
         return table;
     }
 
-    private static void createSeLayer(SeLayer layer, String qualifiedName,
-            GeometryDescriptor geometryAtt) throws SeException {
+    private static void createSeLayer(
+            SeLayer layer, String qualifiedName, GeometryDescriptor geometryAtt)
+            throws SeException {
         String spatialColName = geometryAtt.getLocalName();
         LOGGER.info("setting spatial column name: " + spatialColName);
         layer.setSpatialColumnName(spatialColName);
@@ -1088,8 +1137,10 @@ public class ArcSDEAdapter {
         String WKT = null;
 
         if (crs == null) {
-            LOGGER.warning("Creating feature type " + qualifiedName
-                    + ": the geometry attribute does not supply a coordinate reference system");
+            LOGGER.warning(
+                    "Creating feature type "
+                            + qualifiedName
+                            + ": the geometry attribute does not supply a coordinate reference system");
         } else {
             LOGGER.info("Creating the SeCoordRef object for CRS " + crs);
             WKT = crs.toWKT();
@@ -1127,14 +1178,12 @@ public class ArcSDEAdapter {
      * Creates and returns a <code>SeCoordinateReference</code> CRS, though based on an UNKNOWN CRS,
      * is inclusive enough (in terms of valid coordinate range and presicion) to deal with most
      * coordintates.
-     * <p>
-     * Actually tested to deal with coordinates with 0.0002 units of separation as well as with
+     *
+     * <p>Actually tested to deal with coordinates with 0.0002 units of separation as well as with
      * large coordinates such as UTM (values greater than 500,000.00)
-     * </p>
-     * <p>
-     * This method is driven by the equally named method in TestData.java
-     * </p>
-     * 
+     *
+     * <p>This method is driven by the equally named method in TestData.java
+     *
      * @return
      * @throws SeException
      */

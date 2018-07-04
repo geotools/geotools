@@ -18,43 +18,33 @@ package org.geotools.validation.spatial;
 
 import org.geotools.validation.DefaultIntegrityValidation;
 
-
 /**
  * PointCoveredByLineValidation purpose.
- * 
- * <p>
- * Base typeRef functionality for a 2 line validation.
- * </p>
+ *
+ * <p>Base typeRef functionality for a 2 line validation.
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public abstract class LineLineAbstractValidation
-    extends DefaultIntegrityValidation {
+public abstract class LineLineAbstractValidation extends DefaultIntegrityValidation {
     private String restrictedLineTypeRef;
     private String lineTypeRef;
 
     /**
      * PointCoveredByLineValidation constructor.
-     * 
-     * <p>
-     * Super
-     * </p>
+     *
+     * <p>Super
      */
     public LineLineAbstractValidation() {
         super();
     }
 
     /**
-     * Implementation of getTypeNames. Should be called by sub-classes is being
-     * overwritten.
+     * Implementation of getTypeNames. Should be called by sub-classes is being overwritten.
      *
      * @return Array of typeNames, or empty array for all, null for disabled
-     *
      * @see org.geotools.validation.Validation#getTypeRefs()
      */
     public String[] getTypeRefs() {
@@ -62,7 +52,7 @@ public abstract class LineLineAbstractValidation
             return null;
         }
 
-        return new String[] { lineTypeRef, restrictedLineTypeRef };
+        return new String[] {lineTypeRef, restrictedLineTypeRef};
     }
 
     /**

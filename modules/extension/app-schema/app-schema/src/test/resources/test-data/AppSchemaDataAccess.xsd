@@ -223,6 +223,24 @@
                 </documentation>
               </annotation>
             </element>
+            <element name="defaultGeometry" type="string">
+              <annotation>
+                <documentation>
+                    XPath expression addressing the property that should be used as default geometry for
+                    the target feature type.
+                    
+                    This is especially useful when automatic detection of the default geometry is difficult or
+                    impossible to do, e.g. when the geometry property is nested inside another property, or
+                    multiple geometry properties are present.
+                    
+                    The specified geometry property may be a direct child of the target feature type, or may be
+                    nested inside another property. If the evaluation of the provided expression yields multiple
+                    values, an exception will be thrown at runtime. If the provided expression targets
+                    a property whose type is not a geometry type, an exception will be thrown during
+                    the creation of the app-schema data store.
+                </documentation>
+              </annotation>
+            </element>
             <element name="itemXpath" type="string" minOccurs="0">
               <annotation>
                 <documentation>

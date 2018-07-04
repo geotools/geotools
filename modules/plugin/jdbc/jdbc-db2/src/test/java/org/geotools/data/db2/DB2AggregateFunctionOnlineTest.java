@@ -17,18 +17,13 @@
 package org.geotools.data.db2;
 
 import org.geotools.jdbc.JDBCAggregateFunctionOnlineTest;
-import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DB2AggregateFunctionOnlineTest extends JDBCAggregateFunctionOnlineTest {
 
     @Override
-    protected JDBCTestSetup createTestSetup() {
-        return new DB2TestSetup();
+    protected JDBCAggregateTestSetup createTestSetup() {
+        return new DB2AggregateTestSetup();
     }
-
 }

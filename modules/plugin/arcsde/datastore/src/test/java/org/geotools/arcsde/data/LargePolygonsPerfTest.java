@@ -1,5 +1,13 @@
 package org.geotools.arcsde.data;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeQuery;
+import com.esri.sde.sdk.client.SeQueryInfo;
+import com.esri.sde.sdk.client.SeRow;
+import com.esri.sde.sdk.client.SeShape;
+import com.esri.sde.sdk.client.SeSqlConstruct;
+import com.esri.sde.sdk.geom.GeometryFactory;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -9,9 +17,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Query;
@@ -29,26 +35,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.util.Stopwatch;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeQuery;
-import com.esri.sde.sdk.client.SeQueryInfo;
-import com.esri.sde.sdk.client.SeRow;
-import com.esri.sde.sdk.client.SeShape;
-import com.esri.sde.sdk.client.SeSqlConstruct;
-import com.esri.sde.sdk.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.util.Stopwatch;
-
 /**
  * This is a legacy benchmarking suite I'm using to assess the performance of some very large
  * datasets. Will be removed.
- *
  *
  * @source $URL$
  */
@@ -168,8 +164,12 @@ public class LargePolygonsPerfTest {
             log("writing rendered image to " + output.getAbsolutePath());
             ImageIO.write(image, "png", output);
         }
-        log("-- Average rendering time after " + numRuns + " runs: "
-                + ((totalTime / numRuns) / 1000) + "s");
+        log(
+                "-- Average rendering time after "
+                        + numRuns
+                        + " runs: "
+                        + ((totalTime / numRuns) / 1000)
+                        + "s");
     }
 
     @Test
@@ -241,14 +241,18 @@ public class LargePolygonsPerfTest {
         final String typeName = schema.getTypeName();
         final String spatialColName = schema.getGeometryDescriptor().getLocalName();
 
-        Query query = new Query(typeName, Filter.INCLUDE, new String[] { spatialColName });
+        Query query = new Query(typeName, Filter.INCLUDE, new String[] {spatialColName});
         long runTime = 0;
         for (int run = 0; run < numRuns; run++) {
             runTime += iterate(fs, query);
         }
         double avg = runTime / numRuns;
-        log("--- Avg iteration time with FeatureSource for " + numRuns + " runs: " + (avg / 1000D)
-                + "s");
+        log(
+                "--- Avg iteration time with FeatureSource for "
+                        + numRuns
+                        + " runs: "
+                        + (avg / 1000D)
+                        + "s");
         log("-----------------------------------------------------");
     }
 
@@ -259,14 +263,18 @@ public class LargePolygonsPerfTest {
         DataStore ds = testData.getDataStore();
         SimpleFeatureSource fs = ds.getFeatureSource(typeName);
         try {
-            Query query = new Query(typeName, Filter.INCLUDE, new String[] { "TOWN_ID" });
+            Query query = new Query(typeName, Filter.INCLUDE, new String[] {"TOWN_ID"});
             long runTime = 0;
             for (int run = 0; run < numRuns; run++) {
                 runTime += iterate(fs, query);
             }
             double avg = runTime / numRuns;
-            log("--- Avg iteration time with FeatureSource for " + numRuns + " runs: "
-                    + (avg / 1000D) + "s");
+            log(
+                    "--- Avg iteration time with FeatureSource for "
+                            + numRuns
+                            + " runs: "
+                            + (avg / 1000D)
+                            + "s");
         } finally {
             ds.dispose();
         }
@@ -280,17 +288,20 @@ public class LargePolygonsPerfTest {
 
         Map<String, Serializable> props = testData.getConProps();
 
-        SeConnection conn = new SeConnection(String.valueOf(props.get("server")),
-                Integer.parseInt(String.valueOf(props.get("port"))), String.valueOf(props
-                        .get("instance")), String.valueOf(props.get("user")), String.valueOf(props
-                        .get("password")));
+        SeConnection conn =
+                new SeConnection(
+                        String.valueOf(props.get("server")),
+                        Integer.parseInt(String.valueOf(props.get("port"))),
+                        String.valueOf(props.get("instance")),
+                        String.valueOf(props.get("user")),
+                        String.valueOf(props.get("password")));
 
         try {
             SeQuery query;
             SeQueryInfo queryInfo;
 
             queryInfo = new SeQueryInfo();
-            queryInfo.setColumns(new String[] { "SHAPE" });
+            queryInfo.setColumns(new String[] {"SHAPE"});
             queryInfo.setConstruct(new SeSqlConstruct(typeName));
 
             long runTime = 0;
@@ -299,8 +310,12 @@ public class LargePolygonsPerfTest {
                 runTime += iterateWithSeShapeFetching(query, queryInfo);
             }
             double avg = runTime / numRuns;
-            log("--- Avg iteration time with SeShape fetching for " + numRuns + " runs: "
-                    + (avg / 1000D) + "s");
+            log(
+                    "--- Avg iteration time with SeShape fetching for "
+                            + numRuns
+                            + " runs: "
+                            + (avg / 1000D)
+                            + "s");
         } finally {
             conn.close();
         }
@@ -313,17 +328,20 @@ public class LargePolygonsPerfTest {
         log("Testing SeQuery with GeometryFactory fetching");
 
         Map<String, Serializable> props = testData.getConProps();
-        SeConnection conn = new SeConnection(String.valueOf(props.get("server")),
-                Integer.parseInt(String.valueOf(props.get("port"))), String.valueOf(props
-                        .get("instance")), String.valueOf(props.get("user")), String.valueOf(props
-                        .get("password")));
+        SeConnection conn =
+                new SeConnection(
+                        String.valueOf(props.get("server")),
+                        Integer.parseInt(String.valueOf(props.get("port"))),
+                        String.valueOf(props.get("instance")),
+                        String.valueOf(props.get("user")),
+                        String.valueOf(props.get("password")));
 
         try {
             SeQuery query;
             SeQueryInfo queryInfo;
 
             queryInfo = new SeQueryInfo();
-            queryInfo.setColumns(new String[] { "SHAPE" });
+            queryInfo.setColumns(new String[] {"SHAPE"});
             queryInfo.setConstruct(new SeSqlConstruct(typeName));
 
             long runTime = 0;
@@ -332,8 +350,12 @@ public class LargePolygonsPerfTest {
                 runTime += iterateWithGeometryFactory(query, queryInfo);
             }
             double avg = runTime / numRuns;
-            log("--- Avg iteration time with GeometryFactory for " + numRuns + " runs: "
-                    + (avg / 1000D) + "s");
+            log(
+                    "--- Avg iteration time with GeometryFactory for "
+                            + numRuns
+                            + " runs: "
+                            + (avg / 1000D)
+                            + "s");
         } finally {
             conn.close();
         }
@@ -374,8 +396,14 @@ public class LargePolygonsPerfTest {
             query.close();
         }
         log("\t- " + featureCount + " features iterated in " + sw.getTimeString());
-        log("\t\t- total poinst: " + totalPoints + ", larger geometry: " + largerPoints + " points"
-                + " avg geom points: " + (totalPoints / featureCount));
+        log(
+                "\t\t- total poinst: "
+                        + totalPoints
+                        + ", larger geometry: "
+                        + largerPoints
+                        + " points"
+                        + " avg geom points: "
+                        + (totalPoints / featureCount));
         return sw.getTime();
     }
 
@@ -417,8 +445,13 @@ public class LargePolygonsPerfTest {
             query.close();
         }
         log("\t- " + featureCount + " features iterated in " + sw.getTimeString());
-        log("\t\t- total poinst: " + totalPoints + ", larger geometry: " + largerPoints
-                + " points, avg points: " + (totalPoints / featureCount));
+        log(
+                "\t\t- total poinst: "
+                        + totalPoints
+                        + ", larger geometry: "
+                        + largerPoints
+                        + " points, avg points: "
+                        + (totalPoints / featureCount));
         return sw.getTime();
     }
 
@@ -454,8 +487,13 @@ public class LargePolygonsPerfTest {
             iterator.close();
         }
         log("\t- " + featureCount + " features iterated in " + sw.getTimeString());
-        log("\t\t- total poinst: " + totalPoints + ", larger geometry: " + largerPoints
-                + " points, avg points:" + (totalPoints / featureCount));
+        log(
+                "\t\t- total poinst: "
+                        + totalPoints
+                        + ", larger geometry: "
+                        + largerPoints
+                        + " points, avg points:"
+                        + (totalPoints / featureCount));
         return sw.getTime();
     }
 }

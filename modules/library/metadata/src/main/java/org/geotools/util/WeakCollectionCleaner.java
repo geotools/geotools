@@ -18,41 +18,32 @@ package org.geotools.util;
 
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
-
 import org.geotools.util.logging.Logging;
 
-
 /**
- * A thread invoking {@link Reference#clear} on each enqueded reference.
- * This is usefull only if {@code Reference} subclasses has overridden
- * their {@code clear()} method in order to perform some cleaning.
- * This thread is used by {@link WeakHashSet} and {@link WeakValueHashMap},
- * which remove their entry from the collection when {@link Reference#clear}
- * is invoked.
+ * A thread invoking {@link Reference#clear} on each enqueded reference. This is usefull only if
+ * {@code Reference} subclasses has overridden their {@code clear()} method in order to perform some
+ * cleaning. This thread is used by {@link WeakHashSet} and {@link WeakValueHashMap}, which remove
+ * their entry from the collection when {@link Reference#clear} is invoked.
  *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public final class WeakCollectionCleaner extends Thread {
-    /**
-     * The default thread.
-     */
+    /** The default thread. */
     public static final WeakCollectionCleaner DEFAULT = new WeakCollectionCleaner();
 
     /**
-     * List of reference collected by the garbage collector.
-     * Those elements must be removed from {@link #table}.
+     * List of reference collected by the garbage collector. Those elements must be removed from
+     * {@link #table}.
      */
     ReferenceQueue<Object> referenceQueue = new ReferenceQueue<Object>();
-    
+
     /**
-     * Constructs and starts a new thread as a daemon. This thread will be sleeping
-     * most of the time.  It will run only some few nanoseconds each time a new
-     * {@link Reference} is enqueded.
+     * Constructs and starts a new thread as a daemon. This thread will be sleeping most of the
+     * time. It will run only some few nanoseconds each time a new {@link Reference} is enqueded.
      */
     private WeakCollectionCleaner() {
         super("WeakCollectionCleaner");
@@ -60,18 +51,16 @@ public final class WeakCollectionCleaner extends Thread {
         setDaemon(true);
         start();
     }
-    
+
     public synchronized ReferenceQueue<Object> getReferenceQueue() {
         return referenceQueue;
     }
 
-    /**
-     * Loop to be run during the virtual machine lifetime.
-     */
+    /** Loop to be run during the virtual machine lifetime. */
     @Override
     public void run() {
         ReferenceQueue<Object> rq;
-        while ((rq = getReferenceQueue ()) != null) {
+        while ((rq = getReferenceQueue()) != null) {
             try {
                 // Block until a reference is enqueded.
                 final Reference ref = rq.remove();
@@ -103,7 +92,7 @@ public final class WeakCollectionCleaner extends Thread {
         }
         Logging.getLogger(WeakCollectionCleaner.class).info("Weak collection cleaner stopped");
     }
-    
+
     /**
      * Stops the cleaner thread. Calling this method is recommended in all long running applications
      * with custom class loaders (e.g., web applications).
@@ -120,7 +109,6 @@ public final class WeakCollectionCleaner extends Thread {
 
         }
         // last resort tentative to kill the cleaner thread
-        if (this.isAlive())
-            this.stop();
+        if (this.isAlive()) this.stop();
     }
 }

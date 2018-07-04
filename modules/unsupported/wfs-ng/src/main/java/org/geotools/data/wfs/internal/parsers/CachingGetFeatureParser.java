@@ -18,12 +18,10 @@ package org.geotools.data.wfs.internal.parsers;
 
 import java.io.IOException;
 import java.util.Queue;
-
 import org.geotools.data.wfs.internal.GetFeatureParser;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.FeatureType;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class CachingGetFeatureParser implements GetFeatureParser {
 

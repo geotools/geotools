@@ -18,25 +18,21 @@ package org.geotools.data.wfs.internal.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.PullParser;
 import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.FeatureType;
-import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.SAXException;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 /**
- * {@link GetFeatureParser} for {@link WFSFeatureReader} that uses the geotools
- * {@link PullParser} to fetch Features out of a WFS GetFeature response.
- * 
+ * {@link GetFeatureParser} for {@link WFSFeatureReader} that uses the geotools {@link PullParser}
+ * to fetch Features out of a WFS GetFeature response.
+ *
  * @author Niels Charlier
  */
 public class PullParserFeatureReader implements GetFeatureParser {
@@ -44,22 +40,27 @@ public class PullParserFeatureReader implements GetFeatureParser {
     private PullParser parser;
 
     private InputStream inputStream;
-    
+
     private FeatureType featureType;
 
-    public PullParserFeatureReader(final Configuration wfsConfiguration,
-            final InputStream getFeatureResponseStream, final FeatureType featureType)
+    public PullParserFeatureReader(
+            final Configuration wfsConfiguration,
+            final InputStream getFeatureResponseStream,
+            final FeatureType featureType)
             throws IOException {
         this.inputStream = getFeatureResponseStream;
         this.featureType = featureType;
-       
-        this.parser = new PullParser(wfsConfiguration, getFeatureResponseStream, 
-                new QName(featureType.getName().getNamespaceURI(), featureType.getName().getLocalPart()));
+
+        this.parser =
+                new PullParser(
+                        wfsConfiguration,
+                        getFeatureResponseStream,
+                        new QName(
+                                featureType.getName().getNamespaceURI(),
+                                featureType.getName().getLocalPart()));
     }
 
-    /**
-     * @see GetFeatureParser#close()
-     */
+    /** @see GetFeatureParser#close() */
     public void close() throws IOException {
         if (inputStream != null) {
             try {
@@ -71,9 +72,7 @@ public class PullParserFeatureReader implements GetFeatureParser {
         }
     }
 
-    /**
-     * @see GetFeatureParser#parse()
-     */
+    /** @see GetFeatureParser#parse() */
     public SimpleFeature parse() throws IOException {
         Object parsed;
         try {
@@ -85,9 +84,7 @@ public class PullParserFeatureReader implements GetFeatureParser {
         return feature;
     }
 
-    /**
-     * @see GetFeatureParser#getNumberOfFeatures()
-     */
+    /** @see GetFeatureParser#getNumberOfFeatures() */
     public int getNumberOfFeatures() {
         return -1;
     }
@@ -98,13 +95,11 @@ public class PullParserFeatureReader implements GetFeatureParser {
     }
 
     @Override
-    public void setGeometryFactory(GeometryFactory geometryFactory) {     
-        //TODO implement?
+    public void setGeometryFactory(GeometryFactory geometryFactory) {
+        // TODO implement?
     }
-    
+
     public void setContextCustomizer(ContextCustomizer contextCustomizer) {
         parser.setContextCustomizer(contextCustomizer);
     }
-    
-
 }

@@ -7,9 +7,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * FeatureWriter for updating SimpleFeature content.
  *
- *
  * @source $URL$
  */
-public interface SimpleFeatureWriter extends FeatureWriter<SimpleFeatureType, SimpleFeature>{
-
-}
+public interface SimpleFeatureWriter extends FeatureWriter<SimpleFeatureType, SimpleFeature> {}

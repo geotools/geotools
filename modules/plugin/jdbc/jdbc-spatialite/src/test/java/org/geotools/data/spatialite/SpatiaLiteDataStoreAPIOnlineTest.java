@@ -22,24 +22,16 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.NoSuchElementException;
-
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Point;
-
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SpatiaLiteDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override
@@ -69,7 +61,7 @@ public class SpatiaLiteDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest
         try {
             dataStore.getSchema(featureTypeName);
             fail("Should have thrown an IOException because featureTypeName shouldn't exist");
-        } catch(IOException e) {
+        } catch (IOException e) {
         }
 
         // Create the same schema again
@@ -119,16 +111,16 @@ public class SpatiaLiteDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest
 
     @Override
     public void testTransactionIsolation() throws Exception {
-        //super.testTransactionIsolation();
-        //JD: In order to allow multiple connections from the same thread (which this test requires) 
-        // we need to put the database in read_uncommitted mode, which means transaction isolation 
+        // super.testTransactionIsolation();
+        // JD: In order to allow multiple connections from the same thread (which this test
+        // requires)
+        // we need to put the database in read_uncommitted mode, which means transaction isolation
         // can not be achieved
     }
-    
-    @Override
-    public void testGetFeatureReaderFilterTransaction() throws NoSuchElementException, IOException,
-            IllegalAttributeException {
-        //super.testGetFeatureReaderFilterTransaction();
-    }
 
+    @Override
+    public void testGetFeatureReaderFilterTransaction()
+            throws NoSuchElementException, IOException, IllegalAttributeException {
+        // super.testGetFeatureReaderFilterTransaction();
+    }
 }

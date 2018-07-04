@@ -17,10 +17,10 @@
 
 package org.geotools.data.sfs;
 
-import java.io.StringWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,11 +29,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import org.geotools.geojson.geom.GeometryJSON;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.Not;
@@ -66,7 +71,6 @@ import org.opengis.filter.temporal.AnyInteracts;
 import org.opengis.filter.temporal.Before;
 import org.opengis.filter.temporal.Begins;
 import org.opengis.filter.temporal.BegunBy;
-import org.opengis.filter.temporal.BinaryTemporalOperator;
 import org.opengis.filter.temporal.During;
 import org.opengis.filter.temporal.EndedBy;
 import org.opengis.filter.temporal.Ends;
@@ -76,33 +80,23 @@ import org.opengis.filter.temporal.OverlappedBy;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
-import org.opengis.filter.FilterVisitor;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
-import java.net.URLEncoder;
-
-import org.geotools.geojson.geom.GeometryJSON;
 
 /**
- *
  * This class is pulled from GeoRest DataStore implementation and modified
+ *
  * @author
  */
 class SFSFilterVisitor implements FilterVisitor {
 
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.simplefeatureservice");
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.data.simplefeatureservice");
     private Map<String, String> properties = new HashMap<String, String>();
     private List<String> queryable = new ArrayList<String>();
     private boolean sortProperties;
     private boolean hasProperties;
-    private static final String strEncoding="UTF-8";
+    private static final String strEncoding = "UTF-8";
 
-    public SFSFilterVisitor() {
-    }
+    public SFSFilterVisitor() {}
 
     public SFSFilterVisitor(boolean sortProperties) {
         this.sortProperties = sortProperties;
@@ -119,14 +113,13 @@ class SFSFilterVisitor implements FilterVisitor {
     /**
      * Finish up building the URL, and return it as a string.
      *
-     * @param builder
-     *            StringBuilder that contains the base URL from which to start adding URL
-     *            properties.
-     * @param hasProperties
-     *            Does the given URL already contains other properties?
+     * @param builder StringBuilder that contains the base URL from which to start adding URL
+     *     properties.
+     * @param hasProperties Does the given URL already contains other properties?
      * @return Returns the URL with the newly added properties for filtering.
      */
-    public String finish(StringBuilder builder, boolean hasProperties) throws UnsupportedEncodingException {
+    public String finish(StringBuilder builder, boolean hasProperties)
+            throws UnsupportedEncodingException {
 
         this.hasProperties = hasProperties;
 
@@ -150,7 +143,7 @@ class SFSFilterVisitor implements FilterVisitor {
             builder.append(getGlueChar());
             builder.append("queryable=");
             for (int i = 0; i < queryable.size(); i++) {
-                
+
                 builder.append(URLEncoder.encode(queryable.get(i), strEncoding));
                 if (i < queryable.size() - 1) {
                     builder.append(",");
@@ -266,8 +259,15 @@ class SFSFilterVisitor implements FilterVisitor {
         Polygon polygon = (Polygon) filter.getExpression2().evaluate(extraData);
         Envelope box = polygon.getEnvelopeInternal();
         if (!properties.containsKey("bbox")) {
-            properties.put("bbox", box.getMinX() + "," + box.getMinY() + "," + box.getMaxX() + ","
-                    + box.getMaxY());
+            properties.put(
+                    "bbox",
+                    box.getMinX()
+                            + ","
+                            + box.getMinY()
+                            + ","
+                            + box.getMaxX()
+                            + ","
+                            + box.getMaxY());
         } else {
             throw new IllegalArgumentException("Filter cannot contain more than one bounding box.");
         }
@@ -296,29 +296,29 @@ class SFSFilterVisitor implements FilterVisitor {
     public Object visit(DWithin filter, Object extraData) {
         // check we actually support this thing
         boolean valid = true;
-        if(!(filter.getExpression1() instanceof PropertyName)) {
-            valid = false;
-        } 
-        if(!(filter.getExpression2() instanceof Literal)) {
+        if (!(filter.getExpression1() instanceof PropertyName)) {
             valid = false;
         }
-        if(!valid) {
-            throw new UnsupportedOperationException("DWithin filter on this store is supported only " +
-            		"if the first operand is the default geometry property and the second " +
-            		"is a geometry literal");
+        if (!(filter.getExpression2() instanceof Literal)) {
+            valid = false;
         }
-        
-        
+        if (!valid) {
+            throw new UnsupportedOperationException(
+                    "DWithin filter on this store is supported only "
+                            + "if the first operand is the default geometry property and the second "
+                            + "is a geometry literal");
+        }
+
         Geometry geometry = (Geometry) filter.getExpression2().evaluate(extraData);
 
-        if(geometry instanceof Point) {
+        if (geometry instanceof Point) {
             Point point = (Point) geometry;
             if (!properties.containsKey("lon")) {
                 properties.put("lon", String.valueOf(point.getX()));
             } else {
                 throw new IllegalArgumentException("Long. is already set");
             }
-    
+
             if (!properties.containsKey("lat")) {
                 properties.put("lat", String.valueOf(point.getY()));
             } else {
@@ -327,17 +327,17 @@ class SFSFilterVisitor implements FilterVisitor {
         } else {
             writeGeometry(geometry);
         }
-        
+
         if (!properties.containsKey("tolerance")) {
             properties.put("tolerance", String.valueOf(filter.getDistance()));
         } else {
             throw new IllegalArgumentException("tolerance is already set");
         }
 
-        if (!properties.containsKey("epsg") ) {
+        if (!properties.containsKey("epsg")) {
             properties.put("epsg", filter.getDistanceUnits() + "");
         }
-        
+
         return extraData;
     }
 
@@ -346,10 +346,10 @@ class SFSFilterVisitor implements FilterVisitor {
     }
 
     public Object visit(Intersects filter, Object extraData) {
-        
+
         Geometry goem = (Geometry) filter.getExpression2().evaluate(null);
         writeGeometry(goem);
-        
+
         return extraData;
     }
 
@@ -362,7 +362,10 @@ class SFSFilterVisitor implements FilterVisitor {
                 gjson.write(geom, sw);
                 strGeoJSON = sw.toString();
             } catch (IOException ex) {
-                LOGGER.log(Level.SEVERE, " Exception at visit  : Intersect Filter " + ex.getMessage(), ex);
+                LOGGER.log(
+                        Level.SEVERE,
+                        " Exception at visit  : Intersect Filter " + ex.getMessage(),
+                        ex);
             }
             properties.put("geometry", strGeoJSON);
         } else {
@@ -447,8 +450,8 @@ class SFSFilterVisitor implements FilterVisitor {
         return "&";
     }
 
-    private void checkPropertyFilter(String propertyName, String extension,
-            BinaryComparisonOperator filter) {
+    private void checkPropertyFilter(
+            String propertyName, String extension, BinaryComparisonOperator filter) {
         String combined = propertyName + extension;
         if (!properties.containsKey(combined)) {
             Object value = ((Literal) filter.getExpression2()).getValue();

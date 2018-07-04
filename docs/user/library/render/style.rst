@@ -390,7 +390,7 @@ Examples:
 
 * GeoServer SLD cookbook
   
-  :geoserver:`Points <styling/sld-cookbook/points.html>`
+  :geoserver:`Points <styling/sld/cookbook/points.html>`
   
 * Quick example creating a PointSymbolizer using StyleBuilder:
   
@@ -430,7 +430,7 @@ Examples:
 
 * GeoServer SLD cookbook
   
-  :geoserver:`Lines <styling/sld-cookbook/lines.html>`
+  :geoserver:`Lines <styling/sld/cookbook/lines.html>`
 
 PolygonSymbolizer
 '''''''''''''''''
@@ -441,7 +441,7 @@ Examples:
 
 * GeoServer SLD cookbook
   
-  :geoserver:`Polygons <styling/sld-cookbook/polygons.html>`
+  :geoserver:`Polygons <styling/sld/cookbook/polygons.html>`
   
 * Quick example using StyleBuilder to create a PolygonSymbolizer:
 
@@ -463,9 +463,9 @@ Examples:
 
 * GeoServer SLD cookbook
   
-  * :geoserver:`Point Labels <styling/sld-cookbook/points.html>`
-  * :geoserver:`Line Labels <styling/sld-cookbook/lines.html>`
-  * :geoserver:`Polygon Labels <styling/sld-cookbook/polygons.html>`
+  * :geoserver:`Point Labels <styling/sld/cookbook/points.html>`
+  * :geoserver:`Line Labels <styling/sld/cookbook/lines.html>`
+  * :geoserver:`Polygon Labels <styling/sld/cookbook/polygons.html>`
 
 * Here is a quick example of creating a TextSymbolizer with StyleBuilder:
   
@@ -538,7 +538,7 @@ Considerable vendor options are provided for working with TextSymbolizers:
   
 * maxAngleDelta (90) When drawing curved labels, max allowed angle between two subsequent characters. Higher angles may cause disconnected words or overlapping characters
   
-* maxDisplacement (400) The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels.
+* maxDisplacement (0) The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels.
 
 * minGroupDistance (3) Minimum distance between two labels in the same label group. To be used when both displacement and repeat are used to avoid having two labels too close to each other
   
@@ -548,7 +548,18 @@ Considerable vendor options are provided for working with TextSymbolizers:
   
 * spaceAround(50) The minimum distance between two labels, in pixels
 
+* charSpacing(0) The extra space between characters, in pixels. Can be negative.
+
+* wordSpacing(0) The extra space between words, in pixels. Must be zero or positive.
+
 * underlineText(true): When true instructs the renderer to underline labels
+
+* strikethroughText(true): When true instructs the renderer to strikethrough labels
+
+* kerning(true): When true enables text kerning (adjustment of space between characters to get a more compact and readable layout) 
+
+* displacementMode: Comma separated list of label displacement directions for point/polygon labels (used along with maxDisplacement). The indicated directions will be tried in turn.
+                    Valid values are cardinal directions abbreviations, in particular, N, W, E, S, NW, NE, SW, SE.
 
 Raster Symbolizer
 '''''''''''''''''
@@ -557,7 +568,7 @@ Used to control the rendering of raster data with full "color map" control.
 
 * GeoServer SLD cookbook
   
-  * :geoserver:`Rasters <styling/sld-cookbook/rasters.html>`
+  * :geoserver:`Rasters <styling/sld/cookbook/rasters.html>`
   
 StyleVisitor
 ^^^^^^^^^^^^

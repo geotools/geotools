@@ -3,11 +3,7 @@ package org.geotools.styling;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DescriptionImpl implements Description {
     private InternationalString title;
 
@@ -29,10 +25,11 @@ public class DescriptionImpl implements Description {
 
     /**
      * Copy constructor.
+     *
      * @param description
      */
     public DescriptionImpl(org.opengis.style.Description description) {
-        this( description.getTitle(), description.getAbstract() );
+        this(description.getTitle(), description.getAbstract());
     }
 
     public InternationalString getTitle() {
@@ -46,7 +43,7 @@ public class DescriptionImpl implements Description {
     public void setTitle(String title) {
         this.title = new SimpleInternationalString(title);
     }
-    
+
     public InternationalString getAbstract() {
         return description;
     }
@@ -58,7 +55,7 @@ public class DescriptionImpl implements Description {
     public void setAbstract(String title) {
         this.description = new SimpleInternationalString(title);
     }
-    
+
     public Object accept(org.opengis.style.StyleVisitor visitor, Object extraData) {
         return null;
     }
@@ -78,44 +75,35 @@ public class DescriptionImpl implements Description {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         DescriptionImpl other = (DescriptionImpl) obj;
         if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
-            return false;
+            if (other.description != null) return false;
+        } else if (!description.equals(other.description)) return false;
         if (title == null) {
-            if (other.title != null)
-                return false;
-        } else if (!title.equals(other.title))
-            return false;
+            if (other.title != null) return false;
+        } else if (!title.equals(other.title)) return false;
         return true;
     }
 
     /**
      * Check the provided description return it as a DescriptionImpl
+     *
      * @param description
      * @return DescriptionImpl from the provided description
      */
     static DescriptionImpl cast(org.opengis.style.Description description) {
-        if( description == null ){
+        if (description == null) {
             return null;
-        }
-        else if (description instanceof DescriptionImpl){
+        } else if (description instanceof DescriptionImpl) {
             return (DescriptionImpl) description;
-        }
-        else {
+        } else {
             DescriptionImpl copy = new DescriptionImpl();
-            copy.setTitle( description.getTitle() );
-            copy.setAbstract( description.getAbstract() );            
+            copy.setTitle(description.getTitle());
+            copy.setAbstract(description.getAbstract());
             return copy;
         }
     }
-
 }

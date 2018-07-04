@@ -16,15 +16,11 @@
  */
 package org.geotools.renderer.windbarbs;
 
-import javax.measure.unit.NonSI;
-
 import org.junit.Assert;
 import org.junit.Test;
+import systems.uom.common.USCustomary;
 
-/**
- * @author Simone Giannecchini, GeoSolutions
- * 
- */
+/** @author Simone Giannecchini, GeoSolutions */
 public class SpeedConverterTest extends Assert {
 
     @Test
@@ -81,7 +77,7 @@ public class SpeedConverterTest extends Assert {
         }
 
         // feet/s
-        speed = SpeedConverter.toKnots(1, NonSI.FOOT.toString() + "/s");
+        speed = SpeedConverter.toKnots(1, USCustomary.FOOT.toString() + "/s");
         assertEquals(0.592483801, speed, 1E-6);
 
         try {

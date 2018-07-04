@@ -16,38 +16,33 @@
  */
 package org.geotools.xml.impl;
 
-import org.eclipse.xsd.XSDAttributeDeclaration;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import java.util.logging.Logger;
+import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.geotools.util.Converters;
 import org.geotools.xml.Binding;
 import org.geotools.xml.SimpleBinding;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AttributeEncodeExecutor implements BindingWalker.Visitor {
-    /** the object being encoded **/
+    /** the object being encoded * */
     Object object;
 
-    /** the attribute being encoded **/
+    /** the attribute being encoded * */
     XSDAttributeDeclaration attribute;
 
-    /** the encoded value **/
+    /** the encoded value * */
     Attr encoding;
 
-    /** the document / factory **/
+    /** the document / factory * */
     Document document;
 
     /** logger */
     Logger logger;
 
-    public AttributeEncodeExecutor(Object object, XSDAttributeDeclaration attribute,
-        Document document, Logger logger) {
+    public AttributeEncodeExecutor(
+            Object object, XSDAttributeDeclaration attribute, Document document, Logger logger) {
         this.object = object;
         this.attribute = attribute;
         this.document = document;
@@ -61,7 +56,7 @@ public class AttributeEncodeExecutor implements BindingWalker.Visitor {
     }
 
     public void visit(Binding binding) {
-        //ensure the object type matches the type declared on the bindign
+        // ensure the object type matches the type declared on the bindign
         if (binding.getType() == null) {
             logger.fine("Binding: " + binding.getTarget() + " does not declare a target type");
 
@@ -69,14 +64,18 @@ public class AttributeEncodeExecutor implements BindingWalker.Visitor {
         }
 
         if (!binding.getType().isAssignableFrom(object.getClass())) {
-            //try to convert
+            // try to convert
             Object converted = Converters.convert(object, binding.getType());
 
             if (converted != null) {
                 object = converted;
             } else {
-                logger.fine(object + "[ " + object.getClass() + " ] is not of type "
-                    + binding.getType());
+                logger.fine(
+                        object
+                                + "[ "
+                                + object.getClass()
+                                + " ] is not of type "
+                                + binding.getType());
 
                 return;
             }
@@ -88,8 +87,11 @@ public class AttributeEncodeExecutor implements BindingWalker.Visitor {
             try {
                 encoding.setValue(simple.encode(object, encoding.getValue()));
             } catch (Throwable t) {
-                String msg = "Encode failed for " + attribute.getName() + ". Cause: "
-                    + t.getLocalizedMessage();
+                String msg =
+                        "Encode failed for "
+                                + attribute.getName()
+                                + ". Cause: "
+                                + t.getLocalizedMessage();
                 throw new RuntimeException(msg, t);
             }
         }

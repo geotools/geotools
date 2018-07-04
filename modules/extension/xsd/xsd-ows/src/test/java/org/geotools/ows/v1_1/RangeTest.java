@@ -4,7 +4,6 @@ import net.opengis.ows11.Ows11Factory;
 import net.opengis.ows11.RangeClosureType;
 import net.opengis.ows11.RangeType;
 import net.opengis.ows11.ValueType;
-
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
 import org.junit.Test;

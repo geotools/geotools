@@ -23,9 +23,8 @@ import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
-
-import com.vividsolutions.jts.geom.LineString;
 
 public class ArcStringTypeBindingTest extends GML3TestSupport {
 
@@ -54,25 +53,28 @@ public class ArcStringTypeBindingTest extends GML3TestSupport {
     }
 
     public void testEncodeSimple() throws Exception {
-        LineString curve = new CurvedGeometryFactory(0.1)
-                .createCurvedGeometry(new LiteCoordinateSequence(new double[] { 1, 1, 2, 2, 3, 1,
-                        5, 5, 7, 3 }));
+        LineString curve =
+                new CurvedGeometryFactory(0.1)
+                        .createCurvedGeometry(
+                                new LiteCoordinateSequence(
+                                        new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
         Document dom = encode(curve, GML.curveProperty);
         // print(dom);
         XpathEngine xpath = XMLUnit.newXpathEngine();
         String basePath = "/gml:curveProperty/gml:Curve/gml:segments/gml:ArcString";
-        assertEquals(1,
+        assertEquals(
+                1,
                 xpath.getMatchingNodes(basePath + "[@interpolation='circularArc3Points']", dom)
                         .getLength());
-        assertEquals("1.0 1.0 2.0 2.0 3.0 1.0 5.0 5.0 7.0 3.0",
-                xpath.evaluate(basePath + "/gml:posList", dom));
+        assertEquals("1 1 2 2 3 1 5 5 7 3", xpath.evaluate(basePath + "/gml:posList", dom));
     }
 
     public void testEncodeCompound() throws Exception {
         // create a compound curve
         CurvedGeometryFactory factory = new CurvedGeometryFactory(0.1);
-        LineString curve = factory.createCurvedGeometry(new LiteCoordinateSequence(1, 1, 2, 2, 3,
-                1, 5, 5, 7, 3));
+        LineString curve =
+                factory.createCurvedGeometry(
+                        new LiteCoordinateSequence(1, 1, 2, 2, 3, 1, 5, 5, 7, 3));
         LineString straight = factory.createLineString(new LiteCoordinateSequence(7, 3, 10, 15));
         LineString compound = factory.createCurvedGeometry(curve, straight);
 
@@ -83,17 +85,17 @@ public class ArcStringTypeBindingTest extends GML3TestSupport {
 
         // the curve portion
         String basePath1 = "/gml:curveProperty/gml:Curve/gml:segments/gml:ArcString";
-        assertEquals(1,
+        assertEquals(
+                1,
                 xpath.getMatchingNodes(basePath1 + "[@interpolation='circularArc3Points']", dom)
                         .getLength());
-        assertEquals("1.0 1.0 2.0 2.0 3.0 1.0 5.0 5.0 7.0 3.0",
-                xpath.evaluate(basePath1 + "/gml:posList", dom));
+        assertEquals("1 1 2 2 3 1 5 5 7 3", xpath.evaluate(basePath1 + "/gml:posList", dom));
 
         // the straight portion
         String basePath2 = "/gml:curveProperty/gml:Curve/gml:segments/gml:LineStringSegment";
-        assertEquals(1, xpath.getMatchingNodes(basePath2 + "[@interpolation='linear']", dom)
-                .getLength());
-        assertEquals("7.0 3.0 10.0 15.0", xpath.evaluate(basePath2 + "/gml:posList", dom));
-
+        assertEquals(
+                1,
+                xpath.getMatchingNodes(basePath2 + "[@interpolation='linear']", dom).getLength());
+        assertEquals("7 3 10 15", xpath.evaluate(basePath2 + "/gml:posList", dom));
     }
 }

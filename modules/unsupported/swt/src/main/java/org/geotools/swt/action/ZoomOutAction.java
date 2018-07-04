@@ -23,22 +23,20 @@ import org.geotools.swt.utils.ImageCache;
 
 /**
  * Action that activates the Zoom tool for the current {@link SwtMapPane map pane}.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class ZoomOutAction extends MapAction {
 
     public ZoomOutAction() {
-        super(ZoomOutTool.TOOL_NAME + "@Shift+Z", ZoomOutTool.TOOL_TIP, ImageCache.getInstance()
-                .getImage(ImageCache.IMAGE_ZOOMOUT));
+        super(
+                ZoomOutTool.TOOL_NAME + "@Shift+Z",
+                ZoomOutTool.TOOL_TIP,
+                ImageCache.getInstance().getImage(ImageCache.IMAGE_ZOOMOUT));
     }
 
     public void run() {
         getMapPane().setCursorTool(new ZoomOutTool());
     }
-
 }

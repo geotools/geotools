@@ -18,9 +18,7 @@ package org.geotools.graph.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import junit.framework.TestCase;
-
 import org.geotools.graph.build.line.BasicLineGraphGenerator;
 import org.geotools.graph.path.DijkstraShortestPathFinder;
 import org.geotools.graph.path.Path;
@@ -29,15 +27,10 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineSegment;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineSegment;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
 
     private Graph graph;
@@ -59,7 +52,7 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
         ld3.setCoordinates(new Coordinate(1, 1), new Coordinate(1, 0));
 
         // we have some line segments
-        LineSegment[] lines = { ld1, ld2, ld3 };
+        LineSegment[] lines = {ld1, ld2, ld3};
 
         // create the graph generator
         BasicLineGraphGenerator graphGen = new BasicLineGraphGenerator();
@@ -72,12 +65,11 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
         this.graph = graphGen.getGraph();
 
         System.out.println(graph);
-
     }
 
     public void test1() {
 
-        double[] expected = { 0.0, 1.0, 3.0, 3.0 };
+        double[] expected = {0.0, 1.0, 3.0, 3.0};
 
         ArrayList gotArray = new ArrayList(4);
 
@@ -86,8 +78,9 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
         Node source = (Node) it.next();
 
         // create the path finder
-        DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(
-                graph, (Graphable) source, costFunction(), tcostFunction());
+        DijkstraShortestPathFinder pf =
+                new DijkstraShortestPathFinder(
+                        graph, (Graphable) source, costFunction(), tcostFunction());
 
         pf.calculate();
 
@@ -99,9 +92,7 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
             Path path = pf.getPath((Graphable) d);
 
             gotArray.add(pf.getCost(d));
-
         }
-
     }
 
     protected DijkstraIterator.EdgeWeighter costFunction() {
@@ -119,5 +110,4 @@ public class DijkstraShortestPathFinderWithTurnCostsTest extends TestCase {
             }
         });
     }
-
 }

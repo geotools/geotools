@@ -25,12 +25,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * A visitor that collects features into 
- * a In-Memory FeatureCollection 
- * 
- *
- *
- *
+ * A visitor that collects features into a In-Memory FeatureCollection
  *
  * @source $URL$
  */
@@ -42,9 +37,7 @@ public class FeatureCollectingVisitor implements Visitor {
         fc = new DefaultFeatureCollection("FeatureCollectingVisitor", type);
     }
 
-    /**
-     * @param d Must be a SimpleFeature 
-     */
+    /** @param d Must be a SimpleFeature */
     public void visitData(Data<?> d) {
         fc.add((SimpleFeature) d.getData());
     }
@@ -53,23 +46,17 @@ public class FeatureCollectingVisitor implements Visitor {
         visited_nodes++;
     }
 
-    /**
-     * @return the collection of features visited
-     */
+    /** @return the collection of features visited */
     public SimpleFeatureCollection getCollection() {
         return fc;
     }
 
-    /**
-     * @return the number of nodes visited
-     */
+    /** @return the number of nodes visited */
     public int getVisitedNodes() {
         return visited_nodes;
     }
 
-    /**
-     * @returns true as this feature collection does something with the data it visits
-     */
+    /** @returns true as this feature collection does something with the data it visits */
     public boolean isDataVisitor() {
         return true;
     }

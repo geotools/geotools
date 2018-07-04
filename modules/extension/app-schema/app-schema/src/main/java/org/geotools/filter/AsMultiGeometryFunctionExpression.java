@@ -20,46 +20,42 @@ package org.geotools.filter;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.Attribute;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
- * Function which wraps an instance of geometry in its associatd multi geometry
- * type.
- * 
+ * Function which wraps an instance of geometry in its associatd multi geometry type.
+ *
  * <p>
+ *
  * <ul>
- * <li>Point -> MultiPoint
- * <li>LineString -> MultiLineString
- * <li>Polygon -> MultiPolygon
+ *   <li>Point -> MultiPoint
+ *   <li>LineString -> MultiLineString
+ *   <li>Polygon -> MultiPolygon
  * </ul>
+ *
  * <br>
  * <br>
- * This function takes a single argument expression which must evaluate to an
- * instanceof {@link com.vividsolutions.jts.geom.Geometry}.
- * </p>
- * 
+ * This function takes a single argument expression which must evaluate to an instanceof {@link
+ * org.locationtech.jts.geom.Geometry}.
+ *
  * @author Justin Deoliveira (The Open Planning Project)
- * 
- *
- *
- *
- *
  * @source $URL$
  */
 public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
-    
-    public static FunctionName NAME = new FunctionNameImpl("asMultiGeometry",
-            parameter("multi-geometry",Geometry.class),
-            parameter("geometry",Geometry.class));
-    
+
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "asMultiGeometry",
+                    parameter("multi-geometry", Geometry.class),
+                    parameter("geometry", Geometry.class));
+
     public AsMultiGeometryFunctionExpression() {
         super(NAME);
     }
@@ -69,8 +65,7 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
             return null;
         }
         Attribute att = (Attribute) obj;
-        org.opengis.filter.expression.Expression arg = (Expression) getParameters()
-                .get(0);
+        org.opengis.filter.expression.Expression arg = (Expression) getParameters().get(0);
         Object value = arg.evaluate(att);
 
         if (value != null) {
@@ -82,8 +77,7 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
                 return wrap((Geometry) value);
             } else {
                 throw new IllegalArgumentException(
-                        "function argument did not evaluate to "
-                                + Geometry.class);
+                        "function argument did not evaluate to " + Geometry.class);
             }
         }
 
@@ -92,20 +86,14 @@ public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
 
     private GeometryCollection wrap(Geometry geometry) {
         if (geometry instanceof Point) {
-            return geometry.getFactory().createMultiPoint(
-                    new Point[] { (Point) geometry });
+            return geometry.getFactory().createMultiPoint(new Point[] {(Point) geometry});
         } else if (geometry instanceof LineString) {
-            return geometry.getFactory().createMultiLineString(
-                    new LineString[] { (LineString) geometry });
+            return geometry.getFactory()
+                    .createMultiLineString(new LineString[] {(LineString) geometry});
         } else if (geometry instanceof Polygon) {
-            return geometry.getFactory().createMultiPolygon(
-                    new Polygon[] { (Polygon) geometry });
-
+            return geometry.getFactory().createMultiPolygon(new Polygon[] {(Polygon) geometry});
         }
 
-        throw new IllegalArgumentException(
-                "Unable to create multi geometry from " + geometry);
-
+        throw new IllegalArgumentException("Unable to create multi geometry from " + geometry);
     }
-
 }

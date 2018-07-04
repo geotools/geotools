@@ -1,18 +1,13 @@
 package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCAggregateFunctionOnlineTest;
-import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OracleAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnlineTest {
 
     @Override
-    protected JDBCTestSetup createTestSetup() {
-        return new OracleTestSetup();
+    protected JDBCAggregateTestSetup createTestSetup() {
+        return new OracleAggregateTestSetup();
     }
-
 }

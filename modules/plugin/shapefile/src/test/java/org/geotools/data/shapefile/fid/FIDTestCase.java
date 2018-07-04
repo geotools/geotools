@@ -17,16 +17,11 @@
 package org.geotools.data.shapefile.fid;
 
 import java.io.File;
-
 import org.geotools.data.shapefile.TestCaseSupport;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.junit.Before;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class FIDTestCase extends TestCaseSupport {
 
     protected final String TYPE_NAME = "archsites";
@@ -47,12 +42,11 @@ public abstract class FIDTestCase extends TestCaseSupport {
 
         backdbf = sibling(backshp, "dbf");
         backshx = sibling(backshp, "shx");
-        backprj =  sibling(backshp, "prj");
-        backqix =  sibling(backshp, "qix");
+        backprj = sibling(backshp, "prj");
+        backqix = sibling(backshp, "qix");
 
-        fixFile =  sibling(backshp, "fix");
+        fixFile = sibling(backshp, "fix");
 
         shpFiles = new ShpFiles(backshx);
     }
-
 }

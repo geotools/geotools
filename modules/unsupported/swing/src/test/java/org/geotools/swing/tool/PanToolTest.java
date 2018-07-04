@@ -17,26 +17,24 @@
 
 package org.geotools.swing.tool;
 
+import static org.junit.Assert.*;
+
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-
+import org.fest.swing.core.MouseButton;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.geotools.swing.testutils.TestDataUtils;
-
-import org.fest.swing.core.MouseButton;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 
 /**
  * Tests for the pan cursor tool.
- * 
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$
@@ -45,17 +43,17 @@ import static org.junit.Assert.*;
 @RunWith(GraphicsTestRunner.class)
 public class PanToolTest extends CursorToolTestBase {
     private PanTool tool;
-    
+
     @Before
     public void setup() {
         tool = new PanTool();
     }
-    
+
     @Test
     public void doesNotDrawDragBox() throws Exception {
         assertFalse(tool.drawDragBox());
     }
-    
+
     @Test
     public void dragPanMap() throws Exception {
         ReferencedEnvelope startEnv = mapPane.getDisplayArea();
@@ -63,33 +61,32 @@ public class PanToolTest extends CursorToolTestBase {
 
         Point startWindowPos = new Point(SCREEN.width / 4, SCREEN.height / 4);
         Point endWindowPos = new Point(SCREEN.width / 2, SCREEN.height / 2);
-        
+
         Point screenPos = mapPaneFixture.component().getLocationOnScreen();
-        
-        Point mouseStartPos = new Point(
-                screenPos.x + startWindowPos.x, 
-                screenPos.y + startWindowPos.y);
-        
-        Point mouseEndPos = new Point(
-                screenPos.x + endWindowPos.x,
-                screenPos.y + endWindowPos.y);
-        
+
+        Point mouseStartPos =
+                new Point(screenPos.x + startWindowPos.x, screenPos.y + startWindowPos.y);
+
+        Point mouseEndPos = new Point(screenPos.x + endWindowPos.x, screenPos.y + endWindowPos.y);
+
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
-        
+
         mapPane.setCursorTool(tool);
         mapPaneFixture.robot.pressMouse(mouseStartPos, MouseButton.LEFT_BUTTON);
         mapPaneFixture.robot.moveMouse(mouseEndPos);
         mapPaneFixture.robot.releaseMouseButtons();
-        
-        assertTrue( listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, EVENT_TIMEOUT) );
-        
+
+        assertTrue(listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, EVENT_TIMEOUT));
+
         ReferencedEnvelope endEnv = mapPane.getDisplayArea();
 
-        Point2D expectedDelta = tr.deltaTransform(new Point(
-                startWindowPos.x - endWindowPos.x, 
-                startWindowPos.y - endWindowPos.y), 
-                null);
-        
+        Point2D expectedDelta =
+                tr.deltaTransform(
+                        new Point(
+                                startWindowPos.x - endWindowPos.x,
+                                startWindowPos.y - endWindowPos.y),
+                        null);
+
         assertEquals(startEnv.getMinX() + expectedDelta.getX(), endEnv.getMinX(), TOL);
         assertEquals(startEnv.getMinY() + expectedDelta.getY(), endEnv.getMinY(), TOL);
     }
@@ -98,5 +95,4 @@ public class PanToolTest extends CursorToolTestBase {
     protected Layer getTestLayer() throws Exception {
         return TestDataUtils.getPointLayer();
     }
-
 }

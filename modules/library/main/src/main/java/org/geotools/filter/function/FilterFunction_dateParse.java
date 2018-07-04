@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -22,28 +22,26 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /**
- * Parses a date from a string given a certain pattern (specified in the format accepted
- * by {@link SimpleDateFormat}} 
+ * Parses a date from a string given a certain pattern (specified in the format accepted by {@link
+ * SimpleDateFormat}}
+ *
  * @see SimpleDateFormat
  * @author Andrea Aime - TOPP
- *
- *
- *
- *
  * @source $URL$
  */
 public class FilterFunction_dateParse extends FunctionExpressionImpl {
-    
-    public static FunctionName NAME = new FunctionNameImpl("dateParse",
-            parameter("date", Date.class),
-            parameter("format", String.class),
-            parameter("dateString", String.class));
+
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "dateParse",
+                    parameter("date", Date.class),
+                    parameter("format", String.class),
+                    parameter("dateString", String.class));
 
     public FilterFunction_dateParse() {
         super(NAME);
@@ -55,7 +53,7 @@ public class FilterFunction_dateParse extends FunctionExpressionImpl {
 
         try {
             // attempt to get value and perform conversion
-            format  = getExpression(0).evaluate(feature, String.class);
+            format = getExpression(0).evaluate(feature, String.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -63,7 +61,7 @@ public class FilterFunction_dateParse extends FunctionExpressionImpl {
         }
 
         try { // attempt to get value and perform conversion
-            date = getExpression(1).evaluate(feature, String.class); 
+            date = getExpression(1).evaluate(feature, String.class);
         } catch (Exception e) // probably a type error
         {
             throw new IllegalArgumentException(
@@ -73,11 +71,8 @@ public class FilterFunction_dateParse extends FunctionExpressionImpl {
         DateFormat dateFormat = new SimpleDateFormat(format);
         try {
             return dateFormat.parse(date);
-        } catch(ParseException e) {
+        } catch (ParseException e) {
             throw new IllegalArgumentException("Invalid date, could not parse", e);
         }
     }
-
-    
-
 }

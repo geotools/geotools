@@ -28,6 +28,7 @@ org.geotools.referencing.operation.projection.HotineObliqueMercator$Provider_Two
 org.geotools.referencing.operation.projection.AlbersEqualArea$Provider
 org.geotools.referencing.operation.projection.LambertConformal1SP$Provider
 org.geotools.referencing.operation.projection.LambertConformal2SP$Provider
+org.geotools.referencing.operation.projection.LambertConformalEsriProvider
 org.geotools.referencing.operation.projection.LambertConformalBelgium$Provider
 org.geotools.referencing.operation.projection.LambertAzimuthalEqualArea$Provider
 org.geotools.referencing.operation.projection.Orthographic$Provider

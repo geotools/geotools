@@ -20,32 +20,24 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.xlink.XLINK;
 import org.geotools.xml.ComplexBinding;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-
 
 /**
  * Utility class for gml3 encoding.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- *
- *
- *
  * @source $URL$
  */
 public class GML3EncodingUtils {
@@ -83,9 +75,7 @@ public class GML3EncodingUtils {
         }
     }
 
-    /**
-     * @deprecated use {@link #toURI(CoordinateReferenceSystem)}.
-     */
+    /** @deprecated use {@link #toURI(CoordinateReferenceSystem)}. */
     static URI crs(CoordinateReferenceSystem crs) {
         return toURI(crs);
     }
@@ -97,18 +87,19 @@ public class GML3EncodingUtils {
     static String getID(Geometry g) {
         return GML2EncodingUtils.getID(g);
     }
-    
+
     static String getName(Geometry g) {
         return GML2EncodingUtils.getName(g);
     }
-    
+
     static String getDescription(Geometry g) {
         return GML2EncodingUtils.getDescription(g);
     }
-    
+
     /**
-     * Helper method used to implement {@link ComplexBinding#getProperty(Object, QName)}
-     * for bindings of geometry reference types: 
+     * Helper method used to implement {@link ComplexBinding#getProperty(Object, QName)} for
+     * bindings of geometry reference types:
+     *
      * <ul>
      *   <li>GeometryPropertyType
      *   <li>PointPropertyType
@@ -116,23 +107,25 @@ public class GML3EncodingUtils {
      *   <li>PolygonPropertyType
      * </ul>
      */
-    static Object getProperty( Geometry geometry, QName name ) {
+    static Object getProperty(Geometry geometry, QName name) {
 
-        if (GML._Geometry.equals(name) || GML.Point.equals( name ) || 
-            GML.LineString.equals( name ) || GML.Polygon.equals( name ) ) {
-            //if the geometry is null, return null
-            if ( isEmpty( geometry ) ) {
+        if (GML._Geometry.equals(name)
+                || GML.Point.equals(name)
+                || GML.LineString.equals(name)
+                || GML.Polygon.equals(name)) {
+            // if the geometry is null, return null
+            if (isEmpty(geometry)) {
                 return null;
             }
-            
+
             return geometry;
         }
-        
+
         if (XLINK.HREF.equals(name)) {
-            //only process if geometry is empty
-            if ( isEmpty(geometry) ) {
-                String id = GML3EncodingUtils.getID( geometry );
-                if ( id != null ) {
+            // only process if geometry is empty
+            if (isEmpty(geometry)) {
+                String id = GML3EncodingUtils.getID(geometry);
+                if (id != null) {
                     return "#" + id;
                 }
             }
@@ -140,10 +133,11 @@ public class GML3EncodingUtils {
 
         return null;
     }
-    
+
     /**
-     * Helper method used to implement {@link ComplexBinding#getProperties(Object)}
-     * for bindings of geometry reference types: 
+     * Helper method used to implement {@link ComplexBinding#getProperties(Object)} for bindings of
+     * geometry reference types:
+     *
      * <ul>
      *   <li>GeometryPropertyType
      *   <li>PointPropertyType
@@ -153,28 +147,28 @@ public class GML3EncodingUtils {
      */
     static List getProperties(Geometry geometry) {
 
-        String id = GML3EncodingUtils.getID( geometry );
-        
-        if ( !isEmpty(geometry) && id != null ) {
+        String id = GML3EncodingUtils.getID(geometry);
+
+        if (!isEmpty(geometry) && id != null) {
             // return a comment which is hte xlink href
-            return Collections.singletonList(new Object[] { Encoder.COMMENT, "#" +id });            
+            return Collections.singletonList(new Object[] {Encoder.COMMENT, "#" + id});
         }
-        
+
         return null;
     }
-    
-    static boolean isEmpty( Geometry geometry ) {
-        if ( geometry.isEmpty() ) {
-            //check for case of multi geometry, if it has > 0 goemetries 
+
+    static boolean isEmpty(Geometry geometry) {
+        if (geometry.isEmpty()) {
+            // check for case of multi geometry, if it has > 0 goemetries
             // we consider this to be not empty
-            if ( geometry instanceof GeometryCollection ) {
-                if ( ((GeometryCollection) geometry).getNumGeometries() != 0 ) {
+            if (geometry instanceof GeometryCollection) {
+                if (((GeometryCollection) geometry).getNumGeometries() != 0) {
                     return false;
                 }
             }
             return true;
         }
-        
+
         return false;
     }
 }

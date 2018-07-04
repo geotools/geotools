@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,15 +17,13 @@
 package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
+
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
-
 import java.awt.image.RenderedImage;
 import java.util.Map;
-
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.MultiplyConstDescriptor;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.util.NumberRange;
@@ -34,16 +32,17 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.util.InternationalString;
 
-
 /**
- * Multiplies every sample values of the source coverage by constants (one for each band).
- * If the number of constants supplied is less than the number of bands of the destination,
- * then the constant from entry 0 is applied to all the bands. Otherwise, a constant from a
- * different entry is applied to each band.
+ * Multiplies every sample values of the source coverage by constants (one for each band). If the
+ * number of constants supplied is less than the number of bands of the destination, then the
+ * constant from entry 0 is applied to all the bands. Otherwise, a constant from a different entry
+ * is applied to each band.
  *
- * <P><STRONG>Name:</STRONG>&nbsp;<CODE>"MultiplyConst"</CODE><BR>
- *    <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MultiplyConstDescriptor MultiplyConst}"</CODE><BR>
- *    <STRONG>Parameters:</STRONG></P>
+ * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"MultiplyConst"</CODE><br>
+ * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MultiplyConstDescriptor MultiplyConst}"
+ * </CODE><br>
+ * <STRONG>Parameters:</STRONG>
+ *
  * <table border='3' cellpadding='6' bgcolor='F4F8FF'>
  *   <tr bgcolor='#B9DCFF'>
  *     <th>Name</th>
@@ -69,38 +68,29 @@ import org.opengis.util.InternationalString;
  * </table>
  *
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
- * @see org.geotools.coverage.processing.Operations#multiply(org.opengis.coverage.Coverage, double[])
+ * @see org.geotools.coverage.processing.Operations#multiply(org.opengis.coverage.Coverage,
+ *     double[])
  * @see MultiplyConstDescriptor
- *
- * @todo Should operates on {@code sampleToGeophysics} transform when possible.
- *       See <A HREF="http://jira.codehaus.org/browse/GEOT-610">GEOT-610</A>.
+ * @todo Should operates on {@code sampleToGeophysics} transform when possible. See <A
+ *     HREF="http://jira.codehaus.org/browse/GEOT-610">GEOT-610</A>.
  */
 public class MultiplyConst extends OperationJAI {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -1077713495023498436L;
 
-    /**
-     * Constructs a default {@code "MultiplyConst"} operation.
-     */
+    /** Constructs a default {@code "MultiplyConst"} operation. */
     public MultiplyConst() {
-    	super("MultiplyConst", getOperationDescriptor(JAIExt.getOperationName("MultiplyConst")));
+        super("MultiplyConst", getOperationDescriptor(JAIExt.getOperationName("MultiplyConst")));
     }
-    
+
     public String getName() {
         return "MultiplyConst";
     }
 
-    /**
-     * Returns the expected range of values for the resulting image.
-     */
+    /** Returns the expected range of values for the resulting image. */
     protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
         final double[] constants = (double[]) parameters.parameters.getObjectParameter("constants");
         if (constants.length == 1) {
@@ -108,22 +98,28 @@ public class MultiplyConst extends OperationJAI {
             final NumberRange range = ranges[0];
             final double min = range.getMinimum() * c;
             final double max = range.getMaximum() * c;
-            return (max<min) ? NumberRange.create(max, min) : NumberRange.create(min, max);
+            return (max < min) ? NumberRange.create(max, min) : NumberRange.create(min, max);
         }
         return super.deriveRange(ranges, parameters);
     }
-    
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+
+    protected void handleJAIEXTParams(
+            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
-        if(JAIExt.isJAIExtOperation("operationConst")){
+        if (JAIExt.isJAIExtOperation("operationConst")) {
             parameters.set(Operator.MULTIPLY, 1);
         }
         handleROINoDataInternal(parameters, source, "operationConst", 2, 3);
     }
-    
-    protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
-            InternationalString name, MathTransform gridToCRS, GridCoverage2D[] sources,
+
+    protected Map<String, ?> getProperties(
+            RenderedImage data,
+            CoordinateReferenceSystem crs,
+            InternationalString name,
+            MathTransform gridToCRS,
+            GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(null, parameters.parameters, sources[0], "operationConst", 2, 3, 4);
+        return handleROINoDataProperties(
+                null, parameters.parameters, sources[0], "operationConst", 2, 3, 4);
     }
 }

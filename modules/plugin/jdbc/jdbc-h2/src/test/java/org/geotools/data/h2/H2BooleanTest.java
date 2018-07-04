@@ -19,16 +19,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCBooleanOnlineTest;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2BooleanTest extends JDBCBooleanOnlineTest {
 
     @Override
     protected JDBCBooleanTestSetup createTestSetup() {
         return new H2BooleanTestSetup();
     }
-
 }

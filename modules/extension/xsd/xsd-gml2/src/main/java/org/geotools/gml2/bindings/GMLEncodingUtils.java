@@ -17,18 +17,20 @@
 package org.geotools.gml2.bindings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.logging.Logger;
-
+import java.util.stream.Collectors;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDCompositor;
 import org.eclipse.xsd.XSDDerivationMethod;
@@ -47,6 +49,14 @@ import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
 import org.geotools.xml.XSD;
 import org.geotools.xs.XS;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
@@ -63,38 +73,29 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.xml.sax.Attributes;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLEncodingUtils {
 
     /** logging instance */
-    static Logger LOGGER = Logging.getLogger( "org.geotools.gml");
-    
+    static Logger LOGGER = Logging.getLogger("org.geotools.gml");
+
     XSD gml;
-    
+
     public GMLEncodingUtils(XSD gml) {
         this.gml = gml;
     }
-    
-    public List AbstractFeatureType_getProperties(Object object,
-            XSDElementDeclaration element, SchemaIndex schemaIndex, Set<String> toFilter,
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public List AbstractFeatureType_getProperties(
+            Object object,
+            XSDElementDeclaration element,
+            SchemaIndex schemaIndex,
+            Set<String> toFilter,
             Configuration configuration) {
-        
+
         Feature feature = (Feature) object;
-        
-        //check if this was a resolved feature, if so dont return anything
+
+        // check if this was a resolved feature, if so dont return anything
         // TODO: this is just a hack for our lame xlink implementation
         if (feature.getUserData().get("xlink:id") != null) {
             return Collections.EMPTY_LIST;
@@ -111,11 +112,11 @@ public class GMLEncodingUtils {
         String typeName = featureType.getName().getLocalPart();
         QName qualifiedTypeName = new QName(namespace, typeName);
 
-        //find the type in the schema
+        // find the type in the schema
         XSDTypeDefinition type = schemaIndex.getTypeDefinition(qualifiedTypeName);
 
         if (type == null) {
-            //type not found, do a check for an element, and use its type
+            // type not found, do a check for an element, and use its type
             XSDElementDeclaration e = schemaIndex.getElementDeclaration(qualifiedTypeName);
 
             if (e != null) {
@@ -126,22 +127,28 @@ public class GMLEncodingUtils {
         if (type == null) {
             if (featureType instanceof SimpleFeatureType) {
                 // could not find the feature type in the schema, create a mock one
-                LOGGER.fine("Could find type for " + typeName
-                        + " in the schema, generating type from feature.");
-                type = createXmlTypeFromFeatureType((SimpleFeatureType) featureType, schemaIndex,
-                        toFilter);
+                LOGGER.fine(
+                        "Could find type for "
+                                + typeName
+                                + " in the schema, generating type from feature.");
+                type =
+                        createXmlTypeFromFeatureType(
+                                (SimpleFeatureType) featureType, schemaIndex, toFilter);
             } else {
                 // look for an element declaration smuggled in the UserData map.
-                XSDElementDeclaration e = (XSDElementDeclaration) feature.getDescriptor()
-                        .getUserData().get(XSDElementDeclaration.class);
+                XSDElementDeclaration e =
+                        (XSDElementDeclaration)
+                                feature.getDescriptor()
+                                        .getUserData()
+                                        .get(XSDElementDeclaration.class);
                 if (e != null) {
                     type = e.getTypeDefinition();
                 } else if (element != null) {
                     // as a last resort, use type definition from element declaration
                     XSDTypeDefinition elementTypeDef = element.getTypeDefinition();
-                    QName qualifiedElementTypeName = new QName(
-                            elementTypeDef.getTargetNamespace(),
-                            elementTypeDef.getName());
+                    QName qualifiedElementTypeName =
+                            new QName(
+                                    elementTypeDef.getTargetNamespace(), elementTypeDef.getName());
                     if (qualifiedTypeName.equals(qualifiedElementTypeName)) {
                         type = elementTypeDef;
                     }
@@ -150,35 +157,38 @@ public class GMLEncodingUtils {
         }
 
         if (type == null) {
-            throw new RuntimeException("Could not find type for " + qualifiedTypeName
-                    + " in schema");
+            throw new RuntimeException(
+                    "Could not find type for " + qualifiedTypeName + " in schema");
         }
 
         List particles = Schemas.getChildElementParticles(type, true);
         List properties = new ArrayList();
+        Set<Name> unsubstPropertyNames = null;
 
-    O:  for (int i = 0; i < particles.size(); i++) {
+        O:
+        for (int i = 0; i < particles.size(); i++) {
             XSDParticle particle = (XSDParticle) particles.get(i);
             XSDElementDeclaration attribute = (XSDElementDeclaration) particle.getContent();
 
             if (attribute.isElementDeclarationReference()) {
                 attribute = attribute.getResolvedElementDeclaration();
             }
-            
+
             if (gml.qName("boundedBy")
                     .equals(new QName(attribute.getTargetNamespace(), attribute.getName()))) {
                 BoundingBox bounds = getBoundedBy(feature, configuration);
                 if (bounds != null) {
-                    properties.add(new Object[] { particle, bounds });
+                    properties.add(new Object[] {particle, bounds});
                 }
             } else if (featureType instanceof SimpleFeatureType) {
                 // first simple feature hack, if the schema "overrides" gml attributes like
                 // name and description, ignore the gml version
                 boolean skip = false;
                 if (gml.getNamespaceURI().equals(attribute.getTargetNamespace())) {
-                    for (int j = i+1; j < particles.size(); j++) {
+                    for (int j = i + 1; j < particles.size(); j++) {
                         XSDParticle particle2 = (XSDParticle) particles.get(j);
-                        XSDElementDeclaration attribute2 = (XSDElementDeclaration) particle2.getContent();
+                        XSDElementDeclaration attribute2 =
+                                (XSDElementDeclaration) particle2.getContent();
                         if (attribute2.isElementDeclarationReference()) {
                             attribute2 = attribute2.getResolvedElementDeclaration();
                         }
@@ -191,7 +201,7 @@ public class GMLEncodingUtils {
                 if (skip) {
                     continue;
                 }
-                
+
                 // simple feature brain damage: discard namespace
                 // make sure the feature type has an element
                 if (!isValidDescriptor(featureType, new NameImpl(attribute.getName()))) {
@@ -205,24 +215,78 @@ public class GMLEncodingUtils {
                     if (obj != null && obj instanceof Map) {
                         userData.putAll((Map) obj);
                     }
-                    userData.put(CoordinateReferenceSystem.class, featureType
-                            .getCoordinateReferenceSystem());
+                    userData.put(
+                            CoordinateReferenceSystem.class,
+                            featureType.getCoordinateReferenceSystem());
                     ((Geometry) attributeValue).setUserData(userData);
                 }
-                properties.add(new Object[] { particle, attributeValue });
+                properties.add(new Object[] {particle, attributeValue});
             } else {
                 // namespaces matter for non-simple feature types
-                Name propertyName = new NameImpl(attribute.getTargetNamespace(), attribute
-                        .getName());
+                Name propertyName =
+                        new NameImpl(attribute.getTargetNamespace(), attribute.getName());
                 // make sure the feature type has an element
                 if (!isValidDescriptor(featureType, propertyName)) {
                     continue;
                 }
+                Collection<Property> featureProperties = feature.getProperties(propertyName);
+                // if no feature properties are found for this element check substitution groups
+                if (featureProperties.size() == 0) {
+                    if (unsubstPropertyNames == null) {
+                        // lazy initialisation of a set of all property names that
+                        // will be obtained without considering substitution groups
+                        unsubstPropertyNames =
+                                (Set<Name>)
+                                        particles
+                                                .stream()
+                                                .map(
+                                                        new Function() {
+
+                                                            @Override
+                                                            public Object apply(Object particle) {
+                                                                XSDElementDeclaration attr =
+                                                                        (XSDElementDeclaration)
+                                                                                ((XSDParticle)
+                                                                                                particle)
+                                                                                        .getContent();
+                                                                if (attr
+                                                                        .isElementDeclarationReference()) {
+                                                                    attr =
+                                                                            attr
+                                                                                    .getResolvedElementDeclaration();
+                                                                }
+                                                                return new NameImpl(
+                                                                        attr.getTargetNamespace(),
+                                                                        attr.getName());
+                                                            }
+                                                        })
+                                                .collect(Collectors.toSet());
+                    }
+                    for (XSDElementDeclaration xsdElementDeclaration :
+                            attribute.getSubstitutionGroup()) {
+                        Name substPropertyName =
+                                new NameImpl(
+                                        xsdElementDeclaration.getTargetNamespace(),
+                                        xsdElementDeclaration.getName());
+                        if (!unsubstPropertyNames.contains(substPropertyName)) {
+                            featureProperties = feature.getProperties(substPropertyName);
+                            if (featureProperties.size() > 0) {
+                                // the particle is used outside this class, replace
+                                // the particle with the correct substituted element
+                                particle =
+                                        (XSDParticle) particle.cloneConcreteComponent(true, false);
+                                particle.setContent(xsdElementDeclaration);
+                                break;
+                            }
+                        }
+                    }
+                }
                 // get the value (might be multiple)
-                for (Property property : feature.getProperties(propertyName)) {
+                for (Property property : featureProperties) {
                     Object value;
                     if (property instanceof ComplexAttribute) {
-                        // do not unpack complex attributes as these may have their own bindings, which
+                        // do not unpack complex attributes as these may have their own bindings,
+                        // which
                         // will be applied by the encoder
                         value = property;
                     } else if (property instanceof GeometryAttribute) {
@@ -230,8 +294,10 @@ public class GMLEncodingUtils {
                         if (value != null) {
                             // ensure CRS is passed to the Geometry object
                             Geometry geometry = (Geometry) value;
-                            CoordinateReferenceSystem crs = ((GeometryAttribute) property)
-                                    .getDescriptor().getCoordinateReferenceSystem();
+                            CoordinateReferenceSystem crs =
+                                    ((GeometryAttribute) property)
+                                            .getDescriptor()
+                                            .getCoordinateReferenceSystem();
                             Map<Object, Object> userData = new HashMap<Object, Object>();
                             Object obj = geometry.getUserData();
                             if (obj != null && obj instanceof Map) {
@@ -244,30 +310,30 @@ public class GMLEncodingUtils {
                         // non-complex bindings are unpacked as for simple feature case
                         value = property.getValue();
                     }
-                    properties.add(new Object[] { particle, value });
+                    properties.add(new Object[] {particle, value});
                 }
             }
         }
 
         return properties;
     }
-    
-    public XSDTypeDefinition createXmlTypeFromFeatureType(SimpleFeatureType featureType,
-            SchemaIndex schemaIndex, Set<String> toFilter) {
+
+    public XSDTypeDefinition createXmlTypeFromFeatureType(
+            SimpleFeatureType featureType, SchemaIndex schemaIndex, Set<String> toFilter) {
         XSDFactory f = XSDFactory.eINSTANCE;
         Document dom;
         try {
             dom = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         } catch (ParserConfigurationException e) {
-            throw new RuntimeException( e );
+            throw new RuntimeException(e);
         }
-        
+
         XSDComplexTypeDefinition type = f.createXSDComplexTypeDefinition();
-        type.setTargetNamespace( featureType.getName().getNamespaceURI() );
-        type.setName( featureType.getTypeName() + "Type" );
+        type.setTargetNamespace(featureType.getName().getNamespaceURI());
+        type.setName(featureType.getTypeName() + "Type");
         type.setDerivationMethod(XSDDerivationMethod.EXTENSION_LITERAL);
         type.setBaseTypeDefinition(schemaIndex.getTypeDefinition(gml.qName("AbstractFeatureType")));
-                
+
         XSDModelGroup group = f.createXSDModelGroup();
         group.setCompositor(XSDCompositor.SEQUENCE_LITERAL);
 
@@ -275,72 +341,102 @@ public class GMLEncodingUtils {
         for (int i = 0; i < attributes.size(); i++) {
             AttributeDescriptor attribute = (AttributeDescriptor) attributes.get(i);
 
-            if ( toFilter.contains( attribute.getLocalName() ) ) {
+            if (toFilter.contains(attribute.getLocalName())) {
                 continue;
             }
-           
+
             XSDElementDeclaration element = f.createXSDElementDeclaration();
             element.setName(attribute.getLocalName());
             element.setNillable(attribute.isNillable());
 
-            //check for geometry
-            if ( attribute instanceof GeometryDescriptor ) {
+            // check for geometry
+            if (attribute instanceof GeometryDescriptor) {
                 Class binding = attribute.getType().getBinding();
-                if ( Point.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("PointPropertyType")));
+                if (Point.class.isAssignableFrom(binding)) {
+                    element.setTypeDefinition(
+                            schemaIndex.getTypeDefinition(gml.qName("PointPropertyType")));
+                } else if (LineString.class.isAssignableFrom(binding)) {
+                    // check both GML 3.1 and GML 3.2 types names
+                    element.setTypeDefinition(
+                            searchType(schemaIndex, "LineStringPropertyType", "CurvePropertyType"));
+                } else if (Polygon.class.isAssignableFrom(binding)) {
+                    // check both GML 3.1 and GML 3.2 types names
+                    element.setTypeDefinition(
+                            searchType(schemaIndex, "PolygonPropertyType", "SurfacePropertyType"));
+                } else if (MultiPoint.class.isAssignableFrom(binding)) {
+                    element.setTypeDefinition(
+                            schemaIndex.getTypeDefinition(gml.qName("MultiPointPropertyType")));
+                } else if (MultiLineString.class.isAssignableFrom(binding)) {
+                    // check both GML 3.1 and GML 3.2 types names
+                    element.setTypeDefinition(
+                            searchType(
+                                    schemaIndex,
+                                    "MultiLineStringPropertyType",
+                                    "MultiCurvePropertyType"));
+                } else if (MultiPolygon.class.isAssignableFrom(binding)) {
+                    // check both GML 3.1 and GML 3.2 types names
+                    element.setTypeDefinition(
+                            searchType(
+                                    schemaIndex,
+                                    "MultiPolygonPropertyType",
+                                    "MultiSurfacePropertyType"));
+                } else {
+                    element.setTypeDefinition(
+                            schemaIndex.getTypeDefinition(gml.qName("GeometryPropertyType")));
                 }
-                else if ( LineString.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("LineStringPropertyType")));
-                }
-                else if ( Polygon.class.isAssignableFrom( binding) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("PolygonPropertyType")));
-                }
-                else if ( MultiPoint.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("MultiPointPropertyType")));
-                }
-                else if ( MultiLineString.class.isAssignableFrom( binding ) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("MultiLineStringPropertyType")));
-                }
-                else if ( MultiPolygon.class.isAssignableFrom( binding) ) {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("MultiPolygonPropertyType")));
-                }
-                else {
-                    element.setTypeDefinition(schemaIndex.getTypeDefinition(gml
-                            .qName("GeometryPropertyType")));
-                }
-            }
-            else {
-                //TODO: do a proper mapping
+            } else {
+                // TODO: do a proper mapping
                 element.setTypeDefinition(schemaIndex.getTypeDefinition(XS.STRING));
             }
-            element.setTargetNamespace(featureType.getName().getNamespaceURI());
-            
+
+            String attributeNs = attribute.getName().getNamespaceURI();
+            if (attributeNs != null && !attributeNs.trim().isEmpty()) {
+                element.setTargetNamespace(attributeNs);
+            } else {
+                element.setTargetNamespace(featureType.getName().getNamespaceURI());
+            }
 
             XSDParticle particle = f.createXSDParticle();
             particle.setMinOccurs(attribute.getMinOccurs());
             particle.setMaxOccurs(attribute.getMaxOccurs());
             particle.setContent(element);
-            particle.setElement( dom.createElementNS( XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, "element" ) );
-            
+            particle.setElement(
+                    dom.createElementNS(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, "element"));
+
             group.getContents().add(particle);
         }
 
         XSDParticle particle = f.createXSDParticle();
         particle.setContent(group);
-        particle.setElement( dom.createElementNS( XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, "sequence") );
+        particle.setElement(
+                dom.createElementNS(XSDConstants.SCHEMA_FOR_SCHEMA_URI_2001, "sequence"));
         type.setContent(particle);
         return type;
     }
-    
+
+    /**
+     * Return the first XSD type definition found in the schema index for the provided GML types
+     * names. NULL is returned if no XSD type definition is found.
+     */
+    private XSDTypeDefinition searchType(SchemaIndex schemaIndex, String... typesNames) {
+        for (String typeName : typesNames) {
+            XSDTypeDefinition type = schemaIndex.getTypeDefinition(gml.qName(typeName));
+            if (type != null) {
+                // we found a matching XSD type
+                return type;
+            }
+        }
+        // no matching XSD type found
+        LOGGER.fine(
+                String.format(
+                        "No type definition found for types [%s].",
+                        Arrays.stream(typesNames).collect(Collectors.joining(", "))));
+        return null;
+    }
+
     /**
      * Return true if name is the name of a descriptor of the type or of an ancestor type.
-     * 
+     *
      * @param type type to test
      * @param name name of descriptor
      * @return true if the type or an ancestor has a descriptor of this name
@@ -354,14 +450,12 @@ public class GMLEncodingUtils {
             return false;
         }
     }
-    
+
     /**
      * Return gml:boundedBy property if wanted.
-     * 
-     * @param feature
-     *            feature for which bounds might be required
-     * @param configuration
-     *            encoder configuration, used to suppress feature bounds
+     *
+     * @param feature feature for which bounds might be required
+     * @param configuration encoder configuration, used to suppress feature bounds
      * @return the feature bounds, or null if none or unwanted
      */
     private BoundingBox getBoundedBy(Feature feature, Configuration configuration) {
@@ -372,8 +466,8 @@ public class GMLEncodingUtils {
             BoundingBox bounds = feature.getBounds();
             // do a check for the case where the feature has no geometry properties
             if (bounds.isEmpty()
-                    && (feature.getDefaultGeometryProperty() == null || feature
-                            .getDefaultGeometryProperty().getValue() == null)) {
+                    && (feature.getDefaultGeometryProperty() == null
+                            || feature.getDefaultGeometryProperty().getValue() == null)) {
                 return null;
             } else {
                 return bounds;
@@ -381,29 +475,33 @@ public class GMLEncodingUtils {
         }
     }
 
-
     public Object GeometryPropertyType_getProperty(Geometry geometry, QName name) {
         return GeometryPropertyType_getProperty(geometry, name, true, false);
     }
 
-    public Object GeometryPropertyType_getProperty(Geometry geometry, QName name,
-            boolean includeAbstractGeometry) {
+    public Object GeometryPropertyType_getProperty(
+            Geometry geometry, QName name, boolean includeAbstractGeometry) {
         return GeometryPropertyType_getProperty(geometry, name, includeAbstractGeometry, false);
-
     }
 
-    public Object GeometryPropertyType_getProperty(Geometry geometry, QName name,
-            boolean includeAbstractGeometry, boolean makeEmpty) {
+    public Object GeometryPropertyType_getProperty(
+            Geometry geometry, QName name, boolean includeAbstractGeometry, boolean makeEmpty) {
 
-        if (name.equals(gml.qName("Point")) || name.equals(gml.qName("LineString"))
-                || name.equals(gml.qName("Polygon")) || name.equals(gml.qName("MultiPoint"))
+        if (name.equals(gml.qName("Point"))
+                || name.equals(gml.qName("LineString"))
+                || name.equals(gml.qName("Polygon"))
+                || name.equals(gml.qName("MultiPoint"))
                 || name.equals(gml.qName("MultiLineString"))
-                || name.equals(gml.qName("MultiPolygon")) || name.equals(gml.qName("MultiSurface"))
-                || name.equals(gml.qName("AbstractSurface")) || name.equals(gml.qName("_Surface"))
-                || name.equals(gml.qName("_Curve")) || name.equals(gml.qName("AbstractCurve"))
+                || name.equals(gml.qName("MultiPolygon"))
+                || name.equals(gml.qName("MultiSurface"))
+                || name.equals(gml.qName("AbstractSurface"))
+                || name.equals(gml.qName("_Surface"))
+                || name.equals(gml.qName("_Curve"))
+                || name.equals(gml.qName("AbstractCurve"))
                 || name.equals(gml.qName("MultiCurve"))
-                || (includeAbstractGeometry && (name.equals(gml.qName("_Geometry"))
-                                                || name.equals(gml.qName("AbstractGeometry"))))) {
+                || (includeAbstractGeometry
+                        && (name.equals(gml.qName("_Geometry"))
+                                || name.equals(gml.qName("AbstractGeometry"))))) {
             // if the geometry is null, return null
             if (isEmpty(geometry) || makeEmpty) {
                 return null;
@@ -413,8 +511,8 @@ public class GMLEncodingUtils {
         }
 
         if (geometry.getUserData() instanceof Map) {
-            Map<Name, Object> clientProperties = (Map<Name, Object>) ((Map) geometry.getUserData())
-                    .get(Attributes.class);
+            Map<Name, Object> clientProperties =
+                    (Map<Name, Object>) ((Map) geometry.getUserData()).get(Attributes.class);
 
             Name cname = toTypeName(name);
             if (clientProperties != null && clientProperties.keySet().contains(cname))
@@ -430,12 +528,11 @@ public class GMLEncodingUtils {
         }
 
         return null;
-
     }
 
     /**
      * Convert a {@link QName} to a {@link Name}.
-     * 
+     *
      * @param name
      * @return
      */
@@ -446,98 +543,91 @@ public class GMLEncodingUtils {
             return new NameImpl(name.getNamespaceURI(), name.getLocalPart());
         }
     }
-    
+
     public List GeometryPropertyType_getProperties(Geometry geometry) {
         return null;
     }
-    
-    public static boolean isEmpty( Geometry geometry ) {
-        if ( geometry.isEmpty() ) {
-            //check for case of multi geometry, if it has > 0 goemetries 
+
+    public static boolean isEmpty(Geometry geometry) {
+        if (geometry.isEmpty()) {
+            // check for case of multi geometry, if it has > 0 goemetries
             // we consider this to be not empty
-            if ( geometry instanceof GeometryCollection ) {
-                if ( ((GeometryCollection) geometry).getNumGeometries() != 0 ) {
+            if (geometry instanceof GeometryCollection) {
+                if (((GeometryCollection) geometry).getNumGeometries() != 0) {
                     return false;
                 }
             }
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
-     * Determines the identifier (gml:id) of the geometry by checking
-     * {@link Geometry#getUserData()}.
-     * <p>
-     * This method returns <code>null</code> when no id can be found.
-     * </p>
+     * Determines the identifier (gml:id) of the geometry by checking {@link
+     * Geometry#getUserData()}.
+     *
+     * <p>This method returns <code>null</code> when no id can be found.
      */
     public String getID(Geometry g) {
-        return getMetadata( g, "gml:id" );
+        return getMetadata(g, "gml:id");
     }
-    
+
     /**
-     * Set the identifier (gml:id) of the geometry as a key in the user data map
-     * {@link Geometry#getUserData()} (creating it with{@link Geometry#getUserData()}
-     * if it does not already exist). If the user data exists and is not a
-     * {@link Map}, this method has no effect.
-     * 
+     * Set the identifier (gml:id) of the geometry as a key in the user data map {@link
+     * Geometry#getUserData()} (creating it with{@link Geometry#getUserData()} if it does not
+     * already exist). If the user data exists and is not a {@link Map}, this method has no effect.
+     *
      * @param g the geometry
      * @param id the gml:id to be set
      */
     public void setID(Geometry g, String id) {
         setMetadata(g, "gml:id", id);
     }
-    
+
     /**
-     * Determines the description (gml:description) of the geometry by checking
-     * {@link Geometry#getUserData()}.
-     * <p>
-     * This method returns <code>null</code> when no name can be found.
-     * </p>
+     * Determines the description (gml:description) of the geometry by checking {@link
+     * Geometry#getUserData()}.
+     *
+     * <p>This method returns <code>null</code> when no name can be found.
      */
     public String getName(Geometry g) {
-        return getMetadata( g, "gml:name" );
+        return getMetadata(g, "gml:name");
     }
-    
+
     /**
-     * Set the name (gml:name) of the geometry as a key in the user data map
-     * {@link Geometry#getUserData()} (creating it with{@link Geometry#getUserData()}
-     * if it does not already exist). If the user data exists and is not a
-     * {@link Map}, this method has no effect.
-     * 
+     * Set the name (gml:name) of the geometry as a key in the user data map {@link
+     * Geometry#getUserData()} (creating it with{@link Geometry#getUserData()} if it does not
+     * already exist). If the user data exists and is not a {@link Map}, this method has no effect.
+     *
      * @param g the geometry
      * @param name the gml:name to be set
      */
     public void setName(Geometry g, String name) {
         setMetadata(g, "gml:name", name);
     }
-    
+
     /**
-     * Determines the name (gml:name) of the geometry by checking
-     * {@link Geometry#getUserData()}.
-     * <p>
-     * This method returns <code>null</code> when no description can be found.
-     * </p>
+     * Determines the name (gml:name) of the geometry by checking {@link Geometry#getUserData()}.
+     *
+     * <p>This method returns <code>null</code> when no description can be found.
      */
     public String getDescription(Geometry g) {
-        return getMetadata( g, "gml:description" );
+        return getMetadata(g, "gml:description");
     }
-    
+
     /**
-     * Set the description (gml:description) of the geometry as a key in the user data map
-     * {@link Geometry#getUserData()} (creating it with{@link Geometry#getUserData()}
-     * if it does not already exist). If the user data exists and is not a
-     * {@link Map}, this method has no effect.
-     * 
+     * Set the description (gml:description) of the geometry as a key in the user data map {@link
+     * Geometry#getUserData()} (creating it with{@link Geometry#getUserData()} if it does not
+     * already exist). If the user data exists and is not a {@link Map}, this method has no effect.
+     *
      * @param g the geometry
      * @param description the gml:description to be set
      */
     public void setDescription(Geometry g, String description) {
         setMetadata(g, "gml:description", description);
     }
-    
+
     @SuppressWarnings("rawtypes")
     String getMetadata(Geometry g, String metadata) {
         if (g.getUserData() instanceof Map) {
@@ -546,8 +636,8 @@ public class GMLEncodingUtils {
         }
         return null;
     }
-    
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
     void setMetadata(Geometry g, String metadata, String value) {
         if (g.getUserData() == null) {
             g.setUserData(new HashMap());
@@ -559,7 +649,7 @@ public class GMLEncodingUtils {
 
     /**
      * Checks if a feature is a joined one
-     * 
+     *
      * @param obj
      * @return
      */
@@ -580,7 +670,7 @@ public class GMLEncodingUtils {
 
     /**
      * Splits a joined feature into its components
-     * 
+     *
      * @param obj
      * @return
      */
@@ -601,5 +691,4 @@ public class GMLEncodingUtils {
 
         return (SimpleFeature[]) features.toArray(new SimpleFeature[features.size()]);
     }
-
 }

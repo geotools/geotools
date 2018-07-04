@@ -25,5 +25,4 @@ public class MySQLTemporalFilterOnlineTest extends JDBCTemporalFilterOnlineTest 
     protected JDBCDateTestSetup createTestSetup() {
         return new MySQLDateTestSetup();
     }
-
 }

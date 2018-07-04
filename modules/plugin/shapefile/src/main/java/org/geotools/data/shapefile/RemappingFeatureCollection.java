@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.collection.DecoratingSimpleFeatureCollection;
@@ -36,36 +35,37 @@ import org.opengis.filter.Filter;
 
 /**
  * FeatureCollection that remaps attribute names using a given map.
- * 
+ *
  * @author Mauro Bartolomeoli, mbarto@infosia.it
  */
 class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
 
     /**
-     * Returns a shapefile compatible collection, that is, geometry field is always named the_geom and field names have a max length of 10.
-     * Will return the original collection if already compatible
-     * 
+     * Returns a shapefile compatible collection, that is, geometry field is always named the_geom
+     * and field names have a max length of 10. Will return the original collection if already
+     * compatible
+     *
      * @param fc
      * @return
      */
     public static SimpleFeatureCollection getShapefileCompatibleCollection(
             SimpleFeatureCollection fc) {
         Map<String, String> attributeMappings = createAttributeMappings(fc.getSchema());
-        
+
         // check if the remapping is actually needed
         for (Entry<String, String> entry : attributeMappings.entrySet()) {
-            if(!entry.getKey().equals(entry.getValue())) {
+            if (!entry.getKey().equals(entry.getValue())) {
                 return new RemappingFeatureCollection(fc, attributeMappings);
             }
         }
-        
+
         // return the original collection otherwise
         return fc;
     }
 
     /**
      * Maps schema attributes to shapefile-compatible attributes.
-     * 
+     *
      * @param schema
      * @return
      */
@@ -90,7 +90,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
 
     /**
      * If necessary remaps the name so that it's less than 10 chars long and
-     * 
+     *
      * @param usedFieldNames
      * @param name
      * @return
@@ -115,8 +115,8 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
 
     Map<String, String> attributesMapping;
 
-    public RemappingFeatureCollection(SimpleFeatureCollection delegate,
-            Map<String, String> attributesMapping) {
+    public RemappingFeatureCollection(
+            SimpleFeatureCollection delegate, Map<String, String> attributesMapping) {
         super(delegate);
         this.attributesMapping = attributesMapping;
     }
@@ -126,21 +126,21 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
     }
 
     /**
-     * Builds an inverted version of the given map. Inversion means that key->value becomes value->key
-     * 
+     * Builds an inverted version of the given map. Inversion means that key->value becomes
+     * value->key
+     *
      * @param map
      * @return
      */
     static Map<String, String> invertMappings(Map<String, String> map) {
         Map<String, String> result = new HashMap<String, String>();
-        for (String key : map.keySet())
-            result.put(map.get(key), key);
+        for (String key : map.keySet()) result.put(map.get(key), key);
         return result;
     }
 
     /**
      * Gets a new schema, built remapping attribute names via the attributeMappings map.
-     * 
+     *
      * @param schema
      * @return
      */
@@ -150,14 +150,17 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         for (AttributeDescriptor attDesc : schema.getAttributeDescriptors()) {
             if (attDesc instanceof GeometryDescriptor) {
                 GeometryDescriptor geoDesc = (GeometryDescriptor) attDesc;
-                builder.add(attributesMapping.get(attDesc.getLocalName()),
-                        attDesc.getType().getBinding(), geoDesc.getCoordinateReferenceSystem());
+                builder.add(
+                        attributesMapping.get(attDesc.getLocalName()),
+                        attDesc.getType().getBinding(),
+                        geoDesc.getCoordinateReferenceSystem());
             } else {
                 List<Filter> filters = attDesc.getType().getRestrictions();
                 if (filters != null && !filters.isEmpty()) {
                     builder.restrictions(filters);
                 }
-                builder.add(attributesMapping.get(attDesc.getLocalName()),
+                builder.add(
+                        attributesMapping.get(attDesc.getLocalName()),
                         attDesc.getType().getBinding());
             }
         }
@@ -169,14 +172,17 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
     }
 
     /**
-     * Remaps a SimpleFeature, using the given mappings (oldname -> mappedname). The builder uses the mapped schema.
-     * 
+     * Remaps a SimpleFeature, using the given mappings (oldname -> mappedname). The builder uses
+     * the mapped schema.
+     *
      * @param source
      * @param attributeMappings
      * @param builder
      * @return
      */
-    static SimpleFeature remap(SimpleFeature source, Map<String, String> attributeMappings,
+    static SimpleFeature remap(
+            SimpleFeature source,
+            Map<String, String> attributeMappings,
             SimpleFeatureBuilder builder) {
         SimpleFeatureType target = builder.getFeatureType();
         for (int i = 0; i < target.getAttributeCount(); i++) {
@@ -193,9 +199,7 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
         return builder.buildFeature(source.getIdentifier().getID());
     }
 
-    /**
-     * An iterator remapping features as it scrolls through
-     */
+    /** An iterator remapping features as it scrolls through */
     public static class RemappingIterator implements SimpleFeatureIterator {
         Map<String, String> attributesMapping;
 
@@ -203,8 +207,8 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
 
         SimpleFeatureBuilder builder;
 
-        public RemappingIterator(SimpleFeatureIterator delegate, Map attributesMapping,
-                SimpleFeatureType schema) {
+        public RemappingIterator(
+                SimpleFeatureIterator delegate, Map attributesMapping, SimpleFeatureType schema) {
             this.delegate = delegate;
             this.attributesMapping = RemappingFeatureCollection.invertMappings(attributesMapping);
             this.builder = new SimpleFeatureBuilder(schema);
@@ -223,5 +227,4 @@ class RemappingFeatureCollection extends DecoratingSimpleFeatureCollection {
             delegate.close();
         }
     }
-
 }

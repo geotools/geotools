@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,11 +17,10 @@
  */
 package org.geotools.ysld.validate;
 
-import org.yaml.snakeyaml.events.ScalarEvent;
-
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.yaml.snakeyaml.events.ScalarEvent;
 
 /**
  * Top-level validator that checks the expression type and delegates to the appropriate validator
@@ -32,12 +31,13 @@ public class RootValidator extends YsldValidateHandler {
     static Pattern COLOR = Pattern.compile("(?:fill|stroke)-color");
 
     // Name expressions
-    static Pattern NAME = Pattern
-            .compile("shape|font-(?:family|style|weight)|stroke(?:linecap|linejoin)");
+    static Pattern NAME =
+            Pattern.compile("shape|font-(?:family|style|weight)|stroke(?:linecap|linejoin)");
 
     // General expressions
-    static Pattern EXPRESSION = Pattern.compile(
-            "stroke-(?:width|opacity|linejoin|linecap|dashoffset)|offset|shape|gamma|geometry|label|font-(?:family|size|style|weight)|size|rotation|gap|initial-gap|radius|opacity");
+    static Pattern EXPRESSION =
+            Pattern.compile(
+                    "stroke-(?:width|opacity|linejoin|linecap|dashoffset)|offset|shape|gamma|geometry|label|font-(?:family|size|style|weight)|size|rotation|gap|initial-gap|radius|opacity");
 
     @Override
     public void scalar(ScalarEvent evt, YsldValidateContext context) {
@@ -59,26 +59,30 @@ public class RootValidator extends YsldValidateHandler {
         } else if ("scale".equals(key)) {
             context.push(new ScaleValidator());
         } else if ("anchor".equals(key) || "displacement".equals(key)) {
-            context.push(new TupleValidator(
-                    Arrays.asList(new ExpressionValidator(), new ExpressionValidator())));
+            context.push(
+                    new TupleValidator(
+                            Arrays.asList(new ExpressionValidator(), new ExpressionValidator())));
         } else if ("entries".equals(key)) {
             context.push(
-                    new SequenceValidator(new TupleValidator(Arrays.asList(new ColorValidator(), // Colour
-                            new ExpressionValidator(), // Opacity
-                            new ExpressionValidator(), // Quantity
-                            new ScalarValidator() { // Label (arbitrary string, not an expression)
+                    new SequenceValidator(
+                            new TupleValidator(
+                                    Arrays.asList(
+                                            new ColorValidator(), // Colour
+                                            new ExpressionValidator(), // Opacity
+                                            new ExpressionValidator(), // Quantity
+                                            new ScalarValidator() { // Label (arbitrary string, not
+                                                // an expression)
 
-                                @Override
-                                protected String validate(String value, ScalarEvent evt,
-                                        YsldValidateContext context) {
-                                    return null;
-                                }
-
-                            }))));
+                                                @Override
+                                                protected String validate(
+                                                        String value,
+                                                        ScalarEvent evt,
+                                                        YsldValidateContext context) {
+                                                    return null;
+                                                }
+                                            }))));
         } else if ("params".equals(key)) {
             context.push(new PermissiveValidator());
         }
-
     }
-
 }

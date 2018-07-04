@@ -20,43 +20,39 @@ import org.geotools.referencing.operation.builder.LocalizationGrid;
 
 /**
  * A NADCON localization grid
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  * @author Rueben Schulz
  */
 public class NADConGridShift extends LocalizationGrid {
-    
-    /**
-     * The minimum longitude value covered by this grid (decimal degrees)
-     */
+
+    /** The minimum longitude value covered by this grid (decimal degrees) */
     private double minX;
 
-    /**
-     * The minimum latitude value covered by this grid (decimal degrees)
-     */
+    /** The minimum latitude value covered by this grid (decimal degrees) */
     private double minY;
 
-    /**
-     * The maximum longitude value covered by this grid (decimal degrees)
-     */
+    /** The maximum longitude value covered by this grid (decimal degrees) */
     private double maxX;
 
-    /**
-     * The maximum latitude value covered by this grid (decimal degrees)
-     */
+    /** The maximum latitude value covered by this grid (decimal degrees) */
     private double maxY;
 
-    /**
-     * The difference between longitude grid points (decimal degrees)
-     */
+    /** The difference between longitude grid points (decimal degrees) */
     private double dx;
 
-    /**
-     * The difference between latitude grid points (decimal degrees)
-     */
+    /** The difference between latitude grid points (decimal degrees) */
     private double dy;
 
-    public NADConGridShift(double xmin, double ymin, double xmax, double ymax, double dx, double dy, int width, int height) {
+    public NADConGridShift(
+            double xmin,
+            double ymin,
+            double xmax,
+            double ymax,
+            double dx,
+            double dy,
+            int width,
+            int height) {
         super(width, height);
         this.minX = xmin;
         this.maxX = xmax;
@@ -65,21 +61,31 @@ public class NADConGridShift extends LocalizationGrid {
         this.dx = dx;
         this.dy = dy;
     }
-    
+
     /**
-     * Returns a hash value for this transform. To make this faster it does not
-     * check the grid values.
+     * Returns a hash value for this transform. To make this faster it does not check the grid
+     * values.
      *
      * @return a hash value for this transform.
      */
     @Override
     public final int hashCode() {
-        final long code = Double.doubleToLongBits(minX)
-            + (37 * (Double.doubleToLongBits(minY)
-            + (37 * (Double.doubleToLongBits(maxX)
-            + (37 * (Double.doubleToLongBits(maxY)
-            + (37 * (Double.doubleToLongBits(dx)
-            + (37 * (Double.doubleToLongBits(dy)))))))))));
+        final long code =
+                Double.doubleToLongBits(minX)
+                        + (37
+                                * (Double.doubleToLongBits(minY)
+                                        + (37
+                                                * (Double.doubleToLongBits(maxX)
+                                                        + (37
+                                                                * (Double.doubleToLongBits(maxY)
+                                                                        + (37
+                                                                                * (Double
+                                                                                                .doubleToLongBits(
+                                                                                                        dx)
+                                                                                        + (37
+                                                                                                * (Double
+                                                                                                        .doubleToLongBits(
+                                                                                                                dy)))))))))));
 
         return (int) code ^ (int) (code >>> 32);
     }
@@ -101,57 +107,43 @@ public class NADConGridShift extends LocalizationGrid {
             final NADConGridShift that = (NADConGridShift) object;
 
             return (Double.doubleToLongBits(this.minX) == Double.doubleToLongBits(that.minX))
-                && (Double.doubleToLongBits(this.minY) == Double.doubleToLongBits(that.minY))
-                && (Double.doubleToLongBits(this.maxX) == Double.doubleToLongBits(that.maxX))
-                && (Double.doubleToLongBits(this.maxY) == Double.doubleToLongBits(that.maxY))
-                && (Double.doubleToLongBits(this.dx)   == Double.doubleToLongBits(that.dx))
-                && (Double.doubleToLongBits(this.dy)   == Double.doubleToLongBits(that.dy));
+                    && (Double.doubleToLongBits(this.minY) == Double.doubleToLongBits(that.minY))
+                    && (Double.doubleToLongBits(this.maxX) == Double.doubleToLongBits(that.maxX))
+                    && (Double.doubleToLongBits(this.maxY) == Double.doubleToLongBits(that.maxY))
+                    && (Double.doubleToLongBits(this.dx) == Double.doubleToLongBits(that.dx))
+                    && (Double.doubleToLongBits(this.dy) == Double.doubleToLongBits(that.dy));
         }
 
         return false;
     }
 
-    /**
-     * The minimum longitude value covered by this grid (decimal degrees)
-     */
+    /** The minimum longitude value covered by this grid (decimal degrees) */
     public double getMinX() {
         return minX;
     }
 
-    /**
-     * The minimum latitude value covered by this grid (decimal degrees)
-     */
+    /** The minimum latitude value covered by this grid (decimal degrees) */
     public double getMinY() {
         return minY;
     }
 
-    /**
-     * The maximum longitude value covered by this grid (decimal degrees)
-     */
+    /** The maximum longitude value covered by this grid (decimal degrees) */
     public double getMaxX() {
         return maxX;
     }
 
-    /**
-     * The maximum latitude value covered by this grid (decimal degrees)
-     */
+    /** The maximum latitude value covered by this grid (decimal degrees) */
     public double getMaxY() {
         return maxY;
     }
 
-    /**
-     * The difference between longitude grid points (decimal degrees)
-     */
+    /** The difference between longitude grid points (decimal degrees) */
     public double getDx() {
         return dx;
     }
 
-    /**
-     * The difference between latitude grid points (decimal degrees)
-     */
+    /** The difference between latitude grid points (decimal degrees) */
     public double getDy() {
         return dy;
     }
-
-
 }

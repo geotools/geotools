@@ -16,18 +16,17 @@
  */
 package org.geotools.data.solr;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 public class SolrSingleLayerMappingTest extends SolrTestSupport {
 
@@ -61,8 +60,8 @@ public class SolrSingleLayerMappingTest extends SolrTestSupport {
         assertTrue(schema.getDescriptor("geo") instanceof GeometryDescriptor);
         assertTrue(schema.getDescriptor("geo2") instanceof GeometryDescriptor);
         assertTrue(schema.getDescriptor("geo3") instanceof GeometryDescriptor);
-
     }
+
     public void testFeatureSource() throws Exception {
         init(coreName(dataStore));
         SimpleFeatureSource featureSource = dataStore.getFeatureSource(coreName(dataStore));
@@ -80,6 +79,6 @@ public class SolrSingleLayerMappingTest extends SolrTestSupport {
 
     String coreName(SolrDataStore dataStore) {
         String[] split = dataStore.getSolrServer().getBaseURL().split("/");
-        return split[split.length-1];
+        return split[split.length - 1];
     }
 }

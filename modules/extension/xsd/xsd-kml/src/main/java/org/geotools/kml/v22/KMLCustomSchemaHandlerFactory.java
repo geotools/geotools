@@ -1,7 +1,6 @@
 package org.geotools.kml.v22;
 
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.impl.ElementHandler;

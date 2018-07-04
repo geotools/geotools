@@ -17,8 +17,8 @@
 package org.geotools.filter.function.math;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
 import org.opengis.filter.capability.FunctionName;
@@ -29,17 +29,18 @@ import org.opengis.filter.expression.Literal;
 
 /**
  * Implements the Knuth floored division modulo_operation
- * 
- * @see <a href="http://en.wikipedia.org/wiki/Modulo_operation#Remainder_calculation_for_the_modulo_operation">Modulo_operation</a>
+ *
+ * @see <a
+ *     href="http://en.wikipedia.org/wiki/Modulo_operation#Remainder_calculation_for_the_modulo_operation">Modulo_operation</a>
  */
 public class ModuloFunction implements Function {
 
-    static FunctionName NAME = new FunctionNameImpl(
-        "modulo",
-        Integer.class,
-        FunctionNameImpl.parameter("dividend", Integer.class),
-        FunctionNameImpl.parameter("divisor", Integer.class)
-    );
+    static FunctionName NAME =
+            new FunctionNameImpl(
+                    "modulo",
+                    Integer.class,
+                    FunctionNameImpl.parameter("dividend", Integer.class),
+                    FunctionNameImpl.parameter("divisor", Integer.class));
 
     private final FunctionName functionName;
 
@@ -59,7 +60,8 @@ public class ModuloFunction implements Function {
         }
 
         if (parameters.size() != NAME.getArguments().size()) {
-            throw new IllegalArgumentException(NAME.getArguments().size() + " function parameters are required");
+            throw new IllegalArgumentException(
+                    NAME.getArguments().size() + " function parameters are required");
         }
 
         this.functionName = NAME;
@@ -107,4 +109,29 @@ public class ModuloFunction implements Function {
         return fallback;
     }
 
+    /**
+     * Creates a String representation of this Function with the function name and the arguments.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName());
+        sb.append("(");
+        List<org.opengis.filter.expression.Expression> params = getParameters();
+        if (params != null) {
+            org.opengis.filter.expression.Expression exp;
+            for (Iterator<org.opengis.filter.expression.Expression> it = params.iterator();
+                    it.hasNext(); ) {
+                exp = it.next();
+                sb.append("[");
+                sb.append(exp);
+                sb.append("]");
+                if (it.hasNext()) {
+                    sb.append(", ");
+                }
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 }

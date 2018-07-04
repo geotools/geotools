@@ -18,25 +18,22 @@ package org.geotools.jdbc;
 
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
- * Tests that geometry types can be properly created and retrieved back from the
- * database. You might need to override some of the tests method to fix the expectations
- * for specific geometry class types.
- *
- *
+ * Tests that geometry types can be properly created and retrieved back from the database. You might
+ * need to override some of the tests method to fix the expectations for specific geometry class
+ * types.
  *
  * @source $URL$
  */
@@ -48,41 +45,43 @@ public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
     public void testPoint() throws Exception {
         assertEquals(Point.class, checkGeometryType(Point.class));
     }
-    
+
     public void testLineString() throws Exception {
         assertEquals(LineString.class, checkGeometryType(LineString.class));
     }
-    
+
     public void testLinearRing() throws Exception {
         assertEquals(LinearRing.class, checkGeometryType(LinearRing.class));
     }
-    
+
     public void testPolygon() throws Exception {
         assertEquals(Polygon.class, checkGeometryType(Polygon.class));
     }
-    
+
     public void testMultiPoint() throws Exception {
         assertEquals(MultiPoint.class, checkGeometryType(MultiPoint.class));
     }
-    
+
     public void testMultiLineString() throws Exception {
         assertEquals(MultiLineString.class, checkGeometryType(MultiLineString.class));
     }
-    
+
     public void testMultiPolygon() throws Exception {
         assertEquals(MultiPolygon.class, checkGeometryType(MultiPolygon.class));
     }
-    
+
     /**
      * Sometimes the source cannot anticipate the geometry type, can we cope with this?
+     *
      * @throws Exception
      */
     public void testGeometry() throws Exception {
         assertEquals(Geometry.class, checkGeometryType(Geometry.class));
     }
-    
+
     /**
-     * Same goes for heterogeneous collections 
+     * Same goes for heterogeneous collections
+     *
      * @throws Exception
      */
     public void testGeometryCollection() throws Exception {
@@ -111,5 +110,4 @@ public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
         assertEquals(3, newSchema.getAttributeCount());
         return newSchema.getGeometryDescriptor().getType().getBinding();
     }
-
 }

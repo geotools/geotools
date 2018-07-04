@@ -1,30 +1,25 @@
 package org.geotools.data.efeature.query;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.Unit;
-
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.operation.distance.DistanceOp;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.query.conditions.Condition;
 import org.geotools.data.efeature.DataBuilder;
 import org.geotools.data.efeature.DataTypes;
+import org.geotools.measure.Units;
 import org.geotools.resources.CRSUtilities;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.operation.distance.DistanceOp;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SpatialConditionEncoder {
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Helper methods
     // -----------------------------------------------------
 
@@ -40,27 +35,28 @@ public class SpatialConditionEncoder {
     }
 
     public static double convert(GeometryDescriptor descriptor, double distance, String unit) {
-        Unit<?> fromUnit = Unit.valueOf(unit);
+        Unit<?> fromUnit = Units.parseUnit(unit);
         Unit<?> toUnit = getUnit(descriptor);
-        UnitConverter c = fromUnit.getConverterTo(toUnit);
+        UnitConverter c = Units.getConverterToAny(fromUnit, toUnit);
         return c.convert(distance);
-
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Spatial relation comparison methods
     // -----------------------------------------------------
-    
-    public static Condition bbox(EDataType type, Literal value, boolean swapped) throws EFeatureEncoderException {
-        return bbox((Geometry)DataBuilder.toValue(type, value),swapped);
+
+    public static Condition bbox(EDataType type, Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return bbox((Geometry) DataBuilder.toValue(type, value), swapped);
     }
 
-    public static Condition bbox(EDataType type, Object value, boolean swapped) throws EFeatureEncoderException {
-        return bbox((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition bbox(EDataType type, Object value, boolean swapped)
+            throws EFeatureEncoderException {
+        return bbox((Geometry) DataBuilder.toValue(type, value), swapped);
     }
-    
+
     public static Condition bbox(Literal value, boolean swapped) throws EFeatureEncoderException {
-        return bbox(value.getValue(),swapped);
+        return bbox(value.getValue(), swapped);
     }
 
     public static Condition bbox(Object value, boolean swapped) throws EFeatureEncoderException {
@@ -91,18 +87,20 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition beyond(EDataType type, Literal value, double distance) throws EFeatureEncoderException {
-        return beyond((Geometry)DataBuilder.toValue(type, value),distance);
+    public static Condition beyond(EDataType type, Literal value, double distance)
+            throws EFeatureEncoderException {
+        return beyond((Geometry) DataBuilder.toValue(type, value), distance);
     }
 
-    public static Condition beyond(EDataType type, Object value, double distance) throws EFeatureEncoderException {
-        return beyond((Geometry)DataBuilder.toValue(type, value),distance);
+    public static Condition beyond(EDataType type, Object value, double distance)
+            throws EFeatureEncoderException {
+        return beyond((Geometry) DataBuilder.toValue(type, value), distance);
     }
-    
+
     public static Condition beyond(Literal value, double distance) throws EFeatureEncoderException {
-        return beyond(value.getValue(),distance);
+        return beyond(value.getValue(), distance);
     }
-    
+
     public static Condition beyond(Object value, double distance) throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
             beyond((Geometry) value, distance);
@@ -127,18 +125,21 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition dwithin(EDataType type, Literal value, double distance) throws EFeatureEncoderException {
-        return dwithin((Geometry)DataBuilder.toValue(type, value),distance);
+    public static Condition dwithin(EDataType type, Literal value, double distance)
+            throws EFeatureEncoderException {
+        return dwithin((Geometry) DataBuilder.toValue(type, value), distance);
     }
 
-    public static Condition dwithin(EDataType type, Object value, double distance) throws EFeatureEncoderException {
-        return dwithin((Geometry)DataBuilder.toValue(type, value),distance);
+    public static Condition dwithin(EDataType type, Object value, double distance)
+            throws EFeatureEncoderException {
+        return dwithin((Geometry) DataBuilder.toValue(type, value), distance);
     }
-    
-    public static Condition dwithin(Literal value, double distance) throws EFeatureEncoderException {
-        return dwithin(value.getValue(),distance);
+
+    public static Condition dwithin(Literal value, double distance)
+            throws EFeatureEncoderException {
+        return dwithin(value.getValue(), distance);
     }
-    
+
     public static Condition dwithin(Object value, double distance) throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
             dwithin((Geometry) value, distance);
@@ -163,18 +164,21 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition contains(EDataType type, Literal value, boolean swapped) throws EFeatureEncoderException {
-        return contains((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition contains(EDataType type, Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return contains((Geometry) DataBuilder.toValue(type, value), swapped);
     }
 
-    public static Condition contains(EDataType type, Object value, boolean swapped) throws EFeatureEncoderException {
-        return contains((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition contains(EDataType type, Object value, boolean swapped)
+            throws EFeatureEncoderException {
+        return contains((Geometry) DataBuilder.toValue(type, value), swapped);
     }
-    
-    public static Condition contains(Literal value, boolean swapped) throws EFeatureEncoderException {
-        return contains(value.getValue(),swapped);
+
+    public static Condition contains(Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return contains(value.getValue(), swapped);
     }
-    
+
     public static Condition contains(Object value, boolean swapped)
             throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
@@ -203,18 +207,21 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition crosses(EDataType type, Literal value, boolean swapped) throws EFeatureEncoderException {
-        return crosses((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition crosses(EDataType type, Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return crosses((Geometry) DataBuilder.toValue(type, value), swapped);
     }
 
-    public static Condition crosses(EDataType type, Object value, boolean swapped) throws EFeatureEncoderException {
-        return crosses((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition crosses(EDataType type, Object value, boolean swapped)
+            throws EFeatureEncoderException {
+        return crosses((Geometry) DataBuilder.toValue(type, value), swapped);
     }
-    
-    public static Condition crosses(Literal value, boolean swapped) throws EFeatureEncoderException {
-        return crosses(value.getValue(),swapped);
+
+    public static Condition crosses(Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return crosses(value.getValue(), swapped);
     }
-       
+
     public static Condition crosses(Object value, boolean swapped) throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
             return crosses((Geometry) value, swapped);
@@ -242,18 +249,21 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition disjoint(EDataType type, Literal value, boolean swapped) throws EFeatureEncoderException {
-        return disjoint((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition disjoint(EDataType type, Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return disjoint((Geometry) DataBuilder.toValue(type, value), swapped);
     }
 
-    public static Condition disjoint(EDataType type, Object value, boolean swapped) throws EFeatureEncoderException {
-        return disjoint((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition disjoint(EDataType type, Object value, boolean swapped)
+            throws EFeatureEncoderException {
+        return disjoint((Geometry) DataBuilder.toValue(type, value), swapped);
     }
-    
-    public static Condition disjoint(Literal value, boolean swapped) throws EFeatureEncoderException {
-        return disjoint(value.getValue(),swapped);
+
+    public static Condition disjoint(Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return disjoint(value.getValue(), swapped);
     }
-           
+
     public static Condition disjoint(Object value, boolean swapped)
             throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
@@ -282,18 +292,20 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition equals(EDataType type, Literal value, boolean swapped) throws EFeatureEncoderException {
-        return equals((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition equals(EDataType type, Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return equals((Geometry) DataBuilder.toValue(type, value), swapped);
     }
 
-    public static Condition equals(EDataType type, Object value, boolean swapped) throws EFeatureEncoderException {
-        return equals((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition equals(EDataType type, Object value, boolean swapped)
+            throws EFeatureEncoderException {
+        return equals((Geometry) DataBuilder.toValue(type, value), swapped);
     }
-    
+
     public static Condition equals(Literal value, boolean swapped) throws EFeatureEncoderException {
-        return equals(value.getValue(),swapped);
+        return equals(value.getValue(), swapped);
     }
-               
+
     public static Condition equals(Object value, boolean swapped) throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
             return equals((Geometry) value, swapped);
@@ -321,18 +333,21 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition intersects(EDataType type, Literal value, boolean swapped) throws EFeatureEncoderException {
-        return intersects((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition intersects(EDataType type, Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return intersects((Geometry) DataBuilder.toValue(type, value), swapped);
     }
 
-    public static Condition intersects(EDataType type, Object value, boolean swapped) throws EFeatureEncoderException {
-        return intersects((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition intersects(EDataType type, Object value, boolean swapped)
+            throws EFeatureEncoderException {
+        return intersects((Geometry) DataBuilder.toValue(type, value), swapped);
     }
-    
-    public static Condition intersects(Literal value, boolean swapped) throws EFeatureEncoderException {
-        return intersects(value.getValue(),swapped);
+
+    public static Condition intersects(Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return intersects(value.getValue(), swapped);
     }
-                   
+
     public static Condition intersects(Object value, boolean swapped)
             throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
@@ -361,18 +376,21 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition overlaps(EDataType type, Literal value, boolean swapped) throws EFeatureEncoderException {
-        return overlaps((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition overlaps(EDataType type, Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return overlaps((Geometry) DataBuilder.toValue(type, value), swapped);
     }
 
-    public static Condition overlaps(EDataType type, Object value, boolean swapped) throws EFeatureEncoderException {
-        return overlaps((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition overlaps(EDataType type, Object value, boolean swapped)
+            throws EFeatureEncoderException {
+        return overlaps((Geometry) DataBuilder.toValue(type, value), swapped);
     }
-    
-    public static Condition overlaps(Literal value, boolean swapped) throws EFeatureEncoderException {
-        return overlaps(value.getValue(),swapped);
+
+    public static Condition overlaps(Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return overlaps(value.getValue(), swapped);
     }
-    
+
     public static Condition overlaps(Object value, boolean swapped)
             throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
@@ -401,18 +419,21 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition touches(EDataType type, Literal value, boolean swapped) throws EFeatureEncoderException {
-        return touches((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition touches(EDataType type, Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return touches((Geometry) DataBuilder.toValue(type, value), swapped);
     }
 
-    public static Condition touches(EDataType type, Object value, boolean swapped) throws EFeatureEncoderException {
-        return touches((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition touches(EDataType type, Object value, boolean swapped)
+            throws EFeatureEncoderException {
+        return touches((Geometry) DataBuilder.toValue(type, value), swapped);
     }
-    
-    public static Condition touches(Literal value, boolean swapped) throws EFeatureEncoderException {
-        return touches(value.getValue(),swapped);
+
+    public static Condition touches(Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return touches(value.getValue(), swapped);
     }
-    
+
     public static Condition touches(Object value, boolean swapped) throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
             return touches((Geometry) value, swapped);
@@ -440,18 +461,20 @@ public class SpatialConditionEncoder {
         };
     }
 
-    public static Condition within(EDataType type, Literal value, boolean swapped) throws EFeatureEncoderException {
-        return within((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition within(EDataType type, Literal value, boolean swapped)
+            throws EFeatureEncoderException {
+        return within((Geometry) DataBuilder.toValue(type, value), swapped);
     }
 
-    public static Condition within(EDataType type, Object value, boolean swapped) throws EFeatureEncoderException {
-        return within((Geometry)DataBuilder.toValue(type, value),swapped);
+    public static Condition within(EDataType type, Object value, boolean swapped)
+            throws EFeatureEncoderException {
+        return within((Geometry) DataBuilder.toValue(type, value), swapped);
     }
-    
+
     public static Condition within(Literal value, boolean swapped) throws EFeatureEncoderException {
-        return within(value.getValue(),swapped);
+        return within(value.getValue(), swapped);
     }
-    
+
     public static Condition within(Object value, boolean swapped) throws EFeatureEncoderException {
         if (DataTypes.isGeometry(value)) {
             return within((Geometry) value, swapped);
@@ -478,5 +501,4 @@ public class SpatialConditionEncoder {
             }
         };
     }
-
 }

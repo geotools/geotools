@@ -18,16 +18,10 @@ package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Point;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLPointTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Point.class, binding(GML.PointType).getType());
@@ -49,7 +43,7 @@ public class GMLPointTypeBinding2Test extends GMLTestSupport {
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.point(), GML.Point);
 
-        assertEquals(1,
-            doc.getElementsByTagNameNS(GML.NAMESPACE, GML.coord.getLocalPart()).getLength());
+        assertEquals(
+                1, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.coord.getLocalPart()).getLength());
     }
 }

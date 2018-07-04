@@ -9,9 +9,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
-import javax.imageio.ImageIO;
-
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -30,16 +27,11 @@ import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
-import com.vividsolutions.jts.geom.Point;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeometryTransformationTest {
     private static final long TIME = 2000;
 
@@ -57,11 +49,11 @@ public class GeometryTransformationTest {
         fs = ds.getFeatureSource("line");
         bounds = fs.getBounds();
         bounds.expandBy(3, 3);
-        
+
         bfs = ds.getFeatureSource("buildings");
         bbounds = bfs.getBounds();
         bbounds.expandBy(3, 3);
-        
+
         // System.setProperty("org.geotools.test.interactive", "true");
 
     }
@@ -78,7 +70,7 @@ public class GeometryTransformationTest {
 
         RendererBaseTest.showRender("lineBuffer.sld", renderer, TIME, bounds);
     }
-    
+
     @Test
     public void testBufferPoly() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "polyBuffer.sld");
@@ -91,7 +83,7 @@ public class GeometryTransformationTest {
 
         RendererBaseTest.showRender("polyBuffer.sld", renderer, TIME, bounds);
     }
-    
+
     @Test
     public void testVertices() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "lineVertices.sld");
@@ -104,7 +96,7 @@ public class GeometryTransformationTest {
 
         RendererBaseTest.showRender("lineVertices.sld", renderer, TIME, bounds);
     }
-    
+
     @Test
     public void testStartEnd() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "lineStartEnd.sld");
@@ -117,7 +109,7 @@ public class GeometryTransformationTest {
 
         RendererBaseTest.showRender("lineStartEnd.sld", renderer, TIME, bounds);
     }
-    
+
     @Test
     public void testIsometric() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "isometric.sld");
@@ -131,7 +123,7 @@ public class GeometryTransformationTest {
 
         RendererBaseTest.showRender("lineStartEnd.sld", renderer, TIME, bbounds);
     }
-    
+
     @Test
     public void testOutOfThinAir() throws Exception {
         // generate a collection with just strings (but one is wkt)
@@ -151,7 +143,9 @@ public class GeometryTransformationTest {
 
         // setup a point layer with the right geometry trnasformation
         Style style = SLD.createPointStyle("circle", Color.BLUE, Color.BLUE, 1f, 10f);
-        PointSymbolizer ps = (PointSymbolizer) style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+        PointSymbolizer ps =
+                (PointSymbolizer)
+                        style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         ps.setGeometry(ff.function("convert", ff.property("wkt"), ff.literal(Point.class)));
 
@@ -159,20 +153,22 @@ public class GeometryTransformationTest {
         MapContent map = new MapContent();
         Layer layer = new FeatureLayer(features, style);
         map.addLayer(layer);
-        
+
         // render it
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         StreamingRenderer renderer = new StreamingRenderer();
         Graphics2D graphics = bi.createGraphics();
         renderer.setMapContent(map);
-        renderer.paint(graphics, new Rectangle(100, 100), new ReferencedEnvelope(0, 10, 0, 10, null));
+        renderer.paint(
+                graphics, new Rectangle(100, 100), new ReferencedEnvelope(0, 10, 0, 10, null));
         graphics.dispose();
-        
+        map.dispose();
+
         // ImageIO.write(bi, "png", new File("/tmp/sample.png"));
-        
+
         // check we have a diagonal set of dots
         int[] pixel = new int[3];
-        for(int i = 0; i < 100; i += 10) {
+        for (int i = 0; i < 100; i += 10) {
             bi.getData().getPixel(i, 99 - i, pixel);
             assertEquals(0, pixel[0]);
             assertEquals(0, pixel[1]);

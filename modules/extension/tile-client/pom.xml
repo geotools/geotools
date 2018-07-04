@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================= 
+        Maven Project Configuration File
+        The Geotools Project
+        http://www.geotools.org/
+     ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                               http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.geotools</groupId>
+        <artifactId>extension</artifactId>
+        <version>20-SNAPSHOT</version>
+    </parent>
+
+    <!-- =========================================================== -->
+    <!-- Module Description -->
+    <!-- =========================================================== -->
+    <groupId>org.geotools</groupId>
+    <artifactId>gt-tile-client</artifactId>
+    <packaging>jar</packaging>
+  
+    <name>Tile Client</name>
+
+    <description>
+        This module provides access to tile services, notably OpenStreetMap and Bing Maps.
+        It includes a TileLayer, for displaying tiles into a GeoTools map.
+    </description>
+
+    <inceptionYear>2015</inceptionYear>
+ 
+    <licenses>
+        <license>
+            <name>Lesser General Public License (LGPL)</name>
+            <url>http://www.gnu.org/copyleft/lesser.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <!-- =========================================================== -->
+    <!-- Developers and Contributors -->
+    <!-- =========================================================== -->
+    <developers>
+        <developer>
+            <name>Emanuele Tajariol</name>
+            <id>etj</id>
+            <email>etj@geo-solutions.it</email>
+            <organization>GeoSolutions</organization>
+            <roles>
+                <role>Java Developer</role>
+                <role>Module Maintainer</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>utaddei</id>
+            <name>Ugo Taddei</name>
+            <email>developeresque@gmail.com</email>
+            <organization>none</organization>
+            <roles>
+                <role>Module Maintainer</role>
+                <role>Java Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+
+    <!-- =========================================================== -->
+    <!-- Dependency Mangement -->
+    <!-- =========================================================== -->
+    <dependencies>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-render</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-epsg-hsql</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-coverage</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-swing</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <!-- The version number is specified in the parent POM. -->
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-sample-data</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

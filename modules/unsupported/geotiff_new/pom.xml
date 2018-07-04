@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>plugin</artifactId>
-		<version>17-SNAPSHOT</version>
+		<version>20-SNAPSHOT</version>
 	</parent>
 
 
@@ -142,6 +142,12 @@
 			<groupId>org.jaitools</groupId>
 			<artifactId>jt-utils</artifactId>
 			<version>${jt.version}</version>
+         <exclusions>
+           <exclusion>
+              <groupId>org.locationtech.jts</groupId>
+              <artifactId>jts</artifactId>
+           </exclusion>
+         </exclusions>
 		</dependency>
 	</dependencies>
 

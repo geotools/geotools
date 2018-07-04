@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -31,17 +30,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.data.Parameter;
+import org.geotools.util.URLs;
 
 /**
  * Widget for File; provides a "Browse" button to open a file dialog.
- * 
+ *
  * @author Jody Garnett
- *
- *
- *
  * @source $URL$
  */
 public class JFileField extends ParamField {
@@ -50,7 +46,7 @@ public class JFileField extends ParamField {
 
     private Button browse;
 
-    public JFileField( Composite parent, Parameter< ? > parameter ) {
+    public JFileField(Composite parent, Parameter<?> parameter) {
         super(parent, parameter);
     }
 
@@ -67,30 +63,36 @@ public class JFileField extends ParamField {
         browse = new Button(composite, SWT.PUSH);
         browse.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
         browse.setText("...");
-        browse.addSelectionListener(new SelectionAdapter(){
-            public void widgetSelected( SelectionEvent e ) {
-                browse();
-            }
-        });
+        browse.addSelectionListener(
+                new SelectionAdapter() {
+                    public void widgetSelected(SelectionEvent e) {
+                        browse();
+                    }
+                });
         return composite;
     }
 
     @SuppressWarnings("unchecked")
     protected void browse() {
         FileDialog dialog;
-        Object format = this.parameter.metadata == null ? null : this.parameter.metadata.get(Parameter.EXT);
+        Object format =
+                this.parameter.metadata == null ? null : this.parameter.metadata.get(Parameter.EXT);
         if (format instanceof FileDataStoreFactorySpi) {
-            JFileDataStoreChooser tmpdialog = new JFileDataStoreChooser(parent.getShell(), SWT.NONE,
-                    (FileDataStoreFactorySpi) format);
+            JFileDataStoreChooser tmpdialog =
+                    new JFileDataStoreChooser(
+                            parent.getShell(), SWT.NONE, (FileDataStoreFactorySpi) format);
             dialog = tmpdialog.getFileDialog();
         } else if (format instanceof String) {
-            JFileDataStoreChooser tmpdialog = new JFileDataStoreChooser(parent.getShell(), SWT.NONE, (String) format);
+            JFileDataStoreChooser tmpdialog =
+                    new JFileDataStoreChooser(parent.getShell(), SWT.NONE, (String) format);
             dialog = tmpdialog.getFileDialog();
         } else if (format instanceof String[]) {
-            JFileDataStoreChooser tmpdialog = new JFileDataStoreChooser(parent.getShell(), SWT.NONE, (String[]) format);
+            JFileDataStoreChooser tmpdialog =
+                    new JFileDataStoreChooser(parent.getShell(), SWT.NONE, (String[]) format);
             dialog = tmpdialog.getFileDialog();
         } else if (format instanceof List) {
-            JFileDataStoreChooser tmpdialog = new JFileDataStoreChooser(parent.getShell(), SWT.NONE, (List<String>) format);
+            JFileDataStoreChooser tmpdialog =
+                    new JFileDataStoreChooser(parent.getShell(), SWT.NONE, (List<String>) format);
             dialog = tmpdialog.getFileDialog();
         } else {
             dialog = new FileDialog(parent.getShell(), SWT.NONE);
@@ -115,13 +117,13 @@ public class JFileField extends ParamField {
         }
         try {
             URL url = new URL(txt);
-            return DataUtilities.urlToFile(url);
+            return URLs.urlToFile(url);
         } catch (MalformedURLException e) {
         }
         return null; // not a file
     }
 
-    public void setValue( Object value ) {
+    public void setValue(Object value) {
         if (value instanceof File) {
             File file = (File) value;
             field.setText(file.toString());
@@ -144,5 +146,4 @@ public class JFileField extends ParamField {
         }
         return false;
     }
-
 }

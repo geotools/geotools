@@ -6,7 +6,6 @@
 package org.geotools.process.feature;
 
 import java.util.Map;
-
 import org.geotools.process.impl.AbstractProcess;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -16,10 +15,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author Justin Deoliveira, OpenGEO
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
- *
  * @source $URL$
  */
 public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {
@@ -35,9 +30,10 @@ public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {
 
     /**
      * Performs an operation on a single feature in the collection.
-     * <p>
-     * This method should do some work based on the feature and then set any attributes on the feature
-     * as necessary. Example of a simple buffering operation:
+     *
+     * <p>This method should do some work based on the feature and then set any attributes on the
+     * feature as necessary. Example of a simple buffering operation:
+     *
      * <pre>
      * protected void processFeature(SimpleFeature feature, Map<String, Object> input) throws Exception {
      *    Double buffer = (Double) input.get( BufferFeatureCollectionFactory.BUFFER.key );
@@ -48,13 +44,11 @@ public abstract class AbstractFeatureCollectionProcess extends AbstractProcess {
      *    feature.setDefaultGeometry( g );
      * }
      * </pre>
-     * </p>
      *
      * @param feature the feature being processed
      * @param input a Map of input parameters
-     *
      * @throws Exception
      */
-    protected abstract void processFeature( SimpleFeature feature, Map<String,Object> input )
-        throws Exception;
+    protected abstract void processFeature(SimpleFeature feature, Map<String, Object> input)
+            throws Exception;
 }

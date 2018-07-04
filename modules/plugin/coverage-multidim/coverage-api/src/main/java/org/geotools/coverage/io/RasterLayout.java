@@ -18,30 +18,25 @@ package org.geotools.coverage.io;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
-
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 
 /**
  * A class describing the desired layout of an <code>OpImage</code>.
  *
- * <p> The <code>RasterLayout</code> class encapsulates three types of information about
- * an image:
+ * <p>The <code>RasterLayout</code> class encapsulates three types of information about an image:
  *
  * <ul>
- * <li> The image bounds, comprising the min X and Y coordinates,
- *      image width, and image height;
- * <li> The tile grid layout, comprising the tile grid X and Y offsets,
- *      the tile width, and the tile height; and
+ *   <li>The image bounds, comprising the min X and Y coordinates, image width, and image height;
+ *   <li>The tile grid layout, comprising the tile grid X and Y offsets, the tile width, and the
+ *       tile height; and
  * </ul>
  *
- * <p> Methods that modify the state of an <code>RasterLayout</code> return a reference
- * to 'this' following the change.  This allows multiple modifications to
- * be made in a single expression.  This provides a way of modifying an
- * <code>RasterLayout</code> within a superclass constructor call.
- *
+ * <p>Methods that modify the state of an <code>RasterLayout</code> return a reference to 'this'
+ * following the change. This allows multiple modifications to be made in a single expression. This
+ * provides a way of modifying an <code>RasterLayout</code> within a superclass constructor call.
  */
-public class RasterLayout{
+public class RasterLayout {
 
     /** The image's minimum X coordinate. */
     int minX = 0;
@@ -71,8 +66,8 @@ public class RasterLayout{
     public RasterLayout() {}
 
     /**
-     * Constructs an <code>RasterLayout</code> with all its parameters set.
-     * The <code>sampleModel</code> and <code>colorModel</code> parameters are ignored if null.
+     * Constructs an <code>RasterLayout</code> with all its parameters set. The <code>sampleModel
+     * </code> and <code>colorModel</code> parameters are ignored if null.
      *
      * @param minX the image's minimum X coordinate.
      * @param minY the image's minimum Y coordinate.
@@ -85,14 +80,15 @@ public class RasterLayout{
      * @param sampleModel the image's <code>SampleModel</code>.
      * @param colorModel the image's <code>ColorModel</code>.
      */
-    public RasterLayout(int minX,
-                       int minY,
-                       int width,
-                       int height,
-                       int tileGridXOffset,
-                       int tileGridYOffset,
-                       int tileWidth,
-                       int tileHeight) {
+    public RasterLayout(
+            int minX,
+            int minY,
+            int width,
+            int height,
+            int tileGridXOffset,
+            int tileGridYOffset,
+            int tileWidth,
+            int tileHeight) {
         setMinX(minX);
         setMinY(minY);
         setWidth(width);
@@ -103,43 +99,37 @@ public class RasterLayout{
         setTileHeight(tileHeight);
     }
 
-
     /**
-     * Constructs an <code>RasterLayout</code> with only the image dimension
-     * parameters set.
+     * Constructs an <code>RasterLayout</code> with only the image dimension parameters set.
      *
      * @param minX the image's minimum X coordinate.
      * @param minY the image's minimum Y coordinate.
      * @param width the image's width.
      * @param height the image's height.
      */
-    public RasterLayout(int minX,
-                       int minY,
-                       int width,
-                       int height) {
+    public RasterLayout(int minX, int minY, int width, int height) {
         setMinX(minX);
         setMinY(minY);
         setWidth(width);
         setHeight(height);
     }
 
-
-
     /**
-     * Constructs an <code>RasterLayout</code> with all its parameters set
-     * to equal those of a given <code>RenderedImage</code>.
+     * Constructs an <code>RasterLayout</code> with all its parameters set to equal those of a given
+     * <code>RenderedImage</code>.
      *
      * @param im a <code>RenderedImage</code> whose layout will be copied.
      */
     public RasterLayout(RenderedImage im) {
-        this(im.getMinX(),
-             im.getMinY(),
-             im.getWidth(),
-             im.getHeight(),
-             im.getTileGridXOffset(),
-             im.getTileGridYOffset(),
-             im.getTileWidth(),
-             im.getTileHeight());
+        this(
+                im.getMinX(),
+                im.getMinY(),
+                im.getWidth(),
+                im.getHeight(),
+                im.getTileGridXOffset(),
+                im.getTileGridYOffset(),
+                im.getTileWidth(),
+                im.getTileHeight());
     }
 
     public RasterLayout(Rectangle bounds) {
@@ -149,17 +139,16 @@ public class RasterLayout{
         this.width = bounds.width;
         this.minX = bounds.x;
         this.minY = bounds.y;
-
     }
-    
-    public Rectangle toRectangle () {
+
+    public Rectangle toRectangle() {
         return new Rectangle(minX, minY, width, height);
     }
 
     /**
-     * Returns the value of <code>minX</code> if it is valid, and
-     * otherwise returns the value from the supplied <code>RenderedImage</code>.
-     * If <code>minX</code> is not valid and fallback is null, 0 is returned.
+     * Returns the value of <code>minX</code> if it is valid, and otherwise returns the value from
+     * the supplied <code>RenderedImage</code>. If <code>minX</code> is not valid and fallback is
+     * null, 0 is returned.
      *
      * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of minX.
@@ -180,9 +169,9 @@ public class RasterLayout{
     }
 
     /**
-     * Returns the value of <code>minY</code> if it is valid, and
-     * otherwise returns the value from the supplied <code>RenderedImage</code>.
-     * If <code>minY</code> is not valid and fallback is null, 0 is returned.
+     * Returns the value of <code>minY</code> if it is valid, and otherwise returns the value from
+     * the supplied <code>RenderedImage</code>. If <code>minY</code> is not valid and fallback is
+     * null, 0 is returned.
      *
      * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of minY.
@@ -203,9 +192,9 @@ public class RasterLayout{
     }
 
     /**
-     * Returns the value of <code>width</code> if it is valid, and
-     * otherwise returns the value from the supplied <code>RenderedImage</code>.
-     * If <code>width</code> is not valid and fallback is null, 0 is returned.
+     * Returns the value of <code>width</code> if it is valid, and otherwise returns the value from
+     * the supplied <code>RenderedImage</code>. If <code>width</code> is not valid and fallback is
+     * null, 0 is returned.
      *
      * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of width.
@@ -221,18 +210,17 @@ public class RasterLayout{
      * @return a reference to this <code>RasterLayout</code> following the change.
      * @throws IllegalArgumentException if <code>width</code> is non-positive.
      */
-   public RasterLayout setWidth(int width) {
-       if(width <= 0) {
-           throw new IllegalArgumentException("ImageLayout0");
-       }
-       this.width = width;
-       return this;
+    public RasterLayout setWidth(int width) {
+        if (width <= 0) {
+            throw new IllegalArgumentException("ImageLayout0");
+        }
+        this.width = width;
+        return this;
     }
 
     /**
-     * Returns the value of height if it is valid, and
-     * otherwise returns the value from the supplied <code>RenderedImage</code>.
-     * If height is not valid and fallback is null, 0 is returned.
+     * Returns the value of height if it is valid, and otherwise returns the value from the supplied
+     * <code>RenderedImage</code>. If height is not valid and fallback is null, 0 is returned.
      *
      * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of height.
@@ -249,17 +237,17 @@ public class RasterLayout{
      * @throws IllegalArgumentException if <code>height</code> is non-positive.
      */
     public RasterLayout setHeight(int height) {
-       if(height <= 0) {
-           throw new IllegalArgumentException("ImageLayout0");
-       }
-       this.height = height;
-       return this;
+        if (height <= 0) {
+            throw new IllegalArgumentException("ImageLayout0");
+        }
+        this.height = height;
+        return this;
     }
 
     /**
-     * Returns the value of <code>tileGridXOffset</code> if it is valid, and
-     * otherwise returns the value from the supplied <code>RenderedImage</code>.
-     * If <code>tileGridXOffset</code> is not valid and fallback is null, 0 is returned.
+     * Returns the value of <code>tileGridXOffset</code> if it is valid, and otherwise returns the
+     * value from the supplied <code>RenderedImage</code>. If <code>tileGridXOffset</code> is not
+     * valid and fallback is null, 0 is returned.
      *
      * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileGridXOffset.
@@ -280,9 +268,9 @@ public class RasterLayout{
     }
 
     /**
-     * Returns the value of <code>tileGridYOffset</code> if it is valid, and
-     * otherwise returns the value from the supplied <code>RenderedImage</code>.
-     * If <code>tileGridYOffset</code> is not valid and fallback is null, 0 is returned.
+     * Returns the value of <code>tileGridYOffset</code> if it is valid, and otherwise returns the
+     * value from the supplied <code>RenderedImage</code>. If <code>tileGridYOffset</code> is not
+     * valid and fallback is null, 0 is returned.
      *
      * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileGridYOffset.
@@ -303,9 +291,9 @@ public class RasterLayout{
     }
 
     /**
-     * Returns the value of <code>tileWidth</code> if it is valid, and
-     * otherwise returns the value from the supplied <code>RenderedImage</code>.
-     * If <code>tileWidth</code> is not valid and fallback is null, 0 is returned.
+     * Returns the value of <code>tileWidth</code> if it is valid, and otherwise returns the value
+     * from the supplied <code>RenderedImage</code>. If <code>tileWidth</code> is not valid and
+     * fallback is null, 0 is returned.
      *
      * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileWidth.
@@ -319,21 +307,20 @@ public class RasterLayout{
      *
      * @param tileWidth the width of a tile, as an int.
      * @return a reference to this <code>RasterLayout</code> following the change.
-     * @throws IllegalArgumentException if <code>tileWidth</code> is
-     *                                  non-positive.
+     * @throws IllegalArgumentException if <code>tileWidth</code> is non-positive.
      */
     public RasterLayout setTileWidth(int tileWidth) {
-       if(tileWidth <= 0) {
-           throw new IllegalArgumentException("ImageLayout0");
-       }
-       this.tileWidth = tileWidth;
-       return this;
+        if (tileWidth <= 0) {
+            throw new IllegalArgumentException("ImageLayout0");
+        }
+        this.tileWidth = tileWidth;
+        return this;
     }
 
     /**
-     * Returns the value of tileHeight if it is valid, and
-     * otherwise returns the value from the supplied <code>RenderedImage</code>.
-     * If tileHeight is not valid and fallback is null, 0 is returned.
+     * Returns the value of tileHeight if it is valid, and otherwise returns the value from the
+     * supplied <code>RenderedImage</code>. If tileHeight is not valid and fallback is null, 0 is
+     * returned.
      *
      * @param fallback the <code>RenderedImage</code> fallback.
      * @return the appropriate value of tileHeight.
@@ -347,15 +334,14 @@ public class RasterLayout{
      *
      * @param tileHeight the height of a tile, as an int.
      * @return a reference to this <code>RasterLayout</code> following the change.
-     * @throws IllegalArgumentException if <code>tileHeight</code> is
-     *                                  non-positive.
+     * @throws IllegalArgumentException if <code>tileHeight</code> is non-positive.
      */
     public RasterLayout setTileHeight(int tileHeight) {
-       if(tileHeight <= 0) {
-           throw new IllegalArgumentException("ImageLayout0");
-       }
-       this.tileHeight = tileHeight;
-       return this;
+        if (tileHeight <= 0) {
+            throw new IllegalArgumentException("ImageLayout0");
+        }
+        this.tileHeight = tileHeight;
+        return this;
     }
 
     /** Returns a String containing the values of all valid fields. */
@@ -376,8 +362,8 @@ public class RasterLayout{
         s += ", ";
         s += "TILE_GRID_X_OFFSET=" + tileGridXOffset;
 
-         s += ", ";
-         s += "TILE_GRID_Y_OFFSET=" + tileGridYOffset;
+        s += ", ";
+        s += "TILE_GRID_Y_OFFSET=" + tileGridYOffset;
 
         s += ", ";
         s += "TILE_WIDTH=" + tileWidth;
@@ -385,14 +371,11 @@ public class RasterLayout{
         s += ", ";
         s += "TILE_HEIGHT=" + tileHeight;
 
-
         s += "]";
         return s;
     }
 
-    /**
-     * Returns a clone of the <code>RasterLayout</code> as an Object.
-     */
+    /** Returns a clone of the <code>RasterLayout</code> as an Object. */
     public Object clone() {
         try {
             return super.clone();
@@ -401,37 +384,30 @@ public class RasterLayout{
         }
     }
 
-
     /**
-     * Tests if the specified <code>Object</code> equals this
-     * <code>RasterLayout</code>.
+     * Tests if the specified <code>Object</code> equals this <code>RasterLayout</code>.
      *
      * @param obj the <code>Object</code> to test for equality
-     *
-     * @return <code>true</code> if the specified <code>Object</code>
-     * is an instance of <code>RasterLayout</code> and equals this
-     * <code>RasterLayout</code>; <code>false</code> otherwise.
-     *
+     * @return <code>true</code> if the specified <code>Object</code> is an instance of <code>
+     *     RasterLayout</code> and equals this <code>RasterLayout</code>; <code>false</code>
+     *     otherwise.
      * @since JAI 1.1
      */
     public boolean equals(Object obj) {
 
-    if (this == obj)
-        return true;
+        if (this == obj) return true;
 
-    if (!(obj instanceof RasterLayout))
-        return false;
+        if (!(obj instanceof RasterLayout)) return false;
 
-    RasterLayout il = (RasterLayout)obj;
+        RasterLayout il = (RasterLayout) obj;
 
-    return (width           == il.width          ) &&
-           (height          == il.height         ) &&
-           (minX            == il.minX           ) &&
-           (minY            == il.minY           ) &&
-           (tileHeight      == il.tileHeight     ) &&
-           (tileWidth       == il.tileWidth      ) &&
-           (tileGridXOffset == il.tileGridXOffset) &&
-           (tileGridYOffset == il.tileGridYOffset) ;
+        return (width == il.width)
+                && (height == il.height)
+                && (minX == il.minX)
+                && (minY == il.minY)
+                && (tileHeight == il.tileHeight)
+                && (tileWidth == il.tileWidth)
+                && (tileGridXOffset == il.tileGridXOffset)
+                && (tileGridYOffset == il.tileGridYOffset);
     }
-
 }

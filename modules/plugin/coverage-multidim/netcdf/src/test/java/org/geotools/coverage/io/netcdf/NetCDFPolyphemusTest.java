@@ -26,11 +26,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.media.jai.PlanarImage;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -62,43 +59,41 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform2D;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public final class NetCDFPolyphemusTest extends Assert {
 
-    private final static Logger LOGGER = Logging.getLogger(NetCDFPolyphemusTest.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(NetCDFPolyphemusTest.class.toString());
     private File testDirectory;
 
-    
     @Test
-    public void geoToolsReader() throws IllegalArgumentException, IOException, NoSuchAuthorityCodeException {
+    public void geoToolsReader()
+            throws IllegalArgumentException, IOException, NoSuchAuthorityCodeException {
         boolean isInteractiveTest = TestData.isInteractiveTest();
 
         // create a base driver
         final DefaultFileDriver driver = new NetCDFDriver();
-        final File[] files = TestData.file(this, ".").listFiles(new FileFilter(){
+        final File[] files =
+                TestData.file(this, ".")
+                        .listFiles(
+                                new FileFilter() {
 
-            @Override
-            public boolean accept(File pathname) {
-                return FilenameUtils.getName(pathname.getAbsolutePath()).equalsIgnoreCase("O3-NO2.nc");
-            }
+                                    @Override
+                                    public boolean accept(File pathname) {
+                                        return FilenameUtils.getName(pathname.getAbsolutePath())
+                                                .equalsIgnoreCase("O3-NO2.nc");
+                                    }
+                                });
 
-           
-        });
+        for (File f : files) {
 
-        for( File f : files ) {
-            
             // move to test directory
-            final File file = new File(testDirectory,"O3-NO2.nc");
+            final File file = new File(testDirectory, "O3-NO2.nc");
             FileUtils.copyFile(f, file);
 
             // get the file
             final URL source = file.toURI().toURL();
             assertTrue(driver.canProcess(DriverCapabilities.CONNECT, source, null));
-            
+
             LOGGER.info("ACCEPTED: " + source.toString());
 
             // getting access to the file
@@ -113,7 +108,8 @@ public final class NetCDFPolyphemusTest extends Assert {
                 final List<Name> names = access.getNames(null);
                 for (Name name : names) {
                     // get a source
-                    final CoverageSource gridSource = access.access(name, null, AccessType.READ_ONLY, null, null);
+                    final CoverageSource gridSource =
+                            access.access(name, null, AccessType.READ_ONLY, null, null);
                     if (gridSource == null) {
                         throw new IOException("Unable to access");
                     }
@@ -125,7 +121,8 @@ public final class NetCDFPolyphemusTest extends Assert {
                         LOGGER.info("Temporal domain is null");
                     } else {
                         // temporal crs
-                        LOGGER.info("TemporalCRS: " + temporalDomain.getCoordinateReferenceSystem());
+                        LOGGER.info(
+                                "TemporalCRS: " + temporalDomain.getCoordinateReferenceSystem());
 
                         // print the temporal domain elements
                         for (DateRange tg : temporalDomain.getTemporalElements(true, null)) {
@@ -133,7 +130,8 @@ public final class NetCDFPolyphemusTest extends Assert {
                         }
 
                         // print the temporal domain elements with overall = true
-                        StringBuilder overallTemporal = new StringBuilder("Temporal domain element (overall = true):\n");
+                        StringBuilder overallTemporal =
+                                new StringBuilder("Temporal domain element (overall = true):\n");
                         for (DateRange tg : temporalDomain.getTemporalElements(false, null)) {
                             overallTemporal.append(tg.toString()).append("\n");
                         }
@@ -146,16 +144,20 @@ public final class NetCDFPolyphemusTest extends Assert {
                         LOGGER.info("Vertical domain is null");
                     } else {
                         // vertical crs
-                        LOGGER.info("VerticalCRS: " + verticalDomain.getCoordinateReferenceSystem());
+                        LOGGER.info(
+                                "VerticalCRS: " + verticalDomain.getCoordinateReferenceSystem());
 
                         // print the Vertical domain elements
-                        for (NumberRange<Double> vg : verticalDomain.getVerticalElements(true, null)) {
+                        for (NumberRange<Double> vg :
+                                verticalDomain.getVerticalElements(true, null)) {
                             LOGGER.info("Vertical domain element: " + vg.toString());
                         }
 
                         // print the Vertical domain elements with overall = true
-                        StringBuilder overallVertical = new StringBuilder("Vertical domain element (overall = true):\n");
-                        for (NumberRange<Double> vg : verticalDomain.getVerticalElements(false, null)) {
+                        StringBuilder overallVertical =
+                                new StringBuilder("Vertical domain element (overall = true):\n");
+                        for (NumberRange<Double> vg :
+                                verticalDomain.getVerticalElements(false, null)) {
                             overallVertical.append(vg.toString()).append("\n");
                         }
                         LOGGER.info(overallVertical.toString());
@@ -167,11 +169,13 @@ public final class NetCDFPolyphemusTest extends Assert {
                         LOGGER.info("Horizontal domain is null");
                     } else {
                         // print the horizontal domain elements
-                        final CoordinateReferenceSystem crs2D = spatialDomain.getCoordinateReferenceSystem2D();
+                        final CoordinateReferenceSystem crs2D =
+                                spatialDomain.getCoordinateReferenceSystem2D();
                         assert crs2D != null;
                         final MathTransform2D g2w = spatialDomain.getGridToWorldTransform(null);
                         assert g2w != null;
-                        final Set<? extends BoundingBox> spatialElements = spatialDomain.getSpatialElements(true, null);
+                        final Set<? extends BoundingBox> spatialElements =
+                                spatialDomain.getSpatialElements(true, null);
                         assert spatialElements != null && !spatialElements.isEmpty();
 
                         final StringBuilder buf = new StringBuilder();
@@ -191,33 +195,40 @@ public final class NetCDFPolyphemusTest extends Assert {
                     //
                     // //
 
-                    LinkedHashSet<NumberRange<Double>> requestedVerticalSubset = new LinkedHashSet<NumberRange<Double>>();
-                    SortedSet<? extends NumberRange<Double>> verticalElements = verticalDomain
-                            .getVerticalElements(false, null);
+                    LinkedHashSet<NumberRange<Double>> requestedVerticalSubset =
+                            new LinkedHashSet<NumberRange<Double>>();
+                    SortedSet<? extends NumberRange<Double>> verticalElements =
+                            verticalDomain.getVerticalElements(false, null);
                     final int numLevels = verticalElements.size();
-                    final Iterator<? extends NumberRange<Double>> iterator = verticalElements.iterator();
+                    final Iterator<? extends NumberRange<Double>> iterator =
+                            verticalElements.iterator();
+                    int step = ((numLevels / 5) > 0) ? (numLevels / 5) : 1;
                     for (int i = 0; i < numLevels; i++) {
                         NumberRange<Double> level = iterator.next();
-                        if (i % (numLevels / 5) == 1) {
+                        if ((i % step) == 0) {
                             requestedVerticalSubset.add(level);
                         }
                     }
                     readRequest.setVerticalSubset(requestedVerticalSubset);
 
                     SortedSet<DateRange> requestedTemporalSubset = new DateRangeTreeSet();
-                    SortedSet<? extends DateRange> temporalElements = temporalDomain.getTemporalElements(false, null);
+                    SortedSet<? extends DateRange> temporalElements =
+                            temporalDomain.getTemporalElements(false, null);
                     final int numTimes = temporalElements.size();
                     Iterator<? extends DateRange> iteratorT = temporalElements.iterator();
+                    step = ((numTimes / 5) > 0) ? (numTimes / 5) : 1;
                     for (int i = 0; i < numTimes; i++) {
                         DateRange time = iteratorT.next();
-                        if (i % (numTimes / 5) == 1) {
+                        if ((i % step) == 0) {
                             requestedTemporalSubset.add(time);
                         }
                     }
                     readRequest.setTemporalSubset(requestedTemporalSubset);
 
                     CoverageResponse response = gridSource.read(readRequest, null);
-                    if (response == null || response.getStatus() != Status.SUCCESS || !response.getExceptions().isEmpty()) {
+                    if (response == null
+                            || response.getStatus() != Status.SUCCESS
+                            || !response.getExceptions().isEmpty()) {
                         throw new IOException("Unable to read");
                     }
 
@@ -240,14 +251,11 @@ public final class NetCDFPolyphemusTest extends Assert {
                                 .append(coverage.getCoordinateReferenceSystem2D().toWKT())
                                 .append("\n");
                         buffer.append("GridCoverage GG: ")
-                                .append(coverage.getGridGeometry().toString()).append("\n");
+                                .append(coverage.getGridGeometry().toString())
+                                .append("\n");
                         LOGGER.info(buffer.toString());
                     }
                     gridSource.dispose();
-                }
-            } catch (Throwable t) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.log(Level.WARNING, t.getLocalizedMessage(), t);
                 }
             } finally {
                 if (access != null) {
@@ -259,14 +267,14 @@ public final class NetCDFPolyphemusTest extends Assert {
                 }
             }
         }
-    }    
+    }
 
     @After
     public void tearDown() throws Exception {
         if (TestData.isInteractiveTest()) {
             return;
         }
-        if(testDirectory.exists()){
+        if (testDirectory.exists()) {
             FileUtils.deleteDirectory(testDirectory);
             testDirectory.delete();
         }
@@ -274,13 +282,12 @@ public final class NetCDFPolyphemusTest extends Assert {
 
     @Before
     public void before() throws Exception {
-        File testDir= TestData.file(this, null);
-        testDirectory= new File(testDir,Long.toString(System.nanoTime()));
-        if(testDirectory.exists()){
+        File testDir = TestData.file(this, null);
+        testDirectory = new File(testDir, Long.toString(System.nanoTime()));
+        if (testDirectory.exists()) {
             FileUtils.deleteDirectory(testDirectory);
             testDirectory.delete();
         }
         testDirectory.mkdir();
-        
     }
 }

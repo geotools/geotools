@@ -17,17 +17,12 @@
 package org.geotools.kml.bindings;
 
 import java.util.Collection;
-import org.opengis.feature.simple.SimpleFeature;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
+import org.opengis.feature.simple.SimpleFeature;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FolderTypeBindingTest extends KMLTestSupport {
     public void testType() throws Exception {
         assertEquals(SimpleFeature.class, binding(KML.FolderType).getType());
@@ -38,8 +33,15 @@ public class FolderTypeBindingTest extends KMLTestSupport {
     }
 
     public void testParse() throws Exception {
-        String xml = "<Folder>" + "<name>folder</name>" + "<Placemark>" + "<Point>"
-            + "<coordinates>0,0</coordinates>" + "</Point>" + "</Placemark>" + "</Folder>";
+        String xml =
+                "<Folder>"
+                        + "<name>folder</name>"
+                        + "<Placemark>"
+                        + "<Point>"
+                        + "<coordinates>0,0</coordinates>"
+                        + "</Point>"
+                        + "</Placemark>"
+                        + "</Folder>";
         buildDocument(xml);
 
         SimpleFeature document = (SimpleFeature) parse();

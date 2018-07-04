@@ -28,12 +28,10 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.imageio.ImageReadParam;
 import javax.media.jai.BorderExtenderConstant;
 import javax.media.jai.Interpolation;
 import javax.media.jai.RenderedOp;
-
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -70,21 +68,18 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Coverage Reader class for reading GRASS raster maps.
- * <p>
- * The class reads a GRASS raster map from a GRASS workspace (see package
- * documentation for further info). The reading is really done via Imageio
- * extended classes.
- * </p>
- * 
+ *
+ * <p>The class reads a GRASS raster map from a GRASS workspace (see package documentation for
+ * further info). The reading is really done via Imageio extended classes.
+ *
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 3.0
  * @see GrassBinaryImageReader
  * @see GrassBinaryRasterReadHandler
- *
- *
  * @source $URL$
  */
-public class GrassCoverageReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
+public class GrassCoverageReader extends AbstractGridCoverage2DReader
+        implements GridCoverage2DReader {
     private GrassBinaryImageReader imageReader = null;
 
     private String name;
@@ -109,29 +104,33 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
 
     /**
      * Sets the input source to use to the given {@link File file object}.
-     * <p>
-     * The input source must be set before any of the query or read methods are
-     * used.
-     * </p>
-     * 
-     * @param input
-     *            the {@link File} to use for future decoding.
+     *
+     * <p>The input source must be set before any of the query or read methods are used.
+     *
+     * @param input the {@link File} to use for future decoding.
      */
-    public GrassCoverageReader( Object input ) {
+    public GrassCoverageReader(Object input) {
         if (input instanceof File) {
             File file = (File) input;
             imageReader = new GrassBinaryImageReader(new GrassBinaryImageReaderSpi());
             imageReader.setInput(input);
-            
+
             jgMapEnvironment = new JGrassMapEnvironment(file);
             name = file.getName();
             try {
                 crs = jgMapEnvironment.getCoordinateReferenceSystem();
                 JGrassRegion fileRegion = jgMapEnvironment.getFileRegion();
-                com.vividsolutions.jts.geom.Envelope env = fileRegion.getEnvelope();
-                originalEnvelope = new GeneralEnvelope(new ReferencedEnvelope(env.getMinX(), env.getMaxX(), env.getMinY(),
-                        env.getMaxY(), crs));
-                originalGridRange = new GridEnvelope2D(0, 0, fileRegion.getCols(), fileRegion.getRows());
+                org.locationtech.jts.geom.Envelope env = fileRegion.getEnvelope();
+                originalEnvelope =
+                        new GeneralEnvelope(
+                                new ReferencedEnvelope(
+                                        env.getMinX(),
+                                        env.getMaxX(),
+                                        env.getMinY(),
+                                        env.getMaxY(),
+                                        crs));
+                originalGridRange =
+                        new GridEnvelope2D(0, 0, fileRegion.getCols(), fileRegion.getRows());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -142,71 +141,62 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
 
     /**
      * Constructor for the {@link GrassCoverageReader}.
-     * 
-     * @param cellAnchor
-     *            the object defining whether to assume the pixel value to be
-     *            read in the grid's cell corner or center.
-     * @param interpolation
-     *            the type of interpolation to be used in the case some scaling
-     *            or padding has to be done.
-     * @param useSubSamplingAsColsRows
-     *            a flag that gives the possibility to bypass the imageio
-     *            subsampling mechanism. With GRASS maps this is often more
-     *            performant in some boundary situations. In the case this flag
-     *            is set to true, the subsampling values will be handled as the
-     *            requested columns and rows.
-     * @param castDoubleToFloating
-     *            a flag that gives the possibility to force the reading of a
-     *            map as a floating point map. This is necessary right now
-     *            because of a imageio bug:
-     *            https://jai-imageio-core.dev.java.net
-     *            /issues/show_bug.cgi?id=180.
-     * @param monitor
-     *            a {@link IHMProgressMonitor monitor} for logging purposes.
-     *            This can be null, in which case a dummy one will be used.
+     *
+     * @param cellAnchor the object defining whether to assume the pixel value to be read in the
+     *     grid's cell corner or center.
+     * @param interpolation the type of interpolation to be used in the case some scaling or padding
+     *     has to be done.
+     * @param useSubSamplingAsColsRows a flag that gives the possibility to bypass the imageio
+     *     subsampling mechanism. With GRASS maps this is often more performant in some boundary
+     *     situations. In the case this flag is set to true, the subsampling values will be handled
+     *     as the requested columns and rows.
+     * @param castDoubleToFloating a flag that gives the possibility to force the reading of a map
+     *     as a floating point map. This is necessary right now because of a imageio bug:
+     *     https://jai-imageio-core.dev.java.net /issues/show_bug.cgi?id=180.
+     * @param monitor a {@link IHMProgressMonitor monitor} for logging purposes. This can be null,
+     *     in which case a dummy one will be used.
      */
-    public void setParams( PixelInCell cellAnchor, Interpolation interpolation, boolean useSubSamplingAsColsRows,
-            boolean castDoubleToFloating, ProgressListener monitor ) {
+    public void setParams(
+            PixelInCell cellAnchor,
+            Interpolation interpolation,
+            boolean useSubSamplingAsColsRows,
+            boolean castDoubleToFloating,
+            ProgressListener monitor) {
         this.useSubSamplingAsRequestedColsRows = useSubSamplingAsColsRows;
         this.castDoubleToFloating = castDoubleToFloating;
-        if (monitor != null)
-            this.monitor = monitor;
-        if (cellAnchor != null)
-            this.cellAnchor = cellAnchor;
-        if (interpolation != null)
-            this.interpolation = interpolation;
+        if (monitor != null) this.monitor = monitor;
+        if (cellAnchor != null) this.cellAnchor = cellAnchor;
+        if (interpolation != null) this.interpolation = interpolation;
     }
 
     /**
      * Performs the reading of the coverage.
-     * <p>
-     * This method read the grass file with a special image I/O class. If the
-     * image support the tiling read the data with a special operation which are
-     * written for this case. The step are:
-     * <li>set the region in the world</li>
-     * <li>set the region to read in the JAI coordinate</li>
-     * <li>read the data directly with driver or, if isTiling is true, with the
-     * operation.</li>
-     * <li>verify if the image cover whole the region, if not fill the rows and
-     * columns with padding (with the Border operation)</li>
-     * <li>scale the image to return an image with the number of columns and
-     * rows equal to the requestedRegion</li>
-     *<li>set the coverage (with the transformation from the JAI coordinate to
-     * the real world coordinate.</li>
-     * <p>
-     * 
-     * @param region
-     *            the {@link JGrassRegion region}to read. 
-     *            If null, the map is read in its
-     *            original boundary and resolution.
+     *
+     * <p>This method read the grass file with a special image I/O class. If the image support the
+     * tiling read the data with a special operation which are written for this case. The step are:
+     * <li>set the region in the world
+     * <li>set the region to read in the JAI coordinate
+     * <li>read the data directly with driver or, if isTiling is true, with the operation.
+     * <li>verify if the image cover whole the region, if not fill the rows and columns with padding
+     *     (with the Border operation)
+     * <li>scale the image to return an image with the number of columns and rows equal to the
+     *     requestedRegion
+     * <li>set the coverage (with the transformation from the JAI coordinate to the real world
+     *     coordinate.
+     *
+     *     <p>
+     *
+     * @param region the {@link JGrassRegion region}to read. If null, the map is read in its
+     *     original boundary and resolution.
      * @return the {@link GridCoverage2D read coverage}.
      * @throws IOException
      */
-    public GridCoverage2D readRaster( JGrassRegion region ) throws IOException {
+    public GridCoverage2D readRaster(JGrassRegion region) throws IOException {
         /*
          * retrieve original map region and crs
          */
-        HashMap<String, String> metaDataTable = ((GrassBinaryImageMetadata) imageReader.getImageMetadata(0)).toHashMap();
+        HashMap<String, String> metaDataTable =
+                ((GrassBinaryImageMetadata) imageReader.getImageMetadata(0)).toHashMap();
         double fileNorth = Double.parseDouble(metaDataTable.get(GrassBinaryImageMetadata.NORTH));
         double fileSouth = Double.parseDouble(metaDataTable.get(GrassBinaryImageMetadata.SOUTH));
         double fileEast = Double.parseDouble(metaDataTable.get(GrassBinaryImageMetadata.EAST));
@@ -308,8 +298,13 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
              * is always 0,0, we can continue to see this in world view.
              */
             sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
-            requestedRegionEnvelope = new Envelope2D(crs, requestedWest, requestedSouth, requestedEast - requestedWest,
-                    requestedNorth - requestedSouth);
+            requestedRegionEnvelope =
+                    new Envelope2D(
+                            crs,
+                            requestedWest,
+                            requestedSouth,
+                            requestedEast - requestedWest,
+                            requestedNorth - requestedSouth);
 
             /*
              * the real world deltas
@@ -342,12 +337,12 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                 JGrassRegion tmpRegion = new JGrassRegion(region);
                 tmpRegion.setWEResolution((fileEast - fileWest) / (double) fileCols);
                 tmpRegion.setNSResolution((fileNorth - fileSouth) / (double) fileRows);
-                subSamplingX = (int) Math.floor((double) tmpRegion.getCols() / (double) requestedCols);
-                subSamplingY = (int) Math.floor((double) tmpRegion.getRows() / (double) requestedRows);
-                if (subSamplingX == 0)
-                    subSamplingX = 1;
-                if (subSamplingY == 0)
-                    subSamplingY = 1;
+                subSamplingX =
+                        (int) Math.floor((double) tmpRegion.getCols() / (double) requestedCols);
+                subSamplingY =
+                        (int) Math.floor((double) tmpRegion.getRows() / (double) requestedRows);
+                if (subSamplingX == 0) subSamplingX = 1;
+                if (subSamplingY == 0) subSamplingY = 1;
                 if (subSamplingX != subSamplingY) {
                     if (subSamplingX < subSamplingY) {
                         subSamplingY = subSamplingX;
@@ -362,8 +357,14 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                  * resolution from the given boundaries.
                  */
 
-                double sourceCols = (requestedEast - requestedWest) / (1 + (xPaddingSx / (xmax - xmin))) / requestedXres;
-                double sourceRows = (requestedNorth - requestedSouth) / (1 + (yPaddingTop / (ymax - ymin))) / requestedYres;
+                double sourceCols =
+                        (requestedEast - requestedWest)
+                                / (1 + (xPaddingSx / (xmax - xmin)))
+                                / requestedXres;
+                double sourceRows =
+                        (requestedNorth - requestedSouth)
+                                / (1 + (yPaddingTop / (ymax - ymin)))
+                                / requestedYres;
                 /*
                  * the padding has to be removed since inside the reader
                  * the padding is ignored and non present in the sourceRegion that
@@ -401,8 +402,13 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             int ymin = (int) Math.floor((fileNorth - requestedNorth) * scaleY + EPS);
             int ymax = (int) Math.ceil((fileNorth - requestedSouth) * scaleY - EPS);
             sourceRegion = new Rectangle(xmin, ymin, (xmax - xmin), ymax - ymin);
-            requestedRegionEnvelope = new Envelope2D(crs, requestedWest, requestedSouth, requestedEast - requestedWest,
-                    requestedNorth - requestedSouth);
+            requestedRegionEnvelope =
+                    new Envelope2D(
+                            crs,
+                            requestedWest,
+                            requestedSouth,
+                            requestedEast - requestedWest,
+                            requestedNorth - requestedSouth);
 
             /*
              * define the subsampling values. This done starting from the
@@ -417,7 +423,6 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             } else {
                 subSamplingX = fileCols;
                 subSamplingY = fileRows;
-
             }
         }
         if (sourceRegion.getWidth() <= 0 || sourceRegion.getHeight() <= 0) {
@@ -429,33 +434,51 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
         imageReadParam.setSourceSubsampling(subSamplingX, subSamplingY, 0, 0);
         RenderedImage finalImage = null;
 
-        BufferedImage image = imageReader.read(0, imageReadParam, useSubSamplingAsRequestedColsRows, castDoubleToFloating,
-                monitor);
+        BufferedImage image =
+                imageReader.read(
+                        0,
+                        imageReadParam,
+                        useSubSamplingAsRequestedColsRows,
+                        castDoubleToFloating,
+                        monitor);
         imageReader.dispose();
 
         int imageWidth = image.getWidth();
         int imageHeight = image.getHeight();
-        if (requestedSouth < fileSouth || requestedWest < fileWest || requestedEast > fileEast || requestedNorth > fileNorth) {
+        if (requestedSouth < fileSouth
+                || requestedWest < fileWest
+                || requestedEast > fileEast
+                || requestedNorth > fileNorth) {
             double totalHeigth = (requestedNorth - tmpDyN) - (requestedSouth - tmpDyS);
 
             int xPaddingDx = 0;
             if (xDeltaE > 0) {
-                xPaddingDx = (int) Math.round(xDeltaE * (double) imageWidth
-                        / ((requestedEast - tmpDxE) - (requestedWest - tmpDxW)));
+                xPaddingDx =
+                        (int)
+                                Math.round(
+                                        xDeltaE
+                                                * (double) imageWidth
+                                                / ((requestedEast - tmpDxE)
+                                                        - (requestedWest - tmpDxW)));
             }
             int yPaddingBottom = 0;
             if (yDeltaS < 0) {
                 yPaddingBottom = (int) Math.round(yDeltaS * (double) imageHeight / (totalHeigth));
             }
-            RenderedImage translatedImage = setPadding(xPaddingSx, xPaddingDx, yPaddingTop, yPaddingBottom, image);
+            RenderedImage translatedImage =
+                    setPadding(xPaddingSx, xPaddingDx, yPaddingTop, yPaddingBottom, image);
 
             if (requestedRows != imageHeight || requestedCols != imageWidth) {
-                finalImage = JGrassUtilities.scaleJAIImage(requestedCols, requestedRows, translatedImage, interpolation);
+                finalImage =
+                        JGrassUtilities.scaleJAIImage(
+                                requestedCols, requestedRows, translatedImage, interpolation);
             } else {
                 finalImage = translatedImage;
             }
         } else if (requestedRows != imageHeight || requestedCols != imageWidth) {
-            finalImage = JGrassUtilities.scaleJAIImage(requestedCols, requestedRows, image, interpolation);
+            finalImage =
+                    JGrassUtilities.scaleJAIImage(
+                            requestedCols, requestedRows, image, interpolation);
         } else {
             finalImage = image;
         }
@@ -483,7 +506,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                 max = rangeBuffer.getDouble();
             }
         }
-        range = new double[]{min, max};
+        range = new double[] {min, max};
         // range = imageReader.getRasterReader().getRange();
 
         /*
@@ -501,27 +524,45 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
 
         g2eMapper.setPixelAnchor(cellAnchor);
         MathTransform gridToEnvelopeTransform = g2eMapper.createTransform();
-        GridCoverageFactory factory = CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
+        GridCoverageFactory factory =
+                CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints());
 
-        GridCoverage2D coverage2D = factory.create(name, finalImage, crs, gridToEnvelopeTransform,
-                new GridSampleDimension[]{band}, null, null);
+        GridCoverage2D coverage2D =
+                factory.create(
+                        name,
+                        finalImage,
+                        crs,
+                        gridToEnvelopeTransform,
+                        new GridSampleDimension[] {band},
+                        null,
+                        null);
         return coverage2D;
-
     }
 
-    private RenderedImage setPadding( int xPaddingSx, int xPaddingDx, int yPaddingTop, int yPaddingBottom, RenderedImage image ) {
+    private RenderedImage setPadding(
+            int xPaddingSx,
+            int xPaddingDx,
+            int yPaddingTop,
+            int yPaddingBottom,
+            RenderedImage image) {
         ImageWorker worker = new ImageWorker(image);
-        worker.border(Math.abs(xPaddingSx), Math.abs(0), Math.abs(yPaddingTop), Math.abs(0), new BorderExtenderConstant(new double[]{Double.NaN}));        
-        worker.translate((float)-xPaddingSx, (float)-yPaddingTop, null);
+        worker.border(
+                Math.abs(xPaddingSx),
+                Math.abs(0),
+                Math.abs(yPaddingTop),
+                Math.abs(0),
+                new BorderExtenderConstant(new double[] {Double.NaN}));
+        worker.translate((float) -xPaddingSx, (float) -yPaddingTop, null);
         return worker.getRenderedImage();
     }
 
-    private GridSampleDimension createGridSampleDimension( HashMap<String, String> metaDataTable, double[] range )
-            throws IOException {
+    private GridSampleDimension createGridSampleDimension(
+            HashMap<String, String> metaDataTable, double[] range) throws IOException {
         colorRulesString = metaDataTable.get(GrassBinaryImageMetadata.COLOR_RULES_DESCRIPTOR);
         categoriesString = metaDataTable.get(GrassBinaryImageMetadata.CATEGORIES_DESCRIPTOR);
         String[] colorRulesSplit;
-        if (colorRulesString.length() > 3 && !colorRulesString.matches(".*Infinty.*|.*NaN.*")) { //$NON-NLS-1$
+        if (colorRulesString.length() > 3
+                && !colorRulesString.matches(".*Infinty.*|.*NaN.*")) { // $NON-NLS-1$
             colorRulesSplit = colorRulesString.split(GrassBinaryImageMetadata.RULESSPLIT);
         } else {
             List<String> defColorTable = JGrassColorTable.createDefaultColorTable(range, 255);
@@ -545,7 +586,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
 
             double[][] values = new double[rulesNum][2];
             Color[][] colors = new Color[rulesNum][2];
-            for( int i = 0; i < rulesNum; i++ ) {
+            for (int i = 0; i < rulesNum; i++) {
                 String colorRule = colorRulesSplit[i];
                 JGrassColorTable.parseColorRule(colorRule, values[i], colors[i]);
 
@@ -555,8 +596,16 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
                 // System.out.println("Processing colorrule: " + colorRule);
             }
 
-            Category noData = new Category("novalue", new Color(Color.WHITE.getRed(), Color.WHITE //$NON-NLS-1$
-                    .getGreen(), Color.WHITE.getBlue(), 0), 0);
+            Category noData =
+                    new Category(
+                            "novalue",
+                            new Color(
+                                    Color.WHITE.getRed(),
+                                    Color.WHITE // $NON-NLS-1$
+                                            .getGreen(),
+                                    Color.WHITE.getBlue(),
+                                    0),
+                            0);
             catsList.add(noData);
 
             double a = (values[values.length - 1][1] - values[0][0]) / (double) (COLORNUM - 1);
@@ -568,10 +617,10 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             double offSet = values[0][0] - scale * pmin;
 
             int previousUpper = -Integer.MAX_VALUE;
-            for( int i = 0; i < rulesNum; i++ ) {
+            for (int i = 0; i < rulesNum; i++) {
                 StringBuilder sB = new StringBuilder();
                 sB.append(name);
-                sB.append("_"); //$NON-NLS-1$
+                sB.append("_"); // $NON-NLS-1$
                 sB.append(i);
 
                 double tmpLower = values[i][0];
@@ -594,7 +643,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             Category[] array = (Category[]) catsList.toArray(new Category[catsList.size()]);
             return new GridSampleDimension(name, array, scale, offSet);
         } else {
-            return new GridSampleDimension(name, new Category[]{}, null);
+            return new GridSampleDimension(name, new Category[] {}, null);
         }
     }
 
@@ -651,7 +700,8 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
     // System.out.println(integerView.evaluate(point, buffer)[0]);
     //
     // RenderedImage renderedImage = integerView.getRenderedImage();
-    //            OutputStream oStream = new FileOutputStream(new File("/Users/moovida/Desktop/test.png")); //$NON-NLS-1$
+    //            OutputStream oStream = new FileOutputStream(new
+    // File("/Users/moovida/Desktop/test.png")); //$NON-NLS-1$
     //            ImageIO.write(renderedImage, "png", oStream); //$NON-NLS-1$
     //
     // // GridCoverage2D geographic = (GridCoverage2D)
@@ -678,7 +728,8 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
     // integerView = coverage2D.view(ViewType.RENDERED);
     // renderedImage = integerView.getRenderedImage();
     //
-    //            oStream = new FileOutputStream(new File("/Users/moovida/Desktop/test1.png")); //$NON-NLS-1$
+    //            oStream = new FileOutputStream(new File("/Users/moovida/Desktop/test1.png"));
+    // //$NON-NLS-1$
     // ImageIO.write(renderedImage, "png", oStream);
     // } catch (IOException e) {
     // e.printStackTrace();
@@ -687,7 +738,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
 
     /**
      * Getter for the legend string.
-     * 
+     *
      * @return the legendstring.
      */
     public String getLegendString() {
@@ -696,7 +747,7 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
 
     /**
      * Getter for the categories string.
-     * 
+     *
      * @return the categories string.
      */
     public String getCategoriesString() {
@@ -705,9 +756,9 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
 
     /**
      * Gets the range.
-     * 
-     * <b>Note that the range is available only if the raster was read once.</b>
-     * 
+     *
+     * <p><b>Note that the range is available only if the raster was read once.</b>
+     *
      * @return the range non considering novalues.
      */
     public double[] getRange() {
@@ -715,14 +766,15 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
     }
 
     @Override
-    public GridCoverage2D read( GeneralParameterValue[] params ) throws IllegalArgumentException, IOException {
+    public GridCoverage2D read(GeneralParameterValue[] params)
+            throws IllegalArgumentException, IOException {
 
         GeneralEnvelope requestedEnvelope = null;
         Rectangle dim = null;
         // OverviewPolicy overviewPolicy = null;
         if (params != null) {
-            for( int i = 0; i < params.length; i++ ) {
-                final ParameterValue< ? > param = (ParameterValue< ? >) params[i];
+            for (int i = 0; i < params.length; i++) {
+                final ParameterValue<?> param = (ParameterValue<?>) params[i];
                 final String name = param.getDescriptor().getName().getCode();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName().toString())) {
                     final GridGeometry2D gg = (GridGeometry2D) param.getValue();
@@ -741,7 +793,14 @@ public class GrassCoverageReader extends AbstractGridCoverage2DReader implements
             double[] westSouth = lowerCorner.getCoordinate();
             DirectPosition upperCorner = requestedEnvelope.getUpperCorner();
             double[] eastNorth = upperCorner.getCoordinate();
-            JGrassRegion region = new JGrassRegion(westSouth[0], eastNorth[0], westSouth[1], eastNorth[1], dim.height, dim.width);
+            JGrassRegion region =
+                    new JGrassRegion(
+                            westSouth[0],
+                            eastNorth[0],
+                            westSouth[1],
+                            eastNorth[1],
+                            dim.height,
+                            dim.width);
             return readRaster(region);
         }
 

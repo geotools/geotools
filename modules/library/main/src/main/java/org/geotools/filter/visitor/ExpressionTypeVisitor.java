@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.capability.FunctionName;
@@ -41,27 +40,60 @@ import org.opengis.filter.expression.Subtract;
 /**
  * Returns the output type of the visited expression, taking into account functions output types,
  * property types, and general promotion rules in arithmetic expressions
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class ExpressionTypeVisitor implements ExpressionVisitor {
 
-    static final Map<Class<?>, List<Class<?>>> PROMOTIONS = new HashMap<Class<?>, List<Class<?>>>() {
-        {
-            put(Byte.class, Arrays.asList((Class<?>) Byte.class, Short.class, Integer.class,
-                    Long.class, Float.class, Double.class, BigInteger.class, BigDecimal.class));
-            put(Short.class, Arrays.asList((Class<?>) Short.class, Integer.class, Long.class,
-                    Float.class, Double.class, BigInteger.class, BigDecimal.class));
-            put(Integer.class, Arrays.asList((Class<?>) Integer.class, Long.class, Float.class,
-                    Double.class, BigInteger.class, BigDecimal.class));
-            put(Long.class, Arrays.asList((Class<?>) Long.class, Double.class, BigInteger.class,
-                    BigDecimal.class));
-            put(Float.class, Arrays.asList((Class<?>) Float.class, Double.class, BigDecimal.class));
-            put(Double.class, Arrays.asList((Class<?>) Double.class, BigDecimal.class));
-            put(BigInteger.class, Arrays.asList((Class<?>) BigInteger.class, BigDecimal.class));
-        }
-    };
+    static final Map<Class<?>, List<Class<?>>> PROMOTIONS =
+            new HashMap<Class<?>, List<Class<?>>>() {
+                {
+                    put(
+                            Byte.class,
+                            Arrays.asList(
+                                    (Class<?>) Byte.class,
+                                    Short.class,
+                                    Integer.class,
+                                    Long.class,
+                                    Float.class,
+                                    Double.class,
+                                    BigInteger.class,
+                                    BigDecimal.class));
+                    put(
+                            Short.class,
+                            Arrays.asList(
+                                    (Class<?>) Short.class,
+                                    Integer.class,
+                                    Long.class,
+                                    Float.class,
+                                    Double.class,
+                                    BigInteger.class,
+                                    BigDecimal.class));
+                    put(
+                            Integer.class,
+                            Arrays.asList(
+                                    (Class<?>) Integer.class,
+                                    Long.class,
+                                    Float.class,
+                                    Double.class,
+                                    BigInteger.class,
+                                    BigDecimal.class));
+                    put(
+                            Long.class,
+                            Arrays.asList(
+                                    (Class<?>) Long.class,
+                                    Double.class,
+                                    BigInteger.class,
+                                    BigDecimal.class));
+                    put(
+                            Float.class,
+                            Arrays.asList((Class<?>) Float.class, Double.class, BigDecimal.class));
+                    put(Double.class, Arrays.asList((Class<?>) Double.class, BigDecimal.class));
+                    put(
+                            BigInteger.class,
+                            Arrays.asList((Class<?>) BigInteger.class, BigDecimal.class));
+                }
+            };
 
     FeatureType featureType;
 
@@ -132,7 +164,7 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
     /**
      * Traverses the super-classes trying to find a common superclass. Won't consider interfaces
      * (good enough for the moment, all basic types we handle have a common superclass)
-     * 
+     *
      * @param c1
      * @param c2
      * @return
@@ -173,5 +205,4 @@ public class ExpressionTypeVisitor implements ExpressionVisitor {
             return Object.class;
         }
     }
-
 }

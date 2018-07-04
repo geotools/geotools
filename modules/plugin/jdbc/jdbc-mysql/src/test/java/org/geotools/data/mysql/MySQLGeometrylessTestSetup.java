@@ -18,11 +18,7 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySQLGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     protected MySQLGeometrylessTestSetup() {
@@ -31,8 +27,9 @@ public class MySQLGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     @Override
     protected void createPersonTable() throws Exception {
-        run("CREATE TABLE person(fid int AUTO_INCREMENT PRIMARY KEY, id int, "
-                + "name varchar(255), age int)");
+        run(
+                "CREATE TABLE person(fid int AUTO_INCREMENT PRIMARY KEY, id int, "
+                        + "name varchar(255), age int)");
         run("INSERT INTO person (id,name,age) VALUES (0,'Paul',32)");
         run("INSERT INTO person (id,name,age) VALUES (0,'Anne',40)");
     }
@@ -46,5 +43,4 @@ public class MySQLGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     protected void dropZipCodeTable() throws Exception {
         run("DROP TABLE zipcode");
     }
-
 }

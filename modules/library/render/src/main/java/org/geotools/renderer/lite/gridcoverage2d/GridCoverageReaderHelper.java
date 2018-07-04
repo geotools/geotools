@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,10 +24,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationNearest;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -37,6 +35,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.ReadResolutionCalculator;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.EmptyIntersectionException;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
@@ -44,8 +43,14 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.crs.ProjectionHandler;
+import org.geotools.renderer.crs.ProjectionHandlerFinder;
+import org.geotools.renderer.crs.WrappingProjectionHandler;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -57,15 +62,11 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * Support class that performs the actions needed to read a GridCoverage for the task of rendering
  * it at a given resolution, on a given area, taking into account projection oddities, dateline
  * crossing, and the like
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class GridCoverageReaderHelper {
@@ -90,20 +91,45 @@ public class GridCoverageReaderHelper {
 
     private boolean sameCRS;
 
-    public GridCoverageReaderHelper(GridCoverage2DReader reader, Rectangle mapRasterArea,
-            ReferencedEnvelope mapExtent, Interpolation interpolation) throws FactoryException, IOException {
+    private int padding;
+
+    public GridCoverageReaderHelper(
+            GridCoverage2DReader reader,
+            Rectangle mapRasterArea,
+            ReferencedEnvelope mapExtent,
+            Interpolation interpolation)
+            throws FactoryException, IOException {
+        this(reader, mapRasterArea, mapExtent, interpolation, null);
+    }
+
+    public GridCoverageReaderHelper(
+            GridCoverage2DReader reader,
+            Rectangle mapRasterArea,
+            ReferencedEnvelope mapExtent,
+            Interpolation interpolation,
+            Hints hints)
+            throws FactoryException, IOException {
         this.reader = reader;
         this.mapExtent = mapExtent;
-        this.requestedGridGeometry = new GridGeometry2D(new GridEnvelope2D(mapRasterArea),
-                mapExtent);
+        this.requestedGridGeometry =
+                new GridGeometry2D(new GridEnvelope2D(mapRasterArea), mapExtent);
         this.worldToScreen = requestedGridGeometry.getCRSToGrid2D();
-
+        this.padding = DEFAULT_PADDING;
+        if (hints != null && hints.containsKey(GridCoverageRenderer.PADDING)) {
+            padding = (int) hints.get(GridCoverageRenderer.PADDING);
+        }
         // determine if we need a reading gutter, or not, we do if we are reprojecting, or if
         // there is an interpolation to be applied, in that case we need to expand the area
         // we are going to read
-        sameCRS = CRS.equalsIgnoreMetadata(mapExtent.getCoordinateReferenceSystem(),
-                reader.getCoordinateReferenceSystem());
-        paddingRequired = (!sameCRS || !(interpolation instanceof InterpolationNearest)) && !isReprojectingReader(reader);
+        sameCRS =
+                CRS.equalsIgnoreMetadata(
+                        mapExtent.getCoordinateReferenceSystem(),
+                        reader.getCoordinateReferenceSystem());
+        paddingRequired =
+                (!sameCRS
+                                || !(interpolation instanceof InterpolationNearest)
+                                || isMultiCRSReader(reader))
+                        && !isReprojectingReader(reader);
         if (paddingRequired) {
             // expand the map raster area
             GridEnvelope2D requestedGridEnvelope = new GridEnvelope2D(mapRasterArea);
@@ -111,11 +137,15 @@ public class GridCoverageReaderHelper {
 
             // now create the final envelope accordingly
             try {
-                this.requestedGridGeometry = new GridGeometry2D(requestedGridEnvelope,
-                        PixelInCell.CELL_CORNER, worldToScreen.inverse(),
-                        mapExtent.getCoordinateReferenceSystem(), null);
-                this.mapExtent = ReferencedEnvelope
-                        .reference(requestedGridGeometry.getEnvelope2D());
+                this.requestedGridGeometry =
+                        new GridGeometry2D(
+                                requestedGridEnvelope,
+                                PixelInCell.CELL_CORNER,
+                                worldToScreen.inverse(),
+                                mapExtent.getCoordinateReferenceSystem(),
+                                null);
+                this.mapExtent =
+                        ReferencedEnvelope.reference(requestedGridGeometry.getEnvelope2D());
                 this.mapRasterArea = requestedGridGeometry.getGridRange2D().getBounds();
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -127,9 +157,9 @@ public class GridCoverageReaderHelper {
     }
 
     /**
-     * Returns true if the reader is a reprojecting one, that is, one that can handle 
-     * the coverage reprojection on its own
-     * 
+     * Returns true if the reader is a reprojecting one, that is, one that can handle the coverage
+     * reprojection on its own
+     *
      * @param reader
      * @return
      * @throws IOException
@@ -138,13 +168,29 @@ public class GridCoverageReaderHelper {
         return "true".equals(reader.getMetadataValue(GridCoverage2DReader.REPROJECTING_READER));
     }
 
+    /**
+     * Returns true if the reader is advertising a single CRS, cannot fully perform a reproject to
+     * any target CRS, but internally is working with several CRSs and could use some extra padding
+     * on the requests
+     *
+     * @param reader
+     * @return
+     * @throws IOException
+     */
+    boolean isMultiCRSReader(GridCoverage2DReader reader) throws IOException {
+        return "true".equals(reader.getMetadataValue(GridCoverage2DReader.MULTICRS_READER));
+    }
+
     public ReferencedEnvelope getReadEnvelope() {
         return mapExtent;
     }
 
     private void applyReadGutter(GridEnvelope2D gridRange) {
-        gridRange.setBounds(gridRange.x - DEFAULT_PADDING, gridRange.y - DEFAULT_PADDING,
-                gridRange.width + DEFAULT_PADDING * 2, gridRange.height + DEFAULT_PADDING * 2);
+        gridRange.setBounds(
+                gridRange.x - padding,
+                gridRange.y - padding,
+                gridRange.width + padding * 2,
+                gridRange.height + padding * 2);
     }
 
     private GridGeometry2D applyReadGutter(GridGeometry2D gg) {
@@ -152,11 +198,10 @@ public class GridCoverageReaderHelper {
         GridEnvelope2D range = new GridEnvelope2D(gg.getGridRange2D());
         applyReadGutter(range);
         CoordinateReferenceSystem crs = gg.getEnvelope2D().getCoordinateReferenceSystem();
-        GridGeometry2D result = new GridGeometry2D(range, PixelInCell.CELL_CORNER, gridToCRS, crs,
-                null);
+        GridGeometry2D result =
+                new GridGeometry2D(range, PixelInCell.CELL_CORNER, gridToCRS, crs, null);
 
         return result;
-
     }
 
     /**
@@ -173,8 +218,9 @@ public class GridCoverageReaderHelper {
      * line crossing, poles and other projection trouble areas. The result is a set of coverages
      * that can be either painted or reprojected safely
      */
-    public List<GridCoverage2D> readCoverages(final GeneralParameterValue[] readParams,
-            ProjectionHandler handler) throws IOException, FactoryException, TransformException {
+    public List<GridCoverage2D> readCoverages(
+            final GeneralParameterValue[] readParams, ProjectionHandler handler)
+            throws IOException, FactoryException, TransformException {
         return readCoverages(readParams, handler, new GridCoverageFactory());
     }
 
@@ -183,13 +229,15 @@ public class GridCoverageReaderHelper {
      * line crossing, poles and other projection trouble areas. The result is a set of coverages
      * that can be either painted or reprojected safely
      */
-    public List<GridCoverage2D> readCoverages(final GeneralParameterValue[] readParams,
-            ProjectionHandler handler, GridCoverageFactory gridCoverageFactory)
+    public List<GridCoverage2D> readCoverages(
+            final GeneralParameterValue[] readParams,
+            ProjectionHandler handler,
+            GridCoverageFactory gridCoverageFactory)
             throws IOException, FactoryException, TransformException {
         if (handler == null) {
             GridCoverage2D readCoverage = readCoverage(readParams);
             GridCoverage2D cropped = cropCoverageOnRequestedEnvelope(readCoverage);
-            if(cropped == null) {
+            if (cropped == null) {
                 return Collections.emptyList();
             } else {
                 return Arrays.asList(cropped);
@@ -201,8 +249,8 @@ public class GridCoverageReaderHelper {
         List<GridCoverage2D> coverages = new ArrayList<GridCoverage2D>();
         List<ReferencedEnvelope> queryEnvelopes = handler.getQueryEnvelopes();
         for (ReferencedEnvelope envelope : queryEnvelopes) {
-            List<GridCoverage2D> readCoverages = readCoverageInEnvelope(envelope, readParams,
-                    handler, paddingRequired);
+            List<GridCoverage2D> readCoverages =
+                    readCoverageInEnvelope(envelope, readParams, handler, paddingRequired);
             if (readCoverages != null) {
                 coverages.addAll(readCoverages);
             }
@@ -212,8 +260,8 @@ public class GridCoverageReaderHelper {
         // if that's the case, see if we can perform extra reads
         SingleCRS readerCRS = CRS.getHorizontalCRS(reader.getCoordinateReferenceSystem());
         if (readerCRS instanceof GeographicCRS) {
-            ReferencedEnvelope readerEnvelope = ReferencedEnvelope
-                    .reference(reader.getOriginalEnvelope());
+            ReferencedEnvelope readerEnvelope =
+                    ReferencedEnvelope.reference(reader.getOriginalEnvelope());
             boolean northEast = CRS.getAxisOrder(readerCRS) == AxisOrder.NORTH_EAST;
             int lonAxis = northEast ? 1 : 0;
             if (readerEnvelope.getMaximum(lonAxis) > 180) {
@@ -233,22 +281,30 @@ public class GridCoverageReaderHelper {
                     // try to translate into the the excess area, and intersect
                     ReferencedEnvelope translated = new ReferencedEnvelope(envelope);
                     translated.translate(tx, ty);
-                    ReferencedEnvelope intersection = new ReferencedEnvelope(
-                            translated.intersection(excess),
-                            translated.getCoordinateReferenceSystem());
-                    boolean isEmptyEnvelope = intersection == null || intersection.isNull()
-                            || intersection.getHeight() == 0 || intersection.getWidth() == 0;
+                    ReferencedEnvelope intersection =
+                            new ReferencedEnvelope(
+                                    translated.intersection(excess),
+                                    translated.getCoordinateReferenceSystem());
+                    boolean isEmptyEnvelope =
+                            intersection == null
+                                    || intersection.isNull()
+                                    || intersection.getHeight() == 0
+                                    || intersection.getWidth() == 0;
                     if (isEmptyEnvelope) {
                         continue;
                     }
-                    List<GridCoverage2D> readCoverages = readCoverageInEnvelope(intersection,
-                            readParams, handler, false);
+                    List<GridCoverage2D> readCoverages =
+                            readCoverageInEnvelope(intersection, readParams, handler, false);
                     if (readCoverages != null) {
                         for (GridCoverage2D gc : readCoverages) {
-                            GridCoverage2D displaced = GridCoverageRendererUtilities.displace(gc,
-                                    -tx, -ty,
-                                    gridCoverageFactory);
-                            coverages.add(displaced);
+                            GridCoverage2D displaced =
+                                    GridCoverageRendererUtilities.displace(
+                                            gc, -tx, -ty, gridCoverageFactory);
+                            // add only if the already read bits of the source file
+                            // do not contain the new one
+                            if (!coveragesContainArea(coverages, displaced)) {
+                                coverages.add(displaced);
+                            }
                         }
                     }
                 }
@@ -258,38 +314,65 @@ public class GridCoverageReaderHelper {
         return coverages;
     }
 
+    /**
+     * Checks if any coverage in the list already fully contains the area of the test coverage
+     *
+     * @param coverages
+     * @param test
+     * @return
+     */
+    private boolean coveragesContainArea(List<GridCoverage2D> coverages, GridCoverage2D test) {
+        for (GridCoverage2D coverage : coverages) {
+            if (coverage.getEnvelope2D().contains((BoundingBox) test.getEnvelope2D())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private GridCoverage2D cropCoverageOnRequestedEnvelope(GridCoverage2D readCoverage) {
-        if(readCoverage == null) {
+        if (readCoverage == null) {
             return null;
         }
         try {
-            ReferencedEnvelope requested = ReferencedEnvelope.reference(requestedGridGeometry.getEnvelope());
-            ReferencedEnvelope requestedNativeCRS = requested.transform(readCoverage.getCoordinateReferenceSystem(), true);
-            
-            ReferencedEnvelope coverageEnvelope = ReferencedEnvelope.reference(readCoverage.getEnvelope());
-            ReferencedEnvelope cropEnvelope = new ReferencedEnvelope(
-                    requestedNativeCRS.intersection(coverageEnvelope), readCoverage.getCoordinateReferenceSystem());
+            ReferencedEnvelope requested =
+                    ReferencedEnvelope.reference(requestedGridGeometry.getEnvelope());
+            ReferencedEnvelope requestedNativeCRS =
+                    requested.transform(readCoverage.getCoordinateReferenceSystem(), true);
+
+            ReferencedEnvelope coverageEnvelope =
+                    ReferencedEnvelope.reference(readCoverage.getEnvelope());
+            ReferencedEnvelope cropEnvelope =
+                    new ReferencedEnvelope(
+                            requestedNativeCRS.intersection(coverageEnvelope),
+                            readCoverage.getCoordinateReferenceSystem());
             if (isNotEmpty(cropEnvelope)) {
                 GridCoverage2D cropCoverage = cropCoverage(readCoverage, requestedNativeCRS);
                 return cropCoverage;
             } else {
                 return null;
             }
-        } catch(Exception e) {
-            LOGGER.log(Level.FINE, "Failed to crop coverage on the requested area, using the original one", e);
+        } catch (Exception e) {
+            LOGGER.log(
+                    Level.FINE,
+                    "Failed to crop coverage on the requested area, using the original one",
+                    e);
             return readCoverage;
         }
     }
 
-    private List<GridCoverage2D> readCoverageInEnvelope(ReferencedEnvelope envelope,
-            GeneralParameterValue[] readParams, ProjectionHandler handler, boolean paddingRequired)
-                    throws TransformException, FactoryException, IOException {
+    List<GridCoverage2D> readCoverageInEnvelope(
+            ReferencedEnvelope envelope,
+            GeneralParameterValue[] readParams,
+            ProjectionHandler handler,
+            boolean paddingRequired)
+            throws TransformException, FactoryException, IOException {
         Polygon polygon = JTS.toGeometry(envelope);
         CoordinateReferenceSystem readerCRS = reader.getCoordinateReferenceSystem();
 
         GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(mapRasterArea), mapExtent);
-        GridGeometry2D readingGridGeometry = computeReadingGeometry(gg, readerCRS, polygon,
-                handler);
+        GridGeometry2D readingGridGeometry =
+                computeReadingGeometry(gg, readerCRS, polygon, handler);
         if (readingGridGeometry == null) {
             return null;
         }
@@ -302,18 +385,19 @@ public class GridCoverageReaderHelper {
         }
 
         // cut and slice the geometry as required by the projection handler
-        ReferencedEnvelope readingEnvelope = ReferencedEnvelope
-                .reference(readingGridGeometry.getEnvelope2D());
-        ReferencedEnvelope coverageEnvelope = ReferencedEnvelope
-                .reference(coverage.getEnvelope2D());
+        ReferencedEnvelope readingEnvelope =
+                ReferencedEnvelope.reference(readingGridGeometry.getEnvelope2D());
+        ReferencedEnvelope coverageEnvelope =
+                ReferencedEnvelope.reference(coverage.getEnvelope2D());
         Polygon coverageFootprint = JTS.toGeometry(coverageEnvelope);
         Geometry preProcessed = handler.preProcess(coverageFootprint);
         if (preProcessed != null && !preProcessed.isEmpty()) {
             if (coverageFootprint.equals(preProcessed)) {
                 // we might still have read more than requested
                 if (!readingEnvelope.contains((Envelope) coverageEnvelope)) {
-                    ReferencedEnvelope cropEnvelope = new ReferencedEnvelope(
-                            readingEnvelope.intersection(coverageEnvelope), readerCRS);
+                    ReferencedEnvelope cropEnvelope =
+                            new ReferencedEnvelope(
+                                    readingEnvelope.intersection(coverageEnvelope), readerCRS);
                     GridCoverage2D cropped = cropCoverage(coverage, cropEnvelope);
                     return singleton(cropped);
                 } else {
@@ -323,14 +407,16 @@ public class GridCoverageReaderHelper {
                 final List<Polygon> polygons = PolygonExtractor.INSTANCE.getPolygons(preProcessed);
                 final List<GridCoverage2D> coverages = new ArrayList<>();
                 for (Polygon p : polygons) {
-                    ReferencedEnvelope cropEnvelope = new ReferencedEnvelope(
-                            p.getEnvelopeInternal(), readerCRS);
-                    cropEnvelope = new ReferencedEnvelope(
-                            cropEnvelope.intersection(coverageEnvelope), readerCRS);
-                    cropEnvelope = new ReferencedEnvelope(
-                            cropEnvelope.intersection(readingEnvelope), readerCRS);
+                    ReferencedEnvelope cropEnvelope =
+                            new ReferencedEnvelope(p.getEnvelopeInternal(), readerCRS);
+                    cropEnvelope =
+                            new ReferencedEnvelope(
+                                    cropEnvelope.intersection(coverageEnvelope), readerCRS);
+                    cropEnvelope =
+                            new ReferencedEnvelope(
+                                    cropEnvelope.intersection(readingEnvelope), readerCRS);
                     GridCoverage2D cropped = cropCoverage(coverage, cropEnvelope);
-                    if(cropped != null) {
+                    if (cropped != null) {
                         coverages.add(cropped);
                     }
                 }
@@ -342,7 +428,7 @@ public class GridCoverageReaderHelper {
     }
 
     private List<GridCoverage2D> singleton(GridCoverage2D coverage) {
-        if(coverage == null) {
+        if (coverage == null) {
             return null;
         } else {
             return Collections.singletonList(coverage);
@@ -350,20 +436,23 @@ public class GridCoverageReaderHelper {
     }
 
     private boolean isNotEmpty(ReferencedEnvelope envelope) {
-        return !envelope.isEmpty() && !envelope.isNull() && envelope.getWidth() > 0
+        return !envelope.isEmpty()
+                && !envelope.isNull()
+                && envelope.getWidth() > 0
                 && envelope.getHeight() > 0;
     }
 
     private GridCoverage2D cropCoverage(GridCoverage2D coverage, ReferencedEnvelope cropEnvelope) {
         if (isNotEmpty(cropEnvelope)) {
-            final ParameterValueGroup param = PROCESSOR.getOperation("CoverageCrop").getParameters();
+            final ParameterValueGroup param =
+                    PROCESSOR.getOperation("CoverageCrop").getParameters();
             param.parameter("Source").setValue(coverage);
             param.parameter("Envelope").setValue(cropEnvelope);
-    
+
             try {
                 GridCoverage2D cropped = (GridCoverage2D) PROCESSOR.doOperation(param);
                 return cropped;
-            } catch(EmptyIntersectionException e) {
+            } catch (EmptyIntersectionException e) {
                 return null;
             }
         } else {
@@ -371,22 +460,27 @@ public class GridCoverageReaderHelper {
         }
     }
 
-    private GridGeometry2D computeReadingGeometry(GridGeometry2D gg,
-            CoordinateReferenceSystem readerCRS, Polygon polygon, ProjectionHandler handler)
-            throws TransformException,
-            FactoryException, IOException {
+    private GridGeometry2D computeReadingGeometry(
+            GridGeometry2D gg,
+            CoordinateReferenceSystem readerCRS,
+            Polygon polygon,
+            ProjectionHandler handler)
+            throws TransformException, FactoryException, IOException {
         GridGeometry2D readingGridGeometry;
         MathTransform2D crsToGrid2D = gg.getCRSToGrid2D();
         MathTransform2D gridToCRS2D = gg.getGridToCRS2D();
         if (sameCRS) {
             Envelope gridEnvelope = JTS.transform(polygon, crsToGrid2D).getEnvelopeInternal();
-            GridEnvelope2D gridRange = new GridEnvelope2D((int) gridEnvelope.getMinX(),
-                    (int) gridEnvelope.getMinY(), (int) Math.round(gridEnvelope.getWidth()),
-                    (int) Math.round(gridEnvelope.getHeight()));
+            GridEnvelope2D gridRange =
+                    new GridEnvelope2D(
+                            (int) gridEnvelope.getMinX(),
+                            (int) gridEnvelope.getMinY(),
+                            (int) Math.round(gridEnvelope.getWidth()),
+                            (int) Math.round(gridEnvelope.getHeight()));
             readingGridGeometry = new GridGeometry2D(gridRange, gridToCRS2D, readerCRS);
         } else {
-            ReferencedEnvelope readEnvelope = new ReferencedEnvelope(polygon.getEnvelopeInternal(),
-                    readerCRS);
+            ReferencedEnvelope readEnvelope =
+                    new ReferencedEnvelope(polygon.getEnvelopeInternal(), readerCRS);
             // while we want to read as much data as possible, and cut it only later
             // to avoid warping edge effects later, the resolution needs to be
             // computed against an area that's sane for the projection at hand
@@ -394,32 +488,83 @@ public class GridCoverageReaderHelper {
             if (reducedEnvelope == null) {
                 return null;
             }
-            ReferencedEnvelope reducedEnvelopeInRequestedCRS = reducedEnvelope.transform(
-                    requestedGridGeometry.getCoordinateReferenceSystem(), true);
-            ReferencedEnvelope gridEnvelope = ReferencedEnvelope.reference(CRS.transform(
-                    crsToGrid2D, reducedEnvelopeInRequestedCRS));
-            GridEnvelope2D readingGridRange = new GridEnvelope2D((int) gridEnvelope.getMinX(),
-                    (int) gridEnvelope.getMinY(), (int) gridEnvelope.getWidth(),
-                    (int) gridEnvelope.getHeight());
-            GridGeometry2D localGridGeometry = new GridGeometry2D(readingGridRange, gridToCRS2D,
-                    mapExtent.getCoordinateReferenceSystem());
+            ReferencedEnvelope reducedEnvelopeInRequestedCRS =
+                    reducedEnvelope.transform(
+                            requestedGridGeometry.getCoordinateReferenceSystem(), true);
+            ReferencedEnvelope gridEnvelope =
+                    ReferencedEnvelope.reference(
+                            CRS.transform(crsToGrid2D, reducedEnvelopeInRequestedCRS));
+            GridEnvelope2D readingGridRange =
+                    new GridEnvelope2D(
+                            (int) gridEnvelope.getMinX(),
+                            (int) gridEnvelope.getMinY(),
+                            (int) gridEnvelope.getWidth(),
+                            (int) gridEnvelope.getHeight());
+            GridGeometry2D localGridGeometry =
+                    new GridGeometry2D(
+                            readingGridRange,
+                            gridToCRS2D,
+                            mapExtent.getCoordinateReferenceSystem());
 
             double[][] resolutionLevels = reader.getResolutionLevels();
-            ReadResolutionCalculator calculator = new ReadResolutionCalculator(localGridGeometry,
-                    readerCRS, resolutionLevels != null ? resolutionLevels[0] : null);
-            calculator.setAccurateResolution(true);
+            ReadResolutionCalculator calculator =
+                    new ReadResolutionCalculator(
+                            localGridGeometry,
+                            readerCRS,
+                            resolutionLevels != null ? resolutionLevels[0] : null);
+            calculator.setAccurateResolution(isAccurateResolutionComputationSafe(readEnvelope));
             double[] readResolution = calculator.computeRequestedResolution(reducedEnvelope);
-            int width = (int) Math.max(1,
-                    Math.round(readEnvelope.getWidth() / Math.abs(readResolution[0])));
-            int height = (int) Math.max(1,
-                    Math.round(readEnvelope.getHeight() / Math.abs(readResolution[1])));
+            int width =
+                    (int)
+                            Math.max(
+                                    1,
+                                    Math.round(
+                                            readEnvelope.getWidth() / Math.abs(readResolution[0])));
+            int height =
+                    (int)
+                            Math.max(
+                                    1,
+                                    Math.round(
+                                            readEnvelope.getHeight()
+                                                    / Math.abs(readResolution[1])));
             GridEnvelope2D gridRange = new GridEnvelope2D(0, 0, width, height);
             readingGridGeometry = new GridGeometry2D(gridRange, readEnvelope);
         }
         return readingGridGeometry;
     }
 
-    private ReferencedEnvelope reduceEnvelope(ReferencedEnvelope envelope, ProjectionHandler handler)
+    boolean isAccurateResolutionComputationSafe(ReferencedEnvelope readEnvelope)
+            throws MismatchedDimensionException, FactoryException, TransformException {
+        // accurate resolution computation depends on reprojection working, we need
+        // to make sure the read envelope is sane for the source data at hand
+        CoordinateReferenceSystem readCRS = readEnvelope.getCoordinateReferenceSystem();
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(
+                        new ReferencedEnvelope(readCRS), DefaultGeographicCRS.WGS84, true);
+        if (handler != null) {
+            // if there are no limits or the projection is periodic, assume it's fine to read
+            // whatever
+            if (handler.getValidAreaBounds() == null
+                    || handler instanceof WrappingProjectionHandler) {
+                return true;
+            }
+            // in this case we need to make sure the area is actually safe to perform reprojections
+            // on
+            try {
+                // when assertions are enabled accuracy tests might fail this path
+                ReferencedEnvelope validBounds =
+                        handler.getValidAreaBounds().transform(readCRS, true);
+                return validBounds.contains((Envelope) readEnvelope);
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private ReferencedEnvelope reduceEnvelope(
+            ReferencedEnvelope envelope, ProjectionHandler handler)
             throws TransformException, FactoryException {
         Polygon polygon = JTS.toGeometry(envelope);
         Geometry geom = handler.preProcess(polygon);
@@ -434,59 +579,25 @@ public class GridCoverageReaderHelper {
             }
         }
 
-        ReferencedEnvelope reduced = new ReferencedEnvelope(largest.getEnvelopeInternal(),
-                envelope.getCoordinateReferenceSystem());
+        ReferencedEnvelope reduced =
+                new ReferencedEnvelope(
+                        largest.getEnvelopeInternal(), envelope.getCoordinateReferenceSystem());
         return reduced;
     }
 
     /**
      * Reads a single coverage given the specified read parameters and the grid geometry
-     * 
+     *
      * @param readParams (might be null)
      * @param gg
      * @return
      * @throws IOException
      */
-    private GridCoverage2D readSingleCoverage(GeneralParameterValue[] readParams, GridGeometry2D gg)
+    GridCoverage2D readSingleCoverage(GeneralParameterValue[] readParams, GridGeometry2D gg)
             throws IOException {
-        // //
-        //
-        // Intersect the present envelope with the request envelope, also in WGS 84 to make sure
-        // there is an actual intersection
-        //
-        // //
-        boolean sameCRS;
-        ReferencedEnvelope requestedEnvelope = ReferencedEnvelope.reference(gg.getEnvelope2D());
-        try {
-            final CoordinateReferenceSystem coverageCRS = reader.getCoordinateReferenceSystem();
-            final CoordinateReferenceSystem requestCRS = gg.getCoordinateReferenceSystem();
-            final ReferencedEnvelope coverageEnvelope = ReferencedEnvelope.reference(reader
-                    .getOriginalEnvelope());
-            final ReferencedEnvelope readEnvelope = requestedEnvelope;
-            sameCRS = CRS.equalsIgnoreMetadata(coverageCRS, requestCRS);
-            if (sameCRS) {
-                if (!coverageEnvelope.intersects((BoundingBox) readEnvelope)) {
-                    return null;
-                }
-            } else {
-                ReferencedEnvelope dataEnvelopeWGS84 = coverageEnvelope.transform(
-                        DefaultGeographicCRS.WGS84, true);
-                ReferencedEnvelope requestEnvelopeWGS84 = readEnvelope.transform(
-                        DefaultGeographicCRS.WGS84, true);
-                if (!dataEnvelopeWGS84.intersects((BoundingBox) requestEnvelopeWGS84)) {
-                    return null;
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Failed to compare data and request envelopes, reading the whole mapExtent instead",
-                    e);
-        }
-
         // setup the grid geometry param that will be passed to the reader
-        final Parameter<GridGeometry2D> readGGParam = (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D
-                .createValue();
+        final Parameter<GridGeometry2D> readGGParam =
+                (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         readGGParam.setValue(new GridGeometry2D(gg));
 
         // then I try to get read parameters associated with this
@@ -528,17 +639,15 @@ public class GridCoverageReaderHelper {
             } else
                 // we have no parameters hence we just use the read grid
                 // geometry to get a coverage
-                coverage = reader.read(new GeneralParameterValue[] { readGGParam });
+                coverage = reader.read(new GeneralParameterValue[] {readGGParam});
         } else if (gg != null) {
-            coverage = reader.read(new GeneralParameterValue[] { readGGParam });
+            coverage = reader.read(new GeneralParameterValue[] {readGGParam});
         } else {
             coverage = reader.read(null);
         }
-        
+
         // try to crop on the requested area
-        
 
         return coverage;
     }
-
 }

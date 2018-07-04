@@ -17,30 +17,25 @@
 package org.geotools.coverageio.gdal.jp2kak;
 
 import it.geosolutions.imageio.plugins.jp2kakadu.JP2GDALKakaduImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
 import org.opengis.coverage.grid.Format;
 
-
 /**
- * Implementation of the {@link Format} service provider interface for JP2K
- * files.
+ * Implementation of the {@link Format} service provider interface for JP2K files.
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
-public final class JP2KFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
+public final class JP2KFormatFactory extends BaseGridFormatFactorySPI
+        implements GridFormatFactorySpi {
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.coverageio.gdal.jp2k");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.jp2k");
 
     /**
      * Tells me if the coverage plugin to access JP2K is available or not.
@@ -59,14 +54,14 @@ public final class JP2KFormatFactory extends BaseGridFormatFactorySPI implements
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 if (available) {
-                    LOGGER.fine("JP2KFormatFactory is availaible.");
+                    LOGGER.fine("JP2KFormatFactory is available.");
                 } else {
-                    LOGGER.fine("JP2KFormatFactory is not availaible.");
+                    LOGGER.fine("JP2KFormatFactory is not available.");
                 }
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("JP2KFormatFactory is not availaible.");
+                LOGGER.fine("JP2KFormatFactory is not available.");
             }
 
             available = false;

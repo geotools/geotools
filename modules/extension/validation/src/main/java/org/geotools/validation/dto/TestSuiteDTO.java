@@ -20,18 +20,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
 /**
  * TestSuiteConfig purpose.
- * 
- * <p>
- * Description of TestSuiteConfig ...
- * </p>
+ *
+ * <p>Description of TestSuiteConfig ...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -47,20 +42,15 @@ public class TestSuiteDTO {
 
     /**
      * TestSuiteConfig constructor.
-     * 
-     * <p>
-     * Does nothing
-     * </p>
+     *
+     * <p>Does nothing
      */
-    public TestSuiteDTO() {
-    }
+    public TestSuiteDTO() {}
 
     /**
      * TestSuiteConfig constructor.
-     * 
-     * <p>
-     * Creates a copy of the TestSuiteConfig passed in.
-     * </p>
+     *
+     * <p>Creates a copy of the TestSuiteConfig passed in.
      *
      * @param ts The Test Suite to copy
      */
@@ -81,7 +71,6 @@ public class TestSuiteDTO {
      * Implementation of clone.
      *
      * @return An instance of TestSuiteConfig.
-     *
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -110,9 +99,7 @@ public class TestSuiteDTO {
      * Implementation of equals.
      *
      * @param obj An object to compare for equality.
-     *
      * @return true when the objects have the same data in the same order.
-     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj) {

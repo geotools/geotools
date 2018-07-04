@@ -1,25 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!-- =======================================================================    
-        Maven Project Configuration File                                        
-                                                                                
-        The Geotools Project                                                    
-            http://www.geotools.org/                                            
-                                                                                
-        Version: $Id$              
-     ======================================================================= -->
-  <project xmlns="http://maven.apache.org/POM/4.0.0" 
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                               http://maven.apache.org/maven-v4_0_0.xsd">
+      Maven Project Configuration File                                        
+                                                                              
+      The Geotools Project                                                    
+          http://www.geotools.org/                                            
+                                                                              
+      Version: $Id$              
+   ======================================================================= -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                                 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
-
-
   <!-- =========================================================== -->
   <!--     Module Description                                      -->
   <!-- =========================================================== -->
@@ -27,15 +21,11 @@
   <artifactId>gt-xsd-core</artifactId>
   <packaging>jar</packaging>
   <name>XML Parsing</name>
-  
-
-
   <description>
-    Schema based xml parsing. This module contains tools for creating 
-    bindings from xml types to java types. Schema modelling is based 
-    on Eclipse XSD. 
-  </description>
-
+  Schema based xml parsing. This module contains tools for creating 
+  bindings from xml types to java types. Schema modelling is based 
+  on Eclipse XSD. 
+</description>
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>
@@ -43,7 +33,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
   <!-- =========================================================== -->
   <!--     Developers and Contributors                             -->
   <!-- =========================================================== -->
@@ -69,25 +58,13 @@
       </roles>
     </developer>
   </developers>
-
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>commons-collections</groupId>
-        <artifactId>commons-collections</artifactId>
-        <version>3.2.2</version>  <!-- Updated for security (CVE-2015-8103) binary compatible with 3.1 -->
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
-  <dependencies> 
+  <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-graph</artifactId>
+      <artifactId>gt-main</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -96,8 +73,8 @@
       <version>1.2</version>
       <exclusions>
         <exclusion>
-         <groupId>xml-apis</groupId>
-         <artifactId>xml-apis</artifactId>
+          <groupId>xml-apis</groupId>
+          <artifactId>xml-apis</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -130,15 +107,19 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>org.eclipse.emf.common</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
-      <artifactId>ecore</artifactId>
+      <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.xsd</groupId>
-      <artifactId>xsd</artifactId>
+      <artifactId>org.eclipse.xsd</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -158,7 +139,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-
 </project>
-

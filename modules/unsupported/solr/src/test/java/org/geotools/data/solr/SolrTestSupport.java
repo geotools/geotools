@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,36 +17,26 @@
 
 package org.geotools.data.solr;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.test.OnlineTestCase;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 public abstract class SolrTestSupport extends OnlineTestCase {
 
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(SolrTestSupport.class);
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class);
 
     static {
         // uncomment to turn up logging
@@ -54,16 +44,14 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr").setLevel(
-                java.util.logging.Level.FINE);
+        org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr")
+                .setLevel(java.util.logging.Level.FINE);
         org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr").addHandler(handler);
     }
 
     protected SolrFeatureSource featureSource;
 
     protected SolrDataStore dataStore;
-
-    protected String testFile = "wifiAccessPoint.xml";
 
     protected String layerName = "active";
 
@@ -73,44 +61,33 @@ public abstract class SolrTestSupport extends OnlineTestCase {
 
     private ArrayList<SolrAttribute> attributes;
 
-    private static boolean setUpIsDone = false;
-
     protected DateFormat df = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
 
-    public void setUpSolrFile(String url) throws Exception {
-        if (setUpIsDone) {
-            return;
-        }
-        // do the setup
-        File testDir = (Paths.get(getClass().getResource("/" + testFile).toURI()).getParent())
-                .toFile();
-        ProcessBuilder pb = new ProcessBuilder("java", "-Durl=" + url + "/update", "-jar",
-                "post.jar", testFile);
-        pb.directory(testDir);
-        LOGGER.log(Level.FINE, "Starting SOLR import");
-        final Process command = pb.start();
-        LOGGER.log(Level.FINE, "Started SOLR import");
-        String line;
-        BufferedReader bri = new BufferedReader(new InputStreamReader(command.getInputStream()));
-        BufferedReader bre = new BufferedReader(new InputStreamReader(command.getErrorStream()));
-        while ((line = bri.readLine()) != null) {
-            LOGGER.log(Level.FINE, line);
-        }
-        bri.close();
-        while ((line = bre.readLine()) != null) {
-            LOGGER.log(Level.FINE, line);
-        }
-        bre.close();
-        int i = command.waitFor();
-        assertTrue(i == 0);
-        LOGGER.log(Level.FINE, "SOLR import DONE!");
-        setUpIsDone = true;
+    // tests setup will take care of instantiating the client and closing it
+    private HttpSolrClient solrClient;
+
+    @Override
+    protected void setUpInternal() throws Exception {
+        // add to provided Solr core the necessary data
+        String coreUrl = fixture.getProperty(SolrDataStoreFactory.URL.key);
+        this.solrClient = TestsSolrUtils.instantiateClient(coreUrl);
+        TestsSolrUtils.cleanIndex(solrClient);
+        // make sure the needed geometry field types exist in the managed schema
+        TestsSolrUtils.createWktFieldType(this.solrClient);
+        TestsSolrUtils.createBboxFieldType(this.solrClient);
+        // make sure geometry fields are correctly indexed
+        TestsSolrUtils.createWktField(this.solrClient, "geo");
+        TestsSolrUtils.createWktField(this.solrClient, "geo2");
+        TestsSolrUtils.createBboxField(this.solrClient, "geo3");
+        // get Solr documents from the test data
+        InputStream documents = TestsSolrUtils.resourceToStream("/wifiAccessPoint.xml");
+        // add the documents to the Solr core, letting Solr infer the rest of the schema
+        TestsSolrUtils.runUpdateRequest(this.solrClient, documents);
     }
 
     @Override
     protected void connect() throws Exception {
         String url = fixture.getProperty(SolrDataStoreFactory.URL.key);
-        setUpSolrFile(url);
 
         Map params = createConnectionParams(url, fixture);
 
@@ -127,11 +104,10 @@ public abstract class SolrTestSupport extends OnlineTestCase {
             }
             at.setUse(true);
         }
-
     }
 
     protected Map createConnectionParams(String url, Properties fixture) {
-        String field = fixture.getProperty(SolrDataStoreFactory.FIELD.key);
+        String field = "status_s";
 
         Map params = new HashMap();
         params.put(SolrDataStoreFactory.URL.key, url);
@@ -152,8 +128,8 @@ public abstract class SolrTestSupport extends OnlineTestCase {
 
     protected void init(String layerName, String geometryField) throws Exception {
         this.layerName = layerName;
-        SolrLayerConfiguration solrLayerConfiguration = new SolrLayerConfiguration(
-                new ArrayList<SolrAttribute>());
+        SolrLayerConfiguration solrLayerConfiguration =
+                new SolrLayerConfiguration(new ArrayList<SolrAttribute>());
         solrLayerConfiguration.setLayerName(this.layerName);
         List<SolrAttribute> layerAttributes = new ArrayList<>();
         for (SolrAttribute solrAttribute : attributes) {
@@ -171,8 +147,15 @@ public abstract class SolrTestSupport extends OnlineTestCase {
     }
 
     @Override
-    protected void disconnect() throws Exception {
+    protected void disconnect() {
         dataStore.dispose();
+        try {
+            // make sure all HTTP connections to Solr server is closed
+            this.solrClient.close();
+        } catch (Exception exception) {
+            // just log the exception and move on
+            LOGGER.log(Level.WARNING, "Error closing Solr client.", exception);
+        }
     }
 
     @Override

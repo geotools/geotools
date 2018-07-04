@@ -18,11 +18,8 @@ package org.geotools.gml2.bindings;
 
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import junit.framework.TestCase;
-
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
@@ -40,22 +37,16 @@ import org.geotools.xml.Node;
 import org.geotools.xml.impl.AttributeImpl;
 import org.geotools.xml.impl.ElementImpl;
 import org.geotools.xml.impl.NodeImpl;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AbstractGMLBindingTest extends TestCase {
     XSDSchema schema;
     MutablePicoContainer container;
@@ -81,8 +72,12 @@ public class AbstractGMLBindingTest extends TestCase {
         return (Binding) container.getComponentInstance(type);
     }
 
-    Node createNode(InstanceComponent instance, ElementInstance[] elements, Object[] elementValues,
-        AttributeInstance[] attributes, Object[] attValues) {
+    Node createNode(
+            InstanceComponent instance,
+            ElementInstance[] elements,
+            Object[] elementValues,
+            AttributeInstance[] attributes,
+            Object[] attValues) {
         NodeImpl node = new NodeImpl(instance);
 
         if ((elements != null) && (elements.length > 0)) {
@@ -130,7 +125,7 @@ public class AbstractGMLBindingTest extends TestCase {
     }
 
     public CoordinateSequence createCoordinateSequence(Coordinate c) {
-        return createCoordinateSequence(new Coordinate[] { c });
+        return createCoordinateSequence(new Coordinate[] {c});
     }
 
     public CoordinateSequence createCoordinateSequence(Coordinate[] c) {
@@ -158,7 +153,7 @@ public class AbstractGMLBindingTest extends TestCase {
     XSDTypeDefinition findTypeDefinition(XSDSchema schema, QName type) {
         List types = schema.getTypeDefinitions();
 
-        for (Iterator itr = types.iterator(); itr.hasNext();) {
+        for (Iterator itr = types.iterator(); itr.hasNext(); ) {
             XSDTypeDefinition typeDef = (XSDTypeDefinition) itr.next();
 
             if (type.getNamespaceURI().equals(typeDef.getTargetNamespace())

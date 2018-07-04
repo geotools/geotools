@@ -22,28 +22,23 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.grid.Neighbor;
 import org.geotools.grid.PolygonBuilder;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Unit tests for the HexagonGridBuilder class.
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class HexagonGridBuilderTest extends HexagonTestBase {
-    
+
     private final ReferencedEnvelope bounds = new ReferencedEnvelope(0, 10, 0, 10, null);
     private HexagonBuilder angledBuilder;
     private HexagonBuilder flatBuilder;
@@ -77,7 +72,6 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
             new Case(HexagonOrientation.ANGLED, Neighbor.UPPER, false),
             new Case(HexagonOrientation.ANGLED, Neighbor.UPPER_LEFT, true),
             new Case(HexagonOrientation.ANGLED, Neighbor.UPPER_RIGHT, true),
-
             new Case(HexagonOrientation.FLAT, Neighbor.LEFT, false),
             new Case(HexagonOrientation.FLAT, Neighbor.LOWER, true),
             new Case(HexagonOrientation.FLAT, Neighbor.LOWER_LEFT, true),
@@ -90,11 +84,15 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
 
         for (Case c : cases) {
             if (c.o == HexagonOrientation.ANGLED) {
-                assertEquals("Failed for case: " + c.o + " " + c.n,
-                        c.valid, angledBuilder.isValidNeighbor(c.n));
+                assertEquals(
+                        "Failed for case: " + c.o + " " + c.n,
+                        c.valid,
+                        angledBuilder.isValidNeighbor(c.n));
             } else {
-                assertEquals("Failed for case: " + c.o + " " + c.n,
-                        c.valid, flatBuilder.isValidNeighbor(c.n));
+                assertEquals(
+                        "Failed for case: " + c.o + " " + c.n,
+                        c.valid,
+                        flatBuilder.isValidNeighbor(c.n));
             }
         }
     }
@@ -132,7 +130,8 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
         angledShifts.put(Neighbor.UPPER_LEFT, new Shift(-0.5 * MINOR, 0.75 * MAJOR));
         angledShifts.put(Neighbor.UPPER_RIGHT, new Shift(0.5 * MINOR, 0.75 * MAJOR));
 
-        Map<HexagonOrientation, Map<Neighbor, Shift>> table = new HashMap<HexagonOrientation, Map<Neighbor, Shift>>();
+        Map<HexagonOrientation, Map<Neighbor, Shift>> table =
+                new HashMap<HexagonOrientation, Map<Neighbor, Shift>>();
         table.put(HexagonOrientation.FLAT, flatShifts);
         table.put(HexagonOrientation.ANGLED, angledShifts);
 
@@ -170,6 +169,5 @@ public class HexagonGridBuilderTest extends HexagonTestBase {
             expected[i].y += dy;
             assertCoordinate(expected[i], result[i]);
         }
-
     }
 }

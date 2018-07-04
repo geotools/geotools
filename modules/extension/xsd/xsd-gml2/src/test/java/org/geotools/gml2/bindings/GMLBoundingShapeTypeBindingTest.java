@@ -18,16 +18,10 @@ package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.Envelope;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLBoundingShapeTypeBindingTest extends GMLTestSupport {
     public void testType() {
         assertEquals(Envelope.class, binding(GML.BoundingShapeType).getType());
@@ -57,8 +51,8 @@ public class GMLBoundingShapeTypeBindingTest extends GMLTestSupport {
         Envelope envelope = new Envelope(1, 2, 3, 4);
         Document doc = encode(envelope, GML.boundedBy);
 
-        assertEquals(1,
-            doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Box.getLocalPart()).getLength());
+        assertEquals(
+                1, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Box.getLocalPart()).getLength());
     }
 
     public void testEncodeWithNull() throws Exception {
@@ -68,6 +62,11 @@ public class GMLBoundingShapeTypeBindingTest extends GMLTestSupport {
         Document doc = encode(envelope, GML.boundedBy);
 
         assertEquals(1, doc.getElementsByTagNameNS(GML.NAMESPACE, "null").getLength());
-        assertEquals("unknown", doc.getElementsByTagNameNS(GML.NAMESPACE, "null").item(0).getFirstChild().getTextContent() );
+        assertEquals(
+                "unknown",
+                doc.getElementsByTagNameNS(GML.NAMESPACE, "null")
+                        .item(0)
+                        .getFirstChild()
+                        .getTextContent());
     }
 }

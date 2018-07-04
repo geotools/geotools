@@ -18,15 +18,13 @@
 package org.geotools.filter.text.ecql;
 
 import java.util.List;
-
 import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.cql2.CQLException;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
 
 /**
- * Builds a {@link GeometryCollection} using the 
+ * Builds a {@link GeometryCollection} using the
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
@@ -37,23 +35,20 @@ final class GeometryCollectionBuilder extends GeometryBuilder {
      * @param statement
      * @param resultStack
      */
-    public GeometryCollectionBuilder(String statement,
-            BuildResultStack resultStack) {
+    public GeometryCollectionBuilder(String statement, BuildResultStack resultStack) {
         super(statement, resultStack);
-
     }
 
     @Override
     public Geometry build(int jjtgeometryliteral) throws CQLException {
-        
+
         List<Geometry> geometryList = popGeometryLiteral(jjtgeometryliteral);
 
-        Geometry[] geometries = geometryList.toArray(new Geometry[geometryList.size()]) ;
-        
-        GeometryCollection geometryCollection= getGeometryFactory().createGeometryCollection(geometries);
-        
+        Geometry[] geometries = geometryList.toArray(new Geometry[geometryList.size()]);
+
+        GeometryCollection geometryCollection =
+                getGeometryFactory().createGeometryCollection(geometries);
+
         return geometryCollection;
-
     }
-
 }

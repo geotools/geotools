@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,29 +21,28 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
-
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * The Labelling information that is put in the label cache.
- * 
+ *
  * @author jeichar
  * @author dblasby
  * @author simone giannecchini
  * @author Andrea Aime - OpenGeo
- *
- *
- *
  * @source $URL$
  */
 public class LabelCacheItem implements Comparable<LabelCacheItem> {
-    
-    public enum GraphicResize {NONE, STRETCH, PROPORTIONAL};
+
+    public enum GraphicResize {
+        NONE,
+        STRETCH,
+        PROPORTIONAL
+    };
 
     TextStyle2D textStyle;
 
@@ -58,6 +57,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     private Set<String> layerIds = new HashSet<String>();
 
     int maxDisplacement = 0;
+
+    int[] displacementAngles;
 
     int minGroupDistance = 0;
 
@@ -74,20 +75,24 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     double maxAngleDelta;
 
     int autoWrap = 100;
-    
+
     boolean forceLeftToRightEnabled = true;
-    
+
     boolean conflictResolutionEnabled = true;
-    
+
     double goodnessOfFit = 0;
-    
+
     PolygonAlignOptions polygonAlign = PolygonAlignOptions.NONE;
-    
+
     GraphicResize graphicsResize = GraphicResize.NONE;
-    
+
     int[] graphicMargin = null;
 
     boolean textUnderlined = false;
+
+    boolean textStrikethrough = false;
+
+    double wordSpacing;
 
     TextSymbolizer symbolizer;
 
@@ -98,8 +103,9 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     boolean partialsEnabled = false;
 
     /**
-     * A value between 0 and 1 representing the portion of the label
-     * that overlaps with the geometry (atm used only for polygons)
+     * A value between 0 and 1 representing the portion of the label that overlaps with the geometry
+     * (atm used only for polygons)
+     *
      * @param goodnessOfFit
      */
     public void setGoodnessOfFit(double goodnessOfFit) {
@@ -114,16 +120,12 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         label = l;
     }
 
-    /**
-     * space around - "dont put any label near me by this # of pixels"
-     */
+    /** space around - "dont put any label near me by this # of pixels" */
     public int getSpaceAround() {
         return spaceAround;
     }
 
-    /**
-     * space around - "dont put any label near me by this # of pixels"
-     */
+    /** space around - "dont put any label near me by this # of pixels" */
     public void setSpaceAround(int space) {
         spaceAround = space;
     }
@@ -136,10 +138,13 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         priority = d;
     }
 
-    /**
-     * Construct <code>LabelCacheItem</code>.
-     */
-    public LabelCacheItem(String layerId, TextStyle2D textStyle, LiteShape2 shape, String label, TextSymbolizer symbolizer) {
+    /** Construct <code>LabelCacheItem</code>. */
+    public LabelCacheItem(
+            String layerId,
+            TextStyle2D textStyle,
+            LiteShape2 shape,
+            String label,
+            TextSymbolizer symbolizer) {
         this.textStyle = textStyle;
         this.geoms.add(shape.getGeometry());
         this.label = label;
@@ -147,45 +152,66 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.symbolizer = symbolizer;
     }
 
+    /** Construct <code>LabelCacheItem</code>. */
+    LabelCacheItem(LabelCacheItem other) {
+        // copy part
+        this.textStyle = other.textStyle;
+        this.label = other.label;
+        this.layerIds.addAll(other.getLayerIds());
+        this.geoms.addAll(other.geoms);
+        this.symbolizer = other.symbolizer;
+        this.priority = other.priority;
+        this.spaceAround = other.spaceAround;
+        this.label = other.label;
+        this.maxDisplacement = other.maxDisplacement;
+        this.minGroupDistance = other.minGroupDistance;
+        this.repeat = other.repeat;
+        this.labelAllGroup = other.labelAllGroup;
+        this.removeGroupOverlaps = other.removeGroupOverlaps;
+        this.allowOverruns = other.allowOverruns;
+        this.followLineEnabled = other.followLineEnabled;
+        this.maxAngleDelta = other.maxAngleDelta;
+        this.autoWrap = other.autoWrap;
+        this.forceLeftToRightEnabled = other.forceLeftToRightEnabled;
+        this.conflictResolutionEnabled = other.conflictResolutionEnabled;
+        this.goodnessOfFit = other.goodnessOfFit;
+        this.polygonAlign = other.polygonAlign;
+        this.graphicsResize = other.graphicsResize;
+        this.graphicMargin = other.graphicMargin;
+        this.textUnderlined = other.textUnderlined;
+        this.symbolizer = other.symbolizer;
+    }
+
     /**
      * Return a modifiable set of ids
-     * 
+     *
      * @return
      */
     public Set<String> getLayerIds() {
         return Collections.synchronizedSet(layerIds);
     }
 
-    /**
-     * The list of geometries this item maintains
-     */
+    /** The list of geometries this item maintains */
     public List<Geometry> getGeoms() {
         return geoms;
     }
 
-    /**
-     * The textstyle that is used to label the shape.
-     */
+    /** The textstyle that is used to label the shape. */
     public TextStyle2D getTextStyle() {
         return textStyle;
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
 
-    /**
-     * Returns an example geometry from the list of geometries.
-     */
+    /** Returns an example geometry from the list of geometries. */
     public Geometry getGeometry() {
         return (Geometry) geoms.get(0);
     }
 
     /**
-     * Max amount of pixels the label will be moved around trying to find a non
-     * conflicting location (how and if the moving will be done is geometry type
-     * dependent)
-     * 
+     * Max amount of pixels the label will be moved around trying to find a non conflicting location
+     * (how and if the moving will be done is geometry type dependent)
+     *
      * @return
      */
     public int getMaxDisplacement() {
@@ -197,9 +223,22 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     }
 
     /**
-     * When enabled, repeats labels every "repeat" pixels (works on lines only
-     * atm)
-     * 
+     * defines the actual angle towards which displacement of label will take place (applies only in
+     * polygon or point features)
+     *
+     * @return
+     */
+    public int[] getDisplacementAngles() {
+        return displacementAngles;
+    }
+
+    public void setDisplacementAngles(int[] displacementAngles) {
+        this.displacementAngles = displacementAngles;
+    }
+
+    /**
+     * When enabled, repeats labels every "repeat" pixels (works on lines only atm)
+     *
      * @return
      */
     public int getRepeat() {
@@ -211,9 +250,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     }
 
     /**
-     * When grouping, wheter we should label only the biggest geometry, or the
-     * others as well
-     * 
+     * When grouping, wheter we should label only the biggest geometry, or the others as well
+     *
      * @return
      */
     public boolean labelAllGroup() {
@@ -234,7 +272,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     /**
      * Wheter labels are allowed to go past the start/end of the line
-     * 
+     *
      * @return
      */
     public boolean allowOverruns() {
@@ -250,9 +288,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     }
 
     /**
-     * Minimum cartesian distance between two labels in the same group, in
-     * pixels
-     * 
+     * Minimum cartesian distance between two labels in the same group, in pixels
+     *
      * @param minGroupDistance
      */
     public void setMinGroupDistance(int minGroupDistance) {
@@ -261,7 +298,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     /**
      * Enables curved labels on linear features
-     * 
+     *
      * @return
      */
     public boolean isFollowLineEnabled() {
@@ -273,10 +310,9 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     }
 
     /**
-     * Max angle between two subsequence characters in a curved label, in
-     * degrees. Good visual results are obtained with an angle of less than 25
-     * degrees.
-     * 
+     * Max angle between two subsequence characters in a curved label, in degrees. Good visual
+     * results are obtained with an angle of less than 25 degrees.
+     *
      * @return
      */
     public double getMaxAngleDelta() {
@@ -288,9 +324,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     }
 
     /**
-     * Automatically wraps long labels when the label width, in pixels, exceeds
-     * the autowrap length
-     * 
+     * Automatically wraps long labels when the label width, in pixels, exceeds the autowrap length
+     *
      * @return
      */
     public int getAutoWrap() {
@@ -303,7 +338,7 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(LabelCacheItem other) {
@@ -311,9 +346,9 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     }
 
     /**
-     * If enabled, text will be forced to follow a left to right alignement
-     * (that makes it readable) no matter what the natural orientation of the 
-     * line is
+     * If enabled, text will be forced to follow a left to right alignement (that makes it readable)
+     * no matter what the natural orientation of the line is
+     *
      * @return
      */
     public boolean isForceLeftToRightEnabled() {
@@ -323,24 +358,24 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     public void setForceLeftToRightEnabled(boolean forceLeftToRight) {
         this.forceLeftToRightEnabled = forceLeftToRight;
     }
-    
+
     /**
      * Checks if conflict resolution has been enabled for this label
+     *
      * @return
      */
     public boolean isConflictResolutionEnabled() {
         return conflictResolutionEnabled;
     }
-    
+
     /**
-     * Sets conflict resolution for this label. When on, this label outline/bbox will
-     * be stored in the conflict resolution map and will prevent every other label
-     * to be drawn in the same area
+     * Sets conflict resolution for this label. When on, this label outline/bbox will be stored in
+     * the conflict resolution map and will prevent every other label to be drawn in the same area
+     *
      * @param conflictResolutionEnabled
      */
     public void setConflictResolutionEnabled(boolean conflictResolutionEnabled) {
         this.conflictResolutionEnabled = conflictResolutionEnabled;
- 
     }
 
     public GraphicResize getGraphicsResize() {
@@ -383,6 +418,22 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.textUnderlined = textUnderlined;
     }
 
+    public boolean isTextStrikethrough() {
+        return textStrikethrough;
+    }
+
+    public void setTextStrikethrough(boolean textStrikethrough) {
+        this.textStrikethrough = textStrikethrough;
+    }
+
+    public double getWordSpacing() {
+        return wordSpacing;
+    }
+
+    public void setWordSpacing(double wordSpacing) {
+        this.wordSpacing = wordSpacing;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -394,23 +445,16 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         LabelCacheItem other = (LabelCacheItem) obj;
         if (label == null) {
-            if (other.label != null)
-                return false;
-        } else if (!label.equals(other.label))
-            return false;
+            if (other.label != null) return false;
+        } else if (!label.equals(other.label)) return false;
         if (symbolizer != other.symbolizer) {
-                return false;
+            return false;
         }
         return true;
     }
-    
 }
-

@@ -10,16 +10,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
-
 import org.geotools.data.csv.CSVFileState;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 
 public class CSVSpecifiedWKTStrategyTest {
 
@@ -36,8 +34,9 @@ public class CSVSpecifiedWKTStrategyTest {
 
     @Test
     public void testCreateFeature() throws IOException {
-        String input = CSVTestStrategySupport.buildInputString("fleem,zoo,morx",
-                "foo,POINT(3.14 1.59),car");
+        String input =
+                CSVTestStrategySupport.buildInputString(
+                        "fleem,zoo,morx", "foo,POINT(3.14 1.59),car");
         CSVFileState fileState = new CSVFileState(input, "bar");
         CSVStrategy strategy = new CSVSpecifiedWKTStrategy(fileState, "zoo");
         SimpleFeatureType featureType = strategy.getFeatureType();
@@ -69,5 +68,4 @@ public class CSVSpecifiedWKTStrategyTest {
         assertEquals("Invalid feature property", "bar", feature.getAttribute("morx"));
         assertNull("Unexpected geometry", feature.getAttribute("fleem"));
     }
-
 }

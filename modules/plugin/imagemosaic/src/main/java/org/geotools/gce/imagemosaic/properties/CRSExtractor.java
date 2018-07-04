@@ -20,17 +20,12 @@ package org.geotools.gce.imagemosaic.properties;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Extract the CRS from the coverage in order to store in the index
- */
+/** Extract the CRS from the coverage in order to store in the index */
 public class CRSExtractor extends PropertiesCollector {
 
     public static final String DEFAULT_ATTRIBUTE_NAME = "crs";

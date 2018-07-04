@@ -18,17 +18,11 @@ package org.geotools.styling.builder;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.measure.unit.Unit;
-
+import javax.measure.Unit;
 import org.geotools.styling.ExtensionSymbolizer;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSymbolizer> {
     private String name;
 
@@ -98,8 +92,9 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
         if (unset) {
             return null;
         }
-        ExtensionSymbolizer symbolizer = sf.extensionSymbolizer(name, null, description.build(),
-                uom, extensionName, parameters);
+        ExtensionSymbolizer symbolizer =
+                sf.extensionSymbolizer(
+                        name, null, description.build(), uom, extensionName, parameters);
         symbolizer.setGeometry(geometry);
         if (parent == null) {
             reset();
@@ -141,5 +136,4 @@ public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSy
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().extension().init(this);
     }
-
 }

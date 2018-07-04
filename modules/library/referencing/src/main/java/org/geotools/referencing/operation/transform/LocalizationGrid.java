@@ -16,13 +16,9 @@
  */
 package org.geotools.referencing.operation.transform;
 
-
 /**
  * @deprecated Moved to {@link org.geotools.referencing.operation.builder} package.
- *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve
@@ -31,10 +27,10 @@ package org.geotools.referencing.operation.transform;
  */
 public class LocalizationGrid extends org.geotools.referencing.operation.builder.LocalizationGrid {
     /**
-     * Constructs an initially empty localization grid. All "real worlds"
-     * coordinates are initially set to {@code (NaN,NaN)}.
+     * Constructs an initially empty localization grid. All "real worlds" coordinates are initially
+     * set to {@code (NaN,NaN)}.
      *
-     * @param width  Number of grid's columns.
+     * @param width Number of grid's columns.
      * @param height Number of grid's rows.
      */
     public LocalizationGrid(final int width, final int height) {

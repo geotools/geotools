@@ -1,39 +1,39 @@
 <class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" corner="BOTTOM_RIGHT" language="java" name="com.vividsolutions.jts.geom.Geometry" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.11/jts-1.11.jar" binary="true">    
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="org.locationtech.jts.geom.Geometry" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.11/jts-1.11.jar" binary="true">    
     <position x="290" y="298" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="false">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="2" corner="BOTTOM_RIGHT" language="java" name="com.vividsolutions.jts.geom.Point" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.11/jts-1.11.jar" binary="true">    
+  <class id="2" corner="BOTTOM_RIGHT" language="java" name="org.locationtech.jts.geom.Point" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.11/jts-1.11.jar" binary="true">    
     <position x="596" y="298" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="false">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="3" corner="BOTTOM_RIGHT" language="java" name="com.vividsolutions.jts.geom.LineString" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.11/jts-1.11.jar" binary="true">    
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="org.locationtech.jts.geom.LineString" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.11/jts-1.11.jar" binary="true">    
     <position x="596" y="386" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="false">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="4" corner="BOTTOM_RIGHT" language="java" name="com.vividsolutions.jts.geom.Polygon" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.11/jts-1.11.jar" binary="true">    
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="org.locationtech.jts.geom.Polygon" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.11/jts-1.11.jar" binary="true">    
     <position x="290" y="448" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="false">      
       <attributes public="true" package="true" protected="true" private="true"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="5" corner="BOTTOM_RIGHT" language="java" name="com.vividsolutions.jts.geom.LinearRing" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.11/jts-1.11.jar" binary="true">    
+  <class id="5" corner="BOTTOM_RIGHT" language="java" name="org.locationtech.jts.geom.LinearRing" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.11/jts-1.11.jar" binary="true">    
     <position x="595" y="627" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="false">      
       <attributes public="false" package="false" protected="false" private="false"/>      

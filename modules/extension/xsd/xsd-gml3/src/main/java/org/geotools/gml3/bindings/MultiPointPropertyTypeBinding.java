@@ -19,14 +19,14 @@ package org.geotools.gml3.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPoint;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:MultiPointPropertyType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *         <code>
  *  &lt;complexType name="MultiPointPropertyType"&gt;
@@ -43,30 +43,24 @@ import com.vividsolutions.jts.geom.MultiPoint;
  *          &lt;/annotation&gt;
  *      &lt;/attributeGroup&gt;
  *  &lt;/complexType&gt;
- * 
+ *
  *          </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *         /geotools/gml3/bindings/MultiPointPropertyTypeBinding.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
+ *     /geotools/gml3/bindings/MultiPointPropertyTypeBinding.java $
  */
 public class MultiPointPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 
-    public MultiPointPropertyTypeBinding(GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
+    public MultiPointPropertyTypeBinding(
+            GML3EncodingUtils encodingUtils, XSDIdRegistry idRegistry) {
         super(encodingUtils, idRegistry);
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.MultiPointPropertyType;
     }
@@ -74,5 +68,4 @@ public class MultiPointPropertyTypeBinding extends GeometryPropertyTypeBindingBa
     public Class<? extends Geometry> getGeometryType() {
         return MultiPoint.class;
     }
-
 }

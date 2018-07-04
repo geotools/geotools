@@ -22,11 +22,7 @@ package org.geotools.swt.control;
  *
  * @see JValueField
  * @see ValueChangedEvent
- * 
  * @author Michael Bedward
- *
- *
- *
  * @source $URL$
  */
 public interface ValueChangedListener {
@@ -36,6 +32,5 @@ public interface ValueChangedListener {
      *
      * @param ev the event.
      */
-    public void onValueChanged( ValueChangedEvent<?> ev );
-
+    public void onValueChanged(ValueChangedEvent<?> ev);
 }

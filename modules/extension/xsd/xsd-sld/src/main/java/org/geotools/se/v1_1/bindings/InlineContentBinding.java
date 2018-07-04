@@ -16,16 +16,6 @@
  */
 package org.geotools.se.v1_1.bindings;
 
-import org.geotools.data.Base64;
-import org.geotools.se.v1_1.SE;
-import org.geotools.util.logging.Logging;
-import org.geotools.xml.*;
-import org.w3c.dom.Document;
-
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.xml.namespace.QName;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -33,12 +23,20 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.xml.namespace.QName;
+import org.geotools.data.Base64;
+import org.geotools.image.io.ImageIOExt;
+import org.geotools.se.v1_1.SE;
+import org.geotools.util.logging.Logging;
+import org.geotools.xml.*;
 
 /**
  * Binding object for the element http://www.opengis.net/se:InlineContent.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="InlineContent" type="se:InlineContentType"&gt;
@@ -48,11 +46,11 @@ import java.util.logging.Logger;
  *          externally-defined format that is included in an SE in-line.
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
+ *
  * <pre>
  *       <code>
  *  &lt;xsd:complexType mixed="true" name="InlineContentType"&gt;
@@ -67,31 +65,27 @@ import java.util.logging.Logger;
  *              &lt;/xsd:restriction&gt;
  *          &lt;/xsd:simpleType&gt;
  *      &lt;/xsd:attribute&gt;
- *  &lt;/xsd:complexType&gt; 
- *              
+ *  &lt;/xsd:complexType&gt;
+ *
  *        </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class InlineContentBinding extends AbstractComplexBinding {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.sld");
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.InlineContent;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -99,15 +93,17 @@ public class InlineContentBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String encoding = (String) node.getAttributeValue("encoding");
-//        if ("xml".equalsIgnoreCase(encoding)) {
-//            Document dom = (Document) node.get
-//
+        //        if ("xml".equalsIgnoreCase(encoding)) {
+        //            Document dom = (Document) node.get
+        //
         if ("base64".equalsIgnoreCase(encoding)) {
             String base64 = value.toString();
             Icon icon = parseIcon(base64);
@@ -121,7 +117,7 @@ public class InlineContentBinding extends AbstractComplexBinding {
         byte[] bytes = Base64.decode(content);
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new ByteArrayInputStream(bytes));
+            image = ImageIOExt.readBufferedImage(new ByteArrayInputStream(bytes));
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(Level.WARNING, "could not parse graphic inline content: " + content, e);
@@ -136,8 +132,18 @@ public class InlineContentBinding extends AbstractComplexBinding {
 
     private static class EmptyIcon implements Icon {
         public static final EmptyIcon INSTANCE = new EmptyIcon();
-        @Override public void paintIcon(Component c, Graphics g, int x, int y) { }
-        @Override public int getIconWidth() { return 1; }
-        @Override public int getIconHeight() { return 1; }
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {}
+
+        @Override
+        public int getIconWidth() {
+            return 1;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return 1;
+        }
     }
 }

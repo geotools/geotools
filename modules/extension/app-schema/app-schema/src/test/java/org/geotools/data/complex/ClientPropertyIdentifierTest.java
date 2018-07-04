@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -42,11 +41,11 @@ import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
- * Checks that gml:id attribute can be retrieved also when it is mapped as a regular <code>&lt;ClientProperty&gt;</code> rather than an identifier
- * (using <code>&lt;idExpression&gt;</code>).
- * 
- * @author Stefano Costa, GeoSolutions
+ * Checks that gml:id attribute can be retrieved also when it is mapped as a regular <code>
+ * &lt;ClientProperty&gt;</code> rather than an identifier (using <code>&lt;idExpression&gt;</code>
+ * ).
  *
+ * @author Stefano Costa, GeoSolutions
  */
 public class ClientPropertyIdentifierTest {
 
@@ -72,9 +71,7 @@ public class ClientPropertyIdentifierTest {
      */
     @Before
     public void loadDataAccess() throws Exception {
-        /**
-         * Load observation data access
-         */
+        /** Load observation data access */
         Map dsParams = new HashMap();
         URL url = SweValuesTest.class.getResource(SWE_VALUES_MAPPING);
         assertNotNull(url);
@@ -103,5 +100,4 @@ public class ClientPropertyIdentifierTest {
             assertTrue(gmlId != null && !gmlId.trim().isEmpty());
         }
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,21 +16,18 @@
  */
 package org.geotools.coverage.processing.operation;
 
-// JAI dependencies (for javadoc)
 import javax.media.jai.operator.MinFilterDescriptor;
 import javax.media.jai.operator.MinFilterShape;
-
-// Geotools dependencies
 import org.geotools.coverage.processing.OperationJAI;
 
-
 /**
- * For each position of the mask, replaces the center pixel by the minimum of the pixel
- * values covered by the mask.
+ * For each position of the mask, replaces the center pixel by the minimum of the pixel values
+ * covered by the mask.
  *
- * <P><STRONG>Name:</STRONG>&nbsp;<CODE>"MinFilter"</CODE><BR>
- *    <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MinFilterDescriptor MinFilter}"</CODE><BR>
- *    <STRONG>Parameters:</STRONG></P>
+ * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"MinFilter"</CODE><br>
+ * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain MinFilterDescriptor MinFilter}"</CODE><br>
+ * <STRONG>Parameters:</STRONG>
+ *
  * <table border='3' cellpadding='6' bgcolor='F4F8FF'>
  *   <tr bgcolor='#B9DCFF'>
  *     <th>Name</th>
@@ -63,21 +60,15 @@ import org.geotools.coverage.processing.OperationJAI;
  * </table>
  *
  * @since 2.3
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class MinFilter extends OperationJAI {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -45487721305059086L;
 
-    /**
-     * Constructs a default {@code "MinFilter"} operation.
-     */
+    /** Constructs a default {@code "MinFilter"} operation. */
     public MinFilter() {
         super("MinFilter");
     }

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2014, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,13 +16,11 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.LinearRing;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Marker interface identifying closed curved geometries
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
-public interface CurvedRing extends CurvedGeometry<LinearRing> {
-
-}
+public interface CurvedRing extends CurvedGeometry<LinearRing> {}

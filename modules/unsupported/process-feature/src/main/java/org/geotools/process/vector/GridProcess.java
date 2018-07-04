@@ -19,7 +19,6 @@ package org.geotools.process.vector;
 
 import java.io.IOException;
 import java.util.Map;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -34,35 +33,62 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * A process that builds a regular grid as a feature collection
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  * @source $URL$
  */
-@DescribeProcess(title = "Grid", description = "Generates a georeferenced regular grid of cells.  Output contains the attributes: cell - the cell polygon; id - a unique identifier; centerX and centerY - the ordinates of the cell center.")
+@DescribeProcess(
+    title = "Grid",
+    description =
+            "Generates a georeferenced regular grid of cells.  Output contains the attributes: cell - the cell polygon; id - a unique identifier; centerX and centerY - the ordinates of the cell center."
+)
 public class GridProcess implements VectorProcess {
 
     public enum GridMode {
-        Rectangular, HexagonFlat, HexagonAngled
+        Rectangular,
+        HexagonFlat,
+        HexagonAngled
     };
 
     @DescribeResult(name = "result", description = "Generated grid cells as features")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "bounds", description = "Bounds of the grid") ReferencedEnvelope bounds,
-            @DescribeParameter(name = "width", description = "Width of a cell (in units of the grid CRS)") double width,
-            @DescribeParameter(name = "height", description = "Height of a cell (in units of the grid CRS).  Only for rectangular grid, defaults to equal width.", min = 0) Double height,
-            @DescribeParameter(name = "vertexSpacing", description = "Distance between vertices along cell sides (in units of the grid CRS)", min = 0) Double vertexSpacing,
-            @DescribeParameter(name = "mode", description = "Type of grid to be generated.  Specifies shape of cells in grid.", defaultValue = "Rectangular") GridMode mode)
+            @DescribeParameter(name = "bounds", description = "Bounds of the grid")
+                    ReferencedEnvelope bounds,
+            @DescribeParameter(
+                        name = "width",
+                        description = "Width of a cell (in units of the grid CRS)"
+                    )
+                    double width,
+            @DescribeParameter(
+                        name = "height",
+                        description =
+                                "Height of a cell (in units of the grid CRS).  Only for rectangular grid, defaults to equal width.",
+                        min = 0
+                    )
+                    Double height,
+            @DescribeParameter(
+                        name = "vertexSpacing",
+                        description =
+                                "Distance between vertices along cell sides (in units of the grid CRS)",
+                        min = 0
+                    )
+                    Double vertexSpacing,
+            @DescribeParameter(
+                        name = "mode",
+                        description =
+                                "Type of grid to be generated.  Specifies shape of cells in grid.",
+                        defaultValue = "Rectangular"
+                    )
+                    GridMode mode)
             throws ProcessException {
-        final GridFeatureBuilder builder = new GridFeatureBuilderImpl(bounds
-                .getCoordinateReferenceSystem());
+        final GridFeatureBuilder builder =
+                new GridFeatureBuilderImpl(bounds.getCoordinateReferenceSystem());
         double h = height != null ? height : width;
 
         SimpleFeatureSource source;
@@ -83,7 +109,7 @@ public class GridProcess implements VectorProcess {
 
     /**
      * Builds the feature attributes providing the cell center and a stable id
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
      */
     static final class GridFeatureBuilderImpl extends GridFeatureBuilder {
@@ -91,14 +117,10 @@ public class GridProcess implements VectorProcess {
 
         /**
          * Creates the feature TYPE
-         * 
-         * @param typeName
-         *            name for the feature TYPE; if {@code null} or empty,
-         *            {@linkplain #DEFAULT_TYPE_NAME} will be used
-         * 
-         * @param crs
-         *            coordinate reference system (may be {@code null})
-         * 
+         *
+         * @param typeName name for the feature TYPE; if {@code null} or empty, {@linkplain
+         *     #DEFAULT_TYPE_NAME} will be used
+         * @param crs coordinate reference system (may be {@code null})
          * @return the feature TYPE
          */
         protected static SimpleFeatureType createType(CoordinateReferenceSystem crs) {
@@ -113,9 +135,8 @@ public class GridProcess implements VectorProcess {
 
         /**
          * Creates a new instance.
-         * 
-         * @param crs
-         *            coordinate reference system (may be {@code null})
+         *
+         * @param crs coordinate reference system (may be {@code null})
          */
         public GridFeatureBuilderImpl(CoordinateReferenceSystem crs) {
             super(createType(crs));
@@ -129,21 +150,16 @@ public class GridProcess implements VectorProcess {
         /**
          * Overrides {@linkplain GridFeatureBuilder#setAttributes(GridElement, Map)} to assign a
          * sequential integer id value to each grid element feature as it is constructed.
-         * 
-         * @param el
-         *            the element from which the new feature is being constructed
-         * 
-         * @param attributes
-         *            a {@code Map} with the single key "id"
+         *
+         * @param el the element from which the new feature is being constructed
+         * @param attributes a {@code Map} with the single key "id"
          */
         @Override
         public void setAttributes(GridElement ge, Map<String, Object> attributes) {
-        	PolygonElement pe = (PolygonElement) ge;
+            PolygonElement pe = (PolygonElement) ge;
             attributes.put("id", id);
             attributes.put("centerX", pe.getCenter().x);
             attributes.put("centerY", pe.getCenter().y);
         }
-
     }
-
 }

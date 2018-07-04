@@ -21,18 +21,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-
-/**
- * 
- *
- * @author Niels Charlier
- */
+/** @author Niels Charlier */
 public class ResolutionExtractorSPI implements PropertiesCollectorSPI {
 
     public String getName() {
-        return "ResolutionExtractorSPI";
+        return getClass().getSimpleName();
     }
 
     public boolean isAvailable() {
@@ -43,7 +36,7 @@ public class ResolutionExtractorSPI implements PropertiesCollectorSPI {
         return Collections.emptyMap();
     }
 
-    public PropertiesCollector create(final Object o, final List<String> propertyNames) {
-        return new ResolutionExtractor(this, propertyNames);
+    public ResolutionExtractor create(final Object o, final List<String> propertyNames) {
+        return new ResolutionExtractor(this, propertyNames, ResolutionExtractor.Axis.BOTH);
     }
 }

@@ -3,11 +3,7 @@ package org.geotools.renderer.lite;
 import org.geotools.renderer.RenderListener;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class CountingRenderListener implements RenderListener {
     public int features = 0;
     public int errors = 0;

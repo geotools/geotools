@@ -27,6 +27,7 @@ import static org.opengis.filter.sort.SortBy.REVERSE_ORDER;
 import static org.opengis.filter.sort.SortOrder.ASCENDING;
 import static org.opengis.filter.sort.SortOrder.DESCENDING;
 
+import com.esri.sde.sdk.client.SeException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +42,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.TreeSet;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -56,6 +56,7 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.IllegalAttributeException;
@@ -71,24 +72,20 @@ import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.spatial.BBOX;
 
-import com.esri.sde.sdk.client.SeException;
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
  * {@link ArcSdeFeatureSource} test cases
- * 
- * @author Gabriel Roldan
- * 
  *
+ * @author Gabriel Roldan
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *         /org/geotools/arcsde/data/ArcSDEDataStoreTest.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
+ *     /org/geotools/arcsde/data/ArcSDEDataStoreTest.java $
  * @version $Id$
  */
 public class ArcSDEFeatureSourceTest {
     /** package logger */
-    private static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(ArcSDEFeatureSourceTest.class.getPackage().getName());
+    private static Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(
+                    ArcSDEFeatureSourceTest.class.getPackage().getName());
 
     private static TestData testData;
 
@@ -118,13 +115,12 @@ public class ArcSDEFeatureSourceTest {
     /**
      * This method tests the feature reader by opening various simultaneous FeatureReaders using the
      * 3 test tables.
-     * <p>
-     * I found experimentally that until 24 simultaneous streams can be opened by a single
+     *
+     * <p>I found experimentally that until 24 simultaneous streams can be opened by a single
      * connection. Each featurereader has an ArcSDE stream opened until its <code>close()</code>
      * method is called or hasNext() returns flase, wich automatically closes the stream. If more
      * than 24 simultaneous streams are tryied to be opened upon a single SeConnection, an exception
      * is thrown by de Java ArcSDE API saying that a "NETWORK I/O OPERATION FAILED"
-     * </p>
      */
     @Test
     public void testGetFeatureReader() throws IOException {
@@ -147,14 +143,14 @@ public class ArcSDEFeatureSourceTest {
 
     /**
      * Checks that a query returns only the specified attributes.
-     * 
+     *
      * @throws IOException
      * @throws IllegalAttributeException
      * @throws SeException
      */
     @Test
-    public void testRestrictsAttributes() throws IOException, IllegalAttributeException,
-            SeException {
+    public void testRestrictsAttributes()
+            throws IOException, IllegalAttributeException, SeException {
         final String typeName = testData.getTempTableName();
         final DataStore ds = testData.getDataStore();
         final SimpleFeatureType schema = ds.getSchema(typeName);
@@ -189,8 +185,8 @@ public class ArcSDEFeatureSourceTest {
      * requested order.
      */
     @Test
-    public void testRespectsAttributeOrder() throws IOException, IllegalAttributeException,
-            SeException {
+    public void testRespectsAttributeOrder()
+            throws IOException, IllegalAttributeException, SeException {
         final String typeName = testData.getTempTableName();
         final DataStore ds = testData.getDataStore();
         final SimpleFeatureType schema = ds.getSchema(typeName);
@@ -224,20 +220,20 @@ public class ArcSDEFeatureSourceTest {
     /**
      * Say the query contains a set of propertynames to retrieve and the query filter others, the
      * returned feature type should still match the ones in Query.propertyNames
-     * 
+     *
      * @throws IOException
      * @throws IllegalAttributeException
      * @throws SeException
      * @throws CQLException
      */
     @Test
-    public void testRespectsQueryAttributes() throws IOException, IllegalAttributeException,
-            SeException, CQLException {
+    public void testRespectsQueryAttributes()
+            throws IOException, IllegalAttributeException, SeException, CQLException {
         final String typeName = testData.getTempTableName();
         final DataStore ds = testData.getDataStore();
         final SimpleFeatureSource fs = ds.getFeatureSource(typeName);
 
-        final String[] queryAtts = { "SHAPE" };
+        final String[] queryAtts = {"SHAPE"};
         final Filter filter = CQL.toFilter("INT32_COL = 1");
 
         // build the query asking for a subset of attributes
@@ -260,8 +256,8 @@ public class ArcSDEFeatureSourceTest {
         assertEquals(resultSchema, feature.getType());
     }
 
-    private boolean testNext(FeatureReader<SimpleFeatureType, SimpleFeature> r) throws IOException,
-            IllegalAttributeException {
+    private boolean testNext(FeatureReader<SimpleFeatureType, SimpleFeature> r)
+            throws IOException, IllegalAttributeException {
         if (r.hasNext()) {
             SimpleFeature f = r.next();
             assertNotNull(f);
@@ -280,8 +276,8 @@ public class ArcSDEFeatureSourceTest {
     private FeatureReader<SimpleFeatureType, SimpleFeature> getReader(String typeName)
             throws IOException {
         Query q = new Query(typeName, Filter.INCLUDE);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader(q,
-                Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(q, Transaction.AUTO_COMMIT);
         SimpleFeatureType retType = reader.getFeatureType();
         assertNotNull(retType.getGeometryDescriptor());
         assertTrue(reader.hasNext());
@@ -291,17 +287,17 @@ public class ArcSDEFeatureSourceTest {
 
     /**
      * tests the datastore behavior when fetching data based on mixed queries.
-     * <p>
-     * "Mixed queries" refers to mixing alphanumeric and geometry based filters, since that is the
-     * natural separation of things in the Esri Java API for ArcSDE. This is necessary since mixed
-     * queries sometimes are problematic. So this test ensures that:
+     *
+     * <p>"Mixed queries" refers to mixing alphanumeric and geometry based filters, since that is
+     * the natural separation of things in the Esri Java API for ArcSDE. This is necessary since
+     * mixed queries sometimes are problematic. So this test ensures that:
+     *
      * <ul>
-     * <li>A mixed query respects all filters</li>
-     * <li>A mixed query does not fails when getBounds() is performed</li>
-     * <li>A mixed query does not fails when size() is performed</li>
+     *   <li>A mixed query respects all filters
+     *   <li>A mixed query does not fails when getBounds() is performed
+     *   <li>A mixed query does not fails when size() is performed
      * </ul>
-     * </p>
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -309,16 +305,25 @@ public class ArcSDEFeatureSourceTest {
         final int EXPECTED_RESULT_COUNT = 1;
         SimpleFeatureSource fs = store.getFeatureSource(testData.getTempTableName());
         SimpleFeatureType schema = fs.getSchema();
-        Filter bboxFilter = ff.bbox(schema.getGeometryDescriptor().getLocalName(), -60, -55, -40,
-                -20, schema.getCoordinateReferenceSystem().getName().getCode());
+        Filter bboxFilter =
+                ff.bbox(
+                        schema.getGeometryDescriptor().getLocalName(),
+                        -60,
+                        -55,
+                        -40,
+                        -20,
+                        schema.getCoordinateReferenceSystem().getName().getCode());
         Filter sqlFilter = CQL.toFilter("INT32_COL < 5");
         LOGGER.fine("Geometry filter: " + bboxFilter);
         LOGGER.fine("SQL filter: " + sqlFilter);
 
         And mixedFilter = ff.and(sqlFilter, bboxFilter);
 
-        Not not = ff.not(ff.id(Collections.singleton(ff.featureId(testData.getTempTableName()
-                + ".90000"))));
+        Not not =
+                ff.not(
+                        ff.id(
+                                Collections.singleton(
+                                        ff.featureId(testData.getTempTableName() + ".90000"))));
 
         mixedFilter = ff.and(mixedFilter, not);
 
@@ -360,7 +365,7 @@ public class ArcSDEFeatureSourceTest {
     /**
      * to expose GEOT-408, tests that queries in which only non spatial attributes are requested
      * does not fails due to the datastore trying to parse the geometry attribute.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -411,7 +416,7 @@ public class ArcSDEFeatureSourceTest {
 
     /**
      * Test that FID filters are correctly handled
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -420,8 +425,8 @@ public class ArcSDEFeatureSourceTest {
         final String typeName = testData.getTempTableName();
 
         // grab some fids
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(new Query(
-                typeName), Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                ds.getFeatureReader(new Query(typeName), Transaction.AUTO_COMMIT);
         List<FeatureId> fids = new ArrayList<FeatureId>();
 
         while (reader.hasNext()) {
@@ -446,7 +451,8 @@ public class ArcSDEFeatureSourceTest {
         try {
             while (iterator.hasNext()) {
                 String fid = iterator.next().getID();
-                assertTrue("a fid not included in query was returned: " + fid,
+                assertTrue(
+                        "a fid not included in query was returned: " + fid,
                         fids.contains(ff.featureId(fid)));
             }
         } finally {
@@ -467,15 +473,17 @@ public class ArcSDEFeatureSourceTest {
         final String typeName = testData.getTempTableName();
 
         // grab some fids
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(new Query(
-                typeName), Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                ds.getFeatureReader(new Query(typeName), Transaction.AUTO_COMMIT);
 
         final String idTemplate;
-        Set<FeatureId> fids = new TreeSet<FeatureId>(new Comparator<FeatureId>() {
-            public int compare(FeatureId o1, FeatureId o2) {
-                return o1.getID().compareTo(o2.getID());
-            }
-        });
+        Set<FeatureId> fids =
+                new TreeSet<FeatureId>(
+                        new Comparator<FeatureId>() {
+                            public int compare(FeatureId o1, FeatureId o2) {
+                                return o1.getID().compareTo(o2.getID());
+                            }
+                        });
 
         try {
             String id = reader.next().getID();
@@ -501,7 +509,8 @@ public class ArcSDEFeatureSourceTest {
         try {
             while (iterator.hasNext()) {
                 String fid = iterator.next().getID();
-                assertTrue("a fid not included in query was returned: " + fid,
+                assertTrue(
+                        "a fid not included in query was returned: " + fid,
                         fids.contains(ff.featureId(fid)));
             }
         } finally {
@@ -511,7 +520,7 @@ public class ArcSDEFeatureSourceTest {
 
     /**
      * test that getFeatureSource over an sde layer works
-     * 
+     *
      * @throws IOException
      * @throws SeException
      */
@@ -551,8 +560,14 @@ public class ArcSDEFeatureSourceTest {
         String typeName = testData.getTempTableName();
         SimpleFeatureSource fs = store.getFeatureSource(typeName);
         SimpleFeatureType schema = fs.getSchema();
-        BBOX bboxFilter = ff.bbox(schema.getGeometryDescriptor().getLocalName(), -180, -90, 180,
-                90, schema.getCoordinateReferenceSystem().getName().getCode());
+        BBOX bboxFilter =
+                ff.bbox(
+                        schema.getGeometryDescriptor().getLocalName(),
+                        -180,
+                        -90,
+                        180,
+                        90,
+                        schema.getCoordinateReferenceSystem().getName().getCode());
 
         int expected = 0;
         SimpleFeatureIterator features = fs.getFeatures().features();
@@ -579,36 +594,40 @@ public class ArcSDEFeatureSourceTest {
         assertFalse(queryCapabilities.isOffsetSupported());
         assertTrue(queryCapabilities.isReliableFIDSupported());
 
-        assertFalse(queryCapabilities.supportsSorting(new SortBy[] { NATURAL_ORDER }));
-        assertFalse(queryCapabilities.supportsSorting(new SortBy[] { REVERSE_ORDER }));
-        assertFalse(queryCapabilities.supportsSorting(new SortBy[] { ff.sort("nonExistent",
-                ASCENDING) }));
+        assertFalse(queryCapabilities.supportsSorting(new SortBy[] {NATURAL_ORDER}));
+        assertFalse(queryCapabilities.supportsSorting(new SortBy[] {REVERSE_ORDER}));
+        assertFalse(
+                queryCapabilities.supportsSorting(
+                        new SortBy[] {ff.sort("nonExistent", ASCENDING)}));
 
-        assertFalse(queryCapabilities.supportsSorting(new SortBy[] { ff.sort("nonExistent",
-                ASCENDING) }));
+        assertFalse(
+                queryCapabilities.supportsSorting(
+                        new SortBy[] {ff.sort("nonExistent", ASCENDING)}));
 
         // no sorting on geometry columns!
         String geometryAttribute = fs.getSchema().getGeometryDescriptor().getLocalName();
-        assertFalse(queryCapabilities.supportsSorting(new SortBy[] { ff.sort(geometryAttribute,
-                ASCENDING) }));
+        assertFalse(
+                queryCapabilities.supportsSorting(
+                        new SortBy[] {ff.sort(geometryAttribute, ASCENDING)}));
 
-        SortBy[] supported = { ff.sort("INT32_COL", ASCENDING),//
-                ff.sort("INT32_COL", DESCENDING),//
-                ff.sort("INT16_COL", ASCENDING),//
-                ff.sort("INT16_COL", DESCENDING),//
-                ff.sort("FLOAT32_COL", ASCENDING),//
-                ff.sort("FLOAT32_COL", DESCENDING),//
-                ff.sort("FLOAT64_COL", ASCENDING),//
-                ff.sort("FLOAT64_COL", DESCENDING),//
-                ff.sort("STRING_COL", ASCENDING),//
-                ff.sort("STRING_COL", DESCENDING),//
-                ff.sort("NSTRING_COL", ASCENDING),//
-                ff.sort("NSTRING_COL", DESCENDING),//
-                ff.sort("DATE_COL", ASCENDING),//
-                ff.sort("DATE_COL", ASCENDING) };
+        SortBy[] supported = {
+            ff.sort("INT32_COL", ASCENDING), //
+            ff.sort("INT32_COL", DESCENDING), //
+            ff.sort("INT16_COL", ASCENDING), //
+            ff.sort("INT16_COL", DESCENDING), //
+            ff.sort("FLOAT32_COL", ASCENDING), //
+            ff.sort("FLOAT32_COL", DESCENDING), //
+            ff.sort("FLOAT64_COL", ASCENDING), //
+            ff.sort("FLOAT64_COL", DESCENDING), //
+            ff.sort("STRING_COL", ASCENDING), //
+            ff.sort("STRING_COL", DESCENDING), //
+            ff.sort("NSTRING_COL", ASCENDING), //
+            ff.sort("NSTRING_COL", DESCENDING), //
+            ff.sort("DATE_COL", ASCENDING), //
+            ff.sort("DATE_COL", ASCENDING)
+        };
 
         assertTrue(queryCapabilities.supportsSorting(supported));
-
     }
 
     @Test
@@ -631,10 +650,12 @@ public class ArcSDEFeatureSourceTest {
         cal.set(Calendar.DAY_OF_MONTH, 6);
         Date date2 = cal.getTime();
 
-        filter = ff.and(Arrays.asList(//
-                (Filter) ff.greater(ff.property("DATE_COL"), ff.literal(date1)),//
-                (Filter) ff.less(ff.property("DATE_COL"), ff.literal(date2))//
-                ));
+        filter =
+                ff.and(
+                        Arrays.asList( //
+                                (Filter) ff.greater(ff.property("DATE_COL"), ff.literal(date1)), //
+                                (Filter) ff.less(ff.property("DATE_COL"), ff.literal(date2)) //
+                                ));
         testFilter(filter, fs, 3);
     }
 
@@ -649,42 +670,45 @@ public class ArcSDEFeatureSourceTest {
         SortBy[] sortBy;
         SimpleFeatureIterator features;
 
-        sortBy = new SortBy[] { ff.sort(sortAtt, ASCENDING) };
+        sortBy = new SortBy[] {ff.sort(sortAtt, ASCENDING)};
         query.setSortBy(sortBy);
         features = fs.getFeatures(query).features();
         try {
             Integer previous = Integer.valueOf(Integer.MIN_VALUE);
             while (features.hasNext()) {
                 Integer intVal = (Integer) features.next().getAttribute(sortAtt);
-                assertTrue(previous + " < " + intVal + "?", previous.intValue() < intVal.intValue());
+                assertTrue(
+                        previous + " < " + intVal + "?", previous.intValue() < intVal.intValue());
                 previous = intVal;
             }
         } finally {
             features.close();
         }
 
-        sortBy = new SortBy[] { ff.sort(sortAtt, DESCENDING) };
+        sortBy = new SortBy[] {ff.sort(sortAtt, DESCENDING)};
         query.setSortBy(sortBy);
         features = fs.getFeatures(query).features();
         try {
             Integer previous = Integer.valueOf(Integer.MAX_VALUE);
             while (features.hasNext()) {
                 Integer intVal = (Integer) features.next().getAttribute(sortAtt);
-                assertTrue(previous + " > " + intVal + "?", previous.intValue() > intVal.intValue());
+                assertTrue(
+                        previous + " > " + intVal + "?", previous.intValue() > intVal.intValue());
                 previous = intVal;
             }
         } finally {
             features.close();
         }
 
-        sortBy = new SortBy[] { ff.sort(sortAtt, DESCENDING), ff.sort("FLOAT32_COL", ASCENDING) };
+        sortBy = new SortBy[] {ff.sort(sortAtt, DESCENDING), ff.sort("FLOAT32_COL", ASCENDING)};
         query.setSortBy(sortBy);
         features = fs.getFeatures(query).features();
         try {
             Integer previous = Integer.valueOf(Integer.MAX_VALUE);
             while (features.hasNext()) {
                 Integer intVal = (Integer) features.next().getAttribute(sortAtt);
-                assertTrue(previous + " > " + intVal + "?", previous.intValue() > intVal.intValue());
+                assertTrue(
+                        previous + " > " + intVal + "?", previous.intValue() > intVal.intValue());
                 previous = intVal;
             }
         } finally {
@@ -718,16 +742,17 @@ public class ArcSDEFeatureSourceTest {
 
     /**
      * for a given FeatureSource, makes the following assertions:
+     *
      * <ul>
-     * <li>it's not null</li>
-     * <li>.getDataStore() != null</li>
-     * <li>.getDataStore() == the datastore obtained in setUp()</li>
-     * <li>.getSchema() != null</li>
-     * <li>.getBounds() != null</li>
-     * <li>.getBounds().isNull() == false</li>
-     * <li>.getFeatures().getCounr() > 0</li>
-     * <li>.getFeatures().reader().hasNex() == true</li>
-     * <li>.getFeatures().reader().next() != null</li>
+     *   <li>it's not null
+     *   <li>.getDataStore() != null
+     *   <li>.getDataStore() == the datastore obtained in setUp()
+     *   <li>.getSchema() != null
+     *   <li>.getBounds() != null
+     *   <li>.getBounds().isNull() == false
+     *   <li>.getFeatures().getCounr() > 0
+     *   <li>.getFeatures().reader().hasNex() == true
+     *   <li>.getFeatures().reader().next() != null
      * </ul>
      */
     private void testGetFeatureSource(SimpleFeatureSource fsource) throws IOException {
@@ -778,7 +803,8 @@ public class ArcSDEFeatureSourceTest {
                 numFeat++;
             }
 
-            String failMsg = "Fully fetched features size and estimated num features count does not match";
+            String failMsg =
+                    "Fully fetched features size and estimated num features count does not match";
             assertEquals(failMsg, expected, numFeat);
         } finally {
             fi.close();

@@ -17,17 +17,17 @@
 package org.geotools.filter.v1_1.capabilities;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.capability.Operator;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xml.*;
-
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.capability.Operator;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:ComparisonOperatorType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:simpleType name="ComparisonOperatorType"&gt;
  *      &lt;xsd:restriction base="xsd:string"&gt;
@@ -45,12 +45,8 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class ComparisonOperatorTypeBinding extends AbstractSimpleBinding {
@@ -60,14 +56,13 @@ public class ComparisonOperatorTypeBinding extends AbstractSimpleBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.ComparisonOperatorType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -82,13 +77,13 @@ public class ComparisonOperatorTypeBinding extends AbstractSimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
         return factory.operator((String) value);
     }
 

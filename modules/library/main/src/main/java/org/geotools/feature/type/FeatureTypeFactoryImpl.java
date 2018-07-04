@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@ package org.geotools.feature.type;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AssociationDescriptor;
@@ -39,123 +38,163 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
 
 /**
- * This implementation is capable of creating a good default implementation of
- * the Types used in the feature model.
- * <p>
- * The implementation focus here is on corretness rather then efficiency or even
- * strict error messages. The code serves as a good example, but is not
- * optimized for any particular use.
- * </p>
- * 
+ * This implementation is capable of creating a good default implementation of the Types used in the
+ * feature model.
+ *
+ * <p>The implementation focus here is on corretness rather then efficiency or even strict error
+ * messages. The code serves as a good example, but is not optimized for any particular use.
+ *
  * @author Jody Garnett
- *
- *
- *
  * @source $URL$
  */
 public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
-	/** Used for spatial content */
-	CRSFactory crsFactory;
-	
-	/** Used for type restrictions */
-	FilterFactory filterFactory;
+    /** Used for spatial content */
+    CRSFactory crsFactory;
 
-	/** Rely on setter injection */
-	public FeatureTypeFactoryImpl() {
-		this.crsFactory = null;
-		this.filterFactory = null;
-	}
-	/** Constructor injection */
-	public FeatureTypeFactoryImpl(CRSFactory crsFactory, FilterFactory filterFactory) {
-		this.crsFactory = crsFactory;
-		this.filterFactory = filterFactory;
-	}
+    /** Used for type restrictions */
+    FilterFactory filterFactory;
 
-	public Schema createSchema(String uri) {
-		return new SchemaImpl(uri);
-	}
+    /** Rely on setter injection */
+    public FeatureTypeFactoryImpl() {
+        this.crsFactory = null;
+        this.filterFactory = null;
+    }
+    /** Constructor injection */
+    public FeatureTypeFactoryImpl(CRSFactory crsFactory, FilterFactory filterFactory) {
+        this.crsFactory = crsFactory;
+        this.filterFactory = filterFactory;
+    }
 
-	public CRSFactory getCRSFactory() {
-		return crsFactory;
-	}
+    public Schema createSchema(String uri) {
+        return new SchemaImpl(uri);
+    }
 
-	public void setCRSFactory(CRSFactory crsFactory) {
-		this.crsFactory = crsFactory;
-	}
+    public CRSFactory getCRSFactory() {
+        return crsFactory;
+    }
 
-	public FilterFactory getFilterFactory() {
-		return filterFactory;
-	}
+    public void setCRSFactory(CRSFactory crsFactory) {
+        this.crsFactory = crsFactory;
+    }
 
-	public void setFilterFactory(FilterFactory filterFactory) {
-		this.filterFactory = filterFactory;
-	}
+    public FilterFactory getFilterFactory() {
+        return filterFactory;
+    }
 
-	public AssociationDescriptor createAssociationDescriptor(
-		AssociationType type, Name name, int minOccurs, int maxOccurs, boolean isNillable) {
-		
-		return new AssociationDescriptorImpl( type, name, minOccurs, maxOccurs, isNillable );
-	}
+    public void setFilterFactory(FilterFactory filterFactory) {
+        this.filterFactory = filterFactory;
+    }
 
-	public AttributeDescriptor createAttributeDescriptor(AttributeType type,
-		Name name, int minOccurs, int maxOccurs, boolean isNillable, Object defaultValue) {
-		
-		return new AttributeDescriptorImpl(type, name, minOccurs, maxOccurs, isNillable,defaultValue);
-	}
+    public AssociationDescriptor createAssociationDescriptor(
+            AssociationType type, Name name, int minOccurs, int maxOccurs, boolean isNillable) {
 
-	public GeometryDescriptor createGeometryDescriptor(GeometryType type,
-	        Name name, int minOccurs, int maxOccurs, boolean isNillable,
-	        Object defaultValue) {
-	    return new GeometryDescriptorImpl(type, name, minOccurs, maxOccurs, isNillable, defaultValue);
-	}
-	
-	public AssociationType createAssociationType(Name name,
-		AttributeType relatedType, boolean isAbstract, List restrictions, 
-		AssociationType superType, InternationalString description) {
-		
-		return new AssociationTypeImpl(name, relatedType,
-				isAbstract, restrictions, superType, description);
-	}
-	
-	public AttributeType createAttributeType(Name name, Class binding,
-			boolean isIdentifiable, boolean isAbstract, List restrictions,
-			AttributeType superType, InternationalString description) {
+        return new AssociationDescriptorImpl(type, name, minOccurs, maxOccurs, isNillable);
+    }
 
-		return new AttributeTypeImpl(name, binding, isIdentifiable, isAbstract,
-				restrictions, superType, description);
-	}
+    public AttributeDescriptor createAttributeDescriptor(
+            AttributeType type,
+            Name name,
+            int minOccurs,
+            int maxOccurs,
+            boolean isNillable,
+            Object defaultValue) {
 
-	public ComplexType createComplexType(Name name, Collection schema,
-			boolean isIdentifiable, boolean isAbstract, List restrictions,
-			AttributeType superType, InternationalString description) {
-	    return new ComplexTypeImpl(name, schema, isIdentifiable, isAbstract,
-				restrictions, superType, description);
-	}
+        return new AttributeDescriptorImpl(
+                type, name, minOccurs, maxOccurs, isNillable, defaultValue);
+    }
 
-	public GeometryType createGeometryType(Name name, Class binding,
-			CoordinateReferenceSystem crs, boolean isIdentifiable,
-			boolean isAbstract, List restrictions, AttributeType superType,
-			InternationalString description) {
+    public GeometryDescriptor createGeometryDescriptor(
+            GeometryType type,
+            Name name,
+            int minOccurs,
+            int maxOccurs,
+            boolean isNillable,
+            Object defaultValue) {
+        return new GeometryDescriptorImpl(
+                type, name, minOccurs, maxOccurs, isNillable, defaultValue);
+    }
 
-		return new GeometryTypeImpl(name, binding, crs, isIdentifiable,
-				isAbstract, restrictions, superType, description);
-	}
+    public AssociationType createAssociationType(
+            Name name,
+            AttributeType relatedType,
+            boolean isAbstract,
+            List restrictions,
+            AssociationType superType,
+            InternationalString description) {
 
-	public FeatureType createFeatureType(Name name, Collection schema,
-	        GeometryDescriptor defaultGeometry, boolean isAbstract, 
-			List restrictions, AttributeType superType, InternationalString description) {
+        return new AssociationTypeImpl(
+                name, relatedType, isAbstract, restrictions, superType, description);
+    }
 
-		return new FeatureTypeImpl(name, schema, defaultGeometry,
-				isAbstract, restrictions, superType, description);
-	}
+    public AttributeType createAttributeType(
+            Name name,
+            Class binding,
+            boolean isIdentifiable,
+            boolean isAbstract,
+            List restrictions,
+            AttributeType superType,
+            InternationalString description) {
 
-	public SimpleFeatureType createSimpleFeatureType(Name name,
-	        List<AttributeDescriptor> schema,
-	        GeometryDescriptor defaultGeometry, boolean isAbstract,
-	        List<Filter> restrictions, AttributeType superType,
-	        InternationalString description) {
-	    
-	    return new SimpleFeatureTypeImpl(name,schema,defaultGeometry,isAbstract,
-            restrictions,superType,description);
-	}
+        return new AttributeTypeImpl(
+                name, binding, isIdentifiable, isAbstract, restrictions, superType, description);
+    }
+
+    public ComplexType createComplexType(
+            Name name,
+            Collection schema,
+            boolean isIdentifiable,
+            boolean isAbstract,
+            List restrictions,
+            AttributeType superType,
+            InternationalString description) {
+        return new ComplexTypeImpl(
+                name, schema, isIdentifiable, isAbstract, restrictions, superType, description);
+    }
+
+    public GeometryType createGeometryType(
+            Name name,
+            Class binding,
+            CoordinateReferenceSystem crs,
+            boolean isIdentifiable,
+            boolean isAbstract,
+            List restrictions,
+            AttributeType superType,
+            InternationalString description) {
+
+        return new GeometryTypeImpl(
+                name,
+                binding,
+                crs,
+                isIdentifiable,
+                isAbstract,
+                restrictions,
+                superType,
+                description);
+    }
+
+    public FeatureType createFeatureType(
+            Name name,
+            Collection schema,
+            GeometryDescriptor defaultGeometry,
+            boolean isAbstract,
+            List restrictions,
+            AttributeType superType,
+            InternationalString description) {
+
+        return new FeatureTypeImpl(
+                name, schema, defaultGeometry, isAbstract, restrictions, superType, description);
+    }
+
+    public SimpleFeatureType createSimpleFeatureType(
+            Name name,
+            List<AttributeDescriptor> schema,
+            GeometryDescriptor defaultGeometry,
+            boolean isAbstract,
+            List<Filter> restrictions,
+            AttributeType superType,
+            InternationalString description) {
+
+        return new SimpleFeatureTypeImpl(
+                name, schema, defaultGeometry, isAbstract, restrictions, superType, description);
+    }
 }

@@ -17,34 +17,25 @@
 package org.geotools.validation.network;
 
 import java.util.Map;
-
 import org.geotools.validation.DefaultIntegrityValidation;
 import org.geotools.validation.ValidationResults;
-
-import com.vividsolutions.jts.geom.Envelope;
-
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * StarNodeValidation purpose.
- * 
- * <p>
- * TODO fill this in.
- * </p>
+ *
+ * <p>TODO fill this in.
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class StarNodeValidation extends DefaultIntegrityValidation {
     /**
      * StarNodeValidation constructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
     public StarNodeValidation() {
         super();
@@ -53,23 +44,19 @@ public class StarNodeValidation extends DefaultIntegrityValidation {
 
     /**
      * Check FeatureType for ...
-     * 
-     * <p>
-     * Detailed description...
-     * </p>
+     *
+     * <p>Detailed description...
      *
      * @param layers Map of SimpleFeatureSource by "dataStoreID:typeName"
      * @param envelope The bounding box that encloses the unvalidated data
      * @param results Used to coallate results information
-     *
      * @return <code>true</code> if all the features pass this test.
-     *
      * @throws Exception DOCUMENT ME!
      */
-    public boolean validate(Map layers, Envelope envelope,
-    		ValidationResults results) throws Exception {
-    	results.warning(null, "Validation not yet implemented");
-    	// TODO fill me in!
-    	return false;
+    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+            throws Exception {
+        results.warning(null, "Validation not yet implemented");
+        // TODO fill me in!
+        return false;
     }
 }

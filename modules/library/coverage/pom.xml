@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
 
 
@@ -91,19 +91,6 @@
     </developer>
   </developers>
 
-  <!--
-  <contributors>
-    <contributor>
-      <name></name>
-      <organization></organization>
-      <roles>
-        <role></role>
-      </roles>
-    </contributor>
-  </contributors>
-  -->
-
-
   <!-- =========================================================== -->
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
@@ -124,8 +111,8 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.vividsolutions</groupId>
-      <artifactId>jts</artifactId>
+      <groupId>org.locationtech.jts</groupId>
+      <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
@@ -137,7 +124,7 @@
       <groupId>it.geosolutions.imageio-ext</groupId>
   	  <artifactId>imageio-ext-tiff</artifactId>
       <!-- The version number is specified in the parent POM. -->      
-    </dependency>    
+    </dependency>
     
     <!--  JAI Tools -->  
     <dependency>
@@ -147,137 +134,335 @@
      <dependency>
        <groupId>org.jaitools</groupId>
        <artifactId>jt-utils</artifactId>
+       <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+       </exclusions>
      </dependency>
 
 	<!-- JAIExt -->
 	<dependency>
 		<groupId>it.geosolutions.jaiext.affine</groupId>
 		<artifactId>jt-affine</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.algebra</groupId>
 		<artifactId>jt-algebra</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.bandmerge</groupId>
 		<artifactId>jt-bandmerge</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.bandselect</groupId>
 		<artifactId>jt-bandselect</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.bandcombine</groupId>
 		<artifactId>jt-bandcombine</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.border</groupId>
 		<artifactId>jt-border</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.buffer</groupId>
 		<artifactId>jt-buffer</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.crop</groupId>
 		<artifactId>jt-crop</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.iterators</groupId>
 		<artifactId>jt-iterators</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.lookup</groupId>
 		<artifactId>jt-lookup</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.mosaic</groupId>
 		<artifactId>jt-mosaic</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.nullop</groupId>
 		<artifactId>jt-nullop</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.rescale</groupId>
 		<artifactId>jt-rescale</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.scale</groupId>
 		<artifactId>jt-scale</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
+	</dependency>
+        <dependency>
+		<groupId>it.geosolutions.jaiext.scale2</groupId>
+		<artifactId>jt-scale2</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.stats</groupId>
 		<artifactId>jt-stats</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.translate</groupId>
 		<artifactId>jt-translate</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.utilities</groupId>
 		<artifactId>jt-utilities</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.warp</groupId>
 		<artifactId>jt-warp</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.zonal</groupId>
 		<artifactId>jt-zonal</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.binarize</groupId>
 		<artifactId>jt-binarize</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.format</groupId>
 		<artifactId>jt-format</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.colorconvert</groupId>
 		<artifactId>jt-colorconvert</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.errordiffusion</groupId>
 		<artifactId>jt-errordiffusion</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.orderdither</groupId>
 		<artifactId>jt-orderdither</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.colorindexer</groupId>
 		<artifactId>jt-colorindexer</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.imagefunction</groupId>
 		<artifactId>jt-imagefunction</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.piecewise</groupId>
 		<artifactId>jt-piecewise</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.classifier</groupId>
 		<artifactId>jt-classifier</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>
 	<dependency>
 		<groupId>it.geosolutions.jaiext.rlookup</groupId>
 		<artifactId>jt-rlookup</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>	
 	<dependency>
 		<groupId>it.geosolutions.jaiext.vectorbin</groupId>
 		<artifactId>jt-vectorbin</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
 	</dependency>		
     
     <!-- Test dependencies -->
+    <!--
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-shapefile</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
+-->
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>
@@ -290,12 +475,6 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-cql</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>     
     <dependency>
       <groupId>javax.media</groupId>
       <artifactId>jai_codec</artifactId>

@@ -28,17 +28,15 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Properties;
-
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.DataUtilities;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,18 +48,14 @@ import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
-import it.geosolutions.imageio.utilities.ImageIOUtilities;
-
-/**
- * Test the resolutionLevel-to-ImageMosaicReader mapping machinery. 
- */
+/** Test the resolutionLevel-to-ImageMosaicReader mapping machinery. */
 public class ImageLevelsMapperTest extends Assert {
 
     protected static final Double DELTA = 1E-6;
 
     @Before
     public void init() {
-        System.setProperty("org.geotools.referencing.forceXY","true");
+        System.setProperty("org.geotools.referencing.forceXY", "true");
         CRS.reset("all");
     }
 
@@ -72,18 +66,18 @@ public class ImageLevelsMapperTest extends Assert {
     }
 
     @Test
-    public void multicoveragePyramidWithOverviews() throws IOException,
-            MismatchedDimensionException, NoSuchAuthorityCodeException,
-            InvalidParameterValueException, ParseException {
+    public void multicoveragePyramidWithOverviews()
+            throws IOException, MismatchedDimensionException, NoSuchAuthorityCodeException,
+                    InvalidParameterValueException, ParseException {
 
         //
         // Get the resource.
         //
         final URL testFile = TestData.getResource(this, "multipyramidwithoverviews");
-        File mosaicFolder = DataUtilities.urlToFile(testFile);
+        File mosaicFolder = URLs.urlToFile(testFile);
         assertNotNull(testFile);
-        File[] pyramidLevels = mosaicFolder.listFiles((FileFilter) FileFilterUtils
-                .directoryFileFilter());
+        File[] pyramidLevels =
+                mosaicFolder.listFiles((FileFilter) FileFilterUtils.directoryFileFilter());
         for (File pyramidLevel : pyramidLevels) {
             cleanFiles(pyramidLevel);
         }
@@ -115,10 +109,11 @@ public class ImageLevelsMapperTest extends Assert {
         assertEquals(64, gridEnvelope.getSpan(1), DELTA);
 
         // Read a reduced view of the RGB coverage
-        final ParameterValue<GridGeometry2D> gg = AbstractGridFormat.READ_GRIDGEOMETRY2D
-                .createValue();
+        final ParameterValue<GridGeometry2D> gg =
+                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         final GeneralEnvelope envelope = reader.getOriginalEnvelope();
-        GridEnvelope2D gridRange = new GridEnvelope2D(((GridEnvelope2D)reader.getOriginalGridRange()).getBounds());
+        GridEnvelope2D gridRange =
+                new GridEnvelope2D(((GridEnvelope2D) reader.getOriginalGridRange()).getBounds());
         final Dimension dim = new Dimension();
         dim.setSize(gridRange.getSpan(0) / 16.0, gridRange.getSpan(1) / 16.0);
         Rectangle rasterArea = ((GridEnvelope2D) gridRange);
@@ -126,8 +121,7 @@ public class ImageLevelsMapperTest extends Assert {
         GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, envelope));
 
-        coverage = (GridCoverage2D) reader.read(coverageNames[1],
-                new GeneralParameterValue[] { gg });
+        coverage = (GridCoverage2D) reader.read(coverageNames[1], new GeneralParameterValue[] {gg});
         assertNotNull(coverage);
         renderedImage = coverage.getRenderedImage();
         colorSpaceType = renderedImage.getColorModel().getColorSpace().getType();
@@ -137,22 +131,27 @@ public class ImageLevelsMapperTest extends Assert {
         assertEquals(4, gridEnvelope.getSpan(1), DELTA);
 
         // test on expanded Envelope (Double the size of the envelope)
-        final GeneralEnvelope doubleEnvelope = new GeneralEnvelope(new double[] {
-                envelope.getLowerCorner().getOrdinate(0),
-                envelope.getLowerCorner().getOrdinate(1) }, new double[] {
-                envelope.getLowerCorner().getOrdinate(0) + envelope.getSpan(0) * 2,
-                envelope.getLowerCorner().getOrdinate(1) + envelope.getSpan(1) * 2 });
+        final GeneralEnvelope doubleEnvelope =
+                new GeneralEnvelope(
+                        new double[] {
+                            envelope.getLowerCorner().getOrdinate(0),
+                            envelope.getLowerCorner().getOrdinate(1)
+                        },
+                        new double[] {
+                            envelope.getLowerCorner().getOrdinate(0) + envelope.getSpan(0) * 2,
+                            envelope.getLowerCorner().getOrdinate(1) + envelope.getSpan(1) * 2
+                        });
         doubleEnvelope.setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
 
         GridEnvelope doubleRange = reader.getOriginalGridRange();
-        dim.setSize(doubleRange .getSpan(0) * 2, doubleRange .getSpan(1) * 2);
-        rasterArea = ((GridEnvelope2D) doubleRange );
+        dim.setSize(doubleRange.getSpan(0) * 2, doubleRange.getSpan(1) * 2);
+        rasterArea = ((GridEnvelope2D) doubleRange);
         rasterArea.setSize(dim);
         range = new GridEnvelope2D(rasterArea);
-        gg.setValue(new GridGeometry2D(doubleRange , doubleEnvelope));
+        gg.setValue(new GridGeometry2D(doubleRange, doubleEnvelope));
 
-        coverage = ((GridCoverage2D) reader.read(
-                coverageNames[1], new GeneralParameterValue[] { gg }));
+        coverage =
+                ((GridCoverage2D) reader.read(coverageNames[1], new GeneralParameterValue[] {gg}));
 
         assertNotNull(coverage);
         renderedImage = coverage.getRenderedImage();
@@ -183,15 +182,15 @@ public class ImageLevelsMapperTest extends Assert {
 
             double[] highRes = mapper.getHighestResolution();
             assertNotNull(highRes);
-            match(new double[] { baseRes, baseRes }, highRes);
+            match(new double[] {baseRes, baseRes}, highRes);
 
             double[][] resolutions = mapper.getOverViewResolutions();
             assertNotNull(resolutions);
-            match(new double[] { baseRes * 2, baseRes * 2 }, resolutions[0]);
-            match(new double[] { baseRes * 4, baseRes * 4 }, resolutions[1]);
-            match(new double[] { baseRes * 8, baseRes * 8 }, resolutions[2]);
-            match(new double[] { baseRes * 16, baseRes * 16 }, resolutions[3]);
-            match(new double[] { baseRes * 32, baseRes * 32 }, resolutions[4]);
+            match(new double[] {baseRes * 2, baseRes * 2}, resolutions[0]);
+            match(new double[] {baseRes * 4, baseRes * 4}, resolutions[1]);
+            match(new double[] {baseRes * 8, baseRes * 8}, resolutions[2]);
+            match(new double[] {baseRes * 16, baseRes * 16}, resolutions[3]);
+            match(new double[] {baseRes * 32, baseRes * 32}, resolutions[4]);
 
             assertEquals(0, mapper.getImageReaderIndex(0));
             assertEquals(0, mapper.getImageReaderIndex(1));
@@ -200,16 +199,16 @@ public class ImageLevelsMapperTest extends Assert {
             assertEquals(1, mapper.getImageReaderIndex(4));
             assertEquals(1, mapper.getImageReaderIndex(5));
 
-       } finally {
-           if (fis != null) {
-               try {
-                   fis.close();
-               } catch(Throwable t) {
-                   // Ignore it
-               }
-           }
-           mapper.dispose();
-       }
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (Throwable t) {
+                    // Ignore it
+                }
+            }
+            mapper.dispose();
+        }
     }
 
     private void match(double[] expected, double[] actual) {
@@ -218,13 +217,20 @@ public class ImageLevelsMapperTest extends Assert {
     }
 
     protected void cleanFiles(File mosaicFolder) {
-        for (File configFile : mosaicFolder.listFiles((FileFilter) FileFilterUtils.or(
-                FileFilterUtils.suffixFileFilter("db"), FileFilterUtils
-                        .suffixFileFilter("sample_image"), FileFilterUtils.and(FileFilterUtils
-                        .suffixFileFilter(".properties"), FileFilterUtils
-                        .notFileFilter(FileFilterUtils.or(
-                                FileFilterUtils.nameFileFilter("indexer.properties"),
-                                FileFilterUtils.nameFileFilter("datastore.properties"))))))) {
+        for (File configFile :
+                mosaicFolder.listFiles(
+                        (FileFilter)
+                                FileFilterUtils.or(
+                                        FileFilterUtils.suffixFileFilter("db"),
+                                        FileFilterUtils.suffixFileFilter("sample_image"),
+                                        FileFilterUtils.and(
+                                                FileFilterUtils.suffixFileFilter(".properties"),
+                                                FileFilterUtils.notFileFilter(
+                                                        FileFilterUtils.or(
+                                                                FileFilterUtils.nameFileFilter(
+                                                                        "indexer.properties"),
+                                                                FileFilterUtils.nameFileFilter(
+                                                                        "datastore.properties"))))))) {
             configFile.delete();
         }
     }

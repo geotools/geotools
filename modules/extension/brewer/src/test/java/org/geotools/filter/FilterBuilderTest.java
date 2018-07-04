@@ -8,12 +8,9 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.spatial.Equals;
 
-
 /**
  * FilterBuilder is a main entry from a fluent programming point of view. We will mostly test using
  * this as a starting point; and break out other test cases on an as needed basis.
- *
- *
  *
  * @source $URL$
  */
@@ -32,16 +29,16 @@ public class FilterBuilderTest {
         And and = ff.and(nn, eq);
     }
 
-//    @Test
-//    public void bbox() {
-//        ff.bbox(geometry, bounds);
-//    }
-//
-//    public void between() {
-//        ff.between(ff.property("value"), ff.literal(1), ff.literal(9));
-//    }
-//    public void beyond() {        
-//        Geometry poly = ff.beyond(ff.literal(poly), ff.literal(point), 3.0, "km");
-//
-//    }
+    //    @Test
+    //    public void bbox() {
+    //        ff.bbox(geometry, bounds);
+    //    }
+    //
+    //    public void between() {
+    //        ff.between(ff.property("value"), ff.literal(1), ff.literal(9));
+    //    }
+    //    public void beyond() {
+    //        Geometry poly = ff.beyond(ff.literal(poly), ff.literal(point), 3.0, "km");
+    //
+    //    }
 }

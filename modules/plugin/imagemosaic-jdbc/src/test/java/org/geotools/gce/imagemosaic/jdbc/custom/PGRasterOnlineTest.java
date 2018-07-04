@@ -24,42 +24,35 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.StringTokenizer;
-
+import junit.framework.Assert;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import org.geotools.gce.imagemosaic.jdbc.AbstractTest;
 import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.DBDialect;
 
-
-import junit.framework.Assert;
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PGRasterOnlineTest extends AbstractTest {
-    static protected DBDialect dialect = null;
+    protected static DBDialect dialect = null;
+
     public PGRasterOnlineTest(String test) {
-            super(test);
+        super(test);
     }
 
-    
     public static Test suite() {
         TestSuite suite = new TestSuite();
 
         PGRasterOnlineTest test = new PGRasterOnlineTest("");
 
         if (test.checkPreConditions() == false) {
-                return suite;
+            return suite;
         }
 
         suite.addTest(new PGRasterOnlineTest("testGetConnection"));
-        
+
         // Test with in db pgraster
         suite.addTest(new PGRasterOnlineTest("testDrop"));
-        suite.addTest(new PGRasterOnlineTest("testCreate2"));        
+        suite.addTest(new PGRasterOnlineTest("testCreate2"));
         suite.addTest(new PGRasterOnlineTest("testImage1"));
         suite.addTest(new PGRasterOnlineTest("testFullExtent"));
         suite.addTest(new PGRasterOnlineTest("testNoData"));
@@ -68,7 +61,7 @@ public class PGRasterOnlineTest extends AbstractTest {
         suite.addTest(new PGRasterOnlineTest("testViennaEnv"));
         suite.addTest(new PGRasterOnlineTest("testOutputTransparentColor"));
         suite.addTest(new PGRasterOnlineTest("testOutputTransparentColor2"));
-        
+
         // Test with out db pgraster
         /* not ready yet, segmentation faults in postgres server process
         suite.addTest(new PGRasterOnlineTest("testDrop"));
@@ -81,48 +74,42 @@ public class PGRasterOnlineTest extends AbstractTest {
         suite.addTest(new PGRasterOnlineTest("testViennaEnvJoined"));
         */
 
-        
         suite.addTest(new PGRasterOnlineTest("testCloseConnection"));
 
         return suite;
-}
-    
-    
-    protected String getSrsId() {
-        return "4326";
-}
-
-    
-    @Override
-    public String getConfigUrl() {
-            return "file:target/resources/oek.pgraster.xml";
     }
 
+    protected String getSrsId() {
+        return "4326";
+    }
+
+    @Override
+    public String getConfigUrl() {
+        return "file:target/resources/oek.pgraster.xml";
+    }
 
     protected String getSubDir() {
         return "pgraster";
     }
 
-
     @Override
     protected DBDialect getDBDialect() {
         if (dialect != null) {
-                return dialect;
+            return dialect;
         }
 
         Config config = null;
 
         try {
-                config = Config.readFrom(new URL(getConfigUrl()));
+            config = Config.readFrom(new URL(getConfigUrl()));
         } catch (Exception e) {
-                throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
 
         dialect = DBDialect.getDBDialect(config);
 
         return dialect;
     }
-    
 
     @Override
     protected String getDriverClassName() {
@@ -134,37 +121,42 @@ public class PGRasterOnlineTest extends AbstractTest {
         return "jdbc:postgresql://" + host + ":" + port + "/" + dbName;
     }
 
-
     @Override
     protected String getXMLConnectFragmentName() {
         return "connect.pgraster.xml.inc";
     }
 
-
     @Override
     public void testCreate() {
-        executeCreate(Connection,new String [] { "pgrasterfs.sql","1/pgrasterfs.sql","2/pgrasterfs.sql"},true );
+        executeCreate(
+                Connection,
+                new String[] {"pgrasterfs.sql", "1/pgrasterfs.sql", "2/pgrasterfs.sql"},
+                true);
     }
-    
+
     public void testCreate2() {
-        executeCreate(Connection,new String [] { "pgraster.sql","1/pgraster.sql","2/pgraster.sql",},false );
+        executeCreate(
+                Connection,
+                new String[] {
+                    "pgraster.sql", "1/pgraster.sql", "2/pgraster.sql",
+                },
+                false);
     }
 
+    void executeCreate(java.sql.Connection con, String[] scriptNames, boolean outdb) {
 
-    
-    void executeCreate(java.sql.Connection con,String[] scriptNames, boolean outdb) {
-        
-                        
         try {
 
-            String createMasterStatement = "create table MOSAIC (NAME varchar(254) not null," +
-            "TileTable varchar(254)not null," +
-            "minX FLOAT8,minY FLOAT8, maxX FLOAT8, maxY FLOAT8,resX FLOAT8, resY FLOAT8," +
-            "primary key (NAME,TileTable))";        
-                                      
+            String createMasterStatement =
+                    "create table MOSAIC (NAME varchar(254) not null,"
+                            + "TileTable varchar(254)not null,"
+                            + "minX FLOAT8,minY FLOAT8, maxX FLOAT8, maxY FLOAT8,resX FLOAT8, resY FLOAT8,"
+                            + "primary key (NAME,TileTable))";
+
             con.prepareStatement(createMasterStatement).execute();
-            
-            PreparedStatement ps = con.prepareStatement("insert into MOSAIC(NAME,TileTable) values (?,?)");
+
+            PreparedStatement ps =
+                    con.prepareStatement("insert into MOSAIC(NAME,TileTable) values (?,?)");
             ps.setString(1, "oek");
             ps.setString(2, "rtable1");
             ps.execute();
@@ -174,94 +166,99 @@ public class PGRasterOnlineTest extends AbstractTest {
             ps.setString(1, "oek");
             ps.setString(2, "rtable3");
             ps.execute();
-            
-            con.prepareStatement(
-                    "CREATE TABLE \"public\".\"rtable1\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)").execute();
-            con.prepareStatement(
-                    "CREATE TABLE \"public\".\"rtable2\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)").execute();
-            con.prepareStatement(
-                    "CREATE TABLE \"public\".\"rtable3\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)").execute();
-            
 
-/*            
             con.prepareStatement(
-                    "CREATE TABLE \"public\".\"rtable1\" (rid serial PRIMARY KEY, \"filename\" text)").execute();
- 
-            
+                            "CREATE TABLE \"public\".\"rtable1\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)")
+                    .execute();
             con.prepareStatement(
-                    "SELECT AddRasterColumn('public','rtable1','rast',4326, ARRAY['8BUI','8BUI','8BUI','8BUI'], "+outdb+
-                    ", false, null, 0.007547169811321, -0.005102040816327, null, null, null)").execute();
-            
+                            "CREATE TABLE \"public\".\"rtable2\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)")
+                    .execute();
             con.prepareStatement(
-                    "CREATE TABLE \"public\".\"rtable2\" (rid serial PRIMARY KEY, \"filename\" text)").execute();
-            
-            con.prepareStatement(
-                    "SELECT AddRasterColumn('public','rtable2','rast',4326, ARRAY['8BUI','8BUI','8BUI','8BUI'], "+outdb+
-                    ", false, null, 0.015094339622642, -0.010204081632653, null, null, null)").execute();
-            
-            con.prepareStatement(
-                    "CREATE TABLE \"public\".\"rtable3\" (rid serial PRIMARY KEY, \"filename\" text)").execute();
-            
-            con.prepareStatement(
-                    "SELECT AddRasterColumn('public','rtable3','rast',4326, ARRAY['8BUI','8BUI','8BUI','8BUI'], "+outdb+
-                    ", false, null, 0.030188679245283, -0.020408163265306, null, null, null)").execute();
-*/                    
+                            "CREATE TABLE \"public\".\"rtable3\" (\"rid\" serial PRIMARY KEY,\"rast\" raster,\"filename\" text)")
+                    .execute();
 
-//            con.prepareStatement("alter table raster1 drop constraint enforce_srid_rast").execute();
-//            con.prepareStatement("alter table raster2 drop constraint enforce_srid_rast").execute();
-//            con.prepareStatement("alter table raster3 drop constraint enforce_srid_rast").execute(); 
-            
-            for (String scriptName: scriptNames) {
-                InputStream scriptIn = new URL("file:target/resources/"+scriptName).openStream();
+            /*
+                        con.prepareStatement(
+                                "CREATE TABLE \"public\".\"rtable1\" (rid serial PRIMARY KEY, \"filename\" text)").execute();
+
+
+                        con.prepareStatement(
+                                "SELECT AddRasterColumn('public','rtable1','rast',4326, ARRAY['8BUI','8BUI','8BUI','8BUI'], "+outdb+
+                                ", false, null, 0.007547169811321, -0.005102040816327, null, null, null)").execute();
+
+                        con.prepareStatement(
+                                "CREATE TABLE \"public\".\"rtable2\" (rid serial PRIMARY KEY, \"filename\" text)").execute();
+
+                        con.prepareStatement(
+                                "SELECT AddRasterColumn('public','rtable2','rast',4326, ARRAY['8BUI','8BUI','8BUI','8BUI'], "+outdb+
+                                ", false, null, 0.015094339622642, -0.010204081632653, null, null, null)").execute();
+
+                        con.prepareStatement(
+                                "CREATE TABLE \"public\".\"rtable3\" (rid serial PRIMARY KEY, \"filename\" text)").execute();
+
+                        con.prepareStatement(
+                                "SELECT AddRasterColumn('public','rtable3','rast',4326, ARRAY['8BUI','8BUI','8BUI','8BUI'], "+outdb+
+                                ", false, null, 0.030188679245283, -0.020408163265306, null, null, null)").execute();
+            */
+
+            //            con.prepareStatement("alter table raster1 drop constraint
+            // enforce_srid_rast").execute();
+            //            con.prepareStatement("alter table raster2 drop constraint
+            // enforce_srid_rast").execute();
+            //            con.prepareStatement("alter table raster3 drop constraint
+            // enforce_srid_rast").execute();
+
+            for (String scriptName : scriptNames) {
+                InputStream scriptIn = new URL("file:target/resources/" + scriptName).openStream();
                 final char[] buffer = new char[0x10000];
                 StringBuilder out = new StringBuilder();
                 Reader in = new InputStreamReader(scriptIn, "UTF-8");
                 int read;
                 do {
-                  read = in.read(buffer, 0, buffer.length);
-                  if (read>0) {
-                    out.append(buffer, 0, read);
-                  }
-                } while (read>=0);
-                
-                StringTokenizer tok = new StringTokenizer(out.toString(),";");
+                    read = in.read(buffer, 0, buffer.length);
+                    if (read > 0) {
+                        out.append(buffer, 0, read);
+                    }
+                } while (read >= 0);
+
+                StringTokenizer tok = new StringTokenizer(out.toString(), ";");
                 while (tok.hasMoreTokens()) {
                     String statement = tok.nextToken();
                     con.prepareStatement(statement).execute();
-                }                
+                }
             }
 
             con.prepareStatement(
-                    "CREATE INDEX \"rtable1_rast_gist_idx\" ON \"public\".\"rtable1\" USING GIST (st_convexhull(rast))").execute();
+                            "CREATE INDEX \"rtable1_rast_gist_idx\" ON \"public\".\"rtable1\" USING GIST (st_convexhull(rast))")
+                    .execute();
+            con.prepareStatement("ANALYZE \"public\".\"rtable1\"").execute();
             con.prepareStatement(
-                    "ANALYZE \"public\".\"rtable1\"").execute();
-            con.prepareStatement(
-                    "SELECT AddRasterConstraints('public','rtable1','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE)").execute();
-            
-            con.prepareStatement(
-                    "CREATE INDEX \"rtable2_rast_gist_idx\" ON \"public\".\"rtable2\" USING GIST (st_convexhull(rast))").execute();
-            con.prepareStatement(
-                    "ANALYZE \"public\".\"rtable2\"").execute();
-            con.prepareStatement(
-                    "SELECT AddRasterConstraints('public','rtable2','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE)").execute();
+                            "SELECT AddRasterConstraints('public','rtable1','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE)")
+                    .execute();
 
-            
             con.prepareStatement(
-                    "CREATE INDEX \"rtable3_rast_gist_idx\" ON \"public\".\"rtable3\" USING GIST (st_convexhull(rast))").execute();
+                            "CREATE INDEX \"rtable2_rast_gist_idx\" ON \"public\".\"rtable2\" USING GIST (st_convexhull(rast))")
+                    .execute();
+            con.prepareStatement("ANALYZE \"public\".\"rtable2\"").execute();
             con.prepareStatement(
-                    "ANALYZE \"public\".\"rtable3\"").execute();
+                            "SELECT AddRasterConstraints('public','rtable2','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE)")
+                    .execute();
+
             con.prepareStatement(
-                    "SELECT AddRasterConstraints('public','rtable3','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE)").execute();
-            
+                            "CREATE INDEX \"rtable3_rast_gist_idx\" ON \"public\".\"rtable3\" USING GIST (st_convexhull(rast))")
+                    .execute();
+            con.prepareStatement("ANALYZE \"public\".\"rtable3\"").execute();
+            con.prepareStatement(
+                            "SELECT AddRasterConstraints('public','rtable3','rast',TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE)")
+                    .execute();
+
             con.commit();
-            //con.close();
-        } catch (Exception e) {                   
+            // con.close();
+        } catch (Exception e) {
             e.printStackTrace();
             Assert.fail(e.getMessage());
-        }                    
-
+        }
     }
-
 
     @Override
     public void testDrop() {
@@ -269,22 +266,24 @@ public class PGRasterOnlineTest extends AbstractTest {
         java.sql.Connection con = null;
         try {
             con = getDBDialect().getConnection();
-            con.prepareStatement("DROP TABLE if exists MOSAIC").execute();            
+            con.prepareStatement("DROP TABLE if exists MOSAIC").execute();
             con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable1\"").execute();
             con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable2\"").execute();
             con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable3\"").execute();
             con.commit();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail(e.getMessage());            
+            Assert.fail(e.getMessage());
         } finally {
-            try { if (con!=null) con.close(); } catch (SQLException ex) {};
+            try {
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+            }
+            ;
         }
     }
-        
 
     protected String[] getTileTableNames() {
-        return new String[] { "rtable1", "rtable2", "rtable3" };
-}
-
+        return new String[] {"rtable1", "rtable2", "rtable3"};
+    }
 }

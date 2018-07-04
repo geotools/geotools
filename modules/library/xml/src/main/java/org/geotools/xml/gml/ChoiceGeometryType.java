@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,11 +19,5 @@ package org.geotools.xml.gml;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 
-/**
- * 
- *
- * @source $URL$
- */
-public interface ChoiceGeometryType extends ChoiceAttributeType, GeometryType, GeometryDescriptor {
-            
-}
+/** @source $URL$ */
+public interface ChoiceGeometryType extends ChoiceAttributeType, GeometryType, GeometryDescriptor {}

@@ -19,39 +19,28 @@
  */
 package org.geotools.metadata.iso.identification;
 
-import org.opengis.metadata.identification.RepresentativeFraction;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
-
+import org.opengis.metadata.identification.RepresentativeFraction;
 
 /**
- * A scale where {@linkplain #getDenominator denominator} = {@code 1 / scale}.
- * This implementation is set up as a {@linkplain Number number} - because it is.
- *
- *
+ * A scale where {@linkplain #getDenominator denominator} = {@code 1 / scale}. This implementation
+ * is set up as a {@linkplain Number number} - because it is.
  *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett
- *
  * @since 2.4
  */
 public class RepresentativeFractionImpl extends Number implements RepresentativeFraction {
-    /**
-     * Serial number for compatibility with different versions.
-     */
+    /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = 7228422109144637537L;
 
-    /**
-     * The number below the line in a vulgar fraction.
-     */
+    /** The number below the line in a vulgar fraction. */
     private long denominator;
 
-    /**
-     * Default empty constructor.
-     */
-    public RepresentativeFractionImpl() {
-    }
+    /** Default empty constructor. */
+    public RepresentativeFractionImpl() {}
 
     /**
      * Creates a new representative fraction from the specified denominator.
@@ -63,30 +52,28 @@ public class RepresentativeFractionImpl extends Number implements Representative
     }
 
     /**
-     * Creates a representative fraction from a scale as a {@code double} value.
-     * The {@linkplain #getDenominator denominator} will be set to {@code 1/scale}.
+     * Creates a representative fraction from a scale as a {@code double} value. The {@linkplain
+     * #getDenominator denominator} will be set to {@code 1/scale}.
      *
-     * @param  scale The scale as a number between 0 and 1.
+     * @param scale The scale as a number between 0 and 1.
      * @return The representative fraction created from the given scale.
      * @throws IllegalArgumentException if the condition {@code abs(scale) <= 1} is not meet.
      */
     public static RepresentativeFraction fromScale(final double scale)
-            throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         if (Math.abs(scale) <= 1 || scale == Double.POSITIVE_INFINITY) {
             // Note: we accept positive infinity, but not negative infinity because
             //       we can't represent a negative zero using 'long' primitive type.
             return new RepresentativeFractionImpl(Math.round(1.0 / scale)); // flip!
         } else {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "scale", scale));
+            throw new IllegalArgumentException(
+                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "scale", scale));
         }
     }
 
-    /**
-     * @deprecated This is equivalent to {@link #doubleValue}.
-     */
+    /** @deprecated This is equivalent to {@link #doubleValue}. */
     @Deprecated
-    public double toScale(){
+    public double toScale() {
         return doubleValue();
     }
 
@@ -99,16 +86,14 @@ public class RepresentativeFractionImpl extends Number implements Representative
         return 1.0 / (double) denominator;
     }
 
-    /**
-     * Returns the scale as a {@code float} type.
-     */
+    /** Returns the scale as a {@code float} type. */
     public float floatValue() {
         return 1.0f / (float) denominator;
     }
 
     /**
-     * Returns the scale as an integer. This method returns 0, 1 or throws an exception
-     * as specified in {@link #intValue}.
+     * Returns the scale as an integer. This method returns 0, 1 or throws an exception as specified
+     * in {@link #intValue}.
      *
      * @throws ArithmeticException if the {@linkplain #getDenominator denominator} is 0.
      */
@@ -117,11 +102,10 @@ public class RepresentativeFractionImpl extends Number implements Representative
     }
 
     /**
-     * Returns the scale as an integer. If the denominator is 0, then this method throws an
-     * {@link ArithmeticException} since infinities can not be represented by an integer.
-     * Otherwise if the denominator is 1, then this method returns 1. Otherwise returns 0
-     * 0 since the scale is a fraction between 0 and 1, and such value can not be represented
-     * as an integer.
+     * Returns the scale as an integer. If the denominator is 0, then this method throws an {@link
+     * ArithmeticException} since infinities can not be represented by an integer. Otherwise if the
+     * denominator is 1, then this method returns 1. Otherwise returns 0 0 since the scale is a
+     * fraction between 0 and 1, and such value can not be represented as an integer.
      *
      * @throws ArithmeticException if the {@linkplain #getDenominator denominator} is 0.
      */
@@ -135,9 +119,7 @@ public class RepresentativeFractionImpl extends Number implements Representative
         }
     }
 
-    /**
-     * Returns the number below the line in a vulgar fraction.
-     */
+    /** Returns the number below the line in a vulgar fraction. */
     public long getDenominator() {
         return denominator;
     }
@@ -173,9 +155,7 @@ public class RepresentativeFractionImpl extends Number implements Representative
         return false;
     }
 
-    /**
-     * Returns a hash value for this representative fraction.
-     */
+    /** Returns a hash value for this representative fraction. */
     @Override
     public int hashCode() {
         return (int) denominator;

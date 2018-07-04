@@ -22,19 +22,9 @@ import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
-
-import org.jaitools.media.jai.contour.ContourDescriptor;
-import org.jaitools.media.jai.contour.ContourRIF;
-import org.jaitools.numeric.Range;
-
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -49,89 +39,136 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
+import org.jaitools.media.jai.contour.ContourDescriptor;
+import org.jaitools.media.jai.contour.ContourRIF;
+import org.jaitools.numeric.Range;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.util.AffineTransformation;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
 /**
- * A process to extract contours based on values in a specified band of the 
- * input {@linkplain GridCoverage2D}. This is a geo-spatial wrapper around the JAITools
- * "Contour" operation (see {@linkplain ContourDescriptor} for details of the underlying
- * algorithm).
- * <p>
- * You can specify the specific values for which contours will be generated, or alternatively
- * the interval between contour values.
- * <p>
- * Contours are returned as a feature collection, where each feature has, as its default
- * geometry, a {@linkplain LineString} for the contour ("the_geom"), and the contour
- * value as the {@code Double} attribute "value".
- * 
+ * A process to extract contours based on values in a specified band of the input {@linkplain
+ * GridCoverage2D}. This is a geo-spatial wrapper around the JAITools "Contour" operation (see
+ * {@linkplain ContourDescriptor} for details of the underlying algorithm).
+ *
+ * <p>You can specify the specific values for which contours will be generated, or alternatively the
+ * interval between contour values.
+ *
+ * <p>Contours are returned as a feature collection, where each feature has, as its default
+ * geometry, a {@linkplain LineString} for the contour ("the_geom"), and the contour value as the
+ * {@code Double} attribute "value".
+ *
  * @author Simone Giannecchini, GeoSolutions
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
-@DescribeProcess(title = "Contour", description = "Computes contour lines at specified intervals or levels for the values in a raster.")
+@DescribeProcess(
+    title = "Contour",
+    description =
+            "Computes contour lines at specified intervals or levels for the values in a raster."
+)
 public class ContourProcess implements RasterProcess {
 
-    private static final InternationalString NO_DATA = Vocabulary
-            .formatInternational(VocabularyKeys.NODATA);
+    private static final InternationalString NO_DATA =
+            Vocabulary.formatInternational(VocabularyKeys.NODATA);
 
     static {
-        Registry.registerRIF(JAI.getDefaultInstance(), new ContourDescriptor(), new ContourRIF(),
+        Registry.registerRIF(
+                JAI.getDefaultInstance(),
+                new ContourDescriptor(),
+                new ContourRIF(),
                 Registry.JAI_TOOLS_PRODUCT);
     }
 
     /**
-     * Perform the contouring on the input {@linkplain GridCoverage2D} and returns
-     * the results as a feature collection. You can control which contours are generated
-     * either by providing a list of values via the {@code levels} argument, or by specifying
-     * the interval between contour values via the {@code interval} argument. In the interval 
-     * case, the resulting contour values will be integer multiples of the specified interval. 
-     * If both {@code levels} and {@code interval} are supplied the {@code interval} argument
-     * is ignored.
-     * 
+     * Perform the contouring on the input {@linkplain GridCoverage2D} and returns the results as a
+     * feature collection. You can control which contours are generated either by providing a list
+     * of values via the {@code levels} argument, or by specifying the interval between contour
+     * values via the {@code interval} argument. In the interval case, the resulting contour values
+     * will be integer multiples of the specified interval. If both {@code levels} and {@code
+     * interval} are supplied the {@code interval} argument is ignored.
+     *
      * @param data the input grid coverage
-     * 
      * @param band the coverage band to process; defaults to 0 if {@code null}
-     * 
      * @param levels the values for which contours should be generated
-     * 
      * @param interval the interval between contour values (if {@code levels} is not provided)
-     * 
-     * @param simplify whether to simplify contour lines by removing co-linear vertices;
-     *     default is to simplify
-     * 
+     * @param simplify whether to simplify contour lines by removing co-linear vertices; default is
+     *     to simplify
      * @param smooth whether to apply Bezier smooth to the contours; default is no smoothing
-     * 
-     * @param roi an optional polygonal {@code Geometry} to define the region of interest
-     *     within which contours will be generated
-     * 
-     * @return the contours a feature collection where each feature contains a contour
-     *     as a {@linkplain  LineString} and the contour value as a {@code Double}
-     * 
+     * @param roi an optional polygonal {@code Geometry} to define the region of interest within
+     *     which contours will be generated
+     * @return the contours a feature collection where each feature contains a contour as a
+     *     {@linkplain LineString} and the contour value as a {@code Double}
      * @throws ProcessException
      */
-    public static SimpleFeatureCollection process(GridCoverage2D gc2d, Integer band,
-            double[] levels, Double interval, Boolean simplify, Boolean smooth, Geometry roi,
-            ProgressListener progressListener) throws ProcessException {
+    public static SimpleFeatureCollection process(
+            GridCoverage2D gc2d,
+            Integer band,
+            double[] levels,
+            Double interval,
+            Boolean simplify,
+            Boolean smooth,
+            Geometry roi,
+            ProgressListener progressListener)
+            throws ProcessException {
         ContourProcess process = new ContourProcess();
-        return process.execute(gc2d, band, levels, interval, simplify, smooth, roi,
-                progressListener);
+        return process.execute(
+                gc2d, band, levels, interval, simplify, smooth, roi, progressListener);
     }
 
-    @DescribeResult(name = "result", description = "Contour line features.  Contour level is in value attribute.")
+    @DescribeResult(
+        name = "result",
+        description = "Contour line features.  Contour level is in value attribute."
+    )
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D gc2d,
-            @DescribeParameter(name = "band", description = "Name of band to use for values to be contoured", min = 0, max = 1) Integer band,
-            @DescribeParameter(name = "levels", description = "Values of levels at which to generate contours") double[] levels,
-            @DescribeParameter(name = "interval", description = "Interval between contour values (ignored if levels parameter is supplied)", min = 0, minValue = 0) Double interval,
-            @DescribeParameter(name = "simplify", description = "Indicates whether contour lines are simplified", min = 0) Boolean simplify,
-            @DescribeParameter(name = "smooth", description = "Indicates whether contour lines are smoothed using Bezier smoothing", min = 0) Boolean smooth,
-            @DescribeParameter(name = "roi", description = "Geometry delineating the region of interest (in raster coordinate system)", min = 0) Geometry roi,
-            ProgressListener progressListener) throws ProcessException {
+            @DescribeParameter(
+                        name = "band",
+                        description = "Name of band to use for values to be contoured",
+                        min = 0,
+                        max = 1
+                    )
+                    Integer band,
+            @DescribeParameter(
+                        name = "levels",
+                        description = "Values of levels at which to generate contours"
+                    )
+                    double[] levels,
+            @DescribeParameter(
+                        name = "interval",
+                        description =
+                                "Interval between contour values (ignored if levels parameter is supplied)",
+                        min = 0,
+                        minValue = 0
+                    )
+                    Double interval,
+            @DescribeParameter(
+                        name = "simplify",
+                        description = "Indicates whether contour lines are simplified",
+                        min = 0
+                    )
+                    Boolean simplify,
+            @DescribeParameter(
+                        name = "smooth",
+                        description =
+                                "Indicates whether contour lines are smoothed using Bezier smoothing",
+                        min = 0
+                    )
+                    Boolean smooth,
+            @DescribeParameter(
+                        name = "roi",
+                        description =
+                                "Geometry delineating the region of interest (in raster coordinate system)",
+                        min = 0
+                    )
+                    Geometry roi,
+            ProgressListener progressListener)
+            throws ProcessException {
 
         //
         // initial checks
@@ -145,14 +182,13 @@ public class ContourProcess implements RasterProcess {
         boolean hasValues = !(levels == null || levels.length == 0);
         if (!hasValues && interval == null) {
             throw new ProcessException("One between interval and values must be valid");
-
         }
 
         //
         // GRID TO WORLD preparation
         //
-        final AffineTransform mt2D = (AffineTransform) gc2d.getGridGeometry().getGridToCRS2D(
-                PixelOrientation.CENTER);
+        final AffineTransform mt2D =
+                (AffineTransform) gc2d.getGridGeometry().getGridToCRS2D(PixelOrientation.CENTER);
 
         // get the list of nodata, if any
         List<Object> noDataList = new ArrayList<Object>();
@@ -174,9 +210,12 @@ public class ContourProcess implements RasterProcess {
                             if (catRange.getMinimum() == catRange.getMaximum()) {
                                 noDataList.add(catRange.getMinimum());
                             } else {
-                                Range<Double> noData = new Range<Double>(catRange.getMinimum(),
-                                        catRange.isMinIncluded(), catRange.getMaximum(),
-                                        catRange.isMaxIncluded());
+                                Range<Double> noData =
+                                        new Range<Double>(
+                                                catRange.getMinimum(),
+                                                catRange.isMinIncluded(),
+                                                catRange.getMaximum(),
+                                                catRange.isMaxIncluded());
                                 noDataList.add(noData);
                             }
                         }
@@ -195,46 +234,50 @@ public class ContourProcess implements RasterProcess {
         if (roi != null) {
             pb.setParameter("roi", CoverageUtilities.prepareROI(roi, mt2D));
         }
-        
+
         if (band != null) {
             pb.setParameter("band", band);
         }
-        
+
         if (levels != null && levels.length > 0) {
             final ArrayList<Double> elements = new ArrayList<Double>(levels.length);
-            for (double level : levels)
-                elements.add(level);
+            for (double level : levels) elements.add(level);
             pb.setParameter("levels", elements);
         } else {
             pb.setParameter("interval", interval);
         }
-        
+
         if (simplify != null) {
             pb.setParameter("simplify", simplify);
         }
-        
+
         if (smooth != null) {
             pb.setParameter("smooth", smooth);
         }
-        
+
         if (!noDataList.isEmpty()) {
             pb.setParameter("nodata", noDataList);
         }
 
         final RenderedOp dest = JAI.create("Contour", pb);
         @SuppressWarnings("unchecked")
-        final Collection<LineString> prop = (Collection<LineString>) dest
-                .getProperty(ContourDescriptor.CONTOUR_PROPERTY_NAME);
+        final Collection<LineString> prop =
+                (Collection<LineString>) dest.getProperty(ContourDescriptor.CONTOUR_PROPERTY_NAME);
 
         // wrap as a feature collection and return
-        final SimpleFeatureType schema = CoverageUtilities
-                .createFeatureType(gc2d, LineString.class);
+        final SimpleFeatureType schema =
+                CoverageUtilities.createFeatureType(gc2d, LineString.class);
         final SimpleFeatureBuilder builder = new SimpleFeatureBuilder(schema);
         int i = 0;
         final ListFeatureCollection featureCollection = new ListFeatureCollection(schema);
-        final AffineTransformation jtsTransformation = new AffineTransformation(mt2D.getScaleX(),
-                mt2D.getShearX(), mt2D.getTranslateX(), mt2D.getShearY(), mt2D.getScaleY(),
-                mt2D.getTranslateY());
+        final AffineTransformation jtsTransformation =
+                new AffineTransformation(
+                        mt2D.getScaleX(),
+                        mt2D.getShearX(),
+                        mt2D.getTranslateX(),
+                        mt2D.getShearY(),
+                        mt2D.getScaleY(),
+                        mt2D.getTranslateY());
         for (LineString line : prop) {
 
             if (!line.isValid()) {
@@ -251,13 +294,10 @@ public class ContourProcess implements RasterProcess {
             builder.set("value", value);
 
             featureCollection.add(builder.buildFeature(String.valueOf(i++)));
-
         }
 
         // return value
 
         return featureCollection;
-
     }
-
 }

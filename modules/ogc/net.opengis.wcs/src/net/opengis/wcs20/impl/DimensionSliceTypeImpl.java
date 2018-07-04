@@ -26,137 +26,137 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class DimensionSliceTypeImpl extends DimensionSubsetTypeImpl implements DimensionSliceType {
     /**
-     * The default value of the '{@link #getSlicePoint() <em>Slice Point</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The default value of the '{@link #getSlicePoint() <em>Slice Point</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getSlicePoint()
-     * @generated
-     * @ordered
-     */
+	 * @see #getSlicePoint()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String SLICE_POINT_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getSlicePoint() <em>Slice Point</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getSlicePoint() <em>Slice Point</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getSlicePoint()
-     * @generated
-     * @ordered
-     */
+	 * @see #getSlicePoint()
+	 * @generated
+	 * @ordered
+	 */
     protected String slicePoint = SLICE_POINT_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected DimensionSliceTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.DIMENSION_SLICE_TYPE;
-    }
+		return Wcs20Package.Literals.DIMENSION_SLICE_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public String getSlicePoint() {
-        return slicePoint;
-    }
+		return slicePoint;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public void setSlicePoint(String newSlicePoint) {
-        String oldSlicePoint = slicePoint;
-        slicePoint = newSlicePoint;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT, oldSlicePoint, slicePoint));
-    }
+		String oldSlicePoint = slicePoint;
+		slicePoint = newSlicePoint;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT, oldSlicePoint, slicePoint));
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT:
-                return getSlicePoint();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT:
+				return getSlicePoint();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT:
-                setSlicePoint((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT:
+				setSlicePoint((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT:
-                setSlicePoint(SLICE_POINT_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT:
+				setSlicePoint(SLICE_POINT_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT:
-                return SLICE_POINT_EDEFAULT == null ? slicePoint != null : !SLICE_POINT_EDEFAULT.equals(slicePoint);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.DIMENSION_SLICE_TYPE__SLICE_POINT:
+				return SLICE_POINT_EDEFAULT == null ? slicePoint != null : !SLICE_POINT_EDEFAULT.equals(slicePoint);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (slicePoint: ");
-        result.append(slicePoint);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (slicePoint: ");
+		result.append(slicePoint);
+		result.append(')');
+		return result.toString();
+	}
 
 } //DimensionSliceTypeImpl

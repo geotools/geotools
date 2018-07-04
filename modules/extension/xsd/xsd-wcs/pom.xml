@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.xsd</groupId>
     <artifactId>xsd</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
   
   <!-- =========================================================== -->
@@ -63,11 +63,6 @@
   <!-- =========================================================== -->
   <dependencies>
    	<dependency>
-	 		<groupId>org.geotools</groupId>
-	 		<artifactId>gt-xml</artifactId>
-   	 	<version>${project.version}</version>
-   	</dependency>
-   	<dependency>
 	 		<groupId>org.geotools.xsd</groupId>
 	 		<artifactId>gt-xsd-core</artifactId>
    	 	<version>${project.version}</version>
@@ -109,12 +104,6 @@
       <version>${project.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-sample-data</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>

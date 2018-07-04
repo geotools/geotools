@@ -17,22 +17,20 @@
 package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.kml.KML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:LookAtType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType final="#all" name="LookAtType"&gt;
  *      &lt;complexContent&gt;
@@ -53,26 +51,21 @@ import com.vividsolutions.jts.geom.Point;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class LookAtTypeBinding extends AbstractComplexBinding {
 
     private GeometryFactory geometryFactory;
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.LookAtType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -87,23 +80,23 @@ public class LookAtTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Coordinate c = new Coordinate();
 
-        //&lt;element default="0" minOccurs="0" name="longitude" type="kml:angle180"/&gt;
-        c.y = ((Double) node.getChildValue("longitude", Double.valueOf(0d))).doubleValue();
+        // &lt;element default="0" minOccurs="0" name="longitude" type="kml:angle180"/&gt;
+        c.x = (Double) node.getChildValue("longitude", 0d);
 
-        //&lt;element default="0" minOccurs="0" name="latitude" type="kml:angle90"/&gt;
-        c.x = ((Double) node.getChildValue("latitude", Double.valueOf(0d))).doubleValue();
+        // &lt;element default="0" minOccurs="0" name="latitude" type="kml:angle90"/&gt;
+        c.y = (Double) node.getChildValue("latitude", 0d);
 
-        //&lt;element default="0" minOccurs="0" name="altitude" type="double"/&gt;
-        c.z = ((Double) node.getChildValue("altitude", Double.valueOf(0d))).doubleValue();
+        // &lt;element default="0" minOccurs="0" name="altitude" type="double"/&gt;
+        c.z = (Double) node.getChildValue("altitude", 0d);
 
         Point p = geometryFactory.createPoint(c);
 

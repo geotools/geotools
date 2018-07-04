@@ -17,35 +17,29 @@
 package org.geotools.geometry.jts.spatialschema.geometry.geometry;
 
 import java.util.List;
-
+import org.geotools.geometry.jts.JTSGeometry;
+import org.geotools.geometry.jts.JTSUtils;
+import org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfacePatchImpl;
 import org.opengis.geometry.coordinate.Polygon;
+import org.opengis.geometry.coordinate.PolyhedralSurface;
 import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.geometry.primitive.SurfaceInterpolation;
 
-import org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfacePatchImpl;
-import org.geotools.geometry.jts.JTSGeometry;
-import org.geotools.geometry.jts.JTSUtils;
-import org.opengis.geometry.coordinate.PolyhedralSurface;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PolygonImpl extends SurfacePatchImpl implements Polygon {
-    
-    //*************************************************************************
+
+    // *************************************************************************
     //  Fields
-    //*************************************************************************
-    
+    // *************************************************************************
+
     // Why the hell is this a list???
     private List spanningSurface;
 
-    //*************************************************************************
+    // *************************************************************************
     //  Constructors
-    //*************************************************************************
-    
+    // *************************************************************************
+
     public PolygonImpl(SurfaceBoundary boundary) {
         // We only support planar polygons
         this(boundary, null);
@@ -56,10 +50,10 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
         this.spanningSurface = spanningSurface;
     }
 
-    //*************************************************************************
+    // *************************************************************************
     //  implement the *** interface
-    //*************************************************************************
-    
+    // *************************************************************************
+
     public int getNumDerivativesOnBoundary() {
         return 0;
     }
@@ -68,23 +62,23 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
      * @return
      * @see com.polexis.lite.spatialschema.geometry.primitive.SurfacePatchImpl#calculateJTSPeer()
      */
-    public com.vividsolutions.jts.geom.Geometry calculateJTSPeer() {
+    public org.locationtech.jts.geom.Geometry calculateJTSPeer() {
         SurfaceBoundary boundary = getBoundary();
         Ring exterior = boundary.getExterior();
         List interiors = boundary.getInteriors();
-        com.vividsolutions.jts.geom.Geometry g = ((JTSGeometry) exterior).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry g = ((JTSGeometry) exterior).getJTSGeometry();
         int numHoles = (interiors != null) ? interiors.size() : 0;
-        com.vividsolutions.jts.geom.LinearRing jtsExterior =
-            JTSUtils.GEOMETRY_FACTORY.createLinearRing(g.getCoordinates());
-        com.vividsolutions.jts.geom.LinearRing [] jtsInterior =
-            new com.vividsolutions.jts.geom.LinearRing[numHoles];
-        for (int i=0; i<numHoles; i++) {
-            com.vividsolutions.jts.geom.Geometry g2 =
-                ((JTSGeometry) interiors.get(i)).getJTSGeometry();
+        org.locationtech.jts.geom.LinearRing jtsExterior =
+                JTSUtils.GEOMETRY_FACTORY.createLinearRing(g.getCoordinates());
+        org.locationtech.jts.geom.LinearRing[] jtsInterior =
+                new org.locationtech.jts.geom.LinearRing[numHoles];
+        for (int i = 0; i < numHoles; i++) {
+            org.locationtech.jts.geom.Geometry g2 =
+                    ((JTSGeometry) interiors.get(i)).getJTSGeometry();
             jtsInterior[i] = JTSUtils.GEOMETRY_FACTORY.createLinearRing(g2.getCoordinates());
         }
-        com.vividsolutions.jts.geom.Polygon result =
-            JTSUtils.GEOMETRY_FACTORY.createPolygon(jtsExterior, jtsInterior);
+        org.locationtech.jts.geom.Polygon result =
+                JTSUtils.GEOMETRY_FACTORY.createPolygon(jtsExterior, jtsInterior);
         return result;
     }
 
@@ -100,10 +94,10 @@ public class PolygonImpl extends SurfacePatchImpl implements Polygon {
         // Why the hell is this a list???
         return spanningSurface;
     }
-    
+
     public boolean isValid() {
-    	com.vividsolutions.jts.geom.Polygon poly = (com.vividsolutions.jts.geom.Polygon)
-			this.getJTSGeometry();
-    	return poly.isValid();
+        org.locationtech.jts.geom.Polygon poly =
+                (org.locationtech.jts.geom.Polygon) this.getJTSGeometry();
+        return poly.isValid();
     }
 }

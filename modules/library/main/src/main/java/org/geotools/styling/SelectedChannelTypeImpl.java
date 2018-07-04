@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,34 +19,32 @@ package org.geotools.styling;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Utilities;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.StyleVisitor;
 
 /**
  * Default implementation of SelectedChannelType.
- * 
- *
  *
  * @source $URL$
  */
 public class SelectedChannelTypeImpl implements SelectedChannelType {
     private FilterFactory filterFactory;
 
-    //private Expression contrastEnhancement;
+    // private Expression contrastEnhancement;
     private ContrastEnhancement contrastEnhancement;
-    private String name = "channel";
+    private Expression name = Expression.NIL;
 
-    
-    public SelectedChannelTypeImpl(){
-        this( CommonFactoryFinder.getFilterFactory(null));
+    public SelectedChannelTypeImpl() {
+        this(CommonFactoryFinder.getFilterFactory(null));
     }
 
     public SelectedChannelTypeImpl(FilterFactory factory) {
         filterFactory = factory;
-        contrastEnhancement = contrastEnhancement(filterFactory
-                .literal(1.0));
+        contrastEnhancement = contrastEnhancement(filterFactory.literal(1.0));
     }
-    public SelectedChannelTypeImpl(FilterFactory factory, ContrastEnhancement contrast ) {
+
+    public SelectedChannelTypeImpl(FilterFactory factory, ContrastEnhancement contrast) {
         filterFactory = factory;
         contrastEnhancement = contrast;
     }
@@ -59,7 +57,8 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         }
     }
 
-    public String getChannelName() {
+    @Override
+    public Expression getChannelName() {
         return name;
     }
 
@@ -67,12 +66,19 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         return contrastEnhancement;
     }
 
-    public void setChannelName(String name) {
+    @Override
+    public void setChannelName(Expression name) {
         this.name = name;
     }
 
+    @Override
+    public void setChannelName(String name) {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        this.name = ff.literal(name);
+    }
+
     public void setContrastEnhancement(org.opengis.style.ContrastEnhancement enhancement) {
-        this.contrastEnhancement = ContrastEnhancementImpl.cast( enhancement );
+        this.contrastEnhancement = ContrastEnhancementImpl.cast(enhancement);
     }
 
     public void setContrastEnhancement(Expression gammaValue) {
@@ -86,44 +92,44 @@ public class SelectedChannelTypeImpl implements SelectedChannelType {
         return enhancement;
     }
 
-    public Object accept(StyleVisitor visitor,Object data) {
-        return visitor.visit(this,data);
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
     }
 
-     public void accept(org.geotools.styling.StyleVisitor visitor) {
+    @Override
+    public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
 
-     @Override
-     public int hashCode() {
-         final int PRIME = 1000003;
-         int result = 0;
+    @Override
+    public int hashCode() {
+        final int PRIME = 1000003;
+        int result = 0;
 
-         if (name != null){
-             result = (PRIME * result) + name.hashCode();
-         }
+        if (name != null) {
+            result = (PRIME * result) + name.hashCode();
+        }
 
-         if (contrastEnhancement != null) {
-             result = (PRIME * result) + contrastEnhancement.hashCode();
-         }
-         
-         return result;
-     }
-     
-     @Override
-     public boolean equals(Object obj) {
-     	if (this == obj) {
-             return true;
-         }
+        if (contrastEnhancement != null) {
+            result = (PRIME * result) + contrastEnhancement.hashCode();
+        }
 
-         if (obj instanceof SelectedChannelTypeImpl) {
-        	 SelectedChannelTypeImpl other = (SelectedChannelTypeImpl) obj;
+        return result;
+    }
 
-             return Utilities.equals(name, other.name)
-             && Utilities.equals(contrastEnhancement, other.contrastEnhancement);
-         }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
 
-         return false;
-     }
+        if (obj instanceof SelectedChannelTypeImpl) {
+            SelectedChannelTypeImpl other = (SelectedChannelTypeImpl) obj;
 
+            return Utilities.equals(name, other.name)
+                    && Utilities.equals(contrastEnhancement, other.contrastEnhancement);
+        }
+
+        return false;
+    }
 }

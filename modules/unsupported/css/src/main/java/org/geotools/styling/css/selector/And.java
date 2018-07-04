@@ -38,14 +38,12 @@ public class And extends Composite {
         return sum;
     }
 
-
     @Override
     public String toString() {
         return "And [children=" + getChildren() + "]";
     }
-    
-    public Object accept(SelectorVisitor visitor) {
-    	return visitor.visit(this);
-    }
 
+    public Object accept(SelectorVisitor visitor) {
+        return visitor.visit(this);
+    }
 }

@@ -26,7 +26,7 @@ The GeoTools user guide is available online:
     as a zip file.
        
 `Tutorials <http://docs.geotools.org/latest/userguide/tutorial/>`_ ( `stable <http://docs.geotools.org/stable/tutorials/>`_ | `maintenance <http://docs.geotools.org/maintenance/tutorials/>`_ )
-    Step by step tutorials intorducing both GeoTools and geospatial concepts for Java developers.
+    Step by step tutorials introducing both GeoTools and geospatial concepts for Java developers.
 
 `FAQ <http://docs.geotools.org/latest/userguide/faq.html>`_ ( `stable <http://docs.geotools.org/stable/userguide/faq.html>`_ | `maintenance <http://docs.geotools.org/maintenance/userguide/faq.html>`_ )
     Convey wisdom gleaned from the GeoTools user list.

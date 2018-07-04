@@ -19,13 +19,12 @@ package org.geotools.gml2.simple;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Envelope;
 import org.xml.sax.helpers.AttributesImpl;
-
-import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Encodes a GML2 Envelope
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
@@ -41,12 +40,10 @@ class EnvelopeEncoder extends ObjectEncoder<Envelope> {
     }
 
     @Override
-    public void encode(Envelope e, AttributesImpl atts, GMLWriter handler)
-            throws Exception {
+    public void encode(Envelope e, AttributesImpl atts, GMLWriter handler) throws Exception {
         handler.startElement(box, atts);
-        handler.coordinates(new LiteCoordinateSequence(e.getMinX(), e.getMinY(), e.getMaxX(), e
-                .getMaxY()));
+        handler.coordinates(
+                new LiteCoordinateSequence(e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY()));
         handler.endElement(box);
     }
-
 }

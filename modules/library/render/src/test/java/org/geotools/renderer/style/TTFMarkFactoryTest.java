@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,19 +17,13 @@
 package org.geotools.renderer.style;
 
 import java.awt.Shape;
-
 import junit.framework.TestCase;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.test.TestData;
 import org.opengis.filter.FilterFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TTFMarkFactoryTest extends TestCase {
     private TTFMarkFactory ttf;
     private FilterFactory ff;
@@ -41,8 +35,9 @@ public class TTFMarkFactoryTest extends TestCase {
     }
 
     /**
-     * Checks various malformed ttf paths, some that should be ignored, some that we should
-     * complain about
+     * Checks various malformed ttf paths, some that should be ignored, some that we should complain
+     * about
+     *
      * @throws Exception
      */
     public void testInvalidPaths() throws Exception {
@@ -50,24 +45,25 @@ public class TTFMarkFactoryTest extends TestCase {
         try {
             ttf.getShape(null, ff.literal("ttf://invalid"), null);
             fail("Should have throw an exception, invalid path");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
         }
         try {
             ttf.getShape(null, ff.literal("ttf://missingFont#56"), null);
             fail("Should have throw an exception, invalid font");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("missingFont"));
         }
         try {
             ttf.getShape(null, ff.literal("ttf://Serif#blah"), null);
             fail("Should have throw an exception, invalid char number");
-        } catch(IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("blah"));
         }
     }
-    
+
     /**
      * Checks valid paths
+     *
      * @throws Exception
      */
     public void testValidPathSimpleNumber() throws Exception {
@@ -76,9 +72,10 @@ public class TTFMarkFactoryTest extends TestCase {
         assertTrue(shape.getBounds2D().getWidth() <= 1);
         assertTrue(shape.getBounds2D().getHeight() <= 1);
     }
-    
+
     /**
      * Checks valid paths
+     *
      * @throws Exception
      */
     public void testValidPathHex() throws Exception {
@@ -87,9 +84,10 @@ public class TTFMarkFactoryTest extends TestCase {
         assertTrue(shape.getBounds2D().getWidth() <= 1);
         assertTrue(shape.getBounds2D().getHeight() <= 1);
     }
-    
+
     /**
      * Checks valid paths
+     *
      * @throws Exception
      */
     public void testValidPathUnicode() throws Exception {
@@ -98,14 +96,16 @@ public class TTFMarkFactoryTest extends TestCase {
         assertTrue(shape.getBounds2D().getWidth() <= 1);
         assertTrue(shape.getBounds2D().getHeight() <= 1);
     }
-    
+
     /**
      * Checks valid paths
+     *
      * @throws Exception
      */
     public void testLocalFont() throws Exception {
-        String fontPath = TestData.getResource(StreamingRenderer.class, "recreate.ttf").toURI().toString();
-        Shape shape = ttf.getShape(null, ff.literal("ttf://" +  fontPath + "#U+0021"), null);
+        String fontPath =
+                TestData.getResource(StreamingRenderer.class, "recreate.ttf").toURI().toString();
+        Shape shape = ttf.getShape(null, ff.literal("ttf://" + fontPath + "#U+0021"), null);
         assertNotNull(shape);
         assertTrue(shape.getBounds2D().getWidth() <= 1);
         assertTrue(shape.getBounds2D().getHeight() <= 1);

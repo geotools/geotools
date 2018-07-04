@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,12 +21,8 @@ import org.opengis.filter.capability.Functions;
 
 /**
  * Implementation of the ArithmeticOperators interface.
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class ArithmeticOperatorsImpl implements ArithmeticOperators {
@@ -39,20 +35,23 @@ public class ArithmeticOperatorsImpl implements ArithmeticOperators {
         this.functions = new FunctionsImpl();
     }
 
-    public ArithmeticOperatorsImpl( boolean simpleArtithmetic, Functions functions ) {
+    public ArithmeticOperatorsImpl(boolean simpleArtithmetic, Functions functions) {
         this.simpleArithmetic = simpleArtithmetic;
-        this.functions = toFunctionsImpl( functions );
-    }
-    
-    public ArithmeticOperatorsImpl( ArithmeticOperators copy ) {
-        this.simpleArithmetic = copy.hasSimpleArithmetic();
-        this.functions = copy.getFunctions() == null ? new FunctionsImpl() :
-            new FunctionsImpl( copy.getFunctions() );
+        this.functions = toFunctionsImpl(functions);
     }
 
-    public void setSimpleArithmetic( boolean simpleArithmetic ) {
+    public ArithmeticOperatorsImpl(ArithmeticOperators copy) {
+        this.simpleArithmetic = copy.hasSimpleArithmetic();
+        this.functions =
+                copy.getFunctions() == null
+                        ? new FunctionsImpl()
+                        : new FunctionsImpl(copy.getFunctions());
+    }
+
+    public void setSimpleArithmetic(boolean simpleArithmetic) {
         this.simpleArithmetic = simpleArithmetic;
     }
+
     public boolean hasSimpleArithmetic() {
         return simpleArithmetic;
     }
@@ -60,36 +59,36 @@ public class ArithmeticOperatorsImpl implements ArithmeticOperators {
     public FunctionsImpl getFunctions() {
         return functions;
     }
-    
-    private static FunctionsImpl toFunctionsImpl( Functions functions ) {
-        if( functions == null ){
+
+    private static FunctionsImpl toFunctionsImpl(Functions functions) {
+        if (functions == null) {
             return new FunctionsImpl();
         }
-        if( functions instanceof FunctionsImpl ){
+        if (functions instanceof FunctionsImpl) {
             return (FunctionsImpl) functions;
-        }
-        else {
-            return new FunctionsImpl( functions );
+        } else {
+            return new FunctionsImpl(functions);
         }
     }
-    
-    public void addAll( ArithmeticOperators copy ){
-        if( copy == null ) return;        
-        getFunctions().addAll( copy.getFunctions());
-        if( copy.hasSimpleArithmetic() ){
+
+    public void addAll(ArithmeticOperators copy) {
+        if (copy == null) return;
+        getFunctions().addAll(copy.getFunctions());
+        if (copy.hasSimpleArithmetic()) {
             this.simpleArithmetic = true;
-        }        
+        }
     }
+
     @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append("ArithmeticOperators[");
-        if( simpleArithmetic ){
+        if (simpleArithmetic) {
             buf.append("simpleArithmetic=true");
         }
         buf.append("]");
-        if( functions != null ){
-            buf.append(" with functions");            
+        if (functions != null) {
+            buf.append(" with functions");
         }
         return buf.toString();
     }
@@ -105,20 +104,14 @@ public class ArithmeticOperatorsImpl implements ArithmeticOperators {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         ArithmeticOperatorsImpl other = (ArithmeticOperatorsImpl) obj;
         if (functions == null) {
-            if (other.functions != null)
-                return false;
-        } else if (!functions.equals(other.functions))
-            return false;
-        if (simpleArithmetic != other.simpleArithmetic)
-            return false;
+            if (other.functions != null) return false;
+        } else if (!functions.equals(other.functions)) return false;
+        if (simpleArithmetic != other.simpleArithmetic) return false;
         return true;
     }
 }

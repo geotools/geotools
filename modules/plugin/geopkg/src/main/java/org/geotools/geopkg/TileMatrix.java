@@ -18,10 +18,9 @@ package org.geotools.geopkg;
 
 /**
  * A TileMatrix inside a Geopackage. Corresponds to the gpkg_tile_matrix table.
- * 
+ *
  * @author Justin Deoliveira
  * @author Niels Charlier
- *
  */
 public class TileMatrix {
 
@@ -30,12 +29,18 @@ public class TileMatrix {
     Integer tileWidth, tileHeight;
     Double xPixelSize;
     Double yPixelSize;
+    boolean tiles;
 
-    public TileMatrix() {
-    }
+    public TileMatrix() {}
 
-    public TileMatrix(Integer zoomLevel, Integer matrixWidth, Integer matrixHeight, 
-        Integer tileWidth, Integer tileHeight, Double xPixelSize, Double yPixelSize) {
+    public TileMatrix(
+            Integer zoomLevel,
+            Integer matrixWidth,
+            Integer matrixHeight,
+            Integer tileWidth,
+            Integer tileHeight,
+            Double xPixelSize,
+            Double yPixelSize) {
         super();
         this.zoomLevel = zoomLevel;
         this.matrixWidth = matrixWidth;
@@ -100,5 +105,34 @@ public class TileMatrix {
 
     public void setYPixelSize(Double yPixelSize) {
         this.yPixelSize = yPixelSize;
+    }
+
+    public boolean hasTiles() {
+        return tiles;
+    }
+
+    public void setTiles(boolean tiles) {
+        this.tiles = tiles;
+    }
+
+    @Override
+    public String toString() {
+        return "TileMatrix [zoomLevel="
+                + zoomLevel
+                + ", matrixWidth="
+                + matrixWidth
+                + ", matrixHeight="
+                + matrixHeight
+                + ", tileWidth="
+                + tileWidth
+                + ", tileHeight="
+                + tileHeight
+                + ", xPixelSize="
+                + xPixelSize
+                + ", yPixelSize="
+                + yPixelSize
+                + ", tiles="
+                + tiles
+                + "]";
     }
 }

@@ -21,18 +21,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
 /**
- * Enum that can be use to distinguish between relative paths and absolute paths when trying to load a granuleDescriptor for a mosaic.
- * 
+ * Enum that can be use to distinguish between relative paths and absolute paths when trying to load
+ * a granuleDescriptor for a mosaic.
+ *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
- * 
- *
- *
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
+ *     jar:file:foo.jar/bar.properties URLs
  * @source $URL$
  */
 public enum PathType {
@@ -59,14 +58,12 @@ public enum PathType {
                         LOGGER.info("Unable to read image for file " + rasterURL);
 
                     return null;
-
                 }
                 return rasterURL;
             } catch (MalformedURLException e) {
                 return null;
             }
         }
-
     },
 
     ABSOLUTE {
@@ -94,36 +91,52 @@ public enum PathType {
                             LOGGER.info("Unable to read image for file " + rasterURL);
 
                         return null;
-
                     }
                     return rasterURL;
 
                 } else {
-                    return DataUtilities.fileToURL(rasterFile);
+                    return URLs.fileToUrl(rasterFile);
                 }
 
             } catch (MalformedURLException e) {
                 return null;
             }
         }
+    },
 
+    URL {
+        @Override
+        URL resolvePath(final String parentLocation, final String location) {
+            Utilities.ensureNonNull("location", location);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                final StringBuilder builder = new StringBuilder();
+                builder.append("Trying to resolve path:").append("\n");
+                builder.append("type:").append(this.toString()).append("\n");
+                LOGGER.fine(builder.toString());
+            }
+            try {
+                return new URL(location);
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
     };
 
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(PathType.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(PathType.class);
 
     /**
      * Resolve a path for a granuleDescriptor given the parent location and location itself.
-     * 
-     * <p>
-     * the location can never be null, while the parent location could be null, as an instance when the path is relative.
-     * 
+     *
+     * <p>the location can never be null, while the parent location could be null, as an instance
+     * when the path is relative.
+     *
      * @param parentLocation
      * @param location
-     * @return a {@link File} instance that points to a location which could be relative or absolute depending on the flavor of the enum where this
-     *         method is applied. This method might return <code>null</code> in case something bad happens.
+     * @return a {@link File} instance that points to a location which could be relative or absolute
+     *     depending on the flavor of the enum where this method is applied. This method might
+     *     return <code>null</code> in case something bad happens.
      */
     abstract URL resolvePath(final String parentLocation, final String location);
-
 }

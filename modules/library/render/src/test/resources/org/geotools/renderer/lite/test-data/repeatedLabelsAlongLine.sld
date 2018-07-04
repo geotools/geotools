@@ -20,6 +20,9 @@
           <sld:CssParameter name="font-family">Bitstream Vera Sans</sld:CssParameter>
           <sld:CssParameter name="font-size">8.0</sld:CssParameter>
         </sld:Font>
+        <sld:LabelPlacement>
+           <sld:LinePlacement />
+         </sld:LabelPlacement>
         <sld:Fill>
           <sld:CssParameter name="fill">#000000</sld:CssParameter>
         </sld:Fill>

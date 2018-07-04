@@ -26,7 +26,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
@@ -35,16 +34,14 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import com.vividsolutions.jts.geom.Point;
 
 public class GeoPkgDataStoreAPITest {
 
     DataStore dataStore = null;
 
-    @Rule
-    public TemporaryFolder tmp = new TemporaryFolder(new File("target"));
+    @Rule public TemporaryFolder tmp = new TemporaryFolder(new File("target"));
 
     @Before
     public void setUp() throws Exception {
@@ -100,5 +97,4 @@ public class GeoPkgDataStoreAPITest {
     public void tearDown() {
         dataStore.dispose();
     }
-
 }

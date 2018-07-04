@@ -25,33 +25,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.util.CheckedArrayList;
 import org.geotools.util.CheckedHashMap;
 import org.geotools.util.CheckedHashSet;
 
 /**
  * Configuration object for a {@link org.geotools.data.complex.AppSchemaDataAccess}.
- * <p>
- * This configuration object contains all the needed elements for a AppSchemaDataAccess to aquire the
- * source and target FeatureTypes, and apply the mappings between attributes to serve community
+ *
+ * <p>This configuration object contains all the needed elements for a AppSchemaDataAccess to aquire
+ * the source and target FeatureTypes, and apply the mappings between attributes to serve community
  * schemas.
- * </p>
- * 
+ *
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  * @since 2.4
  */
 public class AppSchemaDataAccessDTO implements Serializable {
     private static final long serialVersionUID = -8649884546130644668L;
 
-    /**
-     * Url used as base path to resolve relative file names in {@link #targetSchemasUris}
-     */
+    /** Url used as base path to resolve relative file names in {@link #targetSchemasUris} */
     private String baseSchemasUrl;
 
     /** Mapping of prefix/namespace used in the target schema */
@@ -62,16 +55,16 @@ public class AppSchemaDataAccessDTO implements Serializable {
      * FeatureTypes. Source feature types are those internally defined whose Feature instances are
      * converted to features of the target schemas by applying the FeatureTypeMappings.
      */
-    private List /* <SourceDataStore> */sourceDataStores = Collections.EMPTY_LIST;
+    private List /* <SourceDataStore> */ sourceDataStores = Collections.EMPTY_LIST;
 
-    private Set /* <TypeMapping> */typeMappings = Collections.EMPTY_SET;
+    private Set /* <TypeMapping> */ typeMappings = Collections.EMPTY_SET;
 
     /**
-     * List of file names, that may be fully qualified URL's, or paths relative to
-     * {@link #baseSchemasUrl}
+     * List of file names, that may be fully qualified URL's, or paths relative to {@link
+     * #baseSchemasUrl}
      */
     private List targetSchemasUris = Collections.EMPTY_LIST;
-    
+
     /**
      * List of the paths of other related types that are mapped separately that shouldn't be visible
      * on their own, thus included in "include" statement
@@ -82,7 +75,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @return DOCUMENT ME!
      */
     public List getTargetSchemasUris() {
@@ -91,9 +84,8 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * DOCUMENT ME!
-     * 
-     * @param targetSchemasUris
-     *                DOCUMENT ME!
+     *
+     * @param targetSchemasUris DOCUMENT ME!
      */
     public void setTargetSchemasUris(List targetSchemasUris) {
         this.targetSchemasUris = new CheckedArrayList(String.class);
@@ -105,9 +97,8 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * DOCUMENT ME!
-     * 
-     * @param nameSpaces
-     *                DOCUMENT ME!
+     *
+     * @param nameSpaces DOCUMENT ME!
      */
     public void setNamespaces(Map nameSpaces) {
         if (nameSpaces == null) {
@@ -120,7 +111,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @return DOCUMENT ME!
      */
     public Map getNamespaces() {
@@ -129,30 +120,31 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * Set the path of other related types that are mapped separately
+     *
      * @param includes
      */
     public void setIncludedTypes(ArrayList<String> includes) {
         if (includes != null) {
             this.includes = new CheckedArrayList(String.class);
             this.includes.addAll(includes);
-        }       
+        }
     }
-    
+
     /**
      * Return the list of paths of related types that are mapped separately
+     *
      * @return
      */
     public List<String> getIncludes() {
         return includes;
     }
-    
+
     /**
      * DOCUMENT ME!
-     * 
-     * @param dataStores
-     *                DOCUMENT ME!
+     *
+     * @param dataStores DOCUMENT ME!
      */
-    public void setSourceDataStores(List /* <SourceDataStore> */dataStores) {
+    public void setSourceDataStores(List /* <SourceDataStore> */ dataStores) {
         if (dataStores == null) {
             this.sourceDataStores = Collections.EMPTY_LIST;
         } else {
@@ -163,7 +155,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @return DOCUMENT ME!
      */
     public List getSourceDataStores() {
@@ -172,9 +164,8 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * DOCUMENT ME!
-     * 
-     * @param typeMappings
-     *                DOCUMENT ME!
+     *
+     * @param typeMappings DOCUMENT ME!
      */
     public void setTypeMappings(Set typeMappings) {
         this.typeMappings = new CheckedHashSet(TypeMapping.class);
@@ -186,7 +177,7 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @return DOCUMENT ME!
      */
     public Set getTypeMappings() {
@@ -195,9 +186,9 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @return a non null URL for the base location of the resource files in order to serve as the
-     *         base to resolve relative configuration paths.
+     *     base to resolve relative configuration paths.
      */
     public String getBaseSchemasUrl() {
         return baseSchemasUrl;
@@ -205,10 +196,9 @@ public class AppSchemaDataAccessDTO implements Serializable {
 
     /**
      * DOCUMENT ME!
-     * 
-     * @param baseSchemasUrl
-     *                URL of a resource which's going to be taken as the base location to resolve
-     *                configuration path elements expressed as relative paths.
+     *
+     * @param baseSchemasUrl URL of a resource which's going to be taken as the base location to
+     *     resolve configuration path elements expressed as relative paths.
      */
     public void setBaseSchemasUrl(final String baseSchemasUrl) {
         this.baseSchemasUrl = baseSchemasUrl;

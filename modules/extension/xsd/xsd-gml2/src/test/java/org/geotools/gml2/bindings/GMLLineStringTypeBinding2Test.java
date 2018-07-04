@@ -18,16 +18,10 @@ package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.LineString;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLLineStringTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(LineString.class, binding(GML.LineStringType).getType());
@@ -48,7 +42,9 @@ public class GMLLineStringTypeBinding2Test extends GMLTestSupport {
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.lineString(), GML.LineString);
 
-        assertEquals(1,
-            doc.getElementsByTagNameNS(GML.NAMESPACE, GML.coordinates.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.coordinates.getLocalPart())
+                        .getLength());
     }
 }

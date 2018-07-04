@@ -510,7 +510,15 @@ function is mapped to a correspondent visitor and for each features group a diff
 will be applied.
 
 For SQL data stores that support group by statements and are able to handle the aggregation function this visitor 
-will be translated to raw SQL optimizing significantly is execution.
+will be translated to raw SQL optimizing significantly is execution. In particular, the following conditions apply
+to JDBC data stores:
+
+* Aggregations and grouping on property names is support
+* Simple math expressions of the above are also supported (substract, add, multiply, divide)
+* Functions may be supported, or not, depending on the filter capabilities of the data store. At the time
+  of writing only PostgreSQL supports a small set of functions (e.g., dateDifference, floor, ceil, 
+  string concatenation and the like).
+
 
 Here are the currently supported aggregate functions:
 
@@ -587,6 +595,29 @@ Fabric            Wind            150.0
 As showed in the examples multiple group by attributes can be used but only one aggregate 
 function and only one aggregate attribute can be used. To compute several aggregations
 multiple group by visitors need to be created and executed.
+
+* Histogram by energy consumption classes::
+
+    FilterFactory ff = dataStore.getFilterFactory();
+    PropertyName pn = ff.property("energy_consumption"));
+    Expression expression = ff.function("floor", ff.divide(pn, ff.literal(100)));
+    GroupByVisitor visitor = new GroupByVisitorBuilder()
+                      .withAggregateAttribute("energy_consumption", buildingType)
+                      .withAggregateVisitor("Count")
+                      .withGroupByAttribute(expression)
+                      .build();
+
+  The expression creates buckets of size 100 and gives each one an integer index, 0 for the
+  first bucket (x >= 0 and x < 100), 1 for the second (x >= 100 and x <200), and so on (each
+  bucket contains its min value and excludes its max value, this avoids overlaps).
+  A bucket with no results will be skipped. The result is:
+
+    List(0)  ->  3
+    List(1)  ->  2
+    List(2)  ->  1
+    List(5)  ->  1
+
+  Buckets 3 and 4 are not present as no value in the data set matches them.
 
 Classifier Functions
 ''''''''''''''''''''

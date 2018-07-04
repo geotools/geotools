@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wfs:WFS_Capabilities xmlns:wfs="http://www.opengis.net/wfs" xmlns:ogc="http://www.opengis.net/ogc" xmlns:gml="http://www.opengis.net/gml" xmlns:ows="http://www.opengis.net/ows" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:SLIP_Public_Services_Environment_WFS="https:services.slip.wa.gov.au/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer" version="1.1.0" xsi:schemaLocation="http://www.opengis.net/gml http://schemas.opengis.net/gml/3.1.1/base/gml.xsd http://www.opengis.net/ogc http://schemas.opengis.net/filter/1.1.0/filter.xsd http://www.opengis.net/ows http://schemas.opengis.net/ows/1.0.0/owsAll.xsd http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
+  <ows:ServiceIdentification>
+    <ows:Title>SLIP_Public_Services_Environment_WFS</ows:Title>
+    <ows:Abstract/>
+    <ows:Keywords>
+      <ows:Keyword/>
+    </ows:Keywords>
+    <ows:ServiceType>WFS</ows:ServiceType>
+    <ows:ServiceTypeVersion>1.1.0</ows:ServiceTypeVersion>
+    <ows:Fees/>
+    <ows:AccessConstraints/>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName/>
+    <ows:ServiceContact>
+      <ows:IndividualName/>
+      <ows:PositionName/>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice/>
+          <ows:Facsimile/>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint/>
+          <ows:City/>
+          <ows:AdministrativeArea/>
+          <ows:PostalCode/>
+          <ows:Country/>
+          <ows:ElectronicMailAddress/>
+        </ows:Address>
+        <ows:OnlineResource xlink:href="https:services.slip.wa.gov.au/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer"/>
+        <ows:HoursOfService/>
+        <ows:ContactInstructions/>
+      </ows:ContactInfo>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer?"/>
+          <ows:Post xlink:href="https://services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="AcceptVersions">
+        <ows:Value>1.1.0</ows:Value>
+        <ows:Value>1.0.0</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="AcceptFormats">
+        <ows:Value>text/xml</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="DescribeFeatureType">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer?"/>
+          <ows:Post xlink:href="https://services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:Operation name="GetFeature">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer?"/>
+          <ows:Post xlink:href="https://services.slip.wa.gov.au:443/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer"/>
+        </ows:HTTP>
+      </ows:DCP>
+      <ows:Parameter name="resultType">
+        <ows:Value>results</ows:Value>
+        <ows:Value>hits</ows:Value>
+      </ows:Parameter>
+      <ows:Parameter name="outputFormat">
+        <ows:Value>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</ows:Value>
+      </ows:Parameter>
+    </ows:Operation>
+    <ows:ExtendedCapabilities>
+      <ows:Constraint name="serviceAxisOrderForSwappableSRS">
+        <ows:Value>latitude,longitude</ows:Value>
+      </ows:Constraint>
+    </ows:ExtendedCapabilities>
+  </ows:OperationsMetadata>
+  <wfs:FeatureTypeList>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Geomorphic_Wetlands_Cervantes_Coastal__DPAW-050_</wfs:Name>
+      <wfs:Title>Geomorphic_Wetlands_Cervantes_Coastal__DPAW-050_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.96419453100009 -30.537501781999936</ows:LowerCorner>
+        <ows:UpperCorner>115.1451551780001 -29.797137548999956</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Clearing_Regulations_-_Environmentally_Sensitive_Areas__DER-016_</wfs:Name>
+      <wfs:Title>Clearing_Regulations_-_Environmentally_Sensitive_Areas__DER-016_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>112.86751149100007 -35.135060397999951</ows:LowerCorner>
+        <ows:UpperCorner>129.00510731500003 -12.165287057999933</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:South_Coast_Significant_Wetlands__DPAW-021_</wfs:Name>
+      <wfs:Title>South_Coast_Significant_Wetlands__DPAW-021_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>116.73157400000002 -35.101493599999969</ows:LowerCorner>
+        <ows:UpperCorner>123.42602420000003 -32.998030899999947</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Geomorphic_Wetlands__Swan_Coastal_Plain__DPAW-017_</wfs:Name>
+      <wfs:Title>Geomorphic_Wetlands__Swan_Coastal_Plain__DPAW-017_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>115.12650899300002 -33.748819991999937</ows:LowerCorner>
+        <ows:UpperCorner>116.12712900700001 -30.748772992999932</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Forest_Blocks__DPAW-016_</wfs:Name>
+      <wfs:Title>Forest_Blocks__DPAW-016_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.97464998900011 -35.064354695999953</ows:LowerCorner>
+        <ows:UpperCorner>117.6073477330001 -31.105058201999952</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Fish_Habitat_Protection_Areas</wfs:Name>
+      <wfs:Title>Fish_Habitat_Protection_Areas</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>113.40733333300011 -32.021600220999971</ows:LowerCorner>
+        <ows:UpperCorner>115.75266194500011 -24.484583332999932</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Contaminated_-_Reported_Sites__DER-015_</wfs:Name>
+      <wfs:Title>Contaminated_-_Reported_Sites__DER-015_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>113.39157302000001 -35.035289349999971</ows:LowerCorner>
+        <ows:UpperCorner>128.11688168000012 -15.450569599999938</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Forest_Disease_Risk_Areas__DPAW-018_</wfs:Name>
+      <wfs:Title>Forest_Disease_Risk_Areas__DPAW-018_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>115.67429198000002 -34.939417264999975</ows:LowerCorner>
+        <ows:UpperCorner>118.19749861300011 -31.891969098999937</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:EPA_Redbook_Recommended_Conservation_Reserves_1976_-_1991__DPAW-025_</wfs:Name>
+      <wfs:Title>EPA_Redbook_Recommended_Conservation_Reserves_1976_-_1991__DPAW-025_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>112.92093470000009 -35.189938266999945</ows:LowerCorner>
+        <ows:UpperCorner>129.00192885000001 -12.239632415999949</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Consanguineous_Suites__DPAW-013_</wfs:Name>
+      <wfs:Title>Consanguineous_Suites__DPAW-013_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.99126148800008 -35.134854226999948</ows:LowerCorner>
+        <ows:UpperCorner>118.51306319900004 -30.996676054999966</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Geomorphic_Wetlands_Cervantes_South__DPAW-049_</wfs:Name>
+      <wfs:Title>Geomorphic_Wetlands_Cervantes_South__DPAW-049_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>115.07313866200002 -30.750001662999978</ows:LowerCorner>
+        <ows:UpperCorner>115.50000008300003 -30.500000038999929</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Forest_Products_Commission_Plantations__FPC-001_</wfs:Name>
+      <wfs:Title>Forest_Products_Commission_Plantations__FPC-001_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>113.7308367490001 -34.978996501999973</ows:LowerCorner>
+        <ows:UpperCorner>122.94348504900006 -24.853206790999934</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Ramsar_Sites__DPAW-037_</wfs:Name>
+      <wfs:Title>Ramsar_Sites__DPAW-037_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>115.35886500800007 -34.549663082999984</ows:LowerCorner>
+        <ows:UpperCorner>129.00464144900002 -14.850379372999953</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Geomorphic_Wetlands_Cervantes_Eneabba__DPAW-048_</wfs:Name>
+      <wfs:Title>Geomorphic_Wetlands_Cervantes_Eneabba__DPAW-048_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>114.98120698600007 -30.502617724999936</ows:LowerCorner>
+        <ows:UpperCorner>115.48702890000004 -29.794278730999963</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Geomorphic_Wetlands_Darkan_Duranillin__DPAW-047_</wfs:Name>
+      <wfs:Title>Geomorphic_Wetlands_Darkan_Duranillin__DPAW-047_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>116.61988809900004 -33.625805285999945</ows:LowerCorner>
+        <ows:UpperCorner>117.00191975700011 -33.245120780999969</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:EPA-SIER__EPA-005_</wfs:Name>
+      <wfs:Title>EPA-SIER__EPA-005_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>112.92093469000008 -35.199998860999983</ows:LowerCorner>
+        <ows:UpperCorner>129.00246938000009 -13.740833322999947</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+    <wfs:FeatureType>
+      <wfs:Name>SLIP_Public_Services_Environment_WFS:Geomorphic_Wetlands__Augusta_to_Walpole__DPAW-022_</wfs:Name>
+      <wfs:Title>Geomorphic_Wetlands__Augusta_to_Walpole__DPAW-022_</wfs:Title>
+      <wfs:DefaultSRS>urn:ogc:def:crs:EPSG:6.9:4283</wfs:DefaultSRS>
+      <wfs:OtherSRS>urn:ogc:def:crs:EPSG:6.9:4326</wfs:OtherSRS>
+      <wfs:OutputFormats>
+        <wfs:Format>text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0</wfs:Format>
+      </wfs:OutputFormats>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>115.01708720000011 -35.04683609999995</ows:LowerCorner>
+        <ows:UpperCorner>116.87650330000008 -33.998858899999959</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+    </wfs:FeatureType>
+  </wfs:FeatureTypeList>
+  <ogc:Filter_Capabilities>
+    <ogc:Spatial_Capabilities>
+      <ogc:GeometryOperands>
+        <ogc:GeometryOperand>gml:Envelope</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Point</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:Polygon</ogc:GeometryOperand>
+        <ogc:GeometryOperand>gml:LineString</ogc:GeometryOperand>
+      </ogc:GeometryOperands>
+      <ogc:SpatialOperators>
+        <ogc:SpatialOperator name="BBOX"/>
+        <ogc:SpatialOperator name="Equals"/>
+        <ogc:SpatialOperator name="Disjoint"/>
+        <ogc:SpatialOperator name="Intersects"/>
+        <ogc:SpatialOperator name="Crosses"/>
+        <ogc:SpatialOperator name="Touches"/>
+        <ogc:SpatialOperator name="Within"/>
+        <ogc:SpatialOperator name="Contains"/>
+        <ogc:SpatialOperator name="Overlaps"/>
+      </ogc:SpatialOperators>
+    </ogc:Spatial_Capabilities>
+    <ogc:Scalar_Capabilities>
+      <ogc:LogicalOperators/>
+      <ogc:ComparisonOperators>
+        <ogc:ComparisonOperator>EqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>NotEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>LessThan</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThan</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>LessThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>GreaterThanEqualTo</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>Like</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>Between</ogc:ComparisonOperator>
+        <ogc:ComparisonOperator>NullCheck</ogc:ComparisonOperator>
+      </ogc:ComparisonOperators>
+    </ogc:Scalar_Capabilities>
+    <ogc:Id_Capabilities>
+      <ogc:EID/>
+      <ogc:FID/>
+    </ogc:Id_Capabilities>
+  </ogc:Filter_Capabilities>
+</wfs:WFS_Capabilities>

@@ -18,21 +18,21 @@ package org.geotools.data.efeature.adapters;
 
 /**
  * @author kengu - 15. juni 2011
- *
- *
  * @source $URL$
  */
-public class ShortAdapter extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.ShortAdapter {
+public class ShortAdapter
+        extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.ShortAdapter {
 
-    public static final org.geotools.data.efeature.adapters.ShortAdapter 
-        DEFAULT = new org.geotools.data.efeature.adapters.ShortAdapter();
+    public static final org.geotools.data.efeature.adapters.ShortAdapter DEFAULT =
+            new org.geotools.data.efeature.adapters.ShortAdapter();
 
     /** Hide constructor */
-    private ShortAdapter() { /*NOP*/};
-    
+    private ShortAdapter() {
+        /*NOP*/
+    };
+
     @Override
     public short shortValue(Object value) {
-        return value instanceof Short ? ((Short)value).shortValue() : (Short)value;
+        return value instanceof Short ? ((Short) value).shortValue() : (Short) value;
     }
-
 }

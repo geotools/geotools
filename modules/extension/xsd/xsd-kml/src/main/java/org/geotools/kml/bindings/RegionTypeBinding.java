@@ -21,18 +21,17 @@ import org.geotools.kml.KML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:RegionType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType final="#all" name="RegionType"&gt;
  *      &lt;complexContent&gt;
@@ -47,26 +46,21 @@ import com.vividsolutions.jts.geom.LinearRing;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class RegionTypeBinding extends AbstractComplexBinding {
 
     private final GeometryFactory geometryFactory;
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.RegionType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -81,13 +75,13 @@ public class RegionTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Object latLonChildElement = node.getChildValue("LatLonAltBox");
         if (latLonChildElement == null) {
             return null;
@@ -97,7 +91,7 @@ public class RegionTypeBinding extends AbstractComplexBinding {
         Coordinate topLeft = new Coordinate(e.getMinX(), e.getMaxY());
         Coordinate topRight = new Coordinate(e.getMaxX(), e.getMaxY());
         Coordinate bottomRight = new Coordinate(e.getMaxX(), e.getMinY());
-        Coordinate[] cs = new Coordinate[] { bottomLeft, topLeft, topRight, bottomRight, bottomLeft };
+        Coordinate[] cs = new Coordinate[] {bottomLeft, topLeft, topRight, bottomRight, bottomLeft};
         LinearRing linearRing = geometryFactory.createLinearRing(cs);
         return linearRing;
     }

@@ -17,9 +17,7 @@
 package org.geotools.coverageio.gdal.envihdr;
 
 import it.geosolutions.imageio.plugins.envihdr.ENVIHdrImageReaderSpi;
-
 import java.util.logging.Logger;
-
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -29,24 +27,20 @@ import org.opengis.coverage.grid.GridCoverageReader;
 /**
  * @author Mathew Wyatt, CSIRO Australia
  * @author Daniele Romagnoli, GeoSolutions.
- *
- *
  * @source $URL$
  */
-public final class EnviHdrReader extends BaseGDALGridCoverage2DReader implements GridCoverageReader {
-    private final static String worldFileExt = ".wld";
-     /** Logger. */
+public final class EnviHdrReader extends BaseGDALGridCoverage2DReader
+        implements GridCoverageReader {
+    private static final String worldFileExt = ".wld";
+    /** Logger. */
     @SuppressWarnings("unused")
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.coverageio.gdal.envihdr");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.envihdr");
 
     /**
-     * Creates a new instance of a {@link EnviHdrReader}. I assume nothing about
-     * file extension.
-     * 
-     * @param input
-     *                Source object for which we want to build an
-     *                {@link EnviHdrReader}.
+     * Creates a new instance of a {@link EnviHdrReader}. I assume nothing about file extension.
+     *
+     * @param input Source object for which we want to build an {@link EnviHdrReader}.
      * @throws DataSourceException
      */
     public EnviHdrReader(Object input) throws DataSourceException {
@@ -54,23 +48,17 @@ public final class EnviHdrReader extends BaseGDALGridCoverage2DReader implements
     }
 
     /**
-     * Creates a new instance of a {@link EnviHdrReader}. I assume nothing about
-     * file extension.
-     * 
-     * @param input
-     *                Source object for which we want to build an
-     *                {@link EnviHdrReader}.
-     * @param hints
-     *                Hints to be used by this reader throughout his life.
+     * Creates a new instance of a {@link EnviHdrReader}. I assume nothing about file extension.
+     *
+     * @param input Source object for which we want to build an {@link EnviHdrReader}.
+     * @param hints Hints to be used by this reader throughout his life.
      * @throws DataSourceException
      */
     public EnviHdrReader(Object input, final Hints hints) throws DataSourceException {
         super(input, hints, worldFileExt, new ENVIHdrImageReaderSpi());
     }
 
-    /**
-     * @see org.opengis.coverage.grid.GridCoverageReader#getFormat()
-     */
+    /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
     public Format getFormat() {
         return new EnviHdrFormat();
     }

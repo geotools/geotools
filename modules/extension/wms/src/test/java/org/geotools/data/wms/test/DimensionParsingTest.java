@@ -16,13 +16,12 @@
  */
 package org.geotools.data.wms.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
-import org.geotools.data.DataUtilities;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.MockHttpClient;
@@ -31,36 +30,31 @@ import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wms.xml.Extent;
 import org.geotools.test.TestData;
+import org.geotools.util.URLs;
 import org.junit.Test;
 
 public class DimensionParsingTest {
-    
+
     static final class CapabilitiesClient extends MockHttpClient {
 
         private String capabilitiesFileName;
-        
-        
 
         public CapabilitiesClient(String capabilitiesFileName) {
             super();
             this.capabilitiesFileName = capabilitiesFileName;
         }
 
-
-
         public HTTPResponse get(URL url) throws IOException {
             if (url.getQuery().contains("GetCapabilities")) {
                 File getCaps = TestData.file(this, capabilitiesFileName);
-                URL caps = DataUtilities.fileToURL(getCaps);
+                URL caps = URLs.fileToUrl(getCaps);
                 return new MockHttpResponse(caps, "text/xml");
             } else {
                 throw new IllegalArgumentException(
                         "Don't know how to handle a get request over " + url.toExternalForm());
             }
         }
-
     };
-    
 
     @Test
     public void testDimensionExtent130() throws Exception {
@@ -75,7 +69,7 @@ public class DimensionParsingTest {
         assertNotNull(time.getExtent());
         assertEquals("2016-01-08T12:45:00.000Z", time.getExtent().getValue());
     }
-    
+
     @Test
     public void testDimensionExtent111() throws Exception {
         MockHttpClient client = new CapabilitiesClient("dimensions1_1_1_Capabilities.xml");

@@ -20,13 +20,12 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-
+import javax.measure.Unit;
 import org.opengis.referencing.cs.AffineCS;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
-
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 /**
  * A two- or three-dimensional coordinate system with straight axes that are not necessarily
@@ -40,29 +39,22 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
  * @see DefaultCartesianCS
  */
 public class DefaultAffineCS extends AbstractCS implements AffineCS {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 7977674229369042440L;
 
     /**
-     * Constructs a new coordinate system with the same values than the specified one.
-     * This copy constructor provides a way to wrap an arbitrary implementation into a
-     * Geotools one or a user-defined one (as a subclass), usually in order to leverage
-     * some implementation-specific API. This constructor performs a shallow copy,
-     * i.e. the properties are not cloned.
+     * Constructs a new coordinate system with the same values than the specified one. This copy
+     * constructor provides a way to wrap an arbitrary implementation into a Geotools one or a
+     * user-defined one (as a subclass), usually in order to leverage some implementation-specific
+     * API. This constructor performs a shallow copy, i.e. the properties are not cloned.
      *
      * @param cs The coordinate system to copy.
-     *
      * @since 2.2
      */
     public DefaultAffineCS(final AffineCS cs) {
@@ -72,77 +64,73 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
     /**
      * Constructs a two-dimensional coordinate system from a name.
      *
-     * @param name  The coordinate system name.
+     * @param name The coordinate system name.
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      */
-    public DefaultAffineCS(final String               name,
-                           final CoordinateSystemAxis axis0,
-                           final CoordinateSystemAxis axis1)
-    {
+    public DefaultAffineCS(
+            final String name, final CoordinateSystemAxis axis0, final CoordinateSystemAxis axis1) {
         super(name, new CoordinateSystemAxis[] {axis0, axis1});
     }
 
     /**
      * Constructs a three-dimensional coordinate system from a name.
      *
-     * @param name  The coordinate system name.
+     * @param name The coordinate system name.
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      * @param axis2 The third axis.
      */
-    public DefaultAffineCS(final String               name,
-                           final CoordinateSystemAxis axis0,
-                           final CoordinateSystemAxis axis1,
-                           final CoordinateSystemAxis axis2)
-    {
+    public DefaultAffineCS(
+            final String name,
+            final CoordinateSystemAxis axis0,
+            final CoordinateSystemAxis axis1,
+            final CoordinateSystemAxis axis2) {
         super(name, new CoordinateSystemAxis[] {axis0, axis1, axis2});
     }
 
     /**
-     * Constructs a two-dimensional coordinate system from a set of properties.
-     * The properties map is given unchanged to the
-     * {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[]) super-class constructor}.
+     * Constructs a two-dimensional coordinate system from a set of properties. The properties map
+     * is given unchanged to the {@linkplain AbstractCS#AbstractCS(Map,CoordinateSystemAxis[])
+     * super-class constructor}.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      */
-    public DefaultAffineCS(final Map<String,?>   properties,
-                           final CoordinateSystemAxis axis0,
-                           final CoordinateSystemAxis axis1)
-    {
+    public DefaultAffineCS(
+            final Map<String, ?> properties,
+            final CoordinateSystemAxis axis0,
+            final CoordinateSystemAxis axis1) {
         super(properties, new CoordinateSystemAxis[] {axis0, axis1});
     }
 
     /**
-     * Constructs a three-dimensional coordinate system from a set of properties.
-     * The properties map is given unchanged to the superclass constructor.
+     * Constructs a three-dimensional coordinate system from a set of properties. The properties map
+     * is given unchanged to the superclass constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param axis0 The first axis.
      * @param axis1 The second axis.
      * @param axis2 The third axis.
      */
-    public DefaultAffineCS(final Map<String,?>   properties,
-                           final CoordinateSystemAxis axis0,
-                           final CoordinateSystemAxis axis1,
-                           final CoordinateSystemAxis axis2)
-    {
+    public DefaultAffineCS(
+            final Map<String, ?> properties,
+            final CoordinateSystemAxis axis0,
+            final CoordinateSystemAxis axis1,
+            final CoordinateSystemAxis axis2) {
         super(properties, new CoordinateSystemAxis[] {axis0, axis1, axis2});
     }
 
-    /**
-     * For {@link #usingUnit} and {@link PredefinedCS#rightHanded} usage only.
-     */
-    DefaultAffineCS(final Map<String,?> properties, final CoordinateSystemAxis[] axis) {
+    /** For {@link #usingUnit} and {@link PredefinedCS#rightHanded} usage only. */
+    DefaultAffineCS(final Map<String, ?> properties, final CoordinateSystemAxis[] axis) {
         super(properties, axis);
     }
 
     /**
-     * Returns {@code true} if the specified axis direction is allowed for this coordinate
-     * system. The default implementation accepts all directions except temporal ones (i.e.
-     * {@link AxisDirection#FUTURE FUTURE} and {@link AxisDirection#PAST PAST}).
+     * Returns {@code true} if the specified axis direction is allowed for this coordinate system.
+     * The default implementation accepts all directions except temporal ones (i.e. {@link
+     * AxisDirection#FUTURE FUTURE} and {@link AxisDirection#PAST PAST}).
      */
     @Override
     protected boolean isCompatibleDirection(final AxisDirection direction) {
@@ -158,7 +146,7 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
      */
     @Override
     protected boolean isCompatibleUnit(final AxisDirection direction, final Unit<?> unit) {
-        return SI.METER.isCompatible(unit) || Unit.ONE.equals(unit);
+        return SI.METRE.isCompatible(unit) || AbstractUnit.ONE.equals(unit);
         // Note: this condition is also coded in PredefinedCS.rightHanded(AffineCS).
     }
 

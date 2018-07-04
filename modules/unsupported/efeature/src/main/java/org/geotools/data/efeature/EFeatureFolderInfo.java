@@ -3,32 +3,29 @@ package org.geotools.data.efeature;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.geotools.data.efeature.internal.EFeatureInfoCache;
 
-
 /**
  * {@link EFeature} folder information class implementation.
- * <p>
- * 
- * @author kengu
- * 
  *
+ * <p>
+ *
+ * @author kengu
  * @source $URL$
  */
 public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
 
     /**
-     * The {@link EFeature} folder name. An {@link EClass} containing {@link EFeature} or
-     * {@link EFeature} compatible data if {@link #eIsObject} is <code>true</code>.
+     * The {@link EFeature} folder name. An {@link EClass} containing {@link EFeature} or {@link
+     * EFeature} compatible data if {@link #eIsObject} is <code>true</code>.
      */
     protected String eName;
-    
-    /** Cached {@link EPackage#getNsURI() name space URI}  */
+
+    /** Cached {@link EPackage#getNsURI() name space URI} */
     protected String eNsURI;
 
     /**
@@ -37,12 +34,10 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
      */
     protected boolean eIsObject;
 
-    /**
-     * {@link EFeature} id to {@link EFeatureInfo} instance {@link Map}
-     */
+    /** {@link EFeature} id to {@link EFeatureInfo} instance {@link Map} */
     protected Map<String, EFeatureInfo> eFeatureInfoMap;
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  EFeatureFolderInfo methods
     // -----------------------------------------------------
 
@@ -56,15 +51,14 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
     public String eName() {
         return eName;
     }
-    
+
     public String eNsURI() {
         return eNsURI;
     }
 
     @Override
     protected EFeaturePackageInfo eParentInfo(boolean checkIsValid) {
-        return eContext(checkIsValid).eStructure().
-            eGetPackageInfo(eNsURI);        
+        return eContext(checkIsValid).eStructure().eGetPackageInfo(eNsURI);
     }
 
     public EFeatureInfo eGetFeatureInfo(String eName) {
@@ -85,8 +79,9 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
 
     /**
      * Validate {@link EFeature} folder information against given {@link EPackage}.
+     *
      * <p>
-     * 
+     *
      * @param ePackage - given {@link EPackage} instance
      * @return <code>true</code> if valid, <code>false</code> otherwise.
      */
@@ -112,16 +107,15 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
             if (eClassifier instanceof EClass) {
                 eParent = (EClass) eClassifier;
             } else
-                return failure(this, eName(), "Folder mismatch: Parent " 
-                        + eName + " not an EClass");
+                return failure(
+                        this, eName(), "Folder mismatch: Parent " + eName + " not an EClass");
         }
 
         // 3) Verify features
         //
         EFeatureStatus s;
         for (EFeatureInfo it : eFeatureInfoMap.values()) {
-            if (!(s = it.validate(ePackage, eParent)).isSuccess())
-            {
+            if (!(s = it.validate(ePackage, eParent)).isSuccess()) {
                 return s;
             }
         }
@@ -131,10 +125,10 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
         return structureIsValid(eName());
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  EStructureInfo implementation
     // -----------------------------------------------------
-    
+
     @Override
     protected void doInvalidate(boolean deep) {
         if (deep) {
@@ -145,28 +139,30 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
     }
 
     @Override
-    protected void doDispose() {        
+    protected void doDispose() {
         for (EFeatureInfo it : eFeatureInfoMap.values()) {
             it.dispose();
         }
         eFeatureInfoMap.clear();
         eFeatureInfoMap = null;
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  EStructureInfo implementation
     // -----------------------------------------------------
-    
+
     /**
      * Construct {@link EFeatureFolderInfo} instances from {@link EPackage} instance.
-     * <p>     
+     *
+     * <p>
+     *
      * @param eStoreInfo - {@link EFeaturePackageInfo} instance
-     * @param ePackage - {@link EPackage} instance containing EFeature and EFeature compatible classes.
+     * @param ePackage - {@link EPackage} instance containing EFeature and EFeature compatible
+     *     classes.
      * @throws IllegalArgumentException If a {@link EPackage} instance was not found.
      */
-    protected static EFeatureFolderInfo create( 
-            EFeaturePackageInfo eStoreInfo, EPackage ePackage) 
-        throws IllegalArgumentException {
+    protected static EFeatureFolderInfo create(EFeaturePackageInfo eStoreInfo, EPackage ePackage)
+            throws IllegalArgumentException {
         EFeatureFolderInfo eInfo = new EFeatureFolderInfo();
         eInfo.eName = ePackage.getName();
         eInfo.eNsURI = eStoreInfo.eNsURI;
@@ -175,44 +171,41 @@ public class EFeatureFolderInfo extends EStructureInfo<EFeaturePackageInfo> {
         eInfo.eIsObject = false;
         eInfo.eFactory = eStoreInfo.eFactory;
         eInfo.eContext = eStoreInfo.eContext;
-        eInfo.eFeatureInfoMap = features(eInfo,ePackage);
+        eInfo.eFeatureInfoMap = features(eInfo, ePackage);
         return eInfo;
     }
 
-    protected static Map<String, EFeatureInfo> features(EFeatureFolderInfo eFolderInfo, EPackage ePackage) {
+    protected static Map<String, EFeatureInfo> features(
+            EFeatureFolderInfo eFolderInfo, EPackage ePackage) {
         //
         // Prepare lists
         //
         EList<EClassifier> eList = ePackage.getEClassifiers();
-        Map<String, EFeatureInfo> eFeatureMap = 
-            new HashMap<String, EFeatureInfo>(eList.size());
+        Map<String, EFeatureInfo> eFeatureMap = new HashMap<String, EFeatureInfo>(eList.size());
         //
         // Get EFeatureInfo cache
         //
         EFeatureInfoCache eCache = eFolderInfo.eContext(false).eStructure().eFeatureInfoCache();
         //
-        // Inspect EMF package, adding all EFeature and EFeature compatible classes. 
+        // Inspect EMF package, adding all EFeature and EFeature compatible classes.
         //
-        for(EClassifier it : eList)
-        {
+        for (EClassifier it : eList) {
             //
             // Check if it implements EFeature or contains EFeature compatible data
             //
-            if(EFeatureUtils.isCompatible(it))
-            {
-                EClass eClass = (EClass)it;
+            if (EFeatureUtils.isCompatible(it)) {
+                EClass eClass = (EClass) it;
                 EFeatureInfo eFeatureInfo = eCache.get(eClass);
-                if(eFeatureInfo==null) {
-                    eFeatureInfo = EFeatureInfo.create(eFolderInfo, (EClass)it);
+                if (eFeatureInfo == null) {
+                    eFeatureInfo = EFeatureInfo.create(eFolderInfo, (EClass) it);
                 }
                 eFeatureInfo = eCache.get(eClass);
                 eFeatureMap.put(eFeatureInfo.eName(), eFeatureInfo);
             }
-        }      
+        }
         //
         // Finished
         //
         return Collections.unmodifiableMap(eFeatureMap);
     }
-
 }

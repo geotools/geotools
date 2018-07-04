@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="smil20" nsURI="http://www.w3.org/2001/SMIL20/" nsPrefix="smil20">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="&#xA;   &lt;div xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;    &lt;h1>About the XML namespace&lt;/h1>&#xA;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      This schema document describes the XML namespace, in a form&#xA;      suitable for import by other schema documents.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      See &lt;a href=&quot;http://www.w3.org/XML/1998/namespace.html&quot;>&#xA;      http://www.w3.org/XML/1998/namespace.html&lt;/a> and&#xA;      &lt;a href=&quot;http://www.w3.org/TR/REC-xml&quot;>&#xA;      http://www.w3.org/TR/REC-xml&lt;/a> for information &#xA;      about this namespace.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      Note that local names in this namespace are intended to be&#xA;      defined only by the World Wide Web Consortium or its subgroups.&#xA;      The names currently defined in this namespace are listed below.&#xA;      They should not be used with conflicting semantics by any Working&#xA;      Group, specification, or document instance.&#xA;     &lt;/p>&#xA;     &lt;p>   &#xA;      See further below in this document for more information about &lt;a href=&quot;#usage&quot;>how to refer to this schema document from your own&#xA;      XSD schema documents&lt;/a> and about &lt;a href=&quot;#nsversioning&quot;>the&#xA;      namespace-versioning policy governing this schema document&lt;/a>.&#xA;     &lt;/p>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;  &#xA;&#xA;   &lt;div xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;   &#xA;    &lt;h3>Father (in any context at all)&lt;/h3> &#xA;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      denotes Jon Bosak, the chair of &#xA;      the original XML Working Group.  This name is reserved by &#xA;      the following decision of the W3C XML Plenary and &#xA;      XML Coordination groups:&#xA;     &lt;/p>&#xA;     &lt;blockquote>&#xA;       &lt;p>&#xA;&#x9;In appreciation for his vision, leadership and&#xA;&#x9;dedication the W3C XML Plenary on this 10th day of&#xA;&#x9;February, 2000, reserves for Jon Bosak in perpetuity&#xA;&#x9;the XML name &quot;xml:Father&quot;.&#xA;       &lt;/p>&#xA;     &lt;/blockquote>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;  &#xA;&#xA;   &lt;div id=&quot;usage&quot; xml:id=&quot;usage&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;    &lt;h2>&#xA;      &lt;a name=&quot;usage&quot;>About this schema document&lt;/a>&#xA;    &lt;/h2>&#xA;&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      This schema defines attributes and an attribute group suitable&#xA;      for use by schemas wishing to allow &lt;code>xml:base&lt;/code>,&#xA;      &lt;code>xml:lang&lt;/code>, &lt;code>xml:space&lt;/code> or&#xA;      &lt;code>xml:id&lt;/code> attributes on elements they define.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      To enable this, such a schema must import this schema for&#xA;      the XML namespace, e.g. as follows:&#xA;     &lt;/p>&#xA;     &lt;pre>&#xA;          &amp;lt;schema . . .&amp;gt;&#xA;           . . .&#xA;           &amp;lt;import namespace=&quot;http://www.w3.org/XML/1998/namespace&quot;&#xA;                      schemaLocation=&quot;http://www.w3.org/2001/xml.xsd&quot;/&amp;gt;&#xA;     &lt;/pre>&#xA;     &lt;p>&#xA;      or&#xA;     &lt;/p>&#xA;     &lt;pre>&#xA;           &amp;lt;import namespace=&quot;http://www.w3.org/XML/1998/namespace&quot;&#xA;                      schemaLocation=&quot;http://www.w3.org/2009/01/xml.xsd&quot;/&amp;gt;&#xA;     &lt;/pre>&#xA;     &lt;p>&#xA;      Subsequently, qualified reference to any of the attributes or the&#xA;      group defined below will have the desired effect, e.g.&#xA;     &lt;/p>&#xA;     &lt;pre>&#xA;          &amp;lt;type . . .&amp;gt;&#xA;           . . .&#xA;           &amp;lt;attributeGroup ref=&quot;xml:specialAttrs&quot;/&amp;gt;&#xA;     &lt;/pre>&#xA;     &lt;p>&#xA;      will define a type which will schema-validate an instance element&#xA;      with any of those attributes.&#xA;     &lt;/p>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;  &#xA;&#xA;   &lt;div id=&quot;nsversioning&quot; xml:id=&quot;nsversioning&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;>&#xA;    &lt;h2>&#xA;      &lt;a name=&quot;nsversioning&quot;>Versioning policy for this schema document&lt;/a>&#xA;    &lt;/h2>&#xA;    &lt;div class=&quot;bodytext&quot;>&#xA;     &lt;p>&#xA;      In keeping with the XML Schema WG's standard versioning&#xA;      policy, this schema document will persist at&#xA;      &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xA;       http://www.w3.org/2009/01/xml.xsd&lt;/a>.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      At the date of issue it can also be found at&#xA;      &lt;a href=&quot;http://www.w3.org/2001/xml.xsd&quot;>&#xA;       http://www.w3.org/2001/xml.xsd&lt;/a>.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      The schema document at that URI may however change in the future,&#xA;      in order to remain compatible with the latest version of XML&#xA;      Schema itself, or with the XML namespace itself.  In other words,&#xA;      if the XML Schema or XML namespaces change, the version of this&#xA;      document at &lt;a href=&quot;http://www.w3.org/2001/xml.xsd&quot;>&#xA;       http://www.w3.org/2001/xml.xsd &#xA;      &lt;/a> &#xA;      will change accordingly; the version at &#xA;      &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xA;       http://www.w3.org/2009/01/xml.xsd &#xA;      &lt;/a> &#xA;      will not change.&#xA;     &lt;/p>&#xA;     &lt;p>&#xA;      Previous dated (and unchanging) versions of this schema &#xA;      document are at:&#xA;     &lt;/p>&#xA;     &lt;ul>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2009/01/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2009/01/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2007/08/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2007/08/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2004/10/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2004/10/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;      &lt;li>&#xA;          &lt;a href=&quot;http://www.w3.org/2001/03/xml.xsd&quot;>&#xA;&#x9;http://www.w3.org/2001/03/xml.xsd&lt;/a>&#xA;        &lt;/li>&#xA;     &lt;/ul>&#xA;    &lt;/div>&#xA;   &lt;/div>&#xA;  "/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EEnum" name="AccumulateType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="accumulate_._type"/>
+    </eAnnotations>
+    <eLiterals name="none"/>
+    <eLiterals name="sum" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="AccumulateTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="accumulate_._type:Object"/>
+      <details key="baseType" value="accumulate_._type"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AdditiveType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="additive_._type"/>
+    </eAnnotations>
+    <eLiterals name="replace"/>
+    <eLiterals name="sum" value="1"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="AdditiveTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="additive_._type:Object"/>
+      <details key="baseType" value="additive_._type"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AnimateColorPrototype">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="animateColorPrototype"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="accumulate" eType="#//AccumulateType"
+        defaultValueLiteral="none" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="accumulate"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="additive" eType="#//AdditiveType"
+        defaultValueLiteral="replace" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="additive"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="attributeName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeType" eType="#//AttributeTypeType"
+        defaultValueLiteral="auto" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="attributeType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="by" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="by"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="from" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="from"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="to" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="to"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="values"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AnimateMotionPrototype">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="animateMotionPrototype"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="accumulate" eType="#//AccumulateType"
+        defaultValueLiteral="none" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="accumulate"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="additive" eType="#//AdditiveType"
+        defaultValueLiteral="replace" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="additive"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="by" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="by"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="from" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="from"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="origin" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="origin"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="to" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="to"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="values"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AnimatePrototype">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="animatePrototype"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="accumulate" eType="#//AccumulateType"
+        defaultValueLiteral="none" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="accumulate"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="additive" eType="#//AdditiveType"
+        defaultValueLiteral="replace" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="additive"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="attributeName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeType" eType="#//AttributeTypeType"
+        defaultValueLiteral="auto" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="attributeType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="by" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="by"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="from" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="from"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="to" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="to"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="values"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="AttributeTypeType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="attributeType_._type"/>
+    </eAnnotations>
+    <eLiterals name="XML"/>
+    <eLiterals name="CSS" value="1"/>
+    <eLiterals name="auto" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="AttributeTypeTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="attributeType_._type:Object"/>
+      <details key="baseType" value="attributeType_._type"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="CalcModeType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="calcMode_._type"/>
+    </eAnnotations>
+    <eLiterals name="discrete"/>
+    <eLiterals name="linear" value="1"/>
+    <eLiterals name="paced" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="CalcModeTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="calcMode_._type:Object"/>
+      <details key="baseType" value="calcMode_._type"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DocumentRoot">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value=""/>
+      <details key="kind" value="mixed"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mixed" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFeatureMapEntry">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="elementWildcard"/>
+        <details key="name" value=":mixed"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xMLNSPrefixMap" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xmlns:prefix"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xSISchemaLocation" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStringToStringMapEntry"
+        transient="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="xsi:schemaLocation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="animate" upperBound="-2"
+        eType="ecore:EClass language.ecore#//AnimateType" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="animate"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="http://www.w3.org/2001/SMIL20/Language#animate"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="animateColor" upperBound="-2"
+        eType="ecore:EClass language.ecore#//AnimateColorType" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="animateColor"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="http://www.w3.org/2001/SMIL20/Language#animateColor"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="animateMotion" upperBound="-2"
+        eType="ecore:EClass language.ecore#//AnimateMotionType" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="animateMotion"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="http://www.w3.org/2001/SMIL20/Language#animateMotion"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="set" upperBound="-2" eType="ecore:EClass language.ecore#//SetType"
+        volatile="true" transient="true" derived="true" containment="true" resolveProxies="false">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="element"/>
+        <details key="name" value="set"/>
+        <details key="namespace" value="##targetNamespace"/>
+        <details key="affiliation" value="http://www.w3.org/2001/SMIL20/Language#set"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FillDefaultType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="fillDefaultType"/>
+    </eAnnotations>
+    <eLiterals name="remove"/>
+    <eLiterals name="freeze" value="1"/>
+    <eLiterals name="hold" value="2"/>
+    <eLiterals name="auto" value="3"/>
+    <eLiterals name="inherit" value="4"/>
+    <eLiterals name="transition" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="FillDefaultTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="fillDefaultType:Object"/>
+      <details key="baseType" value="fillDefaultType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FillTimingAttrsType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="fillTimingAttrsType"/>
+    </eAnnotations>
+    <eLiterals name="remove"/>
+    <eLiterals name="freeze" value="1"/>
+    <eLiterals name="hold" value="2"/>
+    <eLiterals name="auto" value="3"/>
+    <eLiterals name="default" value="4"/>
+    <eLiterals name="transition" value="5"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="FillTimingAttrsTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="fillTimingAttrsType:Object"/>
+      <details key="baseType" value="fillTimingAttrsType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="NonNegativeDecimalType" instanceClassName="java.math.BigDecimal">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="nonNegativeDecimalType"/>
+      <details key="baseType" value="http://www.eclipse.org/emf/2003/XMLType#decimal"/>
+      <details key="minInclusive" value="0.0"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RestartDefaultType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="restartDefaultType"/>
+    </eAnnotations>
+    <eLiterals name="never"/>
+    <eLiterals name="always" value="1"/>
+    <eLiterals name="whenNotActive" value="2"/>
+    <eLiterals name="inherit" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="RestartDefaultTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="restartDefaultType:Object"/>
+      <details key="baseType" value="restartDefaultType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="RestartTimingType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="restartTimingType"/>
+    </eAnnotations>
+    <eLiterals name="never"/>
+    <eLiterals name="always" value="1"/>
+    <eLiterals name="whenNotActive" value="2"/>
+    <eLiterals name="default" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="RestartTimingTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="restartTimingType:Object"/>
+      <details key="baseType" value="restartTimingType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SetPrototype">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="setPrototype"/>
+      <details key="kind" value="empty"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeName" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="attributeName"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributeType" eType="#//AttributeTypeType"
+        defaultValueLiteral="auto" unsettable="true">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="attributeType"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="to" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String">
+      <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+        <details key="kind" value="attribute"/>
+        <details key="name" value="to"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SyncBehaviorDefaultType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="syncBehaviorDefaultType"/>
+    </eAnnotations>
+    <eLiterals name="canSlip"/>
+    <eLiterals name="locked" value="1"/>
+    <eLiterals name="independent" value="2"/>
+    <eLiterals name="inherit" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="SyncBehaviorDefaultTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="syncBehaviorDefaultType:Object"/>
+      <details key="baseType" value="syncBehaviorDefaultType"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SyncBehaviorType">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="syncBehaviorType"/>
+    </eAnnotations>
+    <eLiterals name="canSlip"/>
+    <eLiterals name="locked" value="1"/>
+    <eLiterals name="independent" value="2"/>
+    <eLiterals name="default" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="SyncBehaviorTypeObject" instanceClassName="org.eclipse.emf.common.util.Enumerator">
+    <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
+      <details key="name" value="syncBehaviorType:Object"/>
+      <details key="baseType" value="syncBehaviorType"/>
+    </eAnnotations>
+  </eClassifiers>
+</ecore:EPackage>

@@ -13,17 +13,13 @@ package org.geotools.tutorial.style;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.swing.JButton;
 import javax.swing.JToolBar;
-
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -47,22 +43,23 @@ import org.geotools.swing.JMapFrame;
 import org.geotools.swing.data.JFileDataStoreChooser;
 import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.tool.CursorTool;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
- * In this example we create a map tool to select a feature clicked
- * with the mouse. The selected feature will be painted yellow.
+ * In this example we create a map tool to select a feature clicked with the mouse. The selected
+ * feature will be painted yellow.
  *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/demo/example/src/main/java/org/geotools/demo/SelectionLab.java $
+ * @source $URL:
+ *     http://svn.osgeo.org/geotools/trunk/demo/example/src/main/java/org/geotools/demo/SelectionLab.java
+ *     $
  */
 public class SelectionLab {
 
@@ -75,7 +72,11 @@ public class SelectionLab {
     /*
      * Convenient constants for the type of feature geometry in the shapefile
      */
-    private enum GeomType { POINT, LINE, POLYGON };
+    private enum GeomType {
+        POINT,
+        LINE,
+        POLYGON
+    };
 
     /*
      * Some default style variables
@@ -106,13 +107,13 @@ public class SelectionLab {
 
         me.displayShapefile(file);
     }
-// docs end main
+    // docs end main
 
-// docs start display shapefile
+    // docs start display shapefile
     /**
-     * This method connects to the shapefile; retrieves information about
-     * its features; creates a map frame to display the shapefile and adds
-     * a custom feature selection tool to the toolbar of the map frame.
+     * This method connects to the shapefile; retrieves information about its features; creates a
+     * map frame to display the shapefile and adds a custom feature selection tool to the toolbar of
+     * the map frame.
      */
     public void displayShapefile(File file) throws Exception {
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
@@ -149,28 +150,27 @@ public class SelectionLab {
          * we can just create our tool as an anonymous sub-class
          * of CursorTool.
          */
-        btn.addActionListener(e -> mapFrame.getMapPane().setCursorTool(
-                new CursorTool() {
+        btn.addActionListener(
+                e ->
+                        mapFrame.getMapPane()
+                                .setCursorTool(
+                                        new CursorTool() {
 
-                    @Override
-                    public void onMouseClicked(MapMouseEvent ev) {
-                        selectFeatures(ev);
-                    }
-                }));
+                                            @Override
+                                            public void onMouseClicked(MapMouseEvent ev) {
+                                                selectFeatures(ev);
+                                            }
+                                        }));
 
-        /**
-         * Finally, we display the map frame. When it is closed
-         * this application will exit.
-         */
+        /** Finally, we display the map frame. When it is closed this application will exit. */
         mapFrame.setSize(600, 600);
         mapFrame.setVisible(true);
     }
-// docs end display shapefile
+    // docs end display shapefile
 
-// docs start select features
+    // docs start select features
     /**
-     * This method is called by our feature selection tool when
-     * the user has clicked on the map.
+     * This method is called by our feature selection tool when the user has clicked on the map.
      *
      * @param ev the mouse event being handled
      */
@@ -182,8 +182,8 @@ public class SelectionLab {
          * Construct a 5x5 pixel rectangle centred on the mouse click position
          */
         Point screenPos = ev.getPoint();
-        Rectangle screenRect = new Rectangle(screenPos.x-2, screenPos.y-2, 5, 5);
-        
+        Rectangle screenRect = new Rectangle(screenPos.x - 2, screenPos.y - 2, 5, 5);
+
         /*
          * Transform the screen rectangle into bounding box in the coordinate
          * reference system of our map context. Note: we are using a naive method
@@ -191,9 +191,9 @@ public class SelectionLab {
          */
         AffineTransform screenToWorld = mapFrame.getMapPane().getScreenToWorldTransform();
         Rectangle2D worldRect = screenToWorld.createTransformedShape(screenRect).getBounds2D();
-        ReferencedEnvelope bbox = new ReferencedEnvelope(
-                worldRect,
-                mapFrame.getMapContent().getCoordinateReferenceSystem());
+        ReferencedEnvelope bbox =
+                new ReferencedEnvelope(
+                        worldRect, mapFrame.getMapContent().getCoordinateReferenceSystem());
 
         /*
          * Create a Filter to select features that intersect with
@@ -205,8 +205,7 @@ public class SelectionLab {
          * Use the filter to identify the selected features
          */
         try {
-            SimpleFeatureCollection selectedFeatures =
-                    featureSource.getFeatures(filter);
+            SimpleFeatureCollection selectedFeatures = featureSource.getFeatures(filter);
 
             Set<FeatureId> IDs = new HashSet<>();
             try (SimpleFeatureIterator iter = selectedFeatures.features()) {
@@ -216,7 +215,6 @@ public class SelectionLab {
 
                     System.out.println("   " + feature.getIdentifier());
                 }
-
             }
 
             if (IDs.isEmpty()) {
@@ -229,12 +227,12 @@ public class SelectionLab {
             ex.printStackTrace();
         }
     }
-// docs end select features
+    // docs end select features
 
-// docs start display selected
+    // docs start display selected
     /**
-     * Sets the display to paint selected features yellow and
-     * unselected features in the default style.
+     * Sets the display to paint selected features yellow and unselected features in the default
+     * style.
      *
      * @param IDs identifiers of currently selected features
      */
@@ -252,12 +250,10 @@ public class SelectionLab {
         ((FeatureLayer) layer).setStyle(style);
         mapFrame.getMapPane().repaint();
     }
-// docs end display selected
+    // docs end display selected
 
-// docs start default style
-    /**
-     * Create a default Style for feature display
-     */
+    // docs start default style
+    /** Create a default Style for feature display */
     private Style createDefaultStyle() {
         Rule rule = createRule(LINE_COLOUR, FILL_COLOUR);
 
@@ -268,12 +264,12 @@ public class SelectionLab {
         style.featureTypeStyles().add(fts);
         return style;
     }
-// docs end default style
+    // docs end default style
 
-// docs start selected style
+    // docs start selected style
     /**
-     * Create a Style where features with given IDs are painted
-     * yellow, while others are painted with the default colors.
+     * Create a Style where features with given IDs are painted yellow, while others are painted
+     * with the default colors.
      */
     private Style createSelectedStyle(Set<FeatureId> IDs) {
         Rule selectedRule = createRule(SELECTED_COLOUR, SELECTED_COLOUR);
@@ -290,13 +286,12 @@ public class SelectionLab {
         style.featureTypeStyles().add(fts);
         return style;
     }
-// docs end selected style
+    // docs end selected style
 
-// docs start create rule
+    // docs start create rule
     /**
-     * Helper for createXXXStyle methods. Creates a new Rule containing
-     * a Symbolizer tailored to the geometry type of the features that
-     * we are displaying.
+     * Helper for createXXXStyle methods. Creates a new Rule containing a Symbolizer tailored to the
+     * geometry type of the features that we are displaying.
      */
     private Rule createRule(Color outlineColor, Color fillColor) {
         Symbolizer symbolizer = null;
@@ -332,33 +327,28 @@ public class SelectionLab {
         rule.symbolizers().add(symbolizer);
         return rule;
     }
-// docs end create rule
+    // docs end create rule
 
-// docs start set geometry
-    /**
-     * Retrieve information about the feature geometry
-     */
+    // docs start set geometry
+    /** Retrieve information about the feature geometry */
     private void setGeometry() {
         GeometryDescriptor geomDesc = featureSource.getSchema().getGeometryDescriptor();
         geometryAttributeName = geomDesc.getLocalName();
 
         Class<?> clazz = geomDesc.getType().getBinding();
 
-        if (Polygon.class.isAssignableFrom(clazz) ||
-                MultiPolygon.class.isAssignableFrom(clazz)) {
+        if (Polygon.class.isAssignableFrom(clazz) || MultiPolygon.class.isAssignableFrom(clazz)) {
             geometryType = GeomType.POLYGON;
 
-        } else if (LineString.class.isAssignableFrom(clazz) ||
-                MultiLineString.class.isAssignableFrom(clazz)) {
+        } else if (LineString.class.isAssignableFrom(clazz)
+                || MultiLineString.class.isAssignableFrom(clazz)) {
 
             geometryType = GeomType.LINE;
 
         } else {
             geometryType = GeomType.POINT;
         }
-
     }
-// docs end set geometry
+    // docs end set geometry
 
 }
-

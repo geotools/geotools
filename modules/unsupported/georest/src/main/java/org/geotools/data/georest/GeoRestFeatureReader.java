@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureReader;
@@ -33,14 +32,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.sort.SortOrder;
 
 /**
- * <p>
  * FeatureReader for the {@link GeoRestDataStore}.
- * </p>
- * 
+ *
  * @author Pieter De Graef, Geosparc
- *
- *
- *
  * @source $URL$
  */
 public class GeoRestFeatureReader implements SimpleFeatureReader {
@@ -56,24 +50,21 @@ public class GeoRestFeatureReader implements SimpleFeatureReader {
     /**
      * Create a new reader given a contentState and a query. This constructor will immediately open
      * a connection to the rest service and try to read from it.
-     * 
-     * @param contentState
-     *            The ContentState associated with this reader.
-     * @param query
-     *            A query that determines which features to read.
-     * @throws IOException
-     *             oops.
+     *
+     * @param contentState The ContentState associated with this reader.
+     * @param query A query that determines which features to read.
+     * @throws IOException oops.
      */
     public GeoRestFeatureReader(ContentState contentState, Query query) throws IOException {
         this.contentState = contentState;
 
         // Open the connection....
         GeoRestDataStore ds = (GeoRestDataStore) contentState.getEntry().getDataStore();
-        GeoRestFeatureSource source = (GeoRestFeatureSource) ds.getFeatureSource(contentState
-                .getEntry().getName());
+        GeoRestFeatureSource source =
+                (GeoRestFeatureSource) ds.getFeatureSource(contentState.getEntry().getName());
         InputStream in = getInputStream(source.getUrl(), query);
-        SimpleFeatureCollection col = (SimpleFeatureCollection) json
-                .readFeatureCollection(GeoJSONUtil.toReader(in));
+        SimpleFeatureCollection col =
+                (SimpleFeatureCollection) json.readFeatureCollection(GeoJSONUtil.toReader(in));
         iterator = col.features();
     }
 
@@ -81,8 +72,8 @@ public class GeoRestFeatureReader implements SimpleFeatureReader {
         return contentState.getFeatureType();
     }
 
-    public SimpleFeature next() throws IOException, IllegalArgumentException,
-            NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         return (SimpleFeature) iterator.next();
     }
 

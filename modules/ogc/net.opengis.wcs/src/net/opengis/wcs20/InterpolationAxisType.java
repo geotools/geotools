@@ -18,13 +18,13 @@ public interface InterpolationAxisType extends EObject {
     public String getAxis();
     
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.InterpolationAxisType#getAxis <em>Axis</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.InterpolationAxisType#getAxis <em>Axis</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Axis</em>' attribute.
-     * @see #getAxis()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Axis</em>' attribute.
+	 * @see #getAxis()
+	 * @generated
+	 */
     void setAxis(String value);
 
     /**
@@ -35,13 +35,13 @@ public interface InterpolationAxisType extends EObject {
     public String getInterpolationMethod();
 
     /**
-     * Sets the value of the '{@link net.opengis.wcs20.InterpolationAxisType#getInterpolationMethod <em>Interpolation Method</em>}' attribute.
-     * <!-- begin-user-doc -->
+	 * Sets the value of the '{@link net.opengis.wcs20.InterpolationAxisType#getInterpolationMethod <em>Interpolation Method</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Interpolation Method</em>' attribute.
-     * @see #getInterpolationMethod()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Interpolation Method</em>' attribute.
+	 * @see #getInterpolationMethod()
+	 * @generated
+	 */
     void setInterpolationMethod(String value);
     
     

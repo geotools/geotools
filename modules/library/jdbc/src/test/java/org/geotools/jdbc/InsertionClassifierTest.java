@@ -16,25 +16,24 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import junit.framework.TestCase;
-import org.geotools.factory.Hints;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.geometry.jts.LiteCoordinateSequence;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import junit.framework.TestCase;
+import org.geotools.factory.Hints;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 public class InsertionClassifierTest extends TestCase {
 
@@ -124,7 +123,8 @@ public class InsertionClassifierTest extends TestCase {
         return createLineString(0, 1, 2, 3);
     }
 
-    private SimpleFeature createFeature(SimpleFeatureType featureType, String name, LineString geom1, Geometry geom2) {
+    private SimpleFeature createFeature(
+            SimpleFeatureType featureType, String name, LineString geom1, Geometry geom2) {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
         builder.add(name);
         builder.add(geom1);

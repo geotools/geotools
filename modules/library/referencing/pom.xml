@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>library</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
 
 
@@ -169,8 +169,8 @@
   <dependencies>
     <!-- NOTE: The referencing module does not depends on JTS. -->
     <dependency>
-      <groupId>com.googlecode.efficient-java-matrix-library</groupId>
-      <artifactId>core</artifactId>
+      <groupId>org.ejml</groupId>
+      <artifactId>ejml-ddense</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
@@ -194,6 +194,7 @@
      <version>1.44</version>
    </dependency>
 
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.geotools</groupId>
@@ -209,10 +210,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>net.sourceforge.javacsv</groupId>
-    	<artifactId>javacsv</artifactId>
-    	<version>2.0</version>
-    	<scope>test</scope>
+      <groupId>net.sourceforge.javacsv</groupId>
+      <artifactId>javacsv</artifactId>
+      <version>2.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   

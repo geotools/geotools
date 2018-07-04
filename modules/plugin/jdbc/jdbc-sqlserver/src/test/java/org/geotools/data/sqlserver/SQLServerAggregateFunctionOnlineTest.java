@@ -17,18 +17,13 @@
 package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCAggregateFunctionOnlineTest;
-import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SQLServerAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnlineTest {
 
     @Override
-    protected JDBCTestSetup createTestSetup() {
-        return new SQLServerTestSetup();
+    protected JDBCAggregateTestSetup createTestSetup() {
+        return new SQLServerAggregateTestSetup();
     }
-
 }

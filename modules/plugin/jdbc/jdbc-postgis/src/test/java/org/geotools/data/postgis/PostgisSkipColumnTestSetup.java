@@ -2,11 +2,7 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     protected PostgisSkipColumnTestSetup() {
@@ -15,17 +11,19 @@ public class PostgisSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     @Override
     protected void createSkipColumnTable() throws Exception {
-        run("CREATE TABLE \"skipcolumn\"(" //
-                + "\"fid\" serial primary key, " //
-                + "\"id\" integer, " //
-                + "\"geom\" geometry, " //
-                + "\"weirdproperty\" integer[]," //
-                + "\"name\" varchar)");
-        run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'skipcolumn', 'geom', 2, '4326', 'POINT')");
+        run(
+                "CREATE TABLE \"skipcolumn\"(" //
+                        + "\"fid\" serial primary key, " //
+                        + "\"id\" integer, " //
+                        + "\"geom\" geometry, " //
+                        + "\"weirdproperty\" integer[]," //
+                        + "\"name\" varchar)");
+        run(
+                "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'skipcolumn', 'geom', 2, '4326', 'POINT')");
         run("CREATE INDEX SKIPCOLUMN_GEOM_INDEX ON \"skipcolumn\" USING GIST (\"geom\") ");
-        
-        run("INSERT INTO \"skipcolumn\" VALUES(0, 0, ST_GeometryFromText('POINT(0 0)', 4326), null, 'GeoTools')"); 
 
+        run(
+                "INSERT INTO \"skipcolumn\" VALUES(0, 0, ST_GeometryFromText('POINT(0 0)', 4326), null, 'GeoTools')");
     }
 
     @Override
@@ -33,5 +31,4 @@ public class PostgisSkipColumnTestSetup extends JDBCSkipColumnTestSetup {
         runSafe("DELETE FROM GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'skipcolumn'");
         runSafe("DROP TABLE \"skipcolumn\"");
     }
-
 }

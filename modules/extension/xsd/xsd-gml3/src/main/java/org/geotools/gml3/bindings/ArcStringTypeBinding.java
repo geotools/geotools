@@ -1,6 +1,6 @@
 package org.geotools.gml3.bindings;
-import javax.xml.namespace.QName;
 
+import javax.xml.namespace.QName;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.SingleCurvedGeometry;
 import org.geotools.gml3.ArcParameters;
@@ -8,16 +8,16 @@ import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:ArcStringType.
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;complexType name="ArcStringType"&gt;
@@ -63,13 +63,11 @@ import com.vividsolutions.jts.geom.LineString;
  *              &lt;/attribute&gt;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
- *  &lt;/complexType&gt; 
- * 	
+ *  &lt;/complexType&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
  */
 public class ArcStringTypeBinding extends AbstractComplexBinding implements Comparable {
@@ -78,15 +76,16 @@ public class ArcStringTypeBinding extends AbstractComplexBinding implements Comp
     CoordinateSequenceFactory csFactory;
     ArcParameters arcParameters;
 
-    public ArcStringTypeBinding(GeometryFactory gFactory, CoordinateSequenceFactory csFactory, ArcParameters arcParameters) {
+    public ArcStringTypeBinding(
+            GeometryFactory gFactory,
+            CoordinateSequenceFactory csFactory,
+            ArcParameters arcParameters) {
         this.gFactory = gFactory;
         this.csFactory = csFactory;
         this.arcParameters = arcParameters;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.ArcStringType;
     }
@@ -97,32 +96,39 @@ public class ArcStringTypeBinding extends AbstractComplexBinding implements Comp
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
         return SingleCurvedGeometry.class;
     }
-    
+
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
-    
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+
         LineString arcLineString = GML3ParsingUtils.lineString(node, gFactory, csFactory);
         CoordinateSequence cs = arcLineString.getCoordinateSequence();
         if (cs.size() < 3) {
             // maybe log this instead and return null
-            throw new RuntimeException("Number of coordinates in an arc string must be at least 3, " 
-                    + cs.size()+ " were specified: " + arcLineString);
+            throw new RuntimeException(
+                    "Number of coordinates in an arc string must be at least 3, "
+                            + cs.size()
+                            + " were specified: "
+                            + arcLineString);
         }
 
-        CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(arcParameters, gFactory, cs);
-        
+        CurvedGeometryFactory factory =
+                GML3ParsingUtils.getCurvedGeometryFactory(arcParameters, gFactory, cs);
+
         return factory.createCurvedGeometry(cs);
     }
 
@@ -138,12 +144,12 @@ public class ArcStringTypeBinding extends AbstractComplexBinding implements Comp
     }
 
     public int compareTo(Object o) {
-        if (o instanceof LineStringTypeBinding || o instanceof LineStringSegmentTypeBinding
+        if (o instanceof LineStringTypeBinding
+                || o instanceof LineStringSegmentTypeBinding
                 || o instanceof ArcTypeBinding) {
             return -1;
         } else {
             return 0;
         }
     }
-
 }

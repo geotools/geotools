@@ -19,11 +19,7 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     public PostgisGeometrylessTestSetup(JDBCTestSetup delegate) {
@@ -32,8 +28,9 @@ public class PostgisGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     @Override
     protected void createPersonTable() throws Exception {
-        run("CREATE TABLE \"person\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                + "\"name\" varchar, \"age\" int)");
+        run(
+                "CREATE TABLE \"person\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
+                        + "\"name\" varchar, \"age\" int)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Paul',32)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Anne',40)");
     }
@@ -47,5 +44,4 @@ public class PostgisGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     protected void dropZipCodeTable() throws Exception {
         run("DROP TABLE \"zipcode\"");
     }
-
 }

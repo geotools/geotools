@@ -49,7 +49,7 @@ FeatureStore
 FeatureStore provides Transaction support and modification operations. FeatureStore is an
 extension of FeatureSource.
 
-You may check the result of getFeatureSource( typeName ) with the instanceof operator.
+You may check the result of getFeatureSource( typeName ) with the :code:`instanceof` operator.
 
 Example of FeatureStore use:
 

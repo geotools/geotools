@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>17-SNAPSHOT</version>
+    <version>20-SNAPSHOT</version>
   </parent>
   
 
@@ -27,8 +27,6 @@
   <artifactId>gt-efeature</artifactId>
   <packaging>jar</packaging>
   <name>EFeature DataStore Implementation</name>
-  <version>17-SNAPSHOT</version>
-  
   <description>
     The EFeature DataStore module adds support for spatial read and write operations to EMF models. 
   </description>
@@ -76,17 +74,17 @@
       <dependency>
         <groupId>org.eclipse.emf</groupId>
         <artifactId>edit</artifactId>
-        <version>2.3.0-v200706262000</version>
+        
       </dependency>
       <dependency>
         <groupId>org.eclipse.emf</groupId>
         <artifactId>query</artifactId>
-        <version>1.2.100-v200903190031!</version>
+       
       </dependency>
       <dependency>
         <groupId>org.eclipse.equinox</groupId>
         <artifactId>app</artifactId>
-        <version>1.0.0-v20070606</version>
+       
       </dependency>
       <!-- dependency>
         <groupId>org.eclipse.emf</groupId>
@@ -138,50 +136,48 @@
     <!-- Eclipse -->        
     <dependency>
         <groupId>org.eclipse.xsd</groupId>
-        <artifactId>xsd</artifactId>
-        <version>2.6.0</version>
-        <scope>compile</scope>
-    </dependency>
-    <!-- EMF -->        
-    <dependency>
+        <artifactId>org.eclipse.xsd</artifactId>
+        </dependency>
+	<!-- EMF -->
+	<dependency>
+		<groupId>org.eclipse.emf</groupId>
+		<artifactId>org.eclipse.emf.common</artifactId>
+
+	</dependency>
+
+	<dependency>
+		<groupId>org.eclipse.emf</groupId>
+		<artifactId>org.eclipse.emf.ecore</artifactId>
+
+	</dependency>
+	<dependency>
+		<groupId>org.eclipse.emf</groupId>
+		<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+
+	</dependency>
+	<dependency>
+		<groupId>org.eclipse.emf</groupId>
+		<artifactId>ecore-change</artifactId>
+		<version>2.2.3</version>
+    </dependency>  
+    <dependency> 
         <groupId>org.eclipse.emf</groupId>
-        <artifactId>common</artifactId>
-        <scope>compile</scope>
-    </dependency>
+    <artifactId>org.eclipse.emf.query</artifactId>
+    <version>1.7.0.201306111332</version>
+</dependency>
+
     <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>ecore</artifactId>
-        <version>2.6.1</version>
-        <scope>compile</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>ecore-xmi</artifactId>
-        <version>2.2.3</version>
-        <type>jar</type>
-        <scope>compile</scope>
-    </dependency>    
-    <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>ecore-change</artifactId>
-        <version>2.2.3</version>
-        <type>jar</type>
-        <scope>compile</scope>
-    </dependency>    
-    <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>query</artifactId>
-        <version>1.2.100-v200903190031!</version>
-        <type>jar</type>
-        <scope>compile</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.eclipse.emf</groupId>
-        <artifactId>edit</artifactId>
-        <version>2.3.0-v200706262000</version>
-        <type>jar</type>
-        <scope>compile</scope>
-    </dependency>
+    	<groupId>org.eclipse.emf</groupId>
+   	 	<artifactId>org.eclipse.emf.edit</artifactId>
+    	<version>2.12.0</version>
+	</dependency>
+<dependency>
+    <groupId>org.eclipse.core</groupId>
+    <artifactId>org.eclipse.core.runtime</artifactId>
+    <version>3.7.0</version>
+</dependency>
+
+
     <!-- dependency>
         <groupId>org.eclipse.emf</groupId>
         <artifactId>workspace</artifactId>
@@ -271,6 +267,16 @@
         
   </build>
   <modules></modules>
-  
+    <repositories>
+    <repository>
+      <id>ws02</id>
+      <name>ws04 Maven repository</name>
+      <url>http://dist.wso2.org/maven2/</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    </repositories>
+    
 </project>  
 

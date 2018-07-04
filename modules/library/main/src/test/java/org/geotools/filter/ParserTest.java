@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,13 +17,10 @@
 package org.geotools.filter;
 
 import java.util.logging.Logger;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -31,29 +28,27 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.test.TestData;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.xml.sax.helpers.ParserAdapter;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 
 /**
  * Unit test for sax parser.
  *
  * @author James MacGill, CCG
- *
- *
  * @source $URL$
  */
 public class ParserTest extends FilterTestSupport {
     /** Standard logging instance */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
 
     /** Test suite for this test case */
     TestSuite suite = null;
 
     /** Constructor with test name. */
     String dataFolder = "";
+
     boolean setup = false;
 
     public ParserTest(String testName) {
@@ -61,9 +56,9 @@ public class ParserTest extends FilterTestSupport {
         dataFolder = System.getProperty("dataFolder");
 
         if (dataFolder == null) {
-            //then we are being run by maven
+            // then we are being run by maven
             dataFolder = System.getProperty("basedir");
-            dataFolder = "file:////" + dataFolder + "/tests/unit/testData"; //url.toString();
+            dataFolder = "file:////" + dataFolder + "/tests/unit/testData"; // url.toString();
             LOGGER.fine("data folder is " + dataFolder);
         }
     }
@@ -189,7 +184,7 @@ public class ParserTest extends FilterTestSupport {
     }
 
     public void test13() throws Exception {
-        org.opengis.filter.Filter test = parseDocument( "test13.xml");
+        org.opengis.filter.Filter test = parseDocument("test13.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
@@ -219,12 +214,12 @@ public class ParserTest extends FilterTestSupport {
     }
 
     /* 18 and 19 have multiple filters, and only last one will print,
-       but logicSAXParser was messing up with multiple filters, and
-       I used these tests to fix it.  To make these effective the
-       parser test should be able to get multiple filters.  And shouldn't
-       we also be checking the filters generated programmatically, so they
-       fail if things mess up?  I don't have time right now, but maybe
-       some time soon...cholmes */
+    but logicSAXParser was messing up with multiple filters, and
+    I used these tests to fix it.  To make these effective the
+    parser test should be able to get multiple filters.  And shouldn't
+    we also be checking the filters generated programmatically, so they
+    fail if things mess up?  I don't have time right now, but maybe
+    some time soon...cholmes */
     public void test18() throws Exception {
         org.opengis.filter.Filter test = parseDocument("test18.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
@@ -232,7 +227,7 @@ public class ParserTest extends FilterTestSupport {
     }
 
     public void test19() throws Exception {
-        org.opengis.filter.Filter test = parseDocument( "test19.xml");
+        org.opengis.filter.Filter test = parseDocument("test19.xml");
         LOGGER.fine("filter: " + test.getClass().toString());
         LOGGER.fine("parsed: " + test.toString());
     }
@@ -244,12 +239,12 @@ public class ParserTest extends FilterTestSupport {
         LOGGER.fine("parsed: " + test.toString());
     }
 
-    //public void test27()
-    //throws Exception {
+    // public void test27()
+    // throws Exception {
     //      Filter test = parseDocument(dataFolder+"/test27.xml");
     //      LOGGER.fine("filter: " + test.getClass().toString());
     //      LOGGER.fine("parsed: " + test.toString());
-    //} 
+    // }
     public org.opengis.filter.Filter parseDocument(String uri) throws Exception {
         LOGGER.finest("about to create parser");
 
@@ -262,10 +257,11 @@ public class ParserTest extends FilterTestSupport {
         GMLFilterGeometry geometryFilter = new GMLFilterGeometry(filterFilter);
         GMLFilterDocument documentFilter = new GMLFilterDocument(geometryFilter);
 
-        //XMLReader parser = XMLReaderFactory.createXMLReader(/*"org.apache.xerces.parsers.SAXParser"*/); 
+        // XMLReader parser =
+        // XMLReaderFactory.createXMLReader(/*"org.apache.xerces.parsers.SAXParser"*/);
         // uncomment to use xerces parser
-        //parser.setContentHandler(documentFilter);
-        //parser.parse(uri);
+        // parser.setContentHandler(documentFilter);
+        // parser.parse(uri);
         SAXParserFactory fac = SAXParserFactory.newInstance();
         SAXParser parser = fac.newSAXParser();
 

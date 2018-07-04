@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,7 +18,6 @@ package org.geotools.feature.visitor;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor.AverageResult;
@@ -31,31 +30,27 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
-
 /**
  * Calculates the Sum of an attribute (of a FeatureVisitor)
  *
  * @author Cory Horner, Refractions
- *
  * @since 2.2.M2
- *
- *
  * @source $URL$
  */
 public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
+
     SumStrategy strategy;
 
     public SumVisitor(int attributeTypeIndex, SimpleFeatureType type)
-        throws IllegalFilterException {
+            throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         AttributeDescriptor attributeType = type.getDescriptor(attributeTypeIndex);
         expr = factory.property(attributeType.getLocalName());
         createStrategy(attributeType.getType().getBinding());
     }
 
-    public SumVisitor(String attrName, SimpleFeatureType type)
-        throws IllegalFilterException {
+    public SumVisitor(String attrName, SimpleFeatureType type) throws IllegalFilterException {
         FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
         AttributeDescriptor attributeType = type.getDescriptor(attrName);
         expr = factory.property(attributeType.getLocalName());
@@ -66,8 +61,14 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         this.expr = expr;
     }
 
+    protected void setStrategy(SumStrategy strategy) {
+        if (this.strategy == null) {
+            this.strategy = strategy;
+        }
+    }
+
     public void init(SimpleFeatureCollection collection) {
-    	//do nothing
+        // do nothing
     }
 
     @Override
@@ -79,7 +80,6 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * Factory method
      *
      * @param type The Class of the attributeType
-     *
      * @return The correct strategy class (which returns the correct data type)
      */
     private static SumStrategy createStrategy(Class type) {
@@ -99,6 +99,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public void visit(SimpleFeature feature) {
         visit(feature);
     }
+
     public void visit(Feature feature) {
         Object value = expr.evaluate(feature);
 
@@ -118,24 +119,24 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
     public Object getSum() {
         return strategy.getResult();
     }
-    
+
     public void setValue(Object newSum) {
-    	strategy = createStrategy(newSum.getClass());
-    	strategy.add(newSum);
+        strategy = createStrategy(newSum.getClass());
+        strategy.add(newSum);
     }
-    
+
     public void reset() {
         strategy = null;
     }
 
     public CalcResult getResult() {
-    	if(strategy == null) {
-    		return CalcResult.NULL_RESULT;
-    	}
+        if (strategy == null) {
+            return CalcResult.NULL_RESULT;
+        }
         return new SumResult(strategy);
     }
 
-    interface SumStrategy {
+    protected interface SumStrategy {
         public void add(Object value);
 
         public Object getResult();
@@ -191,10 +192,11 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
     public static class SumResult extends AbstractCalcResult {
         private SumStrategy sum;
-        
+
         public SumResult(SumStrategy newSum) {
             sum = newSum;
         }
+
         public SumResult(Object value) {
             sum = createStrategy(value.getClass());
             sum.add(value);
@@ -205,7 +207,7 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public boolean isCompatible(CalcResult targetResults) {
-        	if (targetResults == CalcResult.NULL_RESULT) return true;
+            if (targetResults == CalcResult.NULL_RESULT) return true;
             if (targetResults instanceof SumResult) return true;
             if (targetResults instanceof CountResult) return true;
             return false;
@@ -213,32 +215,32 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
 
         public CalcResult merge(CalcResult resultsToAdd) {
             if (!isCompatible(resultsToAdd)) {
-                throw new IllegalArgumentException(
-                    "Parameter is not a compatible type");
+                throw new IllegalArgumentException("Parameter is not a compatible type");
             }
-            
-            if(resultsToAdd == CalcResult.NULL_RESULT) {
-        		return this;
-        	}
+
+            if (resultsToAdd == CalcResult.NULL_RESULT) {
+                return this;
+            }
 
             if (resultsToAdd instanceof SumResult) {
-                //create a new strategy object of the correct dataType
-            	Number[] sums = new Number[2];
-            	sums[0] = (Number) sum.getResult(); sums[1] = (Number) resultsToAdd.getValue();
-            	SumStrategy newSum = createStrategy(CalcUtil.getObject(sums).getClass());
-            	//add the two sums
-            	newSum.add(sums[0]);
-            	newSum.add(sums[1]);
+                // create a new strategy object of the correct dataType
+                Number[] sums = new Number[2];
+                sums[0] = (Number) sum.getResult();
+                sums[1] = (Number) resultsToAdd.getValue();
+                SumStrategy newSum = createStrategy(CalcUtil.getObject(sums).getClass());
+                // add the two sums
+                newSum.add(sums[0]);
+                newSum.add(sums[1]);
                 return new SumResult(newSum);
             } else if (resultsToAdd instanceof CountResult) {
-                //SumResult + CountResult = AverageResult
+                // SumResult + CountResult = AverageResult
                 int count = resultsToAdd.toInt();
                 AverageResult newResult = new AverageResult(count, sum.getResult());
 
                 return newResult;
             } else {
                 throw new IllegalArgumentException(
-				"The CalcResults claim to be compatible, but the appropriate merge method has not been implemented.");
+                        "The CalcResults claim to be compatible, but the appropriate merge method has not been implemented.");
             }
         }
     }

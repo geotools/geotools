@@ -1,4 +1,4 @@
-Image Moasic JDBC Design
+Image Mosaic JDBC Design
 ------------------------
 
 

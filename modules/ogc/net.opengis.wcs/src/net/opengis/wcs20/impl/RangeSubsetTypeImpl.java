@@ -31,104 +31,104 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class RangeSubsetTypeImpl extends EObjectImpl implements RangeSubsetType {
     /**
-     * The cached value of the '{@link #getRangeItems() <em>Range Items</em>}' reference list.
-     * <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getRangeItems() <em>Range Items</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getRangeItems()
-     * @generated
-     * @ordered
-     */
+	 * @see #getRangeItems()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<RangeItemType> rangeItems;
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     protected RangeSubsetTypeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return Wcs20Package.Literals.RANGE_SUBSET_TYPE;
-    }
+		return Wcs20Package.Literals.RANGE_SUBSET_TYPE;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     public EList<RangeItemType> getRangeItems() {
-        if (rangeItems == null) {
-            rangeItems = new EObjectResolvingEList<RangeItemType>(RangeItemType.class, this, Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS);
-        }
-        return rangeItems;
-    }
+		if (rangeItems == null) {
+			rangeItems = new EObjectResolvingEList<RangeItemType>(RangeItemType.class, this, Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS);
+		}
+		return rangeItems;
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS:
-                return getRangeItems();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID) {
+			case Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS:
+				return getRangeItems();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS:
-                getRangeItems().clear();
-                getRangeItems().addAll((Collection<? extends RangeItemType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID) {
+			case Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS:
+				getRangeItems().clear();
+				getRangeItems().addAll((Collection<? extends RangeItemType>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS:
-                getRangeItems().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS:
+				getRangeItems().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc -->
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS:
-                return rangeItems != null && !rangeItems.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID) {
+			case Wcs20Package.RANGE_SUBSET_TYPE__RANGE_ITEMS:
+				return rangeItems != null && !rangeItems.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } //RangeSubsetTypeImpl

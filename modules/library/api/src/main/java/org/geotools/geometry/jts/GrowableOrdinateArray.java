@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,15 +16,14 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * Simple support class that allows accumulating doubles in an array, transparently growing it as
  * the data gets added.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 class GrowableOrdinateArray {
 
@@ -34,7 +33,7 @@ class GrowableOrdinateArray {
 
     /**
      * Creates an array of the given initial size
-     * 
+     *
      * @param size
      */
     public GrowableOrdinateArray(int size) {
@@ -44,13 +43,11 @@ class GrowableOrdinateArray {
     /**
      * Builds an initialized array, which will be primed when {@link #ensureLength(int)} is called
      */
-    GrowableOrdinateArray() {
-
-    }
+    GrowableOrdinateArray() {}
 
     /**
      * Appends a single number to the array
-     * 
+     *
      * @param d
      */
     public void add(double d) {
@@ -60,7 +57,7 @@ class GrowableOrdinateArray {
 
     /**
      * Appends a two numbers to the array
-     * 
+     *
      * @param d
      */
     public void add(double d1, double d2) {
@@ -71,7 +68,7 @@ class GrowableOrdinateArray {
 
     /**
      * Appends a list of doubles to the array
-     * 
+     *
      * @param d
      */
     public void addAll(double... d) {
@@ -82,7 +79,7 @@ class GrowableOrdinateArray {
 
     /**
      * Appends a whole coordinate sequence to the array
-     * 
+     *
      * @param cs
      */
     public void addAll(CoordinateSequence cs) {
@@ -97,7 +94,7 @@ class GrowableOrdinateArray {
 
     /**
      * Returns the accumulated numbers, in an array cut to the current size
-     * 
+     *
      * @return
      */
     public double[] getData() {
@@ -112,9 +109,10 @@ class GrowableOrdinateArray {
             return result;
         }
     }
-    
+
     /**
      * Returns the current data array, raw, uncut
+     *
      * @return
      */
     public double[] getDataRaw() {
@@ -123,13 +121,13 @@ class GrowableOrdinateArray {
 
     /**
      * Turns the array of ordinates into a coordinate sequence
-     * 
+     *
      * @param gf
      * @return
      */
     public CoordinateSequence toCoordinateSequence(GeometryFactory gf) {
         double[] data = getData();
-        CoordinateSequence cs = gf.getCoordinateSequenceFactory().create(data.length / 2, 2);
+        CoordinateSequence cs = JTS.createCS(gf.getCoordinateSequenceFactory(), data.length / 2, 2);
         for (int i = 0; i < cs.size(); i++) {
             cs.setOrdinate(i, 0, data[i * 2]);
             cs.setOrdinate(i, 1, data[i * 2 + 1]);
@@ -143,8 +141,8 @@ class GrowableOrdinateArray {
 
     public void setSize(int newSize) {
         if (newSize < 0) {
-            throw new IllegalArgumentException("The size must zero or positive, it was " + newSize
-                    + " instead");
+            throw new IllegalArgumentException(
+                    "The size must zero or positive, it was " + newSize + " instead");
         }
         ensureLength(newSize);
         curr = newSize;
@@ -152,7 +150,7 @@ class GrowableOrdinateArray {
 
     /**
      * Ensures the data array has the specified lenght, or grows it otherwise
-     * 
+     *
      * @param length
      */
     void ensureLength(int length) {
@@ -174,7 +172,7 @@ class GrowableOrdinateArray {
 
     /**
      * Reverses the values between start and end assuming it's a packed array of x/y ordinates
-     * 
+     *
      * @param start
      * @param size
      */
@@ -207,16 +205,14 @@ class GrowableOrdinateArray {
         return sb.toString();
     }
 
-    /**
-     *  Closes the sequence by adding the last point as first
-     */
+    /** Closes the sequence by adding the last point as first */
     public void close() {
         add(data[0], data[1]);
     }
 
     /**
-     * Copies a sub-array from another growable array 
-     * 
+     * Copies a sub-array from another growable array
+     *
      * @param other
      * @param from
      * @param to
@@ -226,6 +222,4 @@ class GrowableOrdinateArray {
         System.arraycopy(other.data, 0, data, 0, to + 1);
         this.curr = to + 1;
     }
-    
-
 }

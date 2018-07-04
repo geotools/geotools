@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@ package org.geotools.filter.function;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -35,106 +35,110 @@ import org.opengis.filter.expression.Literal;
 
 /**
  * Implementation of "Categorize" as a normal function.
- * <p>
- * This implementation is compatible with the Function
- * interface; the parameter list can be used to set the
- * threshold values etc...
- * <p>
- * This function expects:
+ *
+ * <p>This implementation is compatible with the Function interface; the parameter list can be used
+ * to set the threshold values etc...
+ *
+ * <p>This function expects:
+ *
  * <ol>
- * <li>PropertyName; use "Rasterdata" to indicate this is a color map
- * <li>Literal: lookup value
- * <li>Literal: threshold 1
- * <li>Literal: value 1
- * <li>Literal: threshold 2
- * <li>Literal: value 2
- * <li>Literal: (Optional) succeeding or preceding
+ *   <li>PropertyName; use "Rasterdata" to indicate this is a color map
+ *   <li>Literal: lookup value
+ *   <li>Literal: threshold 1
+ *   <li>Literal: value 1
+ *   <li>Literal: threshold 2
+ *   <li>Literal: value 2
+ *   <li>Literal: (Optional) succeeding or preceding
  * </ol>
+ *
  * In reality any expression will do.
+ *
  * @author Jody Garnett
  * @author Johann Sorel (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class CategorizeFunction implements Function {
 
     /** Use as a literal value to indicate behaviour of threshold boundary */
     public static final String SUCCEEDING = "succeeding";
-    
+
     /** Use as a literal value to indicate behaviour of threshold boundary */
-    public static final String PRECEDING = "preceding"; 
-    
+    public static final String PRECEDING = "preceding";
+
     /**
-     * Use as a PropertyName when defining a color map.
-     * The "Raterdata" is expected to apply to only a single band; if multiple
-     * bands are provided it is probably a mistake; but we will use the maximum
-     * value (since we are working against a threshold).
+     * Use as a PropertyName when defining a color map. The "Raterdata" is expected to apply to only
+     * a single band; if multiple bands are provided it is probably a mistake; but we will use the
+     * maximum value (since we are working against a threshold).
      */
     public static final String RASTER_DATA = "Rasterdata";
-    
+
     private final List<Expression> parameters;
     private final Literal fallback;
-    /**
-     * True if all expressions in the param set are static values
-     */
+    /** True if all expressions in the param set are static values */
     private boolean staticTable = true;
+
     double[] thresholds;
     Expression[] values;
     volatile Object[] convertedValues;
     private Class convertedValuesContext;
     private String belongsTo;
-    
-    /**
-     * Make the instance of FunctionName available in
-     * a consistent spot.
-     */
-    public static final FunctionName NAME = new FunctionNameImpl("Categorize", "LookupValue",
-        "Value", "Threshold 1", "Value 1", "Threshold 2", "Value 2", "succeeding or preceding"); 
+
+    /** Make the instance of FunctionName available in a consistent spot. */
+    public static final FunctionName NAME =
+            new FunctionNameImpl(
+                    "Categorize",
+                    "LookupValue",
+                    "Value",
+                    "Threshold 1",
+                    "Value 1",
+                    "Threshold 2",
+                    "Value 2",
+                    "succeeding or preceding");
 
     public CategorizeFunction() {
-        this( new ArrayList<Expression>(), null);
+        this(new ArrayList<Expression>(), null);
     }
 
     public CategorizeFunction(List<Expression> parameters, Literal fallback) {
         this.parameters = parameters;
         this.fallback = fallback;
-        
-        // check for valid structure, we need lookup, value, [threshold, value]*, [thresholdInclusion]
-        if(parameters.size() % 2 != 0) {
+
+        // check for valid structure, we need lookup, value, [threshold, value]*,
+        // [thresholdInclusion]
+        if (parameters.size() % 2 != 0) {
             // in this case the last value must be either succeeding or preceding, as a literal
             Expression lastParameter = parameters.get(parameters.size() - 1);
             String lastValue = lastParameter.evaluate(null, String.class);
-            
+
             if (PRECEDING.equalsIgnoreCase(lastValue)) {
                 belongsTo = PRECEDING;
             } else if (SUCCEEDING.equalsIgnoreCase(lastValue)) {
                 belongsTo = SUCCEEDING;
             } else {
-                throw new IllegalArgumentException("The valid structure of a categorize function call is " +
-                		"\"lookup, value, [threshold, value]*, [succeeding|preceding]\", " +
-                		"yet there is a odd number of parameters and the last value is not succeeding nor preceeding");
+                throw new IllegalArgumentException(
+                        "The valid structure of a categorize function call is "
+                                + "\"lookup, value, [threshold, value]*, [succeeding|preceding]\", "
+                                + "yet there is a odd number of parameters and the last value is not succeeding nor preceeding");
             }
         }
-        
+
         // see if the table is full of attribute independent expressions
         FilterAttributeExtractor extractor = new FilterAttributeExtractor();
         thresholds = new double[(parameters.size() - 1) / 2];
         values = new Expression[thresholds.length + 1];
         for (int i = 1; i < parameters.size(); i++) {
             Expression expression = parameters.get(i);
-            if(expression != null) {
+            if (expression != null) {
                 extractor.clear();
                 expression.accept(extractor, null);
-                if(!extractor.isConstantExpression()) {
+                if (!extractor.isConstantExpression()) {
                     staticTable = false;
                     thresholds = null;
                     break;
-                } else { 
-                    if(i % 2 == 0) {
+                } else {
+                    if (i % 2 == 0) {
                         Double threshold = expression.evaluate(null, Double.class);
-                        if(threshold == null) {
+                        if (threshold == null) {
                             staticTable = false;
                             thresholds = null;
                             break;
@@ -142,13 +146,13 @@ public class CategorizeFunction implements Function {
                             thresholds[i / 2 - 1] = threshold;
                         }
                     } else {
-                        values[i / 2] = expression; 
+                        values[i / 2] = expression;
                     }
                 }
             }
         }
         // allow for binary search
-        if(thresholds != null) {
+        if (thresholds != null) {
             Arrays.sort(thresholds);
         }
     }
@@ -156,9 +160,11 @@ public class CategorizeFunction implements Function {
     public String getName() {
         return NAME.getName();
     }
+
     public FunctionName getFunctionName() {
         return NAME;
     }
+
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }
@@ -173,17 +179,17 @@ public class CategorizeFunction implements Function {
 
     public <T> T evaluate(Object object, Class<T> context) {
         final Expression lookupExp = parameters.get(0);
-        
+
         // check the value we're looking for
         Double value = lookupExp.evaluate(object, Double.class);
-        if(value == null) {
+        if (value == null) {
             value = Converters.convert(object, Double.class);
         }
-        
-        if(value != null && staticTable) {
+
+        if (value != null && staticTable) {
             int expIdx = Arrays.binarySearch(thresholds, value);
             int valIdx;
-            if(expIdx >= 0) {
+            if (expIdx >= 0) {
                 // right at the threshold
                 if (PRECEDING.equals(belongsTo)) {
                     valIdx = expIdx;
@@ -194,11 +200,11 @@ public class CategorizeFunction implements Function {
                 // between threshold values, get the next value
                 valIdx = -expIdx - 1;
             }
-            
+
             // do we have a pre-converted set of values as well?
-            if(convertedValues == null) {
+            if (convertedValues == null) {
                 synchronized (this) {
-                    if(convertedValues == null) {
+                    if (convertedValues == null) {
                         convertedValues = new Object[values.length];
                         for (int i = 0; i < convertedValues.length; i++) {
                             convertedValues[i] = values[i].evaluate(object, context);
@@ -207,9 +213,9 @@ public class CategorizeFunction implements Function {
                     }
                 }
             }
-            
+
             // if we can use the pre-converted go for it, otherwise dynamic eval
-            if(convertedValuesContext == context) {
+            if (convertedValuesContext == context) {
                 return (T) convertedValues[valIdx];
             } else {
                 return values[valIdx].evaluate(object, context);
@@ -226,12 +232,12 @@ public class CategorizeFunction implements Function {
         } else {
             splits = parameters.subList(2, parameters.size() - 1);
         }
-        
+
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         for (int i = 0; i < splits.size(); i += 2) {
             Expression threshholdExp = splits.get(i);
             Expression rangedExp = splits.get(i + 1);
-            
+
             Filter isIncludedInThreshold;
             if (PRECEDING.equals(belongsTo)) {
                 isIncludedInThreshold = ff.greater(lookupExp, threshholdExp);
@@ -250,5 +256,30 @@ public class CategorizeFunction implements Function {
     public Literal getFallbackValue() {
         return fallback;
     }
-    
+
+    /**
+     * Creates a String representation of this Function with the function name and the arguments.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getName());
+        sb.append("(");
+        List<org.opengis.filter.expression.Expression> params = getParameters();
+        if (params != null) {
+            org.opengis.filter.expression.Expression exp;
+            for (Iterator<org.opengis.filter.expression.Expression> it = params.iterator();
+                    it.hasNext(); ) {
+                exp = it.next();
+                sb.append("[");
+                sb.append(exp);
+                sb.append("]");
+                if (it.hasNext()) {
+                    sb.append(", ");
+                }
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 }

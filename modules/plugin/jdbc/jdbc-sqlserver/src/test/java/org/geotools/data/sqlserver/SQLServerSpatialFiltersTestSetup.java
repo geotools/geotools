@@ -23,11 +23,14 @@ public class SQLServerSpatialFiltersTestSetup extends SQLServerDataStoreAPITestS
 
         super.setUpData();
 
-        run("CREATE TABLE ppoint(fid int IDENTITY(0,1) PRIMARY KEY, id int, geom geometry, name nvarchar(255) )");
-        run("INSERT INTO PPOINT (id,geom,name) VALUES (0,"
-                + "geometry::STGeomFromText('POINT(170000 0)', 32632)," + "'p1')");
+        run(
+                "CREATE TABLE ppoint(fid int IDENTITY(0,1) PRIMARY KEY, id int, geom geometry, name nvarchar(255) )");
+        run(
+                "INSERT INTO PPOINT (id,geom,name) VALUES (0,"
+                        + "geometry::STGeomFromText('POINT(170000 0)', 32632),"
+                        + "'p1')");
 
-        run("CREATE SPATIAL INDEX _ppoint_geometry_index on ppoint(geom) WITH (BOUNDING_BOX = (166021.4431, 0.0000, 833978.5569, 9329005.1825))");
+        run(
+                "CREATE SPATIAL INDEX _ppoint_geometry_index on ppoint(geom) WITH (BOUNDING_BOX = (166021.4431, 0.0000, 833978.5569, 9329005.1825))");
     }
-
 }

@@ -17,14 +17,13 @@
 package org.geotools.data.transform;
 
 import java.util.NoSuchElementException;
-
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
- * A simple wrapper that limits the number of features returned by a given
- * {@link SimpleFeatureIterator}
- * 
+ * A simple wrapper that limits the number of features returned by a given {@link
+ * SimpleFeatureIterator}
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class MaxFeaturesIterator implements SimpleFeatureIterator {
@@ -54,5 +53,4 @@ class MaxFeaturesIterator implements SimpleFeatureIterator {
     public void close() {
         wrapped.close();
     }
-
 }

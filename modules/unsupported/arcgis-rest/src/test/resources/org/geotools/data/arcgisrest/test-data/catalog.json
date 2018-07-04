@@ -1,0 +1,72 @@
+{
+  "@context" : "https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld",
+  "@type" : "dcat:Catalog",
+  "conformsTo" : "https://project-open-data.cio.gov/v1.1/schema",
+  "describedBy" : "https://project-open-data.cio.gov/v1.1/schema/catalog.json",
+  "dataset" : [ {
+    "@type" : "dcat:Dataset",
+    "identifier" : "http://data.dhs.opendata.arcgis.com/datasets/940854a3f46345f5af7d5c61abce6ec2_0",
+    "title" : "LGA Profile 2014 (beta)",
+    "description" : "<div>2014 Local Government Area Profiles</div><div><br /></div>https://www2.health.vic.gov.au/about/reporting-planning-data/gis-and-planning-products/geographical-profiles<div>&gt; Please read the data definistions at the link above</div><div>&gt; xls and pdf documents area available at the link above</div><div>&gt; This is a beta release of the 2014 LGA profiles in this format. Field names and types may change during the beta phase. </div><div><br /></div><div>Last updated : 24 May 2016</div><div>Owning agency : Department of Health and Human Services, Victoria</div><div>Copyright statement : https://www.health.vic.gov.au/copyright</div><div>Licence name : https://www.health.vic.gov.au/data-license</div><div>Disclaimer: https://www.health.vic.gov.au/data-disclaimer</div><div>Attribution statement: https://www.health.vic.gov.au/data-attribution</div><div><br /></div><div>Off-line access : Department of Health and Human Services, GPO Box 4057, Melbourne Victoria, 3001</div><div><br /></div><div>Geographic coverage-jurisdiction : Victoria</div>",
+    "keyword" : [ "LGA Profiles", "Health and Human Services", "LGA" ],
+    "issued" : "2016-07-27T04:55:30.000Z",
+    "modified" : "2016-08-12T18:56:09.724Z",
+    "publisher" : {
+      "name" : "Health and Human Services Victoria"
+    },
+    "contactPoint" : {
+      "@type" : "vcard:Contact",
+      "fn" : "miles da costa",
+      "hasEmail" : "mailto:spatial@dhhs.vic.gov.au"
+    },
+    "accessLevel" : "public",
+    "distribution" : [
+        {
+          "@type" : "dcat:Distribution",
+          "title" : "ArcGIS Open Dataset",
+          "format" : "Web page",
+          "mediaType" : "text/html",
+          "accessURL" : "http://data.dhs.opendata.arcgis.com/datasets/940854a3f46345f5af7d5c61abce6ec2_0"
+        },
+        {
+          "@type" : "dcat:Distribution",
+          "title" : "Esri Rest API",
+          "format" : "Esri REST",
+          "mediaType" : "application/json",
+          "accessURL" : "https://services.arcgis.com/B7qHofahIc9hrOqB/arcgis/rest/services/LGA_Profile_2014_(beta)/FeatureServer/0"
+        },
+        {
+          "@type" : "dcat:Distribution",
+          "title" : "GeoJSON",
+          "format" : "GeoJSON",
+          "mediaType" : "application/vnd.geo+json",
+          "downloadURL" : "http://data.dhs.opendata.arcgis.com/datasets/940854a3f46345f5af7d5c61abce6ec2_0.geojson"
+        },
+        {
+          "@type" : "dcat:Distribution",
+          "title" : "CSV",
+          "format" : "CSV",
+          "mediaType" : "text/csv",
+          "downloadURL" : "http://data.dhs.opendata.arcgis.com/datasets/940854a3f46345f5af7d5c61abce6ec2_0.csv"
+        },
+        {
+          "@type" : "dcat:Distribution",
+          "title" : "KML",
+          "format" : "KML",
+          "mediaType" : "application/vnd.google-earth.kml+xml",
+          "downloadURL" : "http://data.dhs.opendata.arcgis.com/datasets/940854a3f46345f5af7d5c61abce6ec2_0.kml"
+        },
+        {
+          "@type" : "dcat:Distribution",
+          "title" : "Shapefile",
+          "format" : "ZIP",
+          "mediaType" : "application/zip",
+          "downloadURL" : "http://data.dhs.opendata.arcgis.com/datasets/940854a3f46345f5af7d5c61abce6ec2_0.zip"
+        } ],
+    "landingPage" : "http://data.dhs.opendata.arcgis.com/datasets/940854a3f46345f5af7d5c61abce6ec2_0",
+    "webService" : "https://services.arcgis.com/B7qHofahIc9hrOqB/arcgis/rest/services/LGA_Profile_2014_(beta)/FeatureServer/0",
+    "license" : "http://data.dhs.opendata.arcgis.com/datasets/940854a3f46345f5af7d5c61abce6ec2_0/license.json",
+    "spatial" : "140.68687930094052,-39.14445967968202,150.07953385695868,-33.95278976659559",
+    "theme" : [ "geospatial" ]
+  } ]
+}

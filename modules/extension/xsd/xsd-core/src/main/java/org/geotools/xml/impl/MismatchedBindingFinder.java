@@ -1,13 +1,8 @@
 package org.geotools.xml.impl;
 
 import org.geotools.xml.Binding;
-import org.geotools.xml.ComplexBinding;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MismatchedBindingFinder implements BindingWalker.Visitor {
 
     private Object object;
@@ -28,5 +23,4 @@ public class MismatchedBindingFinder implements BindingWalker.Visitor {
     public boolean foundMismatchedBinding() {
         return mismatched;
     }
-
 }

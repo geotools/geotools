@@ -20,7 +20,7 @@ The resolver can be configured to use an `OASIS Catalog <http://www.oasis-open.o
 
 Example::
 
-    SchemaResolver resolver = new SchemaResolver(SchemaCatalog.build(DataUtilities.fileToURL(new File("/path/to/catalog.xml"))));
+    SchemaResolver resolver = new SchemaResolver(SchemaCatalog.build(URLs.fileToUrl(new File("/path/to/catalog.xml"))));
 
 
 Classpath

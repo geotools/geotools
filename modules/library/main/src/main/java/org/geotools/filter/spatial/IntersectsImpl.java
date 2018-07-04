@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,20 +16,14 @@
  */
 package org.geotools.filter.spatial;
 
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Intersects;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * 
- *
- * @source $URL$
- */
-public class IntersectsImpl extends AbstractPreparedGeometryFilter implements
-        Intersects {
+/** @source $URL$ */
+public class IntersectsImpl extends AbstractPreparedGeometryFilter implements Intersects {
 
     public IntersectsImpl(Expression e1, Expression e2) {
         super(e1, e2);
@@ -42,17 +36,20 @@ public class IntersectsImpl extends AbstractPreparedGeometryFilter implements
     @Override
     public boolean evaluateInternal(Geometry left, Geometry right) {
         switch (literals) {
-        case BOTH:
-            return cacheValue;
-        case RIGHT: {
-            return rightPreppedGeom.intersects(left);
-        }
-        case LEFT: {
-            return leftPreppedGeom.intersects(right);
-        }
-        default: {
-            return basicEvaluate(left, right);
-        }
+            case BOTH:
+                return cacheValue;
+            case RIGHT:
+                {
+                    return rightPreppedGeom.intersects(left);
+                }
+            case LEFT:
+                {
+                    return leftPreppedGeom.intersects(right);
+                }
+            default:
+                {
+                    return basicEvaluate(left, right);
+                }
         }
     }
 
@@ -65,5 +62,4 @@ public class IntersectsImpl extends AbstractPreparedGeometryFilter implements
         Envelope envRight = right.getEnvelopeInternal();
         return envRight.intersects(envLeft) && left.intersects(right);
     }
-
 }

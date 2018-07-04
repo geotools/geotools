@@ -19,28 +19,22 @@ package org.geotools.arcsde.util;
 
 import static org.junit.Assert.assertSame;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultEngineeringCRS;
-import org.junit.Test;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import com.esri.sde.sdk.client.SeCoordinateReference;
 import com.esri.sde.sdk.client.SeObjectId;
 import com.esri.sde.sdk.pe.PeFactory;
 import com.esri.sde.sdk.pe.PeGeographicCS;
 import com.esri.sde.sdk.pe.PeProjectedCS;
 import com.esri.sde.sdk.pe.PeProjectionException;
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.Map;
+import java.util.TreeMap;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.junit.Test;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ArcSDEUtilsTest {
     @Test
     public void testFindCompatibleCRS_Projected() throws Exception {
@@ -117,5 +111,4 @@ public class ArcSDEUtilsTest {
             e.printStackTrace();
         }
     }
-
 }

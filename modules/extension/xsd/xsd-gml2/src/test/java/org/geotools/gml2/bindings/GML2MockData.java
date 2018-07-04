@@ -17,14 +17,25 @@
 package org.geotools.gml2.bindings;
 
 import java.util.Date;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.TEST;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -32,29 +43,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
-
-
 /**
  * Collection of static methods for creating mock data for binding unit tests.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class GML2MockData {
@@ -62,7 +54,7 @@ public class GML2MockData {
     static GeometryFactory gf = new GeometryFactory();
 
     //
-    //Geometries
+    // Geometries
     //
     static Coordinate coordinate() {
         return new Coordinate(1, 2);
@@ -81,9 +73,8 @@ public class GML2MockData {
     }
 
     static CoordinateSequence coordinates() {
-        return new CoordinateArraySequence(new Coordinate[] {
-                new Coordinate(1, 2), new Coordinate(3, 4)
-            });
+        return new CoordinateArraySequence(
+                new Coordinate[] {new Coordinate(1, 2), new Coordinate(3, 4)});
     }
 
     static Element coordinates(Document document, Node parent) {
@@ -155,10 +146,13 @@ public class GML2MockData {
     }
 
     static LinearRing linearRing() {
-        return gf.createLinearRing(new Coordinate[] {
-                new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(3, 3),
-                new Coordinate(1, 1)
-            });
+        return gf.createLinearRing(
+                new Coordinate[] {
+                    new Coordinate(1, 1),
+                    new Coordinate(2, 2),
+                    new Coordinate(3, 3),
+                    new Coordinate(1, 1)
+                });
     }
 
     static Element lineStringProperty(Document document, Node parent) {
@@ -200,7 +194,8 @@ public class GML2MockData {
     }
 
     static MultiPoint multiPoint() {
-        return setCRS(gf.createMultiPoint(new Coordinate[] { new Coordinate(1, 1), new Coordinate(2, 2) }));
+        return setCRS(
+                gf.createMultiPoint(new Coordinate[] {new Coordinate(1, 1), new Coordinate(2, 2)}));
     }
 
     static Element multiPoint(Document document, Node parent) {
@@ -215,21 +210,20 @@ public class GML2MockData {
 
         return multiPoint;
     }
-    
-    static <G extends Geometry> G setCRS( G geometry ) {
-        geometry.setUserData( crs("4326") );
+
+    static <G extends Geometry> G setCRS(G geometry) {
+        geometry.setUserData(crs("4326"));
         return geometry;
     }
 
-    static CoordinateReferenceSystem crs( String srid ) {
+    static CoordinateReferenceSystem crs(String srid) {
         try {
-            return CRS.decode( "EPSG:4326" );
-        } 
-        catch (Exception e) {
-            throw new RuntimeException( e );
+            return CRS.decode("EPSG:4326");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
-    
+
     static Element multiPointProperty(Document document, Node parent) {
         Element multiPointProperty = element(GML.multiPointProperty, document, parent);
         multiPoint(document, multiPointProperty);
@@ -238,7 +232,7 @@ public class GML2MockData {
     }
 
     static MultiLineString multiLineString() {
-        return gf.createMultiLineString(new LineString[] { lineString(), lineString() });
+        return gf.createMultiLineString(new LineString[] {lineString(), lineString()});
     }
 
     static Element multiLineString(Document document, Node parent) {
@@ -261,7 +255,7 @@ public class GML2MockData {
     }
 
     static MultiPolygon multiPolygon() {
-        return gf.createMultiPolygon(new Polygon[] { polygon(), polygon() });
+        return gf.createMultiPolygon(new Polygon[] {polygon(), polygon()});
     }
 
     static Element multiPolygon(Document document, Node parent) {
@@ -284,7 +278,7 @@ public class GML2MockData {
     }
 
     static GeometryCollection multiGeometry() {
-        return gf.createGeometryCollection(new Geometry[]{point(), lineString(), polygon()});
+        return gf.createGeometryCollection(new Geometry[] {point(), lineString(), polygon()});
     }
     //
     // features

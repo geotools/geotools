@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -29,8 +29,6 @@ import org.opengis.style.StyleVisitor;
  * Default implementation of ShadedRelief.
  *
  * @author iant
- *
- *
  * @source $URL$
  */
 public class ShadedReliefImpl implements ShadedRelief {
@@ -38,8 +36,8 @@ public class ShadedReliefImpl implements ShadedRelief {
     private Expression reliefFactor;
     private boolean brightness = false;
 
-    public ShadedReliefImpl(){
-        this( CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+    public ShadedReliefImpl() {
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
     }
 
     public ShadedReliefImpl(FilterFactory factory) {
@@ -48,9 +46,9 @@ public class ShadedReliefImpl implements ShadedRelief {
     }
 
     /**
-     * The ReliefFactor gives the amount of exaggeration to use for the height
-     * of the ?hills.?  A value of around 55 (times) gives reasonable results
-     * for Earth-based DEMs. The default value is system-dependent.
+     * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A
+     * value of around 55 (times) gives reasonable results for Earth-based DEMs. The default value
+     * is system-dependent.
      *
      * @return an expression which evaluates to a double.
      */
@@ -77,9 +75,9 @@ public class ShadedReliefImpl implements ShadedRelief {
     }
 
     /**
-     * The ReliefFactor gives the amount of exaggeration to use for the height
-     * of the ?hills.?  A value of around 55 (times) gives reasonable results
-     * for Earth-based DEMs. The default value is system-dependent.
+     * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A
+     * value of around 55 (times) gives reasonable results for Earth-based DEMs. The default value
+     * is system-dependent.
      *
      * @param reliefFactor an expression which evaluates to a double.
      */
@@ -87,56 +85,54 @@ public class ShadedReliefImpl implements ShadedRelief {
         this.reliefFactor = reliefFactor;
     }
 
-    public Object accept(StyleVisitor visitor,Object data) {
-	return visitor.visit(this,data);
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
     }
-    
+
     public void accept(org.geotools.styling.StyleVisitor visitor) {
-        visitor.visit( this );
+        visitor.visit(this);
     }
-    
+
     @Override
     public int hashCode() {
         final int PRIME = 1000003;
         int result = 0;
 
-        if (reliefFactor != null){
+        if (reliefFactor != null) {
             result = (PRIME * result) + reliefFactor.hashCode();
         }
 
         result = (PRIME * result) + (brightness ? 1 : 0);
-        
+
         return result;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-    	if (this == obj) {
+        if (this == obj) {
             return true;
         }
 
         if (obj instanceof ShadedReliefImpl) {
-        	ShadedReliefImpl other = (ShadedReliefImpl) obj;
+            ShadedReliefImpl other = (ShadedReliefImpl) obj;
 
             return Utilities.equals(reliefFactor, other.reliefFactor)
-            && Utilities.equals(brightness, other.brightness);
+                    && Utilities.equals(brightness, other.brightness);
         }
 
         return false;
     }
 
     static ShadedReliefImpl cast(org.opengis.style.ShadedRelief shadedRelief) {
-        if( shadedRelief == null ){
+        if (shadedRelief == null) {
             return null;
-        }
-        else if ( shadedRelief instanceof ShadedReliefImpl){
+        } else if (shadedRelief instanceof ShadedReliefImpl) {
             return (ShadedReliefImpl) shadedRelief;
-        }
-        else {
+        } else {
             ShadedReliefImpl copy = new ShadedReliefImpl();
-            copy.setBrightnessOnly( shadedRelief.isBrightnessOnly() );
-            copy.setReliefFactor( shadedRelief.getReliefFactor() );
-            
+            copy.setBrightnessOnly(shadedRelief.isBrightnessOnly());
+            copy.setReliefFactor(shadedRelief.getReliefFactor());
+
             return copy;
         }
     }

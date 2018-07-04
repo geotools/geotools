@@ -16,14 +16,11 @@
  */
 package org.geotools.factory;
 
-
 /**
  * Base class for factory finders. {@code FactoryFinder}s are cover for {@link FactoryRegistry}
  * adding type safety, default hints and synchronization for multi-thread environments.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
@@ -34,18 +31,15 @@ public abstract class FactoryFinder {
      */
     public static final Hints EMPTY_HINTS = new StrictHints.Empty();
 
-    /**
-     * Creates a new factory finder.
-     */
-    protected FactoryFinder() {
-    }
+    /** Creates a new factory finder. */
+    protected FactoryFinder() {}
 
     /**
-     * Returns new hints that combine user supplied hints with the
-     * {@linkplain GeoTools#getDefaultHints defaults hints}. If a hint is specified
-     * in both user and default hints, then user hints have precedence.
-     * <p>
-     * The returned hints should live only the time needed for invoking {@link FactoryRegistry}
+     * Returns new hints that combine user supplied hints with the {@linkplain
+     * GeoTools#getDefaultHints defaults hints}. If a hint is specified in both user and default
+     * hints, then user hints have precedence.
+     *
+     * <p>The returned hints should live only the time needed for invoking {@link FactoryRegistry}
      * methods. No long-term reference should be held.
      *
      * @param hints The user hints, or {@code null} if none.

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,9 +16,19 @@
  */
 package org.geotools.renderer.label;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
+import java.awt.*;
+import java.awt.font.GlyphVector;
+import java.awt.font.LineMetrics;
+import java.awt.font.TextAttribute;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.*;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.TransformedShape;
@@ -31,82 +41,52 @@ import org.geotools.renderer.style.IconStyle2D;
 import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.font.GlyphVector;
-import java.awt.font.LineMetrics;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 
 /**
- * This class performs the layouting and painting of the single label (leaving
- * the label cache the task to sort labels and locate the best label points)
- * 
+ * This class performs the layouting and painting of the single label (leaving the label cache the
+ * task to sort labels and locate the best label points)
+ *
  * @author Andrea Aime
- * 
- *
- *
- *
  * @source $URL$
  */
 public class LabelPainter {
-    
-    /**
-     * Epsilon used for comparisons with 0
-     */
+
+    /** Epsilon used for comparisons with 0 */
     static final double EPS = 1e-6;
-    
-    /**
-     * Delegate shape painter used to paint the graphics below the text
-     */
+
+    /** Delegate shape painter used to paint the graphics below the text */
     StyledShapePainter shapePainter = new StyledShapePainter();
 
-    /**
-     * The current label we're tring to draw
-     */
+    /** The current label we're tring to draw */
     LabelCacheItem labelItem;
 
-    /**
-     * The lines in which the label has been split (if any)
-     */
+    /** The lines in which the label has been split (if any) */
     List<LineInfo> lines;
 
-    /**
-     * The graphics object used during painting
-     */
+    /** The graphics object used during painting */
     Graphics2D graphics;
 
     /**
-     * Whether we draw text using its {@link Shape} outline, or we use a plain
-     * {@link Graphics2D#drawGlyphVector(GlyphVector, float, float)} instead
+     * Whether we draw text using its {@link Shape} outline, or we use a plain {@link
+     * Graphics2D#drawGlyphVector(GlyphVector, float, float)} instead
      */
     LabelRenderingMode labelRenderingMode;
 
-    /**
-     * Used to build JTS geometries during label painting
-     */
+    /** Used to build JTS geometries during label painting */
     GeometryFactory gf = new GeometryFactory();
 
-    /**
-     * The cached label bounds
-     */
+    /** The cached label bounds */
     Rectangle2D labelBounds;
 
-    /**
-     * The class in charge of splitting the labels in multiple lines/scripts/fonts
-     */
+    /** The class in charge of splitting the labels in multiple lines/scripts/fonts */
     LabelSplitter splitter = new LabelSplitter();
 
     /**
      * Builds a new painter
-     * 
+     *
      * @param graphics
      * @param outlineRenderingEnabled
      */
@@ -116,10 +96,9 @@ public class LabelPainter {
     }
 
     /**
-     * Sets the current label. The label will be laid out according to the label
-     * item settings (curved lines, auto wrapping, curved line usage) and the
-     * painter will be ready to draw it.
-     * 
+     * Sets the current label. The label will be laid out according to the label item settings
+     * (curved lines, auto wrapping, curved line usage) and the painter will be ready to draw it.
+     *
      * @param labelItem
      */
     public void setLabel(LabelCacheItem labelItem) {
@@ -133,7 +112,7 @@ public class LabelPainter {
 
         // layout the label elements
         lines = splitter.layout(labelItem, graphics);
-        
+
         // compute the max line length
         double maxWidth = 0;
         for (LineInfo line : lines) {
@@ -153,8 +132,9 @@ public class LabelPainter {
             // bounds,
             // for y we don't care right now as we're computing
             // only the total bounds for a text located in the origin
-            double minX = (maxWidth - currBounds.getWidth()) * textStyle.getAnchorX()
-                    - currBounds.getMinX();
+            double minX =
+                    (maxWidth - currBounds.getWidth()) * textStyle.getAnchorX()
+                            - currBounds.getMinX();
             info.setMinX(minX);
 
             double lineOffset = info.getLineOffset();
@@ -162,8 +142,9 @@ public class LabelPainter {
                 labelBounds = currBounds;
                 boundsY = currBounds.getMinY() + lineOffset;
             } else {
-                Rectangle2D translated = new Rectangle2D.Double(minX, boundsY,
-                        currBounds.getWidth(), currBounds.getHeight());
+                Rectangle2D translated =
+                        new Rectangle2D.Double(
+                                minX, boundsY, currBounds.getWidth(), currBounds.getHeight());
                 boundsY += lineOffset;
                 labelY += lineOffset;
                 labelBounds = labelBounds.createUnion(translated);
@@ -173,28 +154,24 @@ public class LabelPainter {
         normalizeBounds(labelBounds);
     }
 
-
-
-
-
     /**
-     * If, for any reason, a font size of 0 is provided to the renderer, resulting bounds
-     * will become empty and this will ruin most geometric computations dealing with spacing
-     * and orientations. Enlarge the envelope a tiny bit
+     * If, for any reason, a font size of 0 is provided to the renderer, resulting bounds will
+     * become empty and this will ruin most geometric computations dealing with spacing and
+     * orientations. Enlarge the envelope a tiny bit
+     *
      * @param bounds
      */
     void normalizeBounds(Rectangle2D bounds) {
-        if(bounds == null) {
+        if (bounds == null) {
             bounds = new Rectangle2D.Float(-1, -1, 2, 2);
-        } else if(bounds.isEmpty()) {
-            bounds.setRect(bounds.getCenterX() -1 , bounds.getCenterY() -1, 2, 2);
+        } else if (bounds.isEmpty()) {
+            bounds.setRect(bounds.getCenterX() - 1, bounds.getCenterY() - 1, 2, 2);
         }
     }
 
-
     /**
      * Returns the current label item
-     * 
+     *
      * @return
      */
     public LabelCacheItem getLabel() {
@@ -202,17 +179,18 @@ public class LabelPainter {
     }
 
     /**
-     * Returns the line height for this label in pixels (for multiline labels,
-     * it's the height of the first line)
-     * 
+     * Returns the line height for this label in pixels (for multiline labels, it's the height of
+     * the first line)
+     *
      * @return
      */
     public double getLineHeight() {
         return lines.get(0).getLineHeight();
     }
-    
+
     /**
-     * The full size above the baseline 
+     * The full size above the baseline
+     *
      * @return
      */
     public double getAscent() {
@@ -221,7 +199,7 @@ public class LabelPainter {
 
     /**
      * Returns the width of the label, as painted in straight form (
-     * 
+     *
      * @return
      */
     public int getStraightLabelWidth() {
@@ -229,9 +207,9 @@ public class LabelPainter {
     }
 
     /**
-     * Number of lines for this label (more than 1 if the label has embedded
-     * newlines or if we're auto-wrapping it)
-     * 
+     * Number of lines for this label (more than 1 if the label has embedded newlines or if we're
+     * auto-wrapping it)
+     *
      * @return
      */
     public int getLineCount() {
@@ -239,9 +217,8 @@ public class LabelPainter {
     }
 
     /**
-     * Get the straight label bounds, taking into account halo, shield and line
-     * wrapping
-     * 
+     * Get the straight label bounds, taking into account halo, shield and line wrapping
+     *
      * @return
      */
     public Rectangle2D getFullLabelBounds() {
@@ -249,8 +226,11 @@ public class LabelPainter {
         Rectangle2D bounds = (Rectangle2D) getLabelBounds().clone();
 
         // take into account halo
-        int haloRadius = Math.round(labelItem.getTextStyle().getHaloFill() != null ? labelItem
-                .getTextStyle().getHaloRadius() : 0);
+        int haloRadius =
+                Math.round(
+                        labelItem.getTextStyle().getHaloFill() != null
+                                ? labelItem.getTextStyle().getHaloRadius()
+                                : 0);
         bounds.add(bounds.getMinX() - haloRadius, bounds.getMinY() - haloRadius);
         bounds.add(bounds.getMaxX() + haloRadius, bounds.getMaxY() + haloRadius);
 
@@ -275,26 +255,33 @@ public class LabelPainter {
                 }
                 double width = area.getWidth() * factor;
                 double height = area.getHeight() * factor;
-                shieldBounds = new Rectangle2D.Double(width / 2 + bounds.getMinX() - bounds.getWidth() / 2, 
-                        height / 2 + bounds.getMinY() - bounds.getHeight() / 2, width, height);
+                shieldBounds =
+                        new Rectangle2D.Double(
+                                width / 2 + bounds.getMinX() - bounds.getWidth() / 2,
+                                height / 2 + bounds.getMinY() - bounds.getHeight() / 2,
+                                width,
+                                height);
                 shieldBounds = applyMargins(margin, shieldBounds);
             } else {
                 // use the shield natural bounds
-                shieldBounds = new Rectangle2D.Double(-area.getWidth() / 2 + bounds.getMinX()
-                        - bounds.getWidth() / 2, -area.getHeight() / 2 + bounds.getMinY()
-                        - bounds.getHeight() / 2, area.getWidth(), area.getHeight());
+                shieldBounds =
+                        new Rectangle2D.Double(
+                                -area.getWidth() / 2 + bounds.getMinX() - bounds.getWidth() / 2,
+                                -area.getHeight() / 2 + bounds.getMinY() - bounds.getHeight() / 2,
+                                area.getWidth(),
+                                area.getHeight());
             }
 
             bounds = bounds.createUnion(shieldBounds);
         }
-        
+
         normalizeBounds(bounds);
 
         return bounds;
     }
-    
+
     Rectangle2D applyMargins(int[] margin, Rectangle2D bounds) {
-        if(bounds != null) {
+        if (bounds != null) {
             double xmin = bounds.getMinX() - margin[3];
             double ymin = bounds.getMinY() - margin[0];
             double width = bounds.getWidth() + margin[1] + margin[3];
@@ -306,9 +293,8 @@ public class LabelPainter {
     }
 
     /**
-     * Get the straight label bounds, without taking into account halo and
-     * shield
-     * 
+     * Get the straight label bounds, without taking into account halo and shield
+     *
      * @return
      */
     public Rectangle2D getLabelBounds() {
@@ -316,9 +302,9 @@ public class LabelPainter {
     }
 
     /**
-     * Paints the label as a non curved one. The positioning and rotation are
-     * provided by the transformation
-     * 
+     * Paints the label as a non curved one. The positioning and rotation are provided by the
+     * transformation
+     *
      * @param transform
      * @throws Exception
      */
@@ -336,27 +322,39 @@ public class LabelPainter {
                 double offsetY = 0;
                 double offsetX = 0;
                 final int[] margin = labelItem.getGraphicMargin();
-                if(margin != null) {
+                if (margin != null) {
                     offsetX = margin[1] - margin[3];
                     offsetY = margin[2] - margin[0];
                 }
-                LiteShape2 tempShape = new LiteShape2(gf.createPoint(new Coordinate(labelBounds
-                        .getWidth() / 2.0 + offsetX, -1.0 * labelBounds.getHeight() / 2.0 + offsetY)), null, null,
-                        false, false);
+                LineInfo lastLine = lines.get(lines.size() - 1);
+                LiteShape2 tempShape =
+                        new LiteShape2(
+                                gf.createPoint(
+                                        new Coordinate(
+                                                labelBounds.getMinX()
+                                                        + labelBounds.getWidth() / 2.0
+                                                        + offsetX,
+                                                labelBounds.getMinY()
+                                                        + lastLine.getBounds().getHeight()
+                                                        - 1.0 * labelBounds.getHeight() / 2.0
+                                                        + offsetY)),
+                                null,
+                                null,
+                                false,
+                                false);
 
                 // resize graphic and transform it based on the position of the last line
                 graphic = resizeGraphic(graphic);
                 AffineTransform graphicTx = new AffineTransform(transform);
-                LineInfo lastLine = lines.get(lines.size() - 1);
+
                 graphicTx.translate(lastLine.getComponents().get(0).getX(), lastLine.getY());
                 graphics.setTransform(graphicTx);
                 shapePainter.paint(graphics, tempShape, graphic, graphic.getMaxScale());
             }
-            
+
             // 0 is unfortunately an acceptable value if people only want to draw shields
             // (to leverage conflict resolution, priority when placing symbols)
-            if(labelItem.getTextStyle().getFont().getSize() == 0)
-                return;
+            if (labelItem.getTextStyle().getFont().getSize() == 0) return;
 
             // draw the label
             if (lines.size() == 1 && lines.get(0).getComponents().size() == 1) {
@@ -375,7 +373,6 @@ public class LabelPainter {
                         graphics.setTransform(lineTx);
                         drawGlyphVector(component);
                     }
-
                 }
             }
         } finally {
@@ -385,41 +382,42 @@ public class LabelPainter {
 
     /**
      * Resizes the graphic according to the resize mode, label size and margins
+     *
      * @param graphic
      * @return
      */
     private Style2D resizeGraphic(Style2D graphic) {
         final GraphicResize mode = labelItem.graphicsResize;
-        
+
         // if no resize, nothing to do
-        if(mode == GraphicResize.NONE || mode == null) {
+        if (mode == GraphicResize.NONE || mode == null) {
             return graphic;
         }
-        
+
         // compute the new width and height
         double width = labelBounds.getWidth();
         double height = labelBounds.getHeight();
         final int[] margin = labelItem.graphicMargin;
-        if(margin != null) {
-            width +=  margin[1] + margin[3]; 
+        if (margin != null) {
+            width += margin[1] + margin[3];
             height += margin[0] + margin[2];
-        } 
+        }
         width = Math.round(width);
         height = Math.round(height);
-        
+
         // just in case someone specified negative margins for some reason
-        if(width <= 0 || height <= 0) {
+        if (width <= 0 || height <= 0) {
             return null;
         }
-        
-        if(graphic instanceof MarkStyle2D) {
+
+        if (graphic instanceof MarkStyle2D) {
             MarkStyle2D mark = (MarkStyle2D) graphic;
-            
+
             Shape original = mark.getShape();
             Rectangle2D bounds = original.getBounds2D();
             MarkStyle2D resized = (MarkStyle2D) mark.clone();
-            if(mode == GraphicResize.PROPORTIONAL) {
-                if(width > height) {
+            if (mode == GraphicResize.PROPORTIONAL) {
+                if (width > height) {
                     resized.setSize(Math.round(bounds.getHeight() * width / bounds.getWidth()));
                 } else {
                     resized.setSize(height);
@@ -427,52 +425,55 @@ public class LabelPainter {
             } else {
                 TransformedShape tss = new TransformedShape();
                 tss.shape = original;
-                tss.setTransform(AffineTransform.getScaleInstance(width / bounds.getWidth(), height / bounds.getHeight()));
+                tss.setTransform(
+                        AffineTransform.getScaleInstance(
+                                width / bounds.getWidth(), height / bounds.getHeight()));
                 resized.setShape(tss);
                 resized.setSize(height);
             }
-            
+
             return resized;
-        } else if(graphic instanceof IconStyle2D) {
+        } else if (graphic instanceof IconStyle2D) {
             IconStyle2D iconStyle = (IconStyle2D) graphic;
             IconStyle2D resized = (IconStyle2D) iconStyle.clone();
-            
-            
+
             final Icon icon = iconStyle.getIcon();
             AffineTransform at;
-            if(mode == GraphicResize.PROPORTIONAL) {
+            if (mode == GraphicResize.PROPORTIONAL) {
                 double factor;
-                if(width > height) {
-                    factor = width / icon.getIconWidth(); 
+                if (width > height) {
+                    factor = width / icon.getIconWidth();
                 } else {
                     factor = height / icon.getIconHeight();
                 }
                 at = AffineTransform.getScaleInstance(factor, factor);
             } else {
-                at = AffineTransform.getScaleInstance(width / icon.getIconWidth(), 
-                        height / icon.getIconHeight());
+                at =
+                        AffineTransform.getScaleInstance(
+                                width / icon.getIconWidth(), height / icon.getIconHeight());
             }
             resized.setIcon(new TransformedIcon(icon, at));
             return resized;
-        } else if(graphic instanceof GraphicStyle2D) {
+        } else if (graphic instanceof GraphicStyle2D) {
             GraphicStyle2D gstyle = (GraphicStyle2D) graphic;
             GraphicStyle2D resized = (GraphicStyle2D) graphic.clone();
             BufferedImage image = gstyle.getImage();
-            
+
             AffineTransform at;
-            if(mode == GraphicResize.PROPORTIONAL) {
+            if (mode == GraphicResize.PROPORTIONAL) {
                 double factor;
-                if(width > height) {
+                if (width > height) {
                     factor = width / image.getWidth();
                 } else {
                     factor = height / image.getHeight();
                 }
                 at = AffineTransform.getScaleInstance(factor, factor);
             } else {
-                at = AffineTransform.getScaleInstance(width / image.getWidth(), 
-                        height / image.getHeight());
+                at =
+                        AffineTransform.getScaleInstance(
+                                width / image.getWidth(), height / image.getHeight());
             }
-            
+
             AffineTransformOp ato = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
             image = ato.filter(image, null);
             resized.setImage(image);
@@ -484,7 +485,7 @@ public class LabelPainter {
 
     /**
      * Draws the glyph vector respecting the label item options
-     * 
+     *
      * @param gv
      */
     private void drawGlyphVector(LineComponent component) {
@@ -494,15 +495,17 @@ public class LabelPainter {
         if (labelItem.getTextStyle().getHaloFill() != null) {
             configureHalo();
             graphics.draw(outline);
-            // draw underline halo if needed
+            // draw underline and strikethrough halo if needed
             drawStraightLabelUnderlineIfNeeded(outline, metrics, true);
+            drawStraightLabelStrikethroughIfNeeded(outline, metrics, true);
         }
         configureLabelStyle();
-        // draw the under line
+        // draw the under line and strikethrough
         drawStraightLabelUnderlineIfNeeded(outline, metrics, false);
-        if(labelRenderingMode == LabelRenderingMode.STRING) {
+        drawStraightLabelStrikethroughIfNeeded(outline, metrics, false);
+        if (labelRenderingMode == LabelRenderingMode.STRING) {
             graphics.drawGlyphVector(gv, 0, 0);
-        } else if(labelRenderingMode == LabelRenderingMode.OUTLINE) {
+        } else if (labelRenderingMode == LabelRenderingMode.OUTLINE) {
             graphics.fill(outline);
         } else {
             AffineTransform tx = graphics.getTransform();
@@ -514,68 +517,87 @@ public class LabelPainter {
         }
     }
 
-    /**
-     * Computes a line component metrics only if the current label is underlined.
-     */
+    /** Computes a line component metrics only if the current label is underlined. */
     private LineMetrics computeLineMetricsIfNeeded(LineComponent component) {
-        if (labelItem.isTextUnderlined()) {
+        if (labelItem.isTextUnderlined() || labelItem.isTextStrikethrough()) {
             return component.computeLineMetrics(graphics.getFontRenderContext());
         }
         return null;
     }
 
     /**
-     * Draws a line under the text with the same color of the text and with the same width
-     * using the provided thickness and offset.
+     * Draws a line under the text with the same color of the text and with the same width using the
+     * provided thickness and offset.
      */
-    private void drawStraightLabelUnderlineIfNeeded(java.awt.Shape outline, LineMetrics metrics, boolean drawingHalo) {
-        Rectangle2D bounds = outline.getBounds2D().getBounds();
-        double minX = bounds.getMinX();
-        double maxX = bounds.getMaxX();
-        drawStraightLabelUnderlineIfNeeded(minX, maxX, metrics, drawingHalo);
-    }
-
-    /**
-     * Draws a line under the text with the same color of the text and with the same width
-     * using the provided thickness and offset.
-     */
-    private void drawStraightLabelUnderlineIfNeeded(double minX, double maxX, LineMetrics metrics, boolean drawingHalo) {
+    private void drawStraightLabelUnderlineIfNeeded(
+            java.awt.Shape outline, LineMetrics metrics, boolean drawingHalo) {
         // let's see if text underline is enabled for this label or we have something to draw
-        if (!labelItem.isTextUnderlined() || (Math.abs(maxX - minX) < 0.0000001)) {
+        if (!labelItem.isTextUnderlined()) {
             // text underline not enabled or nothing to draw
             return;
         }
         // get needed metrics values
-        float underlineThickness = metrics.getUnderlineThickness();
-        float underlineOffset = metrics.getUnderlineOffset();
+        float thickness = metrics.getUnderlineThickness();
+        float offset = metrics.getUnderlineOffset() * 2;
+        drawStraightLabelLine(outline, drawingHalo, thickness, offset);
+    }
+
+    /**
+     * Draws a line under the text with the same color of the text and with the same width using the
+     * provided thickness and offset.
+     */
+    private void drawStraightLabelStrikethroughIfNeeded(
+            java.awt.Shape outline, LineMetrics metrics, boolean drawingHalo) {
+        // let's see if text strikethrough is enabled for this label or we have something to draw
+        if (!labelItem.isTextStrikethrough()) {
+            // text strikethrough not enabled or nothing to draw
+            return;
+        }
+        // get needed metrics values
+        float thickness = metrics.getStrikethroughThickness();
+        float offset = metrics.getStrikethroughOffset();
+        drawStraightLabelLine(outline, drawingHalo, thickness, offset);
+    }
+
+    private void drawStraightLabelLine(
+            java.awt.Shape outline, boolean drawingHalo, float thickness, float offset) {
+        Rectangle2D bounds = outline.getBounds2D().getBounds();
+        double minX = bounds.getMinX();
+        double maxX = bounds.getMaxX();
+        if ((Math.abs(maxX - minX) < 0.0000001)) {
+            // nothing to draw
+            return;
+        }
+
         // let's se if we are drawing the halo around the underline line
         if (drawingHalo) {
             // when drawing the halo we assume that the correct halo configuration has been set
-            graphics.draw(new Line2D.Double(minX, underlineOffset * 2, maxX, underlineOffset * 2));
+            graphics.draw(new Line2D.Double(minX, offset, maxX, offset));
         } else {
-            // storing the current stroke and setting the stroke according to underline thickness
+            // storing the current stroke and setting the stroke according to the specified
+            // thickness
             Stroke currentStroke = graphics.getStroke();
-            graphics.setStroke(new BasicStroke(underlineThickness));
+            graphics.setStroke(new BasicStroke(thickness));
             // we draw a line with the same color of the text and a stroke of 2
-            graphics.draw(new Line2D.Double(minX, underlineOffset * 2, maxX, underlineOffset * 2));
+            graphics.draw(new Line2D.Double(minX, offset, maxX, offset));
             // we need to restore the previous stroke
             graphics.setStroke(currentStroke);
         }
     }
 
-    /**
-     * Configures the graphic to do the halo drawing
-     */
+    /** Configures the graphic to do the halo drawing */
     private void configureHalo() {
         graphics.setPaint(labelItem.getTextStyle().getHaloFill());
         graphics.setComposite(labelItem.getTextStyle().getHaloComposite());
-        float haloRadius = labelItem.getTextStyle().getHaloFill() != null ? labelItem.getTextStyle().getHaloRadius() : 0;
-        graphics.setStroke(new BasicStroke(2 * haloRadius, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        float haloRadius =
+                labelItem.getTextStyle().getHaloFill() != null
+                        ? labelItem.getTextStyle().getHaloRadius()
+                        : 0;
+        graphics.setStroke(
+                new BasicStroke(2 * haloRadius, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     }
 
-    /**
-     * Configures the graphic to do the text drawing
-     */
+    /** Configures the graphic to do the text drawing */
     private void configureLabelStyle() {
         // DJB: added this because several people were using
         // "font-color" instead of fill
@@ -599,15 +621,13 @@ public class LabelPainter {
     }
 
     /**
-     * Paints a label that follows the line, centered in the current cursor
-     * position
-     * 
+     * Paints a label that follows the line, centered in the current cursor position
+     *
      * @param cursor
      */
     public void paintCurvedLabel(LineStringCursor cursor) {
         // 0 is unfortunately an acceptable value if people only want to draw shields
-        if(labelItem.getTextStyle().getFont().getSize() == 0)
-            return;
+        if (labelItem.getTextStyle().getFont().getSize() == 0) return;
         AffineTransform oldTransform = graphics.getTransform();
         LineInfo line = lines.get(0);
 
@@ -629,8 +649,7 @@ public class LabelPainter {
         graphics.setPaint(Color.BLACK);
 
         double startOrdinate = mid - getStraightLabelWidth() / 2;
-        if (startOrdinate < 0)
-            startOrdinate = 0;
+        if (startOrdinate < 0) startOrdinate = 0;
         cursor.moveTo(startOrdinate);
 
         // store the computed outlines an transformations
@@ -645,12 +664,19 @@ public class LabelPainter {
                 double start = cursor.getCurrentOrdinate();
                 Shape[] outlines = new Shape[numGlyphs];
                 AffineTransform[] transforms = new AffineTransform[numGlyphs];
+                final Font font = component.getGlyphVector().getFont();
+                Number tracking = (Number) font.getAttributes().get(TextAttribute.TRACKING);
                 for (int i = 0; i < numGlyphs; i++) {
                     outlines[i] = glyphVector.getGlyphOutline(i);
                     Point2D p = glyphVector.getGlyphPosition(i);
                     float advance = nextAdvance;
-                    nextAdvance = i < numGlyphs - 1
-                            ? glyphVector.getGlyphMetrics(i + 1).getAdvance() * 0.5f : 0;
+                    if (tracking != null) {
+                        advance = advance + font.getSize2D() * tracking.floatValue();
+                    }
+                    nextAdvance =
+                            i < numGlyphs - 1
+                                    ? glyphVector.getGlyphMetrics(i + 1).getAdvance() * 0.5f
+                                    : 0;
 
                     c = cursor.getCurrentPosition(c);
                     AffineTransform t = new AffineTransform(graphics.getTransform());
@@ -670,19 +696,28 @@ public class LabelPainter {
             }
 
             // draw halo and label
+            // extracting label first line component and compute its metrics
+            LineComponent component = line.getComponents().get(0);
+            final LineMetrics metrics = computeLineMetricsIfNeeded(component);
             if (labelItem.getTextStyle().getHaloFill() != null) {
                 configureHalo();
                 if (labelItem.isTextUnderlined()) {
                     // we need to draw the underline halo
-                    drawCurvedUnderline(line, cursor, startOrdinate, true);
+                    drawCurvedUnderline(line, cursor, startOrdinate, true, metrics);
+                }
+                if (labelItem.isTextStrikethrough()) {
+                    // we need to draw the strikethrough halo
+                    drawCurvedStrikethrough(line, cursor, startOrdinate, true, metrics);
                 }
                 drawOrFillOutlines(allOutlines, allTransforms, false);
             }
             graphics.setTransform(oldTransform);
             configureLabelStyle();
             if (labelItem.isTextUnderlined()) {
-                // we need to draw the underline
-                drawCurvedUnderline(line, cursor, startOrdinate, false);
+                drawCurvedUnderline(line, cursor, startOrdinate, false, metrics);
+            }
+            if (labelItem.isTextStrikethrough()) {
+                drawCurvedStrikethrough(line, cursor, startOrdinate, false, metrics);
             }
             drawOrFillOutlines(allOutlines, allTransforms, true);
         } finally {
@@ -693,19 +728,49 @@ public class LabelPainter {
     /**
      * Helper method that will draw the underline of a curved label using the context of the cursor.
      */
-    private void drawCurvedUnderline(LineInfo line, LineStringCursor cursor, double startOrdinate, boolean drawingHalo) {
-        // extracting label first line component and compute is metrics
-        LineComponent component = line.getComponents().get(0);
-        LineMetrics metrics = computeLineMetricsIfNeeded(component);
+    private void drawCurvedUnderline(
+            LineInfo line,
+            LineStringCursor cursor,
+            double startOrdinate,
+            boolean drawingHalo,
+            LineMetrics metrics) {
+        final float lineOffset = metrics.getUnderlineOffset() * 2;
+        final float lineThickness = metrics.getUnderlineThickness();
+        drawCurvedLine(line, cursor, startOrdinate, drawingHalo, lineOffset, lineThickness);
+    }
+
+    /**
+     * Helper method that will draw the underline of a curved label using the context of the cursor.
+     */
+    private void drawCurvedStrikethrough(
+            LineInfo line,
+            LineStringCursor cursor,
+            double startOrdinate,
+            boolean drawingHalo,
+            LineMetrics metrics) {
+        final float lineOffset = metrics.getStrikethroughOffset();
+        final float lineThickness = metrics.getStrikethroughThickness();
+        drawCurvedLine(line, cursor, startOrdinate, drawingHalo, lineOffset, lineThickness);
+    }
+
+    private void drawCurvedLine(
+            LineInfo line,
+            LineStringCursor cursor,
+            double startOrdinate,
+            boolean drawingHalo,
+            final float lineOffset,
+            final float lineThickness) {
         // the cursor is in the last char of the label
         double endOrdinate = cursor.getCurrentOrdinate();
         // compute the advance based on the first char of the label
         GlyphVector glyphVector = line.getComponents().get(0).getGlyphVector();
         double advance = glyphVector.getGlyphMetrics(0).getAdvance() * 0.5f;
         // extract from the linestring the portion associated with the layer
-        LineString labelLineString = cursor.getSubLineString(startOrdinate - advance, endOrdinate - advance);
+        LineString labelLineString =
+                cursor.getSubLineString(startOrdinate - advance, endOrdinate - advance);
         // compute the underline linestring
-        LiteShape underlineLineString = computeCurvedUnderline(labelLineString, metrics);
+
+        LiteShape underlineLineString = computeCurvedLine(labelLineString, lineOffset);
         if (drawingHalo) {
             // when drawing the halo we assume that the correct halo configuration has been set
             graphics.draw(underlineLineString);
@@ -714,7 +779,8 @@ public class LabelPainter {
             Stroke oldStroke = graphics.getStroke();
             try {
                 // if we are not drawing the halo we need to set the proper stroke
-                graphics.setStroke(new BasicStroke(metrics.getUnderlineThickness()));
+
+                graphics.setStroke(new BasicStroke(lineThickness));
                 // draw the underline
                 graphics.draw(underlineLineString);
             } finally {
@@ -723,11 +789,10 @@ public class LabelPainter {
         }
     }
 
-    /**
-     * Helper method that go through all the outlines and transformations a draw or fill them.
-     */
-    private void drawOrFillOutlines(List<Shape[]> allOutlines, List<AffineTransform[]> allTransforms, boolean fill) {
-        for(int i = 0; i < allOutlines.size(); i++) {
+    /** Helper method that go through all the outlines and transformations a draw or fill them. */
+    private void drawOrFillOutlines(
+            List<Shape[]> allOutlines, List<AffineTransform[]> allTransforms, boolean fill) {
+        for (int i = 0; i < allOutlines.size(); i++) {
             Shape[] outlines = allOutlines.get(i);
             AffineTransform[] transforms = allTransforms.get(i);
             int numGlyphs = outlines.length;
@@ -743,10 +808,12 @@ public class LabelPainter {
     }
 
     /**
-     * Given the portion of the linestring associated with the label and label metrics,
-     * this method will compute a proper underline.
+     * Given the portion of the linestring associated with the label and label metrics, this method
+     * will compute a proper underline.
+     *
+     * @param lineOffset TODO
      */
-    private LiteShape computeCurvedUnderline(LineString labelLineString, LineMetrics metrics) {
+    private LiteShape computeCurvedLine(LineString labelLineString, float lineOffset) {
         Coordinate[] coordinates = labelLineString.getCoordinates();
         Coordinate[] parallelCoordinates = new Coordinate[coordinates.length];
         double anchorOffset = getLinePlacementYAnchor() * getLineHeight();
@@ -757,7 +824,7 @@ public class LabelPainter {
             double dx = coordinateB.x - coordinateA.x;
             double dy = coordinateB.y - coordinateA.y;
             double length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-            double offset = -(anchorOffset + metrics.getUnderlineOffset() * 2);
+            double offset = -(anchorOffset + lineOffset);
             // compute the parallel coordinates
             double x1 = coordinateA.x + offset * (coordinateB.y - coordinateA.y) / length;
             double x2 = coordinateB.x + offset * (coordinateB.y - coordinateA.y) / length;
@@ -772,16 +839,17 @@ public class LabelPainter {
     }
 
     /**
-     * Vertical centering is not trivial, because visually we want centering on
-     * characters such as a,m,e, and not centering on d,g whose center is
-     * affected by the full ascent or the full descent. This method tries to
-     * computes the y anchor taking into account those.
+     * Vertical centering is not trivial, because visually we want centering on characters such as
+     * a,m,e, and not centering on d,g whose center is affected by the full ascent or the full
+     * descent. This method tries to computes the y anchor taking into account those.
      */
     public double getLinePlacementYAnchor() {
         TextStyle2D textStyle = getLabel().getTextStyle();
-        LineMetrics lm = textStyle.getFont().getLineMetrics(textStyle.getLabel(),
-                graphics.getFontRenderContext());
-        
+        LineMetrics lm =
+                textStyle
+                        .getFont()
+                        .getLineMetrics(textStyle.getLabel(), graphics.getFontRenderContext());
+
         // gracefully handle font size = 0
         if (lm.getHeight() > 0) {
             return (Math.abs(lm.getStrikethroughOffset()) + lm.getDescent() + lm.getLeading())
@@ -792,10 +860,10 @@ public class LabelPainter {
     }
 
     /**
-     * Returns true if a label placed in the current cursor position would look
-     * upwards or not, defining upwards a label whose bottom to top direction is
-     * greater than zero, and less or equal to 180 degrees.
-     * 
+     * Returns true if a label placed in the current cursor position would look upwards or not,
+     * defining upwards a label whose bottom to top direction is greater than zero, and less or
+     * equal to 180 degrees.
+     *
      * @param cursor
      * @return
      */
@@ -806,6 +874,4 @@ public class LabelPainter {
         labelAngle = labelAngle % (Math.PI * 2);
         return labelAngle >= 0 && labelAngle < Math.PI;
     }
-
-
 }

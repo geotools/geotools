@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,10 +17,13 @@
 
 package org.geotools.data.solr;
 
-import javax.measure.unit.SI;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.And;
@@ -38,12 +41,7 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
+import si.uom.SI;
 
 public class SolrGeometryTest extends SolrTestSupport {
     public void testBBOXLimitSplittedFilter() throws Exception {
@@ -53,32 +51,39 @@ public class SolrGeometryTest extends SolrTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(bbox);
         assertEquals(11, features.size());
     }
+
     public void testPolygonLimitSplittedFilter() throws Exception {
         init();
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] { -185, -98, 185, -98, 185, 98, -185, 98, -185, -98 }, 2));
+        Polygon ls =
+                gf.createPolygon(
+                        sf.create(
+                                new double[] {-185, -98, 185, -98, 185, 98, -185, 98, -185, -98},
+                                2));
         Within f = ff.within(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(11, features.size());
-    } 
+    }
+
     public void testClipToWorldFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo property = ff.equals(ff.property("standard_ss"),
-                ff.literal("IEEE 802.11b"));
+        PropertyIsEqualTo property =
+                ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
         BBOX bbox = ff.bbox("geo", -190, -190, 190, 190, "EPSG:" + SOURCE_SRID);
         And filter = ff.and(property, bbox);
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
         assertEquals(7, features.size());
     }
+
     public void testCrossesFilter() throws Exception {
         init("not-active");
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LineString ls = gf.createLineString(sf.create(new double[] { 0, 0, 2, 2 }, 2));
+        LineString ls = gf.createLineString(sf.create(new double[] {0, 0, 2, 2}, 2));
         Crosses f = ff.crosses(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
@@ -92,7 +97,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        LineString ls = gf.createLineString(sf.create(new double[] { 0, 0, 1, 1 }, 2));
+        LineString ls = gf.createLineString(sf.create(new double[] {0, 0, 1, 1}, 2));
         Crosses f = ff.crosses(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(0, features.size());
@@ -103,7 +108,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] { 3, 2, 6, 2, 6, 7, 3, 7, 3, 2 }, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] {3, 2, 6, 2, 6, 7, 3, 7, 3, 2}, 2));
         Equals f = ff.equal(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
@@ -117,7 +122,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Point ls = gf.createPoint(sf.create(new double[] { 0, 0 }, 2));
+        Point ls = gf.createPoint(sf.create(new double[] {0, 0}, 2));
         Disjoint f = ff.disjoint(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(2, features.size());
@@ -133,7 +138,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Point ls = gf.createPoint(sf.create(new double[] { 1, 1 }, 2));
+        Point ls = gf.createPoint(sf.create(new double[] {1, 1}, 2));
         Touches f = ff.touches(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
@@ -147,7 +152,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] { 0, 0, 0, 6, 6, 6, 6, 0, 0, 0 }, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] {0, 0, 0, 6, 6, 6, 6, 0, 0, 0}, 2));
         Within f = ff.within(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
@@ -161,8 +166,8 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(
-                new double[] { 5.5, 6, 7, 6, 7, 7, 5.5, 7, 5.5, 6 }, 2));
+        Polygon ls =
+                gf.createPolygon(sf.create(new double[] {5.5, 6, 7, 6, 7, 7, 5.5, 7, 5.5, 6}, 2));
         Overlaps f = ff.overlaps(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
@@ -176,7 +181,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] { 6, 6, 7, 6, 7, 7, 6, 7, 6, 6 }, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] {6, 6, 7, 6, 7, 7, 6, 7, 6, 6}, 2));
         Intersects f = ff.intersects(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
@@ -190,7 +195,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Polygon ls = gf.createPolygon(sf.create(new double[] { 2, 2, 3, 2, 3, 3, 2, 3, 2, 2 }, 2));
+        Polygon ls = gf.createPolygon(sf.create(new double[] {2, 2, 3, 2, 3, 3, 2, 3, 2, 2}, 2));
         Contains f = ff.contains(ff.property("geo"), ff.literal(ls));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
@@ -204,7 +209,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Point ls = gf.createPoint(sf.create(new double[] { 1, 1 }, 2));
+        Point ls = gf.createPoint(sf.create(new double[] {1, 1}, 2));
         DWithin f = ff.dwithin(ff.property("geo"), ff.literal(ls), 3, SI.METRE.getSymbol());
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(2, features.size());
@@ -220,7 +225,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
-        Point ls = gf.createPoint(sf.create(new double[] { 1, 1 }, 2));
+        Point ls = gf.createPoint(sf.create(new double[] {1, 1}, 2));
         Beyond f = ff.beyond(ff.property("geo"), ff.literal(ls), 1, SI.METRE.getSymbol());
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
@@ -228,7 +233,7 @@ public class SolrGeometryTest extends SolrTestSupport {
         assertTrue(fsi.hasNext());
         assertEquals(fsi.next().getID(), "not-active.13");
     }
-    
+
     public void testAlternateGeometry() throws Exception {
         init("active", "geo2");
         SimpleFeatureType schema = featureSource.getSchema();
@@ -244,5 +249,4 @@ public class SolrGeometryTest extends SolrTestSupport {
         assertTrue(fsi.hasNext());
         assertEquals(fsi.next().getID(), "active.9");
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,16 +17,15 @@
 package org.geotools.geometry.jts;
 
 import java.util.List;
-
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * A subclass of {@link MultiPolygon} that can host also {@link CurvePolygon} and will linearize if
  * needed
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<MultiPolygon> {
@@ -80,12 +79,13 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
                 } else {
                     // straight lines polygon
                     sb.append("(");
-                    writeCoordinateSequence(sb, component.getExteriorRing().getCoordinateSequence());
+                    writeCoordinateSequence(
+                            sb, component.getExteriorRing().getCoordinateSequence());
                     int numHoles = component.getNumInteriorRing();
                     for (int i = 0; i < numHoles; i++) {
                         sb.append(", ");
-                        writeCoordinateSequence(sb, component.getInteriorRingN(i)
-                                .getCoordinateSequence());
+                        writeCoordinateSequence(
+                                sb, component.getInteriorRingN(i).getCoordinateSequence());
                     }
                     sb.append(")");
                 }
@@ -119,4 +119,13 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
         return 2;
     }
 
+    @Override
+    public MultiSurface copyInternal() {
+        Polygon[] polys = new Polygon[geometries.length];
+        for (int i = 0; i < geometries.length; i++) {
+            polys[i] = (Polygon) geometries[i];
+        }
+
+        return new MultiSurface(polys, factory, tolerance);
+    }
 }

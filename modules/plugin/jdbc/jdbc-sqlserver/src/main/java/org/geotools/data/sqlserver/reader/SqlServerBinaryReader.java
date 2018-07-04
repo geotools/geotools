@@ -1,21 +1,20 @@
 package org.geotools.data.sqlserver.reader;
 
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.ByteArrayInStream;
-import com.vividsolutions.jts.io.ByteOrderDataInStream;
-import com.vividsolutions.jts.io.ByteOrderValues;
-import com.vividsolutions.jts.io.InStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.io.ByteArrayInStream;
+import org.locationtech.jts.io.ByteOrderDataInStream;
+import org.locationtech.jts.io.ByteOrderValues;
+import org.locationtech.jts.io.InStream;
 
 /**
  * Decode Sql Server binary format to JTS
  *
  * @author Anders Bakkevold, Bouvet
- *
  * @source $URL$
  */
 public class SqlServerBinaryReader {
@@ -67,20 +66,22 @@ public class SqlServerBinaryReader {
         }
     }
 
-    private Geometry decodeMultiPolygon( int shapeIndex) {
+    private Geometry decodeMultiPolygon(int shapeIndex) {
         Collection<Geometry> polygons = new ArrayList<Geometry>();
         for (int i = shapeIndex; i < binary.getShapes().length; i++) {
             if (binary.getShape(i).getParentOffset() == shapeIndex) {
                 polygons.add(decodePolygon(i));
             }
         }
-        return gf.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));        }
+        return gf.createMultiPolygon(polygons.toArray(new Polygon[polygons.size()]));
+    }
 
     private Geometry decodeMultiPoint(int shapeIndex) {
         Collection<Geometry> points = new ArrayList<Geometry>();
         for (int i = shapeIndex; i < binary.getShapes().length; i++) {
             if (binary.getShape(i).getParentOffset() == shapeIndex) {
-                points.add(gf.createPoint(binary.getSequence(binary.getShape(i).getFigureOffset())));
+                points.add(
+                        gf.createPoint(binary.getSequence(binary.getShape(i).getFigureOffset())));
             }
         }
         return gf.createMultiPoint(points.toArray(new Point[points.size()]));
@@ -90,7 +91,9 @@ public class SqlServerBinaryReader {
         Collection<Geometry> linestrings = new ArrayList<Geometry>();
         for (int i = shapeIndex; i < binary.getShapes().length; i++) {
             if (binary.getShape(i).getParentOffset() == shapeIndex) {
-                linestrings.add(gf.createLineString(binary.getSequence(binary.getShape(i).getFigureOffset())));
+                linestrings.add(
+                        gf.createLineString(
+                                binary.getSequence(binary.getShape(i).getFigureOffset())));
             }
         }
         return gf.createMultiLineString(linestrings.toArray(new LineString[linestrings.size()]));
@@ -99,10 +102,10 @@ public class SqlServerBinaryReader {
     private Geometry decodePolygon(int shapeIndex) {
         Shape shape = binary.getShape(shapeIndex);
         int figureOffset = shape.getFigureOffset();
-        int figureStopIndex = binary.getFigures().length-1;
-        if (shapeIndex +1 < binary.getShapes().length) {
+        int figureStopIndex = binary.getFigures().length - 1;
+        if (shapeIndex + 1 < binary.getShapes().length) {
             Shape nextShape = binary.getShape(shapeIndex + 1);
-            figureStopIndex = nextShape.getFigureOffset()-1;
+            figureStopIndex = nextShape.getFigureOffset() - 1;
         }
         List<LinearRing> linearRings = new ArrayList<LinearRing>();
         if (figureOffset <= -1) {
@@ -128,7 +131,7 @@ public class SqlServerBinaryReader {
         Coordinate coordinate;
         if (binary.isSinglePoint()) {
             coordinate = binary.getCoordinates()[0];
-        }  else if (shape.getParentOffset() != -1) {
+        } else if (shape.getParentOffset() != -1) {
             Figure figure = binary.getFigure(shape.getFigureOffset());
             coordinate = binary.getCoordinates()[figure.getPointOffset()];
         } else {
@@ -139,7 +142,7 @@ public class SqlServerBinaryReader {
 
     private Geometry decodeGeometryCollection(int shapeIndex) throws SqlServerBinaryParseException {
         Collection<Geometry> geometries = new ArrayList<Geometry>();
-        for (int i = shapeIndex +1; i < binary.getShapes().length; i++) {
+        for (int i = shapeIndex + 1; i < binary.getShapes().length; i++) {
             Shape subShape = binary.getShapes()[i];
             if (subShape.getParentOffset() == shapeIndex) {
                 geometries.add(decode(i, subShape.getType()));
@@ -163,12 +166,17 @@ public class SqlServerBinaryReader {
         CoordinateSequence[] sequences = new CoordinateSequence[figures.length];
         for (int i = 0; i < figures.length; i++) {
             int figurePointOffset = figures[i].getPointOffset();
-            int nextPointOffset = figures.length >= i+2 ? figures[i+1].getPointOffset() : binary.getCoordinates().length;
-            Coordinate[] coordinates = Arrays.copyOfRange(binary.getCoordinates(), figurePointOffset, nextPointOffset);
+            int nextPointOffset =
+                    figures.length >= i + 2
+                            ? figures[i + 1].getPointOffset()
+                            : binary.getCoordinates().length;
+            Coordinate[] coordinates =
+                    Arrays.copyOfRange(binary.getCoordinates(), figurePointOffset, nextPointOffset);
             int attribute = figures[i].getAttribute();
-            if ((attribute == 0 || attribute == 2) && !coordinates[0].equals(coordinates[coordinates.length-1]) ) {
+            if ((attribute == 0 || attribute == 2)
+                    && !coordinates[0].equals(coordinates[coordinates.length - 1])) {
                 coordinates = Arrays.copyOf(coordinates, coordinates.length + 1);
-                coordinates[coordinates.length-1] = coordinates[0];
+                coordinates[coordinates.length - 1] = coordinates[0];
             }
             sequences[i] = gf.getCoordinateSequenceFactory().create(coordinates);
         }
@@ -181,7 +189,8 @@ public class SqlServerBinaryReader {
         binary.setSrid(dis.readInt());
         byte version = dis.readByte();
         if (version != 1) {
-            throw new SqlServerBinaryParseException("Unsupported version (only supports version 1): " + version);
+            throw new SqlServerBinaryParseException(
+                    "Unsupported version (only supports version 1): " + version);
         }
         binary.setSerializationProperties(dis.readByte());
 
@@ -191,11 +200,11 @@ public class SqlServerBinaryReader {
         readMValues();
 
         if (binary.isSinglePoint()) {
-            binary.setFigures(new Figure[] { new Figure(1,0) });
-            binary.setShapes(new Shape[] { new Shape(-1,0,2)});
+            binary.setFigures(new Figure[] {new Figure(1, 0)});
+            binary.setShapes(new Shape[] {new Shape(-1, 0, 2)});
         } else if (binary.hasSingleLineSegment()) {
-            binary.setFigures(new Figure[] { new Figure(1,0) });
-            binary.setShapes(new Shape[] { new Shape(-1,0,1)});
+            binary.setFigures(new Figure[] {new Figure(1, 0)});
+            binary.setShapes(new Shape[] {new Shape(-1, 0, 1)});
         } else {
             readFigures();
             readShapes();
@@ -214,39 +223,41 @@ public class SqlServerBinaryReader {
 
     private void readCoordinates() throws IOException {
         Coordinate[] coordinates = new Coordinate[binary.getNumberOfPoints()];
-        for(int i = 0; i<binary.getNumberOfPoints(); i++) {
+        for (int i = 0; i < binary.getNumberOfPoints(); i++) {
             coordinates[i] = readCoordinate();
         }
         binary.setCoordinates(coordinates);
     }
 
     private void readShapes() throws IOException {
-        int numberOfShapes;Shape[] shapesMetadata;
+        int numberOfShapes;
+        Shape[] shapesMetadata;
         numberOfShapes = dis.readInt();
         shapesMetadata = new Shape[numberOfShapes];
         for (int i = 0; i < numberOfShapes; i++) {
             int parentOffset = dis.readInt();
             int figureOffset = dis.readInt();
-            int shapeType =  dis.readByte();
+            int shapeType = dis.readByte();
             shapesMetadata[i] = new Shape(parentOffset, figureOffset, shapeType);
         }
         binary.setShapes(shapesMetadata);
     }
 
     private void readFigures() throws IOException {
-        int numberOfFigures;Figure[] figuresMetadata;
+        int numberOfFigures;
+        Figure[] figuresMetadata;
         numberOfFigures = dis.readInt();
         figuresMetadata = new Figure[numberOfFigures];
         for (int i = 0; i < numberOfFigures; i++) {
             byte figureAttribute = dis.readByte();
             int figurePointOffset = dis.readInt();
-            figuresMetadata[i] = new Figure(figureAttribute,figurePointOffset);
+            figuresMetadata[i] = new Figure(figureAttribute, figurePointOffset);
         }
         binary.setFigures(figuresMetadata);
     }
 
     private void readMValues() throws IOException {
-        //measure values are currently discarded, as they cannot be represented in a JTS Geometry
+        // measure values are currently discarded, as they cannot be represented in a JTS Geometry
         if (binary.hasM()) {
             for (int i = 0; i < binary.getNumberOfPoints(); i++) {
                 dis.readDouble();

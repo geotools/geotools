@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -36,31 +35,29 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.spatial.BBOX3D;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Tests the ability of the datastore to cope with 3D data
- * 
+ *
  * @author Andrea Aime - OpenGeo
  * @author Martin Davis - OpenGeo
- * 
- * 
- * 
  * @source $URL$
  */
 public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
@@ -81,33 +78,52 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
     /**
      * Returns the name of the feature type with 3d lines
+     *
      * @return
      */
     protected abstract String getLine3d();
 
     /**
      * Returns the name of the feature type with 3d points
+     *
      * @return
      */
     protected abstract String getPoint3d();
-    
+
     /**
      * Returns the name of the feature type with 3d polygons
+     *
      * @return
      */
     protected abstract String getPoly3d();
-
 
     @Override
     protected void connect() throws Exception {
         super.connect();
 
-        line3DType = DataUtilities.createType(dataStore.getNamespaceURI() + "." + tname(getLine3d()),
-                aname(ID) + ":0," + aname(GEOM) + ":LineString:srid=" + getEpsgCode() + "," + aname(NAME)
-                        + ":String");
+        line3DType =
+                DataUtilities.createType(
+                        dataStore.getNamespaceURI() + "." + tname(getLine3d()),
+                        aname(ID)
+                                + ":0,"
+                                + aname(GEOM)
+                                + ":LineString:srid="
+                                + getEpsgCode()
+                                + ","
+                                + aname(NAME)
+                                + ":String");
         line3DType.getGeometryDescriptor().getUserData().put(Hints.COORDINATE_DIMENSION, 3);
-        poly3DType = DataUtilities.createType(dataStore.getNamespaceURI() + "." + tname(getPoly3d()),
-                aname(ID) + ":0," + aname(GEOM) + ":Polygon:srid=" + getEpsgCode() + "," + aname(NAME) + ":String");
+        poly3DType =
+                DataUtilities.createType(
+                        dataStore.getNamespaceURI() + "." + tname(getPoly3d()),
+                        aname(ID)
+                                + ":0,"
+                                + aname(GEOM)
+                                + ":Polygon:srid="
+                                + getEpsgCode()
+                                + ","
+                                + aname(NAME)
+                                + ":String");
         poly3DType.getGeometryDescriptor().getUserData().put(Hints.COORDINATE_DIMENSION, 3);
 
         crs = CRS.decode("EPSG:" + getEpsgCode());
@@ -116,23 +132,24 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
     protected Integer getNativeSRID() {
         return new Integer(getEpsgCode());
     }
-    
+
     protected abstract int getEpsgCode();
 
     public void testSchema() throws Exception {
         SimpleFeatureType schema = dataStore.getSchema(tname(getLine3d()));
-        CoordinateReferenceSystem crs = schema.getGeometryDescriptor()
-                .getCoordinateReferenceSystem();
+        CoordinateReferenceSystem crs =
+                schema.getGeometryDescriptor().getCoordinateReferenceSystem();
         assertEquals(new Integer(getEpsgCode()), CRS.lookupEpsgCode(crs, false));
-        assertEquals(getNativeSRID(),
+        assertEquals(
+                getNativeSRID(),
                 schema.getGeometryDescriptor().getUserData().get(JDBCDataStore.JDBC_NATIVE_SRID));
-        assertEquals(3,
-                schema.getGeometryDescriptor().getUserData().get(Hints.COORDINATE_DIMENSION));
+        assertEquals(
+                3, schema.getGeometryDescriptor().getUserData().get(Hints.COORDINATE_DIMENSION));
     }
 
     public void testReadPoint() throws Exception {
         SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(getPoint3d())).getFeatures();
-        try(SimpleFeatureIterator fr = fc.features()) {
+        try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
             Point p = (Point) fr.next().getDefaultGeometry();
             assertTrue(new Coordinate(1, 1, 1).equals(p.getCoordinate()));
@@ -141,7 +158,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
     public void testReadLine() throws Exception {
         SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(getLine3d())).getFeatures();
-        try(SimpleFeatureIterator fr = fc.features()) {
+        try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
             LineString ls = (LineString) fr.next().getDefaultGeometry();
             // 1 1 0, 2 2 0, 4 2 1, 5 1 1
@@ -153,23 +170,50 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         }
     }
 
+    public void testBBOX3DReadLine() throws Exception {
+        BBOX3D bbox3d = FF.bbox("", new ReferencedEnvelope3D(2, 3, 1, 2, 0, 1, crs));
+        SimpleFeatureCollection fc =
+                dataStore.getFeatureSource(tname(getLine3d())).getFeatures(bbox3d);
+        try (SimpleFeatureIterator fr = fc.features()) {
+            assertTrue(fr.hasNext());
+            LineString ls = (LineString) fr.next().getDefaultGeometry();
+            // 1 1 0, 2 2 0, 4 2 1, 5 1 1
+            assertEquals(4, ls.getCoordinates().length);
+            assertTrue(new Coordinate(1, 1, 0).equals3D(ls.getCoordinateN(0)));
+            assertTrue(new Coordinate(2, 2, 0).equals3D(ls.getCoordinateN(1)));
+            assertTrue(new Coordinate(4, 2, 1).equals3D(ls.getCoordinateN(2)));
+            assertTrue(new Coordinate(5, 1, 1).equals3D(ls.getCoordinateN(3)));
+        }
+    }
+
+    public void testBBOX3DOutsideLine() throws Exception {
+        // a bbox 3d well outside the line footprint
+        BBOX3D bbox3d = FF.bbox("", new ReferencedEnvelope3D(2, 3, 1, 2, 100, 101, crs));
+        SimpleFeatureCollection fc =
+                dataStore.getFeatureSource(tname(getLine3d())).getFeatures(bbox3d);
+        assertEquals(0, fc.size());
+    }
+
     public void testWriteLine() throws Exception {
         // build a 3d line
         GeometryFactory gf = new GeometryFactory();
-        LineString ls = gf.createLineString(new Coordinate[] { new Coordinate(0, 0, 0),
-                new Coordinate(1, 1, 1) });
+        LineString ls =
+                gf.createLineString(
+                        new Coordinate[] {new Coordinate(0, 0, 0), new Coordinate(1, 1, 1)});
 
         // build a feature around it
-        SimpleFeature newFeature = SimpleFeatureBuilder.build(line3DType, new Object[] { 2, ls,
-                "l3" }, null);
+        SimpleFeature newFeature =
+                SimpleFeatureBuilder.build(line3DType, new Object[] {2, ls, "l3"}, null);
 
         // insert it
-        SimpleFeatureStore fs = (SimpleFeatureStore) dataStore.getFeatureSource(tname(getLine3d()),
-                Transaction.AUTO_COMMIT);
+        SimpleFeatureStore fs =
+                (SimpleFeatureStore)
+                        dataStore.getFeatureSource(tname(getLine3d()), Transaction.AUTO_COMMIT);
         List<FeatureId> fids = fs.addFeatures(DataUtilities.collection(newFeature));
 
         // retrieve it back
-        try(SimpleFeatureIterator fi = fs.getFeatures(FF.id(new HashSet<FeatureId>(fids))).features()) {
+        try (SimpleFeatureIterator fi =
+                fs.getFeatures(FF.id(new HashSet<FeatureId>(fids))).features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
             assertTrue(ls.equalsExact((Geometry) f.getDefaultGeometry()));
@@ -180,8 +224,9 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         LiteCoordinateSequenceFactory csf = new LiteCoordinateSequenceFactory();
         GeometryFactory gf = new GeometryFactory(csf);
 
-        LinearRing shell = gf.createLinearRing(csf.create(new double[] { 0, 0, 99, 1, 0, 33, 1, 1,
-                66, 0, 0, 99 }, 3));
+        LinearRing shell =
+                gf.createLinearRing(
+                        csf.create(new double[] {0, 0, 99, 1, 0, 33, 1, 1, 66, 0, 0, 99}, 3));
         Polygon poly = gf.createPolygon(shell, null);
 
         checkCreateSchemaAndInsert(poly);
@@ -191,8 +236,11 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         LiteCoordinateSequenceFactory csf = new LiteCoordinateSequenceFactory();
         GeometryFactory gf = new GeometryFactory(csf);
 
-        LinearRing shell = gf.createLinearRing(csf.create(new double[] { 0, 0, 99, 1, 0, 33, 1, 1,
-                66, 0, 1, 33, 0, 0, 99 }, 3));
+        LinearRing shell =
+                gf.createLinearRing(
+                        csf.create(
+                                new double[] {0, 0, 99, 1, 0, 33, 1, 1, 66, 0, 1, 33, 0, 0, 99},
+                                3));
         Polygon poly = gf.createPolygon(shell, null);
 
         checkCreateSchemaAndInsert(poly);
@@ -202,11 +250,17 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         LiteCoordinateSequenceFactory csf = new LiteCoordinateSequenceFactory();
         GeometryFactory gf = new GeometryFactory(csf);
 
-        LinearRing shell = gf.createLinearRing(csf.create(new double[] { 0, 0, 99, 10, 0, 33, 10,
-                10, 66, 0, 10, 66, 0, 0, 99 }, 3));
-        LinearRing hole = gf.createLinearRing(csf.create(new double[] { 2, 2, 99, 3, 2, 44, 3, 3,
-                99, 2, 3, 99, 2, 2, 99 }, 3));
-        Polygon poly = gf.createPolygon(shell, new LinearRing[] { hole });
+        LinearRing shell =
+                gf.createLinearRing(
+                        csf.create(
+                                new double[] {0, 0, 99, 10, 0, 33, 10, 10, 66, 0, 10, 66, 0, 0, 99},
+                                3));
+        LinearRing hole =
+                gf.createLinearRing(
+                        csf.create(
+                                new double[] {2, 2, 99, 3, 2, 44, 3, 3, 99, 2, 3, 99, 2, 2, 99},
+                                3));
+        Polygon poly = gf.createPolygon(shell, new LinearRing[] {hole});
 
         checkCreateSchemaAndInsert(poly);
     }
@@ -215,19 +269,25 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         LiteCoordinateSequenceFactory csf = new LiteCoordinateSequenceFactory();
         GeometryFactory gf = new GeometryFactory(csf);
 
-        LinearRing shell = gf.createLinearRing(csf.create(new double[] { 1, 1, 99, 10, 1, 33, 
-                10, 10, 66,    1, 10, 66,       1, 1, 99 }, 3));
-        LinearRing hole = gf.createLinearRing(csf.create(new double[] { 2, 2, 99, 8, 2, 44, 8, 8,
-                99, 2, 8, 99, 2, 2, 99 }, 3));
-        Polygon poly = gf.createPolygon(shell, new LinearRing[] { hole });
+        LinearRing shell =
+                gf.createLinearRing(
+                        csf.create(
+                                new double[] {1, 1, 99, 10, 1, 33, 10, 10, 66, 1, 10, 66, 1, 1, 99},
+                                3));
+        LinearRing hole =
+                gf.createLinearRing(
+                        csf.create(
+                                new double[] {2, 2, 99, 8, 2, 44, 8, 8, 99, 2, 8, 99, 2, 2, 99},
+                                3));
+        Polygon poly = gf.createPolygon(shell, new LinearRing[] {hole});
 
         checkCreateSchemaAndInsert(poly);
     }
 
     /**
-     * Creates the polygon schema, inserts a 3D geometry into the datastore,
-     * and retrieves it back to make sure 3d data is preserved.
-     * 
+     * Creates the polygon schema, inserts a 3D geometry into the datastore, and retrieves it back
+     * to make sure 3d data is preserved.
+     *
      * @throws Exception
      */
     private void checkCreateSchemaAndInsert(Geometry poly) throws Exception {
@@ -236,12 +296,14 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         assertFeatureTypesEqual(poly3DType, actualSchema);
         assertEquals(
                 getNativeSRID(),
-                actualSchema.getGeometryDescriptor().getUserData()
+                actualSchema
+                        .getGeometryDescriptor()
+                        .getUserData()
                         .get(JDBCDataStore.JDBC_NATIVE_SRID));
 
         // insert the feature
-        try(FeatureWriter<SimpleFeatureType, SimpleFeature> fw = dataStore.getFeatureWriterAppend(
-                tname(getPoly3d()), Transaction.AUTO_COMMIT)) {
+        try (FeatureWriter<SimpleFeatureType, SimpleFeature> fw =
+                dataStore.getFeatureWriterAppend(tname(getPoly3d()), Transaction.AUTO_COMMIT)) {
             SimpleFeature f = fw.next();
             f.setAttribute(aname(ID), 0);
             f.setAttribute(aname(GEOM), poly);
@@ -250,24 +312,23 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
         }
 
         // read feature back
-        
+
         /**
-         * Use a LiteCoordinateSequence, since this mimics GeoServer behaviour better,
-         * and it exposes bugs in CoordinateSequence handling.
+         * Use a LiteCoordinateSequence, since this mimics GeoServer behaviour better, and it
+         * exposes bugs in CoordinateSequence handling.
          */
         final Hints hints = new Hints();
         hints.put(Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory());
         Query query = new Query(tname(getPoly3d()));
         query.setHints(hints);
-        
-        try(FeatureReader<SimpleFeatureType, SimpleFeature> fr = dataStore.getFeatureReader(
-                query, Transaction.AUTO_COMMIT)) {
+
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertTrue(fr.hasNext());
             SimpleFeature f = fr.next();
-    
+
             /**
-             * Check the geometries are topologically equal.
-             * Check that the Z values are preserved
+             * Check the geometries are topologically equal. Check that the Z values are preserved
              */
             Geometry fgeom = (Geometry) f.getDefaultGeometry();
             assertTrue("2D topology does not match", poly.equalsTopo(fgeom));
@@ -276,10 +337,11 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
     }
 
     /**
-     * Tests whether two geometries have the same Z values for coordinates with identical 2D locations. Requires that each geometry is internally
-     * location-consistent in Z; that is, if two coordinates are identical in location, then the Z values are equal. This should always be the case
-     * for valid data.
-     * 
+     * Tests whether two geometries have the same Z values for coordinates with identical 2D
+     * locations. Requires that each geometry is internally location-consistent in Z; that is, if
+     * two coordinates are identical in location, then the Z values are equal. This should always be
+     * the case for valid data.
+     *
      * @param g1
      * @param g2
      * @return true if the geometries are location-equal in Z
@@ -297,8 +359,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
             Coordinate p2 = pt2[i2];
             double z = coordZMap.get(p2);
             boolean isEqualZ = p2.z == z || (Double.isNaN(p2.z) && Double.isNaN(z));
-            if (!isEqualZ)
-                return false;
+            if (!isEqualZ) return false;
         }
 
         return true;
@@ -306,7 +367,7 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
     /**
      * Make sure we can properly retrieve the bounds of 3d layers
-     * 
+     *
      * @throws Exception
      */
     public void testBounds() throws Exception {
@@ -328,8 +389,9 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
         // setup a query that mimicks the streaming renderer behaviour
         Query q = new Query(tname(getLine3d()));
-        Hints hints = new Hints(Hints.JTS_COORDINATE_SEQUENCE_FACTORY,
-                new LiteCoordinateSequenceFactory());
+        Hints hints =
+                new Hints(
+                        Hints.JTS_COORDINATE_SEQUENCE_FACTORY, new LiteCoordinateSequenceFactory());
         q.setHints(hints);
 
         // check the srs you get is the expected one
@@ -340,20 +402,26 @@ public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 
         // build up the reference 2d line, the 3d one is (1 1 0, 2 2 0, 4 2 1, 5
         // 1 1)
-        LineString expected = new GeometryFactory().createLineString(new Coordinate[] {
-                new Coordinate(1, 1), new Coordinate(2, 2), new Coordinate(4, 2),
-                new Coordinate(5, 1) });
+        LineString expected =
+                new GeometryFactory()
+                        .createLineString(
+                                new Coordinate[] {
+                                    new Coordinate(1, 1),
+                                    new Coordinate(2, 2),
+                                    new Coordinate(4, 2),
+                                    new Coordinate(5, 1)
+                                });
 
         // check feature reader and the schema
-        try(FeatureReader<SimpleFeatureType, SimpleFeature> fr = dataStore.getFeatureReader(q,
-                Transaction.AUTO_COMMIT)) {
+        try (FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                dataStore.getFeatureReader(q, Transaction.AUTO_COMMIT)) {
             assertEquals(crs, fr.getFeatureType().getCoordinateReferenceSystem());
-            assertEquals(crs, fr.getFeatureType().getGeometryDescriptor()
-                    .getCoordinateReferenceSystem());
+            assertEquals(
+                    crs,
+                    fr.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem());
             assertTrue(fr.hasNext());
             SimpleFeature f = fr.next();
             assertTrue(expected.equalsExact((Geometry) f.getDefaultGeometry()));
         }
     }
-
 }

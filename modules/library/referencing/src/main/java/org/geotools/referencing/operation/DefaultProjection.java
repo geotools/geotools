@@ -20,42 +20,32 @@
 package org.geotools.referencing.operation;
 
 import java.util.Map;
-
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.Projection;
-
 
 /**
  * A {@linkplain DefaultConversion conversion} transforming
  * (<var>longitude</var>,<var>latitude</var>) coordinates to cartesian coordinates
  * (<var>x</var>,<var>y</var>).
  *
- * <P>An unofficial list of projections and their parameters can
- * be found <A HREF="http://www.remotesensing.org/geotiff/proj_list/">there</A>.
- * Most projections expect the following parameters:
- *  <code>"central_meridian"</code> (default to 0),
- *  <code>"latitude_of_origin"</code> (default to 0),
- *  <code>"scale_factor"</code> (default to 1),
- *  <code>"false_easting"</code> (default to 0) and
- *  <code>"false_northing"</code> (default to 0).</P>
+ * <p>An unofficial list of projections and their parameters can be found <A
+ * HREF="http://www.remotesensing.org/geotiff/proj_list/">there</A>. Most projections expect the
+ * following parameters: <code>"central_meridian"</code> (default to 0), <code>"latitude_of_origin"
+ * </code> (default to 0), <code>"scale_factor"</code> (default to 1), <code>"false_easting"</code>
+ * (default to 0) and <code>"false_northing"</code> (default to 0).
  *
  * @since 2.1
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
  * @see org.geotools.referencing.crs.DefaultProjectedCRS
  * @see <A HREF="http://mathworld.wolfram.com/MapProjection.html">Map projections on MathWorld</A>
  */
 public class DefaultProjection extends DefaultConversion implements Projection {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7176751851369816864L;
 
     /**
@@ -66,35 +56,35 @@ public class DefaultProjection extends DefaultConversion implements Projection {
      * @param conversion The defining conversion.
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS}
-     *                  to positions in the {@linkplain #getTargetCRS target CRS}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to
+     *     positions in the {@linkplain #getTargetCRS target CRS}.
      */
-    public DefaultProjection(final Conversion               conversion,
-                             final CoordinateReferenceSystem sourceCRS,
-                             final CoordinateReferenceSystem targetCRS,
-                             final MathTransform             transform)
-    {
+    public DefaultProjection(
+            final Conversion conversion,
+            final CoordinateReferenceSystem sourceCRS,
+            final CoordinateReferenceSystem targetCRS,
+            final MathTransform transform) {
         super(conversion, sourceCRS, targetCRS, transform);
     }
 
     /**
-     * Constructs a projection from a set of properties. The properties given in argument
-     * follow the same rules than for the {@link AbstractCoordinateOperation} constructor.
+     * Constructs a projection from a set of properties. The properties given in argument follow the
+     * same rules than for the {@link AbstractCoordinateOperation} constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param sourceCRS The source CRS, or {@code null} if not available.
      * @param targetCRS The target CRS, or {@code null} if not available.
      * @param transform Transform from positions in the {@linkplain #getSourceCRS source coordinate
-     *                  reference system} to positions in the {@linkplain #getTargetCRS target
-     *                  coordinate reference system}.
-     * @param method    The operation method.
+     *     reference system} to positions in the {@linkplain #getTargetCRS target coordinate
+     *     reference system}.
+     * @param method The operation method.
      */
-    public DefaultProjection(final Map<String,?>             properties,
-                             final CoordinateReferenceSystem sourceCRS,
-                             final CoordinateReferenceSystem targetCRS,
-                             final MathTransform             transform,
-                             final OperationMethod           method)
-    {
+    public DefaultProjection(
+            final Map<String, ?> properties,
+            final CoordinateReferenceSystem sourceCRS,
+            final CoordinateReferenceSystem targetCRS,
+            final MathTransform transform,
+            final OperationMethod method) {
         super(properties, sourceCRS, targetCRS, transform, method);
     }
 }

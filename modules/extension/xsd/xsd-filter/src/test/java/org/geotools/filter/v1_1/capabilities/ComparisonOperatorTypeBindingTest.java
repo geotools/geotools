@@ -16,18 +16,18 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.Operator;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xml.Binding;
-
+import org.opengis.filter.capability.Operator;
+import org.w3c.dom.Document;
 
 /**
  * Binding test case for http://www.opengis.net/ogc:ComparisonOperatorType.
  *
  * <p>
- *  <pre>
+ *
+ * <pre>
  *   <code>
  *  &lt;xsd:simpleType name="ComparisonOperatorType"&gt;
  *      &lt;xsd:restriction base="xsd:string"&gt;
@@ -45,12 +45,8 @@ import org.geotools.xml.Binding;
  *
  *    </code>
  *   </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
@@ -135,8 +131,11 @@ public class ComparisonOperatorTypeBindingTest extends OGCTestSupport {
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.comparisonOperator("LessThan"),
-                new QName(OGC.NAMESPACE, "ComparisonOperator"), OGC.ComparisonOperatorType);
+        Document dom =
+                encode(
+                        FilterMockData.comparisonOperator("LessThan"),
+                        new QName(OGC.NAMESPACE, "ComparisonOperator"),
+                        OGC.ComparisonOperatorType);
         assertEquals("LessThan", dom.getDocumentElement().getFirstChild().getNodeValue());
     }
 }

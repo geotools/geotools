@@ -17,6 +17,7 @@
 
 package org.geotools.gce.imagemosaic.granulecollector;
 
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.ColorModel;
@@ -25,6 +26,7 @@ import java.awt.image.MultiPixelPackedSampleModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,14 +36,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.management.RuntimeErrorException;
 import javax.media.jai.Histogram;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
-
 import org.apache.commons.io.FilenameUtils;
-import org.geotools.data.DataUtilities;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.gce.imagemosaic.GranuleLoader;
@@ -55,27 +53,26 @@ import org.geotools.gce.imagemosaic.egr.ROIExcessGranuleRemover;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.image.ImageWorker;
 import org.geotools.resources.coverage.CoverageUtilities;
-import it.geosolutions.jaiext.vectorbin.ROIGeometry;
+import org.geotools.util.URLs;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.opengis.feature.simple.SimpleFeature;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * Basic submosaic producer. Accepts all granules and mosaics without any real special handling
- */
+/** Basic submosaic producer. Accepts all granules and mosaics without any real special handling */
 public class BaseSubmosaicProducer implements SubmosaicProducer {
 
-    final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(DefaultSubmosaicProducer.class);
+    static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(DefaultSubmosaicProducer.class);
 
     /** The final lists for granules to be computed, splitted per dimension value. */
-    protected final List<Future<GranuleDescriptor.GranuleLoadingResult>> granulesFutures = new ArrayList<Future<GranuleDescriptor.GranuleLoadingResult>>();
+    protected final List<Future<GranuleDescriptor.GranuleLoadingResult>> granulesFutures =
+            new ArrayList<Future<GranuleDescriptor.GranuleLoadingResult>>();
 
     protected final boolean dryRun;
 
     protected RasterLayerResponse rasterLayerResponse;
 
-    /** The number of collected granules. **/
+    /** The number of collected granules. * */
     protected int granulesNumber;
 
     protected double[][] sourceThreshold;
@@ -92,12 +89,14 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         this.rasterLayerResponse = rasterLayerResponse;
         this.dryRun = dryRun;
         inputTransparentColor = rasterLayerResponse.getRequest().getInputTransparentColor();
-        doInputTransparency = inputTransparentColor != null
-                && !rasterLayerResponse.getFootprintBehavior().handleFootprints();
+        doInputTransparency =
+                inputTransparentColor != null
+                        && !rasterLayerResponse.getFootprintBehavior().handleFootprints();
     }
 
     /**
-     * This methods collects the granules from their eventual multithreaded processing and turn them into a {@link MosaicInputs} object.
+     * This methods collects the granules from their eventual multithreaded processing and turn them
+     * into a {@link MosaicInputs} object.
      *
      * @return a {@link MosaicInputs} ready to be mosaicked.
      */
@@ -112,6 +111,7 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
         // execute them all
         final StringBuilder paths = new StringBuilder();
+        URL sourceUrl = null;
         final List<MosaicElement> returnValues = new ArrayList<>();
         // collect sources for the current dimension and then process them
         for (Future<GranuleDescriptor.GranuleLoadingResult> future : granulesFutures) {
@@ -121,30 +121,34 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                 final GranuleDescriptor.GranuleLoadingResult result = future.get();
                 if (result == null) {
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.log(Level.FINE, "Unable to load the raster for granule with request "
-                                + rasterLayerResponse.getRequest().toString());
+                        LOGGER.log(
+                                Level.FINE,
+                                "Unable to load the raster for granule with request "
+                                        + rasterLayerResponse.getRequest().toString());
                     }
                     continue;
                 }
                 final RenderedImage loadedImage = result.getRaster();
                 if (loadedImage == null) {
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.log(Level.FINE,
+                        LOGGER.log(
+                                Level.FINE,
                                 "Unable to load the raster for granuleDescriptor "
-                                        + result.getGranuleUrl() + " with request "
+                                        + result.getGranuleUrl()
+                                        + " with request "
                                         + rasterLayerResponse.getRequest().toString());
                     }
                     continue;
                 }
-                
+
                 // perform excess granule removal in case multithreaded loading is enabled
-                if(isMultithreadedLoadingEnabled()) {
+                if (isMultithreadedLoadingEnabled()) {
                     ROIExcessGranuleRemover remover = rasterLayerResponse.getExcessGranuleRemover();
-                    if(remover != null) {
-                        if(remover.isRenderingAreaComplete()) {
+                    if (remover != null) {
+                        if (remover.isRenderingAreaComplete()) {
                             break;
                         }
-                        if(!remover.addGranule(result)) {
+                        if (!remover.addGranule(result)) {
                             // skip this granule
                             continue;
                         }
@@ -174,8 +178,13 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                     // for data type other than byte and ushort. With float and double
                     // it can cut off a large par of the dynamic.
                     //
-                    sourceThreshold = new double[][] { { CoverageUtilities
-                            .getMosaicThreshold(loadedImage.getSampleModel().getDataType()) } };
+                    sourceThreshold =
+                            new double[][] {
+                                {
+                                    CoverageUtilities.getMosaicThreshold(
+                                            loadedImage.getSampleModel().getDataType())
+                                }
+                            };
                 }
 
                 // moving on
@@ -184,34 +193,43 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                 }
 
                 // path management
-                File inputFile = DataUtilities.urlToFile(result.getGranuleUrl());
-                String canonicalPath = inputFile.getCanonicalPath();
-                // Remove ovr extension if present
-                String fileCanonicalPath = canonicalPath;
-                if (canonicalPath.endsWith(".ovr")) {
-                    fileCanonicalPath = canonicalPath.substring(0, canonicalPath.length() - 4);
+                String fileCanonicalPath = null;
+                File inputFile = URLs.urlToFile(result.getGranuleUrl());
+                if (inputFile != null) {
+                    String canonicalPath = inputFile.getCanonicalPath();
+                    // Remove ovr extension if present
+                    fileCanonicalPath = canonicalPath;
+                    if (canonicalPath.endsWith(".ovr")) {
+                        fileCanonicalPath = canonicalPath.substring(0, canonicalPath.length() - 4);
+                    }
+                    paths.append(canonicalPath).append(",");
                 }
-                paths.append(canonicalPath).append(",");
+                // take only the first source URL found
+                if (sourceUrl == null) {
+                    sourceUrl = result.getGranuleUrl();
+                }
 
                 // add to the mosaic collection, with preprocessing
                 // TODO pluggable mechanism for processing (artifacts,etc...)
-                MosaicElement input = preProcessGranuleRaster(loadedImage, result,
-                        fileCanonicalPath);
+                MosaicElement input =
+                        preProcessGranuleRaster(loadedImage, result, fileCanonicalPath);
                 returnValues.add(input);
 
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info("Adding to mosaic failed, original request was "
-                            + rasterLayerResponse.getRequest());
+                    LOGGER.info(
+                            "Adding to mosaic failed, original request was "
+                                    + rasterLayerResponse.getRequest());
                 }
                 throw new IOException(e);
             }
         }
-        
+
         // collect paths
         rasterLayerResponse.setGranulesPaths(
                 paths.length() > 1 ? paths.substring(0, paths.length() - 1) : "");
-        
+        rasterLayerResponse.setSourceUrl(sourceUrl);
+
         if (returnValues == null || returnValues.isEmpty()) {
             if (LOGGER.isLoggable(Level.INFO)) {
                 LOGGER.info("The MosaicElement list is null or empty");
@@ -220,8 +238,10 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         return new MosaicInputs(doInputTransparency, hasAlpha, returnValues, sourceThreshold);
     }
 
-    private MosaicElement preProcessGranuleRaster(RenderedImage granule,
-            final GranuleDescriptor.GranuleLoadingResult result, String canonicalPath) {
+    private MosaicElement preProcessGranuleRaster(
+            RenderedImage granule,
+            final GranuleDescriptor.GranuleLoadingResult result,
+            String canonicalPath) {
 
         //
         // INDEX COLOR MODEL EXPANSION
@@ -258,18 +278,23 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Support for alpha on input granule " + result.getGranuleUrl());
             }
-            granule = new ImageWorker(granule).makeColorTransparent(inputTransparentColor)
-                    .getRenderedImage();
+            granule =
+                    new ImageWorker(granule)
+                            .makeColorTransparent(inputTransparentColor)
+                            .getRenderedImage();
             hasAlpha = granule.getColorModel().hasAlpha();
             if (!granule.getColorModel().hasAlpha()) {
-                // if the resulting image has no transparency (can happen with IndexColorModel then we need to try component
+                // if the resulting image has no transparency (can happen with IndexColorModel then
+                // we need to try component
                 // color model
-                granule = new ImageWorker(granule).forceComponentColorModel(true)
-                        .makeColorTransparent(inputTransparentColor).getRenderedImage();
+                granule =
+                        new ImageWorker(granule)
+                                .forceComponentColorModel(true)
+                                .makeColorTransparent(inputTransparentColor)
+                                .getRenderedImage();
                 hasAlpha = granule.getColorModel().hasAlpha();
             }
             assert hasAlpha;
-
         }
         PlanarImage alphaChannel = null;
         if (hasAlpha || doInputTransparency) {
@@ -279,7 +304,8 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                 w.forceComponentColorModel();
                 granule = w.getRenderedImage();
             }
-            // doing this here gives the guarantee that I get the correct index for the transparency band
+            // doing this here gives the guarantee that I get the correct index for the transparency
+            // band
             alphaIndex[0] = granule.getColorModel().getNumComponents() - 1;
             assert alphaIndex[0] < granule.getSampleModel().getNumBands();
 
@@ -298,8 +324,13 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         //
         // we need to add its roi in order to avoid problems with the mosaics sources overlapping
         final Rectangle bounds = PlanarImage.wrapRenderedImage(granule).getBounds();
-        Geometry mask = JTS.toGeometry(new Envelope(bounds.getMinX(), bounds.getMaxX(),
-                bounds.getMinY(), bounds.getMaxY()));
+        Geometry mask =
+                JTS.toGeometry(
+                        new Envelope(
+                                bounds.getMinX(),
+                                bounds.getMaxX(),
+                                bounds.getMinY(),
+                                bounds.getMaxY()));
         ROI imageROI = new ROIGeometry(mask);
         if (rasterLayerResponse.getFootprintBehavior().handleFootprints()) {
 
@@ -327,8 +358,9 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                         final String histogramPath = path + baseName + "." + "histogram";
                         final Histogram histogram = Utils.getHistogram(histogramPath);
                         if (histogram != null) {
-                            final double[] p = histogram.getPTileThreshold(
-                                    rasterLayerResponse.getArtifactsFilterPTileThreshold());
+                            final double[] p =
+                                    histogram.getPTileThreshold(
+                                            rasterLayerResponse.getArtifactsFilterPTileThreshold());
                             artifactThreshold = (int) p[0];
                         }
                     }
@@ -336,9 +368,11 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "Filtering granules artifacts");
                 }
-                ImageWorker w = new ImageWorker(granule)
-                        .setRenderingHints(rasterLayerResponse.getHints()).setROI(imageROI);
-                w.setBackground(new double[] { 0 });
+                ImageWorker w =
+                        new ImageWorker(granule)
+                                .setRenderingHints(rasterLayerResponse.getHints())
+                                .setROI(imageROI);
+                w.setBackground(new double[] {0});
                 w.artifactsFilter(artifactThreshold, 3);
                 granule = w.getRenderedImage();
             }
@@ -350,9 +384,14 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
 
     @Override
     public List<MosaicElement> createMosaic() throws IOException {
-        return Collections
-                .singletonList((new Mosaicker(this.rasterLayerResponse,
-                        collectGranules(), MergeBehavior.FLAT)).createMosaic());
+        final MosaicElement mosaic =
+                (new Mosaicker(this.rasterLayerResponse, collectGranules(), MergeBehavior.FLAT))
+                        .createMosaic();
+        if (mosaic == null) {
+            return Collections.emptyList();
+        } else {
+            return Collections.singletonList(mosaic);
+        }
     }
 
     @Override
@@ -361,37 +400,47 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
     }
 
     protected boolean acceptGranule(GranuleDescriptor granuleDescriptor) {
-        Object imageIndex = granuleDescriptor.getOriginator().getAttribute("imageindex");
+        SimpleFeature originator = granuleDescriptor.getOriginator();
+        Object imageIndex = originator != null ? originator.getAttribute("imageindex") : null;
 
         if (imageIndex != null && imageIndex instanceof Integer) {
             rasterLayerResponse.setImageChoice((Integer) imageIndex);
         }
 
-        final GranuleLoader loader = new GranuleLoader(rasterLayerResponse.getBaseReadParameters(),
-                rasterLayerResponse.getImageChoice(), rasterLayerResponse.getMosaicBBox(),
-                rasterLayerResponse.getFinalWorldToGridCorner(), granuleDescriptor,
-                rasterLayerResponse.getRequest(), rasterLayerResponse.getHints());
+        final GranuleLoader loader =
+                new GranuleLoader(
+                        rasterLayerResponse.getBaseReadParameters(),
+                        rasterLayerResponse.getImageChoice(),
+                        rasterLayerResponse.getMosaicBBox(),
+                        rasterLayerResponse.getFinalWorldToGridCorner(),
+                        granuleDescriptor,
+                        rasterLayerResponse.getRequest(),
+                        rasterLayerResponse.getHints());
         if (!dryRun) {
             final boolean multiThreadedLoading = isMultithreadedLoadingEnabled();
             if (multiThreadedLoading) {
                 // MULTITHREADED EXECUTION submitting the task
-                final ExecutorService mtLoader = rasterLayerResponse
-                        .getRasterManager().getParentReader().getMultiThreadedLoader();
+                final ExecutorService mtLoader =
+                        rasterLayerResponse
+                                .getRasterManager()
+                                .getParentReader()
+                                .getMultiThreadedLoader();
                 granulesFutures.add(mtLoader.submit(loader));
             } else {
-                // SINGLE THREADED Execution, we defer the execution to when we have done the loading
-                final FutureTask<GranuleDescriptor.GranuleLoadingResult> task = new FutureTask<>(
-                        loader);
+                // SINGLE THREADED Execution, we defer the execution to when we have done the
+                // loading
+                final FutureTask<GranuleDescriptor.GranuleLoadingResult> task =
+                        new FutureTask<>(loader);
                 task.run(); // run in current thread
-                
+
                 // perform excess granule removal, as it makes sense in single threaded mode to
                 // do it while loading, to allow for an early bail out reading granules
                 ROIExcessGranuleRemover remover = rasterLayerResponse.getExcessGranuleRemover();
                 GranuleLoadingResult result;
-                if(remover != null) {
+                if (remover != null) {
                     try {
                         result = task.get();
-                        if(!remover.addGranule(result)) {
+                        if (!remover.addGranule(result)) {
                             return false;
                         }
                     } catch (InterruptedException | ExecutionException e) {
@@ -409,14 +458,14 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
         granulesNumber++;
         return true;
     }
-    
+
     private boolean isMultithreadedLoadingEnabled() {
-        final ExecutorService mtLoader = rasterLayerResponse
-                .getRasterManager().getParentReader().getMultiThreadedLoader();
-        final boolean multiThreadedLoading = rasterLayerResponse.isMultithreadingAllowed() && mtLoader != null;
+        final ExecutorService mtLoader =
+                rasterLayerResponse.getRasterManager().getParentReader().getMultiThreadedLoader();
+        final boolean multiThreadedLoading =
+                rasterLayerResponse.isMultithreadingAllowed() && mtLoader != null;
         return multiThreadedLoading;
     }
-
 
     public boolean doInputTransparency() {
         return doInputTransparency;

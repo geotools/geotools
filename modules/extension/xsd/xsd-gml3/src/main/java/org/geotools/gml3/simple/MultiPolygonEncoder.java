@@ -21,24 +21,23 @@ import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 import org.xml.sax.helpers.AttributesImpl;
-
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Encodes a GML3 multi polygon
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
 class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
 
-    static final QualifiedName MULTI_SURFACE = new QualifiedName(GML.NAMESPACE, "MultiSurface",
-            "gml");
+    static final QualifiedName MULTI_SURFACE =
+            new QualifiedName(GML.NAMESPACE, "MultiSurface", "gml");
 
-    static final QualifiedName SURFACE_MEMBER = new QualifiedName(GML.NAMESPACE, "surfaceMember",
-            "gml");
+    static final QualifiedName SURFACE_MEMBER =
+            new QualifiedName(GML.NAMESPACE, "surfaceMember", "gml");
 
     QualifiedName multiSurface;
 
@@ -54,18 +53,17 @@ class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
     }
 
     @Override
-    public void encode(MultiPolygon geometry, AttributesImpl atts, GMLWriter handler)
+    public void encode(MultiPolygon geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
+        atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(multiSurface, atts);
 
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             handler.startElement(surfaceMember, null);
-            pe.encode((Polygon) geometry.getGeometryN(i), null, handler);
+            pe.encode((Polygon) geometry.getGeometryN(i), null, handler, gmlId + "." + (i + 1));
             handler.endElement(surfaceMember);
         }
 
         handler.endElement(multiSurface);
     }
-    
-
 }

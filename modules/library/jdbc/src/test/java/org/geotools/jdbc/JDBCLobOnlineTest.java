@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
@@ -19,11 +18,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.identity.Identifier;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
 
     protected static final String TESTLOB = "testlob";
@@ -31,18 +26,17 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
     protected static final String BLOB_FIELD = "blob_field";
     protected static final String CLOB_FIELD = "clob_field";
     protected static final String RAW_FIELD = "raw_field";
-    
-    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null); 
+
+    protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     protected SimpleFeatureType lobSchema;
 
     @Override
     protected abstract JDBCLobTestSetup createTestSetup();
-    
-    
+
     @Override
     protected void connect() throws Exception {
         super.connect();
-        
+
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName(TESTLOB);
         tb.add(aname(BLOB_FIELD), byte[].class);
@@ -50,56 +44,69 @@ public abstract class JDBCLobOnlineTest extends JDBCTestSupport {
         tb.add(aname(RAW_FIELD), byte[].class);
         lobSchema = tb.buildFeatureType();
     }
-    
+
     public void testSchema() throws Exception {
-        SimpleFeatureType ft =  dataStore.getSchema(tname(TESTLOB));
+        SimpleFeatureType ft = dataStore.getSchema(tname(TESTLOB));
         assertFeatureTypesEqual(lobSchema, ft);
     }
-    
+
     public void testRead() throws Exception {
-        FeatureCollection<SimpleFeatureType, SimpleFeature> fc = 
-            dataStore.getFeatureSource(tname(TESTLOB)).getFeatures();
-        
-        try(FeatureIterator<SimpleFeature> fi = fc.features()) {
+        FeatureCollection<SimpleFeatureType, SimpleFeature> fc =
+                dataStore.getFeatureSource(tname(TESTLOB)).getFeatures();
+
+        try (FeatureIterator<SimpleFeature> fi = fc.features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
-            
-            assertTrue(Arrays.equals(new byte[] {1,2,3,4,5}, (byte[]) f.getAttribute(aname(BLOB_FIELD))));
-            assertTrue(Arrays.equals(new byte[] {6,7,8,9,10}, (byte[]) f.getAttribute(aname(RAW_FIELD))));
+
+            assertTrue(
+                    Arrays.equals(
+                            new byte[] {1, 2, 3, 4, 5},
+                            (byte[]) f.getAttribute(aname(BLOB_FIELD))));
+            assertTrue(
+                    Arrays.equals(
+                            new byte[] {6, 7, 8, 9, 10},
+                            (byte[]) f.getAttribute(aname(RAW_FIELD))));
             assertEquals("small clob", f.getAttribute(aname(CLOB_FIELD)));
         }
     }
-    
+
     public void testWrite() throws Exception {
-        FeatureStore<SimpleFeatureType, SimpleFeature> fs =  (FeatureStore<SimpleFeatureType, SimpleFeature>) 
-            dataStore.getFeatureSource(tname(TESTLOB));
-        
-        SimpleFeature sf = SimpleFeatureBuilder.build(lobSchema, new Object[] {
-                new byte[] {6,7,8}, "newclob", new byte[] {11,12,13}}, null);
+        FeatureStore<SimpleFeatureType, SimpleFeature> fs =
+                (FeatureStore<SimpleFeatureType, SimpleFeature>)
+                        dataStore.getFeatureSource(tname(TESTLOB));
+
+        SimpleFeature sf =
+                SimpleFeatureBuilder.build(
+                        lobSchema,
+                        new Object[] {new byte[] {6, 7, 8}, "newclob", new byte[] {11, 12, 13}},
+                        null);
         List<FeatureId> fids = fs.addFeatures(DataUtilities.collection(sf));
-        
+
         Filter filter = ff.id(new HashSet<Identifier>(fids));
-        try(FeatureIterator<SimpleFeature> fi = fs.getFeatures(filter).features()) {
+        try (FeatureIterator<SimpleFeature> fi = fs.getFeatures(filter).features()) {
             assertTrue(fi.hasNext());
             SimpleFeature f = fi.next();
-            assertTrue(Arrays.equals(new byte[] {6,7,8}, (byte[]) f.getAttribute(aname(BLOB_FIELD))));
-            assertTrue(Arrays.equals(new byte[] {11,12,13}, (byte[]) f.getAttribute(aname(RAW_FIELD))));
+            assertTrue(
+                    Arrays.equals(
+                            new byte[] {6, 7, 8}, (byte[]) f.getAttribute(aname(BLOB_FIELD))));
+            assertTrue(
+                    Arrays.equals(
+                            new byte[] {11, 12, 13}, (byte[]) f.getAttribute(aname(RAW_FIELD))));
             assertEquals("newclob", f.getAttribute(aname(CLOB_FIELD)));
         }
     }
-    
+
     public void testCreateSchema() throws IOException {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.init(lobSchema);
         tb.setName(tname("testLobCreate"));
         SimpleFeatureType ft = tb.buildFeatureType();
-        
-        if(Arrays.asList(dataStore.getTypeNames()).contains(ft.getTypeName())) {
+
+        if (Arrays.asList(dataStore.getTypeNames()).contains(ft.getTypeName())) {
             dataStore.removeSchema(ft.getTypeName());
         }
         dataStore.createSchema(ft);
-        SimpleFeatureType ft2 =  dataStore.getSchema(ft.getTypeName());
+        SimpleFeatureType ft2 = dataStore.getSchema(ft.getTypeName());
         assertFeatureTypesEqual(ft, ft2);
     }
-
 }

@@ -21,26 +21,19 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 
 /**
- * This class is a holder for a GeoKey record containing four short values as
- * specified in the GeoTiff spec. The values are a GeoKey ID, the TIFFTag number
- * of the location of this data, the count of values for this GeoKey, and the
- * offset (or value if the location is 0).
- * 
- * <p>
- * If the Tiff Tag location is 0, then the value is a Short and is contained in
- * the offset. Otherwise, there is one or more value in the specified external
- * Tiff tag. The number is specified by the count field, and the offset into the
- * record is the offset field.
- * </p>
- * 
+ * This class is a holder for a GeoKey record containing four short values as specified in the
+ * GeoTiff spec. The values are a GeoKey ID, the TIFFTag number of the location of this data, the
+ * count of values for this GeoKey, and the offset (or value if the location is 0).
+ *
+ * <p>If the Tiff Tag location is 0, then the value is a Short and is contained in the offset.
+ * Otherwise, there is one or more value in the specified external Tiff tag. The number is specified
+ * by the count field, and the offset into the record is the offset field.
+ *
  * @author Simone Giannecchini, GeoSolutions
  * @author Mike Nidel
- *
- *
- *
  * @source $URL$
  */
-public final class GeoKeyEntry implements Comparable<GeoKeyEntry>{
+public final class GeoKeyEntry implements Comparable<GeoKeyEntry> {
 
     /**
      * "KeyID" gives the key-ID value of the Key (identical in function to TIFF tag ID, but
@@ -56,9 +49,7 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry>{
      */
     private int tiffTagLocation;
 
-    /**
-     * "Count" indicates the number of values in this key.
-     */
+    /** "Count" indicates the number of values in this key. */
     private int count;
 
     /**
@@ -71,11 +62,9 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry>{
 
     /**
      * Constructor of a {@link GeoKeyEntry}.
-     * 
-     * @param keyID
-     *            the id of this {@link GeoKeyEntry}.
-     * @param tagLoc
-     *            the location of this tag.
+     *
+     * @param keyID the id of this {@link GeoKeyEntry}.
+     * @param tagLoc the location of this tag.
      * @param count
      * @param offset
      */
@@ -88,9 +77,8 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry>{
 
     private static void ensureNotNegative(final String argument, final int value) {
         if (value < 0)
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                    argument, value));
-
+            throw new IllegalArgumentException(
+                    Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, argument, value));
     }
 
     public int getKeyID() {
@@ -130,32 +118,29 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry>{
     }
 
     public int[] getValues() {
-        return new int[] { keyID, tiffTagLocation, count, valueOffset };
+        return new int[] {keyID, tiffTagLocation, count, valueOffset};
     }
 
     /**
      * According to GeoTIff spec:
-     * 
-     * <p>
-     * In the TIFF spec it is required that TIFF tags be written out to the file in tag-ID sorted
+     *
+     * <p>In the TIFF spec it is required that TIFF tags be written out to the file in tag-ID sorted
      * order. This is done to avoid forcing software to perform N-squared sort operations when
      * reading and writing tags.
      */
     public int compareTo(GeoKeyEntry o) {
         return this.keyID > o.keyID ? 1 : (this.keyID == o.keyID ? 0 : 1);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof GeoKeyEntry))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof GeoKeyEntry)) return false;
         final GeoKeyEntry that = (GeoKeyEntry) obj;
-        if (this.keyID == that.keyID && this.count == that.count
+        if (this.keyID == that.keyID
+                && this.count == that.count
                 && this.valueOffset == that.valueOffset
-                && this.tiffTagLocation == that.tiffTagLocation)
-            return true;
+                && this.tiffTagLocation == that.tiffTagLocation) return true;
 
         return false;
     }
@@ -179,5 +164,4 @@ public final class GeoKeyEntry implements Comparable<GeoKeyEntry>{
         builder.append("VALUE_OFFSET: ").append(valueOffset).append("\n");
         return builder.toString();
     }
-    
-} 
+}

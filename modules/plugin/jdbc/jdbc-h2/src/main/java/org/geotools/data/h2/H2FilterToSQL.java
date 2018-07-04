@@ -19,12 +19,14 @@ package org.geotools.data.h2;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.logging.Logger;
-
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -42,17 +44,10 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LinearRing;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2FilterToSQL extends FilterToSQL {
     private static final Logger LOGGER = Logging.getLogger(H2FilterToSQL.class);
+
     @Override
     protected FilterCapabilities createFilterCapabilities() {
         FilterCapabilities caps = super.createFilterCapabilities();
@@ -67,37 +62,48 @@ public class H2FilterToSQL extends FilterToSQL {
         caps.addType(Within.class);
         caps.addType(DWithin.class);
         caps.addType(Beyond.class);
-        
+
+        // native filter support
+        caps.addType(NativeFilter.class);
+
         return caps;
     }
-    
+
     @Override
     protected void visitLiteralGeometry(Literal expression) throws IOException {
         Geometry g = (Geometry) evaluateLiteral(expression, Geometry.class);
         if (g instanceof LinearRing) {
-            //WKT does not support linear rings
+            // WKT does not support linear rings
             g = g.getFactory().createLineString(((LinearRing) g).getCoordinateSequence());
         }
-        out.write( "ST_GeomFromText('"+g.toText()+"', "+currentSRID+")");
+        out.write("ST_GeomFromText('" + g.toText() + "', " + currentSRID + ")");
     }
-    
-    
+
     @Override
-    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
-        PropertyName property, Literal geometry, boolean swapped, Object extraData) {
-        return visitBinarySpatialOperator(filter, (Expression) property, (Expression) geometry, 
-            swapped, extraData);
+    protected Object visitBinarySpatialOperator(
+            BinarySpatialOperator filter,
+            PropertyName property,
+            Literal geometry,
+            boolean swapped,
+            Object extraData) {
+        return visitBinarySpatialOperator(
+                filter, (Expression) property, (Expression) geometry, swapped, extraData);
     }
-    
+
     @Override
-    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
-            Expression e2, Object extraData) {
+    protected Object visitBinarySpatialOperator(
+            BinarySpatialOperator filter, Expression e1, Expression e2, Object extraData) {
         return visitBinarySpatialOperator(filter, e1, e2, false, extraData);
     }
-    
-    protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
-                Expression e2, boolean swapped, Object extraData) {
 
+    protected Object visitBinarySpatialOperator(
+            BinarySpatialOperator filter,
+            Expression e1,
+            Expression e2,
+            boolean swapped,
+            Object extraData) {
+
+        double distance = 0;
         try {
             if (filter instanceof DistanceBufferOperator) {
                 out.write("ST_Distance(");
@@ -105,108 +111,105 @@ public class H2FilterToSQL extends FilterToSQL {
                 out.write(", ");
                 e2.accept(this, extraData);
                 out.write(")");
-                
+
                 if (filter instanceof DWithin) {
                     out.write("<");
-                }
-                else if (filter instanceof Beyond) {
+                } else if (filter instanceof Beyond) {
                     out.write(">");
-                }
-                else {
+                } else {
                     throw new RuntimeException("Unknown distance operator");
                 }
-                out.write(Double.toString(((DistanceBufferOperator)filter).getDistance()));
-            }
-            else if (filter instanceof BBOX) {
-                //TODO: make a loose bounding box parameter
+                distance = getDistanceInNativeUnits((DistanceBufferOperator) filter);
+                out.write(Double.toString(distance));
+            } else if (filter instanceof BBOX) {
+                // TODO: make a loose bounding box parameter
                 out.write("ST_Intersects(");
                 e1.accept(this, extraData);
                 out.write(",");
                 e2.accept(this, extraData);
                 out.write(")");
-            }
-            else {
-             
+            } else {
+
                 if (filter instanceof Contains) {
                     out.write("ST_Contains(");
-                }
-                else if (filter instanceof Crosses) {
+                } else if (filter instanceof Crosses) {
                     out.write("ST_Crosses(");
-                }
-                else if (filter instanceof Disjoint) {
+                } else if (filter instanceof Disjoint) {
                     out.write("ST_Disjoint(");
-                }
-                else if (filter instanceof Equals) {
+                } else if (filter instanceof Equals) {
                     out.write("ST_Equals(");
-                }
-                else if (filter instanceof Intersects) {
+                } else if (filter instanceof Intersects) {
                     out.write("ST_Intersects(");
-                }
-                else if (filter instanceof Overlaps) {
+                } else if (filter instanceof Overlaps) {
                     out.write("ST_Overlaps(");
-                }
-                else if (filter instanceof Touches) {
+                } else if (filter instanceof Touches) {
                     out.write("ST_Touches(");
-                }
-                else if (filter instanceof Within) {
+                } else if (filter instanceof Within) {
                     out.write("ST_Within(");
-                }
-                else {
+                } else {
                     throw new RuntimeException("Unknown operator: " + filter);
                 }
-                
+
                 if (swapped) {
                     e2.accept(this, extraData);
                     out.write(", ");
                     e1.accept(this, extraData);
-                }
-                else {
+                } else {
                     e1.accept(this, extraData);
                     out.write(", ");
                     e2.accept(this, extraData);
                 }
-                
+
                 out.write(")");
             }
-            
+
             Expression geometry = e1 instanceof Literal ? e1 : e2 instanceof Literal ? e2 : null;
-            if (geometry != null && !(filter instanceof Disjoint)) {
-                String spatialIndex = (String) 
-                    currentGeometry.getUserData().get(H2Dialect.H2_SPATIAL_INDEX);
+            if (geometry != null && !(filter instanceof Disjoint) && !(filter instanceof Beyond)) {
+                String spatialIndex =
+                        (String) currentGeometry.getUserData().get(H2Dialect.H2_SPATIAL_INDEX);
                 if (spatialIndex != null) {
-                    //property map the column type
-                    if (primaryKey.getColumns().size() == 1 && 
-                        Number.class.isAssignableFrom(primaryKey.getColumns().get(0).getType())) {
-                        
+                    // property map the column type
+                    if (primaryKey.getColumns().size() == 1
+                            && Number.class.isAssignableFrom(
+                                    primaryKey.getColumns().get(0).getType())) {
+
                         Envelope e = geometry.evaluate(null, Envelope.class);
-                        
-                        out.write( " AND ");
+
+                        if (filter instanceof DWithin) {
+                            e.expandBy(distance);
+                        }
+
+                        out.write(" AND ");
                         out.write("\"" + primaryKey.getColumns().get(0).getName() + "\" ");
-                        out.write( "IN (");
+                        out.write("IN (");
                         out.write("SELECT CAST(HATBOX_JOIN_ID AS INT)");
                         out.write(" FROM HATBOX_MBR_INTERSECTS_ENV(");
-                        if (databaseSchema != null ) {
-                            out.write("'"+databaseSchema+"', ");
-                        }
-                        else {
+                        if (databaseSchema != null) {
+                            out.write("'" + databaseSchema + "', ");
+                        } else {
                             out.write("'PUBLIC', ");
                         }
-                        out.write("'"+featureType.getTypeName()+"', ");
-                        out.write(e.getMinX()+", "+e.getMaxX()+", "+e.getMinY()+", "+e.getMaxY());
+                        out.write("'" + featureType.getTypeName() + "', ");
+                        out.write(
+                                e.getMinX()
+                                        + ", "
+                                        + e.getMaxX()
+                                        + ", "
+                                        + e.getMinY()
+                                        + ", "
+                                        + e.getMaxY());
                         out.write(")");
                         out.write(")");
                     }
                 }
             }
-        } 
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        
+
         return extraData;
     }
 
-    
     @Override
     protected void writeLiteral(Object literal) throws IOException {
         if (literal instanceof Date) {
@@ -214,14 +217,12 @@ public class H2FilterToSQL extends FilterToSQL {
             if (literal instanceof java.sql.Date) {
                 SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
                 out.write("'" + DATE_FORMAT.format(literal) + "', 'yyyy-MM-dd'");
-            }
-            else {
+            } else {
                 SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
                 out.write("'" + DATETIME_FORMAT.format(literal) + "', 'yyyy-MM-dd HH:mm:ss.SSSZ'");
             }
             out.write(")");
-        }
-        else {
+        } else {
             super.writeLiteral(literal);
         }
     }

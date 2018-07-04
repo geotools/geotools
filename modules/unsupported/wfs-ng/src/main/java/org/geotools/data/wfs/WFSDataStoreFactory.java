@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2004-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2004-2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -18,15 +18,11 @@ package org.geotools.data.wfs;
 
 import static org.geotools.data.wfs.internal.URIs.buildURL;
 
-import org.geotools.util.Version;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
@@ -39,54 +35,50 @@ import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.ows.ServiceException;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
+import org.geotools.util.Version;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 /**
  * A {@link DataStoreFactorySpi} to connect to a Web Feature Service.
- * <p>
- * Produces a {@link WFSDataStore} if the correct set of connection parameters are provided. For
+ *
+ * <p>Produces a {@link WFSDataStore} if the correct set of connection parameters are provided. For
  * instance, the only mandatory one is {@link #URL}.
- * </p>
- * <p>
- * As with all the DataStoreFactorySpi implementations, this one is not intended to be used directly
- * but through the {@link DataStoreFinder} mechanism, hence client applications should not have
- * strong dependencies over this module.
- * </p>
- * <p>
- * Upon a valid URL to a WFS GetCapabilities document, this factory will perform version negotiation
- * between the server supported protocol versions and this plugin supported ones, and will return a
- * {@link DataStore} capable of communicating with the server using the agreed WFS protocol version.
- * </p>
- * <p>
- * In the case the provided GetCapabilities URL explicitly contains a VERSION parameter and both the
- * server and client support that version, that version will be used.
- * </p>
- * 
+ *
+ * <p>As with all the DataStoreFactorySpi implementations, this one is not intended to be used
+ * directly but through the {@link DataStoreFinder} mechanism, hence client applications should not
+ * have strong dependencies over this module.
+ *
+ * <p>Upon a valid URL to a WFS GetCapabilities document, this factory will perform version
+ * negotiation between the server supported protocol versions and this plugin supported ones, and
+ * will return a {@link DataStore} capable of communicating with the server using the agreed WFS
+ * protocol version.
+ *
+ * <p>In the case the provided GetCapabilities URL explicitly contains a VERSION parameter and both
+ * the server and client support that version, that version will be used.
+ *
  * @see WFSDataStore
  * @see WFSClient
  */
-@SuppressWarnings({ "unchecked", "nls" })
+@SuppressWarnings({"unchecked", "nls"})
 public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataStoreFactorySpi {
-    
+
     private static int GMLComplianceLevel = 0;
-      
+
     /**
      * Requests the WFS Capabilities document from the {@link WFSDataStoreFactory#URL url} parameter
      * in {@code params} and returns a {@link WFSDataStore} according to the version of the
      * GetCapabilities document returned.
-     * <p>
-     * Note the {@code URL} provided as parameter must refer to the actual {@code GetCapabilities}
-     * request. If you need to specify a preferred version or want the GetCapabilities request to be
-     * generated from a base URL build the URL with the {@link #createGetCapabilitiesRequest} first.
-     * </p>
-     * 
+     *
+     * <p>Note the {@code URL} provided as parameter must refer to the actual {@code
+     * GetCapabilities} request. If you need to specify a preferred version or want the
+     * GetCapabilities request to be generated from a base URL build the URL with the {@link
+     * #createGetCapabilitiesRequest} first.
+     *
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
     @Override
-    public WFSDataStore createDataStore(final Map<String, Serializable> params)
-            throws IOException {
+    public WFSDataStore createDataStore(final Map<String, Serializable> params) throws IOException {
 
         final WFSConfig config = WFSConfig.fromParams(params);
 
@@ -100,16 +92,15 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
             }
         }
 
-        final HTTPClient http = new SimpleHttpClient();// new MultithreadedHttpClient();
-        // TODO: let HTTPClient be configured for gzip
-        // http.setTryGzip(tryGZIP);
+        final URL capabilitiesURL = (URL) URL.lookUp(params);
+
+        final HTTPClient http = getHttpClient(params);
+        http.setTryGzip(config.isTryGZIP());
         http.setUser(config.getUser());
         http.setPassword(config.getPassword());
         int timeoutMillis = config.getTimeoutMillis();
         http.setConnectTimeout(timeoutMillis / 1000);
         http.setReadTimeout(timeoutMillis / 1000);
-
-        final URL capabilitiesURL = (URL) URL.lookUp(params);
 
         // WFSClient performs version negotiation and selects the correct strategy
         WFSClient wfsClient;
@@ -122,8 +113,8 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         WFSDataStore dataStore = new WFSDataStore(wfsClient);
         // factories
         dataStore.setFilterFactory(CommonFactoryFinder.getFilterFactory(null));
-        dataStore.setGeometryFactory(new GeometryFactory(
-                PackedCoordinateSequenceFactory.DOUBLE_FACTORY));
+        dataStore.setGeometryFactory(
+                new GeometryFactory(PackedCoordinateSequenceFactory.DOUBLE_FACTORY));
         dataStore.setFeatureTypeFactory(new FeatureTypeFactoryImpl());
         dataStore.setFeatureFactory(CommonFactoryFinder.getFeatureFactory(null));
         dataStore.setDataStoreFactory(this);
@@ -131,12 +122,31 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
 
         return dataStore;
     }
-    
+
+    /**
+     * Creates the HttpClient instance used to connect to the WFS service, compatible with the given
+     * parameters.
+     *
+     * @param params wfs service connection parameters
+     * @return the HttpClient instance
+     * @throws IOException
+     */
+    public HTTPClient getHttpClient(final Map<String, Serializable> params) throws IOException {
+        final URL capabilitiesURL = (URL) URL.lookUp(params);
+        final WFSConfig config = WFSConfig.fromParams(params);
+        return config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
+                ? new MultithreadedHttpClient()
+                : new SimpleHttpClient();
+    }
+
+    private static boolean isHttp(java.net.URL capabilitiesURL) {
+        return capabilitiesURL.getProtocol().toLowerCase().matches("http(s)?");
+    }
+
     @Override
     public DataStore createNewDataStore(final Map<String, Serializable> params) throws IOException {
         throw new UnsupportedOperationException("Operation not applicable to a WFS service");
     }
-    
 
     @Override
     public String getDisplayName() {
@@ -148,35 +158,31 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         return "Provides access to the Features published a Web Feature Service, "
                 + "and the ability to perform transactions on the server (when supported / allowed).";
     }
-    
-    
 
     /**
      * Checks whether {@code params} contains a valid set of parameters to connecto to a WFS.
-     * <p>
-     * Rules are:
+     *
+     * <p>Rules are:
+     *
      * <ul>
-     * <li>The mandatory {@link #URL} is provided.
-     * <li>Either both {@link #USERNAME} and {@link #PASSWORD} are provided, or none.
+     *   <li>The mandatory {@link #URL} is provided.
+     *   <li>Either both {@link #USERNAME} and {@link #PASSWORD} are provided, or none.
      * </ul>
-     * </p>
      */
     @Override
     public boolean canProcess(@SuppressWarnings("rawtypes") final Map params) {
         return super.canProcess(params, GMLComplianceLevel);
     }
-    
+
     /**
      * Creates a HTTP GET Method based WFS {@code GetCapabilities} request for the given protocol
      * version.
-     * <p>
-     * If the query string in the {@code host} URL already contains a VERSION number, that version
-     * is <b>discarded</b>.
-     * </p>
-     * 
-     * @param host
-     *            non null URL from which to construct the WFS {@code GetCapabilities} request by
-     *            discarding the query string, if any, and appending the propper query string.
+     *
+     * <p>If the query string in the {@code host} URL already contains a VERSION number, that
+     * version is <b>discarded</b>.
+     *
+     * @param host non null URL from which to construct the WFS {@code GetCapabilities} request by
+     *     discarding the query string, if any, and appending the propper query string.
      * @return
      */
     public static URL createGetCapabilitiesRequest(URL host, Version version) {
@@ -196,19 +202,16 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
 
     /**
      * Creates a HTTP GET Method based WFS {@code GetCapabilities} request.
-     * <p>
-     * If the query string in the {@code host} URL already contains a VERSION number, that version
-     * is used, otherwise the queried version will be 1.0.0.
-     * </p>
-     * <p>
-     * <b>NOTE</b> the default version will be 1.0.0 until the support for 1.1.0 gets stable enough
-     * for general use. If you want to use a 1.1.0 WFS you'll have to explicitly provide the
+     *
+     * <p>If the query string in the {@code host} URL already contains a VERSION number, that
+     * version is used, otherwise the queried version will be 1.0.0.
+     *
+     * <p><b>NOTE</b> the default version will be 1.0.0 until the support for 1.1.0 gets stable
+     * enough for general use. If you want to use a 1.1.0 WFS you'll have to explicitly provide the
      * VERSION=1.1.0 parameter in the GetCapabilities request meanwhile.
-     * </p>
-     * 
-     * @param host
-     *            non null URL pointing either to a base WFS service access point, or to a full
-     *            {@code GetCapabilities} request.
+     *
+     * @param host non null URL pointing either to a base WFS service access point, or to a full
+     *     {@code GetCapabilities} request.
      * @return
      */
     public static URL createGetCapabilitiesRequest(final URL host) {
@@ -217,11 +220,13 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         }
 
         String queryString = host.getQuery();
-        queryString = queryString == null || "".equals(queryString.trim()) ? "" : queryString
-                .toUpperCase();
+        queryString =
+                queryString == null || "".equals(queryString.trim())
+                        ? ""
+                        : queryString.toUpperCase();
 
         final Version defaultVersion = Versions.highest();
-        
+
         // which version to use
         Version requestVersion = defaultVersion;
 
@@ -258,5 +263,4 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
     public boolean isAvailable() {
         return true;
     }
-
 }

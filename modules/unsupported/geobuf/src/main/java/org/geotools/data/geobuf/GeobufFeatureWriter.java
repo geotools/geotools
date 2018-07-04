@@ -16,6 +16,11 @@
  */
 package org.geotools.data.geobuf;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
@@ -24,12 +29,6 @@ import org.geotools.data.store.ContentState;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 public class GeobufFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
@@ -53,12 +52,13 @@ public class GeobufFeatureWriter implements FeatureWriter<SimpleFeatureType, Sim
 
     private File file;
 
-    public GeobufFeatureWriter(ContentState state, Query query, int precision, int dimension) throws IOException {
+    public GeobufFeatureWriter(ContentState state, Query query, int precision, int dimension)
+            throws IOException {
         this.state = state;
         String typeName = query.getTypeName();
         DataStore dataStore = state.getEntry().getDataStore();
         if (dataStore instanceof GeobufDirectoryDataStore) {
-            this.file = ((GeobufDirectoryDataStore)dataStore).getDataStore(typeName).getFile();
+            this.file = ((GeobufDirectoryDataStore) dataStore).getDataStore(typeName).getFile();
         } else {
             this.file = ((GeobufDataStore) dataStore).getFile();
         }

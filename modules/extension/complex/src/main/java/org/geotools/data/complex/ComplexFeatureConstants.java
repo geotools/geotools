@@ -28,20 +28,17 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 
 /**
- * This is just a compilation of constants and static methods used in app-schema module. 
+ * This is just a compilation of constants and static methods used in app-schema module.
+ *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
  * @source $URL$
  */
 public class ComplexFeatureConstants {
-    /**
-     * Static attribute name used to link different feature types.
-     */    
+    /** Static attribute name used to link different feature types. */
     public static final String FEATURE_CHAINING_LINK_STRING = "FEATURE_LINK";
 
-    public static final Name FEATURE_CHAINING_LINK_NAME = new NameImpl(FEATURE_CHAINING_LINK_STRING);
+    public static final Name FEATURE_CHAINING_LINK_NAME =
+            new NameImpl(FEATURE_CHAINING_LINK_STRING);
 
     /**
      * Static attribute descriptor used to link different feature types. This attribute won't appear
@@ -49,17 +46,24 @@ public class ComplexFeatureConstants {
      * more than one instances to be used in one type that can be chained by different parent
      * feature types.
      */
-    public static final PropertyDescriptor FEATURE_CHAINING_LINK = new AttributeDescriptorImpl(
-            XSSchema.STRING_TYPE, FEATURE_CHAINING_LINK_NAME, 0, -1, true, null);
+    public static final PropertyDescriptor FEATURE_CHAINING_LINK =
+            new AttributeDescriptorImpl(
+                    XSSchema.STRING_TYPE, FEATURE_CHAINING_LINK_NAME, 0, -1, true, null);
 
     /**
-     * Name representation of xlink:href
+     * Static attribute name used for the auxiliary default geometry attribute, which is created
+     * when &lt;defaultGeometry&gt; is specified in the feature type mapping configuration.
+     *
+     * <p>The constant represents to the local part of the qualified attribute name; the namespace
+     * URI is generated at runtime and will be the same as the namespace URI of the feature
+     * containing the geometry attribute.
      */
+    public static final String DEFAULT_GEOMETRY_LOCAL_NAME = "__DEFAULT_GEOMETRY__";
+
+    /** Name representation of xlink:href */
     public static final Name XLINK_HREF_NAME = Types.toTypeName(XLINK.HREF);
-    
-   /**
-     * Hints key for xlink:href used in ToXlinkHrefFunction
-     */
+
+    /** Hints key for xlink:href used in ToXlinkHrefFunction */
     public static final Hints.Key STRING_KEY = new Hints.Key(String.class);
 
     /**
@@ -67,7 +71,7 @@ public class ComplexFeatureConstants {
      * multi-valued properties, e.g. gml:name[2]
      */
     public static final String MAPPED_ATTRIBUTE_INDEX = "MAPPED_ATTRIBUTE_INDEX";
-    
+
     public static final String XPATH_SEPARATOR = "/";
 
     /**
@@ -75,33 +79,31 @@ public class ComplexFeatureConstants {
      */
     public static final Name SIMPLE_CONTENT = new NameImpl(null, "simpleContent");
 
-    /**
-     * Constant to indicate the last row from denormalised rows.
-     */
+    /** Constant to indicate the last row from denormalised rows. */
     public static final String LAST_INDEX = "LAST";
-    
-    
+
     /**
      * Unpacks a value from an attribute container
-     * 
+     *
      * @param value
      * @return
      */
     public static Object unpack(Object value) {
-        
-        if (value instanceof org.opengis.feature.ComplexAttribute){
-            Property simpleContent = ((org.opengis.feature.ComplexAttribute)value).getProperty(SIMPLE_CONTENT);
+
+        if (value instanceof org.opengis.feature.ComplexAttribute) {
+            Property simpleContent =
+                    ((org.opengis.feature.ComplexAttribute) value).getProperty(SIMPLE_CONTENT);
             if (simpleContent == null) {
                 return null;
             } else {
                 return simpleContent.getValue();
             }
         }
-        
-        if(value instanceof org.opengis.feature.Attribute){
-            return ((org.opengis.feature.Attribute)value).getValue();
+
+        if (value instanceof org.opengis.feature.Attribute) {
+            return ((org.opengis.feature.Attribute) value).getValue();
         }
-        
+
         return value;
     }
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,64 +19,55 @@ package org.geotools.data.store;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EmptyFeatureCollection extends DataFeatureCollection {
 
-	/**
-	 * null bounds
-	 */
-	static ReferencedEnvelope bounds = new ReferencedEnvelope(new Envelope(),null);
-	static {
-		bounds.setToNull();
-	}
-	
-	public EmptyFeatureCollection( SimpleFeatureType schema ) {
-		super(null,schema);
-	}
-	
-	
-	public ReferencedEnvelope getBounds() {
-		return bounds;
-	}
+    /** null bounds */
+    static ReferencedEnvelope bounds = new ReferencedEnvelope(new Envelope(), null);
 
-	public int getCount() throws IOException {
-		return 0;
-	}
+    static {
+        bounds.setToNull();
+    }
 
-	protected Iterator openIterator() {
-		return new EmptyIterator();
-	}
-	
-	protected void closeIterator(Iterator close) {
-		//do nothing
-	}
-	
-	//read only access
-	public boolean add(SimpleFeature object) {
-		return false;
-	}
-	
-	
-	public boolean remove(Object object) {
-		return false;
-	}
-	
-	public boolean removeAll(Collection collection) {
-		return false;
-	}
-	public boolean isValid() {
-	    return true;
-	}
+    public EmptyFeatureCollection(SimpleFeatureType schema) {
+        super(null, schema);
+    }
 
+    public ReferencedEnvelope getBounds() {
+        return bounds;
+    }
+
+    public int getCount() throws IOException {
+        return 0;
+    }
+
+    protected Iterator openIterator() {
+        return new EmptyIterator();
+    }
+
+    protected void closeIterator(Iterator close) {
+        // do nothing
+    }
+
+    // read only access
+    public boolean add(SimpleFeature object) {
+        return false;
+    }
+
+    public boolean remove(Object object) {
+        return false;
+    }
+
+    public boolean removeAll(Collection collection) {
+        return false;
+    }
+
+    public boolean isValid() {
+        return true;
+    }
 }

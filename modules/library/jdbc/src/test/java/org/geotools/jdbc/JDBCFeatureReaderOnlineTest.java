@@ -17,27 +17,20 @@
 package org.geotools.jdbc;
 
 import java.util.List;
-
-import org.geotools.data.Query;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class JDBCFeatureReaderOnlineTest extends JDBCTestSupport {
 
     public void testNext() throws Exception {
         Query query = new Query(tname("ft1"));
-        try(FeatureReader reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
+        try (FeatureReader reader = dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT)) {
             assertTrue(reader.hasNext());
             SimpleFeature feature = (SimpleFeature) reader.next();
 
@@ -59,12 +52,11 @@ public abstract class JDBCFeatureReaderOnlineTest extends JDBCTestSupport {
                 fail();
             }
             assertEquals(attrs.get(2), feature.getAttribute(2));
-    
+
             Geometry g = (Geometry) feature.getDefaultGeometry();
             assertNotNull(g);
-    
+
             assertTrue(g.getUserData() instanceof CoordinateReferenceSystem);
         }
     }
-
 }

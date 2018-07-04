@@ -17,15 +17,10 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
-
 import org.geotools.jdbc.JDBCFunctionOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostGISFunctionOnlineTest extends JDBCFunctionOnlineTest {
 
     @Override
@@ -38,5 +33,4 @@ public class PostGISFunctionOnlineTest extends JDBCFunctionOnlineTest {
         // ignore, due to the default float formatting settings in postgres driver
         // we are getting more decimals than we'd expect in this test
     }
-
 }

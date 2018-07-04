@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,32 +17,25 @@
 package org.geotools.data.ows;
 
 import java.io.IOException;
-import java.io.InputStream;
-
 import org.geotools.ows.ServiceException;
 
 /**
- * Base class for GetCapabilities responses. They should typically attempt to
- * parse the Capabilities document in inputStream in the constructor. 
- * 
+ * Base class for GetCapabilities responses. They should typically attempt to parse the Capabilities
+ * document in inputStream in the constructor.
+ *
  * @author Richard Gould
- *
- *
- *
  * @source $URL$
  */
 public abstract class GetCapabilitiesResponse extends Response {
 
-	protected Capabilities capabilities;
+    protected Capabilities capabilities;
 
-	public GetCapabilitiesResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
-		super(httpResponse);
-	}
- 
-	/**
-	 * Returns the capabilities object parsed during the response
-	 */
-	public Capabilities getCapabilities() {
-		return capabilities;
-	}
+    public GetCapabilitiesResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
+        super(httpResponse);
+    }
+
+    /** Returns the capabilities object parsed during the response */
+    public Capabilities getCapabilities() {
+        return capabilities;
+    }
 }

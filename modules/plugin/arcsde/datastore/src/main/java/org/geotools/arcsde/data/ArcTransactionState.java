@@ -17,12 +17,16 @@
  */
 package org.geotools.arcsde.data;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeObjectId;
+import com.esri.sde.sdk.client.SeState;
+import com.esri.sde.sdk.client.SeVersion;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
@@ -31,20 +35,14 @@ import org.geotools.data.FeatureListenerManager;
 import org.geotools.data.Transaction;
 import org.geotools.util.logging.Logging;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeObjectId;
-import com.esri.sde.sdk.client.SeState;
-import com.esri.sde.sdk.client.SeVersion;
-
 /**
  * Store the transaction state for <code>ArcSDEFeatureWriter</code> instances.
- * 
+ *
  * @author Jake Fear
  * @author Gabriel Roldan
  * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/ArcTransactionState.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/ArcTransactionState.java $
  * @version $Id$
  */
 final class ArcTransactionState implements Transaction.State {
@@ -52,8 +50,8 @@ final class ArcTransactionState implements Transaction.State {
 
     /**
      * ArcSDEDataStore we can use to look up a Session for our Transaction.
-     * <p>
-     * The ConnectionPool will hold this connection open for us until commit(), rollback() or
+     *
+     * <p>The ConnectionPool will hold this connection open for us until commit(), rollback() or
      * close() is called.
      */
     private ArcSDEDataStore dataStore;
@@ -62,9 +60,7 @@ final class ArcTransactionState implements Transaction.State {
 
     private final FeatureListenerManager listenerManager;
 
-    /**
-     * Set of typename changed to fire changed events for at commit and rollback.
-     */
+    /** Set of typename changed to fire changed events for at commit and rollback. */
     private final Set<String> typesChanged = new HashSet<String>();
 
     public SeState currentVersionState;
@@ -77,11 +73,10 @@ final class ArcTransactionState implements Transaction.State {
 
     /**
      * Creates a new ArcTransactionState object.
-     * 
+     *
      * @param listenerManager
-     * @param arcSDEDataStore
-     *            connection pool where to grab a connection and hold it while there's a transaction
-     *            open (signaled by any use of {@link #getConnection()}
+     * @param arcSDEDataStore connection pool where to grab a connection and hold it while there's a
+     *     transaction open (signaled by any use of {@link #getConnection()}
      */
     ArcTransactionState(ArcSDEDataStore dataStore, final FeatureListenerManager listenerManager) {
         this.dataStore = dataStore;
@@ -98,13 +93,12 @@ final class ArcTransactionState implements Transaction.State {
     }
 
     /**
-     * @param versioName
-     *            the name of the version to work against
+     * @param versioName the name of the version to work against
      * @return
      * @throws IOException
      */
-    public ArcSdeVersionHandler getVersionHandler(final boolean ftIsVersioned,
-            final String versionName) throws IOException {
+    public ArcSdeVersionHandler getVersionHandler(
+            final boolean ftIsVersioned, final String versionName) throws IOException {
         if (ftIsVersioned) {
             setupVersioningHandling(versionName);
         }
@@ -113,13 +107,11 @@ final class ArcTransactionState implements Transaction.State {
 
     /**
      * Registers a feature change event over a feature type.
-     * <p>
-     * To be called by {@link TransactionFeatureWriter#write()} so this state can fire a changed
+     *
+     * <p>To be called by {@link TransactionFeatureWriter#write()} so this state can fire a changed
      * event at {@link #commit()} and {@link #rollback()}.
-     * </p>
-     * 
-     * @param typeName
-     *            the type name of the feature changed (inserted/removed/modified).
+     *
+     * @param typeName the type name of the feature changed (inserted/removed/modified).
      */
     public void addChange(final String typeName) {
         typesChanged.add(typeName);
@@ -128,39 +120,42 @@ final class ArcTransactionState implements Transaction.State {
     /**
      * Commits the transaction and returns the connection to the pool. A new one will be grabbed
      * when needed.
-     * <p>
-     * Preconditions:
+     *
+     * <p>Preconditions:
+     *
      * <ul>
-     * <li>{@link #setTransaction(Transaction)} already called with non <code>null</code> argument.
-     * <li>
+     *   <li>{@link #setTransaction(Transaction)} already called with non <code>null</code>
+     *       argument.
+     *   <li>
      * </ul>
-     * </p>
      */
     public void commit() throws IOException {
         failIfClosed();
         final ISession session = this.getConnection();
 
-        final Command<Void> commitCommand = new Command<Void>() {
-            @Override
-            public Void execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
+        final Command<Void> commitCommand =
+                new Command<Void>() {
+                    @Override
+                    public Void execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
 
-                try {
-                    if (currentVersionState != null) {
-                        SeObjectId parentStateId = initialStateId;
-                        // Change the version's state pointer to the last edit state.
-                        defaultVersion.changeState(currentVersionState.getId());
-                        // Trim the state tree.
-                        currentVersionState.trimTree(parentStateId, currentVersionState.getId());
+                        try {
+                            if (currentVersionState != null) {
+                                SeObjectId parentStateId = initialStateId;
+                                // Change the version's state pointer to the last edit state.
+                                defaultVersion.changeState(currentVersionState.getId());
+                                // Trim the state tree.
+                                currentVersionState.trimTree(
+                                        parentStateId, currentVersionState.getId());
+                            }
+                        } catch (SeException se) {
+                            LOGGER.log(Level.WARNING, se.getMessage(), se);
+                            close();
+                            throw se;
+                        }
+                        return null;
                     }
-                } catch (SeException se) {
-                    LOGGER.log(Level.WARNING, se.getMessage(), se);
-                    close();
-                    throw se;
-                }
-                return null;
-            }
-        };
+                };
 
         try {
             session.issue(commitCommand);
@@ -172,9 +167,7 @@ final class ArcTransactionState implements Transaction.State {
         }
     }
 
-    /**
-     * 
-     */
+    /** */
     public void rollback() throws IOException {
         failIfClosed();
         try {
@@ -200,19 +193,16 @@ final class ArcTransactionState implements Transaction.State {
         typesChanged.clear();
     }
 
-    /**
-     * 
-     */
+    /** */
     public void addAuthorization(String authId) {
         // intentionally blank
     }
 
     /**
      * @see Transaction.State#setTransaction(Transaction)
-     * @param transaction
-     *            transaction information, <code>null</code> signals this state lifecycle end.
-     * @throws IllegalStateException
-     *             if close() is called while a transaction is in progress
+     * @param transaction transaction information, <code>null</code> signals this state lifecycle
+     *     end.
+     * @throws IllegalStateException if close() is called while a transaction is in progress
      */
     public void setTransaction(final Transaction transaction) {
         if (Transaction.AUTO_COMMIT.equals(transaction)) {
@@ -235,9 +225,8 @@ final class ArcTransactionState implements Transaction.State {
 
     /**
      * If this state has been closed throws an unchecked exception as its clearly a broken workflow.
-     * 
-     * @throws IllegalStateException
-     *             if the transaction state has been closed.
+     *
+     * @throws IllegalStateException if the transaction state has been closed.
      */
     private void failIfClosed() throws IllegalStateException {
         if (dataStore == null) {
@@ -258,7 +247,7 @@ final class ArcTransactionState implements Transaction.State {
     /**
      * Used only within the package to provide access to a single connection on which this
      * transaction is being conducted.
-     * 
+     *
      * @return connection
      * @throws IOException
      */

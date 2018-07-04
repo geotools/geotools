@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.Parameter;
@@ -38,9 +37,8 @@ import org.opengis.filter.capability.FunctionName;
 /**
  * A value for a CSS property. Values can be several things, including from literals, expressions,
  * composition of multiple values.
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 abstract class Value {
 
@@ -204,22 +202,19 @@ abstract class Value {
      * OGC expression
      */
     public org.opengis.filter.expression.Expression toExpression() {
-        throw new UnsupportedOperationException("Cannot turn this value into a OGC expression: "
-                + this);
+        throw new UnsupportedOperationException(
+                "Cannot turn this value into a OGC expression: " + this);
     }
 
-    /**
-     * Turns this value into a literal. Only true literals support this operation
-     */
+    /** Turns this value into a literal. Only true literals support this operation */
     public String toLiteral() {
         throw new UnsupportedOperationException("Cannot turn this value into a literal: " + this);
     }
 
     /**
      * A literal, that is, a static value, represented as a string
-     * 
-     * @author Andrea Aime - GeoSolutions
      *
+     * @author Andrea Aime - GeoSolutions
      */
     static class Literal extends Value {
 
@@ -246,18 +241,13 @@ abstract class Value {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
             Literal other = (Literal) obj;
             if (body == null) {
-                if (other.body != null)
-                    return false;
-            } else if (!body.equals(other.body))
-                return false;
+                if (other.body != null) return false;
+            } else if (!body.equals(other.body)) return false;
             return true;
         }
 
@@ -274,19 +264,26 @@ abstract class Value {
         public String toLiteral() {
             return body;
         }
-
     }
 
     /**
      * A function, with a name and parameters
-     * 
-     * @author Andrea Aime - GeoSolutions
      *
+     * @author Andrea Aime - GeoSolutions
      */
     static class Function extends Value {
         static final String URL = "url";
 
         static final String SYMBOL = "symbol";
+
+        public static boolean isGraphicsFunction(Value v) {
+            if (!(v instanceof Function)) {
+                return false;
+            } else {
+                Function f = (Function) v;
+                return URL.equals(f.name) || SYMBOL.equals(f.name);
+            }
+        }
 
         public String name;
 
@@ -294,6 +291,7 @@ abstract class Value {
 
         /**
          * Builds a function
+         *
          * @param name
          * @param parameters
          */
@@ -302,14 +300,14 @@ abstract class Value {
             this.parameters = parameters;
             this.name = name;
             if ((URL.equals(name) || SYMBOL.equals(name)) && parameters.size() != 1) {
-                throw new IllegalArgumentException("Function " + name
-                        + " takes a single argument, not " + parameters.size());
+                throw new IllegalArgumentException(
+                        "Function " + name + " takes a single argument, not " + parameters.size());
             }
         }
 
         /**
          * Builds a function
-         * 
+         *
          * @param name
          * @param parameters
          */
@@ -332,34 +330,36 @@ abstract class Value {
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            Function other = (Function) obj;
-            if (name == null) {
-                if (other.name != null)
-                    return false;
-            } else if (!name.equals(other.name))
-                return false;
-            if (parameters == null) {
-                if (other.parameters != null)
-                    return false;
-            } else if (!parameters.equals(other.parameters))
-                return false;
-            return true;
+        public org.opengis.filter.expression.Expression toExpression() {
+            // turn function call if possible
+            org.opengis.filter.expression.Expression[] params =
+                    this.parameters
+                            .stream()
+                            .map(v -> v.toExpression())
+                            .toArray(s -> new org.opengis.filter.expression.Expression[s]);
+            return FF.function(this.name, params);
         }
 
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
+            Function other = (Function) obj;
+            if (name == null) {
+                if (other.name != null) return false;
+            } else if (!name.equals(other.name)) return false;
+            if (parameters == null) {
+                if (other.parameters != null) return false;
+            } else if (!parameters.equals(other.parameters)) return false;
+            return true;
+        }
     }
-    
+
     /**
      * A function, with a name and named parameters
-     * 
-     * @author Andrea Aime - GeoSolutions
      *
+     * @author Andrea Aime - GeoSolutions
      */
     static class TransformFunction extends Value {
         static final String URL = "url";
@@ -372,6 +372,7 @@ abstract class Value {
 
         /**
          * Builds a function
+         *
          * @param name
          * @param parameters
          */
@@ -380,8 +381,8 @@ abstract class Value {
             this.parameters = parameters;
             this.name = name;
             if ((URL.equals(name) || SYMBOL.equals(name)) && parameters.size() != 1) {
-                throw new IllegalArgumentException("Function " + name
-                        + " takes a single argument, not " + parameters.size());
+                throw new IllegalArgumentException(
+                        "Function " + name + " takes a single argument, not " + parameters.size());
             }
         }
 
@@ -401,40 +402,34 @@ abstract class Value {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
             TransformFunction other = (TransformFunction) obj;
             if (name == null) {
-                if (other.name != null)
-                    return false;
-            } else if (!name.equals(other.name))
-                return false;
+                if (other.name != null) return false;
+            } else if (!name.equals(other.name)) return false;
             if (parameters == null) {
-                if (other.parameters != null)
-                    return false;
-            } else if (!parameters.equals(other.parameters))
-                return false;
+                if (other.parameters != null) return false;
+            } else if (!parameters.equals(other.parameters)) return false;
             return true;
         }
-        
+
         @Override
         public org.opengis.filter.expression.Expression toExpression() {
             Map<String, Parameter<?>> paramInfo = loadProcessInfo(processName(name));
-            if(paramInfo == null) {
-                throw new RuntimeException("Could not locate rendering transformation named " + name);
+            if (paramInfo == null) {
+                throw new RuntimeException(
+                        "Could not locate rendering transformation named " + name);
             }
             List<org.opengis.filter.expression.Expression> arguments = new ArrayList<>();
-            
+
             // See if we have to add the implicit parameter layer
             String inputLayerParameter = getInputLayerParameter(paramInfo);
-            if(inputLayerParameter != null && !parameters.containsKey(inputLayerParameter)) {
+            if (inputLayerParameter != null && !parameters.containsKey(inputLayerParameter)) {
                 arguments.add(toParamFunction(inputLayerParameter, null));
             }
-            
+
             // Transform all the parameters we have
             for (Map.Entry<String, Value> p : parameters.entrySet()) {
                 String key = p.getKey();
@@ -442,21 +437,23 @@ abstract class Value {
                 org.opengis.filter.expression.Expression ex = toParamFunction(key, v);
                 arguments.add(ex);
             }
-            
+
             org.opengis.filter.expression.Expression[] argsArray = toExpressionArray(arguments);
             return FF.function(name, argsArray);
         }
-        
+
         private String getInputLayerParameter(Map<String, Parameter<?>> paramInfo) {
             for (Map.Entry<String, Parameter<?>> entry : paramInfo.entrySet()) {
-                if(entry.getValue() != null) {
+                if (entry.getValue() != null) {
                     final Class<?> type = entry.getValue().getType();
-                    if(GridCoverage2D.class.isAssignableFrom(type) || FeatureCollection.class.isAssignableFrom(type) || GridCoverage2DReader.class.isAssignableFrom(type)) {
+                    if (GridCoverage2D.class.isAssignableFrom(type)
+                            || FeatureCollection.class.isAssignableFrom(type)
+                            || GridCoverage2DReader.class.isAssignableFrom(type)) {
                         return entry.getKey();
                     }
                 }
             }
-            
+
             return null;
         }
 
@@ -464,26 +461,29 @@ abstract class Value {
             List<org.opengis.filter.expression.Expression> paramArgs = new ArrayList<>();
             // the param name
             paramArgs.add(FF.literal(key));
-            if(v instanceof MultiValue) {
+            if (v instanceof MultiValue) {
                 MultiValue mv = (MultiValue) v;
                 for (Value cv : mv.values) {
                     final org.opengis.filter.expression.Expression ex = cv.toExpression();
                     paramArgs.add(ex);
                 }
-            } else if(v != null) {
+            } else if (v != null) {
                 final org.opengis.filter.expression.Expression ex = v.toExpression();
                 paramArgs.add(ex);
             }
-            org.opengis.filter.expression.Expression[] paramArgsArray = toExpressionArray(
-                    paramArgs);
-            org.opengis.filter.expression.Function function = FF.function("parameter", paramArgsArray);
+            org.opengis.filter.expression.Expression[] paramArgsArray =
+                    toExpressionArray(paramArgs);
+            org.opengis.filter.expression.Function function =
+                    FF.function("parameter", paramArgsArray);
             return function;
         }
 
         private org.opengis.filter.expression.Expression[] toExpressionArray(
                 List<org.opengis.filter.expression.Expression> arguments) {
-            org.opengis.filter.expression.Expression[] argsArray = (org.opengis.filter.expression.Expression[]) 
-                    arguments.toArray(new org.opengis.filter.expression.Expression[arguments.size()]);
+            org.opengis.filter.expression.Expression[] argsArray =
+                    (org.opengis.filter.expression.Expression[])
+                            arguments.toArray(
+                                    new org.opengis.filter.expression.Expression[arguments.size()]);
             return argsArray;
         }
 
@@ -495,16 +495,19 @@ abstract class Value {
 
             return new NameImpl(split[0], split[1]);
         }
-        
+
         @SuppressWarnings("unchecked")
-        public static Map<String,Parameter<?>> loadProcessInfo(Name name) {
+        public static Map<String, Parameter<?>> loadProcessInfo(Name name) {
             Class<?> processorsClass = null;
             try {
-                processorsClass = Class.forName("org.geotools.process.Processors", false, Value.class.getClassLoader());
+                processorsClass =
+                        Class.forName(
+                                "org.geotools.process.Processors",
+                                false,
+                                Value.class.getClassLoader());
                 Method getParameterInfo = processorsClass.getMethod("getParameterInfo", Name.class);
-                return (Map<String,Parameter<?>>) getParameterInfo.invoke(null, name);
-            }
-            catch(Exception e) {
+                return (Map<String, Parameter<?>>) getParameterInfo.invoke(null, name);
+            } catch (Exception e) {
                 throw new RuntimeException("Error looking up process info", e);
             }
         }
@@ -513,14 +516,12 @@ abstract class Value {
             // TODO Auto-generated method stub
             return false;
         }
-
     }
 
     /**
      * An expression, backed by an OGC {@link org.opengis.filter.expression.Expression}
-     * 
-     * @author Andrea Aime - GeoSolutions
      *
+     * @author Andrea Aime - GeoSolutions
      */
     static class Expression extends Value {
         public org.opengis.filter.expression.Expression expression;
@@ -540,18 +541,13 @@ abstract class Value {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
             Expression other = (Expression) obj;
             if (expression == null) {
-                if (other.expression != null)
-                    return false;
-            } else if (!expression.equals(other.expression))
-                return false;
+                if (other.expression != null) return false;
+            } else if (!expression.equals(other.expression)) return false;
             return true;
         }
 
@@ -565,17 +561,15 @@ abstract class Value {
         }
 
         public String toLiteral() {
-            throw new UnsupportedOperationException("Cannot turn this value into a literal: "
-                    + this);
+            throw new UnsupportedOperationException(
+                    "Cannot turn this value into a literal: " + this);
         }
-
     }
 
     /**
      * A list of values
-     * 
-     * @author Andrea Aime - GeoSolutions
      *
+     * @author Andrea Aime - GeoSolutions
      */
     public static class MultiValue extends Value {
         List<Value> values;
@@ -598,18 +592,13 @@ abstract class Value {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
             MultiValue other = (MultiValue) obj;
             if (values == null) {
-                if (other.values != null)
-                    return false;
-            } else if (!values.equals(other.values))
-                return false;
+                if (other.values != null) return false;
+            } else if (!values.equals(other.values)) return false;
             return true;
         }
 
@@ -625,7 +614,5 @@ abstract class Value {
 
             return sb.toString();
         }
-
     }
-
 }

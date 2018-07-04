@@ -16,16 +16,12 @@
  */
 package org.geotools.resources.i18n;
 
-
 /**
  * English language resource.
  *
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class Errors_en extends Errors {
-}
+public class Errors_en extends Errors {}

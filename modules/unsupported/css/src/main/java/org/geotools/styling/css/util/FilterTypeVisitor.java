@@ -18,8 +18,8 @@ package org.geotools.styling.css.util;
 
 import java.util.Date;
 import java.util.List;
-
 import org.geotools.filter.visitor.DefaultFilterVisitor;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -67,12 +67,10 @@ import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.parameter.Parameter;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
- * Applies duck typing to properties in filters, aggregating the types found in the
- * {@link TypeAggregator}
- * 
+ * Applies duck typing to properties in filters, aggregating the types found in the {@link
+ * TypeAggregator}
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class FilterTypeVisitor extends DefaultFilterVisitor {
@@ -138,7 +136,7 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
     @Override
     public Object visit(Function expression, Object data) {
         FunctionName name = expression.getFunctionName();
-        if(name != null && name.getArgumentCount() > 0) {
+        if (name != null && name.getArgumentCount() > 0) {
             List<Parameter<?>> argumentTypes = name.getArguments();
             List<Expression> arguments = expression.getParameters();
             for (int i = 0; i < Math.min(arguments.size(), argumentTypes.size()); i++) {
@@ -202,31 +200,26 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
     public Object visit(MetBy metBy, Object data) {
         visitTemporalExpression(metBy);
         return super.visit(metBy, data);
-
     }
 
     public Object visit(OverlappedBy overlappedBy, Object data) {
         visitTemporalExpression(overlappedBy);
         return super.visit(overlappedBy, data);
-
     }
 
     public Object visit(TContains contains, Object data) {
         visitTemporalExpression(contains);
         return super.visit(contains, data);
-
     }
 
     public Object visit(TEquals equals, Object data) {
         visitTemporalExpression(equals);
         return super.visit(equals, data);
-
     }
 
     public Object visit(TOverlaps contains, Object data) {
         visitTemporalExpression(contains);
         return super.visit(contains, data);
-
     }
 
     private void visitTemporalExpression(BinaryTemporalOperator expression) {
@@ -300,7 +293,6 @@ class FilterTypeVisitor extends DefaultFilterVisitor {
                 aggregator.addType(name, value.getClass());
             }
         }
-
     }
 
     public Object visit(PropertyIsLike filter, Object data) {

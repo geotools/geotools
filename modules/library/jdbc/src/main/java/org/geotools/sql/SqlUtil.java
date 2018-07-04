@@ -15,26 +15,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.geotools.util.logging.Logging;
 
 /**
  * Builder class for creating prepared statements.
- * 
- * @author Justin Deoliveira, OpenGeo
  *
+ * @author Justin Deoliveira, OpenGeo
  */
-public class SqlUtil {    
+public class SqlUtil {
 
     static final Logger LOGGER = Logging.getLogger(SqlUtil.class);
-    
+
     public static class PreparedStatementBuilder {
 
         PreparedStatement ps;
         int pos = 1;
 
         StringBuilder log = new StringBuilder();
-        
+
         public PreparedStatementBuilder(PreparedStatement ps) throws SQLException {
             this.ps = ps;
         }
@@ -55,11 +53,10 @@ public class SqlUtil {
             log(i);
             if (i != null) {
                 ps.setInt(pos++, i);
-            }
-            else {
+            } else {
                 ps.setNull(pos++, Types.INTEGER);
             }
-            
+
             return this;
         }
 
@@ -67,11 +64,10 @@ public class SqlUtil {
             log(d);
             if (d != null) {
                 ps.setDouble(pos++, d);
-            }
-            else {
+            } else {
                 ps.setNull(pos++, Types.DOUBLE);
             }
-            
+
             return this;
         }
 
@@ -96,7 +92,7 @@ public class SqlUtil {
         public PreparedStatementBuilder set(byte[] b) throws SQLException {
             log(b);
             ps.setBytes(pos++, b);
-            //ps.setBinaryStream(pos++, is);
+            // ps.setBinaryStream(pos++, is);
             return this;
         }
 
@@ -113,41 +109,39 @@ public class SqlUtil {
             log.append("\n").append(" ").append(pos).append(" = ").append(v);
         }
     }
-        
-    public static void runScript(InputStream stream, Connection cx) throws SQLException{    
+
+    public static void runScript(InputStream stream, Connection cx) throws SQLException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
         Statement st = cx.createStatement();
-        
+
         try {
             StringBuilder buf = new StringBuilder();
             String sql = reader.readLine();
             while (sql != null) {
                 sql = sql.trim();
-                if (!sql.isEmpty() && !sql.startsWith("--")) {                    
+                if (!sql.isEmpty() && !sql.startsWith("--")) {
                     buf.append(sql).append(" ");
-        
+
                     if (sql.endsWith(";")) {
                         String stmt = buf.toString();
                         boolean skipError = stmt.startsWith("?");
                         if (skipError) {
-                            stmt = stmt.replaceAll("^\\? *" ,"");
+                            stmt = stmt.replaceAll("^\\? *", "");
                         }
-        
+
                         LOGGER.fine(stmt);
                         st.addBatch(stmt);
-    
+
                         buf.setLength(0);
                     }
                 }
                 sql = reader.readLine();
             }
             st.executeBatch();
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             throw new SQLException(e);
-        }
-        finally {
+        } finally {
             try {
                 stream.close();
             } catch (IOException e) {
@@ -160,58 +154,58 @@ public class SqlUtil {
             }
         }
     }
-    
+
     private static final Pattern PROPERTY_PATTERN = Pattern.compile("\\$\\{(.+?)\\}");
-    
-    public static void runScript(InputStream stream, Connection cx, Map<String, String> properties) throws SQLException{    
+
+    public static void runScript(InputStream stream, Connection cx, Map<String, String> properties)
+            throws SQLException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
         Statement st = cx.createStatement();
         int insideBlock = 0;
-        
+
         try {
             StringBuilder buf = new StringBuilder();
             String sql = reader.readLine();
             while (sql != null) {
                 sql = sql.trim();
-                if (!sql.isEmpty() && !sql.startsWith("--")) {                    
+                if (!sql.isEmpty() && !sql.startsWith("--")) {
                     buf.append(sql).append(" ");
-                    
+
                     if (sql.startsWith("BEGIN")) {
                         insideBlock++;
                     } else if (insideBlock > 0 && sql.startsWith("END")) {
                         insideBlock--;
                     }
-        
-                    if (sql.endsWith(";") && insideBlock==0) {                            
+
+                    if (sql.endsWith(";") && insideBlock == 0) {
                         Matcher matcher = PROPERTY_PATTERN.matcher(buf);
                         while (matcher.find()) {
                             String propertyName = matcher.group(1);
                             String propertyValue = properties.get(propertyName);
                             if (propertyValue == null) {
-                                throw new RuntimeException("Missing property " + propertyName + " for sql script");
+                                throw new RuntimeException(
+                                        "Missing property " + propertyName + " for sql script");
                             } else {
                                 buf.replace(matcher.start(), matcher.end(), propertyValue);
                                 matcher.reset();
                             }
                         }
-                        
+
                         String stmt = buf.toString();
-        
+
                         LOGGER.fine(stmt);
                         st.addBatch(stmt);
-    
+
                         buf.setLength(0);
                     }
                 }
                 sql = reader.readLine();
             }
             st.executeBatch();
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             throw new SQLException(e);
-        }
-        finally {
+        } finally {
             try {
                 stream.close();
             } catch (IOException e) {
@@ -223,14 +217,14 @@ public class SqlUtil {
                 LOGGER.log(Level.WARNING, "Error closing statement", e);
             }
         }
-    }    
+    }
 
-    public static PreparedStatementBuilder prepare(Connection conn, String sql) throws SQLException {
-        return new PreparedStatementBuilder(conn, sql); 
+    public static PreparedStatementBuilder prepare(Connection conn, String sql)
+            throws SQLException {
+        return new PreparedStatementBuilder(conn, sql);
     }
 
     public static PreparedStatementBuilder prepare(PreparedStatement st) throws SQLException {
-        return new PreparedStatementBuilder(st); 
+        return new PreparedStatementBuilder(st);
     }
-
 }

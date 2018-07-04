@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *        
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,11 +19,11 @@ package org.geotools.filter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import javax.xml.transform.TransformerException;
-
 import org.geotools.gml.producer.GeometryTransformer;
 import org.geotools.xml.transform.TransformerBase;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;
 import org.opengis.filter.Filter;
@@ -80,72 +80,67 @@ import org.opengis.filter.temporal.TOverlaps;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * An XMLEncoder for Filters and Expressions.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Ian Schneider
- *
  */
 public class FilterTransformer extends TransformerBase {
-    
+
     /** The namespace to use if none is provided. */
     private static String defaultNamespace = "http://www.opengis.net/ogc";
 
     /** Map of comparison types to sql representation */
     private static Map comparisions = new HashMap();
-    
+
     /** Map of spatial types to sql representation */
     private static Map spatial = new HashMap();
-    
+
     /** Map of logical types to sql representation */
     private static Map logical = new HashMap();
-    
-    /**
-     * A typed convenience method for converting a Filter into XML.
-     */
+
+    /** A typed convenience method for converting a Filter into XML. */
     public String transform(Filter f) throws TransformerException {
         return super.transform(f);
     }
-    
+
     public org.geotools.xml.transform.Translator createTranslator(ContentHandler handler) {
         return new FilterTranslator(handler);
-    }    
-    public static class FilterTranslator extends TranslatorSupport implements org.opengis.filter.FilterVisitor, org.opengis.filter.expression.ExpressionVisitor {
+    }
+
+    public static class FilterTranslator extends TranslatorSupport
+            implements org.opengis.filter.FilterVisitor,
+                    org.opengis.filter.expression.ExpressionVisitor {
         GeometryTransformer.GeometryTranslator geometryEncoder;
-        
+
         public FilterTranslator(ContentHandler handler) {
-            super(handler, "ogc" ,defaultNamespace);
- 
+            super(handler, "ogc", defaultNamespace);
+
             geometryEncoder = new GeometryTransformer.GeometryTranslator(handler);
-            
+
             addNamespaceDeclarations(geometryEncoder);
         }
-        
+
         public Object visit(ExcludeFilter filter, Object extraData) {
             // Exclude filter represents "null" when the default action is to not accept any content
             // the code calling the FilterTransformer should of checked for this case
-            // and taken appropriate action            
+            // and taken appropriate action
             return extraData; // should we consider throwing an illegal state exception?
         }
 
         public Object visit(IncludeFilter filter, Object extraData) {
             // Include filter represents "null" when the default action is to include all content
             // the code calling the FilterTransformer should of checked for this case
-            // and taken appropriate action            
+            // and taken appropriate action
             return extraData; // should we consider throwing an illegal state exception?
         }
 
         public Object visit(And filter, Object extraData) {
             start("And");
-            for( org.opengis.filter.Filter child : filter.getChildren() ){
-                child.accept( this, extraData );
+            for (org.opengis.filter.Filter child : filter.getChildren()) {
+                child.accept(this, extraData);
             }
             end("And");
             return extraData;
@@ -153,38 +148,37 @@ public class FilterTransformer extends TransformerBase {
 
         public Object visit(Id filter, Object extraData) {
             Set<Identifier> fids = filter.getIdentifiers();
-            for (Identifier fid : fids ) {
+            for (Identifier fid : fids) {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute( null, "fid", "fid",  null, fid.toString() );
-                element("FeatureId", null, atts );
+                atts.addAttribute(null, "fid", "fid", null, fid.toString());
+                element("FeatureId", null, atts);
             }
             return extraData;
         }
 
         public Object visit(Not filter, Object extraData) {
             start("Not");
-            filter.getFilter().accept( this, extraData );
+            filter.getFilter().accept(this, extraData);
             end("Not");
             return extraData;
- 
         }
 
         public Object visit(Or filter, Object extraData) {
             start("Or");
-            for( org.opengis.filter.Filter child : filter.getChildren() ){
-                child.accept( this, extraData );
+            for (org.opengis.filter.Filter child : filter.getChildren()) {
+                child.accept(this, extraData);
             }
             end("Or");
-            return extraData; 
+            return extraData;
         }
 
         public Object visit(PropertyIsBetween filter, Object extraData) {
             Expression left = (Expression) filter.getLowerBoundary();
             Expression mid = (Expression) filter.getExpression();
             Expression right = (Expression) filter.getUpperBoundary();
-            
+
             String type = "PropertyIsBetween";
-            
+
             start(type);
             mid.accept(this, extraData);
             start("LowerBoundary");
@@ -194,19 +188,19 @@ public class FilterTransformer extends TransformerBase {
             right.accept(this, extraData);
             end("UpperBoundary");
             end(type);
-            
+
             return extraData;
         }
 
         public Object visit(PropertyIsEqualTo filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "PropertyIsEqualTo";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -214,12 +208,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "PropertyIsNotEqualTo";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -227,12 +221,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(PropertyIsGreaterThan filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "PropertyIsGreaterThan";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -240,12 +234,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "PropertyIsGreaterThanOrEqualTo";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -253,12 +247,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(PropertyIsLessThan filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "PropertyIsLessThan";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -266,12 +260,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "PropertyIsLessThanOrEqualTo";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -281,66 +275,65 @@ public class FilterTransformer extends TransformerBase {
             String wcs = filter.getSingleChar();
             String esc = filter.getEscape();
             Expression expression = filter.getExpression();
-            
+
             AttributesImpl atts = new AttributesImpl();
             atts.addAttribute("", "wildCard", "wildCard", "", wcm);
             atts.addAttribute("", "singleChar", "singleChar", "", wcs);
             atts.addAttribute("", "escape", "escape", "", esc);
-            
-            start("PropertyIsLike",atts);
 
-            expression.accept( this, extraData);
-            
-            element("Literal", filter.getLiteral() );
-            
+            start("PropertyIsLike", atts);
+
+            expression.accept(this, extraData);
+
+            element("Literal", filter.getLiteral());
+
             end("PropertyIsLike");
             return extraData;
         }
 
         public Object visit(PropertyIsNull filter, Object extraData) {
             Expression expr = (Expression) filter.getExpression();
-            
-            String type = "PropertyIsNull";            
+
+            String type = "PropertyIsNull";
             start(type);
-            expr.accept(this,extraData);
+            expr.accept(this, extraData);
             end(type);
             return extraData;
         }
 
         public Object visit(PropertyIsNil filter, Object extraData) {
             Expression expr = (Expression) filter.getExpression();
-            
+
             AttributesImpl atts = new AttributesImpl();
             if (filter.getNilReason() != null) {
-                atts.addAttribute("", "nilReason", "nilReason", "", filter.getNilReason().toString());
+                atts.addAttribute(
+                        "", "nilReason", "nilReason", "", filter.getNilReason().toString());
             }
-            
+
             String type = "PropertyIsNil";
             start(type, atts);
-            expr.accept(this,extraData);
+            expr.accept(this, extraData);
             end(type);
             return extraData;
         }
-        
+
         public Object visit(BBOX filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
-            final String type = "BBOX";            
+
+            final String type = "BBOX";
             start(type);
-            left.accept(this,extraData);
-            if( right instanceof Literal){
+            left.accept(this, extraData);
+            if (right instanceof Literal) {
                 Literal literal = (Literal) right;
-                Envelope bbox = literal.evaluate(null, Envelope.class);                
-                if( bbox != null ){
-                    encode( bbox );
+                Envelope bbox = literal.evaluate(null, Envelope.class);
+                if (bbox != null) {
+                    encode(bbox);
+                } else {
+                    right.accept(this, extraData);
                 }
-                else {
-                    right.accept(this,extraData);
-                }
-            }
-            else {
-                right.accept(this,extraData);
+            } else {
+                right.accept(this, extraData);
             }
             end(type);
             return extraData;
@@ -349,14 +342,14 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(Beyond filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "Beyond";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
-            element("Distance", String.valueOf(filter.getDistance()) );
-            element("DistanceUnits", String.valueOf(filter.getDistanceUnits()) );
+            left.accept(this, extraData);
+            right.accept(this, extraData);
+            element("Distance", String.valueOf(filter.getDistance()));
+            element("DistanceUnits", String.valueOf(filter.getDistanceUnits()));
             end(type);
             return extraData;
         }
@@ -364,12 +357,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(Contains filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "Contains";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -377,12 +370,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(Crosses filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "Crosses";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -390,12 +383,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(Disjoint filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "Disjoint";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -404,12 +397,12 @@ public class FilterTransformer extends TransformerBase {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
             final String type = "DWithin";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
-            element("Distance", String.valueOf(filter.getDistance()) );
-            element("DistanceUnits", String.valueOf(filter.getDistanceUnits()) );
+            left.accept(this, extraData);
+            right.accept(this, extraData);
+            element("Distance", String.valueOf(filter.getDistance()));
+            element("DistanceUnits", String.valueOf(filter.getDistanceUnits()));
             end(type);
             return extraData;
         }
@@ -417,12 +410,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(Equals filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "Equals";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -430,12 +423,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(Intersects filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "Intersects";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -443,12 +436,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(Overlaps filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "Overlaps";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -456,12 +449,12 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(Touches filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "Touches";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
@@ -469,38 +462,39 @@ public class FilterTransformer extends TransformerBase {
         public Object visit(Within filter, Object extraData) {
             Expression left = filter.getExpression1();
             Expression right = filter.getExpression2();
-            
+
             final String type = "Within";
-            
+
             start(type);
-            left.accept(this,extraData);
-            right.accept(this,extraData);
+            left.accept(this, extraData);
+            right.accept(this, extraData);
             end(type);
             return extraData;
         }
 
         public Object visitNullFilter(Object extraData) {
-            // We do not have an expression? how to represent? 
-            return extraData;            
+            // We do not have an expression? how to represent?
+            return extraData;
         }
 
         public void encode(Object o) throws IllegalArgumentException {
             if (o instanceof Filter) {
                 Filter filter = (Filter) o;
-                filter.accept( this, null);
-            }
-            else if (o instanceof Expression) {
+                filter.accept(this, null);
+            } else if (o instanceof Expression) {
                 Expression expression = (Expression) o;
-                expression.accept( this, null );
-            }
-            else { 
-                throw new IllegalArgumentException("Cannot encode " + (o == null ? "null" : o.getClass().getName())+" should be Filter or Expression");
+                expression.accept(this, null);
+            } else {
+                throw new IllegalArgumentException(
+                        "Cannot encode "
+                                + (o == null ? "null" : o.getClass().getName())
+                                + " should be Filter or Expression");
             }
         }
 
         public Object visit(NilExpression expression, Object extraData) {
             // We do not have an expression? how to represent? <Literal></Literal>?
-            element("Literal","");
+            element("Literal", "");
             return extraData;
         }
 
@@ -527,9 +521,9 @@ public class FilterTransformer extends TransformerBase {
 
             AttributesImpl atts = new AttributesImpl();
             atts.addAttribute("", "name", "name", "", expression.getName());
-            start(type,atts);
+            start(type, atts);
 
-            for( org.opengis.filter.expression.Expression parameter : expression.getParameters() ){
+            for (org.opengis.filter.expression.Expression parameter : expression.getParameters()) {
                 parameter.accept(this, extraData);
             }
             end(type);
@@ -538,18 +532,16 @@ public class FilterTransformer extends TransformerBase {
 
         public Object visit(Literal expression, Object extraData) {
             Object value = expression.getValue();
-            if( value == null ){
+            if (value == null) {
                 element("Literal", "");
-            }
-            else if (value instanceof Geometry) {
-                geometryEncoder.encode( (Geometry) value );
-            }
-            else {
-                String txt = expression.evaluate(null, String.class );
-                if( txt == null ){
+            } else if (value instanceof Geometry) {
+                geometryEncoder.encode((Geometry) value);
+            } else {
+                String txt = expression.evaluate(null, String.class);
+                if (txt == null) {
                     txt = value.toString();
                 }
-                element("Literal",txt);
+                element("Literal", txt);
             }
             return extraData;
         }
@@ -564,7 +556,7 @@ public class FilterTransformer extends TransformerBase {
         }
 
         public Object visit(PropertyName expression, Object extraData) {
-            element("PropertyName",expression.getPropertyName());
+            element("PropertyName", expression.getPropertyName());
             return extraData;
         }
 
@@ -576,63 +568,63 @@ public class FilterTransformer extends TransformerBase {
             end(type);
             return extraData;
         }
-        
+
         public Object visit(After after, Object extraData) {
-            return visit((BinaryTemporalOperator)after, After.NAME, extraData);
+            return visit((BinaryTemporalOperator) after, After.NAME, extraData);
         }
 
         public Object visit(AnyInteracts anyInteracts, Object extraData) {
-            return visit((BinaryTemporalOperator)anyInteracts, AnyInteracts.NAME, extraData);
+            return visit((BinaryTemporalOperator) anyInteracts, AnyInteracts.NAME, extraData);
         }
 
         public Object visit(Before before, Object extraData) {
-            return visit((BinaryTemporalOperator)before, Before.NAME, extraData);
+            return visit((BinaryTemporalOperator) before, Before.NAME, extraData);
         }
 
         public Object visit(Begins begins, Object extraData) {
-            return visit((BinaryTemporalOperator)begins, Begins.NAME, extraData);
+            return visit((BinaryTemporalOperator) begins, Begins.NAME, extraData);
         }
 
         public Object visit(BegunBy begunBy, Object extraData) {
-            return visit((BinaryTemporalOperator)begunBy, BegunBy.NAME, extraData);
+            return visit((BinaryTemporalOperator) begunBy, BegunBy.NAME, extraData);
         }
 
         public Object visit(During during, Object extraData) {
-            return visit((BinaryTemporalOperator)during, During.NAME, extraData);
+            return visit((BinaryTemporalOperator) during, During.NAME, extraData);
         }
 
         public Object visit(EndedBy endedBy, Object extraData) {
-            return visit((BinaryTemporalOperator)endedBy, EndedBy.NAME, extraData);
+            return visit((BinaryTemporalOperator) endedBy, EndedBy.NAME, extraData);
         }
 
         public Object visit(Ends ends, Object extraData) {
-            return visit((BinaryTemporalOperator)ends, Ends.NAME, extraData);
+            return visit((BinaryTemporalOperator) ends, Ends.NAME, extraData);
         }
 
         public Object visit(Meets meets, Object extraData) {
-            return visit((BinaryTemporalOperator)meets, Meets.NAME, extraData);
+            return visit((BinaryTemporalOperator) meets, Meets.NAME, extraData);
         }
 
         public Object visit(MetBy metBy, Object extraData) {
-            return visit((BinaryTemporalOperator)metBy, MetBy.NAME, extraData);
+            return visit((BinaryTemporalOperator) metBy, MetBy.NAME, extraData);
         }
 
         public Object visit(OverlappedBy overlappedBy, Object extraData) {
-            return visit((BinaryTemporalOperator)overlappedBy, OverlappedBy.NAME, extraData);
+            return visit((BinaryTemporalOperator) overlappedBy, OverlappedBy.NAME, extraData);
         }
 
         public Object visit(TContains contains, Object extraData) {
-            return visit((BinaryTemporalOperator)contains, TContains.NAME, extraData);
+            return visit((BinaryTemporalOperator) contains, TContains.NAME, extraData);
         }
 
         public Object visit(TEquals equals, Object extraData) {
-            return visit((BinaryTemporalOperator)equals, TEquals.NAME, extraData);
+            return visit((BinaryTemporalOperator) equals, TEquals.NAME, extraData);
         }
 
         public Object visit(TOverlaps contains, Object extraData) {
-            return visit((BinaryTemporalOperator)contains, TOverlaps.NAME, extraData);
+            return visit((BinaryTemporalOperator) contains, TOverlaps.NAME, extraData);
         }
-        
+
         protected Object visit(BinaryTemporalOperator filter, String name, Object data) {
             start(name);
             filter.getExpression1().accept(this, data);
@@ -641,5 +633,4 @@ public class FilterTransformer extends TransformerBase {
             return data;
         }
     }
-    
 }

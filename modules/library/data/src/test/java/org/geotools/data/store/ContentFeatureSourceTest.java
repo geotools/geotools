@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@ import static org.junit.Assert.assertFalse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.EmptyFeatureReader;
 import org.geotools.data.FeatureReader;
@@ -35,6 +34,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.junit.Test;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
@@ -42,25 +42,17 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
-import com.vividsolutions.jts.geom.LineString;
-
 public class ContentFeatureSourceTest {
 
-    /**
-     * Mock feature type name.
-     */
+    /** Mock feature type name. */
     protected static final Name TYPENAME = new NameImpl("http://www.geotools.org", "Mock");
 
-    /**
-     * Mock feature type.
-     */
+    /** Mock feature type. */
     protected static final SimpleFeatureType TYPE = buildType();
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
-    /**
-     * Build the test type.
-     */
+    /** Build the test type. */
     protected static SimpleFeatureType buildType() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(TYPENAME);
@@ -79,88 +71,99 @@ public class ContentFeatureSourceTest {
     @Test
     public void testRetypeCannotSortCovered() throws Exception {
         Query q = new Query();
-        q.setPropertyNames(new String[] { "name", "z" });
-        q.setSortBy(new SortBy[] { ff.sort("z", SortOrder.ASCENDING) });
+        q.setPropertyNames(new String[] {"name", "z"});
+        q.setSortBy(new SortBy[] {ff.sort("z", SortOrder.ASCENDING)});
         checkRetypeCannotSort(q, q);
     }
 
     @Test
     public void testRetypeCannotSortPartiallyCovered() throws Exception {
         Query q = new Query();
-        q.setPropertyNames(new String[] { "name", });
-        q.setSortBy(new SortBy[] { ff.sort("name", SortOrder.ASCENDING),
-                ff.sort("z", SortOrder.ASCENDING) });
+        q.setPropertyNames(
+                new String[] {
+                    "name",
+                });
+        q.setSortBy(
+                new SortBy[] {
+                    ff.sort("name", SortOrder.ASCENDING), ff.sort("z", SortOrder.ASCENDING)
+                });
         Query expected = new Query(q);
-        expected.setPropertyNames(new String[] { "name", "z" });
+        expected.setPropertyNames(new String[] {"name", "z"});
         checkRetypeCannotSort(q, expected);
     }
 
     @Test
     public void testRetypeCannotSortFullyCovered() throws Exception {
         Query q = new Query();
-        q.setPropertyNames(new String[] { "name", });
-        q.setSortBy(new SortBy[] { ff.sort("z", SortOrder.ASCENDING) });
+        q.setPropertyNames(
+                new String[] {
+                    "name",
+                });
+        q.setSortBy(new SortBy[] {ff.sort("z", SortOrder.ASCENDING)});
         Query expected = new Query(q);
-        expected.setPropertyNames(new String[] { "name", "z" });
+        expected.setPropertyNames(new String[] {"name", "z"});
         checkRetypeCannotSort(q, expected);
     }
 
     public void checkRetypeCannotSort(Query query, final Query expected) throws IOException {
-        DataStore store = new ContentDataStore() {
+        DataStore store =
+                new ContentDataStore() {
 
-            {
-                namespaceURI = TYPE.getName().getNamespaceURI();
-            }
-
-            @SuppressWarnings("serial")
-            @Override
-            protected List<Name> createTypeNames() throws IOException {
-                return new ArrayList<Name>() {
                     {
-                        add(TYPENAME);
+                        namespaceURI = TYPE.getName().getNamespaceURI();
+                    }
+
+                    @SuppressWarnings("serial")
+                    @Override
+                    protected List<Name> createTypeNames() throws IOException {
+                        return new ArrayList<Name>() {
+                            {
+                                add(TYPENAME);
+                            }
+                        };
+                    }
+
+                    @Override
+                    protected ContentFeatureSource createFeatureSource(ContentEntry entry)
+                            throws IOException {
+                        return new ContentFeatureSource(entry, null) {
+
+                            @Override
+                            protected ReferencedEnvelope getBoundsInternal(Query query)
+                                    throws IOException {
+                                throw new RuntimeException("Unexpected call");
+                            }
+
+                            @Override
+                            protected int getCountInternal(Query query) throws IOException {
+                                throw new RuntimeException("Unexpected call");
+                            }
+
+                            @Override
+                            protected FeatureReader<SimpleFeatureType, SimpleFeature>
+                                    getReaderInternal(Query query) throws IOException {
+                                assertEquals(expected, query);
+                                return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(
+                                        TYPE);
+                            }
+
+                            @Override
+                            protected SimpleFeatureType buildFeatureType() throws IOException {
+                                return TYPE;
+                            }
+
+                            @Override
+                            protected boolean canRetype() {
+                                return true;
+                            }
+
+                            @Override
+                            protected boolean canSort() {
+                                return false;
+                            }
+                        };
                     }
                 };
-            }
-
-            @Override
-            protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
-                return new ContentFeatureSource(entry, null) {
-
-                    @Override
-                    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-                        throw new RuntimeException("Unexpected call");
-                    }
-
-                    @Override
-                    protected int getCountInternal(Query query) throws IOException {
-                        throw new RuntimeException("Unexpected call");
-                    }
-
-                    @Override
-                    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(
-                            Query query) throws IOException {
-                        assertEquals(expected, query);
-                        return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(TYPE);
-                    }
-
-                    @Override
-                    protected SimpleFeatureType buildFeatureType() throws IOException {
-                        return TYPE;
-                    }
-
-                    @Override
-                    protected boolean canRetype() {
-                        return true;
-                    }
-
-                    @Override
-                    protected boolean canSort() {
-                        return false;
-                    }
-                };
-            }
-
-        };
 
         SimpleFeatureSource fs = store.getFeatureSource(TYPE.getName());
         SimpleFeatureCollection features = fs.getFeatures(query);
@@ -168,6 +171,4 @@ public class ContentFeatureSourceTest {
             assertFalse(fi.hasNext());
         }
     }
-
-
 }

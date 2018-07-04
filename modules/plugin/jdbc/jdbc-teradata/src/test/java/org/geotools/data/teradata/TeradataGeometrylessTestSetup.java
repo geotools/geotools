@@ -19,11 +19,7 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     public TeradataGeometrylessTestSetup(JDBCTestSetup delegate) {
@@ -31,7 +27,8 @@ public class TeradataGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     }
 
     protected void createPersonTable() throws Exception {
-        run("CREATE TABLE \"person\"(\"fid\" PRIMARY KEY not null generated always as identity (start with 0) integer, \"id\" int, \"name\" varchar(200), \"age\" int)");
+        run(
+                "CREATE TABLE \"person\"(\"fid\" PRIMARY KEY not null generated always as identity (start with 0) integer, \"id\" int, \"name\" varchar(200), \"age\" int)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Paul',32)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Anne',40)");
     }
@@ -43,5 +40,4 @@ public class TeradataGeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     protected void dropZipCodeTable() throws Exception {
         runSafe("DROP TABLE \"zipcode\"");
     }
-
 }

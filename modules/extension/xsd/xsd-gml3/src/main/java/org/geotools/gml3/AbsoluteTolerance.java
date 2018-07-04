@@ -17,14 +17,12 @@
 package org.geotools.gml3;
 
 /**
- *
  * @author Erik van de Pol
- *
- *
  * @source $URL$
  */
 public class AbsoluteTolerance implements LinearizationTolerance {
     private double tolerance;
+
     public AbsoluteTolerance(double tolerance) {
         this.tolerance = tolerance;
     }

@@ -19,14 +19,14 @@ package org.geotools.gml3.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:PointPropertyType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *         <code>
  *  &lt;complexType name="PointPropertyType"&gt;
@@ -49,19 +49,14 @@ import com.vividsolutions.jts.geom.Point;
  *          &lt;/annotation&gt;
  *      &lt;/attributeGroup&gt;
  *  &lt;/complexType&gt;
- * 
+ *
  *          </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *         /geotools/gml3/bindings/PointPropertyTypeBinding.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
+ *     /geotools/gml3/bindings/PointPropertyTypeBinding.java $
  */
 public class PointPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 
@@ -70,9 +65,7 @@ public class PointPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.PointPropertyType;
     }
@@ -80,5 +73,4 @@ public class PointPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
     public Class<? extends Geometry> getGeometryType() {
         return Point.class;
     }
-
 }

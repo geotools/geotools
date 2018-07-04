@@ -19,20 +19,15 @@ package org.geotools.xml.resolver;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-
-import org.geotools.data.DataUtilities;
+import org.geotools.util.URLs;
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Tests for {@link SchemaCache}.
- * 
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- *
- *
  * @source $URL$
  */
 public class SchemaCacheTest {
@@ -59,30 +54,29 @@ public class SchemaCacheTest {
         Assert.assertFalse((new File("target/test/a")).exists());
     }
 
-    /**
-     * Test resolution of a schema in an existing cache.
-     */
+    /** Test resolution of a schema in an existing cache. */
     @Test
     public void resolve() throws Exception {
         // intentionally construct non-canonical cache directory
-        File cacheDirectory = new File(DataUtilities.urlToFile(SchemaCacheTest.class
-                .getResource("/test-data/cache")), "../cache");
-        SchemaResolver resolver = new SchemaResolver(
-                new SchemaCache(cacheDirectory, false));
-        String resolvedLocation = resolver
-                .resolve("http://schemas.example.org/cache-test/cache-test.xsd");
+        File cacheDirectory =
+                new File(
+                        URLs.urlToFile(SchemaCacheTest.class.getResource("/test-data/cache")),
+                        "../cache");
+        SchemaResolver resolver = new SchemaResolver(new SchemaCache(cacheDirectory, false));
+        String resolvedLocation =
+                resolver.resolve("http://schemas.example.org/cache-test/cache-test.xsd");
         Assert.assertTrue(resolvedLocation.startsWith("file:"));
         Assert.assertTrue(resolvedLocation.endsWith("cache-test.xsd"));
-        Assert.assertTrue(DataUtilities.urlToFile((new URI(resolvedLocation)).toURL()).exists());
+        Assert.assertTrue(URLs.urlToFile((new URI(resolvedLocation)).toURL()).exists());
         // test that cache path is not canonical
-        Assert.assertFalse(cacheDirectory.toString().equals(
-                cacheDirectory.getCanonicalFile().toString()));
+        Assert.assertFalse(
+                cacheDirectory.toString().equals(cacheDirectory.getCanonicalFile().toString()));
         // test that resolved location is canonical, despite cache directory not being canonical
-        Assert.assertEquals(resolvedLocation,
-                DataUtilities.urlToFile((new URI(resolvedLocation)).toURL()).getCanonicalFile()
-                        .toURI().toString());
+        Assert.assertEquals(
+                resolvedLocation,
+                URLs.urlToFile((new URI(resolvedLocation)).toURL())
+                        .getCanonicalFile()
+                        .toURI()
+                        .toString());
     }
-    
-    
-
 }

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -24,33 +24,27 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-
 /**
  * AttributeHandler purpose.
- * 
- * <p>
- * Represents an 'attribute' element
- * </p>
- * 
- * <p>
- * Example Use:
+ *
+ * <p>Represents an 'attribute' element
+ *
+ * <p>Example Use:
+ *
  * <pre><code>
- * 
+ *
  *  AttributeHandler x = new AttributeHandler(...);
- *  
+ *
  * </code></pre>
- * </p>
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class AttributeHandler extends XSIElementHandler {
     /** 'attribute' */
-    public final static String LOCALNAME = "attribute";
+    public static final String LOCALNAME = "attribute";
 
     /** OPTIONAL */
     public static final int OPTIONAL = 0;
@@ -60,6 +54,7 @@ public class AttributeHandler extends XSIElementHandler {
 
     /** REQUIRED */
     public static final int REQUIRED = 2;
+
     private static int offset = 0;
     private String id;
     private String name;
@@ -79,21 +74,17 @@ public class AttributeHandler extends XSIElementHandler {
         return offset++;
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((type == null)
-        ? 1 : type.hashCode()) * ((name == null) ? 1 : name.hashCode()))
-        + hashCodeOffset;
+        return (LOCALNAME.hashCode()
+                        * ((id == null) ? 1 : id.hashCode())
+                        * ((type == null) ? 1 : type.hashCode())
+                        * ((name == null) ? 1 : name.hashCode()))
+                + hashCodeOffset;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName)
-        throws SAXException {
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
             //
@@ -105,7 +96,7 @@ public class AttributeHandler extends XSIElementHandler {
                     simpleType = sth;
                 } else {
                     throw new SAXNotRecognizedException(
-                        "Extension may only have one 'simpleType' or 'complexType' declaration.");
+                            "Extension may only have one 'simpleType' or 'complexType' declaration.");
                 }
 
                 return sth;
@@ -116,11 +107,10 @@ public class AttributeHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts){
+    public void startElement(String namespaceURI, String localName, Attributes atts) {
         id = atts.getValue("", "id");
 
         if (id == null) {
@@ -171,20 +161,15 @@ public class AttributeHandler extends XSIElementHandler {
         this.use = findUse(use1);
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
     /**
-     * <p>
      * Convert the 'use' attribute to an int mask
-     * </p>
      *
      * @param use
-     *
      */
     public static int findUse(String use) {
         if ("optional".equalsIgnoreCase(use)) {
@@ -203,51 +188,38 @@ public class AttributeHandler extends XSIElementHandler {
     }
 
     /**
-     * <p>
      * converts an int mask representing use to the string representation
-     * </p>
      *
      * @param use
-     *
      */
     public static String writeUse(int use) {
         switch (use) {
-        case OPTIONAL:
-            return "optional";
+            case OPTIONAL:
+                return "optional";
 
-        case PROHIBITED:
-            return "prohibited";
+            case PROHIBITED:
+                return "prohibited";
 
-        case REQUIRED:
-            return "required";
+            case REQUIRED:
+                return "required";
 
-        default:
-            return null;
+            default:
+                return null;
         }
     }
 
-    /**
-     * <p>
-     * Returns the attribute name
-     * </p>
-     *
-     */
+    /** Returns the attribute name */
     public String getName() {
         return name;
     }
 
     /**
-     * <p>
      * creates a smaller simpler version
-     * </p>
      *
      * @param parent
-     *
-     *
      * @throws SAXException
      */
-    protected Attribute compress(SchemaHandler parent)
-        throws SAXException {
+    protected Attribute compress(SchemaHandler parent) throws SAXException {
         if (cache != null) {
             return cache;
         }
@@ -266,8 +238,7 @@ public class AttributeHandler extends XSIElementHandler {
                 Attribute refA = parent.lookUpAttribute(ref);
 
                 if (refA == null) {
-                    throw new SAXException("Attribute '" + ref
-                        + "' was refered and not found");
+                    throw new SAXException("Attribute '" + ref + "' was refered and not found");
                 }
 
                 st = refA.getSimpleType();
@@ -287,26 +258,22 @@ public class AttributeHandler extends XSIElementHandler {
             }
         }
 
-        cache = new AttributeGT(id, name1, parent.getTargetNamespace(), st,
-                use1, def1, fixed1, false);
+        cache =
+                new AttributeGT(
+                        id, name1, parent.getTargetNamespace(), st, use1, def1, fixed1, false);
 
         id = type = ref = null;
 
         return cache;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 }

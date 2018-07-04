@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2">
+   <aggregation type="forecastModelRunCollection">
+        <scanFmrc location="${DIRECTORY}" regExp="twodimtimediff[12].nc" />
+    </aggregation>
+</netcdf>

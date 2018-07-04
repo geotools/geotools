@@ -17,16 +17,13 @@
 package org.geotools.coverageio.gdal.erdasimg;
 
 import it.geosolutions.imageio.plugins.erdasimg.ErdasImgImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.MismatchedDimensionException;
-
 
 /**
  * An implementation a {@link Format} for the Erdas Imagine format.
@@ -34,20 +31,14 @@ import org.opengis.geometry.MismatchedDimensionException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public final class ErdasImgFormat extends BaseGDALGridFormat implements Format {
-    /**
-     * Logger.
-     */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.coverageio.gdal.erdasimg");
+    /** Logger. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.erdasimg");
 
-    /**
-     * Creates an instance and sets the metadata.
-     */
+    /** Creates an instance and sets the metadata. */
     public ErdasImgFormat() {
         super(new ErdasImgImageReaderSpi());
 
@@ -60,16 +51,12 @@ public final class ErdasImgFormat extends BaseGDALGridFormat implements Format {
 
     private static InfoWrapper INFO = new InfoWrapper("Erdas Imagine Coverage Format", "ERDASImg");
 
-    /**
-     * Sets the metadata information.
-     */
+    /** Sets the metadata information. */
     protected void setInfo() {
         setInfo(INFO);
     }
 
-    /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints)
-     */
+    /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
     public ErdasImgReader getReader(Object source, Hints hints) {
         try {
             return new ErdasImgReader(source, hints);

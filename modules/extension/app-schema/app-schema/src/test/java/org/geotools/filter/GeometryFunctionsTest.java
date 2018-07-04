@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.data.complex.config.Types;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -40,6 +39,10 @@ import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xs.XSSchema;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -52,26 +55,17 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-
 /**
- * This is to test functions that convert numeric values to geometry types. This is required when the data store doesn't have geometry columns, but
- * geometry types are needed.
- * 
+ * This is to test functions that convert numeric values to geometry types. This is required when
+ * the data store doesn't have geometry columns, but geometry types are needed.
+ *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * 
- * 
- * 
- * 
  * @source $URL$
  */
 public class GeometryFunctionsTest extends AppSchemaTestSupport {
 
-    public static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.data.complex");
+    public static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
 
     private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -84,26 +78,38 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     @BeforeClass
     public static void setUpOnce() {
         List<AttributeDescriptor> schema = new ArrayList<AttributeDescriptor>();
-        schema.add(new AttributeDescriptorImpl(XSSchema.DOUBLE_TYPE, Types.typeName("pointOne"), 0,
-                1, false, null));
-        schema.add(new AttributeDescriptorImpl(XSSchema.DOUBLE_TYPE, Types.typeName("pointTwo"), 0,
-                1, false, null));
+        schema.add(
+                new AttributeDescriptorImpl(
+                        XSSchema.DOUBLE_TYPE, Types.typeName("pointOne"), 0, 1, false, null));
+        schema.add(
+                new AttributeDescriptorImpl(
+                        XSSchema.DOUBLE_TYPE, Types.typeName("pointTwo"), 0, 1, false, null));
 
-        SimpleFeatureType type = new SimpleFeatureTypeImpl(Types.typeName("GeometryContainer"),
-                schema, null, false, null, GMLSchema.ABSTRACTFEATURETYPE_TYPE, null);
-        feature = SimpleFeatureBuilder.build(type, new Object[] { 5.0, 2.5 }, null);
+        SimpleFeatureType type =
+                new SimpleFeatureTypeImpl(
+                        Types.typeName("GeometryContainer"),
+                        schema,
+                        null,
+                        false,
+                        null,
+                        GMLSchema.ABSTRACTFEATURETYPE_TYPE,
+                        null);
+        feature = SimpleFeatureBuilder.build(type, new Object[] {5.0, 2.5}, null);
         pointOne = ff.property("pointOne");
         pointTwo = ff.property("pointTwo");
     }
 
     @Test
-    /**
-     * Test toDirectPosition function
-     */
+    /** Test toDirectPosition function */
     public void testToDirectPosition() throws Exception {
         // 2 points with SRS
-        Function function = ff.function("toDirectPosition", ToDirectPositionFunction.SRS_NAME,
-                ff.literal("EPSG:4326"), pointOne, pointTwo);
+        Function function =
+                ff.function(
+                        "toDirectPosition",
+                        ToDirectPositionFunction.SRS_NAME,
+                        ff.literal("EPSG:4326"),
+                        pointOne,
+                        pointTwo);
         Object value = function.evaluate(feature);
         assertTrue(value instanceof DirectPosition);
         DirectPosition pos = (DirectPosition) value;
@@ -122,8 +128,13 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals(pos.getOrdinate(0), 5.0, 0);
         // invalid CRS
         try {
-            function = ff.function("toDirectPosition", ToDirectPositionFunction.SRS_NAME,
-                    ff.literal("1"), pointOne, pointTwo);
+            function =
+                    ff.function(
+                            "toDirectPosition",
+                            ToDirectPositionFunction.SRS_NAME,
+                            ff.literal("1"),
+                            pointOne,
+                            pointTwo);
             function.evaluate(feature);
             fail("Shouldn't get this far with invalid SRS name: '1'");
         } catch (Throwable e) {
@@ -133,31 +144,48 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         try {
             function = ff.function("toDirectPosition", pointOne, pointTwo, pointOne);
             function.evaluate(feature);
-            fail("Shouldn't get this far with too many parameters: " + pointOne.toString() + ", "
-                    + pointTwo.toString() + ", " + pointOne.toString());
+            fail(
+                    "Shouldn't get this far with too many parameters: "
+                            + pointOne.toString()
+                            + ", "
+                            + pointTwo.toString()
+                            + ", "
+                            + pointOne.toString());
         } catch (Throwable e) {
             LOGGER.info("Testing exception: " + e.toString());
         }
         // no points
         try {
-            function = ff.function("toDirectPosition", ToDirectPositionFunction.SRS_NAME,
-                    ff.literal("EPSG:WGS84"));
+            function =
+                    ff.function(
+                            "toDirectPosition",
+                            ToDirectPositionFunction.SRS_NAME,
+                            ff.literal("EPSG:WGS84"));
             function.evaluate(feature);
-            fail("Shouldn't get this far with too many parameters: " + pointOne.toString() + ", "
-                    + pointTwo.toString() + ", " + pointOne.toString());
+            fail(
+                    "Shouldn't get this far with too many parameters: "
+                            + pointOne.toString()
+                            + ", "
+                            + pointTwo.toString()
+                            + ", "
+                            + pointOne.toString());
         } catch (Throwable e) {
             LOGGER.info("Testing exception: " + e.toString());
         }
     }
 
     @Test
-    /**
-     * Test toPoint function
-     */
+    /** Test toPoint function */
     public void testToPoint() throws NoSuchAuthorityCodeException, FactoryException {
         // 2 points with SRS name and gml:id
-        Function function = ff.function("toPoint", ToDirectPositionFunction.SRS_NAME,
-                ff.literal("EPSG:4283"), pointOne, pointTwo, ff.literal("1"));
+        Function function =
+                ff.function(
+                        "toPoint",
+                        ToDirectPositionFunction.SRS_NAME,
+                        ff.literal("EPSG:4283"),
+                        pointOne,
+                        pointTwo,
+                        ff.literal("1"));
         Object value = function.evaluate(feature);
         assertTrue(value instanceof Point);
         Point pt = (Point) value;
@@ -186,21 +214,30 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
             LOGGER.info("Testing exception: " + e.toString());
         }
         // 3 points
-        function = ff.function("toPoint", ToDirectPositionFunction.SRS_NAME, ff.literal("1"),
-                pointOne, pointTwo, pointOne);
+        function =
+                ff.function(
+                        "toPoint",
+                        ToDirectPositionFunction.SRS_NAME,
+                        ff.literal("1"),
+                        pointOne,
+                        pointTwo,
+                        pointOne);
         try {
             function.evaluate(feature);
-            fail("Shouldn't get this far with too many parameters: " + pointOne.toString() + ", "
-                    + pointTwo.toString() + ", " + pointOne.toString());
+            fail(
+                    "Shouldn't get this far with too many parameters: "
+                            + pointOne.toString()
+                            + ", "
+                            + pointTwo.toString()
+                            + ", "
+                            + pointOne.toString());
         } catch (Throwable e) {
             LOGGER.info("Testing exception: " + e.toString());
         }
     }
 
     @Test
-    /**
-     * Test toEnvelope function
-     */
+    /** Test toEnvelope function */
     public void testToEnvelope() {
         // Option 1 (1D Envelope) : <OCQL>ToEnvelope(minx,maxx)</OCQL>
         Function function = ff.function("toEnvelope", pointOne, pointTwo);
@@ -232,8 +269,14 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals(env.getMaxY(), 5.0, 0);
         assertEquals(CRS.toSRS(refEnv.getCoordinateReferenceSystem()), "EPSG:4283");
         // Option 4 (2D Envelope with crsname): <OCQL>ToEnvelope(minx,maxx,miny,maxy,crsname)</OCQL>
-        function = ff.function("toEnvelope", pointTwo, pointOne, pointTwo, pointOne,
-                ff.literal("EPSG:4283"));
+        function =
+                ff.function(
+                        "toEnvelope",
+                        pointTwo,
+                        pointOne,
+                        pointTwo,
+                        pointOne,
+                        ff.literal("EPSG:4283"));
         value = function.evaluate(feature);
         assertTrue(value instanceof ReferencedEnvelope);
         refEnv = (ReferencedEnvelope) value;
@@ -245,11 +288,10 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     }
 
     @Test
-    /**
-     * Test ToLineString with EPSG SRS.
-     */
+    /** Test ToLineString with EPSG SRS. */
     public void testToLineStringEPSG() {
-        Function function = ff.function("toLineString", ff.literal("EPSG:9902"), pointOne, pointTwo);
+        Function function =
+                ff.function("toLineString", ff.literal("EPSG:9902"), pointOne, pointTwo);
         Object value = function.evaluate(feature);
         assertTrue(value instanceof LineString);
         LineString linestring = (LineString) value;
@@ -265,11 +307,9 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
         assertEquals(linestring.getCoordinateN(1).y, Coordinate.NULL_ORDINATE, 0);
         assertEquals(linestring.getCoordinateN(1).z, Coordinate.NULL_ORDINATE, 0);
     }
-    
+
     @Test
-    /**
-     * Test ToLineString with non EPSG SRS.
-     */
+    /** Test ToLineString with non EPSG SRS. */
     public void testToLineStringCustomSRS() {
         String customSRS = "#borehole.GA.1";
         Function function = ff.function("toLineString", ff.literal(customSRS), pointOne, pointTwo);
@@ -290,31 +330,34 @@ public class GeometryFunctionsTest extends AppSchemaTestSupport {
     }
 
     @Test
-    /**
-     * Test ToLineString with null parameters.
-     */
+    /** Test ToLineString with null parameters. */
     public void testToLineStringNullParams() {
         Function function = ff.function("toLineString", null, null);
         try {
             function.evaluate(feature);
             fail();
         } catch (IllegalArgumentException e) {
-            String msg = "Invalid parameters for toLineString function: [null, null]. Usage: toLineString(srsName, point 1, point 2)";
+            String msg =
+                    "Invalid parameters for toLineString function: [null, null]. Usage: toLineString(srsName, point 1, point 2)";
             assertEquals(msg, e.getMessage());
         }
     }
 
     @Test
-    /**
-     * Test ToLineString with invalid parameters.
-     */
+    /** Test ToLineString with invalid parameters. */
     public void testToLineStringInvalidParams() {
-        Function function = ff.function("toLineString", ff.literal("#GA.borehole.100"), Literal.NIL, ff.literal("something"));
+        Function function =
+                ff.function(
+                        "toLineString",
+                        ff.literal("#GA.borehole.100"),
+                        Literal.NIL,
+                        ff.literal("something"));
         try {
             function.evaluate(feature);
             fail();
         } catch (IllegalArgumentException e) {
-            String msg = "Error converting the parameters for toLineString function: [#GA.borehole.100, Expression.NIL, something]. Usage: toLineString(srsName, point 1, point 2)";
+            String msg =
+                    "Error converting the parameters for toLineString function: [#GA.borehole.100, Expression.NIL, something]. Usage: toLineString(srsName, point 1, point 2)";
             assertEquals(msg, e.getMessage());
             assertTrue(e.getCause() instanceof NumberFormatException);
         }

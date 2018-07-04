@@ -20,9 +20,8 @@ import org.geotools.geometry.DirectPosition1D;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform1D;
 import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.TransformException;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
-
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * Concatenated transform in which the resulting transform is one-dimensional.
@@ -33,31 +32,21 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
  * @author Martin Desruisseaux (IRD)
  */
 final class ConcatenatedTransform1D extends ConcatenatedTransform implements MathTransform1D {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 8150427971141078395L;
 
-    /**
-     * Constructs a concatenated transform.
-     */
-    public ConcatenatedTransform1D(final MathTransform transform1,
-                                   final MathTransform transform2)
-    {
+    /** Constructs a concatenated transform. */
+    public ConcatenatedTransform1D(final MathTransform transform1, final MathTransform transform2) {
         super(transform1, transform2);
     }
 
-    /**
-     * Checks if transforms are compatibles with this implementation.
-     */
+    /** Checks if transforms are compatibles with this implementation. */
     @Override
     boolean isValid() {
-        return super.isValid() && getSourceDimensions()==1 && getTargetDimensions()==1;
+        return super.isValid() && getSourceDimensions() == 1 && getTargetDimensions() == 1;
     }
 
-    /**
-     * Transforms the specified value.
-     */
+    /** Transforms the specified value. */
     public double transform(final double value) throws TransformException {
         final double[] values = new double[] {value};
         final double[] buffer = new double[] {transform1.getTargetDimensions()};
@@ -66,19 +55,15 @@ final class ConcatenatedTransform1D extends ConcatenatedTransform implements Mat
         return values[0];
     }
 
-    /**
-     * Gets the derivative of this function at a value.
-     */
+    /** Gets the derivative of this function at a value. */
     public double derivative(final double value) throws TransformException {
         final DirectPosition1D p = new DirectPosition1D(value);
         final Matrix m = derivative(p);
-        assert m.getNumRow()==1 && m.getNumCol()==1;
-        return m.getElement(0,0);
+        assert m.getNumRow() == 1 && m.getNumCol() == 1;
+        return m.getElement(0, 0);
     }
 
-    /**
-     * Creates the inverse transform of this object.
-     */
+    /** Creates the inverse transform of this object. */
     @Override
     public MathTransform1D inverse() throws NoninvertibleTransformException {
         return (MathTransform1D) super.inverse();

@@ -116,12 +116,12 @@ div.header div.wrap {
 	right: 10px;
 }
 #logo_osgeo a {
-	float: right;
-    width: 200px;
-    height: 85px;
+    float: right;
+    width: 297px;
+    height: 114px;
     overflow: hidden;
     text-indent: -9999em;
-    background: url(img/osgeo-logo.png) no-repeat;
+    background: url(img/OSGeo_project.png) no-repeat;
 }
 
 #top-nav {

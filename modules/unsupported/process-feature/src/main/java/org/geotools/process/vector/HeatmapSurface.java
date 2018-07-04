@@ -17,26 +17,23 @@
  */
 package org.geotools.process.vector;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Computes a Heat Map surface from a set of irregular data points, each containing a positive
  * height value. The nature of the surface is determined by a kernelRadius value, which indicates
  * how far out each data points "spreads".
- * <p>
- * The Heatmap surface is computed as a grid (raster) of values representing the surface. For
- * stability, the compute grid is expanded by the kernel radius on all four sides. This avoids
- * "edge effects" from distorting the surface within the requested envelope.
- * <p>
- * The values in the output surface are normalized to lie in the range [0, 1].
- * 
+ *
+ * <p>The Heatmap surface is computed as a grid (raster) of values representing the surface. For
+ * stability, the compute grid is expanded by the kernel radius on all four sides. This avoids "edge
+ * effects" from distorting the surface within the requested envelope.
+ *
+ * <p>The values in the output surface are normalized to lie in the range [0, 1].
+ *
  * @author Martin Davis, OpenGeo
- * 
  */
 public class HeatmapSurface {
-    /**
-     * Number of iterations of box blur to approximate a Gaussian blur
-     */
+    /** Number of iterations of box blur to approximate a Gaussian blur */
     private static final int GAUSSIAN_APPROX_ITER = 4;
 
     private Envelope srcEnv;
@@ -53,7 +50,7 @@ public class HeatmapSurface {
 
     /**
      * Creates a new heatmap surface.
-     * 
+     *
      * @param kernelRadius the kernel radius, in grid units
      * @param srcEnv the envelope defining the data space
      * @param xSize the width of the output grid
@@ -73,10 +70,9 @@ public class HeatmapSurface {
     private void init() {
         gridTrans = new GridTransform(srcEnv, xSize, ySize);
         /**
-         * Do NOT clamp transform output, since
-         * the actual target grid is larger than the source Envelope,
-         * due to the required buffering.
-         * This means that transform outputs MUST be checked for validity.
+         * Do NOT clamp transform output, since the actual target grid is larger than the source
+         * Envelope, due to the required buffering. This means that transform outputs MUST be
+         * checked for validity.
          */
         gridTrans.setClamp(false);
 
@@ -88,23 +84,19 @@ public class HeatmapSurface {
 
     /**
      * Adds a new data point to the surface. Data points can be coincident.
-     * 
+     *
      * @param x the X ordinate of the point
      * @param y the Y ordinate of the point
      * @param value the data value of the point
      */
-    public void addPoint(double x, double y, double value) 
-    {
-        /**
-         * Input points are converted to grid space, and offset by the grid expansion offset
-         */
+    public void addPoint(double x, double y, double value) {
+        /** Input points are converted to grid space, and offset by the grid expansion offset */
         int gi = gridTrans.i(x) + kernelRadiusGrid;
         int gj = gridTrans.j(y) + kernelRadiusGrid;
 
         // check if point falls outside grid - skip it if so
-        if (gi < 0 || gi > grid.length || gj < 0 || gj > grid[0].length)
-            return;
-        
+        if (gi < 0 || gi > grid.length || gj < 0 || gj > grid[0].length) return;
+
         grid[gi][gj] += value;
         // System.out.println("data[" + gi + ", " + gj + "] <- " + value);
     }
@@ -112,7 +104,7 @@ public class HeatmapSurface {
     /**
      * Computes a grid representing the heatmap surface. The grid is structured as an XY matrix,
      * with (0,0) being the bottom left corner of the data space
-     * 
+     *
      * @return a grid representing the surface
      */
     public float[][] computeSurface() {
@@ -150,11 +142,8 @@ public class HeatmapSurface {
         float[][] grid2 = new float[ySize][xSize];
         for (int count = 0; count < GAUSSIAN_APPROX_ITER; count++) {
             int boxKernelRadius = baseBoxKernelRadius;
-            /**
-             * If required, increment radius to ensure sum of radii equals total kernel radius
-             */
-            if (count < radiusIncBreak)
-                boxKernelRadius++;
+            /** If required, increment radius to ensure sum of radii equals total kernel radius */
+            if (count < radiusIncBreak) boxKernelRadius++;
             // System.out.println(boxKernelRadius);
 
             boxBlur(boxKernelRadius, grid, grid2);
@@ -169,7 +158,7 @@ public class HeatmapSurface {
     /**
      * DON'T USE This method is too simplistic to determine normalization factor. Would need to use
      * a full 2D grid and smooth it to get correct value
-     * 
+     *
      * @param baseBoxKernelRadius
      * @param radiusIncBreak
      */
@@ -177,11 +166,8 @@ public class HeatmapSurface {
         double val = 1.0;
         for (int count = 0; count < GAUSSIAN_APPROX_ITER; count++) {
             int boxKernelRadius = baseBoxKernelRadius;
-            /**
-             * If required, increment radius to ensure sum of radii equals total kernel radius
-             */
-            if (count < radiusIncBreak)
-                boxKernelRadius++;
+            /** If required, increment radius to ensure sum of radii equals total kernel radius */
+            if (count < radiusIncBreak) boxKernelRadius++;
 
             int dia = 2 * boxKernelRadius + 1;
             float kernelVal = kernelVal(boxKernelRadius);
@@ -204,15 +190,14 @@ public class HeatmapSurface {
 
     /**
      * Normalizes grid values to range [0,1]
-     * 
+     *
      * @param grid
      */
     private void normalize(float[][] grid) {
         float max = Float.NEGATIVE_INFINITY;
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] > max)
-                    max = grid[i][j];
+                if (grid[i][j] > max) max = grid[i][j];
             }
         }
 
@@ -244,8 +229,7 @@ public class HeatmapSurface {
             double tot = 0.0;
 
             for (int i = -kernelRadius; i <= kernelRadius; i++) {
-                if (i < 0 || i >= width)
-                    continue;
+                if (i < 0 || i >= width) continue;
                 tot += kernelVal * input[i][j];
             }
 
@@ -257,12 +241,10 @@ public class HeatmapSurface {
 
                 // update box running total
                 int iprev = i - 1 - kernelRadius;
-                if (iprev >= 0)
-                    tot -= kernelVal * input[iprev][j];
+                if (iprev >= 0) tot -= kernelVal * input[iprev][j];
 
                 int inext = i + kernelRadius;
-                if (inext < width)
-                    tot += kernelVal * input[inext][j];
+                if (inext < width) tot += kernelVal * input[inext][j];
 
                 output[j][i] = (float) tot;
                 // if (i==49 && j==147) System.out.println("val[ " + i + ", " + j + "] = " + tot);

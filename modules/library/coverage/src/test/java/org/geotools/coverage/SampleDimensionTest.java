@@ -23,13 +23,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.util.InternationalString;
 
-
 /**
- * Tests the {@link GridSampleDimension} implementation. Since {@code GridSampleDimension}
- * rely on {@link CategoryList} for many of its work, many {@code GridSampleDimension}
- * tests are actually {@code CategoryList} tests.
- *
- *
+ * Tests the {@link GridSampleDimension} implementation. Since {@code GridSampleDimension} rely on
+ * {@link CategoryList} for many of its work, many {@code GridSampleDimension} tests are actually
+ * {@code CategoryList} tests.
  *
  * @source $URL$
  * @version $Id$
@@ -48,85 +45,60 @@ public final class SampleDimensionTest {
             return new SimpleInternationalString("overridden");
         }
     }
-    /**
-     * The categories making the sample dimension to test.
-     */
-    private static final String[] CATEGORIES = {
-        "No data",
-        "Clouds",
-        "Lands"
-    };
+    /** The categories making the sample dimension to test. */
+    private static final String[] CATEGORIES = {"No data", "Clouds", "Lands"};
 
     /**
-     * The "no data" values making the sample dimension to test.
-     * There is one for each category in {@link #CATEGORIES}.
+     * The "no data" values making the sample dimension to test. There is one for each category in
+     * {@link #CATEGORIES}.
      */
     private static final int[] NO_DATA = {0, 1, 255};
 
-    /**
-     * The minimal value for the geophysics category, inclusive.
-     */
+    /** The minimal value for the geophysics category, inclusive. */
     private static final int minimum = 10;
 
-    /**
-     * The maximal value for the geophysics category, exclusive.
-     */
+    /** The maximal value for the geophysics category, exclusive. */
     private static final int maximum = 200;
 
-    /**
-     * The scale factor for the sample dimension to test.
-     */
-    private static final double scale  = 0.1;
+    /** The scale factor for the sample dimension to test. */
+    private static final double scale = 0.1;
 
-    /**
-     * The offset value for the sample dimension to test.
-     */
+    /** The offset value for the sample dimension to test. */
     private static final double offset = 5.0;
 
-    /**
-     * Small number for comparaison.
-     */
+    /** Small number for comparaison. */
     private static final double EPS = 1E-7;
 
-    /**
-     * The sample dimension to test.
-     */
+    /** The sample dimension to test. */
     private GridSampleDimension test;
 
-    /**
-     * Sets up common objects used for all tests.
-     */
+    /** Sets up common objects used for all tests. */
     @Before
     public void setUp() {
         assertEquals("setUp", CATEGORIES.length, NO_DATA.length);
-        final Category[] categories = new Category[CATEGORIES.length+1];
-        for (int i=0; i<CATEGORIES.length; i++) {
+        final Category[] categories = new Category[CATEGORIES.length + 1];
+        for (int i = 0; i < CATEGORIES.length; i++) {
             categories[i] = new Category(CATEGORIES[i], null, NO_DATA[i]);
         }
         categories[CATEGORIES.length] = new Category("SST", null, minimum, maximum);
-        test = new GridSampleDimension("Temperature" ,categories, scale, offset);
+        test = new GridSampleDimension("Temperature", categories, scale, offset);
     }
 
-    /**
-     * Tests the consistency of the sample dimension.
-     */
+    /** Tests the consistency of the sample dimension. */
     @Test
     public void testSampleDimension() {
         final double[] nodataValues = test.getNoDataValues();
         assertEquals("nodataValues.length", CATEGORIES.length, nodataValues.length);
-        for (int i=0; i<CATEGORIES.length; i++) {
-            assertEquals("nodataValues["+i+']', NO_DATA[i], nodataValues[i], 0);
+        for (int i = 0; i < CATEGORIES.length; i++) {
+            assertEquals("nodataValues[" + i + ']', NO_DATA[i], nodataValues[i], 0);
         }
-        assertEquals("scale",     scale,  test.getScale(),        0);
-        assertEquals("offset",    offset, test.getOffset(),       0);
-        assertEquals("minimum",   0,      test.getMinimumValue(), 0);
-        assertEquals("maximum",   255,    test.getMaximumValue(), 0);
-
+        assertEquals("scale", scale, test.getScale(), 0);
+        assertEquals("offset", offset, test.getOffset(), 0);
+        assertEquals("minimum", 0, test.getMinimumValue(), 0);
+        assertEquals("maximum", 255, test.getMaximumValue(), 0);
     }
 
-    /**
-     * Tests the {@link GridSampleDimension}'s cloning.
-     */
+    /** Tests the {@link GridSampleDimension}'s cloning. */
     @Test
     public void testCloningSampleDimension() {
         GridSampleDimension original;
@@ -135,6 +107,5 @@ public final class SampleDimensionTest {
 
         GridSampleDimension wrapped = new WrappedGridSampleDimension(original);
         assertEquals("overridden", wrapped.getDescription().toString());
-
     }
 }

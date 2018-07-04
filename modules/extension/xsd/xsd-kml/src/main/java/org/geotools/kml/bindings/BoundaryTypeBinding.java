@@ -17,18 +17,18 @@
 package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
-import com.vividsolutions.jts.geom.LinearRing;
 import org.geotools.kml.KML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:boundaryType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType final="#all" name="boundaryType"&gt;
  *      &lt;all&gt;
@@ -38,23 +38,18 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class BoundaryTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.boundaryType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -65,21 +60,21 @@ public class BoundaryTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(LinearRing.class);
     }
-    
+
     public Object getProperty(Object object, QName name) throws Exception {
-        if ( KML.LinearRing.getLocalPart().equals( name.getLocalPart() ) ) {
+        if (KML.LinearRing.getLocalPart().equals(name.getLocalPart())) {
             return object;
         }
-        
+
         return null;
     }
 }

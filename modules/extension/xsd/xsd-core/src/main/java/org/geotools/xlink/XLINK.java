@@ -19,21 +19,15 @@ package org.geotools.xlink;
 import javax.xml.namespace.QName;
 import org.geotools.xml.XSD;
 
-
 /**
- * This interface contains the qualified names of all the types,elements, and
- * attributes in the http://www.w3.org/1999/xlink schema.
+ * This interface contains the qualified names of all the types,elements, and attributes in the
+ * http://www.w3.org/1999/xlink schema.
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public final class XLINK extends XSD {
-    /**
-     * singleton instance
-     */
+    /** singleton instance */
     private static XLINK instance = new XLINK();
 
     /** @generated */
@@ -72,29 +66,20 @@ public final class XLINK extends XSD {
     /** @generated */
     public static final QName TO = new QName("http://www.w3.org/1999/xlink", "to");
 
-    /**
-     * Private constructor.
-     */
-    private XLINK() {
-    }
+    /** Private constructor. */
+    private XLINK() {}
 
-    /**
-     * The single instance.
-     */
+    /** The single instance. */
     public static XLINK getInstance() {
         return instance;
     }
 
-    /**
-     * Returns 'http://www.w3.org/1999/xlink'
-     */
+    /** Returns 'http://www.w3.org/1999/xlink' */
     public String getNamespaceURI() {
         return NAMESPACE;
     }
 
-    /**
-     * Returns location of 'xlinks.xsd'.
-     */
+    /** Returns location of 'xlinks.xsd'. */
     public String getSchemaLocation() {
         return getClass().getResource("xlinks.xsd").toString();
     }

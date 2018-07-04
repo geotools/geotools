@@ -28,28 +28,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
-import javax.imageio.ImageIO;
-import javax.measure.unit.Unit;
-
-import org.opengis.geometry.Envelope;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
-
+import javax.measure.Unit;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.factory.GeoTools;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.referencing.operation.transform.LinearTransform1D;
-import org.geotools.referencing.operation.transform.LogarithmicTransform1D;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.util.NumberRange;
-
+import org.opengis.geometry.Envelope;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * Helper class for the creation of {@link GridCoverage2D} instances. The only purpose of this
@@ -92,94 +86,76 @@ import org.geotools.util.NumberRange;
  * @version $Id$
  */
 public class GridCoverageBuilder {
-    /**
-     * The envelope, including coordinate reference system.
-     */
+    /** The envelope, including coordinate reference system. */
     private GeneralEnvelope envelope;
 
-    /**
-     * The range of sample values.
-     */
+    /** The range of sample values. */
     private NumberRange<? extends Number> range;
 
-    /**
-     * The default {@linkplain #range}.
-     */
-    private static final NumberRange<Integer> DEFAULT_RANGE = NumberRange.create(0, true, 256, false);
+    /** The default {@linkplain #range}. */
+    private static final NumberRange<Integer> DEFAULT_RANGE =
+            NumberRange.create(0, true, 256, false);
 
     /**
-     * The list of variables created. Each variable will be mapped to a
-     * {@linkplain GridSampleDimension sample dimension}.
+     * The list of variables created. Each variable will be mapped to a {@linkplain
+     * GridSampleDimension sample dimension}.
      *
      * @see #newVariable
      */
     protected final List<Variable> variables;
 
-    /**
-     * The image size.
-     */
+    /** The image size. */
     private int width, height;
 
-    /**
-     * The image. Will be created only when first needed.
-     */
+    /** The image. Will be created only when first needed. */
     private BufferedImage image;
 
-    /**
-     * The grid coverage. Will be created only when first needed.
-     */
+    /** The grid coverage. Will be created only when first needed. */
     private GridCoverage2D coverage;
 
-    /**
-     * The factory to use for creating grid coverages.
-     */
+    /** The factory to use for creating grid coverages. */
     private final GridCoverageFactory factory;
 
-    /**
-     * Creates a builder initialized to default values and factory.
-     */
+    /** Creates a builder initialized to default values and factory. */
     public GridCoverageBuilder() {
         this(CoverageFactoryFinder.getGridCoverageFactory(GeoTools.getDefaultHints()));
     }
 
-    /**
-     * Creates a builder initialized to default values.
-     */
+    /** Creates a builder initialized to default values. */
     public GridCoverageBuilder(final GridCoverageFactory factory) {
         this.factory = factory;
         variables = new ArrayList<Variable>();
-        width  = 256;
+        width = 256;
         height = 256;
     }
 
-    /**
-     * Wraps an arbitrary envelope to an object that can be stored in {@link #envelope}.
-     */
+    /** Wraps an arbitrary envelope to an object that can be stored in {@link #envelope}. */
     private static GeneralEnvelope wrap(final Envelope envelope) {
-        return (envelope==null || envelope instanceof GeneralEnvelope) ?
-            (GeneralEnvelope) envelope : new GeneralEnvelope(envelope);
+        return (envelope == null || envelope instanceof GeneralEnvelope)
+                ? (GeneralEnvelope) envelope
+                : new GeneralEnvelope(envelope);
     }
 
     /**
-     * Returns the current coordinate reference system. If no CRS has been
-     * {@linkplain #setCoordinateReferenceSystem explicitly defined}, then
-     * the default CRS is {@linkplain DefaultGeographicCRS#WGS84 WGS84}.
+     * Returns the current coordinate reference system. If no CRS has been {@linkplain
+     * #setCoordinateReferenceSystem explicitly defined}, then the default CRS is {@linkplain
+     * DefaultGeographicCRS#WGS84 WGS84}.
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-        return (envelope != null) ? envelope.getCoordinateReferenceSystem() : DefaultGeographicCRS.WGS84;
+        return (envelope != null)
+                ? envelope.getCoordinateReferenceSystem()
+                : DefaultGeographicCRS.WGS84;
     }
 
     /**
-     * Sets the coordinate reference system to the specified value. If an
-     * {@linkplain #setEnvelope envelope was previously defined}, it will
-     * be reprojected to the new CRS.
+     * Sets the coordinate reference system to the specified value. If an {@linkplain #setEnvelope
+     * envelope was previously defined}, it will be reprojected to the new CRS.
      *
-     * @throws IllegalArgumentException if the CRS is illegal for the
-     *         {@linkplain #getEnvelope current envelope}.
+     * @throws IllegalArgumentException if the CRS is illegal for the {@linkplain #getEnvelope
+     *     current envelope}.
      */
     public void setCoordinateReferenceSystem(final CoordinateReferenceSystem crs)
-            throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         if (envelope == null) {
             if (crs != null) {
                 envelope = wrap(CRS.getEnvelope(crs));
@@ -188,18 +164,19 @@ public class GridCoverageBuilder {
                     envelope.setToNull();
                 }
             }
-        } else try {
-            envelope = wrap(CRS.transform(envelope, crs));
-        } catch (TransformException exception) {
-            throw new IllegalArgumentException(Errors.format(
-                    ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
-        }
+        } else
+            try {
+                envelope = wrap(CRS.transform(envelope, crs));
+            } catch (TransformException exception) {
+                throw new IllegalArgumentException(
+                        Errors.format(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
+            }
         coverage = null;
     }
 
     /**
-     * Sets the coordinate reference system to the specified authority code. This convenience
-     * method gives a preference to axis in (<var>longitude</var>, <var>latitude</var>) order.
+     * Sets the coordinate reference system to the specified authority code. This convenience method
+     * gives a preference to axis in (<var>longitude</var>, <var>latitude</var>) order.
      *
      * @throws IllegalArgumentException if the given CRS is illegal.
      */
@@ -208,8 +185,8 @@ public class GridCoverageBuilder {
         try {
             crs = CRS.decode(code, true);
         } catch (FactoryException exception) {
-            throw new IllegalArgumentException(Errors.format(
-                    ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
+            throw new IllegalArgumentException(
+                    Errors.format(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
         }
         setCoordinateReferenceSystem(crs);
     }
@@ -235,33 +212,34 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Sets the envelope to the specified value. If a {@linkplain #setCoordinateReferenceSystem
-     * CRS was previously defined}, the envelope will be reprojected to that CRS. If no CRS was
-     * previously defined, then the CRS will be set to the
-     * {@linkplain Envelope#getCoordinateReferenceSystem envelope CRS}.
+     * Sets the envelope to the specified value. If a {@linkplain #setCoordinateReferenceSystem CRS
+     * was previously defined}, the envelope will be reprojected to that CRS. If no CRS was
+     * previously defined, then the CRS will be set to the {@linkplain
+     * Envelope#getCoordinateReferenceSystem envelope CRS}.
      *
-     * @throws IllegalArgumentException if the envelope is illegal for the
-     *         {@linkplain #getCoordinateReferenceSystem current CRS}.
+     * @throws IllegalArgumentException if the envelope is illegal for the {@linkplain
+     *     #getCoordinateReferenceSystem current CRS}.
      */
     public void setEnvelope(Envelope envelope) throws IllegalArgumentException {
-        if (this.envelope != null) try {
-            envelope = CRS.transform(envelope, this.envelope.getCoordinateReferenceSystem());
-        } catch (TransformException exception) {
-            throw new IllegalArgumentException(Errors.format(
-                    ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
-        }
+        if (this.envelope != null)
+            try {
+                envelope = CRS.transform(envelope, this.envelope.getCoordinateReferenceSystem());
+            } catch (TransformException exception) {
+                throw new IllegalArgumentException(
+                        Errors.format(ErrorKeys.ILLEGAL_COORDINATE_REFERENCE_SYSTEM), exception);
+            }
         this.envelope = new GeneralEnvelope(envelope);
         coverage = null;
     }
 
     /**
      * Sets the envelope to the specified values, which must be the lower corner coordinates
-     * followed by upper corner coordinates. The number of arguments provided shall be twice
-     * the envelope dimension, and minimum shall not be greater than maximum.
-     * <p>
-     * <b>Example:</b>
-     * (<var>x</var><sub>min</sub>, <var>y</var><sub>min</sub>, <var>z</var><sub>min</sub>,
-     *  <var>x</var><sub>max</sub>, <var>y</var><sub>max</sub>, <var>z</var><sub>max</sub>)
+     * followed by upper corner coordinates. The number of arguments provided shall be twice the
+     * envelope dimension, and minimum shall not be greater than maximum.
+     *
+     * <p><b>Example:</b> (<var>x</var><sub>min</sub>, <var>y</var><sub>min</sub>,
+     * <var>z</var><sub>min</sub>, <var>x</var><sub>max</sub>, <var>y</var><sub>max</sub>,
+     * <var>z</var><sub>max</sub>)
      */
     public void setEnvelope(final double... ordinates) throws IllegalArgumentException {
         GeneralEnvelope envelope = this.envelope;
@@ -280,9 +258,7 @@ public class GridCoverageBuilder {
         return (range != null) ? range : DEFAULT_RANGE;
     }
 
-    /**
-     * Sets the range of sample values.
-     */
+    /** Sets the range of sample values. */
     public void setSampleRange(final NumberRange<? extends Number> range) {
         this.range = range;
         coverage = null;
@@ -291,8 +267,8 @@ public class GridCoverageBuilder {
     /**
      * Sets the range of sample values.
      *
-     * @param  lower The lower sample value (inclusive), typically 0.
-     * @param  upper The upper sample value (exclusive), typically 256.
+     * @param lower The lower sample value (inclusive), typically 0.
+     * @param upper The upper sample value (exclusive), typically 256.
      */
     public void setSampleRange(final int lower, final int upper) {
         setSampleRange(NumberRange.create(lower, true, upper, false));
@@ -306,30 +282,26 @@ public class GridCoverageBuilder {
         return new Dimension(width, height);
     }
 
-    /**
-     * Sets the image size.
-     */
+    /** Sets the image size. */
     public void setImageSize(final Dimension size) {
-        width    = size.width;
-        height   = size.height;
-        image    = null;
+        width = size.width;
+        height = size.height;
+        image = null;
         coverage = null;
     }
 
-    /**
-     * Sets the image size.
-     */
+    /** Sets the image size. */
     public void setImageSize(final int width, final int height) {
         setImageSize(new Dimension(width, height));
     }
 
     /**
      * Creates a new variable, which will be mapped to a {@linkplain GridSampleDimension sample
-     * dimension}. Additional information like scale, offset and nodata values can be provided
-     * by invoking setters on the returned variable.
+     * dimension}. Additional information like scale, offset and nodata values can be provided by
+     * invoking setters on the returned variable.
      *
-     * @param  name  The variable name, or {@code null} for a default name.
-     * @param  units The variable units, or {@code null} if unknown.
+     * @param name The variable name, or {@code null} for a default name.
+     * @param units The variable units, or {@code null} if unknown.
      * @return A new variable.
      */
     public Variable newVariable(final CharSequence name, final Unit<?> units) {
@@ -340,8 +312,8 @@ public class GridCoverageBuilder {
 
     /**
      * Returns the buffered image to be wrapped by {@link GridCoverage2D}. If no image has been
-     * {@linkplain #setBufferedImage explicitly defined}, a new one is created the first time
-     * this method is invoked. Users can write in this image before to create the grid coverage.
+     * {@linkplain #setBufferedImage explicitly defined}, a new one is created the first time this
+     * method is invoked. Users can write in this image before to create the grid coverage.
      */
     public BufferedImage getBufferedImage() {
         if (image == null) {
@@ -364,8 +336,8 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Sets the buffered image. Invoking this method overwrite the
-     * {@linkplain #getImageSize image size} with the given image size.
+     * Sets the buffered image. Invoking this method overwrite the {@linkplain #getImageSize image
+     * size} with the given image size.
      */
     public void setBufferedImage(final BufferedImage image) {
         setImageSize(image.getWidth(), image.getHeight());
@@ -374,13 +346,13 @@ public class GridCoverageBuilder {
     }
 
     /**
-     * Sets the buffered image by reading it from the given file. Invoking this method
-     * overwrite the {@linkplain #getImageSize image size} with the given image size.
+     * Sets the buffered image by reading it from the given file. Invoking this method overwrite the
+     * {@linkplain #getImageSize image size} with the given image size.
      *
      * @throws IOException if the image can't be read.
      */
     public void setBufferedImage(final File file) throws IOException {
-        setBufferedImage(ImageIO.read(file));
+        setBufferedImage(ImageIOExt.readBufferedImage(file));
     }
 
     /**
@@ -399,16 +371,14 @@ public class GridCoverageBuilder {
         } else {
             size = 1 << Short.SIZE;
         }
-        for (int i=raster.getWidth(); --i>=0;) {
-            for (int j=raster.getHeight(); --j>=0;) {
-                raster.setSample(i,j,0, random.nextInt(size));
+        for (int i = raster.getWidth(); --i >= 0; ) {
+            for (int j = raster.getHeight(); --j >= 0; ) {
+                raster.setSample(i, j, 0, random.nextInt(size));
             }
         }
     }
 
-    /**
-     * Returns the grid coverage.
-     */
+    /** Returns the grid coverage. */
     public GridCoverage2D getGridCoverage2D() {
         if (coverage == null) {
             final BufferedImage image = getBufferedImage();
@@ -418,7 +388,7 @@ public class GridCoverageBuilder {
                 bands = null;
             } else {
                 bands = new GridSampleDimension[variables.size()];
-                for (int i=0; i<bands.length; i++) {
+                for (int i = 0; i < bands.length; i++) {
                     bands[i] = variables.get(i).getSampleDimension();
                 }
             }
@@ -427,10 +397,9 @@ public class GridCoverageBuilder {
         return coverage;
     }
 
-
     /**
-     * A variable to be mapped to a {@linkplain GridSampleDimension sample dimension}.
-     * Variables are created by {@link GridCoverageBuilder#newVariable}.
+     * A variable to be mapped to a {@linkplain GridSampleDimension sample dimension}. Variables are
+     * created by {@link GridCoverageBuilder#newVariable}.
      *
      * @since 2.5
      * @author Martin Desruisseaux
@@ -438,20 +407,14 @@ public class GridCoverageBuilder {
      * @version $Id$
      */
     public class Variable {
-        /**
-         * The variable name, or {@code null} for a default name.
-         */
+        /** The variable name, or {@code null} for a default name. */
         private final CharSequence name;
 
-        /**
-         * The variable units, or {@code null} for a default units.
-         */
+        /** The variable units, or {@code null} for a default units. */
         private final Unit<?> units;
 
-        /**
-         * The "nodata" values.
-         */
-        private final Map<Integer,CharSequence> nodata;
+        /** The "nodata" values. */
+        private final Map<Integer, CharSequence> nodata;
 
         /**
          * The sample dimension. Will be created when first needed. May be reset to {@code null}
@@ -462,40 +425,38 @@ public class GridCoverageBuilder {
         /**
          * Creates a new variable of the given name and units.
          *
-         * @param name  The variable name, or {@code null} for a default name.
+         * @param name The variable name, or {@code null} for a default name.
          * @param units The variable units, or {@code null} if unknown.
-         *
          * @see GridCoverageBuilder#newVariable
          */
         protected Variable(final CharSequence name, final Unit<?> units) {
-            this.name   = name;
-            this.units  = units;
-            this.nodata = new TreeMap<Integer,CharSequence>();
+            this.name = name;
+            this.units = units;
+            this.nodata = new TreeMap<Integer, CharSequence>();
         }
 
         /**
          * Adds a "nodata" value.
          *
-         * @param  name  The name for the "nodata" value.
-         * @param  value The pixel value to assign to "nodata".
+         * @param name The name for the "nodata" value.
+         * @param value The pixel value to assign to "nodata".
          * @throws IllegalArgumentException if the given pixel value is already assigned.
          */
         public void addNodataValue(final CharSequence name, final int value)
-                throws IllegalArgumentException
-        {
+                throws IllegalArgumentException {
             final Integer key = value;
             final CharSequence old = nodata.put(key, name);
             if (old != null) {
                 nodata.put(key, old);
-                throw new IllegalArgumentException(Errors.format(
-                        ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", key));
+                throw new IllegalArgumentException(
+                        Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "value", key));
             }
             sampleDimension = null;
         }
 
         /**
-         * Returns a sample dimension for the current
-         * {@linkplain GridCoverageBuilder#getSampleRange range of sample values}.
+         * Returns a sample dimension for the current {@linkplain GridCoverageBuilder#getSampleRange
+         * range of sample values}.
          */
         public GridSampleDimension getSampleDimension() {
             if (sampleDimension == null) {
@@ -504,7 +465,7 @@ public class GridCoverageBuilder {
                 int upper = (int) Math.ceil(range.getMaximum(false));
                 final Category[] categories = new Category[nodata.size() + 1];
                 int i = 0;
-                for (final Map.Entry<Integer,CharSequence> entry : nodata.entrySet()) {
+                for (final Map.Entry<Integer, CharSequence> entry : nodata.entrySet()) {
                     final int sample = entry.getKey();
                     if (sample >= lower && sample < upper) {
                         if (sample - lower <= upper - sample) {
@@ -522,9 +483,7 @@ public class GridCoverageBuilder {
             return sampleDimension;
         }
 
-        /**
-         * Returns a string representation of this variable.
-         */
+        /** Returns a string representation of this variable. */
         @Override
         public String toString() {
             final StringBuilder buffer = new StringBuilder(getClass().getSimpleName());

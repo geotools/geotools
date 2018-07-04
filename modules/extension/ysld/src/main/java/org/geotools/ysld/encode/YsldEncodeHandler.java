@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,13 +17,6 @@
  */
 package org.geotools.ysld.encode;
 
-import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.ysld.Tuple;
-import org.geotools.ysld.Ysld;
-import org.geotools.ysld.parse.Util;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
-
 import java.awt.Color;
 import java.util.ArrayDeque;
 import java.util.Collections;
@@ -34,6 +27,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.ysld.Tuple;
+import org.geotools.ysld.Ysld;
+import org.geotools.ysld.parse.Util;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 
 /**
  * Encodes a single style object as YSLD
@@ -55,8 +54,10 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     @SuppressWarnings("unchecked")
     YsldEncodeHandler(T obj) {
-        this.it = obj != null ? Collections.singleton(obj).iterator()
-                : (Iterator<T>) Collections.emptyIterator();
+        this.it =
+                obj != null
+                        ? Collections.singleton(obj).iterator()
+                        : (Iterator<T>) Collections.emptyIterator();
     }
 
     @Override
@@ -107,7 +108,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     /**
      * Should be used to encode values parsed with Util.name
-     * 
+     *
      * @param key
      * @param expr
      * @return
@@ -167,7 +168,14 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     }
 
     Object toColorOrNull(Expression expr) {
-        Object obj = toObjOrNull(expr, false);
+        Object obj;
+        if (expr instanceof Literal) {
+            obj = ((Literal) expr).getValue();
+            if (obj instanceof Color) {
+                return obj;
+            }
+        }
+        obj = toObjOrNull(expr, false);
         if (obj instanceof String && expr instanceof Literal) {
             String str = Util.stripQuotes(obj.toString());
             obj = makeColorIfPossible(str);
@@ -177,6 +185,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     /**
      * See {@link #toObjOrNull(Expression, boolean)}
+     *
      * @param expr
      * @return
      */
@@ -199,32 +208,29 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
 
     static final Pattern EMBEDED_EXPRESSION_TO_ESCAPE = Pattern.compile("[$}\\\\]");
 
-    /**
-     * Escapes the characters '$', '}', and '\' by prepending '\'.
-     */
+    /** Escapes the characters '$', '}', and '\' by prepending '\'. */
     String escapeForEmbededCQL(String s) {
         return EMBEDED_EXPRESSION_TO_ESCAPE.matcher(s).replaceAll("\\\\$0");
     }
 
     /**
      * Takes an {@link Expression} and encodes it as YSLD. Literals are encoded as Strings.
-     * Concatenation expressions are removed, as they are implicit in the YSLD syntax.
-     * Other non-literal expressions are wrapped in ${}.
+     * Concatenation expressions are removed, as they are implicit in the YSLD syntax. Other
+     * non-literal expressions are wrapped in ${}.
      *
-     * If the resulting string can be converted to the number, returns an appropriate {@link Number} object.
-     * Otherwise returns a {@link String}.
-     * Returns null if the passed expressison was null
-     *
+     * <p>If the resulting string can be converted to the number, returns an appropriate {@link
+     * Number} object. Otherwise returns a {@link String}. Returns null if the passed expressison
+     * was null
      *
      * @param expr Expression to encode
      * @param isname
      * @return {@link String} or {@link Number} representation of expr, or null if expr is null.
      */
     Object toObjOrNull(Expression expr, boolean isname) {
-        if (isNull(expr))
-            return null;
+        if (isNull(expr)) return null;
 
         List<Expression> subExpressions = Util.splitConcatenates(expr);
+
         StringBuilder builder = new StringBuilder();
         for (Expression subExpr : subExpressions) {
             if (isNull(subExpr)) {

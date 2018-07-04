@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -30,9 +30,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
 import javax.swing.Icon;
-
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape;
@@ -41,53 +39,44 @@ import org.geotools.renderer.VendorOptionParser;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 import org.geotools.styling.Symbolizer;
+import org.locationtech.jts.algorithm.MinimumDiameter;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.index.quadtree.Quadtree;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.TransformException;
-
-import com.vividsolutions.jts.algorithm.MinimumDiameter;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 /**
  * Helper class that helps building (and caching) a texture fill built off a random symbol
  * distribution
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class RandomFillBuilder {
-    
+
     public enum PositionRandomizer {
-        /**
-         * No random symbol distribution
-         */
+        /** No random symbol distribution */
         NONE,
-        /**
-         * Freeform random distribution
-         */
+        /** Freeform random distribution */
         FREE,
-        /**
-         * Grid based random distribution
-         */
-        GRID };
-        
+        /** Grid based random distribution */
+        GRID
+    };
+
     public enum RotationRandomizer {
-        /**
-         * No angle randomization
-         */
+        /** No angle randomization */
         NONE,
-        /**
-         * Freeform angle randomizer
-         */
+        /** Freeform angle randomizer */
         FREE
     }
 
-    private static final int MAX_RANDOM_COUNT = Integer.getInteger(
-            "org.geotools.render.random.maxCount", 1024);
+    private static final int MAX_RANDOM_COUNT =
+            Integer.getInteger("org.geotools.render.random.maxCount", 1024);
 
-    private static final int MAX_RANDOM_ATTEMPTS_MULTIPLIER = Integer.getInteger(
-            "org.geotools.render.random.maxAttemptsMultiplier", 5);
+    private static final int MAX_RANDOM_ATTEMPTS_MULTIPLIER =
+            Integer.getInteger("org.geotools.render.random.maxAttemptsMultiplier", 5);
 
-    private static final boolean RANDOM_VISUAL_DEBUGGER = Boolean.getBoolean("org.geotools.render.random.visualDebugger");
+    private static final boolean RANDOM_VISUAL_DEBUGGER =
+            Boolean.getBoolean("org.geotools.render.random.visualDebugger");
 
     private VendorOptionParser voParser;
 
@@ -100,22 +89,33 @@ class RandomFillBuilder {
 
     /**
      * Builds a image with a random distribution of the graphic/mark
-     * 
+     *
      * @param symbolizer
      * @param graphicSize
      * @param gs
      * @param mark
      * @return
      */
-    BufferedImage buildRandomTilableImage(Symbolizer symbolizer, Graphic gr, Icon icon, Mark mark,
-            Shape shape, double markSize, Object feature) {
+    BufferedImage buildRandomTilableImage(
+            Symbolizer symbolizer,
+            Graphic gr,
+            Icon icon,
+            Mark mark,
+            Shape shape,
+            double markSize,
+            Object feature) {
         // grab the random generation options
-        PositionRandomizer randomizer = (PositionRandomizer) voParser.getEnumOption(symbolizer, "random", PositionRandomizer.NONE);
+        PositionRandomizer randomizer =
+                (PositionRandomizer)
+                        voParser.getEnumOption(symbolizer, "random", PositionRandomizer.NONE);
         int seed = voParser.getIntOption(symbolizer, "random-seed", 0);
         int tileSize = voParser.getIntOption(symbolizer, "random-tile-size", 256);
         int count = voParser.getIntOption(symbolizer, "random-symbol-count", 16);
         int spaceAround = voParser.getIntOption(symbolizer, "random-space-around", 0);
-        RotationRandomizer rotation = (RotationRandomizer) voParser.getEnumOption(symbolizer, "random-rotation", RotationRandomizer.NONE);
+        RotationRandomizer rotation =
+                (RotationRandomizer)
+                        voParser.getEnumOption(
+                                symbolizer, "random-rotation", RotationRandomizer.NONE);
         boolean randomRotation = rotation == RotationRandomizer.FREE;
 
         // minimum validation
@@ -130,8 +130,11 @@ class RandomFillBuilder {
         }
         if (icon != null && (icon.getIconWidth() > tileSize || icon.getIconHeight() > tileSize)) {
             throw new IllegalArgumentException(
-                    "Cannot perform random image disposition, image size " + icon.getIconWidth()
-                            + "x" + icon.getIconHeight() + " exceeds randomized tile size: "
+                    "Cannot perform random image disposition, image size "
+                            + icon.getIconWidth()
+                            + "x"
+                            + icon.getIconHeight()
+                            + " exceeds randomized tile size: "
                             + tileSize);
         }
 
@@ -149,21 +152,23 @@ class RandomFillBuilder {
 
         // establish the bounds for the random symbols
         Rectangle targetArea = new Rectangle(0, 0, tileSize, tileSize);
-        
+
         // build the point sequence generator
         Random random = new Random(seed);
         PositionSequence ps;
-        if(randomizer == PositionRandomizer.GRID) {
+        if (randomizer == PositionRandomizer.GRID) {
             ps = new GridBasedPositionGenerator(random, rac, count, targetArea, randomRotation);
         } else {
-            ps = new FullyRandomizedPositionGenerator(random, rac, count, targetArea, randomRotation);
+            ps =
+                    new FullyRandomizedPositionGenerator(
+                            random, rac, count, targetArea, randomRotation);
         }
 
         // if we are going to paint rotated images, better set the interpolation to bicubic
         Object oldInterpolationValue = g2d.getRenderingHint(RenderingHints.KEY_INTERPOLATION);
         if (randomRotation && icon != null) {
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(
+                    RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         }
         AffineTransform originalTransform = g2d.getTransform();
         try {
@@ -171,7 +176,7 @@ class RandomFillBuilder {
                 // paint the random symbols
                 AffineTransform at = new AffineTransform();
                 Position p;
-                while((p = ps.getNextPosition()) != null) {
+                while ((p = ps.getNextPosition()) != null) {
                     at.setToTranslation(p.x, p.y);
                     at.rotate(Math.toRadians(p.rotation));
                     List<AffineTransform2D> transforms = new ArrayList<AffineTransform2D>();
@@ -216,9 +221,14 @@ class RandomFillBuilder {
                             g2d.transform(transform);
                             icon.paintIcon(null, g2d, 0, 0);
                         } else if (shape != null) {
-                            factory.fillDrawMark(g2d, transform.getTranslateX(),
-                                    transform.getTranslateY(), mark, markSize,
-                                    Math.toRadians(p.rotation), feature);
+                            factory.fillDrawMark(
+                                    g2d,
+                                    transform.getTranslateX(),
+                                    transform.getTranslateY(),
+                                    mark,
+                                    markSize,
+                                    Math.toRadians(p.rotation),
+                                    feature);
                         }
                     }
                     // System.out.println(p + " was free");
@@ -266,8 +276,8 @@ class RandomFillBuilder {
         return conflictBounds;
     }
 
-    private Geometry getGeometryBounds(Icon icon, Mark mark, Shape shape, double markSize,
-            Object feature) {
+    private Geometry getGeometryBounds(
+            Icon icon, Mark mark, Shape shape, double markSize, Object feature) {
         Geometry bounds;
         if (icon != null) {
             bounds = new GeometryBuilder().box(0, 0, icon.getIconWidth(), icon.getIconHeight());
@@ -296,7 +306,7 @@ class RandomFillBuilder {
 
     /**
      * Checks and reserves areas to avoid overlaps between painted symbols
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
      */
     interface ReservedAreaCache {
@@ -308,9 +318,8 @@ class RandomFillBuilder {
 
     /**
      * No op implementation, does not do conflict resolution
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
-     * 
      */
     private static class NoOpReservedAreaCache implements ReservedAreaCache {
 
@@ -323,14 +332,12 @@ class RandomFillBuilder {
         public void paintReservedAreas(Graphics2D g2d) {
             // nothing to paint
         }
-
     }
 
     /**
      * Stores the various positions of the reserved areas and checks for conflicts
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
-     * 
      */
     private static class DefaultReservedAreaCache implements ReservedAreaCache {
         Quadtree qt = new Quadtree();
@@ -353,7 +360,7 @@ class RandomFillBuilder {
                 Geometry cbTransformed = JTS.transform(conflictBounds, tx2d);
                 transformedConflictBounds.add(cbTransformed);
                 List results = qt.query(cbTransformed.getEnvelopeInternal());
-                for (Iterator it = results.iterator(); it.hasNext();) {
+                for (Iterator it = results.iterator(); it.hasNext(); ) {
                     Geometry candidate = (Geometry) it.next();
                     if (candidate.intersects(cbTransformed)) {
                         // location conflict
@@ -382,14 +389,13 @@ class RandomFillBuilder {
                 g2d.draw(ls);
             }
         }
-
     }
-    
+
     static final class Position {
         int x;
         int y;
         double rotation;
-        
+
         public Position(int x, int y, double rotation) {
             this.x = x;
             this.y = y;
@@ -400,11 +406,11 @@ class RandomFillBuilder {
         public String toString() {
             return "Position [x=" + x + ", y=" + y + ", rotation=" + rotation + "]";
         }
-        
     }
 
     interface PositionSequence {
         Position getNextPosition();
+
         void lastPositionResults(boolean conflict);
     }
 
@@ -417,14 +423,19 @@ class RandomFillBuilder {
         int targetSymbolCount;
 
         Random random;
-        
+
         Rectangle targetArea;
 
         boolean randomRotation;
-        
+
         Position position = new Position(0, 0, 0);
 
-        public FullyRandomizedPositionGenerator(Random random, ReservedAreaCache rac, int targetSymbolCount, Rectangle targetArea, boolean randomRotation) {
+        public FullyRandomizedPositionGenerator(
+                Random random,
+                ReservedAreaCache rac,
+                int targetSymbolCount,
+                Rectangle targetArea,
+                boolean randomRotation) {
             this.targetSymbolCount = targetSymbolCount;
             this.random = random;
             this.targetArea = targetArea;
@@ -433,16 +444,16 @@ class RandomFillBuilder {
 
         @Override
         public Position getNextPosition() {
-            if(attempts > targetSymbolCount * MAX_RANDOM_ATTEMPTS_MULTIPLIER
+            if (attempts > targetSymbolCount * MAX_RANDOM_ATTEMPTS_MULTIPLIER
                     || symbols > targetSymbolCount) {
                 return null;
             }
-            
+
             attempts++;
-            
+
             position.x = targetArea.x + random.nextInt(targetArea.width);
             position.y = targetArea.y + random.nextInt(targetArea.height);
-            if(randomRotation) {
+            if (randomRotation) {
                 position.rotation = random.nextDouble() * 360;
             }
             return position;
@@ -450,13 +461,12 @@ class RandomFillBuilder {
 
         @Override
         public void lastPositionResults(boolean conflict) {
-            if(!conflict) {
+            if (!conflict) {
                 symbols++;
             }
         }
-
     }
-    
+
     static class GridBasedPositionGenerator implements PositionSequence {
 
         int attempts;
@@ -464,28 +474,33 @@ class RandomFillBuilder {
         int symbols;
 
         int targetSymbolCount;
-        
+
         double deltaX, deltaY;
 
         Random random;
-        
+
         Rectangle targetArea;
 
         int rows;
 
         int cols;
-        
+
         int r;
-        
+
         int c;
-        
+
         boolean retry;
-        
+
         boolean randomRotation;
-        
+
         Position position = new Position(0, 0, 0);
 
-        public GridBasedPositionGenerator(Random random, ReservedAreaCache rac, int targetSymbolCount, Rectangle targetArea, boolean randomRotation) {
+        public GridBasedPositionGenerator(
+                Random random,
+                ReservedAreaCache rac,
+                int targetSymbolCount,
+                Rectangle targetArea,
+                boolean randomRotation) {
             this.targetSymbolCount = targetSymbolCount;
             this.random = random;
             this.targetArea = targetArea;
@@ -493,7 +508,7 @@ class RandomFillBuilder {
             this.rows = (int) Math.sqrt(targetSymbolCount);
             this.cols = targetSymbolCount / rows;
             // compute deltas, taking into account the symbol size
-            this.deltaX = 1d * targetArea.width / cols; 
+            this.deltaX = 1d * targetArea.width / cols;
             this.deltaY = 1d * targetArea.height / rows;
             // adapt rows and cols to the deltas just computed
             this.rows = (int) Math.max(Math.round(targetArea.width / deltaX), 1);
@@ -503,16 +518,27 @@ class RandomFillBuilder {
 
         @Override
         public Position getNextPosition() {
-            if(symbols > targetSymbolCount || r >= rows) {
+            if (symbols > targetSymbolCount || r >= rows) {
                 return null;
             }
-            
+
             attempts++;
-            
-            // System.out.println("Grid position: " + c + ", " + r + ", deltas: " + deltaX + "," + deltaY + " target area: " + targetArea);
-            position.x = (int) Math.round(targetArea.getMinX() + c * deltaX + random.nextDouble() * deltaX);
-            position.y = (int) Math.round(targetArea.getMinY() + r * deltaY + random.nextDouble() * deltaY);
-            if(randomRotation) {
+
+            // System.out.println("Grid position: " + c + ", " + r + ", deltas: " + deltaX + "," +
+            // deltaY + " target area: " + targetArea);
+            position.x =
+                    (int)
+                            Math.round(
+                                    targetArea.getMinX()
+                                            + c * deltaX
+                                            + random.nextDouble() * deltaX);
+            position.y =
+                    (int)
+                            Math.round(
+                                    targetArea.getMinY()
+                                            + r * deltaY
+                                            + random.nextDouble() * deltaY);
+            if (randomRotation) {
                 position.rotation = random.nextDouble() * 360;
             }
             // System.out.println("Position: " + position);
@@ -521,13 +547,13 @@ class RandomFillBuilder {
 
         @Override
         public void lastPositionResults(boolean conflict) {
-            if(!conflict) {
+            if (!conflict) {
                 // move on to the next location
                 symbols++;
                 moveToNextCell();
             } else {
                 // can we retry?
-                if(attempts > MAX_RANDOM_ATTEMPTS_MULTIPLIER) {
+                if (attempts > MAX_RANDOM_ATTEMPTS_MULTIPLIER) {
                     // too many attempts, this cell will be left empty
                     moveToNextCell();
                 }
@@ -536,13 +562,11 @@ class RandomFillBuilder {
 
         private void moveToNextCell() {
             c++;
-            if(c >= cols) {
+            if (c >= cols) {
                 r++;
                 c = 0;
             }
             attempts = 0;
         }
-
     }
-
 }

@@ -20,9 +20,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Set;
-
 import javax.xml.bind.JAXBException;
-
 import org.geotools.coverage.io.netcdf.cf.Entry;
 import org.geotools.coverage.io.netcdf.cf.NetCDFCFParser;
 import org.geotools.test.TestData;
@@ -32,7 +30,7 @@ import org.junit.Test;
 public final class NetCDFCFTest extends Assert {
 
     @Test
-    public void testCFParsing () throws FileNotFoundException, IOException, JAXBException {
+    public void testCFParsing() throws FileNotFoundException, IOException, JAXBException {
         final File file = TestData.file(this, "cf-reduced-standard-name-table.xml");
         NetCDFCFParser parser = NetCDFCFParser.unmarshallXml(file);
         assertTrue(parser.hasEntryId("air_potential_temperature"));

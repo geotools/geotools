@@ -10,58 +10,50 @@
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
 // J2SE direct dependencies
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geotools.geometry.jts.JTSGeometry;
+import org.geotools.geometry.jts.JTSUtils;
+import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
+import org.geotools.geometry.jts.spatialschema.geometry.NotifyingArrayList;
+import org.geotools.geometry.jts.spatialschema.geometry.geometry.LineStringImpl;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.complex.CompositeCurve;
 import org.opengis.geometry.coordinate.LineString;
 import org.opengis.geometry.coordinate.ParamForPoint;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.Curve;
+import org.opengis.geometry.primitive.CurveBoundary;
 import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.geometry.primitive.OrientableCurve;
-
-import org.geotools.geometry.jts.spatialschema.geometry.NotifyingArrayList;
-import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
-import org.geotools.geometry.jts.spatialschema.geometry.geometry.LineStringImpl;
-import org.geotools.geometry.jts.JTSGeometry;
-import org.geotools.geometry.jts.JTSUtils;
-import org.opengis.geometry.primitive.CurveBoundary;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Simple implementation of the Curve interface that does not implement any
- * of the (hard) math functions like intersection, etc.  A curve consists of
- * any number of CurveSegment objects (such as LineStrings) that must be
- * connected end-to-end.
- *
- *
- *
+ * Simple implementation of the Curve interface that does not implement any of the (hard) math
+ * functions like intersection, etc. A curve consists of any number of CurveSegment objects (such as
+ * LineStrings) that must be connected end-to-end.
  *
  * @source $URL$
  */
 public class CurveImpl extends GeometryImpl implements Curve {
-    /**
-     * Component parts of the Curve.  Each element must implement CurveSegment.
-     */
+    /** Component parts of the Curve. Each element must implement CurveSegment. */
     private List curveSegments;
 
-    //*************************************************************************
+    // *************************************************************************
     //  constructors
-    //*************************************************************************
+    // *************************************************************************
 
-    /**
-     * Creates a new {@code CurveImpl}.
-     */
+    /** Creates a new {@code CurveImpl}. */
     public CurveImpl() {
         this(null);
     }
 
     /**
      * Creates a new {@code CurveImpl}.
+     *
      * @param crs
      */
     public CurveImpl(final CoordinateReferenceSystem crs) {
@@ -69,9 +61,9 @@ public class CurveImpl extends GeometryImpl implements Curve {
         curveSegments = new NotifyingArrayList(this);
     }
 
-    //*************************************************************************
-    //  
-    //*************************************************************************
+    // *************************************************************************
+    //
+    // *************************************************************************
 
     public CurveBoundary getBoundary() {
         return (CurveBoundary) super.getBoundary();
@@ -97,14 +89,14 @@ public class CurveImpl extends GeometryImpl implements Curve {
      * @see org.opengis.geometry.coordinate.GenericCurve#getEndPoint()
      */
     public final DirectPosition getEndPoint() {
-        return ((CurveSegment) curveSegments.get(curveSegments.size()-1)).getEndPoint();
+        return ((CurveSegment) curveSegments.get(curveSegments.size() - 1)).getEndPoint();
     }
 
     /**
      * @inheritDoc
      * @see org.opengis.geometry.coordinate.GenericCurve#getTangent(double)
      */
-    public double [] getTangent(double s) {
+    public double[] getTangent(double s) {
         // PENDING(CSD): Implement me!
         return new double[0];
     }
@@ -136,19 +128,16 @@ public class CurveImpl extends GeometryImpl implements Curve {
         int i = (int) cp;
         if (i < 0) {
             i = 0;
-        }
-        else if (i > n) {
+        } else if (i > n) {
             i = n;
         }
         if (i == n) {
-            return ((CurveSegment) curveSegments.get(n-1)).getEndPoint();
-        }
-        else {
+            return ((CurveSegment) curveSegments.get(n - 1)).getEndPoint();
+        } else {
             CurveSegment cs = (CurveSegment) curveSegments.get(i);
             double d = cp - i; // 0 <= d < 1
             return cs.forConstructiveParam(
-                (1-d) * cs.getStartConstructiveParam() +
-                  d   * cs.getEndConstructiveParam());
+                    (1 - d) * cs.getStartConstructiveParam() + d * cs.getEndConstructiveParam());
         }
     }
 
@@ -156,71 +145,64 @@ public class CurveImpl extends GeometryImpl implements Curve {
         return null;
     }
 
-    /**
-     * Not implemented.  Always just returns null.
-     */
+    /** Not implemented. Always just returns null. */
     public ParamForPoint getParamForPoint(DirectPosition p) {
         return null;
     }
 
-    /**
-     * Not implemented.  Always returns zero.
-     */
+    /** Not implemented. Always returns zero. */
     public double length(Position point1, Position point2) {
         return 0.0;
     }
 
     /**
-     * Not implemented.  Always returns 0.
-     * This wouldn't be hard to implement, though.  You'd just sum over the
-     * CurveSegments that comprise this object.
+     * Not implemented. Always returns 0. This wouldn't be hard to implement, though. You'd just sum
+     * over the CurveSegments that comprise this object.
      */
     public double length(double cparam1, double cparam2) {
         return 0.0;
     }
 
     /**
-     * Not fully implemented.  Returns null, unless all CurveSegments are LineStrings,
-     * in which case it returns a concatenation of all the LineStrings.
-     * In future versions this could be implemented by delegating to the comprising segments.
+     * Not fully implemented. Returns null, unless all CurveSegments are LineStrings, in which case
+     * it returns a concatenation of all the LineStrings. In future versions this could be
+     * implemented by delegating to the comprising segments.
      */
     public LineString asLineString(double maxSpacing, double maxOffset) {
-    	int count = curveSegments.size();
-    	if (count == 1) {
-    		Object segment1 = curveSegments.get(0);
-    		if (segment1 instanceof LineString) {
-    			return (LineString) segment1;
-    		}
-    	} else if (count > 0) {
-			boolean allLineString = true;
-			LineStringImpl lsi = new LineStringImpl();
-			LineString ls = null;
-			List retList = lsi.getControlPoints();
-			Object lastPoint = null;
-			List segList = null;
-			for (int i = 0; i < count && allLineString; i++) {
-	    		Object segment = curveSegments.get(0);
-	    		if (segment instanceof LineString) {
-	    			segList = ((LineString) segment).getControlPoints();
-	    			if (segList.get(0).equals(lastPoint)) {
-	    				retList.remove(retList.size() - 1);
-	    			}
-	    			retList.addAll(segList);
-	    			lastPoint = retList.get(retList.size() - 1);
-	    		} else {
-	    			allLineString = false;
-	    		}
-			}
-			if (allLineString) {
-				return lsi;
-			}
-    	}
+        int count = curveSegments.size();
+        if (count == 1) {
+            Object segment1 = curveSegments.get(0);
+            if (segment1 instanceof LineString) {
+                return (LineString) segment1;
+            }
+        } else if (count > 0) {
+            boolean allLineString = true;
+            LineStringImpl lsi = new LineStringImpl();
+            LineString ls = null;
+            List retList = lsi.getControlPoints();
+            Object lastPoint = null;
+            List segList = null;
+            for (int i = 0; i < count && allLineString; i++) {
+                Object segment = curveSegments.get(0);
+                if (segment instanceof LineString) {
+                    segList = ((LineString) segment).getControlPoints();
+                    if (segList.get(0).equals(lastPoint)) {
+                        retList.remove(retList.size() - 1);
+                    }
+                    retList.addAll(segList);
+                    lastPoint = retList.get(retList.size() - 1);
+                } else {
+                    allLineString = false;
+                }
+            }
+            if (allLineString) {
+                return lsi;
+            }
+        }
         return null;
     }
 
-    /**
-     * Returns null.
-     */
+    /** Returns null. */
     public CompositeCurve getComposite() {
         return null;
     }
@@ -229,62 +211,53 @@ public class CurveImpl extends GeometryImpl implements Curve {
         return +1;
     }
 
-    /**
-     * Returns "this".  Should return the containing primitive, if any.
-     */
+    /** Returns "this". Should return the containing primitive, if any. */
     public Curve getPrimitive() {
         return this;
     }
 
-    /**
-     * Not implemented.  Always returns an empty set.
-     */
+    /** Not implemented. Always returns an empty set. */
     public Set getContainedPrimitives() {
         return Collections.EMPTY_SET;
     }
 
     /**
-     * Not implemented (and probably never will be since traversal of this
-     * association would require a lot of extra work).  Always returns an
-     * empty set.
+     * Not implemented (and probably never will be since traversal of this association would require
+     * a lot of extra work). Always returns an empty set.
      */
     public Set getContainingPrimitives() {
         return Collections.EMPTY_SET;
     }
 
     /**
-     * Not implemented (and probably never will be since traversal of this
-     * association would require a lot of extra work).  Always returns an
-     * empty set.
+     * Not implemented (and probably never will be since traversal of this association would require
+     * a lot of extra work). Always returns an empty set.
      */
     public Set getComplexes() {
         return Collections.EMPTY_SET;
     }
 
-    /**
-     * Not implemented.  Returns null.
-     */
+    /** Not implemented. Returns null. */
     public OrientableCurve[] getProxy() {
         return null;
     }
 
-    protected com.vividsolutions.jts.geom.Geometry computeJTSPeer() {
+    protected org.locationtech.jts.geom.Geometry computeJTSPeer() {
         // For each segment that comprises us, get the JTS peer.
         int n = curveSegments.size();
         ArrayList allCoords = new ArrayList();
-        for (int i=0; i<n; i++) {
+        for (int i = 0; i < n; i++) {
             JTSGeometry g = (JTSGeometry) curveSegments.get(i);
-            com.vividsolutions.jts.geom.LineString jts =
-                (com.vividsolutions.jts.geom.LineString) g.getJTSGeometry();
+            org.locationtech.jts.geom.LineString jts =
+                    (org.locationtech.jts.geom.LineString) g.getJTSGeometry();
             int m = jts.getNumPoints();
-            for (int j=0; j<m; j++) {
+            for (int j = 0; j < m; j++) {
                 allCoords.add(jts.getCoordinateN(j));
             }
-            if (i != (n-1))
-                allCoords.remove(allCoords.size()-1);
+            if (i != (n - 1)) allCoords.remove(allCoords.size() - 1);
         }
-        com.vividsolutions.jts.geom.Coordinate [] coords =
-            new com.vividsolutions.jts.geom.Coordinate[allCoords.size()];
+        org.locationtech.jts.geom.Coordinate[] coords =
+                new org.locationtech.jts.geom.Coordinate[allCoords.size()];
         allCoords.toArray(coords);
         return JTSUtils.GEOMETRY_FACTORY.createLineString(coords);
     }

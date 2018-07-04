@@ -17,26 +17,24 @@
 package org.geotools.gml2.bindings;
 
 import java.util.StringTokenizer;
-
 import javax.xml.namespace.QName;
-
+import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-
 
 /**
  * Binding object for the type http://www.opengis.net/gml:CoordinatesType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="CoordinatesType"&gt;
  *      &lt;annotation&gt;
@@ -59,12 +57,8 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
@@ -74,14 +68,13 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
         this.csFactory = csFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.CoordinatesType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -92,16 +85,16 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
-     * Returns an object of type {@see com.vividsolutions.jts.geom.CoordinateSequence}
-     * TODO: this method should do more validation of the string
+     * Returns an object of type {@see org.locationtech.jts.geom.CoordinateSequence} TODO: this
+     * method should do more validation of the string
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //get the coordinate and tuple seperators
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // get the coordinate and tuple seperators
         String decimal = ".";
         String cs = ",";
         String ts = " ";
@@ -118,49 +111,49 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
             ts = (String) node.getAttribute("ts").getValue();
         }
 
-        //do the parsing
+        // do the parsing
         String text = instance.getText();
 
-        //eliminate newlines, repeated spaces, etc
+        // eliminate newlines, repeated spaces, etc
         final String anyBlankSeq = "\\s+";
         final String singleSpace = " ";
         text = text.replaceAll(anyBlankSeq, singleSpace);
 
-        //first tokenize by tuple seperators
+        // first tokenize by tuple seperators
         StringTokenizer tuples = new StringTokenizer(text, ts);
         CoordinateSequence seq = null;
         int i = 0;
-        int ncoords = tuples.countTokens(); //number of coordinates
-        if(cs.equals(ts)) {
-            ncoords = ncoords/2;
+        int ncoords = tuples.countTokens(); // number of coordinates
+        if (cs.equals(ts)) {
+            ncoords = ncoords / 2;
         }
 
         while (tuples.hasMoreTokens()) {
             String tuple = tuples.nextToken();
 
-            //next tokenize by coordinate seperator
+            // next tokenize by coordinate seperator
             String[] oords = tuple.split(cs);
 
-            if(cs.equals(ts) && oords.length == 1 && tuples.hasMoreTokens()){
+            if (cs.equals(ts) && oords.length == 1 && tuples.hasMoreTokens()) {
                 String tempX = oords[0];
                 oords = new String[2];
                 oords[0] = tempX;
                 oords[1] = tuples.nextToken();
             }
 
-            //next tokenize by decimal
+            // next tokenize by decimal
             String x = null;
 
-            //next tokenize by decimal
+            // next tokenize by decimal
             String y = null;
 
-            //next tokenize by decimal
+            // next tokenize by decimal
             String z = null;
 
-            //must be at least 1D			
+            // must be at least 1D
             x = ".".equals(decimal) ? oords[0] : oords[0].replaceAll(decimal, ".");
 
-            //check for 2 and 3 D
+            // check for 2 and 3 D
             if (oords.length > 1) {
                 y = ".".equals(decimal) ? oords[1] : oords[1].replaceAll(decimal, ".");
             }
@@ -170,7 +163,7 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
             }
 
             if (seq == null) {
-                seq = csFactory.create(ncoords, oords.length);
+                seq = JTS.createCS(csFactory, ncoords, oords.length);
             }
 
             seq.setOrdinate(i, CoordinateSequence.X, Double.parseDouble(x));
@@ -189,8 +182,7 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
         return seq;
     }
 
-    public Element encode(Object object, Document document, Element value)
-        throws Exception {
+    public Element encode(Object object, Document document, Element value) throws Exception {
         CoordinateSequence coordinates = (CoordinateSequence) object;
         StringBuffer buf = new StringBuffer();
 

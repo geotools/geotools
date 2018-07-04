@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -15,8 +15,9 @@
  *    Lesser General Public License for more details.
  */
 /**
- * {@linkplain org.geotools.metadata.iso.quality.DataQualityImpl Data quality} implementation. An explanation
- * for this package is provided in the {@linkplain org.opengis.metadata.quality OpenGIS&reg; javadoc}.
- * The remaining discussion on this page is specific to the Geotools implementation.
+ * {@linkplain org.geotools.metadata.iso.quality.DataQualityImpl Data quality} implementation. An
+ * explanation for this package is provided in the {@linkplain org.opengis.metadata.quality
+ * OpenGIS&reg; javadoc}. The remaining discussion on this page is specific to the Geotools
+ * implementation.
  */
 package org.geotools.metadata.iso.quality;

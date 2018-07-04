@@ -91,11 +91,6 @@ switch to the "Java Perspective".
    
 1. Visit the Eclipse download page (http://www.eclipse.org/downloads/eclipse-packages/) and download "Eclipse IDE for
    Java developers".
-   
-   At the time of writing the latest release was Eclipse Neon:
-   
-   * eclipse-jee-neon-R-win32.zip
-   
 2. Eclipse now provides an installer; however this tutorial targets the binary packages that 
    you simply extract and run.
 3. To start out with create the folder C:\\java to keep all our java development in one spot.
@@ -106,9 +101,6 @@ switch to the "Java Perspective".
 6. Open up the eclipse.ini file.
    
    * Use our JDK directly by providing a -vm argument
-   * Optional: If you have lots of memory for development consider -Xmx756m
-   
-.. literalinclude:: artifacts/eclipse.ini
    
 7. Double click on your desktop shortcut to start up eclipse.
 8. When you start up eclipse for the first time it will prompt you for a workspace. To keep our
@@ -233,7 +225,7 @@ such as GeoTools publish their work.
    want to use. This workbook was written for |release| although you may wish to try a different
    version.
    
-   For production a stable release is recommended:
+   For production a stable release of |branch| should be used for `geotools.version`:
     
    .. literalinclude:: artifacts/pom.xml
         :language: xml
@@ -247,8 +239,7 @@ such as GeoTools publish their work.
         :start-after: <url>http://maven.apache.org</url>
         :end-before: <dependencies>
         
-5. We are going to add a dependence to GeoTools :file:`gt-main` and :file:`gt-swing` jars. Note we
-   are making use of the geotools.version defined above.
+5. We are going to add a dependence to GeoTools :file:`gt-main` and :file:`gt-swing` jars. Note use of `geotools.version` defined above.
    
    .. literalinclude:: artifacts/pom.xml
         :language: xml
@@ -263,12 +254,7 @@ such as GeoTools publish their work.
         :start-after: </dependencies>
         :end-before: <build>
    
-   .. note:: If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
-   
-      .. literalinclude:: artifacts/pom2.xml
-        :language: xml
-        :start-after: </dependencies>
-        :end-before: <build>
+   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
 7. GeoTools now requires Java 8 language level features (eg. lambdas) - you need to tell Maven to use the 1.8 source level.
 
@@ -335,7 +321,9 @@ Things to Try
 =============
 
 Each tutorial consists of very detailed steps followed by a series of extra questions. If you get
-stuck at any point please ask your instructor; or sign up to the geotools-users email list.
+stuck at any point please ask your instructor; or sign up to the geotools-users_ email list.
+
+.. _geotools-users: http://docs.geotools.org/latest/developer/communication.html
 
 Here are some additional challenges for you to try:
 
@@ -402,10 +390,10 @@ Here are some additional challenges for you to try:
 
   You will also need to change your pom.xml file to include the following snapshot repository:
 
-.. literalinclude:: artifacts/pom2.xml
-   :language: xml
-   :start-after: </dependencies>
-   :end-before: </project>
+  .. literalinclude:: artifacts/pom2.xml
+     :language: xml
+     :start-after: </dependencies>
+     :end-before: </project>
 
 * So what jars did maven actually use for the Quickstart application? Open up your :file:`pom.xml`
   and switch to the :guilabel:`dependency heirarchy` or :guilabel:`dependency graph` tabs to see

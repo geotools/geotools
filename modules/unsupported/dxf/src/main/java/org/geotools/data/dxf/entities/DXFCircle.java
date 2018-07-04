@@ -1,30 +1,24 @@
 package org.geotools.data.dxf.entities;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LinearRing;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
 import java.io.EOFException;
 import java.io.IOException;
-
-
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.GeometryType;
-import org.geotools.data.dxf.parser.DXFUnivers;
 import org.geotools.data.dxf.header.DXFLayer;
 import org.geotools.data.dxf.header.DXFLineType;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.parser.DXFUnivers;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFCircle extends DXFEntity {
 
     private static final Log log = LogFactory.getLog(DXFCircle.class);
@@ -32,29 +26,58 @@ public class DXFCircle extends DXFEntity {
     public double _radius = 0;
 
     public DXFCircle(DXFCircle newCircle) {
-        this(new DXFPoint(newCircle._point._point.x, newCircle._point._point.y, newCircle.getColor(), newCircle.getRefLayer(), 0, newCircle.getThickness()),
-                newCircle._radius, newCircle.getLineType(), newCircle.getColor(), newCircle.getRefLayer(), 0, newCircle.getThickness());
+        this(
+                new DXFPoint(
+                        newCircle._point._point.x,
+                        newCircle._point._point.y,
+                        newCircle.getColor(),
+                        newCircle.getRefLayer(),
+                        0,
+                        newCircle.getThickness()),
+                newCircle._radius,
+                newCircle.getLineType(),
+                newCircle.getColor(),
+                newCircle.getRefLayer(),
+                0,
+                newCircle.getThickness());
 
         setType(newCircle.getType());
         setStartingLineNumber(newCircle.getStartingLineNumber());
         setUnivers(newCircle.getUnivers());
     }
 
-    public DXFCircle(DXFPoint p, double r, DXFLineType lineType, int c, DXFLayer l, int visibility, double thickness) {
+    public DXFCircle(
+            DXFPoint p,
+            double r,
+            DXFLineType lineType,
+            int c,
+            DXFLayer l,
+            int visibility,
+            double thickness) {
         super(c, l, visibility, lineType, thickness);
         _point = p;
         _radius = r;
         setName("DXFCircle");
     }
-    public DXFCircle(DXFPoint p, double r, DXFLineType lineType, int c, DXFLayer l, int visibility, double thickness, DXFExtendedData extData) {
-    	super(c, l, visibility, lineType, thickness);
-    	_point = p;
-    	_radius = r;
-    	setName("DXFCircle");
-    	_extendedData = extData;
+
+    public DXFCircle(
+            DXFPoint p,
+            double r,
+            DXFLineType lineType,
+            int c,
+            DXFLayer l,
+            int visibility,
+            double thickness,
+            DXFExtendedData extData) {
+        super(c, l, visibility, lineType, thickness);
+        _point = p;
+        _radius = r;
+        setName("DXFCircle");
+        _extendedData = extData;
     }
 
-    public static DXFCircle read(DXFLineNumberReader br, DXFUnivers univers) throws NumberFormatException, IOException {
+    public static DXFCircle read(DXFLineNumberReader br, DXFUnivers univers)
+            throws NumberFormatException, IOException {
 
         int visibility = 0, c = 0;
         double x = 0, y = 0, r = 0, thickness = 1;
@@ -86,41 +109,48 @@ public class DXFCircle extends DXFEntity {
                     br.reset();
                     doLoop = false;
                     break;
-                case LINETYPE_NAME: //"6"
+                case LINETYPE_NAME: // "6"
                     lineType = univers.findLType(cvp.getStringValue());
                     break;
-                case LAYER_NAME: //"8"
+                case LAYER_NAME: // "8"
                     l = univers.findLayer(cvp.getStringValue());
                     break;
-                case THICKNESS: //"39"
+                case THICKNESS: // "39"
                     thickness = cvp.getDoubleValue();
                     break;
-                case VISIBILITY: //"60"
+                case VISIBILITY: // "60"
                     visibility = cvp.getShortValue();
                     break;
-                case COLOR: //"62"
+                case COLOR: // "62"
                     c = cvp.getShortValue();
                     break;
-                case X_1: //"10"
+                case X_1: // "10"
                     x = cvp.getDoubleValue();
                     break;
-                case Y_1: //"20"
+                case Y_1: // "20"
                     y = cvp.getDoubleValue();
                     break;
-                case DOUBLE_1: //"40"
+                case DOUBLE_1: // "40"
                     r = cvp.getDoubleValue();
                     break;
                 case XDATA_APPLICATION_NAME:
-                	String appName = cvp.getStringValue();
-            		_extData = DXFExtendedData.getExtendedData(br);
-            		_extData.setAppName(appName);
+                    String appName = cvp.getStringValue();
+                    _extData = DXFExtendedData.getExtendedData(br);
+                    _extData.setAppName(appName);
                     break;
                 default:
                     break;
             }
-
         }
-        DXFCircle e = new DXFCircle(new DXFPoint(x, y, c, l, visibility, 1), r, lineType, c, l, visibility, thickness);
+        DXFCircle e =
+                new DXFCircle(
+                        new DXFPoint(x, y, c, l, visibility, 1),
+                        r,
+                        lineType,
+                        c,
+                        l,
+                        visibility,
+                        thickness);
         e.setType(GeometryType.POLYGON);
         e.setStartingLineNumber(sln);
         e.setUnivers(univers);
@@ -139,12 +169,12 @@ public class DXFCircle extends DXFEntity {
         double endAngle = 2 * Math.PI;
         double segAngle = 2 * Math.PI / _radius;
 
-        if(_radius < DXFUnivers.NUM_OF_SEGMENTS){
+        if (_radius < DXFUnivers.NUM_OF_SEGMENTS) {
             segAngle = DXFUnivers.MIN_ANGLE;
         }
 
         double angle = startAngle;
-        for (;;) {
+        for (; ; ) {
             double x = _point._point.getX() + _radius * Math.cos(angle);
             double y = _point._point.getY() + _radius * Math.sin(angle);
             Coordinate c = new Coordinate(x, y);
@@ -167,8 +197,7 @@ public class DXFCircle extends DXFEntity {
             lc.set(lc.size() - 1, lc.get(0));
         }
 
-
-        return rotateAndPlace(lc.toArray(new Coordinate[]{}));
+        return rotateAndPlace(lc.toArray(new Coordinate[] {}));
     }
 
     @Override

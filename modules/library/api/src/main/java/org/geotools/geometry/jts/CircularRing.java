@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,40 +17,42 @@
 package org.geotools.geometry.jts;
 
 import java.util.Arrays;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateFilter;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceComparator;
-import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.GeometryFilter;
-import com.vividsolutions.jts.geom.IntersectionMatrix;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateFilter;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceComparator;
+import org.locationtech.jts.geom.CoordinateSequenceFilter;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFilter;
+import org.locationtech.jts.geom.IntersectionMatrix;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 /**
  * A CircularRing is a CircularString whose start and end point coincide. The ring needs to be
  * formed of at least two arc circles, in order to be able to determine its orientation.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
-public class CircularRing extends LinearRing implements SingleCurvedGeometry<LinearRing>,
-        CurvedRing {
+public class CircularRing extends LinearRing
+        implements SingleCurvedGeometry<LinearRing>, CurvedRing {
 
     private static final long serialVersionUID = -5796254063449438787L;
 
-    /**
-     * This sequence is used as a fake to trick the constructor
-     */
-    static final CoordinateSequence FAKE_RING_2D = new CoordinateArraySequence(
-            new Coordinate[] { new Coordinate(0, 0), new Coordinate(0, 1), new Coordinate(1, 1),
-                    new Coordinate(0, 0) });
+    /** This sequence is used as a fake to trick the constructor */
+    static final CoordinateSequence FAKE_RING_2D =
+            new CoordinateArraySequence(
+                    new Coordinate[] {
+                        new Coordinate(0, 0),
+                        new Coordinate(0, 1),
+                        new Coordinate(1, 1),
+                        new Coordinate(0, 0)
+                    });
 
     CircularString delegate;
 
@@ -137,7 +139,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
 
     /**
      * Returns a normalized ring (one that does not have a single arc closing on itself)
-     * 
+     *
      * @return
      */
     public CircularRing normalizeRing() {
@@ -171,7 +173,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         ncp[7] = center.y + radius * Math.sin(am2);
         ncp[8] = cp[0];
         ncp[9] = cp[1];
-        
+
         return new CircularRing(ncp, factory, delegate.getTolerance());
     }
 
@@ -381,6 +383,11 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         linearize().apply(filter);
     }
 
+    @Override
+    public CircularRing copyInternal() {
+        return new CircularRing(getControlPoints(), factory, getTolerance());
+    }
+
     public void normalize() {
         linearize().normalize();
     }
@@ -400,7 +407,6 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     public boolean isWithinDistance(Geometry geom, double distance) {
         return linearize().isWithinDistance(geom, distance);
     }
-
 
     public double getArea() {
         return linearize().getArea();
@@ -458,8 +464,6 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         return linearize().relate(g);
     }
 
-
-
     public Geometry buffer(double distance) {
         return linearize().buffer(distance);
     }
@@ -512,5 +516,4 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     public String toText() {
         return linearize().toText();
     }
-
 }

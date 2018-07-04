@@ -19,19 +19,13 @@ package org.geotools.gml2.bindings;
 import org.geotools.gml2.GML;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance poly;
     ElementInstance oring;
@@ -51,16 +45,26 @@ public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     }
 
     public void testNoInnerRing() throws Exception {
-        Node node = createNode(poly, new ElementInstance[] { oring },
-                new Object[] {
-                    new GeometryFactory().createLinearRing(
-                        new Coordinate[] {
-                            new Coordinate(1, 2), new Coordinate(3, 4), new Coordinate(5, 6),
-                            new Coordinate(1, 2)
-                        })
-                }, null, null);
+        Node node =
+                createNode(
+                        poly,
+                        new ElementInstance[] {oring},
+                        new Object[] {
+                            new GeometryFactory()
+                                    .createLinearRing(
+                                            new Coordinate[] {
+                                                new Coordinate(1, 2),
+                                                new Coordinate(3, 4),
+                                                new Coordinate(5, 6),
+                                                new Coordinate(1, 2)
+                                            })
+                        },
+                        null,
+                        null);
 
-        GMLPolygonTypeBinding s = (GMLPolygonTypeBinding) container.getComponentInstanceOfType(GMLPolygonTypeBinding.class);
+        GMLPolygonTypeBinding s =
+                (GMLPolygonTypeBinding)
+                        container.getComponentInstanceOfType(GMLPolygonTypeBinding.class);
         Polygon p = (Polygon) s.parse(poly, node, null);
         assertNotNull(p);
         assertEquals(p.getExteriorRing().getPointN(0).getX(), 1d, 0d);
@@ -74,21 +78,36 @@ public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     }
 
     public void testInnerRing() throws Exception {
-        Node node = createNode(poly, new ElementInstance[] { oring, iring },
-                new Object[] {
-                    new GeometryFactory().createLinearRing(
-                        new Coordinate[] {
-                            new Coordinate(0, 0), new Coordinate(10, 0), new Coordinate(10, 10),
-                            new Coordinate(0, 10), new Coordinate(0, 0)
-                        }),
-                    new GeometryFactory().createLinearRing(
-                        new Coordinate[] {
-                            new Coordinate(1, 1), new Coordinate(9, 1), new Coordinate(9, 9),
-                            new Coordinate(1, 9), new Coordinate(1, 1)
-                        })
-                }, null, null);
+        Node node =
+                createNode(
+                        poly,
+                        new ElementInstance[] {oring, iring},
+                        new Object[] {
+                            new GeometryFactory()
+                                    .createLinearRing(
+                                            new Coordinate[] {
+                                                new Coordinate(0, 0),
+                                                new Coordinate(10, 0),
+                                                new Coordinate(10, 10),
+                                                new Coordinate(0, 10),
+                                                new Coordinate(0, 0)
+                                            }),
+                            new GeometryFactory()
+                                    .createLinearRing(
+                                            new Coordinate[] {
+                                                new Coordinate(1, 1),
+                                                new Coordinate(9, 1),
+                                                new Coordinate(9, 9),
+                                                new Coordinate(1, 9),
+                                                new Coordinate(1, 1)
+                                            })
+                        },
+                        null,
+                        null);
 
-        GMLPolygonTypeBinding s = (GMLPolygonTypeBinding) container.getComponentInstanceOfType(GMLPolygonTypeBinding.class);
+        GMLPolygonTypeBinding s =
+                (GMLPolygonTypeBinding)
+                        container.getComponentInstanceOfType(GMLPolygonTypeBinding.class);
         Polygon p = (Polygon) s.parse(poly, node, null);
         assertNotNull(p);
         assertEquals(p.getExteriorRing().getPointN(0).getX(), 0d, 0d);

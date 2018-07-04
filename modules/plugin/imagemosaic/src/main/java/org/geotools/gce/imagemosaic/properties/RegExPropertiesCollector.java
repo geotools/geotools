@@ -23,18 +23,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.util.logging.Logging;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class RegExPropertiesCollector extends PropertiesCollector {
 
-    private final static Logger LOGGER = Logging.getLogger(RegExPropertiesCollector.class);
+    private static final Logger LOGGER = Logging.getLogger(RegExPropertiesCollector.class);
 
     private boolean fullPath = false;
 
@@ -50,13 +45,16 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
      * @deprecated use {@link RegExPropertiesCollector#RegExPropertiesCollector(PropertiesCollectorSPI, List, String, boolean) instead
      */
     @Deprecated
-    public RegExPropertiesCollector(PropertiesCollectorSPI spi, List<String> propertyNames,
-            String regex) {
+    public RegExPropertiesCollector(
+            PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
         this(spi, propertyNames, regex, false);
     }
 
-    public RegExPropertiesCollector(PropertiesCollectorSPI spi, List<String> propertyNames,
-            String regex, boolean fullPath) {
+    public RegExPropertiesCollector(
+            PropertiesCollectorSPI spi,
+            List<String> propertyNames,
+            String regex,
+            boolean fullPath) {
         super(spi, propertyNames);
         this.fullPath = fullPath;
         pattern = Pattern.compile(regex);
@@ -76,18 +74,16 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
         final Matcher matcher = pattern.matcher(name);
 
         while (matcher.find()) {
-            if (!fullPath) {
-                addMatch(matcher.group());
-            } else {
-                // Chaining group Strings together
-                int count = matcher.groupCount();
-                String match = "";
-                for (int i = 1; i <= count; i++) {
-                    match += matcher.group(i);
-                }
-                addMatch(match);
-
+            // Chaining group Strings together
+            int count = matcher.groupCount();
+            String match = "";
+            if (count == 0) {
+                match = matcher.group();
             }
+            for (int i = 1; i <= count; i++) {
+                match += matcher.group(i);
+            }
+            addMatch(match);
         }
         return this;
     }
@@ -107,9 +103,7 @@ public abstract class RegExPropertiesCollector extends PropertiesCollector {
         for (String propertyName : getPropertyNames()) {
             map.put(propertyName, matches.get(index++));
             // do we have more values?
-            if (index >= matches.size())
-                return;
+            if (index >= matches.size()) return;
         }
     }
-
 }

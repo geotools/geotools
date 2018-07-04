@@ -5,18 +5,13 @@ import static org.junit.Assert.*;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.FilterFactory2;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTReader;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeometryCollectorTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
@@ -54,7 +49,7 @@ public class GeometryCollectorTest {
         assertSame(p0, result.getGeometryN(0));
         assertSame(p1, result.getGeometryN(1));
     }
-    
+
     @Test
     public void testInvalidMultipolygon() throws Exception {
         WKTReader reader = new WKTReader();
@@ -69,7 +64,7 @@ public class GeometryCollectorTest {
 
         GeometryCollection result = collector.collect();
         assertEquals(1, result.getNumGeometries());
-        Polygon p = (com.vividsolutions.jts.geom.Polygon) result.getGeometryN(0);
+        Polygon p = (org.locationtech.jts.geom.Polygon) result.getGeometryN(0);
         assertTrue(p.isValid());
     }
 
@@ -89,7 +84,7 @@ public class GeometryCollectorTest {
             // fine
         }
     }
-    
+
     @Test
     public void testCRSSimple() throws Exception {
         WKTReader reader = new WKTReader();
@@ -109,7 +104,7 @@ public class GeometryCollectorTest {
         assertSame(p0, result.getGeometryN(0));
         assertSame(p1, result.getGeometryN(1));
     }
-    
+
     @Test
     public void testCRSNested() throws Exception {
         WKTReader reader = new WKTReader();
@@ -128,5 +123,4 @@ public class GeometryCollectorTest {
         assertSame(DefaultGeographicCRS.WGS84, result.getUserData());
         assertEquals(reader.read("POINT(0 0)"), result.getGeometryN(0));
     }
-
 }

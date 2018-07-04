@@ -20,35 +20,33 @@ package org.geotools.swing.menu;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
-import org.geotools.swing.locale.LocaleUtils;
-import org.geotools.swing.dialog.JCRSChooser;
-import org.geotools.swing.dialog.JTextReporter;
 import org.geotools.swing.MapPane;
+import org.geotools.swing.dialog.JCRSChooser;
 import org.geotools.swing.dialog.JExceptionReporter;
+import org.geotools.swing.dialog.JTextReporter;
+import org.geotools.swing.locale.LocaleUtils;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * A pop-up menu that can be used with a {@code MapPane} for coordinate
- * reference system operations. It has the following items:
+ * A pop-up menu that can be used with a {@code MapPane} for coordinate reference system operations.
+ * It has the following items:
+ *
  * <ul>
- * <li> Set the CRS for the map pane
- * <li> Show the CRS definition
+ *   <li>Set the CRS for the map pane
+ *   <li>Show the CRS definition
  * </ol>
  *
  * @author Michael Bedward
  * @since 2.6
- *
  * @source $URL$
  * @version $Id$
  */
 public class JCRSPopupMenu extends JPopupMenu {
-    
+
     private static final String SET_CRS_STRING = LocaleUtils.getValue("Menu", "CRS_Set");
     private static final String SHOW_CRS_STRING = LocaleUtils.getValue("Menu", "CRS_Show");
 
@@ -74,22 +72,24 @@ public class JCRSPopupMenu extends JPopupMenu {
         this.mapPane = mapPane;
 
         JMenuItem setCRSItem = new JMenuItem(SET_CRS_STRING);
-                
-        setCRSItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setCRS();
-            }
-        });
+
+        setCRSItem.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        setCRS();
+                    }
+                });
         add(setCRSItem);
 
         JMenuItem showCRSItem = new JMenuItem(SHOW_CRS_STRING);
-        showCRSItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showCRS();
-            }
-        });
+        showCRSItem.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        showCRS();
+                    }
+                });
         add(showCRSItem);
     }
 
@@ -103,10 +103,8 @@ public class JCRSPopupMenu extends JPopupMenu {
     }
 
     /**
-     * {@inheritDoc}
-     * The menu items will only be enabled when both the {@code MapPane} associated with
-     * this menu, and its {@code MapContent}, are set.
-     *
+     * {@inheritDoc} The menu items will only be enabled when both the {@code MapPane} associated
+     * with this menu, and its {@code MapContent}, are set.
      */
     @Override
     public void show(Component invoker, int x, int y) {
@@ -119,9 +117,7 @@ public class JCRSPopupMenu extends JPopupMenu {
         super.show(invoker, x, y);
     }
 
-    /**
-     * Sets the CRS.
-     */
+    /** Sets the CRS. */
     private void setCRS() {
         if (mapPane != null && mapPane.getMapContent() != null) {
             String initial = null;
@@ -133,8 +129,8 @@ public class JCRSPopupMenu extends JPopupMenu {
                     // do nothing
                 }
             }
-            
-            CoordinateReferenceSystem newCRS = JCRSChooser.showDialog(null, initial, "EPSG" );
+
+            CoordinateReferenceSystem newCRS = JCRSChooser.showDialog(null, initial, "EPSG");
 
             if (newCRS != null && (crs == null || !CRS.equalsIgnoreMetadata(crs, newCRS))) {
                 try {
@@ -147,15 +143,12 @@ public class JCRSPopupMenu extends JPopupMenu {
         }
     }
 
-    /**
-     * Displays the CRS definition in a dialog.
-     */
+    /** Displays the CRS definition in a dialog. */
     private void showCRS() {
         if (mapPane != null && mapPane.getMapContent() != null) {
             CoordinateReferenceSystem crs = mapPane.getMapContent().getCoordinateReferenceSystem();
-            JTextReporter.showDialog("Coordinate reference system", 
-                    crs.toWKT(),
-                    JTextReporter.FLAG_MODAL);
+            JTextReporter.showDialog(
+                    "Coordinate reference system", crs.toWKT(), JTextReporter.FLAG_MODAL);
         }
     }
 }

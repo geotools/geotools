@@ -16,23 +16,20 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.LineString;
 import org.geotools.gml3.GML3TestSupport;
+import org.locationtech.jts.geom.LineString;
 
 /**
- *
  * @author Erik van de Pol
- *
- *
  * @source $URL$
  */
 public class CircleTypeBindingTest extends GML3TestSupport {
-    
+
     @Override
     protected boolean enableExtendedArcSurfaceSupport() {
         return true;
     }
-    
+
     public void testParse() throws Exception {
         GML3MockData.circleWithPosList(document, document);
         LineString lineString = (LineString) parse();

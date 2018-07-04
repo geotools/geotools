@@ -9,41 +9,35 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.OctagonalEnvelope;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.OctagonalEnvelope;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * The FilterFunction_octagonalEnvelope UnitTest
+ *
  * @author Jared Erickson
  */
 public class FilterFunction_octagonalEnvelopeTest {
 
-    /**
-     * Test of getArgCount method, of class FilterFunction_octagonalEnvelope.
-     */
+    /** Test of getArgCount method, of class FilterFunction_octagonalEnvelope. */
     @Test
     public void testGetArgCount() {
         FilterFunction_octagonalEnvelope f = new FilterFunction_octagonalEnvelope();
         assertEquals(1, f.getFunctionName().getArgumentCount());
     }
 
-    /**
-     * Test of getName method, of class FilterFunction_octagonalEnvelope.
-     */
+    /** Test of getName method, of class FilterFunction_octagonalEnvelope. */
     @Test
     public void getName() {
         FilterFunction_octagonalEnvelope f = new FilterFunction_octagonalEnvelope();
         assertEquals("octagonalenvelope", f.getName());
     }
 
-    /**
-     * Test of evaluate method, of class FilterFunction_octagonalEnvelope.
-     */
+    /** Test of evaluate method, of class FilterFunction_octagonalEnvelope. */
     @Test
     public void testEvaluate() throws Exception {
         SimpleFeatureCollection featureCollection = FunctionTestFixture.polygons();

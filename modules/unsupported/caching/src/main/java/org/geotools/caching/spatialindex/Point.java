@@ -28,11 +28,7 @@
 //    marioh@cs.ucr.edu
 package org.geotools.caching.spatialindex;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class Point implements Shape, Cloneable {
     public double[] m_pCoords = null;
 
@@ -135,7 +131,7 @@ public class Point implements Shape, Cloneable {
     double getMinimumDistance(final Point p) {
         if (m_pCoords.length != p.m_pCoords.length) {
             throw new IllegalArgumentException(
-                "getMinimumDistance: Shape has the wrong number of dimensions.");
+                    "getMinimumDistance: Shape has the wrong number of dimensions.");
         }
 
         double ret = 0.0;

@@ -16,16 +16,11 @@
  */
 package org.geotools.gml3;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiSurface extends MultiPolygon {
     public MultiSurface(Polygon[] polygons, GeometryFactory factory) {
         super(polygons, factory);

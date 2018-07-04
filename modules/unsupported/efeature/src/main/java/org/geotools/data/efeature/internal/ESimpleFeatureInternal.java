@@ -16,6 +16,7 @@
  */
 package org.geotools.data.efeature.internal;
 
+import org.locationtech.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -52,18 +52,12 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.geometry.BoundingBox;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
- * 
  * @author kengu - 3. juli 2011
- *
- *
  * @source $URL$
  */
 public class ESimpleFeatureInternal implements ESimpleFeature {
@@ -71,35 +65,34 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
     private FeatureId eID;
 
     private EFeatureInternal eInternal;
-    
+
     private Map<Object, Object> userData;
-    
+
     /**
      * Cached container {@link Adapter}.
+     *
      * <p>
-     * 
+     *
      * @see {@link #getEObjectAdapter()}
      */
     protected AdapterImpl eObjectlistener;
-    
+
     /**
      * Cached {@link EFeatureListener}.
+     *
      * <p>
-     * 
+     *
      * @see {@link #getStructureAdapter()}
      */
     protected EFeatureListener<?> eStructurelistener;
-    
-    
-    /**
-     * Cached {@link Feature feature} bounds.
-     */
+
+    /** Cached {@link Feature feature} bounds. */
     protected ReferencedEnvelope bounds;
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
+
     public ESimpleFeatureInternal(EFeatureInternal eInternal) {
         //
         // -------------------------------------------------
@@ -113,21 +106,21 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
         eStructure().addListener(getStructureAdapter());
         eFeature().eAdapters().add(getEObjectAdapter());
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  ESimpleFeature implementation
     // -----------------------------------------------------
-    
+
     @Override
     public EObject eObject() {
         return eInternal.eImpl();
     }
-    
+
     @Override
     public EFeature eFeature() {
-        return (EFeature)eInternal.eFeature();
+        return (EFeature) eInternal.eFeature();
     }
-            
+
     @Override
     public boolean isDetached() {
         return eStructure().eHints().eValuesDetached();
@@ -137,19 +130,19 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
     public boolean isSingleton() {
         return eStructure().eHints().eSingletonFeatures();
     }
-    
+
     @Override
     public List<Object> read() throws IllegalStateException {
         return read(eInternal().eTx);
     }
-    
+
     @Override
     public List<Object> read(Transaction transaction) throws IllegalStateException {
         //
         // Get properties
         //
-        List<EFeaturePropertyDelegate<?, ? extends Property, ? extends EStructuralFeature>> 
-            eList = eInternal.getProperties();
+        List<EFeaturePropertyDelegate<?, ? extends Property, ? extends EStructuralFeature>> eList =
+                eInternal.getProperties();
         //
         // Prepare to read values from properties
         //
@@ -157,7 +150,7 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
         //
         // Loop over all properties
         //
-        for(EFeatureProperty<?, ? extends Property> it : eList) {
+        for (EFeatureProperty<?, ? extends Property> it : eList) {
             eValues.add(it.read(eInternal().eTx));
         }
         //
@@ -170,21 +163,21 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
     public List<Object> write() throws IllegalStateException {
         return write(eInternal().eTx);
     }
-    
+
     @Override
-    public List<Object> write(Transaction transaction) throws IllegalStateException {            
+    public List<Object> write(Transaction transaction) throws IllegalStateException {
         //
         // Decide if feature values is allowed to be updated from backing store
         //
-        if(!isDetached()) {
-            throw new IllegalStateException("ESimpleFeature " 
-                    + getType().getTypeName() + " is not detached");
+        if (!isDetached()) {
+            throw new IllegalStateException(
+                    "ESimpleFeature " + getType().getTypeName() + " is not detached");
         }
         //
         // Get properties
         //
-        List<EFeaturePropertyDelegate<?, ? extends Property, ? extends EStructuralFeature>> 
-            eList = eInternal.getProperties();
+        List<EFeaturePropertyDelegate<?, ? extends Property, ? extends EStructuralFeature>> eList =
+                eInternal.getProperties();
         //
         // Prepare to read values from properties
         //
@@ -192,17 +185,17 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
         //
         // Loop over all properties
         //
-        for(EFeatureProperty<?, ? extends Property> it : eList) {
+        for (EFeatureProperty<?, ? extends Property> it : eList) {
             eValues.add(it.write(eInternal().eTx));
         }
         //
         // Finished
         //
-        return eValues;            
+        return eValues;
     }
-           
+
     @Override
-    public boolean isReleased() {            
+    public boolean isReleased() {
         return eInternal == null;
     }
 
@@ -222,15 +215,15 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
         eInternal = null;
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  SimpleFeature implementation
     // -----------------------------------------------------
-    
+
     @Override
     public String getID() {
         return getIdentifier().getID();
     }
-    
+
     @Override
     public FeatureId getIdentifier() {
         //
@@ -244,9 +237,12 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
             //
             // Get feature id as string
             //
-            String fid = (eIDAttribute == null || !eFeature().eIsSet(eIDAttribute) ? null
-                    : EcoreUtil.convertToString(eIDAttribute.getEAttributeType(),
-                            eFeature().eGet(eIDAttribute)));
+            String fid =
+                    (eIDAttribute == null || !eFeature().eIsSet(eIDAttribute)
+                            ? null
+                            : EcoreUtil.convertToString(
+                                    eIDAttribute.getEAttributeType(),
+                                    eFeature().eGet(eIDAttribute)));
             //
             // Create feature id instance
             //
@@ -288,12 +284,12 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
     public GeometryAttribute getDefaultGeometryProperty() {
         //
         // Get default Geometry name
-        // 
+        //
         String eName = eStructure().eGetDefaultGeometryName();
         //
         // Get EFeatureGeometry structure
         //
-        EFeatureGeometry<?> eGeometry = (EFeatureGeometry<?>)eInternal.getPropertyMap().get(eName);
+        EFeatureGeometry<?> eGeometry = (EFeatureGeometry<?>) eInternal.getPropertyMap().get(eName);
         //
         // Found geometry?
         //
@@ -530,8 +526,8 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
             p.setValue(newGeometry);
         }
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Object equality implementation
     // -----------------------------------------------------
 
@@ -540,12 +536,12 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
         int hash = 7;
         hash = 31 * hash + getID().hashCode();
         hash = 31 * hash + getFeatureType().hashCode();
-        for(Object it : getAttributes()) {
+        for (Object it : getAttributes()) {
             hash = (null == it ? 0 : it.hashCode());
         }
         return hash;
     }
-               
+
     @Override
     public boolean equals(Object obj) {
         //
@@ -562,14 +558,14 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
         }
         //
         // Not same implementation?
-        //        
+        //
         if (!(obj instanceof ESimpleFeatureInternal)) {
             return false;
         }
         //
         // Cast to ESimpleFeatureInternal
         //
-        ESimpleFeatureInternal eFeature = (ESimpleFeatureInternal)obj;
+        ESimpleFeatureInternal eFeature = (ESimpleFeatureInternal) obj;
         //
         // Get this feature ID
         //
@@ -590,7 +586,7 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
             return false;
         }
         //
-        // Is not same feature type. 
+        // Is not same feature type.
         //
         if (!eFeature.getFeatureType().equals(getFeatureType())) {
             return false;
@@ -624,38 +620,34 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
         //
         // All values are equal
         //
-        return true;        
+        return true;
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Helper methods
     // -----------------------------------------------------
-    
-    /**
-     * Verify that state is available
-     */
-    protected void verify() throws IllegalStateException
-    {
-        if(eStructure()==null)
-            throw new IllegalStateException(this + " is not valid. " +
-                        "Please specify the structure.");
-        if(eFeature()==null)
-            throw new IllegalStateException(this + " is released.");
-    }  
-    
+
+    /** Verify that state is available */
+    protected void verify() throws IllegalStateException {
+        if (eStructure() == null)
+            throw new IllegalStateException(
+                    this + " is not valid. " + "Please specify the structure.");
+        if (eFeature() == null) throw new IllegalStateException(this + " is released.");
+    }
+
     protected EFeatureInternal eInternal() {
         return eInternal;
     }
-    
+
     protected EFeatureInfo eStructure() {
         return eInternal.eStructure;
     }
-    
+
     protected void eReplace(EFeatureInternal eInternal) {
         //
         // Remove structure listener from current structure?
         //
-        if(!eStructure().eEqualTo(eInternal.eStructure)) {
+        if (!eStructure().eEqualTo(eInternal.eStructure)) {
             eStructure().removeListener(getStructureAdapter());
         }
         //
@@ -670,77 +662,79 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
         // Add call-backs that keep caches in-sync with structure and data
         //
         eStructure().addListener(getStructureAdapter());
-        eFeature().eAdapters().add(getEObjectAdapter()); 
+        eFeature().eAdapters().add(getEObjectAdapter());
     }
 
-    
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Methods for keeping cached data in-sync
     // -----------------------------------------------------
-    
+
     /**
      * Cached {@link EFeatureListener} which monitors changes made to {@link EFeatureInfo}.
-     * <p>
-     * On each change, this adapter determines if any data cached by this instance should be
+     *
+     * <p>On each change, this adapter determines if any data cached by this instance should be
      * invalidated. The following conditions invoke invalidation of data:
+     *
      * <ol>
-     * <li>{@link #bounds} is invalidated after {@link #setSRID(String) spatial reference ID} is
-     * changed</li>
+     *   <li>{@link #bounds} is invalidated after {@link #setSRID(String) spatial reference ID} is
+     *       changed
      * </ol>
-     * 
+     *
      * @see {@link #setSRID(String)} - forwarded to {@link EFeatureInfo#setSRID(String)}
-     * @see {@link EFeatureInfo#setSRID(String)} - invalidates the
-     *      {@link FeatureType#getCoordinateReferenceSystem() CRS} of all {@link Feature} instances
-     *      contained by {@link EFeature}s with the same structure as this.
+     * @see {@link EFeatureInfo#setSRID(String)} - invalidates the {@link
+     *     FeatureType#getCoordinateReferenceSystem() CRS} of all {@link Feature} instances
+     *     contained by {@link EFeature}s with the same structure as this.
      * @return a lazily cached {@link Adapter} instance.
      */
     protected Adapter getEObjectAdapter() {
         if (eObjectlistener == null) {
-            eObjectlistener = new AdapterImpl() {
+            eObjectlistener =
+                    new AdapterImpl() {
 
-                @Override
-                public void notifyChanged(Notification msg) {
+                        @Override
+                        public void notifyChanged(Notification msg) {
 
-                    Object feature = msg.getFeature();
-                    if (msg.getEventType() == Notification.SET
-                            && (msg.getNewValue() instanceof Geometry)
-                            && (msg.getFeature() instanceof EStructuralFeature)) {
-                        // Check if a geometry is changed. If it is, bounds
-                        // must be re-calculated...
-                        String eName = ((EStructuralFeature) feature).getName();
-                        if (eStructure().isGeometry(eName)) {
-                            // Reset bounds. This forces bounds of this
-                            // feature to be recalculated on next call
-                            // to SimpleFeatureDelegate#getBounds()
-                            bounds = null;
-
+                            Object feature = msg.getFeature();
+                            if (msg.getEventType() == Notification.SET
+                                    && (msg.getNewValue() instanceof Geometry)
+                                    && (msg.getFeature() instanceof EStructuralFeature)) {
+                                // Check if a geometry is changed. If it is, bounds
+                                // must be re-calculated...
+                                String eName = ((EStructuralFeature) feature).getName();
+                                if (eStructure().isGeometry(eName)) {
+                                    // Reset bounds. This forces bounds of this
+                                    // feature to be recalculated on next call
+                                    // to SimpleFeatureDelegate#getBounds()
+                                    bounds = null;
+                                }
+                            }
                         }
-                    }
-                }
-            };
+                    };
         }
         return eObjectlistener;
-    }        
+    }
 
     /**
      * Cached {@link Adapter} which monitors changes made to the {@link EObject} instance this
      * delegates to.
-     * <p>
-     * On each change, this adapter determines if any data cached by this instance should be
+     *
+     * <p>On each change, this adapter determines if any data cached by this instance should be
      * invalidated. The following conditions invoke invalidation of data:
+     *
      * <ol>
-     * <li>{@link #bounds} is invalidated after a {@link #getValue() geometry} change</li>
+     *   <li>{@link #bounds} is invalidated after a {@link #getValue() geometry} change
      * </ol>
-     * 
+     *
      * @return a lazily cached {@link EStructuralFeature} instance.
      */
     protected EFeatureListener<?> getStructureAdapter() {
         if (eStructurelistener == null) {
-            eStructurelistener = new EFeatureListener<Object>() {
+            eStructurelistener =
+                    new EFeatureListener<Object>() {
 
                         @Override
-                        public boolean onChange(Object source, 
-                                int property, Object oldValue, Object newValue) {
+                        public boolean onChange(
+                                Object source, int property, Object oldValue, Object newValue) {
                             //
                             // Dispatch on property type
                             //
@@ -757,26 +751,30 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
                                 //
                                 // Notify
                                 //
-                                EFeatureInternal.eNotify((InternalEObject)eObject(),EFeaturePackage.EFEATURE__SRID, oldValue, newValue);
-                                
+                                EFeatureInternal.eNotify(
+                                        (InternalEObject) eObject(),
+                                        EFeaturePackage.EFEATURE__SRID,
+                                        oldValue,
+                                        newValue);
+
                             }
                             //
                             // Referenced EObject structure changed?
                             //
-                            else if ((source == eFeature()) 
+                            else if ((source == eFeature())
                                     && (property == EFeaturePackage.EFEATURE__STRUCTURE)) {
                                 //
                                 // ---------------------------------------
                                 //  Current structure has been switched
                                 // ---------------------------------------
                                 //
-                                //  1) Remove listener from structure 
+                                //  1) Remove listener from structure
                                 //
-                                ((EFeatureInfo)oldValue).removeListener(this);
+                                ((EFeatureInfo) oldValue).removeListener(this);
                                 //
                                 // Add listener to new structure
                                 //
-                                ((EFeatureInfo)newValue).addListener(this);
+                                ((EFeatureInfo) newValue).addListener(this);
                                 //
                                 //  This forces current bounds
                                 //  to be recalculated on next call
@@ -789,11 +787,8 @@ public class ESimpleFeatureInternal implements ESimpleFeature {
                             //
                             return true;
                         }
-
                     };
         }
         return eStructurelistener;
     }
-    
-            
 }

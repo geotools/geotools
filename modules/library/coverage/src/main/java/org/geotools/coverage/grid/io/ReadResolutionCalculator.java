@@ -20,7 +20,6 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataSourceException;
@@ -60,11 +59,14 @@ public class ReadResolutionCalculator {
 
     private MathTransform destinationToSourceTransform;
 
-    public ReadResolutionCalculator(GridGeometry2D requestedGridGeometry,
-            CoordinateReferenceSystem nativeCrs, double[] fullResolution) throws FactoryException {
+    public ReadResolutionCalculator(
+            GridGeometry2D requestedGridGeometry,
+            CoordinateReferenceSystem nativeCrs,
+            double[] fullResolution)
+            throws FactoryException {
         Utilities.ensureNonNull("gridGeometry", requestedGridGeometry);
-        this.requestedBBox = new ReferencedEnvelope(
-                (Envelope) requestedGridGeometry.getEnvelope2D());
+        this.requestedBBox =
+                new ReferencedEnvelope((Envelope) requestedGridGeometry.getEnvelope2D());
         this.requestedRasterArea = requestedGridGeometry.getGridRange2D().getBounds();
         this.requestedGridToWorld = (AffineTransform) requestedGridGeometry.getGridToCRS2D();
         this.fullResolution = fullResolution;
@@ -73,8 +75,8 @@ public class ReadResolutionCalculator {
         if (fullResolution == null) {
             this.fullResolution = computeClassicResolution();
         }
-        CoordinateReferenceSystem requestedCRS = requestedGridGeometry
-                .getCoordinateReferenceSystem();
+        CoordinateReferenceSystem requestedCRS =
+                requestedGridGeometry.getCoordinateReferenceSystem();
         if (!CRS.equalsIgnoreMetadata(nativeCrs, requestedCRS)) {
             this.destinationToSourceTransform = CRS.findMathTransform(requestedCRS, nativeCrs);
         }
@@ -83,18 +85,16 @@ public class ReadResolutionCalculator {
     /**
      * Computes the requested resolution which is going to be used for selecting overviews and or
      * deciding decimation factors on the target coverage.
-     * 
-     * <p>
-     * In case the requested envelope is in the same {@link CoordinateReferenceSystem} of the
+     *
+     * <p>In case the requested envelope is in the same {@link CoordinateReferenceSystem} of the
      * coverage we compute the resolution using the requested {@link MathTransform}. Notice that it
      * must be a {@link LinearTransform} or else we fail.
-     * 
-     * <p>
-     * In case the requested envelope is not in the same {@link CoordinateReferenceSystem} of the
+     *
+     * <p>In case the requested envelope is not in the same {@link CoordinateReferenceSystem} of the
      * coverage we
-     * 
+     *
      * @throws DataSourceException in case something bad happens during reprojections and/or
-     *         intersections.
+     *     intersections.
      */
     public double[] computeRequestedResolution(ReferencedEnvelope readBounds) {
         try {
@@ -117,13 +117,17 @@ public class ReadResolutionCalculator {
                 } else {
                     // the crs of the request and the one of the coverage are the
                     // same, we can get the resolution from the grid to world
-                    return new double[] { XAffineTransform.getScaleX0(requestedGridToWorld),
-                            XAffineTransform.getScaleY0(requestedGridToWorld) };
+                    return new double[] {
+                        XAffineTransform.getScaleX0(requestedGridToWorld),
+                        XAffineTransform.getScaleY0(requestedGridToWorld)
+                    };
                 }
             } else {
                 // should not happen
-                throw new UnsupportedOperationException(Errors.format(
-                        ErrorKeys.UNSUPPORTED_OPERATION_$1, requestedGridToWorld.toString()));
+                throw new UnsupportedOperationException(
+                        Errors.format(
+                                ErrorKeys.UNSUPPORTED_OPERATION_$1,
+                                requestedGridToWorld.toString()));
             }
         } catch (Throwable e) {
             if (LOGGER.isLoggable(Level.INFO))
@@ -133,23 +137,25 @@ public class ReadResolutionCalculator {
         //
         // use the coverage resolution since we cannot compute the requested one
         //
-        LOGGER.log(Level.WARNING,
+        LOGGER.log(
+                Level.WARNING,
                 "Unable to compute requested resolution, the reader will pick the native one");
         return fullResolution;
     }
 
     /**
      * Classic way of computing the requested resolution
-     * 
+     *
      * @return
      */
     private double[] computeClassicResolution() {
-        final GridToEnvelopeMapper geMapper = new GridToEnvelopeMapper(new GridEnvelope2D(
-                requestedRasterArea), requestedBBox);
+        final GridToEnvelopeMapper geMapper =
+                new GridToEnvelopeMapper(new GridEnvelope2D(requestedRasterArea), requestedBBox);
         final AffineTransform tempTransform = geMapper.createAffineTransform();
 
-        return new double[] { XAffineTransform.getScaleX0(tempTransform),
-                XAffineTransform.getScaleY0(tempTransform) };
+        return new double[] {
+            XAffineTransform.getScaleX0(tempTransform), XAffineTransform.getScaleY0(tempTransform)
+        };
     }
 
     /**
@@ -157,7 +163,7 @@ public class ReadResolutionCalculator {
      * the corners of the requested area and the middle points and take the better one. This will
      * provide better results for cases where there is a lot more deformation on a subregion
      * (top/bottom/sides) of the requested bbox with respect to others.
-     * 
+     *
      * @return
      * @throws TransformException
      * @throws NoninvertibleTransformException
@@ -165,15 +171,17 @@ public class ReadResolutionCalculator {
      */
     private double[] computeAccurateResolution(ReferencedEnvelope readBBox)
             throws TransformException, NoninvertibleTransformException, FactoryException {
-        if (!CRS.equalsIgnoreMetadata(readBBox.getCoordinateReferenceSystem(),
+        if (!CRS.equalsIgnoreMetadata(
+                readBBox.getCoordinateReferenceSystem(),
                 requestedBBox.getCoordinateReferenceSystem())) {
             readBBox = readBBox.transform(requestedBBox.getCoordinateReferenceSystem(), true);
         }
         double resX = XAffineTransform.getScaleX0(requestedGridToWorld);
         double resY = XAffineTransform.getScaleY0(requestedGridToWorld);
-        GeneralEnvelope cropBboxTarget = CRS.transform(readBBox,
-                requestedBBox.getCoordinateReferenceSystem());
-        double[] points = new double[36];
+        GeneralEnvelope cropBboxTarget =
+                CRS.transform(readBBox, requestedBBox.getCoordinateReferenceSystem());
+        final int NPOINTS = 36;
+        double[] points = new double[NPOINTS * 2];
         for (int i = 0; i < 3; i++) {
             double x;
             if (i == 0) {
@@ -193,17 +201,21 @@ public class ReadResolutionCalculator {
                     y = cropBboxTarget.getMaximum(1) - resY / 2;
                 }
 
-                int k = (i * 3 + j) * 4;
+                int k = (i * 3 + j) * 8;
                 points[k] = x - resX / 2;
-                points[k + 1] = y - resY / 2;
+                points[k + 1] = y;
                 points[k + 2] = x + resX / 2;
-                points[k + 3] = y + resY / 2;
+                points[k + 3] = y;
+                points[k + 4] = x;
+                points[k + 5] = y - resY / 2;
+                points[k + 6] = x;
+                points[k + 7] = y + resY / 2;
             }
         }
-        destinationToSourceTransform.transform(points, 0, points, 0, 18);
+        destinationToSourceTransform.transform(points, 0, points, 0, NPOINTS);
 
         double minDistance = Double.MAX_VALUE;
-        for (int i = 0; i < 36 && minDistance > 0; i += 4) {
+        for (int i = 0; i < points.length && minDistance > 0; i += 4) {
             double dx = points[i + 2] - points[i];
             double dy = points[i + 3] - points[i + 1];
             double d = Math.sqrt(dx * dx + dy * dy);
@@ -214,8 +226,9 @@ public class ReadResolutionCalculator {
 
         // reprojection can turn a segment into a zero lenght one, in that case, fall back on
         // the full resolution in that case
-        return new double[] { Math.max(minDistance, fullResolution[0]),
-                Math.max(minDistance, fullResolution[1]) };
+        double minDistanceX = Math.max(minDistance, fullResolution[0]);
+        double minDistanceY = Math.max(minDistance, fullResolution[1]);
+        return new double[] {minDistanceX, minDistanceY};
     }
 
     public boolean isAccurateResolution() {

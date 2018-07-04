@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Capabilities xmlns="http://www.opengis.net/wmts/1.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_response.xsd" version="1.0.0">
+    <ows:ServiceIdentification>
+        <ows:ServiceType>OGC WMTS</ows:ServiceType>
+        <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+    </ows:ServiceIdentification>
+    <ows:ServiceProvider>
+        <ows:ServiceContact>
+            <ows:ContactInfo></ows:ContactInfo>
+        </ows:ServiceContact>
+    </ows:ServiceProvider>
+    <ows:OperationsMetadata>
+        <ows:Operation name="GetCapabilities">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts?">
+                        <ows:Constraint name="GetEncoding">
+                            <ows:AllowedValues>
+                                <ows:Value>KVP</ows:Value>
+                            </ows:AllowedValues>
+                        </ows:Constraint>
+                    </ows:Get>
+                </ows:HTTP>
+            </ows:DCP>
+        </ows:Operation>
+        <ows:Operation name="GetTile">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts?">
+                        <ows:Constraint name="GetEncoding">
+                            <ows:AllowedValues>
+                                <ows:Value>KVP</ows:Value>
+                            </ows:AllowedValues>
+                        </ows:Constraint>
+                    </ows:Get>
+                </ows:HTTP>
+            </ows:DCP>
+        </ows:Operation>
+        <ows:Operation name="GetFeatureInfo">
+            <ows:DCP>
+                <ows:HTTP>
+                    <ows:Get xlink:href="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts?">
+                        <ows:Constraint name="GetEncoding">
+                            <ows:AllowedValues>
+                                <ows:Value>KVP</ows:Value>
+                            </ows:AllowedValues>
+                        </ows:Constraint>
+                    </ows:Get>
+                </ows:HTTP>
+            </ows:DCP>
+        </ows:Operation>
+    </ows:OperationsMetadata>
+    <Contents>
+        <Layer>
+            <ows:Title>plz</ows:Title>
+            <ows:Identifier>plz</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/plz/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <Layer>
+            <ows:Title>isolines</ows:Title>
+            <ows:Identifier>isolines</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/isolines/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <Layer>
+            <ows:Title>grey</ows:Title>
+            <ows:Identifier>grey</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/grey/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <Layer>
+            <ows:Title>statmap-overlay-all</ows:Title>
+            <ows:Identifier>overlay-all</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/overlay-all/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <Layer>
+            <ows:Title>admin</ows:Title>
+            <ows:Identifier>admin</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/admin/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <Layer>
+            <ows:Title>overlay-base</ows:Title>
+            <ows:Identifier>overlay-base</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/overlay-base/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <Layer>
+            <ows:Title>inca</ows:Title>
+            <ows:Identifier>inca</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/inca/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <Layer>
+            <ows:Title>landuse</ows:Title>
+            <ows:Identifier>landuse</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/landuse/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <Layer>
+            <ows:Title>color</ows:Title>
+            <ows:Identifier>color</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/color/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <Layer>
+            <ows:Title>statmap-overlay-label</ows:Title>
+            <ows:Identifier>overlay-label</ows:Identifier>
+            <Style isDefault="true">
+                <ows:Identifier>default</ows:Identifier>
+            </Style>
+            <Format>image/png</Format>
+            <TileMatrixSetLink>
+                <TileMatrixSet>statmap</TileMatrixSet>
+            </TileMatrixSetLink>
+            <ResourceURL format="image/png" resourceType="tile" template="http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/overlay-label/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"></ResourceURL>
+        </Layer>
+        <TileMatrixSet>
+            <ows:Identifier>statmap</ows:Identifier>
+            <ows:BoundingBox crs="urn:ogc:def:crs:EPSG:6.3:31287">
+                <ows:LowerCorner>-2000000.000000 -1000000.000000</ows:LowerCorner>
+                <ows:UpperCorner>2400000.000000 3200000.000000</ows:UpperCorner>
+            </ows:BoundingBox>
+            <ows:SupportedCRS>urn:ogc:def:crs:EPSG:6.3:31287</ows:SupportedCRS>
+            <TileMatrix>
+                <ows:Identifier>0</ows:Identifier>
+                <ScaleDenominator>29257142.85714285820722579956</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>2</MatrixWidth>
+                <MatrixHeight>1</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>1</ows:Identifier>
+                <ScaleDenominator>14628571.42857142910361289978</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>3</MatrixWidth>
+                <MatrixHeight>2</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>2</ows:Identifier>
+                <ScaleDenominator>7314285.71428571455180644989</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>5</MatrixWidth>
+                <MatrixHeight>4</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>3</ows:Identifier>
+                <ScaleDenominator>3657142.85714285727590322495</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>9</MatrixWidth>
+                <MatrixHeight>9</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>4</ows:Identifier>
+                <ScaleDenominator>1828571.42857142863795161247</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>17</MatrixWidth>
+                <MatrixHeight>17</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>5</ows:Identifier>
+                <ScaleDenominator>914285.71428571431897580624</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>34</MatrixWidth>
+                <MatrixHeight>33</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>6</ows:Identifier>
+                <ScaleDenominator>457142.85714285715948790312</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>68</MatrixWidth>
+                <MatrixHeight>65</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>7</ows:Identifier>
+                <ScaleDenominator>228571.42857142857974395156</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>135</MatrixWidth>
+                <MatrixHeight>129</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>8</ows:Identifier>
+                <ScaleDenominator>114285.71428571428987197578</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>269</MatrixWidth>
+                <MatrixHeight>257</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>9</ows:Identifier>
+                <ScaleDenominator>57142.85714285714493598789</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>538</MatrixWidth>
+                <MatrixHeight>513</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>10</ows:Identifier>
+                <ScaleDenominator>28571.42857142857246799394</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>1075</MatrixWidth>
+                <MatrixHeight>1026</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>11</ows:Identifier>
+                <ScaleDenominator>14285.71428571428623399697</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>2149</MatrixWidth>
+                <MatrixHeight>2051</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>12</ows:Identifier>
+                <ScaleDenominator>7142.85714285714311699849</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>4297</MatrixWidth>
+                <MatrixHeight>4102</MatrixHeight>
+            </TileMatrix>
+            <TileMatrix>
+                <ows:Identifier>13</ows:Identifier>
+                <ScaleDenominator>3571.42857142857155849924</ScaleDenominator>
+                <TopLeftCorner>3200000.000000 -2000000.000000</TopLeftCorner>
+                <TileWidth>512</TileWidth>
+                <TileHeight>512</TileHeight>
+                <MatrixWidth>8594</MatrixWidth>
+                <MatrixHeight>8204</MatrixHeight>
+            </TileMatrix>
+        </TileMatrixSet>
+    </Contents>
+</Capabilities>

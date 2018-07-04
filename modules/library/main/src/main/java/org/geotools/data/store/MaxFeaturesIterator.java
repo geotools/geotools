@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,19 +17,17 @@
 package org.geotools.data.store;
 
 import java.util.Iterator;
-
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.DelegateFeatureIterator;
 import org.opengis.feature.Feature;
 
 /**
  * Iterator wrapper which caps the number of returned features.
- * 
- * @author Justin Deoliveira, The Open Planning Project
  *
+ * @author Justin Deoliveira, The Open Planning Project
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *         data/store/MaxFeaturesIterator.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
+ *     data/store/MaxFeaturesIterator.java $
  */
 public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F> {
 
@@ -40,13 +38,13 @@ public class MaxFeaturesIterator<F extends Feature> implements FeatureIterator<F
     long counter;
 
     public MaxFeaturesIterator(Iterator<F> iterator, long max) {
-        this( new DelegateFeatureIterator<F>(iterator), 0, max);
+        this(new DelegateFeatureIterator<F>(iterator), 0, max);
     }
 
     public MaxFeaturesIterator(Iterator<F> iterator, long start, long max) {
-        this( new DelegateFeatureIterator<F>(iterator), start, max);
+        this(new DelegateFeatureIterator<F>(iterator), start, max);
     }
-    
+
     public MaxFeaturesIterator(FeatureIterator<F> delegate, long max) {
         this(delegate, 0, max);
     }

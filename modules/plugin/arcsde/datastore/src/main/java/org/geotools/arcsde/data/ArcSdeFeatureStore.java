@@ -16,11 +16,13 @@
  */
 package org.geotools.arcsde.data;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeTable;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.data.DataSourceException;
@@ -41,37 +43,27 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeTable;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFeatureStore {
 
     private static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureStore.class.getName());
 
-    public ArcSdeFeatureStore(final FeatureTypeInfo typeInfo, final ArcSDEDataStore arcSDEDataStore) {
+    public ArcSdeFeatureStore(
+            final FeatureTypeInfo typeInfo, final ArcSDEDataStore arcSDEDataStore) {
         super(typeInfo, arcSDEDataStore);
     }
 
-    /**
-     * @see FeatureStore#getTransaction()
-     */
+    /** @see FeatureStore#getTransaction() */
     public synchronized Transaction getTransaction() {
         return transaction;
     }
 
     /**
      * Sets this FeatureStore transaction.
-     * <p>
-     * If transaction is not auto commit, initiates an {@link ArcTransactionState} with the
+     *
+     * <p>If transaction is not auto commit, initiates an {@link ArcTransactionState} with the
      * dataStore's connection pool as key.
-     * </p>
-     * 
+     *
      * @see FeatureStore#setTransaction(Transaction)
      */
     public synchronized void setTransaction(final Transaction transaction) {
@@ -95,9 +87,7 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
         this.transaction = transaction;
     }
 
-    /**
-     * @see FeatureStore#addFeatures(SimpleFeatureCollection)
-     */
+    /** @see FeatureStore#addFeatures(SimpleFeatureCollection) */
     public List<FeatureId> addFeatures(
             final FeatureCollection<SimpleFeatureType, SimpleFeature> collection)
             throws IOException {
@@ -126,9 +116,7 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
         return featureIds;
     }
 
-    /**
-     * @see FeatureStore#modifyFeatures(AttributeDescriptor[], Object[], Filter)
-     */
+    /** @see FeatureStore#modifyFeatures(AttributeDescriptor[], Object[], Filter) */
     public final void modifyFeatures(AttributeDescriptor[] type, Object[] value, Filter filter)
             throws IOException {
 
@@ -167,7 +155,14 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
 
     public void modifyFeatures(String name, Object attributeValue, Filter filter)
             throws IOException {
-        modifyFeatures(new Name[] { new NameImpl(name), }, new Object[] { attributeValue, }, filter);
+        modifyFeatures(
+                new Name[] {
+                    new NameImpl(name),
+                },
+                new Object[] {
+                    attributeValue,
+                },
+                filter);
     }
 
     public void modifyFeatures(String[] names, Object[] values, Filter filter) throws IOException {
@@ -178,22 +173,33 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
         modifyFeatures(attributeNames, values, filter);
     }
 
-    /**
-     * @see FeatureStore#modifyFeatures(AttributeDescriptor, Object, Filter)
-     */
-    public final void modifyFeatures(final AttributeDescriptor type, final Object value,
-            final Filter filter) throws IOException {
-        modifyFeatures(new Name[] { type.getName(), }, new Object[] { value, }, filter);
+    /** @see FeatureStore#modifyFeatures(AttributeDescriptor, Object, Filter) */
+    public final void modifyFeatures(
+            final AttributeDescriptor type, final Object value, final Filter filter)
+            throws IOException {
+        modifyFeatures(
+                new Name[] {
+                    type.getName(),
+                },
+                new Object[] {
+                    value,
+                },
+                filter);
     }
 
     public final void modifyFeatures(final Name name, final Object value, final Filter filter)
             throws IOException {
-        modifyFeatures(new Name[] { name, }, new Object[] { value, }, filter);
+        modifyFeatures(
+                new Name[] {
+                    name,
+                },
+                new Object[] {
+                    value,
+                },
+                filter);
     }
 
-    /**
-     * @see FeatureStore#removeFeatures(Filter)
-     */
+    /** @see FeatureStore#removeFeatures(Filter) */
     public void removeFeatures(final Filter filter) throws IOException {
         final Transaction currTransaction = getTransaction();
         final String typeName = typeInfo.getFeatureTypeName();
@@ -214,9 +220,7 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
         }
     }
 
-    /**
-     * @see FeatureStore#setFeatures(FeatureReader)
-     */
+    /** @see FeatureStore#setFeatures(FeatureReader) */
     public void setFeatures(final FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         final SimpleFeatureType readerType = reader.getFeatureType();
@@ -253,7 +257,7 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
      * an SeTable with the provided <code>connection</code>. This means if the connection has a
      * transaction in progress, the truncation takes effect upon commit, otherwise it takes effect
      * immediately.
-     * 
+     *
      * @param typeName
      * @param session
      * @throws DataSourceException
@@ -265,8 +269,8 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
             // need to do actual deletes, as SeTable.truncate does not respects
             // transactions and would delete all content
             LOGGER.fine("deleting all table records for " + typeName);
-            final FeatureWriter<SimpleFeatureType, SimpleFeature> writer = dataStore
-                    .getFeatureWriter(typeName, transaction);
+            final FeatureWriter<SimpleFeatureType, SimpleFeature> writer =
+                    dataStore.getFeatureWriter(typeName, transaction);
             while (writer.hasNext()) {
                 writer.next();
                 writer.remove();
@@ -274,14 +278,15 @@ public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFea
         } else {
             // we're in auto commit mode, lets truncate the table the fast way
             LOGGER.fine("truncating table " + typeName);
-            session.issue(new Command<Void>() {
-                @Override
-                public Void execute(ISession session, SeConnection connection) throws SeException,
-                        IOException {
-                    table.truncate();
-                    return null;
-                }
-            });
+            session.issue(
+                    new Command<Void>() {
+                        @Override
+                        public Void execute(ISession session, SeConnection connection)
+                                throws SeException, IOException {
+                            table.truncate();
+                            return null;
+                        }
+                    });
         }
     }
 }

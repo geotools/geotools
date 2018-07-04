@@ -17,24 +17,21 @@
 package org.geotools.gml3.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:CurveArrayPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="CurveArrayPropertyType"&gt;
  *      &lt;annotation&gt;
@@ -48,53 +45,48 @@ import com.vividsolutions.jts.geom.MultiLineString;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class CurveArrayPropertyTypeBinding extends AbstractComplexBinding {
-    
+
     protected GeometryFactory gf;
-    
+
     public CurveArrayPropertyTypeBinding(GeometryFactory gf) {
         this.gf = gf;
     }
-    
-    /**
-     * @generated
-     */
+
+    /** @generated */
     public QName getTarget() {
         return GML.CurveArrayPropertyType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
     public Class getType() {
-        //return Curve[].class;
+        // return Curve[].class;
         return MultiLineString[].class;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List curves = node.getChildValues(MultiLineString.class);
-        
-        //pick up any regular line strings as well
+
+        // pick up any regular line strings as well
         for (LineString l : (List<LineString>) node.getChildValues(LineString.class)) {
-            curves.add(gf.createMultiLineString(new LineString[]{l}));
+            curves.add(gf.createMultiLineString(new LineString[] {l}));
         }
         return curves.toArray(new MultiLineString[curves.size()]);
     }

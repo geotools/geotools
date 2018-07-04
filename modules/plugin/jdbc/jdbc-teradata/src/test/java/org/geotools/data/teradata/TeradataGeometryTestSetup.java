@@ -19,11 +19,7 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataGeometryTestSetup extends JDBCGeometryTestSetup {
 
     public TeradataGeometryTestSetup(JDBCTestSetup delegate) {
@@ -38,5 +34,4 @@ public class TeradataGeometryTestSetup extends JDBCGeometryTestSetup {
         runSafe("DROP TABLE \"" + tableName + "_geom_idx\"");
         runSafe("DROP TABLE \"" + tableName + "\"");
     }
-
 }

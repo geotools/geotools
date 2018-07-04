@@ -1,8 +1,8 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    (C) 2002-2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,12 +24,8 @@ import org.opengis.filter.capability.TemporalCapabilities;
 
 /**
  * Implementation of the FilterCapabilities interface.
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class FilterCapabilitiesImpl implements FilterCapabilities {
@@ -39,67 +35,84 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
     ScalarCapabilitiesImpl scalar;
     SpatialCapabiltiesImpl spatial;
     TemporalCapabilitiesImpl temporal;
-    
-    public FilterCapabilitiesImpl(){
-        this( FilterCapabilities.VERSION_100 );
+
+    public FilterCapabilitiesImpl() {
+        this(FilterCapabilities.VERSION_100);
     }
-    public FilterCapabilitiesImpl( String version ){
+
+    public FilterCapabilitiesImpl(String version) {
         this.version = version;
-    }    
-    public FilterCapabilitiesImpl( String version, ScalarCapabilities scalar, 
-        SpatialCapabilities spatial, IdCapabilities id ) {
-        this.version = version;
-        this.id = toIdCapabilitiesImpl(id);
-        this.scalar = toScalarCapabilitiesImpl( scalar );
-        this.spatial = toSpatialCapabiltiesImpl( spatial );
-        this.temporal = toTemporalCapabilitiesImpl( null );
     }
-    public FilterCapabilitiesImpl( String version, ScalarCapabilities scalar, 
-        SpatialCapabilities spatial, IdCapabilities id, TemporalCapabilities temporal ) {
+
+    public FilterCapabilitiesImpl(
+            String version,
+            ScalarCapabilities scalar,
+            SpatialCapabilities spatial,
+            IdCapabilities id) {
         this.version = version;
         this.id = toIdCapabilitiesImpl(id);
-        this.scalar = toScalarCapabilitiesImpl( scalar );
-        this.spatial = toSpatialCapabiltiesImpl( spatial );
-        this.temporal = toTemporalCapabilitiesImpl( temporal );
+        this.scalar = toScalarCapabilitiesImpl(scalar);
+        this.spatial = toSpatialCapabiltiesImpl(spatial);
+        this.temporal = toTemporalCapabilitiesImpl(null);
     }
-    public FilterCapabilitiesImpl( FilterCapabilities copy ) {
+
+    public FilterCapabilitiesImpl(
+            String version,
+            ScalarCapabilities scalar,
+            SpatialCapabilities spatial,
+            IdCapabilities id,
+            TemporalCapabilities temporal) {
+        this.version = version;
+        this.id = toIdCapabilitiesImpl(id);
+        this.scalar = toScalarCapabilitiesImpl(scalar);
+        this.spatial = toSpatialCapabiltiesImpl(spatial);
+        this.temporal = toTemporalCapabilitiesImpl(temporal);
+    }
+
+    public FilterCapabilitiesImpl(FilterCapabilities copy) {
         this.version = copy.getVersion();
-        this.id = copy.getIdCapabilities() == null ? null : new IdCapabilitiesImpl( copy.getIdCapabilities() );
-        this.scalar = toScalarCapabilitiesImpl( copy.getScalarCapabilities() );
-        this.spatial = toSpatialCapabiltiesImpl( copy.getSpatialCapabilities() );
-        this.temporal = toTemporalCapabilitiesImpl( copy.getTemporalCapabilities() );
-    }    
-    
-    private ScalarCapabilitiesImpl toScalarCapabilitiesImpl( ScalarCapabilities scalarCapabilities ) {
-        if( scalarCapabilities == null ){
+        this.id =
+                copy.getIdCapabilities() == null
+                        ? null
+                        : new IdCapabilitiesImpl(copy.getIdCapabilities());
+        this.scalar = toScalarCapabilitiesImpl(copy.getScalarCapabilities());
+        this.spatial = toSpatialCapabiltiesImpl(copy.getSpatialCapabilities());
+        this.temporal = toTemporalCapabilitiesImpl(copy.getTemporalCapabilities());
+    }
+
+    private ScalarCapabilitiesImpl toScalarCapabilitiesImpl(ScalarCapabilities scalarCapabilities) {
+        if (scalarCapabilities == null) {
             return new ScalarCapabilitiesImpl();
         }
-        if( scalarCapabilities instanceof ScalarCapabilitiesImpl){
+        if (scalarCapabilities instanceof ScalarCapabilitiesImpl) {
             return (ScalarCapabilitiesImpl) scalarCapabilities;
         }
-        return new ScalarCapabilitiesImpl( scalarCapabilities );
+        return new ScalarCapabilitiesImpl(scalarCapabilities);
     }
-    
-    private IdCapabilitiesImpl toIdCapabilitiesImpl( IdCapabilities idCapabilities ) {
-        if( idCapabilities == null ){
+
+    private IdCapabilitiesImpl toIdCapabilitiesImpl(IdCapabilities idCapabilities) {
+        if (idCapabilities == null) {
             return new IdCapabilitiesImpl();
         }
-        if( idCapabilities instanceof IdCapabilitiesImpl){
+        if (idCapabilities instanceof IdCapabilitiesImpl) {
             return (IdCapabilitiesImpl) idCapabilities;
         }
-        return new IdCapabilitiesImpl( idCapabilities );
+        return new IdCapabilitiesImpl(idCapabilities);
     }
-    private static SpatialCapabiltiesImpl toSpatialCapabiltiesImpl( SpatialCapabilities spatialCapabilities ) {
-        if( spatialCapabilities == null ){
+
+    private static SpatialCapabiltiesImpl toSpatialCapabiltiesImpl(
+            SpatialCapabilities spatialCapabilities) {
+        if (spatialCapabilities == null) {
             return new SpatialCapabiltiesImpl();
         }
-        if( spatialCapabilities instanceof SpatialCapabiltiesImpl){
+        if (spatialCapabilities instanceof SpatialCapabiltiesImpl) {
             return (SpatialCapabiltiesImpl) spatialCapabilities;
         }
-        return new SpatialCapabiltiesImpl( spatialCapabilities );
+        return new SpatialCapabiltiesImpl(spatialCapabilities);
     }
-    private static TemporalCapabilitiesImpl 
-        toTemporalCapabilitiesImpl(TemporalCapabilities temporalCapabilities) {
+
+    private static TemporalCapabilitiesImpl toTemporalCapabilitiesImpl(
+            TemporalCapabilities temporalCapabilities) {
         if (temporalCapabilities == null) {
             return new TemporalCapabilitiesImpl();
         }
@@ -108,52 +121,55 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         }
         return new TemporalCapabilitiesImpl(temporalCapabilities);
     }
-    
+
     /**
      * Version of the Filter Specification supported.
-     * <p>
-     * This should be one of the following constants:
+     *
+     * <p>This should be one of the following constants:
+     *
      * <ul>
-     * <li>FilterCapabilities.VERSION_100
-     * <li>FilterCapabilities.VERSION_110
+     *   <li>FilterCapabilities.VERSION_100
+     *   <li>FilterCapabilities.VERSION_110
      * </ul>
+     *
      * @param version
      */
-    public void setVersion( String version ) {
+    public void setVersion(String version) {
         this.version = version;
     }
-    
+
     public String getVersion() {
         return version;
     }
-    
-    public void setId( IdCapabilities id ) {
+
+    public void setId(IdCapabilities id) {
         this.id = toIdCapabilitiesImpl(id);
     }
 
     public IdCapabilitiesImpl getIdCapabilities() {
-        if( id == null ){
+        if (id == null) {
             id = new IdCapabilitiesImpl();
         }
         return id;
     }
 
-    public void setScalar( ScalarCapabilities scalar ) {
-        this.scalar = toScalarCapabilitiesImpl( scalar );
+    public void setScalar(ScalarCapabilities scalar) {
+        this.scalar = toScalarCapabilitiesImpl(scalar);
     }
+
     public ScalarCapabilitiesImpl getScalarCapabilities() {
-        if( scalar == null ){
+        if (scalar == null) {
             scalar = new ScalarCapabilitiesImpl();
         }
         return scalar;
     }
 
-    public void setSpatial( SpatialCapabilities spatial ) {
-        this.spatial = toSpatialCapabiltiesImpl( spatial );
+    public void setSpatial(SpatialCapabilities spatial) {
+        this.spatial = toSpatialCapabiltiesImpl(spatial);
     }
-    
+
     public SpatialCapabiltiesImpl getSpatialCapabilities() {
-        if( spatial == null ){
+        if (spatial == null) {
             spatial = new SpatialCapabiltiesImpl();
         }
         return spatial;
@@ -164,38 +180,41 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
     }
 
     public TemporalCapabilities getTemporalCapabilities() {
-        // TODO Auto-generated method stub
-        return null;
+        if (temporal == null) {
+            temporal = new TemporalCapabilitiesImpl();
+        }
+        return temporal;
     }
-    
-    public void addAll( FilterCapabilities copy ){
-        getIdCapabilities().addAll( copy.getIdCapabilities() );
-        getScalarCapabilities().addAll( copy.getScalarCapabilities() );
-        getSpatialCapabilities().addAll( copy.getSpatialCapabilities() );
-        if( getVersion().compareTo( copy.getVersion() ) < 0 ){
-            setVersion( copy.getVersion() );
+
+    public void addAll(FilterCapabilities copy) {
+        getIdCapabilities().addAll(copy.getIdCapabilities());
+        getScalarCapabilities().addAll(copy.getScalarCapabilities());
+        getSpatialCapabilities().addAll(copy.getSpatialCapabilities());
+        if (getVersion().compareTo(copy.getVersion()) < 0) {
+            setVersion(copy.getVersion());
         }
     }
-    
+
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append("FilterCapabilities [");
         buf.append(version);
         buf.append("]");
-        if( id != null ){
-            buf.append( "\n idCapabilities=");
-            buf.append( id );
+        if (id != null) {
+            buf.append("\n idCapabilities=");
+            buf.append(id);
         }
-        if( scalar != null ){
+        if (scalar != null) {
             buf.append("\n scalarCapabilities=");
-            buf.append( scalar );
+            buf.append(scalar);
         }
-        if( spatial != null ){
+        if (spatial != null) {
             buf.append("\n spatialCapabilities=");
-            buf.append( spatial );
-        }        
+            buf.append(spatial);
+        }
         return buf.toString();
     }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -207,40 +226,28 @@ public class FilterCapabilitiesImpl implements FilterCapabilities {
         result = prime * result + ((version == null) ? 0 : version.hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         FilterCapabilitiesImpl other = (FilterCapabilitiesImpl) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
+            if (other.id != null) return false;
+        } else if (!id.equals(other.id)) return false;
         if (scalar == null) {
-            if (other.scalar != null)
-                return false;
-        } else if (!scalar.equals(other.scalar))
-            return false;
+            if (other.scalar != null) return false;
+        } else if (!scalar.equals(other.scalar)) return false;
         if (spatial == null) {
-            if (other.spatial != null)
-                return false;
-        } else if (!spatial.equals(other.spatial))
-            return false;
+            if (other.spatial != null) return false;
+        } else if (!spatial.equals(other.spatial)) return false;
         if (temporal == null) {
-            if (other.temporal != null)
-                return false;
-        } else if (!temporal.equals(other.temporal))
-            return false;
+            if (other.temporal != null) return false;
+        } else if (!temporal.equals(other.temporal)) return false;
         if (version == null) {
-            if (other.version != null)
-                return false;
-        } else if (!version.equals(other.version))
-            return false;
+            if (other.version != null) return false;
+        } else if (!version.equals(other.version)) return false;
         return true;
     }
 }

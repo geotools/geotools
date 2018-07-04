@@ -1,15 +1,5 @@
 package org.geotools.arcsde.session;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-import java.util.logging.Logger;
-
-import org.geotools.arcsde.ArcSdeException;
-import org.geotools.arcsde.logging.Loggers;
-import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
-
 import com.esri.sde.sdk.client.SeColumnDefinition;
 import com.esri.sde.sdk.client.SeConnection;
 import com.esri.sde.sdk.client.SeDBMSInfo;
@@ -32,12 +22,16 @@ import com.esri.sde.sdk.client.SeStreamOp;
 import com.esri.sde.sdk.client.SeTable;
 import com.esri.sde.sdk.client.SeUpdate;
 import com.esri.sde.sdk.client.SeVersion;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Logger;
+import org.geotools.arcsde.ArcSdeException;
+import org.geotools.arcsde.logging.Loggers;
+import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class Commands {
 
     private static final Logger LOGGER = Loggers.getLogger("org.geotools.arcsde.session");
@@ -56,8 +50,8 @@ public class Commands {
         }
 
         @Override
-        public SeState execute(ISession session, SeConnection connection) throws SeException,
-                IOException {
+        public SeState execute(ISession session, SeConnection connection)
+                throws SeException, IOException {
             SeState parentState = new SeState(connection, new SeObjectId(parentStateId));
 
             SeState realParent = null;
@@ -110,19 +104,17 @@ public class Commands {
 
             return newState;
         }
-
     }
 
-    /**
-     * Command to create, prepare, and execute a query.
-     */
+    /** Command to create, prepare, and execute a query. */
     public static final class CreateAndExecuteQueryCommand extends Command<SeQuery> {
 
         private final String[] propertyNames;
 
         private final SeSqlConstruct sql;
 
-        public CreateAndExecuteQueryCommand(final String[] propertyNames, final SeSqlConstruct sql) {
+        public CreateAndExecuteQueryCommand(
+                final String[] propertyNames, final SeSqlConstruct sql) {
             this.propertyNames = propertyNames;
             this.sql = sql;
         }
@@ -135,7 +127,6 @@ public class Commands {
             query.execute();
             return query;
         }
-
     }
 
     public static final class CreateSeStateCommand extends Command<SeState> {
@@ -219,28 +210,25 @@ public class Commands {
         }
     }
 
-    /**
-     * Command to check a connection is alive
-     */
-    public static final Command<Void> TEST_SERVER = new Command<Void>() {
-        @Override
-        public Void execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            connection.testServer(Session.TEST_SERVER_ROUNDTRIP_INTERVAL_SECONDS);
+    /** Command to check a connection is alive */
+    public static final Command<Void> TEST_SERVER =
+            new Command<Void>() {
+                @Override
+                public Void execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    connection.testServer(Session.TEST_SERVER_ROUNDTRIP_INTERVAL_SECONDS);
 
-            return null;
-        }
-    };
+                    return null;
+                }
+            };
 
-    /**
-     * Command to fetch the default version
-     */
-    public static final Command<SeVersion> GET_DEFAULT_VERSION = new GetVersionCommand(
-            SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME);
+    /** Command to fetch the default version */
+    public static final Command<SeVersion> GET_DEFAULT_VERSION =
+            new GetVersionCommand(SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME);
 
     /**
      * Command to fetch a version.
-     * 
+     *
      * @author Gabriel Roldan
      */
     public static final class GetVersionCommand extends Command<SeVersion> {
@@ -252,8 +240,8 @@ public class Commands {
         }
 
         @Override
-        public SeVersion execute(ISession session, SeConnection connection) throws SeException,
-                IOException {
+        public SeVersion execute(ISession session, SeConnection connection)
+                throws SeException, IOException {
 
             final SeVersion version;
             try {
@@ -267,12 +255,16 @@ public class Commands {
                         for (SeVersion v : versionList) {
                             available.add(v.getName());
                         }
-                        throw new ArcSdeException("Specified ArcSDE version does not exist: "
-                                + versionName + ". Available versions are: " + available, cause);
+                        throw new ArcSdeException(
+                                "Specified ArcSDE version does not exist: "
+                                        + versionName
+                                        + ". Available versions are: "
+                                        + available,
+                                cause);
                     } catch (SeException ignorable) {
                         // hum... ignore
-                        throw new ArcSdeException("Specified ArcSDE version does not exist: "
-                                + versionName, cause);
+                        throw new ArcSdeException(
+                                "Specified ArcSDE version does not exist: " + versionName, cause);
                     }
                 } else {
                     throw cause;
@@ -292,8 +284,8 @@ public class Commands {
         }
 
         @Override
-        public SeTable execute(ISession session, SeConnection connection) throws SeException,
-                IOException {
+        public SeTable execute(ISession session, SeConnection connection)
+                throws SeException, IOException {
             SeTable table = new SeTable(connection, tableName);
 
             try {
@@ -304,7 +296,6 @@ public class Commands {
 
             return table;
         }
-
     }
 
     public static final class GetLayerCommand extends Command<SeLayer> {
@@ -317,10 +308,10 @@ public class Commands {
 
         /**
          * @return the SeLayer corresponding to the provided SeTable, or {@code null} if the table
-         *         has no shape column
+         *     has no shape column
          */
-        public SeLayer execute(ISession session, SeConnection connection) throws SeException,
-                IOException {
+        public SeLayer execute(ISession session, SeConnection connection)
+                throws SeException, IOException {
             final String shapeColumn = getShapeColumn(table);
             if (shapeColumn == null) {
                 return null;
@@ -358,8 +349,8 @@ public class Commands {
         }
 
         @Override
-        public SdeRow execute(ISession session, SeConnection connection) throws SeException,
-                IOException {
+        public SdeRow execute(ISession session, SeConnection connection)
+                throws SeException, IOException {
             SeRow row = query.fetch();
             if (row == null) {
                 return null;
@@ -368,34 +359,35 @@ public class Commands {
             }
             return holder;
         }
-
     }
 
-    public static final Command<Void> START_TRANSACTION = new Command<Void>() {
-        @Override
-        public Void execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            connection.setTransactionAutoCommit(0);
-            connection.startTransaction();
-            return null;
-        }
-    };
+    public static final Command<Void> START_TRANSACTION =
+            new Command<Void>() {
+                @Override
+                public Void execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    connection.setTransactionAutoCommit(0);
+                    connection.startTransaction();
+                    return null;
+                }
+            };
 
-    public static final Command<List<String>> GET_RASTER_COLUMN_NAMES = new Command<List<String>>() {
-        @SuppressWarnings("unchecked")
-        @Override
-        public List<String> execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
+    public static final Command<List<String>> GET_RASTER_COLUMN_NAMES =
+            new Command<List<String>>() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public List<String> execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
 
-            final Vector<SeRasterColumn> rasterColumns = connection.getRasterColumns();
-            List<String> names = new ArrayList<String>(rasterColumns.size());
+                    final Vector<SeRasterColumn> rasterColumns = connection.getRasterColumns();
+                    List<String> names = new ArrayList<String>(rasterColumns.size());
 
-            for (SeRasterColumn col : rasterColumns) {
-                names.add(col.getQualifiedTableName());
-            }
-            return names;
-        }
-    };
+                    for (SeRasterColumn col : rasterColumns) {
+                        names.add(col.getQualifiedTableName());
+                    }
+                    return names;
+                }
+            };
 
     public static final Command<Void> COMMIT_TRANSACTION = new CommitTransaction();
 
@@ -408,14 +400,15 @@ public class Commands {
         }
     }
 
-    public static final Command<Void> ROLLBACK_TRANSACTION = new Command<Void>() {
-        @Override
-        public Void execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            connection.rollbackTransaction();
-            return null;
-        }
-    };
+    public static final Command<Void> ROLLBACK_TRANSACTION =
+            new Command<Void>() {
+                @Override
+                public Void execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    connection.rollbackTransaction();
+                    return null;
+                }
+            };
 
     public static final class CloseConnection extends Command<Void> {
         @Override
@@ -433,70 +426,78 @@ public class Commands {
 
     public static final Command<Void> CLOSE_CONNECTION = new CloseConnection();
 
-    public static final Command<List<SeLayer>> GET_LAYERS = new Command<List<SeLayer>>() {
-        @SuppressWarnings("unchecked")
-        @Override
-        public List<SeLayer> execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            return connection.getLayers();
-        }
-    };
+    public static final Command<List<SeLayer>> GET_LAYERS =
+            new Command<List<SeLayer>>() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public List<SeLayer> execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    return connection.getLayers();
+                }
+            };
 
-    public static final Command<String> GET_USER = new Command<String>() {
-        @Override
-        public String execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            return connection.getUser();
-        }
-    };
+    public static final Command<String> GET_USER =
+            new Command<String>() {
+                @Override
+                public String execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    return connection.getUser();
+                }
+            };
 
-    public static final Command<SeRelease> GET_RELEASE = new Command<SeRelease>() {
-        @Override
-        public SeRelease execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            return connection.getRelease();
-        }
-    };
+    public static final Command<SeRelease> GET_RELEASE =
+            new Command<SeRelease>() {
+                @Override
+                public SeRelease execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    return connection.getRelease();
+                }
+            };
 
-    public static final Command<String> GET_DATABASENAME = new Command<String>() {
-        @Override
-        public String execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            return connection.getDatabaseName();
-        }
-    };
+    public static final Command<String> GET_DATABASENAME =
+            new Command<String>() {
+                @Override
+                public String execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    return connection.getDatabaseName();
+                }
+            };
 
-    public static final Command<SeDBMSInfo> GET_DBMS_INFO = new Command<SeDBMSInfo>() {
-        @Override
-        public SeDBMSInfo execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            return connection.getDBMSInfo();
-        }
-    };
+    public static final Command<SeDBMSInfo> GET_DBMS_INFO =
+            new Command<SeDBMSInfo>() {
+                @Override
+                public SeDBMSInfo execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    return connection.getDBMSInfo();
+                }
+            };
 
-    public static final Command<SeInsert> CREATE_SEINSERT = new Command<SeInsert>() {
-        @Override
-        public SeInsert execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            return new SeInsert(connection);
-        }
-    };
+    public static final Command<SeInsert> CREATE_SEINSERT =
+            new Command<SeInsert>() {
+                @Override
+                public SeInsert execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    return new SeInsert(connection);
+                }
+            };
 
-    public static final Command<SeUpdate> CREATE_SEUPDATE = new Command<SeUpdate>() {
-        @Override
-        public SeUpdate execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            return new SeUpdate(connection);
-        }
-    };
+    public static final Command<SeUpdate> CREATE_SEUPDATE =
+            new Command<SeUpdate>() {
+                @Override
+                public SeUpdate execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    return new SeUpdate(connection);
+                }
+            };
 
-    public static final Command<SeDelete> CREATE_SEDELETE = new Command<SeDelete>() {
-        @Override
-        public SeDelete execute(final ISession session, final SeConnection connection)
-                throws SeException, IOException {
-            return new SeDelete(connection);
-        }
-    };
+    public static final Command<SeDelete> CREATE_SEDELETE =
+            new Command<SeDelete>() {
+                @Override
+                public SeDelete execute(final ISession session, final SeConnection connection)
+                        throws SeException, IOException {
+                    return new SeDelete(connection);
+                }
+            };
 
     public static final class CreateSeRegistrationCommand extends Command<SeRegistration> {
         private String typeName;
@@ -512,10 +513,7 @@ public class Commands {
         }
     }
 
-    /**
-     * 
-     * @author groldan
-     */
+    /** @author groldan */
     public static final class PrepareQueryCommand extends Command<SeQuery> {
 
         private final SeFilter[] spatialConstraints;
@@ -524,7 +522,9 @@ public class Commands {
 
         private ArcSdeVersionHandler version;
 
-        public PrepareQueryCommand(final SeQueryInfo qInfo, final SeFilter[] spatialConstraints,
+        public PrepareQueryCommand(
+                final SeQueryInfo qInfo,
+                final SeFilter[] spatialConstraints,
                 final ArcSdeVersionHandler version) {
             this.qInfo = qInfo;
             this.spatialConstraints = spatialConstraints;
@@ -532,8 +532,8 @@ public class Commands {
         }
 
         @Override
-        public SeQuery execute(ISession session, SeConnection connection) throws SeException,
-                IOException {
+        public SeQuery execute(ISession session, SeConnection connection)
+                throws SeException, IOException {
 
             final SeQuery seQuery = new SeQuery(connection);
 
@@ -543,8 +543,8 @@ public class Commands {
 
             if (spatialConstraints.length > 0) {
                 final boolean setReturnGeometryMasks = false;
-                seQuery.setSpatialConstraints(SeQuery.SE_OPTIMIZE, setReturnGeometryMasks,
-                        spatialConstraints);
+                seQuery.setSpatialConstraints(
+                        SeQuery.SE_OPTIMIZE, setReturnGeometryMasks, spatialConstraints);
             }
 
             return seQuery;

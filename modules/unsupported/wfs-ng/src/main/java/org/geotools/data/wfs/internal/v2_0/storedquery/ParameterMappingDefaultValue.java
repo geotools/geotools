@@ -30,8 +30,7 @@ public class ParameterMappingDefaultValue implements ParameterMapping, Serializa
         setDefaultValue(defaultValue);
     }
 
-    public ParameterMappingDefaultValue() {
-    }
+    public ParameterMappingDefaultValue() {}
 
     public void setForcible(boolean forcible) {
         this.forcible = forcible;

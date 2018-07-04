@@ -1,28 +1,23 @@
 package org.geotools.data.dxf.entities;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import java.awt.geom.Rectangle2D;
 import java.io.EOFException;
 import java.io.IOException;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.GeometryType;
-import org.geotools.data.dxf.parser.DXFUnivers;
 import org.geotools.data.dxf.header.DXFLayer;
 import org.geotools.data.dxf.header.DXFLineType;
 import org.geotools.data.dxf.header.DXFTables;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.parser.DXFUnivers;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFText extends DXFEntity {
 
     private static final Log log = LogFactory.getLog(DXFText.class);
@@ -37,8 +32,21 @@ public class DXFText extends DXFEntity {
     public Rectangle2D.Double _r = new Rectangle2D.Double();
 
     public DXFText(DXFText newText) {
-        this(newText._point._point.x, newText._point._point.y, newText._value, newText._rotation, newText.getThickness(), newText._height,
-                newText._align, newText._style, newText.getColor(), newText.getRefLayer(), newText._angle, newText._zoomfactor, 0, newText.getLineType());
+        this(
+                newText._point._point.x,
+                newText._point._point.y,
+                newText._value,
+                newText._rotation,
+                newText.getThickness(),
+                newText._height,
+                newText._align,
+                newText._style,
+                newText.getColor(),
+                newText.getRefLayer(),
+                newText._angle,
+                newText._zoomfactor,
+                0,
+                newText.getLineType());
 
         setType(newText.getType());
         setStartingLineNumber(newText.getStartingLineNumber());
@@ -48,7 +56,21 @@ public class DXFText extends DXFEntity {
         setKey(newText._value);
     }
 
-    public DXFText(double x, double y, String value, double rotation, double thickness, double height, int align, String style, int c, DXFLayer l, double angle, double zoomFactor, int visibility, DXFLineType lineType) {
+    public DXFText(
+            double x,
+            double y,
+            String value,
+            double rotation,
+            double thickness,
+            double height,
+            int align,
+            String style,
+            int c,
+            DXFLayer l,
+            double angle,
+            double zoomFactor,
+            int visibility,
+            DXFLineType lineType) {
         super(c, l, visibility, lineType, thickness);
         _point = new DXFPoint(x, y, c, l, visibility, thickness);
         _value = value;
@@ -60,18 +82,34 @@ public class DXFText extends DXFEntity {
         _zoomfactor = zoomFactor;
         setName("DXFText");
     }
-    public DXFText(double x, double y, String value, double rotation, double thickness, double height, int align, String style, int c, DXFLayer l, double angle, double zoomFactor, int visibility, DXFLineType lineType, DXFExtendedData extData) {
-    	super(c, l, visibility, lineType, thickness);
-    	_point = new DXFPoint(x, y, c, l, visibility, thickness);
-    	_value = value;
-    	_rotation = rotation;
-    	_height = height;
-    	_align = align;
-    	_style = style;
-    	_angle = angle;
-    	_zoomfactor = zoomFactor;
-    	_extendedData = extData;
-    	setName("DXFText");
+
+    public DXFText(
+            double x,
+            double y,
+            String value,
+            double rotation,
+            double thickness,
+            double height,
+            int align,
+            String style,
+            int c,
+            DXFLayer l,
+            double angle,
+            double zoomFactor,
+            int visibility,
+            DXFLineType lineType,
+            DXFExtendedData extData) {
+        super(c, l, visibility, lineType, thickness);
+        _point = new DXFPoint(x, y, c, l, visibility, thickness);
+        _value = value;
+        _rotation = rotation;
+        _height = height;
+        _align = align;
+        _style = style;
+        _angle = angle;
+        _zoomfactor = zoomFactor;
+        _extendedData = extData;
+        setName("DXFText");
     }
 
     public static DXFText read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
@@ -113,74 +151,101 @@ public class DXFText extends DXFEntity {
                     br.reset();
                     doLoop = false;
                     break;
-                case X_1: //"10"
+                case X_1: // "10"
                     x = cvp.getDoubleValue();
                     break;
-                case Y_1: //"20"
+                case Y_1: // "20"
                     y = cvp.getDoubleValue();
                     break;
-                case TEXT: //"1"
+                case TEXT: // "1"
                     value = cvp.getStringValue();
                     break;
-                case ANGLE_1: //"50"
+                case ANGLE_1: // "50"
                     rotation = cvp.getDoubleValue();
                     break;
-                case THICKNESS: //"39"
+                case THICKNESS: // "39"
                     thickness = cvp.getDoubleValue();
                     break;
-                case DOUBLE_1: //"40"
+                case DOUBLE_1: // "40"
                     height = cvp.getDoubleValue();
                     break;
-                case ANGLE_2: //"51"
+                case ANGLE_2: // "51"
                     angle = cvp.getDoubleValue();
                     break;
-                case DOUBLE_2: //"41"
+                case DOUBLE_2: // "41"
                     zoomfactor = cvp.getDoubleValue();
                     break;
-                case INT_3: //"72"
+                case INT_3: // "72"
                     align = cvp.getShortValue();
                     break;
-                case LAYER_NAME: //"8"
+                case LAYER_NAME: // "8"
                     l = univers.findLayer(cvp.getStringValue());
                     break;
-                case COLOR: //"62"
+                case COLOR: // "62"
                     c = cvp.getShortValue();
                     break;
-                case TEXT_STYLE_NAME: //"7"
+                case TEXT_STYLE_NAME: // "7"
                     style = cvp.getStringValue();
                     break;
-                case VISIBILITY: //"60"
+                case VISIBILITY: // "60"
                     visibility = cvp.getShortValue();
                     break;
-                case LINETYPE_NAME: //"6"
+                case LINETYPE_NAME: // "6"
                     lineType = univers.findLType(cvp.getStringValue());
                     break;
                 case XDATA_APPLICATION_NAME:
-                	String appName = cvp.getStringValue();
-            		_extData = DXFExtendedData.getExtendedData(br);
-            		_extData.setAppName(appName);
+                    String appName = cvp.getStringValue();
+                    _extData = DXFExtendedData.getExtendedData(br);
+                    _extData.setAppName(appName);
                     break;
                 default:
                     break;
             }
-
         }
 
-        DXFText e = new DXFText(x, y, value, rotation, thickness, height, align, style, c, l, angle, zoomfactor, visibility, lineType, _extData);
+        DXFText e =
+                new DXFText(
+                        x,
+                        y,
+                        value,
+                        rotation,
+                        thickness,
+                        height,
+                        align,
+                        style,
+                        c,
+                        l,
+                        angle,
+                        zoomfactor,
+                        visibility,
+                        lineType,
+                        _extData);
         e.setType(GeometryType.POINT);
         e.setStartingLineNumber(sln);
         e.setUnivers(univers);
         // Hack voor label
         e.setKey(value);
-        log.debug(e.toString(x, y, value, rotation, thickness, height, align, style, c, angle, zoomfactor, visibility));
+        log.debug(
+                e.toString(
+                        x,
+                        y,
+                        value,
+                        rotation,
+                        thickness,
+                        height,
+                        align,
+                        style,
+                        c,
+                        angle,
+                        zoomfactor,
+                        visibility));
         log.debug(">Exit at line: " + br.getLineNumber());
         return e;
     }
 
     @Override
     public Geometry getGeometry() {
-        if (geometry == null) {
-        }
+        if (geometry == null) {}
         return super.getGeometry();
     }
 
@@ -196,7 +261,19 @@ public class DXFText extends DXFEntity {
         return rotateAndPlace(new Coordinate(_point._point.getX(), _point._point.getY()));
     }
 
-    public String toString(double x, double y, String value, double rotation, double thickness, double height, double align, String style, int c, double angle, double zoomfactor, int visibility) {
+    public String toString(
+            double x,
+            double y,
+            String value,
+            double rotation,
+            double thickness,
+            double height,
+            double align,
+            String style,
+            int c,
+            double angle,
+            double zoomfactor,
+            int visibility) {
         StringBuffer s = new StringBuffer();
         s.append("DXFText [");
         s.append("x: ");

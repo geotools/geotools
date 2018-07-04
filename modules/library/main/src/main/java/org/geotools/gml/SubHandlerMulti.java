@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,38 +20,33 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 
 /**
- * Creates a MultiPoint, MultiLineString, or MultiPolygon geometry as required
- * by the internal functions.
+ * Creates a MultiPoint, MultiLineString, or MultiPolygon geometry as required by the internal
+ * functions.
  *
  * @author Ian Turton, CCG
  * @author Rob Hranac, Vision for New York
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class SubHandlerMulti extends SubHandler {
     /** The logger for the GML module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
 
-    /**
-     * Remembers the list of all possible sub (base) types for this multi type.
-     */
-    private static final Collection BASE_GEOMETRY_TYPES = new Vector(java.util.Arrays
-            .asList(new String[] { "Point", "LineString", "Polygon" }));
+    /** Remembers the list of all possible sub (base) types for this multi type. */
+    private static final Collection BASE_GEOMETRY_TYPES =
+            new Vector(java.util.Arrays.asList(new String[] {"Point", "LineString", "Polygon"}));
 
     /** Geometry factory to return the multi type. */
     private GeometryFactory geometryFactory = new GeometryFactory();
@@ -71,11 +66,8 @@ public class SubHandlerMulti extends SubHandler {
     /** Remembers whether or not the internal type is set already. */
     private boolean internalTypeSet = false;
 
-    /**
-     * Empty constructor.
-     */
-    public SubHandlerMulti() {
-    }
+    /** Empty constructor. */
+    public SubHandlerMulti() {}
 
     /**
      * Handles all internal (sub) geometries.
@@ -125,7 +117,6 @@ public class SubHandlerMulti extends SubHandler {
      * Determines whether or not it is time to return this geometry.
      *
      * @param message The geometry element that prompted this check.
-     *
      * @return DOCUMENT ME!
      */
     public boolean isComplete(String message) {
@@ -139,34 +130,32 @@ public class SubHandlerMulti extends SubHandler {
     /**
      * Returns a completed multi type.
      *
-     * @param geometryFactory The factory this method should use to create the
-     *        multi type.
-     *
+     * @param geometryFactory The factory this method should use to create the multi type.
      * @return Appropriate multi geometry type.
      */
     public Geometry create(GeometryFactory geometryFactory) {
         if (internalType.equals("Point")) {
-            Point[] pointArray = geometryFactory.toPointArray(geometries);            
+            Point[] pointArray = geometryFactory.toPointArray(geometries);
             MultiPoint multiPoint = geometryFactory.createMultiPoint(pointArray);
-            multiPoint.setUserData( getSRS() );
-            multiPoint.setSRID( getSRID() );
+            multiPoint.setUserData(getSRS());
+            multiPoint.setSRID(getSRID());
             LOGGER.fine("created " + multiPoint);
 
             return multiPoint;
         } else if (internalType.equals("LineString")) {
-            LineString[] lineStringArray = geometryFactory
-                    .toLineStringArray(geometries);
-            MultiLineString multiLineString = geometryFactory.createMultiLineString(lineStringArray);
-            multiLineString.setUserData( getSRS() );
-            multiLineString.setSRID( getSRID() );
+            LineString[] lineStringArray = geometryFactory.toLineStringArray(geometries);
+            MultiLineString multiLineString =
+                    geometryFactory.createMultiLineString(lineStringArray);
+            multiLineString.setUserData(getSRS());
+            multiLineString.setSRID(getSRID());
             LOGGER.fine("created " + multiLineString);
 
             return multiLineString;
         } else if (internalType.equals("Polygon")) {
             Polygon[] polygonArray = geometryFactory.toPolygonArray(geometries);
             MultiPolygon multiPolygon = geometryFactory.createMultiPolygon(polygonArray);
-            multiPolygon.setUserData( getSRS() );
-            multiPolygon.setSRID( getSRID() );
+            multiPolygon.setUserData(getSRS());
+            multiPolygon.setSRID(getSRID());
             LOGGER.fine("created " + multiPolygon);
 
             return multiPolygon;

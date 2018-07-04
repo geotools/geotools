@@ -16,21 +16,21 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.picocontainer.MutablePicoContainer;
 import javax.xml.namespace.QName;
-import org.opengis.filter.BinaryComparisonOperator;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:BinaryComparisonOpType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="BinaryComparisonOpType"&gt;
  *      &lt;xsd:complexContent&gt;
@@ -44,12 +44,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
@@ -59,14 +55,13 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.BinaryComparisonOpType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -77,6 +72,7 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -87,23 +83,23 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //implemented by comcreate elements;
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // implemented by comcreate elements;
         return null;
 
         //    	//TODO: replace with element bindings
@@ -112,28 +108,34 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
         //
         //        String name = instance.getName();
         //
-        //        //		<xsd:element name="PropertyIsEqualTo" substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/>
+        //        //		<xsd:element name="PropertyIsEqualTo" substitutionGroup="ogc:comparisonOps"
+        // type="ogc:BinaryComparisonOpType"/>
         //        if ("PropertyIsEqualTo".equals(name)) {
         //            return factory.equals(e1, e2);
         //        }
-        //        //		<xsd:element name="PropertyIsNotEqualTo" substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/>
+        //        //		<xsd:element name="PropertyIsNotEqualTo" substitutionGroup="ogc:comparisonOps"
+        // type="ogc:BinaryComparisonOpType"/>
         //        else if ("PropertyIsNotEqualTo".equals(name)) {
         //            //TODO: add geoapi interface
         //            return factory.not(factory.equals(e1, e2));
         //        }
-        //        //		<xsd:element name="PropertyIsLessThan" substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/>
+        //        //		<xsd:element name="PropertyIsLessThan" substitutionGroup="ogc:comparisonOps"
+        // type="ogc:BinaryComparisonOpType"/>
         //        else if ("PropertyIsLessThan".equals(name)) {
         //            return factory.less(e1, e2);
         //        }
-        //        //		<xsd:element name="PropertyIsGreaterThan" substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/>
+        //        //		<xsd:element name="PropertyIsGreaterThan"
+        // substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/>
         //        else if ("PropertyIsGreaterThan".equals(name)) {
         //            return factory.greater(e1, e2);
         //        }
-        //        //		<xsd:element name="PropertyIsLessThanOrEqualTo" substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/>
+        //        //		<xsd:element name="PropertyIsLessThanOrEqualTo"
+        // substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/>
         //        else if ("PropertyIsLessThanOrEqualTo".equals(name)) {
         //            return factory.lessOrEqual(e1, e2);
         //        }
-        //        //		<xsd:element name="PropertyIsGreaterThanOrEqualTo" substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/>		
+        //        //		<xsd:element name="PropertyIsGreaterThanOrEqualTo"
+        // substitutionGroup="ogc:comparisonOps" type="ogc:BinaryComparisonOpType"/>
         //        else if ("PropertyIsGreaterThanOrEqualTo".equals(name)) {
         //            return factory.greaterOrEqual(e1, e2);
         //        } else {
@@ -141,15 +143,14 @@ public class OGCBinaryComparisonOpTypeBinding extends AbstractComplexBinding {
         //        }
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         if (OGC.expression.equals(name)) {
             BinaryComparisonOperator op = (BinaryComparisonOperator) object;
 
-            return new Expression[] { op.getExpression1(), op.getExpression2() };
+            return new Expression[] {op.getExpression1(), op.getExpression2()};
         }
 
-        //filter 1.1 only
+        // filter 1.1 only
         if ("matchCase".equals(name.getLocalPart())) {
             BinaryComparisonOperator op = (BinaryComparisonOperator) object;
 

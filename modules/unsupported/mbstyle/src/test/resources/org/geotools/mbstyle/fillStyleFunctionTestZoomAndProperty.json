@@ -1,0 +1,126 @@
+{
+    "version": 8,
+    "name": "functions",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -423.96500736815887,
+        49.05603059845177
+    ],
+    "zoom": 3.511754487634505,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        },
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "testSpritesheet",
+    "glyphs": "testGlyphs",
+    "layers": [
+        {
+            "id": "water",
+            "type": "fill",
+            "source": "composite",
+            "source-layer": "water",
+            "layout": {
+                "visibility": "visible"
+            },
+            "paint": {
+                "fill-color": {
+                    "base": 1,
+                    "property": "someNumericProperty",
+                    "stops": [
+                        [
+                            {"zoom":0 , "value":0},
+                            "#3366FF"
+                        ],
+                        [ 
+                            {"zoom":0 , "value":50},
+                            "#336600"
+                        ],
+                        [
+                            {"zoom":12 , "value": 0},
+                            "#CC33FF"
+                        ],
+                        [
+                            {"zoom":12 , "value": 50 },
+                            "#CC3300"
+                        ],                        
+                        [
+                            {"zoom":15, "value": 0},
+                            "#FF3366"
+                        ],
+                        [
+                            {"zoom":15, "value": 50},
+                            "#FF3300"
+                        ],                        
+                        [
+                            {"zoom": 22, "value": 0 },
+                            "#FF6633"
+                        ],
+                        [
+                            {"zoom": 22, "value": 50},
+                            "#FF6600"
+                        ]                        
+                        
+                    ]
+                },
+                "fill-opacity": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            5,
+                            1
+                        ],
+                        [
+                            10,
+                            0.75
+                        ],
+                        [
+                            17,
+                            0.5
+                        ]
+                    ]
+                },
+                "fill-outline-color": {
+                    "property": "someTextProperty",
+                    "default": "#000000",
+                    "type": "categorical",
+                    "stops": [
+                        [
+                            {"zoom": 3, "value": "val1"},
+                            "#CCFFFF"
+                        ],
+                        [
+                            {"zoom": 3, "value": "val2"},
+                            "#CCFF00"
+                        ],                        
+                        [
+                           {"zoom": 21, "value": "val1"},
+                            "#B88AFF"
+                        ],
+                        [
+                           {"zoom": 21, "value": "val2"},
+                            "#B88A00"
+                        ]                        
+                    ]
+                }
+            }
+        }
+    ],
+    "created": "2017-02-15T14:31:51.108Z",
+    "id": "ciz723a3y000g2so5l675lmz8",
+    "modified": "2017-04-26T20:44:41.356Z",
+    "owner": "testuser",
+    "visibility": "private",
+    "draft": false
+}

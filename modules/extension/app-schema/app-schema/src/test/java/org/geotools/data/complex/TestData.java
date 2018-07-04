@@ -19,7 +19,6 @@ package org.geotools.data.complex;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
@@ -29,6 +28,9 @@ import org.geotools.feature.TypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -41,43 +43,34 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.xml.sax.helpers.NamespaceSupport;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
 /**
- * 
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  * @since 2.4
  */
 public class TestData {
 
-    public final static Name WATERSAMPLE_TYPENAME = Types.typeName("wq_ir_results");
+    public static final Name WATERSAMPLE_TYPENAME = Types.typeName("wq_ir_results");
 
-    private TestData() {
-    }
+    private TestData() {}
 
     /**
      * Complex type:
+     *
      * <ul>
-     * wq_plus
-     * <li>sitename
-     * <li>anzlic_no
-     * <li>project_no
-     * <li>measurement (0..*)
-     * <ul>
-     * <li>determinand_description</li>
-     * <li>result</li>
+     *   wq_plus
+     *   <li>sitename
+     *   <li>anzlic_no
+     *   <li>project_no
+     *   <li>measurement (0..*)
+     *       <ul>
+     *         <li>determinand_description
+     *         <li>result
+     *       </ul>
+     *   <li>location
      * </ul>
-     * </li>
-     * <li>location
-     * </ul>
-     * 
+     *
      * @return
      */
     public static FeatureType createComplexWaterQualityType() {
@@ -86,8 +79,8 @@ public class TestData {
 
         FeatureType wq_plusType;
 
-        AttributeType detdesc = builder.name("determinand_description").bind(String.class)
-                .attribute();
+        AttributeType detdesc =
+                builder.name("determinand_description").bind(String.class).attribute();
         AttributeType result = builder.name("result").bind(Float.class).attribute();
 
         builder.setName("measurement");
@@ -147,15 +140,16 @@ public class TestData {
     }
 
     /**
-     * 
+     *
+     *
      * <pre>
      * </pre>
-     * 
+     *
      * @param targetFeature
      * @return
      * @throws Exception
      */
-    public static List/* <AttributeMapping> */createMappingsColumnsAndValues(
+    public static List /* <AttributeMapping> */ createMappingsColumnsAndValues(
             AttributeDescriptor targetFeature) throws Exception {
 
         List mappings = new LinkedList();
@@ -169,87 +163,89 @@ public class TestData {
         target = "sample/measurement[1]/parameter";
         // empty nssupport as the test properties have no namespace
         NamespaceSupport namespaces = new NamespaceSupport();
-        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping =
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         source = ff.property("ph");
         target = "sample/measurement[1]/value";
-        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping =
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         source = ff.literal("temp");
         target = "sample/measurement[2]/parameter";
-        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping =
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         source = ff.property("temp");
         target = "sample/measurement[2]/value";
-        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping =
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         source = ff.literal("turbidity");
         target = "sample/measurement[3]/parameter";
-        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping =
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         source = ff.property("turbidity");
         target = "sample/measurement[3]/value";
-        attMapping = new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
+        attMapping =
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces));
         mappings.add(attMapping);
 
         return mappings;
     }
 
     /**
-     * <p>
      * Flat FeatureType:
+     *
      * <ul>
-     * wq_ir_results
-     * <li> station_no</li>
-     * <li> sitename</li>
-     * <li> anzlic_no</li>
-     * <li> project_no</li>
-     * <li> id</li>
-     * <li> sample_collection_date</li>
-     * <li> determinand_description</li>
-     * <li> results_value</li>
-     * <li> location</li>
+     *   wq_ir_results
+     *   <li>station_no
+     *   <li>sitename
+     *   <li>anzlic_no
+     *   <li>project_no
+     *   <li>id
+     *   <li>sample_collection_date
+     *   <li>determinand_description
+     *   <li>results_value
+     *   <li>location
      * </ul>
-     * </p>
-     * <p>
-     * Complex type:
+     *
+     * <p>Complex type:
+     *
      * <ul>
-     * wq_plus
-     * <li>sitename
-     * <li>anzlic_no
-     * <li>project_no
-     * <li>location
-     * <li>measurement (0..*)
-     * <ul>
-     * <li>determinand_description</li>
-     * <li>result</li>
+     *   wq_plus
+     *   <li>sitename
+     *   <li>anzlic_no
+     *   <li>project_no
+     *   <li>location
+     *   <li>measurement (0..*)
+     *       <ul>
+     *         <li>determinand_description
+     *         <li>result
+     *       </ul>
      * </ul>
-     * </li>
-     * </ul>
-     * </p>
-     * <p>
-     * Mappings definition:
-     * 
+     *
+     * <p>Mappings definition:
+     *
      * <pre>
      *       &lt;strong&gt;wq_ir_results&lt;/strong&gt;			&lt;strong&gt;wq_plus&lt;/strong&gt;
      *        station_no		--&gt;	wq_plus@id
-     *        sitename		--&gt;	sitename	
+     *        sitename		--&gt;	sitename
      *        anzlic_no		--&gt;	anzlic_no
      *        project_no		--&gt;	project_no
      *        id		--&gt;	measurement/@id
      *        sample_collection_date--&gt; [not used]
-     *        determinand_description--&gt;measurement/determinand_description	
+     *        determinand_description--&gt;measurement/determinand_description
      *        results_value		--&gt;measurement/result
      *        location		--&gt;location
      * </pre>
-     * 
-     * </p>
-     * 
+     *
      * @param simpleStore
      * @return
      * @throws Exception
@@ -257,13 +253,14 @@ public class TestData {
     public static FeatureTypeMapping createMappingsGroupByStation(MemoryDataStore simpleStore)
             throws Exception {
         Name sourceTypeName = WATERSAMPLE_TYPENAME;
-        final FeatureSource<SimpleFeatureType, SimpleFeature> wsSource = simpleStore
-                .getFeatureSource(sourceTypeName);
+        final FeatureSource<SimpleFeatureType, SimpleFeature> wsSource =
+                simpleStore.getFeatureSource(sourceTypeName);
 
         FeatureType targetType = createComplexWaterQualityType();
         FeatureTypeFactory tf = new UniqueNameFeatureTypeFactoryImpl();
-        AttributeDescriptor targetFeature = tf.createAttributeDescriptor(targetType, targetType
-                .getName(), 0, Integer.MAX_VALUE, true, null);
+        AttributeDescriptor targetFeature =
+                tf.createAttributeDescriptor(
+                        targetType, targetType.getName(), 0, Integer.MAX_VALUE, true, null);
 
         List mappings = new LinkedList();
         Expression id;
@@ -276,61 +273,66 @@ public class TestData {
         source = Expression.NIL;
         target = "wq_plus";
         NamespaceSupport namespaces = new NamespaceSupport();
-        mappings.add(new AttributeMapping(id, source, XPath
-                .steps(targetFeature, target, namespaces)));
+        mappings.add(
+                new AttributeMapping(id, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("sitename");
         target = "wq_plus/sitename";
-        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target,
-                namespaces)));
+        mappings.add(
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("anzlic_no");
         target = "wq_plus/anzlic_no";
-        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target,
-                namespaces)));
+        mappings.add(
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("project_no");
         target = "wq_plus/project_no";
-        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target,
-                namespaces)));
+        mappings.add(
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         id = ff.property("id[1]");
         source = null;
         target = "wq_plus/measurement";
-        mappings.add(new AttributeMapping(id, source, null, XPath
-                .steps(targetFeature, target, namespaces), null, true, null));
+        mappings.add(
+                new AttributeMapping(
+                        id,
+                        source,
+                        null,
+                        XPath.steps(targetFeature, target, namespaces),
+                        null,
+                        true,
+                        null));
 
         source = ff.property("determinand_description");
         target = "wq_plus/measurement/determinand_description";
-        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target,
-                namespaces)));
+        mappings.add(
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("results_value");
         target = "wq_plus/measurement/result";
-        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target,
-                namespaces)));
+        mappings.add(
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
         source = ff.property("location");
         target = "wq_plus/location";
-        mappings.add(new AttributeMapping(null, source, XPath.steps(targetFeature, target,
-                namespaces)));
+        mappings.add(
+                new AttributeMapping(null, source, XPath.steps(targetFeature, target, namespaces)));
 
-        return new FeatureTypeMapping(wsSource, targetFeature, mappings,
-                namespaces);
-
+        return new FeatureTypeMapping(wsSource, targetFeature, mappings, namespaces);
     }
 
     /**
-     * Creates a flat FeatureType <code>wq_ir_results</code> with a structure
-     * like the following, from which a complex one should be constructed
-     * grouping by station_no attribute.
+     * Creates a flat FeatureType <code>wq_ir_results</code> with a structure like the following,
+     * from which a complex one should be constructed grouping by station_no attribute.
+     *
+     * <p>Following this sample schema, a total of 10 unique station_no identifiers will be created,
+     * and for each one, a total of N desagregate rows with the same station_no, where N goes from 1
+     * to 10. So for the first station_no there will be just one occurrence and the last one will
+     * have 10.
+     *
      * <p>
-     * Following this sample schema, a total of 10 unique station_no identifiers
-     * will be created, and for each one, a total of N desagregate rows with the
-     * same station_no, where N goes from 1 to 10. So for the first station_no
-     * there will be just one occurrence and the last one will have 10.
-     * </p>
-     * <p>
+     *
      * <table>
      * <tr>
      * <td> station_no (string) </td>
@@ -402,8 +404,7 @@ public class TestData {
      * <td> POINT(10, 10) </td>
      * </tr>
      * </table>
-     * </p>
-     * 
+     *
      * @return
      * @throws Exception
      */
@@ -431,12 +432,12 @@ public class TestData {
         GeometryFactory gf = new GeometryFactory();
 
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
-        
+
         for (int groupValue = 1; groupValue <= NUM_STATIONS; groupValue++) {
 
             for (int measurement = 1; measurement <= groupValue; measurement++) {
                 String fid = type.getName().getLocalPart() + "." + groupValue + "." + measurement;
-                
+
                 fb.add("station_no." + groupValue);
                 fb.add("sitename" + groupValue);
                 fb.add("anzlic_no" + groupValue);
@@ -456,5 +457,4 @@ public class TestData {
         }
         return dataStore;
     }
-
 }

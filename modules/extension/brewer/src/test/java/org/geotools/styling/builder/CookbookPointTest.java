@@ -7,9 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.util.List;
-
-import javax.measure.unit.SI;
-
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
@@ -28,18 +25,21 @@ import org.opengis.style.Fill;
 import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.Mark;
 import org.opengis.style.Stroke;
+import si.uom.SI;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class CookbookPointTest extends AbstractStyleTest {
 
     @Test
     public void testSimple() {
-        Style style = new GraphicBuilder().size(6).mark().name("circle").fill().color(Color.RED)
-                .buildStyle();
+        Style style =
+                new GraphicBuilder()
+                        .size(6)
+                        .mark()
+                        .name("circle")
+                        .fill()
+                        .color(Color.RED)
+                        .buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -69,8 +69,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         GraphicBuilder gb = new GraphicBuilder().size(6);
         gb.anchor().x(0).y(1);
         gb.displacement().x(10).y(20);
-        Style style = gb.mark().name("circle").fill().color(Color.RED)
-                .buildStyle();
+        Style style = gb.mark().name("circle").fill().color(Color.RED).buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -132,8 +131,15 @@ public class CookbookPointTest extends AbstractStyleTest {
 
     @Test
     public void testRotatedSquare() {
-        Style style = new GraphicBuilder().size(12).rotation(45).mark().name("square").fill()
-                .color(Color.GREEN).buildStyle();
+        Style style =
+                new GraphicBuilder()
+                        .size(12)
+                        .rotation(45)
+                        .mark()
+                        .name("square")
+                        .fill()
+                        .color(Color.GREEN)
+                        .buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -188,8 +194,11 @@ public class CookbookPointTest extends AbstractStyleTest {
 
     @Test
     public void testPointAsGraphics() {
-        Style style = new GraphicBuilder().size(32).externalGraphic("smileyface.png", "image/png")
-                .buildStyle();
+        Style style =
+                new GraphicBuilder()
+                        .size(32)
+                        .externalGraphic("smileyface.png", "image/png")
+                        .buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -233,8 +242,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12)
-                .weightName(Font.Weight.BOLD);
+        tb.newFont().familyName("Arial").size(12).weightName(Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);
         Style style = rb.buildStyle();
@@ -259,8 +267,10 @@ public class CookbookPointTest extends AbstractStyleTest {
         PointPlacement pp = (PointPlacement) ps.getLabelPlacement();
         assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0);
         assertEquals(0, pp.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0);
-        assertEquals(0, (int) pp.getDisplacement().getDisplacementX().evaluate(null, Integer.class));
-        assertEquals(5, (int) pp.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
+        assertEquals(
+                0, (int) pp.getDisplacement().getDisplacementX().evaluate(null, Integer.class));
+        assertEquals(
+                5, (int) pp.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
     }
 
     @Test
@@ -269,8 +279,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         rb.point().graphic().size(6).mark().name("circle").fill().color(Color.RED);
         TextSymbolizerBuilder tb = rb.text().label("name");
         tb.fill().color(Color.BLACK);
-        tb.newFont().familyName("Arial").size(12)
-                .weightName(Font.Weight.BOLD);
+        tb.newFont().familyName("Arial").size(12).weightName(Font.Weight.BOLD);
         tb.pointPlacement().displacement().x(0).y(5);
         tb.pointPlacement().anchor().x(0.5);
         tb.pointPlacement().rotation(-45);
@@ -297,8 +306,10 @@ public class CookbookPointTest extends AbstractStyleTest {
         assertEquals(-45, pp.getRotation().evaluate(null, Double.class), 0.0);
         assertEquals(0.5, pp.getAnchorPoint().getAnchorPointX().evaluate(null, Double.class), 0);
         assertEquals(0, pp.getAnchorPoint().getAnchorPointY().evaluate(null, Double.class), 0);
-        assertEquals(0, (int) pp.getDisplacement().getDisplacementX().evaluate(null, Integer.class));
-        assertEquals(5, (int) pp.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
+        assertEquals(
+                0, (int) pp.getDisplacement().getDisplacementX().evaluate(null, Integer.class));
+        assertEquals(
+                5, (int) pp.getDisplacement().getDisplacementY().evaluate(null, Integer.class));
     }
 
     private void basicPointWithLabelAssertions(StyleCollector collector) {
@@ -322,16 +333,41 @@ public class CookbookPointTest extends AbstractStyleTest {
 
     @Test
     public void testAttributeBasedPoint() {
-        Mark mark = (Mark) new MarkBuilder().name("circle").fill().color(new Color(0, 51, 204))
-                .buildRoot();
+        Mark mark =
+                (Mark)
+                        new MarkBuilder()
+                                .name("circle")
+                                .fill()
+                                .color(new Color(0, 51, 204))
+                                .buildRoot();
         FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
-        fts.rule().name("SmallPop").title("1 to 50000").filter("pop < 50000").point().graphic()
-                .size(8).mark().reset(mark);
-        fts.rule().name("MediumPop").title("50000 to 100000")
-                .filter("pop between 50000 and 100000").point().graphic().size(12).mark()
+        fts.rule()
+                .name("SmallPop")
+                .title("1 to 50000")
+                .filter("pop < 50000")
+                .point()
+                .graphic()
+                .size(8)
+                .mark()
                 .reset(mark);
-        fts.rule().name("LargePop").title("Greater than 100000").filter("pop >= 100000").point()
-                .graphic().size(16).mark().reset(mark);
+        fts.rule()
+                .name("MediumPop")
+                .title("50000 to 100000")
+                .filter("pop between 50000 and 100000")
+                .point()
+                .graphic()
+                .size(12)
+                .mark()
+                .reset(mark);
+        fts.rule()
+                .name("LargePop")
+                .title("Greater than 100000")
+                .filter("pop >= 100000")
+                .point()
+                .graphic()
+                .size(16)
+                .mark()
+                .reset(mark);
         Style style = fts.buildStyle();
         // print(style);
 
@@ -342,20 +378,37 @@ public class CookbookPointTest extends AbstractStyleTest {
         assertEquals(3, collector.symbolizers.size());
 
         // check rules and styles
-        checkAttributeBasedRule(collector.rules.get(0),
-                ff.less(ff.property("pop"), ff.literal("50000")), 8);
-        checkAttributeBasedRule(collector.rules.get(1),
-                ff.between(ff.property("pop"), ff.literal("50000"), ff.literal("100000")), 12);
-        checkAttributeBasedRule(collector.rules.get(2),
-                ff.greaterOrEqual(ff.property("pop"), ff.literal("100000")), 16);
+        checkAttributeBasedRule(
+                collector.rules.get(0), ff.less(ff.property("pop"), ff.literal("50000")), 8);
+        checkAttributeBasedRule(
+                collector.rules.get(1),
+                ff.between(ff.property("pop"), ff.literal("50000"), ff.literal("100000")),
+                12);
+        checkAttributeBasedRule(
+                collector.rules.get(2),
+                ff.greaterOrEqual(ff.property("pop"), ff.literal("100000")),
+                16);
     }
 
     @Test
     public void testCagetorizeBasedPoint() {
-        Function size = ff.function("categorize", ff.property("pop"), ff.literal(8),
-                ff.literal(50000), ff.literal(12), ff.literal(100000), ff.literal(16));
-        Style style = new GraphicBuilder().size(size).mark().name("circle").fill()
-                .color(new Color(0, 51, 204)).buildStyle();
+        Function size =
+                ff.function(
+                        "categorize",
+                        ff.property("pop"),
+                        ff.literal(8),
+                        ff.literal(50000),
+                        ff.literal(12),
+                        ff.literal(100000),
+                        ff.literal(16));
+        Style style =
+                new GraphicBuilder()
+                        .size(size)
+                        .mark()
+                        .name("circle")
+                        .fill()
+                        .color(new Color(0, 51, 204))
+                        .buildStyle();
         // print(style);
 
         StyleCollector collector = new StyleCollector();
@@ -380,7 +433,14 @@ public class CookbookPointTest extends AbstractStyleTest {
         Mark mark = (Mark) new MarkBuilder().name("circle").fill().color(Color.RED).buildRoot();
         FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
         fts.rule().name("Large").max(160000000).point().graphic().size(12).mark().reset(mark);
-        fts.rule().name("Medium").min(160000000).max(320000000).point().graphic().size(8).mark()
+        fts.rule()
+                .name("Medium")
+                .min(160000000)
+                .max(320000000)
+                .point()
+                .graphic()
+                .size(8)
+                .mark()
                 .reset(mark);
         fts.rule().name("Small").min(320000000).point().graphic().size(4).mark().reset(mark);
         Style style = fts.buildStyle();
@@ -395,11 +455,12 @@ public class CookbookPointTest extends AbstractStyleTest {
         // check rules and styles
         checkScaleBasedRule(collector.rules.get(0), "Large", 0, 160000000, 12);
         checkScaleBasedRule(collector.rules.get(1), "Medium", 160000000, 320000000, 8);
-        checkScaleBasedRule(collector.rules.get(2), "Small", 320000000, Double.POSITIVE_INFINITY, 4);
+        checkScaleBasedRule(
+                collector.rules.get(2), "Small", 320000000, Double.POSITIVE_INFINITY, 4);
     }
 
-    private void checkScaleBasedRule(Rule rule, String name, double minDenominator,
-            double maxDenominator, int size) {
+    private void checkScaleBasedRule(
+            Rule rule, String name, double minDenominator, double maxDenominator, int size) {
         assertEquals(name, rule.getName());
         assertEquals(minDenominator, rule.getMinScaleDenominator(), 0.0);
         assertEquals(maxDenominator, rule.getMaxScaleDenominator(), 0.0);
@@ -410,8 +471,16 @@ public class CookbookPointTest extends AbstractStyleTest {
 
     @Test
     public void testUomPoint() {
-        Style style = new PointSymbolizerBuilder().uom(SI.METER).graphic().size(50).mark()
-                .name("circle").fill().color(Color.RED).buildStyle();
+        Style style =
+                new PointSymbolizerBuilder()
+                        .uom(SI.METRE)
+                        .graphic()
+                        .size(50)
+                        .mark()
+                        .name("circle")
+                        .fill()
+                        .color(Color.RED)
+                        .buildStyle();
         // print(style);
 
         StyleCollector collector = new StyleCollector();
@@ -419,7 +488,6 @@ public class CookbookPointTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         PointSymbolizer ps = (PointSymbolizer) collector.symbolizers.get(0);
-        assertEquals(SI.METER, ps.getUnitOfMeasure());
+        assertEquals(SI.METRE, ps.getUnitOfMeasure());
     }
-
 }

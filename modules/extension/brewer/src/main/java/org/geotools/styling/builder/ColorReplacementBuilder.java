@@ -18,15 +18,10 @@ package org.geotools.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.styling.ColorReplacement;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplacement> {
     private Expression propertyName;
 
@@ -92,5 +87,4 @@ public class ColorReplacementBuilder extends AbstractStyleBuilder<ColorReplaceme
         // TODO: build a raster style
         throw new UnsupportedOperationException("Can't build a style out of a color replacement");
     }
-
 }

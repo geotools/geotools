@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,29 +16,24 @@
  */
 package org.geotools.factory;
 
-import java.util.Set;
-import java.util.Map;
 import java.awt.RenderingHints;
+import java.util.Map;
+import java.util.Set;
 import org.geotools.util.Utilities;
 
-
 /**
- * Compares two factories for equality.
- * Used internally for {@link AbstractFactory#equals} implementation only.
+ * Compares two factories for equality. Used internally for {@link AbstractFactory#equals}
+ * implementation only.
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 final class FactoryComparator {
-    /**
-     * A pair of factory already compared.
-     */
+    /** A pair of factory already compared. */
     private final Factory f1, f2;
 
-    /**
-     * Prepare a comparaison between the two specified factories.
-     */
+    /** Prepare a comparaison between the two specified factories. */
     FactoryComparator(final Factory f1, final Factory f2) {
         this.f1 = f1;
         this.f2 = f2;
@@ -58,13 +53,13 @@ final class FactoryComparator {
             }
             for (final Map.Entry<RenderingHints.Key, ?> entry : m1.entrySet()) {
                 final Object key = entry.getKey();
-                final Object v1  = entry.getValue();
-                final Object v2  = m2.get(key);
+                final Object v1 = entry.getValue();
+                final Object v2 = m2.get(key);
                 if (v1 == v2) continue;
                 if (v1 instanceof Factory) {
-                    if (v2 == null || !v1.getClass().equals(v2.getClass()) ||
-                       !new FactoryComparator((Factory) v1, (Factory) v2).compare(done))
-                    {
+                    if (v2 == null
+                            || !v1.getClass().equals(v2.getClass())
+                            || !new FactoryComparator((Factory) v1, (Factory) v2).compare(done)) {
                         return false;
                     }
                 } else if (!Utilities.equals(v1, v2)) {
@@ -76,23 +71,23 @@ final class FactoryComparator {
     }
 
     /**
-     * For internal use only. This implementation assumes that {@code f1.equals(f2)}
-     * is symetric (i.e. equivalents to {@code f2.equals(f1)}).
+     * For internal use only. This implementation assumes that {@code f1.equals(f2)} is symetric
+     * (i.e. equivalents to {@code f2.equals(f1)}).
      */
     @Override
     public boolean equals(final Object object) {
         if (object instanceof FactoryComparator) {
             final FactoryComparator that = (FactoryComparator) object;
-            return (this.f1 == that.f1 && this.f2 == that.f2) ||
-                   (this.f1 == that.f2 && this.f2 == that.f1);
+            return (this.f1 == that.f1 && this.f2 == that.f2)
+                    || (this.f1 == that.f2 && this.f2 == that.f1);
         }
         return false;
     }
 
     /**
-     * For internal use only. Must be compatible with the symetry assumption made in
-     * {@link #equals(Object)}: use a commutative operation (addition here) and do not
-     * multiply a term by some factor like the usual 37.
+     * For internal use only. Must be compatible with the symetry assumption made in {@link
+     * #equals(Object)}: use a commutative operation (addition here) and do not multiply a term by
+     * some factor like the usual 37.
      */
     @Override
     public int hashCode() {

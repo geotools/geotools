@@ -1,0 +1,62 @@
+{
+    "version": 8,
+    "name": "Empty",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -106.37942820066576,
+        39.62499260458827
+    ],
+    "zoom": 15.80212732929003,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        },
+        "composite": {
+            "url": "mapbox://test.cixwdy1nj001933p91a6wnxe0-2emxh,testuser.cixwc3qp2001l2wquza8ccz21-658xw",
+            "type": "vector"
+        }
+    },
+    "sprite": "mapbox://sprites/test/cixwe1jim001l2sp6his5j6ns",
+    "glyphs": "mapbox://fonts/test/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "test-id",
+            "type": "line",
+            "source": "test-source",
+            "source-layer": "test-source-layer",
+            "layout": {
+                "visibility": "visible",
+                "line-cap": "square",
+                "line-join": "round",
+                "line-round-limit" 1.2,
+            },
+            "paint": {
+                "line-color": "rebeccapurple",
+                "line-opacity": 0.80,
+                "line-translate-anchor": "viewport",
+                "line-dasharray": [50, 10, 20, 10],
+                "line-offset": 0,
+                "line-gap-width": 8,
+                "line-translate": [
+                    0,
+                    0
+                ],
+                "line-translate-anchor": "map",                
+                "line-width": 5,
+                "line-blur": 2
+            }
+        }
+    ],
+    "created": "2017-01-13T22:41:15.108Z",
+    "id": "cixwe1jim001l2sp6his5j6ns",
+    "modified": "2017-02-08T16:37:48.232Z",
+    "owner": "test",
+    "draft": false
+}

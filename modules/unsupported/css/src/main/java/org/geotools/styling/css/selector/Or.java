@@ -23,11 +23,10 @@ public class Or extends Composite {
     public Or(Selector... selectors) {
         super(selectors);
     }
-    
+
     public Or(List<Selector> selectors) {
         super(selectors);
     }
-
 
     @Override
     public Specificity getSpecificity() {
@@ -41,14 +40,13 @@ public class Or extends Composite {
 
         return max;
     }
-    
+
     public Object accept(SelectorVisitor visitor) {
-    	return visitor.visit(this);
+        return visitor.visit(this);
     }
 
     @Override
     public String toString() {
         return "Or [children=" + getChildren() + "]";
     }
-
 }

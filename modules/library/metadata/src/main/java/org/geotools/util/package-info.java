@@ -16,10 +16,8 @@
  */
 
 /**
- * Contains utilities and addition to the collection
- * framework. Some classes implements the {@link java.util.Set} interface
- * and provides facilities for mutually exclusive set, caching or
- * handling ranges of values.
+ * Contains utilities and addition to the collection framework. Some classes implements the {@link
+ * java.util.Set} interface and provides facilities for mutually exclusive set, caching or handling
+ * ranges of values.
  */
 package org.geotools.util;
-

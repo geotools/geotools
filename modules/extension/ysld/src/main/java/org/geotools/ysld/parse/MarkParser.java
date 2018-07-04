@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,10 +21,7 @@ import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
-/**
- * Handles parsing a Ysld "mark" property into a {@link Mark} object.
- * 
- */
+/** Handles parsing a Ysld "mark" property into a {@link Mark} object. */
 public abstract class MarkParser extends YsldParseHandler {
 
     Mark mark;
@@ -46,18 +43,20 @@ public abstract class MarkParser extends YsldParseHandler {
             mark.setWellKnownName(Util.expression(map.str("shape"), factory));
         }
 
-        context.push(new StrokeParser(factory) {
-            @Override
-            protected void stroke(Stroke stroke) {
-                mark.setStroke(stroke);
-            }
-        });
-        context.push(new FillParser(factory) {
-            @Override
-            protected void fill(Fill fill) {
-                mark.setFill(fill);
-            }
-        });
+        context.push(
+                new StrokeParser(factory) {
+                    @Override
+                    protected void stroke(Stroke stroke) {
+                        mark.setStroke(stroke);
+                    }
+                });
+        context.push(
+                new FillParser(factory) {
+                    @Override
+                    protected void fill(Fill fill) {
+                        mark.setFill(fill);
+                    }
+                });
     }
 
     protected abstract void mark(Mark mark);

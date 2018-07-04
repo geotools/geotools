@@ -18,10 +18,8 @@
 package org.geotools.wfs.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs20.WFSCapabilitiesType;
 import net.opengis.wfs20.Wfs20Factory;
-
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
@@ -43,10 +41,8 @@ public class WFS_CapabilitiesTypeBinding extends AbstractComplexEMFBinding {
         return WFSCapabilitiesType.class;
     }
 
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);
     }
-
 }

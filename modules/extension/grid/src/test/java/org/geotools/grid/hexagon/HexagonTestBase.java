@@ -22,27 +22,27 @@ import static org.junit.Assert.assertTrue;
 
 import org.geotools.grid.PolygonElement;
 import org.geotools.grid.TestBase;
-
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Base class for Hexagon unit tests.
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class HexagonTestBase extends TestBase {
-    
+
     protected final double SIDE_LEN = 1.0;
     protected final double AREA = Math.sqrt(3.0) * 1.5;
 
-    protected void assertVertices(PolygonElement hexagon,
-            double minx, double miny, double sideLen, HexagonOrientation orientation) {
+    protected void assertVertices(
+            PolygonElement hexagon,
+            double minx,
+            double miny,
+            double sideLen,
+            HexagonOrientation orientation) {
 
         assertTrue("error in test code", hexagon instanceof Hexagon);
 
@@ -56,7 +56,7 @@ public class HexagonTestBase extends TestBase {
             expected[2] = new Coordinate(minx + 2.0 * sideLen, miny + 0.5 * span);
             expected[3] = new Coordinate(minx + 1.5 * sideLen, miny);
             expected[4] = new Coordinate(minx + 0.5 * sideLen, miny);
-            expected[5] = new Coordinate(minx, miny + span/2.0);
+            expected[5] = new Coordinate(minx, miny + span / 2.0);
         } else {
             expected[0] = new Coordinate(minx + 0.5 * span, miny + 2.0 * sideLen);
             expected[1] = new Coordinate(minx + span, miny + 1.5 * sideLen);
@@ -73,5 +73,4 @@ public class HexagonTestBase extends TestBase {
             assertCoordinate(expected[i], vertices[i]);
         }
     }
-
 }

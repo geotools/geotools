@@ -9,18 +9,17 @@
     <version>2.0.0-2</version>
     <name>Web Feature Service (WFS) 2.0 schema</name>
 
-
     <developers>
         <developer>
             <name>Ben Caradoc-Davies</name>
             <id>bencaradocdavies</id>
-            <email>Ben.Caradoc-Davies@csiro.au</email>
-            <organization>CSIRO Earth Science and Resource Engineering </organization>
+            <email>ben@transient.nz</email>
+            <organization>Transient Software Limited</organization>
             <roles>
                 <role>Module Maintainer</role>
                 <role>Schema Packager</role>
             </roles>
-            <timezone>8</timezone>
+            <timezone>Pacific/Auckland</timezone>
         </developer>
     </developers>
 
@@ -66,11 +65,11 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <tasks>
-                                <property name="srcdir" value="http://schemas.opengis.net/wfs/2.0" />
+                                <property name="srcdir" value="http://schemas.opengis.net/wfs/2.0"/>
                                 <property name="destdir"
-                                    value="${project.build.outputDirectory}/net/opengis/schemas/wfs/2.0" />
-                                <mkdir dir="${destdir}" />
-                                <get src="${srcdir}/wfs.xsd" dest="${destdir}/wfs.xsd" />
+                                    value="${project.build.outputDirectory}/net/opengis/schemas/wfs/2.0"/>
+                                <mkdir dir="${destdir}"/>
+                                <get src="${srcdir}/wfs.xsd" dest="${destdir}/wfs.xsd"/>
                             </tasks>
                         </configuration>
                         <goals>

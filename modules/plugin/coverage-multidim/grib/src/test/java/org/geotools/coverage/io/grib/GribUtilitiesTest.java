@@ -19,16 +19,12 @@ package org.geotools.coverage.io.grib;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import org.geotools.TestData;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.junit.Test;
-
 import ucar.unidata.util.StringUtil2;
 
-/**
- * Simple {@link GribUtilities} tests
- */
+/** Simple {@link GribUtilities} tests */
 public class GribUtilitiesTest extends GribTest {
 
     @Test

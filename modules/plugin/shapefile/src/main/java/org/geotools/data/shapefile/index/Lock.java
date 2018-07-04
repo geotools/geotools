@@ -18,8 +18,6 @@ package org.geotools.data.shapefile.index;
 
 /**
  * @author Tommaso Nolli
- *
- *
  * @source $URL$
  */
 public interface Lock {
@@ -28,5 +26,4 @@ public interface Lock {
     public static short EXCLUSIVE = 2;
 
     public short getType();
-
 }

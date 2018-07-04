@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2008 - 2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2008 - 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -16,28 +16,29 @@
  */
 package org.geotools.data.wfs;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
-import org.geotools.data.wfs.WFSDataStoreFactory;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.internal.Versions;
+import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.util.Version;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class WFSDataStoreFactoryTest {
 
     private WFSDataStoreFactory dsf;
@@ -61,7 +62,8 @@ public class WFSDataStoreFactoryTest {
         // URL not set
         assertFalse(dsf.canProcess(params));
 
-        params.put(WFSDataStoreFactory.URL.key,
+        params.put(
+                WFSDataStoreFactory.URL.key,
                 "http://someserver.example.org/wfs?request=GetCapabilities");
         assertTrue(dsf.canProcess(params));
 
@@ -101,18 +103,16 @@ public class WFSDataStoreFactoryTest {
     }
 
     /**
-     * @param capabilitiesFile
-     *            the name of the GetCapabilities document under
-     *            {@code /org/geotools/data/wfs/impl/test-data}
+     * @param capabilitiesFile the name of the GetCapabilities document under {@code
+     *     /org/geotools/data/wfs/impl/test-data}
      */
-    private WFSDataStore testCreateDataStore(final String capabilitiesFile,
-            final Version expectedVersion) throws IOException {
+    private WFSDataStore testCreateDataStore(
+            final String capabilitiesFile, final Version expectedVersion) throws IOException {
 
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("TESTING", Boolean.TRUE);
 
-        final URL capabilitiesUrl = getClass().getResource(
-                "test-data/" + capabilitiesFile);
+        final URL capabilitiesUrl = getClass().getResource("test-data/" + capabilitiesFile);
         if (capabilitiesUrl == null) {
             throw new IllegalArgumentException(capabilitiesFile + " not found");
         }
@@ -138,5 +138,83 @@ public class WFSDataStoreFactoryTest {
         } catch (UnsupportedOperationException e) {
             assertTrue(true);
         }
+    }
+
+    /**
+     * Test for GZIP settings, backwards compatibility: If no gzip settings is present, client has
+     * to enable gzip
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testHttpClientGzipEncodingDefault() throws IOException {
+        Boolean tryGzip = null;
+        boolean expectedGzipOnClient = true;
+        assertExpectForGzipParam(expectedGzipOnClient, tryGzip);
+    }
+
+    /**
+     * Test for GZIP settings: Ensure "true" is passed to http client.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testHttpClientGzipEncodingTrue() throws IOException {
+        Boolean tryGzip = true;
+        boolean expectedGzipOnClient = true;
+        assertExpectForGzipParam(expectedGzipOnClient, tryGzip);
+    }
+
+    /**
+     * Test for GZIP settings: Ensure "false" is passed to http client.
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testHttpClientGzipEncodingFalse() throws IOException {
+        Boolean tryGzip = false;
+        boolean expectedGzipOnClient = false;
+        assertExpectForGzipParam(expectedGzipOnClient, tryGzip);
+    }
+
+    private void assertExpectForGzipParam(boolean expectGzipOnClient, Boolean tryGzip)
+            throws IOException {
+        if (tryGzip != null) {
+            params.put(WFSDataStoreFactory.TRY_GZIP.key, tryGzip);
+        }
+        final URL capabilitiesUrl =
+                getClass().getResource("test-data/CubeWerx_4.12.6/1.0.0/GetCapabilities.xml");
+        params.put(WFSDataStoreFactory.URL.key, capabilitiesUrl);
+        params.put(WFSDataStoreFactory.TIMEOUT.key, 1);
+        WFSDataStore store = dsf.createDataStore(params);
+        WFSClient wfsClient = store.getWfsClient();
+        HTTPClient httpClient = wfsClient.getHTTPClient();
+        assertEquals(expectGzipOnClient, httpClient.isTryGzip());
+    }
+
+    @Test
+    public void testHttpPoolingTrueWithHttp() throws IOException {
+        params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
+        params.put(
+                WFSDataStoreFactory.URL.key,
+                new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
+        assertTrue(
+                new WFSDataStoreFactory().getHttpClient(params) instanceof MultithreadedHttpClient);
+    }
+
+    @Test
+    public void testHttpPoolingFalseWithHttp() throws IOException {
+        params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, false);
+        params.put(
+                WFSDataStoreFactory.URL.key,
+                new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
+        assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof SimpleHttpClient);
+    }
+
+    @Test
+    public void testHttpPoolingTrueWithFile() throws IOException {
+        params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
+        params.put(WFSDataStoreFactory.URL.key, new URL("file://some/file"));
+        assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof SimpleHttpClient);
     }
 }

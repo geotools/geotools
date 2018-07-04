@@ -19,107 +19,100 @@
  */
 package org.geotools.referencing.operation;
 
-import java.util.List;
+import static org.geotools.referencing.AbstractIdentifiedObject.nameMatches;
+
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.logging.LogRecord;
-import javax.measure.unit.Unit;
-import javax.measure.unit.SI;
-
-import org.opengis.parameter.ParameterValue;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.parameter.ParameterDescriptor;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.GeneralParameterValue;
-import org.opengis.referencing.crs.ProjectedCRS;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.MathTransform;
-
-import org.geotools.util.Utilities;
+import java.util.logging.Logger;
+import javax.measure.Unit;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.factory.ReferencingFactory;
-import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
+import org.geotools.referencing.operation.matrix.XMatrix;
+import org.geotools.referencing.operation.projection.MapProjection; // For javadoc
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.geotools.referencing.operation.projection.MapProjection;   // For javadoc
 import org.geotools.resources.i18n.LoggingKeys;
 import org.geotools.resources.i18n.Loggings;
-
-import static org.geotools.referencing.AbstractIdentifiedObject.nameMatches;
-
+import org.geotools.util.Utilities;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterDescriptor;
+import org.opengis.parameter.ParameterDescriptorGroup;
+import org.opengis.parameter.ParameterValue;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Matrix;
+import si.uom.SI;
 
 /**
- * Returns a conversion from a source to target projected CRS, if this conversion
- * is representable as an affine transform. More specifically, if all projection
- * parameters are identical except the following ones:
- * <P>
+ * Returns a conversion from a source to target projected CRS, if this conversion is representable
+ * as an affine transform. More specifically, if all projection parameters are identical except the
+ * following ones:
+ *
+ * <p>
+ *
  * <UL>
- *   <LI>{@link MapProjection.AbstractProvider#SCALE_FACTOR   scale_factor}</LI>
- *   <LI>{@link MapProjection.AbstractProvider#FALSE_EASTING  false_easting}</LI>
- *   <LI>{@link MapProjection.AbstractProvider#FALSE_NORTHING false_northing}</LI>
+ *   <LI>{@link MapProjection.AbstractProvider#SCALE_FACTOR scale_factor}
+ *   <LI>{@link MapProjection.AbstractProvider#FALSE_EASTING false_easting}
+ *   <LI>{@link MapProjection.AbstractProvider#FALSE_NORTHING false_northing}
  * </UL>
- * <P>
- * Then the conversion between two projected CRS can sometime be represented as a linear
- * conversion. For example if only false easting/northing differ, then the coordinate conversion
- * is simply a translation.
+ *
+ * <p>Then the conversion between two projected CRS can sometime be represented as a linear
+ * conversion. For example if only false easting/northing differ, then the coordinate conversion is
+ * simply a translation.
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 final class ProjectionAnalyzer {
-    /**
-     * The map projection.
-     */
+    /** The map projection. */
     private final Conversion projection;
 
     /**
-     * The affine transform applied on geographic coordinates before the projection.
-     * In Geotools {@link MapProjection} implementation, this is the axis swapping and
-     * scaling needed in order to get standard (<var>longitude</var>,<var>latitude</var>)
-     * axis in degrees. Can be {@code null} if none.
-     * <p>
-     * This is not needed for {@code ProjectionAnalyzer} working, but is stored anyway
-     * for debugging purpose.
+     * The affine transform applied on geographic coordinates before the projection. In Geotools
+     * {@link MapProjection} implementation, this is the axis swapping and scaling needed in order
+     * to get standard (<var>longitude</var>,<var>latitude</var>) axis in degrees. Can be {@code
+     * null} if none.
+     *
+     * <p>This is not needed for {@code ProjectionAnalyzer} working, but is stored anyway for
+     * debugging purpose.
      */
     private final Matrix geographicScale;
 
     /**
-     * The affine transform applied on projected coordinates after the projection.
-     * In Geotools {@link MapProjection} implementation, this is the axis swapping
-     * and scaling needed in order to get standard (<var>x</var>,<var>y</var>) axis
-     * in metres. Can be {@code null} if none.
+     * The affine transform applied on projected coordinates after the projection. In Geotools
+     * {@link MapProjection} implementation, this is the axis swapping and scaling needed in order
+     * to get standard (<var>x</var>,<var>y</var>) axis in metres. Can be {@code null} if none.
      */
     private final Matrix projectedScale;
 
     /**
-     * The transform for the map projection alone, without the {@link #geographicScale}
-     * and {@link #projectedScale} parts. In Geotools implementation, it should be an
-     * instance of {@link MapProjection}. May be {@code null} if we can't handle the
-     * {@linkplain #projection}.
+     * The transform for the map projection alone, without the {@link #geographicScale} and {@link
+     * #projectedScale} parts. In Geotools implementation, it should be an instance of {@link
+     * MapProjection}. May be {@code null} if we can't handle the {@linkplain #projection}.
      */
     private final MathTransform transform;
 
-    /**
-     * The map projection parameters values, or a copy of them.
-     */
+    /** The map projection parameters values, or a copy of them. */
     private List<GeneralParameterValue> parameters;
 
     /**
      * Constructs a {@code ProjectionAnalyzer} for the specified projected CRS. This constructor
      * inspects the {@linkplain ProjectedCRS#getConversionFromBase conversion from base} and splits
-     * {@link ConcatenatedTransform} in their {@link #geographicScale}, {@link #projectedScale}
-     * and {@link #transform} components.
+     * {@link ConcatenatedTransform} in their {@link #geographicScale}, {@link #projectedScale} and
+     * {@link #transform} components.
      */
     private ProjectionAnalyzer(final ProjectedCRS crs) {
         Matrix geographicScale = null;
-        Matrix  projectedScale = null;
+        Matrix projectedScale = null;
         projection = crs.getConversionFromBase();
         MathTransform candidate = projection.getMathTransform();
         while (candidate instanceof ConcatenatedTransform) {
@@ -184,39 +177,40 @@ final class ProjectionAnalyzer {
             parameters = group.values();
         }
         this.geographicScale = geographicScale;
-        this.projectedScale  = projectedScale;
-        this.transform       = candidate;
+        this.projectedScale = projectedScale;
+        this.transform = candidate;
     }
 
-    /**
-     * Returns the {@linkplain #transform} parameter descriptor, or {@code null} if none.
-     */
+    /** Returns the {@linkplain #transform} parameter descriptor, or {@code null} if none. */
     private ParameterDescriptorGroup getTransformDescriptor() {
-        return (transform instanceof AbstractMathTransform) ?
-            ((AbstractMathTransform) transform).getParameterDescriptors() : null;
+        return (transform instanceof AbstractMathTransform)
+                ? ((AbstractMathTransform) transform).getParameterDescriptors()
+                : null;
     }
 
     /**
-     * Returns the affine transform applied after the <em>normalized</em> projection in order to
-     * get the same projection than {@link #transform}. The normalized projection is a imaginary
+     * Returns the affine transform applied after the <em>normalized</em> projection in order to get
+     * the same projection than {@link #transform}. The normalized projection is a imaginary
      * transform (we don't have a {@link MathTransform} instance for it, but we don't need) with
      * {@code "scale factor"} == 1, {@code "false easting"} == 0 and {@code "false northing"} == 0.
      * In other words, this method extracts the above-cited parameters in an affine transform.
-     * <p>
-     * As a side effect, this method removes from the {@linkplain #parameters} list
-     * all the above-cited ones parameters.
+     *
+     * <p>As a side effect, this method removes from the {@linkplain #parameters} list all the
+     * above-cited ones parameters.
      *
      * @return The affine transform.
      */
     private XMatrix normalizedToProjection() {
-        parameters = new LinkedList<GeneralParameterValue>(parameters); // Keep the original list unchanged.
+        parameters =
+                new LinkedList<GeneralParameterValue>(
+                        parameters); // Keep the original list unchanged.
         /*
          * Creates a matrix which will conceptually stands between the normalized transform and
          * the 'projectedScale' transform. The matrix dimensions are selected accordingly using
          * a robust code when possible, but the result should be a 3x3 matrix most of the time.
          */
-        final int  sourceDim = (transform != null) ? transform.getTargetDimensions() : 2;
-        final int  targetDim = (projectedScale != null) ? projectedScale.getNumCol()-1 : sourceDim;
+        final int sourceDim = (transform != null) ? transform.getTargetDimensions() : 2;
+        final int targetDim = (projectedScale != null) ? projectedScale.getNumCol() - 1 : sourceDim;
         final XMatrix matrix = MatrixFactory.create(targetDim + 1, sourceDim + 1);
         /*
          * Search for "scale factor", "false easting" and "false northing" parameters.
@@ -237,7 +231,7 @@ final class ProjectionAnalyzer {
          */
         Unit<?> unit = null;
         String warning = null;
-        for (final Iterator<GeneralParameterValue> it=parameters.iterator(); it.hasNext();) {
+        for (final Iterator<GeneralParameterValue> it = parameters.iterator(); it.hasNext(); ) {
             final GeneralParameterValue parameter = it.next();
             if (parameter instanceof ParameterValue) {
                 final ParameterValue<?> value = (ParameterValue) parameter;
@@ -245,8 +239,8 @@ final class ProjectionAnalyzer {
                 if (Number.class.isAssignableFrom(descriptor.getValueClass())) {
                     if (nameMatches(descriptor, "scale_factor")) {
                         final double scale = value.doubleValue();
-                        for (int i=Math.min(sourceDim, targetDim); --i>=0;) {
-                            matrix.setElement(i,i, matrix.getElement(i,i) * scale);
+                        for (int i = Math.min(sourceDim, targetDim); --i >= 0; ) {
+                            matrix.setElement(i, i, matrix.getElement(i, i) * scale);
                         }
                     } else {
                         final int d;
@@ -257,10 +251,10 @@ final class ProjectionAnalyzer {
                         } else {
                             continue;
                         }
-                        final double offset = value.doubleValue(SI.METER);
+                        final double offset = value.doubleValue(SI.METRE);
                         if (!Double.isNaN(offset) && offset != value.doubleValue()) {
                             // See the above comment about units. The above check could have been
-                            // replaced by "if (!SI.METER.equals(unit))", but the above avoid the
+                            // replaced by "if (!SI.METRE.equals(unit))", but the above avoid the
                             // warning in the very common case where 'offset == 0'.
                             unit = value.getUnit();
                             warning = descriptor.getName().getCode();
@@ -272,8 +266,13 @@ final class ProjectionAnalyzer {
             }
         }
         if (warning != null) {
-            final LogRecord record = Loggings.format(Level.WARNING,
-                    LoggingKeys.APPLIED_UNIT_CONVERSION_$3, warning, unit, SI.METER);
+            final LogRecord record =
+                    Loggings.format(
+                            Level.WARNING,
+                            LoggingKeys.APPLIED_UNIT_CONVERSION_$3,
+                            warning,
+                            unit,
+                            SI.METRE);
             record.setSourceClassName(getClass().getName());
             record.setSourceMethodName("createLinearConversion"); // This is the public method.
             final Logger logger = ReferencingFactory.LOGGER;
@@ -284,17 +283,19 @@ final class ProjectionAnalyzer {
     }
 
     /**
-     * Checks if the parameter in the two specified list contains the same values.
-     * The order parameter order is irrelevant. The common parameters are removed
-     * from both lists.
+     * Checks if the parameter in the two specified list contains the same values. The order
+     * parameter order is irrelevant. The common parameters are removed from both lists.
      */
-    private static boolean parameterValuesEqual(final List<GeneralParameterValue> source,
-                                                final List<GeneralParameterValue> target,
-                                                final double errorTolerance)
-    {
-search: for (final Iterator<GeneralParameterValue> targetIter=target.iterator(); targetIter.hasNext();) {
+    private static boolean parameterValuesEqual(
+            final List<GeneralParameterValue> source,
+            final List<GeneralParameterValue> target,
+            final double errorTolerance) {
+        search:
+        for (final Iterator<GeneralParameterValue> targetIter = target.iterator();
+                targetIter.hasNext(); ) {
             final GeneralParameterValue targetPrm = targetIter.next();
-            for (final Iterator<GeneralParameterValue> sourceIter=source.iterator(); sourceIter.hasNext();) {
+            for (final Iterator<GeneralParameterValue> sourceIter = source.iterator();
+                    sourceIter.hasNext(); ) {
                 final GeneralParameterValue sourcePrm = sourceIter.next();
                 if (!nameMatches(sourcePrm.getDescriptor(), targetPrm.getDescriptor())) {
                     continue;
@@ -302,7 +303,8 @@ search: for (final Iterator<GeneralParameterValue> targetIter=target.iterator();
                 if (sourcePrm instanceof ParameterValue && targetPrm instanceof ParameterValue) {
                     final ParameterValue<?> sourceValue = (ParameterValue) sourcePrm;
                     final ParameterValue<?> targetValue = (ParameterValue) targetPrm;
-                    if (Number.class.isAssignableFrom(targetValue.getDescriptor().getValueClass())) {
+                    if (Number.class.isAssignableFrom(
+                            targetValue.getDescriptor().getValueClass())) {
                         final double sourceNum, targetNum;
                         final Unit<?> unit = targetValue.getUnit();
                         if (unit != null) {
@@ -348,9 +350,7 @@ search: for (final Iterator<GeneralParameterValue> targetIter=target.iterator();
         return source.isEmpty();
     }
 
-    /**
-     * Applies {@code normalizedToProjection} first, then {@link #projectedScale}.
-     */
+    /** Applies {@code normalizedToProjection} first, then {@link #projectedScale}. */
     private XMatrix applyProjectedScale(final XMatrix normalizedToProjection) {
         if (projectedScale == null) {
             return normalizedToProjection;
@@ -361,21 +361,21 @@ search: for (final Iterator<GeneralParameterValue> targetIter=target.iterator();
     }
 
     /**
-     * Returns a conversion from a source to target projected CRS, if this conversion
-     * is representable as an affine transform. If no linear conversion has been found
-     * between the two CRS, then this method returns {@code null}.
+     * Returns a conversion from a source to target projected CRS, if this conversion is
+     * representable as an affine transform. If no linear conversion has been found between the two
+     * CRS, then this method returns {@code null}.
      *
-     * @param  sourceCRS The source coordinate reference system.
-     * @param  targetCRS The target coordinate reference system.
-     * @param  errorTolerance Relative error tolerance for considering two parameter values as
-     *         equal. This is usually a small number like {@code 1E-10}.
-     * @return The conversion from {@code sourceCRS} to {@code targetCRS} as an
-     *         affine transform, or {@code null} if no linear transform has been found.
+     * @param sourceCRS The source coordinate reference system.
+     * @param targetCRS The target coordinate reference system.
+     * @param errorTolerance Relative error tolerance for considering two parameter values as equal.
+     *     This is usually a small number like {@code 1E-10}.
+     * @return The conversion from {@code sourceCRS} to {@code targetCRS} as an affine transform, or
+     *     {@code null} if no linear transform has been found.
      */
-    public static Matrix createLinearConversion(final ProjectedCRS sourceCRS,
-                                                final ProjectedCRS targetCRS,
-                                                final double errorTolerance)
-    {
+    public static Matrix createLinearConversion(
+            final ProjectedCRS sourceCRS,
+            final ProjectedCRS targetCRS,
+            final double errorTolerance) {
         /*
          * Checks if the datum are the same. To be stricter, we could compare the 'baseCRS'
          * instead. But this is not always needed. For example we don't really care if the
@@ -413,7 +413,7 @@ search: for (final Iterator<GeneralParameterValue> targetIter=target.iterator();
              */
             final ParameterDescriptorGroup sourceDsc = source.getTransformDescriptor();
             final ParameterDescriptorGroup targetDsc = source.getTransformDescriptor();
-            if (sourceDsc==null || targetDsc==null || !nameMatches(sourceDsc, targetDsc)) {
+            if (sourceDsc == null || targetDsc == null || !nameMatches(sourceDsc, targetDsc)) {
                 return null;
             }
         }

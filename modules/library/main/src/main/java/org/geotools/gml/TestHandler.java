@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,18 +16,14 @@
  */
 package org.geotools.gml;
 
+import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.helpers.XMLFilterImpl;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-
 /**
- * Simple test implementation of <code>GMLHandlerJTS</code>. This very simple
- * handler just prints every JTS geometry that it gets to the standard output.
+ * Simple test implementation of <code>GMLHandlerJTS</code>. This very simple handler just prints
+ * every JTS geometry that it gets to the standard output.
  *
  * @author Rob Hranac, Vision for New York
- *
- *
  * @source $URL$
  * @version $Id$
  */

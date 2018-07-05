@@ -22,6 +22,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -420,6 +421,11 @@ public abstract class AbstractFinderFilterVisitor implements FilterVisitor, Expr
         filter.getExpression1().accept(this, data);
         if (found) return found;
         filter.getExpression2().accept(this, data);
+        return found;
+    }
+
+    @Override
+    public Object visit(NativeFilter filter, Object data) {
         return found;
     }
 }

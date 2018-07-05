@@ -16,7 +16,6 @@
  */
 package org.geotools.data.oracle;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.sql.Date;
 import java.util.List;
 import org.geotools.data.DataUtilities;
@@ -31,6 +30,7 @@ import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.identity.FeatureId;

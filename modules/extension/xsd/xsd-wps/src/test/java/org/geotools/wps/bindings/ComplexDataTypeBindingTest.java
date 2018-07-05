@@ -16,7 +16,6 @@
  */
 package org.geotools.wps.bindings;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.io.Reader;
 import java.io.StringReader;
 import net.opengis.wfs.FeatureCollectionType;
@@ -28,6 +27,7 @@ import org.geotools.wps.WPSConfiguration;
 import org.geotools.wps.WPSTestSupport;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.EncoderDelegate;
+import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

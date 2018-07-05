@@ -16,12 +16,12 @@
  */
 package org.geotools.gml3.simple;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.ObjectEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Envelope;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**

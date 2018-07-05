@@ -16,8 +16,6 @@
  */
 package org.geotools.data.teradata;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -27,6 +25,8 @@ import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;

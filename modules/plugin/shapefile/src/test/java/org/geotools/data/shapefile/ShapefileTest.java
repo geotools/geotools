@@ -18,10 +18,6 @@ package org.geotools.data.shapefile;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -49,6 +45,10 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.renderer.ScreenMap;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;

@@ -20,17 +20,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
@@ -103,7 +103,7 @@ public class DecimatorTest {
         // acute triangle
         LinearRing g =
                 gf.createLinearRing(csf.create(new double[] {0, 0, 0, 10, 2, 10, 2, 0, 0, 0}));
-        LinearRing original = (LinearRing) g.clone();
+        LinearRing original = (LinearRing) g.copy();
         assertTrue(g.isValid());
 
         Decimator d = new Decimator(-1, -1);
@@ -119,7 +119,7 @@ public class DecimatorTest {
                 gf.createLineString(csf.create(new double[] {0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5}));
 
         Decimator d = new Decimator(identity, new Rectangle(0, 0, 5, 5), 0.8);
-        d.decimateTransformGeneralize((Geometry) ls.clone(), identity);
+        d.decimateTransformGeneralize((Geometry) ls.copy(), identity);
         assertEquals(6, ls.getNumPoints());
 
         d = new Decimator(identity, new Rectangle(0, 0, 5, 5), 1);

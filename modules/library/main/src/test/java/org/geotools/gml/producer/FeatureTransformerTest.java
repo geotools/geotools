@@ -2,7 +2,6 @@ package org.geotools.gml.producer;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +13,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.w3c.dom.Document;

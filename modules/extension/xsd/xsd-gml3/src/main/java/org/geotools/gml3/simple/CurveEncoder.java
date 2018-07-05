@@ -16,7 +16,6 @@
  */
 package org.geotools.gml3.simple;
 
-import com.vividsolutions.jts.geom.LineString;
 import org.geotools.geometry.jts.CompoundCurvedGeometry;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.SingleCurvedGeometry;
@@ -25,6 +24,7 @@ import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.LineString;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**

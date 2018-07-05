@@ -144,7 +144,7 @@
 			<version>${jt.version}</version>
          <exclusions>
            <exclusion>
-              <groupId>com.vividsolutions</groupId>
+              <groupId>org.locationtech.jts</groupId>
               <artifactId>jts</artifactId>
            </exclusion>
          </exclusions>

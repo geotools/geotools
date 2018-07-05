@@ -2,9 +2,6 @@ package org.geotools.renderer.label;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
 import java.awt.Color;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
@@ -31,6 +28,9 @@ import org.geotools.test.TestGraphics;
 import org.geotools.util.NumberRange;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

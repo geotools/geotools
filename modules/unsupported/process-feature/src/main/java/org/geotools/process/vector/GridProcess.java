@@ -17,7 +17,6 @@
  */
 package org.geotools.process.vector;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.io.IOException;
 import java.util.Map;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -34,6 +33,7 @@ import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

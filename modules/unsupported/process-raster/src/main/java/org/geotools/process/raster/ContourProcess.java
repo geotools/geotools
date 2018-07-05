@@ -17,9 +17,6 @@
  */
 package org.geotools.process.raster;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
@@ -45,6 +42,9 @@ import org.geotools.util.NumberRange;
 import org.jaitools.media.jai.contour.ContourDescriptor;
 import org.jaitools.media.jai.contour.ContourRIF;
 import org.jaitools.numeric.Range;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.util.AffineTransformation;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.util.InternationalString;

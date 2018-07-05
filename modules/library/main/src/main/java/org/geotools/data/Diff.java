@@ -16,10 +16,6 @@
  */
 package org.geotools.data;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.index.SpatialIndex;
-import com.vividsolutions.jts.index.quadtree.Quadtree;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -29,6 +25,10 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.index.SpatialIndex;
+import org.locationtech.jts.index.quadtree.Quadtree;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;

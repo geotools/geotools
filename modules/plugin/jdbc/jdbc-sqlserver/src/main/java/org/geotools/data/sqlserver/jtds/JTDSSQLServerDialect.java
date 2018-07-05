@@ -16,13 +16,13 @@
  */
 package org.geotools.data.sqlserver.jtds;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Map;
 import org.geotools.data.sqlserver.SQLServerDialect;
 import org.geotools.jdbc.JDBCDataStore;
+import org.locationtech.jts.geom.Geometry;
 
 /** @author ian.turton */
 public class JTDSSQLServerDialect extends SQLServerDialect {

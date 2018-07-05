@@ -22,13 +22,6 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +30,13 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.FilterFunction_offset.OffsetOrdinateFilter;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.capability.FunctionName;
 
 /** @source $URL$ */
@@ -66,7 +66,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
 
             // add the "cap"
             if (geom instanceof Polygon) {
-                Polygon offseted = (Polygon) geom.clone();
+                Polygon offseted = (Polygon) geom.copy();
                 offseted.apply(new OffsetOrdinateFilter(0, extrusion));
                 faces.add(0, (Polygon) geom);
                 faces.add(offseted);
@@ -75,7 +75,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
                 for (int i = 0; i < gc.getNumGeometries(); i++) {
                     Geometry g = gc.getGeometryN(i);
                     if (g instanceof Polygon) {
-                        Polygon offseted = (Polygon) g.clone();
+                        Polygon offseted = (Polygon) g.copy();
                         offseted.apply(new OffsetOrdinateFilter(0, extrusion));
                         faces.add(0, (Polygon) g);
                         faces.add(offseted);
@@ -83,7 +83,7 @@ public class FilterFunction_isometric extends FunctionExpressionImpl
                 }
             }
 
-            Polygon[] polyArray = (Polygon[]) faces.toArray(new Polygon[faces.size()]);
+            Polygon[] polyArray = faces.toArray(new Polygon[faces.size()]);
             return geom.getFactory().createMultiPolygon(polyArray);
 
         } else {

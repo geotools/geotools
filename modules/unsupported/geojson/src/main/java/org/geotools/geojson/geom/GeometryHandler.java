@@ -16,12 +16,12 @@
  */
 package org.geotools.geojson.geom;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import org.geotools.geojson.DelegatingHandler;
 import org.geotools.geojson.RecordingHandler;
 import org.json.simple.parser.ParseException;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /** @source $URL$ */
 public class GeometryHandler extends DelegatingHandler<Geometry> {

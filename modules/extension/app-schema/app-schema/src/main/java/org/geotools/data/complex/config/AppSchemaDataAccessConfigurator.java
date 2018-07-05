@@ -54,6 +54,7 @@ import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.complex.spi.CustomImplementationsFinder;
+import org.geotools.data.complex.spi.CustomSourceDataStore;
 import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.factory.Hints;
@@ -648,6 +649,20 @@ public class AppSchemaDataAccessConfigurator {
     }
 
     private Expression parseOgcCqlExpression(String sourceExpr) throws DataSourceException {
+        return parseOgcCqlExpression(sourceExpr, ff);
+    }
+
+    /**
+     * Utility method that parses an CQL expression from its text representation. If the provided
+     * expression test representation is NULL, {@link Expression.NIL} is returned.
+     *
+     * @param sourceExpr the expression in its text representation
+     * @param ff filter factory used to build the final expression
+     * @return the parsed expression
+     * @throws DataSourceException if the expression text representation could not be parsed
+     */
+    public static Expression parseOgcCqlExpression(String sourceExpr, FilterFactory ff)
+            throws DataSourceException {
         Expression expression = Expression.NIL;
         if (sourceExpr != null && sourceExpr.trim().length() > 0) {
             try {
@@ -864,7 +879,16 @@ public class AppSchemaDataAccessConfigurator {
             if (dataStoreMap != null && dataStoreMap.containsKey(datastoreParams)) {
                 dataStore = dataStoreMap.get(datastoreParams);
             } else {
-                dataStore = DataAccessFinder.getDataStore(datastoreParams);
+                // let's check if any data store provided a custom syntax for its configuration
+                List<CustomSourceDataStore> extensions = CustomSourceDataStore.loadExtensions();
+                dataStore = buildDataStore(extensions, dsconfig, config);
+                // if no custom data store handled this configuration let's fallback on the default
+                // constructor
+                dataStore =
+                        dataStore == null
+                                ? DataAccessFinder.getDataStore(datastoreParams)
+                                : dataStore;
+                // store the store in the data stores map
                 dataStoreMap.put(datastoreParams, dataStore);
             }
 
@@ -882,6 +906,33 @@ public class AppSchemaDataAccessConfigurator {
         }
 
         return datastores;
+    }
+
+    /**
+     * Iterate over all the custom data store extensions to check if anyone can \ wants to build a
+     * data store based on the provided configuration. The first build data store is returned, if no
+     * data store is build NULL is returned.
+     *
+     * @param extensions the custom data stores extensions
+     * @param dataStoreConfig the data store configuration
+     * @param appSchemaConfig the full mappings file configuration
+     * @return the store built or NULL
+     */
+    @SuppressWarnings("unchecked")
+    private DataAccess<FeatureType, Feature> buildDataStore(
+            List<CustomSourceDataStore> extensions,
+            SourceDataStore dataStoreConfig,
+            AppSchemaDataAccessDTO appSchemaConfig) {
+        for (CustomSourceDataStore extension : extensions) {
+            // let's see if this extension wants to build a store
+            DataAccess<? extends FeatureType, ? extends Feature> dataStore =
+                    extension.buildDataStore(dataStoreConfig, appSchemaConfig);
+            if (dataStore != null) {
+                // we have a store, we are done
+                return (DataAccess<FeatureType, Feature>) dataStore;
+            }
+        }
+        return null;
     }
 
     /**

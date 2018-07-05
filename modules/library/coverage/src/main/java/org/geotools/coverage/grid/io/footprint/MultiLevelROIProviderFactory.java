@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.File;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -24,6 +23,7 @@ import java.util.logging.Logger;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Factory class used for returning a {@link MultiLevelROIProvider} based on the input footprint

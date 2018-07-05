@@ -2,8 +2,6 @@ package org.geotools.renderer.lite;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Polygon;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,6 +29,8 @@ import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CRSAuthorityFactory;

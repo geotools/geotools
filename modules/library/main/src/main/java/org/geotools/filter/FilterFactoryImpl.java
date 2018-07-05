@@ -83,6 +83,7 @@ import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.MultiValuedFilter.MatchAction;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -1106,5 +1107,9 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
 
     public TemporalCapabilities temporalCapabilities(TemporalOperator[] temporalOperators) {
         return new TemporalCapabilitiesImpl(Arrays.asList(temporalOperators));
+    }
+
+    public NativeFilter nativeFilter(String nativeFilter) {
+        return new NativeFilterImpl(nativeFilter);
     }
 }

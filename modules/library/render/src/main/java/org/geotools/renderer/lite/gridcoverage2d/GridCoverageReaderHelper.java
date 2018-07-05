@@ -16,9 +16,6 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +46,9 @@ import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.crs.WrappingProjectionHandler;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.parameter.GeneralParameterValue;

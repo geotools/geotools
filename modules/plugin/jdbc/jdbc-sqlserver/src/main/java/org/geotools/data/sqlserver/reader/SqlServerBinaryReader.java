@@ -1,15 +1,15 @@
 package org.geotools.data.sqlserver.reader;
 
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.ByteArrayInStream;
-import com.vividsolutions.jts.io.ByteOrderDataInStream;
-import com.vividsolutions.jts.io.ByteOrderValues;
-import com.vividsolutions.jts.io.InStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.io.ByteArrayInStream;
+import org.locationtech.jts.io.ByteOrderDataInStream;
+import org.locationtech.jts.io.ByteOrderValues;
+import org.locationtech.jts.io.InStream;
 
 /**
  * Decode Sql Server binary format to JTS

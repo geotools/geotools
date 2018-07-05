@@ -16,8 +16,6 @@
  */
 package org.geotools.gml3.v3_2;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,6 +35,8 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
 import org.geotools.xml.Parser;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;

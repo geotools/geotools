@@ -4,7 +4,7 @@ import static org.geotools.data.efeature.internal.EFeatureInternal.DATA_EDEFAULT
 import static org.geotools.data.efeature.internal.EFeatureInternal.DEFAULT_EDEFAULT;
 import static org.geotools.data.efeature.internal.EFeatureInternal.SRID_EDEFAULT;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;

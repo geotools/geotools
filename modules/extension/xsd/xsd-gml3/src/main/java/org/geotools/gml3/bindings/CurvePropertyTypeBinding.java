@@ -16,11 +16,11 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:CurvePropertyType.

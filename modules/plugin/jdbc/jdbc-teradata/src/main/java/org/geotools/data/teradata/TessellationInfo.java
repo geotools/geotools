@@ -16,7 +16,7 @@
  */
 package org.geotools.data.teradata;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Holds teradata tessellation parameters.

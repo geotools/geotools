@@ -16,14 +16,14 @@
  */
 package org.geotools.renderer.lite;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFilter;
-import com.vividsolutions.jts.geom.LineString;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFilter;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * Class collecting unclosed straight lines from a geometry. If a non straight line is found, or any

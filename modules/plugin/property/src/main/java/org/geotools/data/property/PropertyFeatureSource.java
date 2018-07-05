@@ -16,8 +16,6 @@
  */
 package org.geotools.data.property;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -34,6 +32,8 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

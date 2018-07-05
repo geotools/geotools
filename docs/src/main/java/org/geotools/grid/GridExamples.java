@@ -1,6 +1,5 @@
 package org.geotools.grid;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Color;
 import java.net.URL;
 import java.util.Arrays;
@@ -17,6 +16,7 @@ import org.geotools.grid.oblong.Oblongs;
 import org.geotools.grid.ortholine.LineOrientation;
 import org.geotools.grid.ortholine.OrthoLineDef;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

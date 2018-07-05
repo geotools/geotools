@@ -18,7 +18,9 @@ package org.geotools.process;
 
 import java.util.Map;
 import org.geotools.data.Query;
+import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridGeometry;
+import org.opengis.parameter.GeneralParameterValue;
 
 /**
  * An interface to be implemented by processes meant to be integrated as feature collection/grid
@@ -37,8 +39,9 @@ public interface RenderingProcess extends Process {
      * input data of the process involved in rendering. This method will be called only if the input
      * data is a feature collection.
      *
-     * @param targetQuery
-     * @param gridGeometry
+     * @param input The process inputs
+     * @param targetQuery The query against the transformation outputs
+     * @param gridGeometry The grid geometry desired for the outputs of the transformation
      * @return The transformed query, or null if no inversion is possible/meaningful
      */
     Query invertQuery(Map<String, Object> input, Query targetQuery, GridGeometry gridGeometry)
@@ -49,11 +52,25 @@ public interface RenderingProcess extends Process {
      * the input data of the process involved in rendering. This method will be called only if the
      * input data is a grid coverage or a grid coverage reader
      *
-     * @param targetQuery
-     * @param gridGeometry
+     * @param input The process inputs
+     * @param targetQuery The query against the transformation outputs
+     * @param gridGeometry The grid geometry desired for the outputs of the transformation
      * @return The transformed query, or null if no inversion is possible/meaningful
      */
     GridGeometry invertGridGeometry(
             Map<String, Object> input, Query targetQuery, GridGeometry targetGridGeometry)
             throws ProcessException;
+
+    /**
+     * Allows the transformation to customize the read parameters (asl
+     *
+     * @param input The process inputs
+     * @param reader The reader involved
+     * @param params The current parameters
+     * @return The original parameters, or a customized version of them
+     */
+    default GeneralParameterValue[] customizeReadParams(
+            Map<String, Object> input, GridCoverageReader reader, GeneralParameterValue[] params) {
+        return params;
+    }
 }

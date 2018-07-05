@@ -22,9 +22,6 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMParser;
@@ -135,13 +132,11 @@ import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -154,7 +149,6 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
@@ -237,6 +231,8 @@ public class ImageMosaicReaderTest extends Assert {
     private URL timeFormatURL;
 
     private URL oneBitURL;
+
+    @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @Before
     public void setup() {
@@ -428,6 +424,7 @@ public class ImageMosaicReaderTest extends Assert {
         // Test the output coverage
         TestUtils.checkCoverage(
                 reader, new GeneralParameterValue[] {gg, useJai, tileSize}, "overviews test");
+        reader.dispose();
     }
 
     /**
@@ -444,6 +441,7 @@ public class ImageMosaicReaderTest extends Assert {
                 reader.getReadingResolutions(OverviewPolicy.QUALITY, new double[] {32, 32});
         assertEquals(16.0714285714285, result[0], DELTA);
         assertEquals(16.0427807486631, result[1], DELTA);
+        reader.dispose();
     }
 
     @Test
@@ -456,6 +454,7 @@ public class ImageMosaicReaderTest extends Assert {
                 reader.getReadingResolutions(OverviewPolicy.QUALITY, new double[] {32, 32});
         assertEquals(16.0714285714285, result[0], DELTA);
         assertEquals(16.0427807486631, result[1], DELTA);
+        reader.dispose();
     }
 
     @Test
@@ -607,6 +606,7 @@ public class ImageMosaicReaderTest extends Assert {
         if (!INTERACTIVE) {
             FileUtils.deleteDirectory(TestData.file(this, "water_temp3"));
         }
+        reader.dispose();
     }
 
     /**
@@ -851,6 +851,7 @@ public class ImageMosaicReaderTest extends Assert {
                 "Time-Elevation Test");
 
         // clean up
+        reader.dispose();
         if (!INTERACTIVE) {
             FileUtils.deleteDirectory(TestData.file(this, "watertemp2"));
         }
@@ -961,6 +962,8 @@ public class ImageMosaicReaderTest extends Assert {
         GridGeometry2D ggCoverage = coverage.getGridGeometry();
         assertEquals(0, ggCoverage.getGridRange().getLow(0));
         assertEquals(0, ggCoverage.getGridRange().getLow(1));
+
+        reader.dispose();
     }
 
     @Test
@@ -1029,6 +1032,8 @@ public class ImageMosaicReaderTest extends Assert {
                 });
         TestUtils.checkCoverage(
                 reader, new GeneralParameterValue[] {gg, useJai, time}, "time test");
+
+        reader.dispose();
     }
 
     @Test
@@ -1046,6 +1051,8 @@ public class ImageMosaicReaderTest extends Assert {
                 "2004-02-01T12:05:00.000Z,2004-03-01T15:07:00.000Z,2004-04-15T19:05:00.000Z,2004-05-30T12:15:59.000Z",
                 reader.getMetadataValue(metadataNames[0]));
         assertEquals("java.sql.Timestamp", reader.getMetadataValue("TIME_DOMAIN_DATATYPE"));
+
+        reader.dispose();
     }
 
     /** Simple test method accessing time and 2 custom dimensions for the sample dataset */
@@ -1125,6 +1132,7 @@ public class ImageMosaicReaderTest extends Assert {
         final String baseName = FilenameUtils.getBaseName(fileSource);
         assertEquals(baseName, "NCOM_wattemp_" + selectedWaveLength + "_" + selectedDate + "_12");
         TestUtils.testCoverage(reader, values, "domain test", coverage, null);
+        reader.dispose();
     }
 
     /**
@@ -1599,6 +1607,7 @@ public class ImageMosaicReaderTest extends Assert {
         final String baseName = FilenameUtils.getBaseName(fileSource);
         assertEquals(baseName, "temp_020_099_20081031T000000_20081103T000000_12_24");
         TestUtils.testCoverage(reader, values, "domain test", coverage, null);
+        reader.dispose();
     }
 
     /**
@@ -1642,6 +1651,8 @@ public class ImageMosaicReaderTest extends Assert {
         assertEquals("ELEVATION", descriptor.getName());
         assertEquals("lowz", descriptor.getStartAttribute());
         assertEquals("highz", descriptor.getEndAttribute());
+
+        reader.dispose();
     }
 
     @Test
@@ -1727,6 +1738,8 @@ public class ImageMosaicReaderTest extends Assert {
         assertEquals(
                 "temp_020_099_20081101T000000_20081104T000000_12_24",
                 FilenameUtils.getBaseName(fileSource));
+
+        reader.dispose();
     }
 
     private GridCoverage2D readCoverageInDateRange(
@@ -1850,6 +1863,8 @@ public class ImageMosaicReaderTest extends Assert {
         // inspect reanderedImage
         final RenderedImage image = coverage.getRenderedImage();
         assertEquals("wrong number of bands detected", 1, image.getSampleModel().getNumBands());
+
+        reader.dispose();
     }
 
     /**
@@ -1919,6 +1934,8 @@ public class ImageMosaicReaderTest extends Assert {
                 new GeneralParameterValue[] {gg, useJai, op},
                 "heterogeneous granules test: OverviewPolicy=IGNORE",
                 rasterArea);
+
+        reader.dispose();
     }
 
     /**
@@ -2087,8 +2104,11 @@ public class ImageMosaicReaderTest extends Assert {
         blendPV.setValue(blend);
 
         // Test the output coverage
-        return TestUtils.checkCoverage(
-                reader, new GeneralParameterValue[] {inTransp, blendPV, outTransp}, title);
+        GridCoverage2D gridCoverage2D =
+                TestUtils.checkCoverage(
+                        reader, new GeneralParameterValue[] {inTransp, blendPV, outTransp}, title);
+        reader.dispose();
+        return gridCoverage2D;
     }
 
     /**
@@ -2160,6 +2180,8 @@ public class ImageMosaicReaderTest extends Assert {
         RenderedImage ri = coverage.getRenderedImage();
         assertEquals(0, ri.getMinX(), 10);
         assertEquals(0, ri.getMinY(), 10);
+
+        reader.dispose();
     }
 
     void assertEnvelope(Envelope expected, Envelope actual, double tolerance) {
@@ -2234,6 +2256,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertEquals(0, pixel[2]);
         assertEquals(255, pixel[3]);
 
+        reader.dispose();
         return coverage;
     }
 
@@ -2266,7 +2289,7 @@ public class ImageMosaicReaderTest extends Assert {
                                 new RegexFileFilter("global_mosaic_10.*"),
                                 new RegexFileFilter("global_mosaic_12.*")),
                         null)) {
-            assertTrue(file.renameTo(new File(directory2, file.getName())));
+            file.renameTo(new File(directory2, file.getName()));
         }
 
         final URL testUrl = URLs.fileToUrl(directory2);
@@ -2308,6 +2331,8 @@ public class ImageMosaicReaderTest extends Assert {
         ri.getData().getPixel(0, 0, pixel);
         assertEquals(255, pixel[0]);
         assertEquals(64, pixel[1]);
+
+        reader.dispose();
     }
 
     @Test
@@ -2349,6 +2374,8 @@ public class ImageMosaicReaderTest extends Assert {
         assertEquals(0, pixel[1]);
         assertEquals(0, pixel[2]);
         assertEquals(255, pixel[3]);
+
+        reader.dispose();
     }
 
     @Test
@@ -2569,6 +2596,8 @@ public class ImageMosaicReaderTest extends Assert {
                 new GeneralParameterValue[] {useJai, time, dateValue, depthValue};
         final GridCoverage2D coverage = TestUtils.getCoverage(reader, values, false);
         assertNull(coverage);
+
+        reader.dispose();
     }
 
     /**
@@ -2656,6 +2685,8 @@ public class ImageMosaicReaderTest extends Assert {
         final RenderedImage image = coverage.getRenderedImage();
         assertEquals("wrong number of bands detected", 3, image.getSampleModel().getNumBands());
         assertEquals(DataBuffer.TYPE_SHORT, image.getSampleModel().getDataType());
+
+        reader.dispose();
     }
 
     @Test
@@ -3949,6 +3980,8 @@ public class ImageMosaicReaderTest extends Assert {
                 reader,
                 new GeneralParameterValue[] {gg, bkg, direct, depthValue, dateValue},
                 "oracle Test");
+
+        reader.dispose();
     }
 
     @Test
@@ -4123,6 +4156,7 @@ public class ImageMosaicReaderTest extends Assert {
         assertTrue(mosaicProperties.exists());
 
         // clean up
+        reader.dispose();
         if (!INTERACTIVE) {
             FileUtils.deleteDirectory(TestData.file(this, folder));
         }
@@ -4171,6 +4205,8 @@ public class ImageMosaicReaderTest extends Assert {
                 84.3132,
                 Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_STDDEV")),
                 DELTA);
+
+        reader.dispose();
     }
 
     @Test
@@ -4207,6 +4243,8 @@ public class ImageMosaicReaderTest extends Assert {
                 83.2542,
                 Double.parseDouble(parser.getMetadataValue(band, "STATISTICS_STDDEV")),
                 DELTA);
+
+        reader.dispose();
     }
 
     @Test
@@ -4338,6 +4376,7 @@ public class ImageMosaicReaderTest extends Assert {
                 FileUtils.deleteQuietly(f);
             }
         }
+        reader.dispose();
     }
 
     @Test
@@ -4495,6 +4534,7 @@ public class ImageMosaicReaderTest extends Assert {
         String path = (String) fileLocation;
         assertTrue(!path.isEmpty());
         assertTrue(path.endsWith(".ovr"));
+        reader.dispose();
     }
 
     @Test
@@ -4941,6 +4981,8 @@ public class ImageMosaicReaderTest extends Assert {
         GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {gg});
         RenderedImage ri = coverage.getRenderedImage();
         assertEquals(1, getSourceGranules(ri));
+
+        reader.dispose();
     }
 
     private int getSourceGranules(RenderedImage ri) {
@@ -4999,6 +5041,8 @@ public class ImageMosaicReaderTest extends Assert {
             final File myFile = new File(dir, filePath);
             assertTrue(supportFiles.contains(myFile));
         }
+
+        reader.dispose();
     }
 
     @Test
@@ -5039,6 +5083,8 @@ public class ImageMosaicReaderTest extends Assert {
             final File myFile = new File(dir, filePath);
             assertTrue(supportFiles.contains(myFile));
         }
+
+        reader.dispose();
     }
 
     @Test
@@ -5055,6 +5101,8 @@ public class ImageMosaicReaderTest extends Assert {
         // BandsSelect operation)
         SampleModel sampleModel = coverage.getRenderedImage().getSampleModel();
         assertThat(sampleModel.getNumBands(), is(5));
+
+        reader.dispose();
     }
 
     @Test
@@ -5081,6 +5129,8 @@ public class ImageMosaicReaderTest extends Assert {
         assertEquals(expectedEnvelope.getMinimum(1), actualEnvelope.getMinimum(1), EPS);
         assertEquals(expectedEnvelope.getMaximum(0), actualEnvelope.getMaximum(0), EPS);
         assertEquals(expectedEnvelope.getMaximum(1), actualEnvelope.getMaximum(1), EPS);
+
+        reader.dispose();
     }
 
     @Test
@@ -5092,6 +5142,8 @@ public class ImageMosaicReaderTest extends Assert {
         GridCoverage2D coverage =
                 TestUtils.getCoverage(reader, new GeneralParameterValue[] {filter}, false);
         assertNull(coverage);
+
+        reader.dispose();
     }
 
     @Test
@@ -5151,16 +5203,10 @@ public class ImageMosaicReaderTest extends Assert {
         reader.dispose();
     }
 
-    private File setupTimeCachedMosaic()
-            throws FileNotFoundException, IOException, NoSuchAuthorityCodeException,
-                    FactoryException {
+    private File setupTimeCachedMosaic() throws IOException, FactoryException {
         // copy the test data
         File source = URLs.urlToFile(timeURL);
-        File testDataDir = TestData.file(this, ".");
-        File timeCached = new File(testDataDir, "timeCached");
-        if (timeCached.exists()) {
-            FileUtils.deleteDirectory(timeCached);
-        }
+        File timeCached = tempFolder.newFolder("timeCached");
         FileUtils.copyDirectory(source, timeCached);
         Arrays.stream(
                         timeCached.listFiles(
@@ -5217,6 +5263,7 @@ public class ImageMosaicReaderTest extends Assert {
         deferredLoading.setValue(false);
         GridCoverage2D coverage = imReader.read(new GeneralParameterValue[] {deferredLoading});
         assertNoData(coverage, 0d);
+        imReader.dispose();
     }
 
     @Test
@@ -5236,6 +5283,7 @@ public class ImageMosaicReaderTest extends Assert {
         deferredLoading.setValue(true);
         GridCoverage2D coverage = imReader.read(new GeneralParameterValue[] {deferredLoading});
         assertNoData(coverage, 7d);
+        imReader.dispose();
     }
 
     public void assertNoData(GridCoverage2D coverageDeferred, Double expectedNoData) {

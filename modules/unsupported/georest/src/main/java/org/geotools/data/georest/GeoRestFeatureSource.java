@@ -16,7 +16,7 @@
  */
 package org.geotools.data.georest;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

@@ -16,7 +16,7 @@
  */
 package org.geotools.gml2.bindings;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequence;
 
 /** @source $URL$ */
 public class GMLUtil {

@@ -16,17 +16,17 @@
  */
 package org.geotools.filter.v1_0;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;

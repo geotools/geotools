@@ -16,7 +16,6 @@
  */
 package org.geotools.data.store;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +38,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

@@ -16,7 +16,6 @@
  */
 package org.geotools.filter.visitor;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +26,7 @@ import org.geotools.feature.SchemaException;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.function.FilterFunction_geometryType;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;

@@ -18,7 +18,6 @@ package org.geotools.data.transform;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.RenderingHints.Key;
 import java.net.URI;
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

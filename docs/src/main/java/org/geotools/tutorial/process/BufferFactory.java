@@ -16,7 +16,6 @@
  */
 package org.geotools.tutorial.process;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -25,6 +24,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.process.Process;
 import org.geotools.process.impl.SingleProcessFactory;
 import org.geotools.text.Text;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.util.InternationalString;
 
 /**

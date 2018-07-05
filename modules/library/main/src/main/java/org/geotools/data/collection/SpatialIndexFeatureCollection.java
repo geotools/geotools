@@ -16,9 +16,6 @@
  */
 package org.geotools.data.collection;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.index.ItemVisitor;
-import com.vividsolutions.jts.index.strtree.STRtree;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +35,9 @@ import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.index.ItemVisitor;
+import org.locationtech.jts.index.strtree.STRtree;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

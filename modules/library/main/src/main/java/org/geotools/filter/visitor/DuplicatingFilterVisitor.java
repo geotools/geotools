@@ -28,6 +28,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -487,5 +488,10 @@ public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisito
                         visit(contains.getExpression1(), extraData),
                         visit(contains.getExpression2(), extraData),
                         contains.getMatchAction());
+    }
+
+    @Override
+    public Object visit(NativeFilter filter, Object extraData) {
+        return getFactory(extraData).nativeFilter(filter.getNative());
     }
 }

@@ -17,14 +17,14 @@
  */
 package org.geotools.image;
 
-import com.vividsolutions.jts.awt.ShapeWriter;
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.util.BitSet;
+import org.locationtech.jts.awt.ShapeWriter;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * An analogous of {@link BitSet} which is explicitly 2 dimensional and allows drawing a shape to

@@ -18,13 +18,13 @@
  */
 package org.geotools.filter;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
 

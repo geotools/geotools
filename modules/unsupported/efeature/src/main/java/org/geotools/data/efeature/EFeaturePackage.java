@@ -194,7 +194,7 @@ public interface EFeaturePackage extends EPackage {
      * <!--
      * end-user-doc -->
      *
-     * @see com.vividsolutions.jts.geom.Geometry
+     * @see org.locationtech.jts.geom.Geometry
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getGeometry()
      * @generated
      */
@@ -453,14 +453,14 @@ public interface EFeaturePackage extends EPackage {
     EDataType getEStructuralFeature();
 
     /**
-     * Returns the meta object for data type '{@link com.vividsolutions.jts.geom.Geometry
+     * Returns the meta object for data type '{@link org.locationtech.jts.geom.Geometry
      * <em>Geometry</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @return the meta object for data type '<em>Geometry</em>'.
-     * @see com.vividsolutions.jts.geom.Geometry
-     * @model instanceClass="com.vividsolutions.jts.geom.Geometry"
+     * @see org.locationtech.jts.geom.Geometry
+     * @model instanceClass="org.locationtech.jts.geom.Geometry"
      * @generated
      */
     EDataType getGeometry();
@@ -734,7 +734,7 @@ public interface EFeaturePackage extends EPackage {
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
-         * @see com.vividsolutions.jts.geom.Geometry
+         * @see org.locationtech.jts.geom.Geometry
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getGeometry()
          * @generated
          */

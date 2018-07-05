@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.imageio.maskband.DatasetLayout;
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +31,7 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**

@@ -76,7 +76,7 @@ Is described using the following schema::
            {
                "localName": "location",
                "type": {
-                   "binding": "com.vividsolutions.jts.geom.Point"
+                   "binding": "org.locationtech.jts.geom.Point"
                },
                "userData": {
                    "encoding": "GeoJSON",

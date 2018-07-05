@@ -16,8 +16,6 @@
  */
 package org.geotools.validation.relate;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -25,6 +23,8 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -49,7 +49,7 @@ public class TouchesIntegrity extends RelationIntegrity {
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map, com.vividsolutions.jts.geom.Envelope, org.geotools.validation.ValidationResults)
+     * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map, org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
     public boolean validate(Map layers, Envelope envelope, ValidationResults results)
             throws Exception {

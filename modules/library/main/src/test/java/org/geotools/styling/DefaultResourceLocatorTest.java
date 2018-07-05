@@ -43,6 +43,19 @@ public class DefaultResourceLocatorTest extends TestCase {
         assertTrue(file.exists());
     }
 
+    public void testPreserveURLQueryWithColors() throws Exception {
+        DefaultResourceLocator locator = new DefaultResourceLocator();
+        locator.setSourceUrl(getClass().getResource("test-data/blob.gif"));
+
+        // Confirm still able to resolve to a File
+        URL url = locator.locateResource("blob.gif?fill=#ff0000&stroke=#000000");
+        final String external = url.toExternalForm();
+        assertTrue(external.indexOf('?') > 0);
+        assertEquals("fill=#ff0000&stroke=#000000", external.split("\\?")[1]);
+        File file = URLs.urlToFile(url);
+        assertTrue(file.exists());
+    }
+
     void checkURL(URL url) {
         File f = URLs.urlToFile(url);
         assertTrue(f.exists());

@@ -16,12 +16,12 @@
  */
 package org.geotools.util;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.WKTReader2;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * Converter factory performing converstions among geometric types.
@@ -29,12 +29,10 @@ import org.geotools.geometry.jts.WKTReader2;
  * <p>Supported conversions:
  *
  * <ul>
- *   <li>{@link String} to {@link com.vividsolutions.jts.geom.Geometry}
- *   <li>{@link com.vividsolutions.jts.geom.Geometry} to {@link String}
- *   <li>{@link com.vividsolutions.jts.geom.Envelope} to {@link
- *       com.vividsolutions.jts.geom.Geometry}
- *   <li>{@link com.vividsolutions.jts.geom.Geometry} to {@link
- *       com.vividsolutions.jts.geom.Envelope}
+ *   <li>{@link String} to {@link org.locationtech.jts.geom.Geometry}
+ *   <li>{@link org.locationtech.jts.geom.Geometry} to {@link String}
+ *   <li>{@link org.locationtech.jts.geom.Envelope} to {@link org.locationtech.jts.geom.Geometry}
+ *   <li>{@link org.locationtech.jts.geom.Geometry} to {@link org.locationtech.jts.geom.Envelope}
  *   <li>
  * </ul>
  *

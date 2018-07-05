@@ -23,8 +23,8 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * 

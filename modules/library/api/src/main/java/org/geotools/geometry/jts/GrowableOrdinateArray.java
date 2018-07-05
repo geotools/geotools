@@ -16,8 +16,8 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * Simple support class that allows accumulating doubles in an array, transparently growing it as

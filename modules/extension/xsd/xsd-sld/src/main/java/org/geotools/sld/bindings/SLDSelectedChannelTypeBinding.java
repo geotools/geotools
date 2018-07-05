@@ -21,6 +21,7 @@ import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
+import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -95,7 +96,7 @@ public class SLDSelectedChannelTypeBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return styleFactory.createSelectedChannelType(
-                (String) node.getChildValue("SourceChannelName"),
+                (Expression) node.getChildValue("SourceChannelName"),
                 (ContrastEnhancement) node.getChildValue("ContrastEnhancement"));
     }
 }

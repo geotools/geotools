@@ -16,9 +16,9 @@
  */
 package org.geotools.gml2.simple;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**

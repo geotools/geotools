@@ -16,12 +16,6 @@
  */
 package org.geotools.filter.text.commons;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,6 +30,12 @@ import java.util.regex.Pattern;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -1129,7 +1129,7 @@ public abstract class AbstractFilterBuilder {
             Literal literal = filterFactory.literal(g);
 
             return literal;
-        } catch (com.vividsolutions.jts.io.ParseException e) {
+        } catch (org.locationtech.jts.io.ParseException e) {
             throw new CQLException(e.getMessage(), geometry, e, this.cqlSource);
         } catch (Exception e) {
             throw new CQLException(

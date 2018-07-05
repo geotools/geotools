@@ -16,7 +16,6 @@
  */
 package org.geotools.filter;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -27,6 +26,7 @@ import java.util.regex.Pattern;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.expression.ExpressionAbstract;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -336,7 +336,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
      *
      * <ul>
      *   <li><tt>java.lang</tt>
-     *   <li><tt>com.vividsolutions.jts.geom</tt>
+     *   <li><tt>org.locationtech.jts.geom</tt>
      * </ul>
      *
      * Otherwise it must be specified as a full qualified class name.
@@ -379,7 +379,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
                 } catch (ClassNotFoundException e1) {
                     // try prefixing with jts.geom
                     try {
-                        type = Class.forName("com.vividsolutions.jts.geom." + grp);
+                        type = Class.forName("org.locationtech.jts.geom." + grp);
                     } catch (ClassNotFoundException e2) {
                         // throw back the original
                         throw (IllegalArgumentException)

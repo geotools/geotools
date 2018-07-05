@@ -36,6 +36,12 @@ public class SVGFactoryFinderTest extends TestCase {
         assertContainsClassInstance(result, SVGGraphicFactory.class);
     }
 
+    public void testLookupMarkFactories() {
+        List<MarkFactory> result = loadIterator(DynamicSymbolFactoryFinder.getMarkFactories());
+        assertTrue(result.size() >= 1);
+        assertContainsClassInstance(result, MarkFactory.class);
+    }
+
     public void assertContainsClassInstance(List list, Class clazz) {
         for (Object item : list) {
             if (item != null && clazz.isAssignableFrom(item.getClass())) return;

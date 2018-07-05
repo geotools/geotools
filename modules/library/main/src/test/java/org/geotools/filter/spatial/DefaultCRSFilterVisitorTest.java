@@ -18,11 +18,11 @@ package org.geotools.filter.spatial;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;

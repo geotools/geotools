@@ -21,7 +21,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.io.WKTReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +31,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.NullProgressListener;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.expression.Expression;

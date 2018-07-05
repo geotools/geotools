@@ -16,11 +16,11 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.geom.AffineTransform;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * A path iterator for the LiteShape class, specialized to iterate over Polygon objects.

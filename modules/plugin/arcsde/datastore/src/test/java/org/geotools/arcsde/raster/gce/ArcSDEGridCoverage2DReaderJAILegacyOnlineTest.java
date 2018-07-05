@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import com.vividsolutions.jts.util.Stopwatch;
 import java.awt.Rectangle;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
@@ -66,6 +65,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.locationtech.jts.util.Stopwatch;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;

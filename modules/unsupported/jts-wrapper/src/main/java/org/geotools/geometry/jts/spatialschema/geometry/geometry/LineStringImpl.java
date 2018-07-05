@@ -11,13 +11,13 @@ package org.geotools.geometry.jts.spatialschema.geometry.geometry;
 
 // J2SE direct dependencies
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.List;
 import org.geotools.geometry.jts.JTSGeometry;
 import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.CurveBoundaryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.PointImpl;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.LineString;
 import org.opengis.geometry.coordinate.ParamForPoint;
@@ -250,8 +250,7 @@ public class LineStringImpl extends GenericCurveImpl implements LineString, JTSG
      */
     protected Geometry computeJTSPeer() {
         int n = controlPoints.size();
-        com.vividsolutions.jts.geom.Coordinate[] coords =
-                new com.vividsolutions.jts.geom.Coordinate[n];
+        org.locationtech.jts.geom.Coordinate[] coords = new org.locationtech.jts.geom.Coordinate[n];
         for (int i = 0; i < n; i++) {
             coords[i] = JTSUtils.directPositionToCoordinate((DirectPosition) controlPoints.get(i));
         }

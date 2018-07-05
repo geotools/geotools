@@ -22,7 +22,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import org.geotools.geometry.DirectPosition2D;
@@ -35,6 +34,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.geometry.DirectPosition;

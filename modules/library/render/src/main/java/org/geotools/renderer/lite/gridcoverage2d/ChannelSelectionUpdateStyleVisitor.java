@@ -69,7 +69,7 @@ public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor 
                 bandIndices = new int[channels.length];
                 for (int i = 0; i < channels.length; i++) {
                     // Note that in channel selection, channels start at index 1
-                    bandIndices[i] = Integer.parseInt(channels[i].getChannelName()) - 1;
+                    bandIndices[i] = channels[i].getChannelName().evaluate(null, Integer.class) - 1;
                 }
             }
         }

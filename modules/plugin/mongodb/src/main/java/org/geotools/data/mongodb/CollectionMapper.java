@@ -19,7 +19,7 @@ package org.geotools.data.mongodb;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;

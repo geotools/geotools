@@ -189,7 +189,7 @@ public class SLDConfiguration extends Configuration {
      * <p>The following factories are registered:
      *
      * <ul>
-     *   <li>{@link StyleFactoryImpl.class} under {@link StyleFactory.class}
+     *   <li>{@link StyleFactoryImpl} under {@link StyleFactory}
      * </ul>
      */
     protected void configureContext(MutablePicoContainer container) {

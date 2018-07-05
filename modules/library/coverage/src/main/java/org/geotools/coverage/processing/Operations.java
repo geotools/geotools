@@ -16,7 +16,6 @@
  */
 package org.geotools.coverage.processing;
 
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.jaiext.JAIExt;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -29,6 +28,7 @@ import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.factory.Hints;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridGeometry;

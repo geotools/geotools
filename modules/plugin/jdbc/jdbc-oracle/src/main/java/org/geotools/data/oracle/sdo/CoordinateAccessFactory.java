@@ -21,7 +21,7 @@
  */
 package org.geotools.data.oracle.sdo;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
 
 /**
  * Extends CoordinateSequenceFactory with meta data information.

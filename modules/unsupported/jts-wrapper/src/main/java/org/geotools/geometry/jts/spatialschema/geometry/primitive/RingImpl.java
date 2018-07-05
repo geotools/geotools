@@ -9,9 +9,9 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
-import com.vividsolutions.jts.geom.LineString;
 import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.complex.CompositeCurveImpl;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.geometry.complex.CompositeCurve;
 import org.opengis.geometry.primitive.OrientableCurve;
 import org.opengis.geometry.primitive.Ring;
@@ -73,7 +73,7 @@ public class RingImpl extends CompositeCurveImpl implements Ring {
      */
     public boolean isValid() {
         // Verify that the line doesn't cross itself
-        com.vividsolutions.jts.geom.Coordinate[] coords = computeJTSPeer().getCoordinates();
+        org.locationtech.jts.geom.Coordinate[] coords = computeJTSPeer().getCoordinates();
         int count = coords.length;
         // System.err.println("RingImpl.isValid -- coord count " + count);
         if (count > 2) {
@@ -81,8 +81,8 @@ public class RingImpl extends CompositeCurveImpl implements Ring {
                 // System.err.println("  Adding closure coord");
                 // Close the set of coordinates for the validation test
                 // if it isn't already closed
-                com.vividsolutions.jts.geom.Coordinate[] tmp =
-                        new com.vividsolutions.jts.geom.Coordinate[count + 1];
+                org.locationtech.jts.geom.Coordinate[] tmp =
+                        new org.locationtech.jts.geom.Coordinate[count + 1];
                 System.arraycopy(coords, 0, tmp, 0, count);
                 tmp[count] = coords[0];
                 coords = tmp;

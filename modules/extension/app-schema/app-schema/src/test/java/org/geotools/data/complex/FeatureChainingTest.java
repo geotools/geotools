@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.util.Stopwatch;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -43,6 +42,7 @@ import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.util.Stopwatch;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;

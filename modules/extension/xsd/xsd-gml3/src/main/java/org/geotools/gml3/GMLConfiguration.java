@@ -16,9 +16,6 @@
  */
 package org.geotools.gml3;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 import javax.xml.namespace.QName;
 import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml2.FeatureTypeCache;
@@ -91,6 +88,9 @@ import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
 import org.geotools.xs.XS;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;
 
 /**

@@ -2,7 +2,7 @@ package org.geotools.data.efeature;
 
 import static org.geotools.data.efeature.EFeatureConstants.DEFAULT_SRID;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;

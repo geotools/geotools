@@ -16,8 +16,8 @@
  */
 package org.geotools.data.wfs.internal;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 

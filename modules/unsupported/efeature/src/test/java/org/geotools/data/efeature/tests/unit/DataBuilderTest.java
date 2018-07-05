@@ -16,8 +16,8 @@
  */
 package org.geotools.data.efeature.tests.unit;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
 import java.util.Arrays;
 import junit.framework.Test;
 import junit.framework.TestCase;

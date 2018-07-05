@@ -17,8 +17,6 @@
 
 package org.geotools.gce.imagemosaic.granulecollector;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -56,6 +54,8 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.image.ImageWorker;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** Basic submosaic producer. Accepts all granules and mosaics without any real special handling */

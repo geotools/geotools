@@ -16,7 +16,6 @@
  */
 package org.geotools.data.property;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,6 +31,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

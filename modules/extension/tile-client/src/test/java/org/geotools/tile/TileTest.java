@@ -16,7 +16,6 @@
  */
 package org.geotools.tile;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,6 +27,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
 
 public class TileTest {
 

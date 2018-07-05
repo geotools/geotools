@@ -16,8 +16,6 @@
  */
 package org.geotools.data.property;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTWriter;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +34,8 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTWriter2;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTWriter;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

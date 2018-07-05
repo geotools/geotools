@@ -16,12 +16,12 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import java.util.Set;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.factory.Hints;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * Defines static methods used to access {@linkplain GeometryFactory geometry}, {@linkplain

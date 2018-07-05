@@ -18,10 +18,6 @@ package org.geotools.geometry.jts;
 
 // J2SE dependencies
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.geom.AffineTransform;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -32,6 +28,10 @@ import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.projection.PointOutsideEnvelopeException;
 import org.geotools.referencing.wkt.Parser;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

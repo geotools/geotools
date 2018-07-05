@@ -5,7 +5,7 @@
  */
 package org.geotools.data.efeature.tests.impl;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import org.eclipse.emf.ecore.EClass;
 import org.geotools.data.efeature.impl.EFeatureImpl;
 import org.geotools.data.efeature.tests.EFeatureData;

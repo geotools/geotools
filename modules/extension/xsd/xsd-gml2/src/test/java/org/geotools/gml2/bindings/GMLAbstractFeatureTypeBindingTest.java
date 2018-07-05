@@ -16,12 +16,12 @@
  */
 package org.geotools.gml2.bindings;
 
-import com.vividsolutions.jts.geom.Point;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.TEST;
 import org.geotools.gml2.TestConfiguration;
 import org.geotools.xml.Binding;
 import org.geotools.xml.Configuration;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

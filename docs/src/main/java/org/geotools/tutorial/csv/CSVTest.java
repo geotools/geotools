@@ -11,7 +11,6 @@ package org.geotools.tutorial.csv;
 import static org.junit.Assert.assertTrue;
 
 import com.csvreader.CsvReader;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
@@ -36,6 +35,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

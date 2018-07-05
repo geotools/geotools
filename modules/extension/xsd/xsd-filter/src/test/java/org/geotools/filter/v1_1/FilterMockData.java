@@ -16,9 +16,6 @@
  */
 package org.geotools.filter.v1_1;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -26,6 +23,9 @@ import javax.xml.namespace.QName;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.ResourceIdImpl;
 import org.geotools.gml3.GML;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;

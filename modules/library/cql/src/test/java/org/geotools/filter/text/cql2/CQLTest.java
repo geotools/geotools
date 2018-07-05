@@ -18,9 +18,6 @@ package org.geotools.filter.text.cql2;
 
 import static org.junit.Assert.assertEquals;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterFactoryImpl;
@@ -38,6 +35,9 @@ import org.geotools.filter.text.ecql.ECQLTemporalPredicateTest;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;

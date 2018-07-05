@@ -11,10 +11,11 @@ The **gt-svg** plugin uses the Batik library to support the use of SVG graphics.
       <version>${geotools.version}</version>
     </dependency>
 
-Example
-^^^^^^^
+External graphic example
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following example is taken from test cases:
+The following example, taken from test cases, uses SVG as an external graphic (thus, using it
+as is, with the original colors):
 
 * :download:`house.svg </../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/house.svg>`
 * :download:`fillHouse.sld </../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/fillHouse.sld>`
@@ -22,6 +23,20 @@ The following example is taken from test cases:
 Here is the example fillHouse.sld:
 
 .. literalinclude:: /../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/fillHouse.sld
+     :language: xml
+
+Mark example
+^^^^^^^^^^^^
+
+As an alternative, it's also possible to use a simple SVG as a Mark, thus picking only the shape
+of the SVG but allowing to assign fill and stroke in SLD:
+
+* :download:`house.svg </../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/convenience.svg>`
+* :download:`fillHouse.sld </../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/convenience.sld>`
+
+Here is the example convenience.sld:
+
+.. literalinclude:: /../../modules/plugin/svg/src/test/resources/org/geotools/renderer/lite/test-data/convenience.sld
      :language: xml
 
 

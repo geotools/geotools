@@ -16,8 +16,6 @@
  */
 package org.geotools.filter.text.commons;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTWriter;
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,6 +34,8 @@ import org.geotools.factory.Hints;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTWriter;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;

@@ -32,5 +32,5 @@ public interface GMLHandlerJTS extends org.xml.sax.ContentHandler {
      *
      * @param geometry the simple feature geometry
      */
-    void geometry(com.vividsolutions.jts.geom.Geometry geometry);
+    void geometry(org.locationtech.jts.geom.Geometry geometry);
 }

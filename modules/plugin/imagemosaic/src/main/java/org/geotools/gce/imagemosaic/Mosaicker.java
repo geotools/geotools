@@ -17,7 +17,6 @@
 
 package org.geotools.gce.imagemosaic;
 
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.imageio.pam.PAMDataset;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
@@ -45,6 +44,7 @@ import org.geotools.image.ImageWorker;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.TransformException;
 

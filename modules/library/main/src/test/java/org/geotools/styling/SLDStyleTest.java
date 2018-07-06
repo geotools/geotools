@@ -18,9 +18,6 @@ package org.geotools.styling;
 
 import static org.junit.Assert.assertNotNull;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -43,6 +40,9 @@ import org.geotools.factory.GeoTools;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_buffer;
 import org.geotools.test.TestData;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;

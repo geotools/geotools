@@ -16,7 +16,6 @@
  */
 package org.geotools.gml2.bindings;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Iterator;
@@ -38,6 +37,7 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;

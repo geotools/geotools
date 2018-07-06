@@ -16,16 +16,16 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.gml3.bindings.SurfaceTypeBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /** @source $URL$ */
 public class SurfacePropertyTypeBinding

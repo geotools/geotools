@@ -16,7 +16,6 @@
  */
 package org.geotools.data.store;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.List;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -24,6 +23,7 @@ import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

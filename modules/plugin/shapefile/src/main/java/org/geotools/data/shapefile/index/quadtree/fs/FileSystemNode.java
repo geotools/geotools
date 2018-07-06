@@ -16,7 +16,6 @@
  */
 package org.geotools.data.shapefile.index.quadtree.fs;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -26,6 +25,7 @@ import java.nio.channels.FileChannel.MapMode;
 import org.geotools.data.shapefile.index.quadtree.Node;
 import org.geotools.data.shapefile.index.quadtree.StoreException;
 import org.geotools.resources.NIOUtilities;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * DOCUMENT ME!

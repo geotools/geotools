@@ -16,9 +16,9 @@
  */
 package org.geotools.renderer.crs;
 
-import com.vividsolutions.jts.geom.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.locationtech.jts.geom.*;
 
 /** Collects component of a given geometry that have the desired dimension */
 public class GeometryDimensionCollector implements GeometryComponentFilter {

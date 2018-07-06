@@ -16,10 +16,10 @@
  */
 package org.geotools.tile.impl.bing;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.impl.WebMercatorTileService;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * BingTileUtil contains code ported from <a

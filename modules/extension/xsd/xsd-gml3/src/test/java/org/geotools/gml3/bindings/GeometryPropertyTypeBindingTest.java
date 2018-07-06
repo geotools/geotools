@@ -16,9 +16,6 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.io.WKTReader;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.XpathEngine;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
@@ -27,6 +24,9 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Configuration;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.io.WKTReader;
 import org.w3c.dom.Document;
 
 /** @source $URL$ */

@@ -16,8 +16,8 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geotools.gml3.bindings.LineStringTypeBinding;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:CurveType.

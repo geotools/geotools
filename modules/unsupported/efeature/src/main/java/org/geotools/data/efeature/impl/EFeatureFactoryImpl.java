@@ -5,8 +5,8 @@
  */
 package org.geotools.data.efeature.impl;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.emf.ecore.EClass;

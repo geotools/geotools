@@ -16,9 +16,6 @@
  */
 package org.geotools.gml2.simple;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiLineString;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -45,6 +42,9 @@ import org.geotools.xml.EncoderDelegate;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.BindingLoader;
 import org.geotools.xs.bindings.XSStringBinding;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiLineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

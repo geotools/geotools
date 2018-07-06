@@ -1,6 +1,5 @@
 package org.geotools.gml3.v3_2;
 
-import com.vividsolutions.jts.geom.LineString;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.geotools.feature.type.SchemaImpl;
 import org.geotools.gml3.v3_2.gmd.GMDSchema;
 import org.geotools.xlink.XLINKSchema;
 import org.geotools.xs.XSSchema;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
@@ -1631,7 +1631,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "AbstractGeometryType"),
-                        com.vividsolutions.jts.geom.Geometry.class,
+                        org.locationtech.jts.geom.Geometry.class,
                         false,
                         true,
                         null,
@@ -14366,7 +14366,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "GeometryPropertyType"),
-                        com.vividsolutions.jts.geom.Geometry.class,
+                        org.locationtech.jts.geom.Geometry.class,
                         false,
                         false,
                         null,
@@ -15702,7 +15702,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "LineStringType"),
-                        com.vividsolutions.jts.geom.LineString.class,
+                        org.locationtech.jts.geom.LineString.class,
                         false,
                         false,
                         null,
@@ -15905,7 +15905,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "LinearRingPropertyType"),
-                        com.vividsolutions.jts.geom.LinearRing.class,
+                        org.locationtech.jts.geom.LinearRing.class,
                         false,
                         false,
                         null,
@@ -15952,7 +15952,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "LinearRingType"),
-                        com.vividsolutions.jts.geom.LinearRing.class,
+                        org.locationtech.jts.geom.LinearRing.class,
                         false,
                         false,
                         null,
@@ -16648,7 +16648,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiCurvePropertyType"),
-                        com.vividsolutions.jts.geom.MultiLineString.class,
+                        org.locationtech.jts.geom.MultiLineString.class,
                         false,
                         false,
                         null,
@@ -16689,7 +16689,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiGeometryPropertyType"),
-                        com.vividsolutions.jts.geom.GeometryCollection.class,
+                        org.locationtech.jts.geom.GeometryCollection.class,
                         false,
                         false,
                         null,
@@ -16729,7 +16729,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiGeometryType"),
-                        com.vividsolutions.jts.geom.GeometryCollection.class,
+                        org.locationtech.jts.geom.GeometryCollection.class,
                         false,
                         false,
                         null,
@@ -16770,7 +16770,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiPointPropertyType"),
-                        com.vividsolutions.jts.geom.MultiPoint.class,
+                        org.locationtech.jts.geom.MultiPoint.class,
                         false,
                         false,
                         null,
@@ -16810,7 +16810,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiPointType"),
-                        com.vividsolutions.jts.geom.MultiPoint.class,
+                        org.locationtech.jts.geom.MultiPoint.class,
                         false,
                         false,
                         null,
@@ -17050,7 +17050,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiSurfacePropertyType"),
-                        com.vividsolutions.jts.geom.MultiPolygon.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         null,
@@ -17090,7 +17090,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiSurfaceType"),
-                        com.vividsolutions.jts.geom.MultiPolygon.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         null,
@@ -19415,7 +19415,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "PointPropertyType"),
-                        com.vividsolutions.jts.geom.Point.class,
+                        org.locationtech.jts.geom.Point.class,
                         false,
                         false,
                         null,
@@ -19457,7 +19457,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "PointType"),
-                        com.vividsolutions.jts.geom.Point.class,
+                        org.locationtech.jts.geom.Point.class,
                         false,
                         false,
                         null,
@@ -19731,7 +19731,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "PolygonType"),
-                        com.vividsolutions.jts.geom.Polygon.class,
+                        org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
                         null,
@@ -22566,7 +22566,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "SurfacePropertyType"),
-                        com.vividsolutions.jts.geom.Polygon.class,
+                        org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
                         null,
@@ -22605,7 +22605,7 @@ public class GMLSchema extends SchemaImpl {
         AttributeType builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "SurfaceType"),
-                        com.vividsolutions.jts.geom.Polygon.class,
+                        org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
                         null,
@@ -25282,7 +25282,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AbstractLazyAttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml/3.2", "MultiCurveType"),
-                        com.vividsolutions.jts.geom.MultiLineString.class,
+                        org.locationtech.jts.geom.MultiLineString.class,
                         false,
                         false,
                         null,

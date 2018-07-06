@@ -16,7 +16,6 @@
  */
 package org.geotools.wfs;
 
-import com.vividsolutions.jts.geom.Point;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,6 +59,7 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
 import org.geotools.xml.Schemas;
 import org.geotools.xml.StreamingParser;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.opengis.filter.capability.Operator;

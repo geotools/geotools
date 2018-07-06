@@ -19,12 +19,12 @@ package org.geotools.styling.css.util;
 
 import static org.junit.Assert.assertEquals;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Date;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 
 public class FilterTypeVisitorTest {

@@ -21,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Point;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,6 +68,7 @@ import org.geotools.xml.Schemas;
 import org.geotools.xml.StreamingParser;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.opengis.filter.capability.SpatialOperators;

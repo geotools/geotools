@@ -16,26 +16,26 @@
  */
 package org.geotools.renderer.lite;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateFilter;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceComparator;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.GeometryFilter;
-import com.vividsolutions.jts.geom.IntersectionMatrix;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateFilter;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceComparator;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.CoordinateSequenceFilter;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFilter;
+import org.locationtech.jts.geom.IntersectionMatrix;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.PrecisionModel;
 
 /**
  * A subclass of {@link GeometryFactory} with special optimizations for geometry collections made of
@@ -112,10 +112,6 @@ class SimpleGeometryFactory extends GeometryFactory {
 
         public Geometry buffer(double distance) {
             return geometry.buffer(distance);
-        }
-
-        public Object clone() {
-            return geometry.clone();
         }
 
         public int compareTo(Object o, CoordinateSequenceComparator comp) {
@@ -378,10 +374,6 @@ class SimpleGeometryFactory extends GeometryFactory {
 
         public Geometry buffer(double distance) {
             return lineString.buffer(distance);
-        }
-
-        public Object clone() {
-            return lineString.clone();
         }
 
         public int compareTo(Object o, CoordinateSequenceComparator comp) {
@@ -678,10 +670,6 @@ class SimpleGeometryFactory extends GeometryFactory {
             return polygon.buffer(distance);
         }
 
-        public Object clone() {
-            return polygon.clone();
-        }
-
         public int compareTo(Object o, CoordinateSequenceComparator comp) {
             return polygon.compareTo(o, comp);
         }
@@ -953,10 +941,6 @@ class SimpleGeometryFactory extends GeometryFactory {
 
         public Geometry buffer(double distance) {
             return point.buffer(distance);
-        }
-
-        public Object clone() {
-            return point.clone();
         }
 
         public int compareTo(Object o, CoordinateSequenceComparator comp) {

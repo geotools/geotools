@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.6" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="com.vividsolutions.jts.geom.Geometry" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
+  <class id="1" language="java" name="org.locationtech.jts.geom.Geometry" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="175" y="44"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
@@ -10,8 +10,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="com.vividsolutions.jts.geom.Point" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
+  <class id="2" language="java" name="org.locationtech.jts.geom.Point" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="59" y="142"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
@@ -19,8 +19,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="com.vividsolutions.jts.geom.LineString" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="org.locationtech.jts.geom.LineString" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="175" y="142"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
@@ -28,8 +28,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="com.vividsolutions.jts.geom.Polygon" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="org.locationtech.jts.geom.Polygon" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="328" y="142"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
@@ -37,8 +37,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="com.vividsolutions.jts.geom.LinearRing" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
+  <class id="5" language="java" name="org.locationtech.jts.geom.LinearRing" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="174" y="220"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      
@@ -46,8 +46,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="com.vividsolutions.jts.geom.Envelope" project="docs" 
-    file="/Users/jody/.m2/repository/com/vividsolutions/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
+  <class id="6" language="java" name="org.locationtech.jts.geom.Envelope" project="docs" 
+    file="/Users/jody/.m2/repository/org.locationtech/jts/1.13/jts-1.13.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="364" y="44"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="false" accessors="true" 
       visibility="false">      

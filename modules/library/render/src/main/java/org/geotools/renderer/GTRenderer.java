@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -25,6 +24,7 @@ import java.util.Map;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * GeoTools renderer for rendering spatial content into a Graphics2D. Typical usage:

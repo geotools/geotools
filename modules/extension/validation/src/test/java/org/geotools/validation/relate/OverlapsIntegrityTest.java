@@ -16,12 +16,12 @@
  */
 package org.geotools.validation.relate;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 

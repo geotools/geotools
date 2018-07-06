@@ -17,7 +17,7 @@
 
 package org.geotools.grid;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Represents a {@code GridElement} that is a polygon.

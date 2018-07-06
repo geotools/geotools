@@ -18,10 +18,10 @@ package org.geotools.feature.simple;
 
 import static org.junit.Assert.assertNotEquals;
 
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
 import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

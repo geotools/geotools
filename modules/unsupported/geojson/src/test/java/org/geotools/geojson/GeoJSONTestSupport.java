@@ -16,10 +16,10 @@
  */
 package org.geotools.geojson;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.StringReader;
 import junit.framework.TestCase;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** @source $URL$ */

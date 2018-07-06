@@ -16,8 +16,8 @@
  */
 package org.geotools.feature.visitor;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Calculates the extents (envelope) of the features it visits.

@@ -19,7 +19,6 @@ package org.geotools.process.function;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
 import java.net.URL;
 import java.util.List;
 import org.geotools.TestData;
@@ -30,6 +29,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.feature.BufferFeatureCollectionFactory;
 import org.junit.Test;
+import org.locationtech.jts.geom.MultiPolygon;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;

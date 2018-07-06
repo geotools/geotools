@@ -16,9 +16,9 @@
  */
 package org.geotools.gce.imagemosaic.jdbc;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

@@ -16,9 +16,6 @@
  */
 package org.geotools.kml;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -35,6 +32,9 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
 import org.geotools.xml.StreamingParser;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 

@@ -16,11 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.egr;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.prep.PreparedGeometry;
-import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -50,6 +45,11 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteShape;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.prep.PreparedGeometry;
+import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
 
 /**
  * Creates a quantized binary representation of a Bounding Box.
@@ -57,8 +57,8 @@ import org.geotools.util.logging.Logging;
  * <p><br>
  * The BBOx is represented by a grid of pixels, which are then split in a set of tiles. <br>
  *
- * <p>By {@link #add(com.vividsolutions.jts.geom.Geometry) adding} Geometries to the Binarizator,
- * they will be rendered on the grid.<br>
+ * <p>By {@link #add(org.locationtech.jts.geom.Geometry) adding} Geometries to the Binarizator, they
+ * will be rendered on the grid.<br>
  *
  * <p>You can check if the grid has been fully drawn using the {@link #isComplete() } method.<br>
  *

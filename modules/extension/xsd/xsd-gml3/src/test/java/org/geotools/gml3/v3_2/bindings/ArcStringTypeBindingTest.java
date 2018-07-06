@@ -16,7 +16,6 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
-import com.vividsolutions.jts.geom.LineString;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.XpathEngine;
 import org.geotools.geometry.jts.CircularString;
@@ -25,6 +24,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
+import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
 public class ArcStringTypeBindingTest extends GML32TestSupport {

@@ -16,12 +16,12 @@
  */
 package org.geotools.kml.bindings;
 
-import com.vividsolutions.jts.geom.Envelope;
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:LatLonBoxType.

@@ -4,7 +4,6 @@ import static org.geotools.data.shapefile.files.ShpFileType.DBF;
 import static org.geotools.data.shapefile.files.ShpFileType.PRJ;
 import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
@@ -16,6 +15,7 @@ import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.data.shapefile.shp.ShapefileException;
 import org.geotools.data.shapefile.shp.ShapefileReader;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.referencing.FactoryException;
 
 /**

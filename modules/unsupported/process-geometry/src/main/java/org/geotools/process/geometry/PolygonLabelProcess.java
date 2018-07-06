@@ -18,12 +18,12 @@
 
 package org.geotools.process.geometry;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.factory.StaticMethodsProcessFactory;
 import org.geotools.text.Text;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Based on Vladimir Agafonkin's Algorithm https://www.mapbox.com/blog/polygon-center/

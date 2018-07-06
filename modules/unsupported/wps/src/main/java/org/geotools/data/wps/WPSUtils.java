@@ -16,7 +16,6 @@
  */
 package org.geotools.data.wps;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +45,7 @@ import org.eclipse.emf.common.util.EList;
 import org.geotools.data.Parameter;
 import org.geotools.text.Text;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.util.InternationalString;
 
 /**

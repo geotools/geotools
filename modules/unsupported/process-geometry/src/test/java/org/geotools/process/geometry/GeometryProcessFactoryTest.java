@@ -1,8 +1,5 @@
 package org.geotools.process.geometry;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.operation.buffer.BufferParameters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +11,9 @@ import org.geotools.feature.NameImpl;
 import org.geotools.process.ProcessException;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
+import org.locationtech.jts.operation.buffer.BufferParameters;
 import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 

@@ -18,8 +18,6 @@ package org.geotools.data.complex;
 
 import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
 
-import com.vividsolutions.jts.geom.EmptyGeometry;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +43,8 @@ import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.xlink.XLINK;
+import org.locationtech.jts.geom.EmptyGeometry;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
@@ -628,7 +628,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 // db is reused instead of regenerated if different attributes refer
                 // to the same database row... so if we change the userData, we have
                 // to clone it
-                geom = (Geometry) ((Geometry) target.getValue()).clone();
+                geom = ((Geometry) target.getValue()).copy();
             }
 
             if (geom != null) {

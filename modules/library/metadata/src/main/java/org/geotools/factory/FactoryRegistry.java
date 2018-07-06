@@ -765,8 +765,8 @@ public class FactoryRegistry {
      *
      * <p>Override this method for non-Geotools implementations. For example a JTS geometry factory
      * finder may overrides this method in order to check if a {@link
-     * com.vividsolutions.jts.geom.GeometryFactory} uses the required {@link
-     * com.vividsolutions.jts.geom.CoordinateSequenceFactory}. Such method should be implemented as
+     * org.locationtech.jts.geom.GeometryFactory} uses the required {@link
+     * org.locationtech.jts.geom.CoordinateSequenceFactory}. Such method should be implemented as
      * below, since this method may be invoked for various kind of objects:
      *
      * <pre>

@@ -16,7 +16,7 @@
  */
 package org.geotools.caching.featurecache;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import java.io.IOException;
 import org.geotools.caching.CacheOversizedException;
 import org.geotools.data.simple.SimpleFeatureCollection;

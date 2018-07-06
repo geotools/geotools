@@ -21,16 +21,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import java.util.Arrays;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 
 public class CurvedGeometryTest {
 
@@ -59,7 +59,7 @@ public class CurvedGeometryTest {
         assertEquals(CircularArc.BASE_SEGMENTS_QUADRANT + 1, cs.getNumPoints());
 
         // check cloning
-        CircularString cloned = (CircularString) cs.clone();
+        CircularString cloned = (CircularString) cs.copy();
         assertEquals(cs, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
@@ -112,7 +112,7 @@ public class CurvedGeometryTest {
         assertEquals(CircularArc.BASE_SEGMENTS_QUADRANT * 2 + 1, cs.getNumPoints());
 
         // check cloning
-        CircularString cloned = (CircularString) cs.clone();
+        CircularString cloned = (CircularString) cs.copy();
         assertEquals(cs, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
@@ -169,7 +169,7 @@ public class CurvedGeometryTest {
         circle.assertTolerance(coordinates, 0.1);
 
         // check cloning
-        CircularRing cloned = (CircularRing) cr.clone();
+        CircularRing cloned = (CircularRing) cr.copy();
         assertEquals(cr, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
@@ -237,7 +237,7 @@ public class CurvedGeometryTest {
         assertEquals(CircularArc.BASE_SEGMENTS_QUADRANT * 2 + 4, curve.getNumPoints());
 
         // check cloning
-        CompoundCurve cloned = (CompoundCurve) curve.clone();
+        CompoundCurve cloned = (CompoundCurve) curve.copy();
         assertEquals(curve, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
@@ -279,7 +279,7 @@ public class CurvedGeometryTest {
         assertEquals(CircularArc.BASE_SEGMENTS_QUADRANT * 2 + 4, ring.getNumPoints());
 
         // check cloning
-        CompoundRing cloned = (CompoundRing) ring.clone();
+        CompoundRing cloned = (CompoundRing) ring.copy();
         assertEquals(ring, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
@@ -308,7 +308,7 @@ public class CurvedGeometryTest {
         assertEquals(CircularArc.BASE_SEGMENTS_QUADRANT * 4 + 1 + 5, curved.getNumPoints());
 
         // check cloning
-        CurvePolygon cloned = (CurvePolygon) curved.clone();
+        CurvePolygon cloned = (CurvePolygon) curved.copy();
         assertEquals(curved, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate
@@ -364,7 +364,7 @@ public class CurvedGeometryTest {
         assertEquals((CircularArc.BASE_SEGMENTS_QUADRANT * 4 + 1 + 5) + (5 + 5), ms.getNumPoints());
 
         // check cloning
-        MultiSurface cloned = (MultiSurface) ms.clone();
+        MultiSurface cloned = (MultiSurface) ms.copy();
         assertEquals(ms, cloned);
 
         // check perimeter, not enough control points to have a accurate estimate

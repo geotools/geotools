@@ -16,7 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import java.util.logging.Logger;
 import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 
 /**

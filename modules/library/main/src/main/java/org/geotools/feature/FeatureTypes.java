@@ -16,7 +16,6 @@
  */
 package org.geotools.feature;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.Utilities;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

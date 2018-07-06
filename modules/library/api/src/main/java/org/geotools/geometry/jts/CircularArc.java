@@ -18,9 +18,9 @@ package org.geotools.geometry.jts;
 
 import static java.lang.Math.*;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.Arrays;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Represents an arc by three points, and provides methods to linearize it to a given max distance

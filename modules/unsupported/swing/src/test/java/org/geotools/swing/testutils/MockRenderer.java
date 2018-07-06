@@ -17,7 +17,6 @@
 
 package org.geotools.swing.testutils;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -36,6 +35,7 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * A simple mock GTRenderer.

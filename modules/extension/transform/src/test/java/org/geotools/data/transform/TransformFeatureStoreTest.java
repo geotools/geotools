@@ -2,7 +2,6 @@ package org.geotools.data.transform;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.ecql.ECQL;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 

@@ -18,7 +18,7 @@
 package org.geotools.geometry.iso.operation.overlay;
 
 /** @version 1.7.2 */
-// import com.vividsolutions.jts.geomgraph.*;
+// import org.locationtech.jts.geomgraph.*;
 
 import org.geotools.geometry.iso.topograph2D.Coordinate;
 import org.geotools.geometry.iso.topograph2D.DirectedEdgeStar;

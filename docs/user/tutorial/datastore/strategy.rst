@@ -53,7 +53,7 @@ Much of the class's structure is improved to be more compartmentalized. The meta
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/CSVDataStoreFactory.java
       :language: java
-      :start-after: import com.vividsolutions.jts.geom.GeometryFactory;
+      :start-after: import org.locationtech.jts.geom.GeometryFactory;
       :end-before: @Override
 
 
@@ -296,7 +296,7 @@ Similar to the CSVLatLonStrategy, a specified WKT must be passed to the strategy
 
    .. literalinclude:: /../../modules/unsupported/csv/src/main/java/org/geotools/data/csv/parse/CSVSpecifiedWKTStrategy.java
       :language: java
-      :start-after: import com.vividsolutions.jts.io.WKTWriter;
+      :start-after: import org.locationtech.jts.io.WKTWriter;
       :end-before: @Override
 
 To build the feature type with this strategy, the only thing that needs to be changed is updating the specified WKT field. Instead of reading this data as an Integer, Double or String (as in the base CSVStrategy class's **createBuilder()** method), we want to use a Geometry class to store the information in the WKT Field's column. To do this, we create an AttributeBuilder, set our CRS to **WGS84** and the binding to :file:`Geometry.class`. We get an AttributeDescriptor from this builder, suppling it with the wktField specified as its name. Then we set the featureBuilder with this AttributeDescriptor, it overwrites it with the new information.

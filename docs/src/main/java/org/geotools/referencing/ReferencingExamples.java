@@ -1,6 +1,5 @@
 package org.geotools.referencing;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import java.awt.RenderingHints.Key;
 import java.awt.geom.Point2D;
 import java.util.Collections;
@@ -16,6 +15,7 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.referencing.wkt.Formattable;
+import org.locationtech.jts.geom.Coordinate;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;

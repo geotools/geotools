@@ -16,8 +16,8 @@
  */
 package org.geotools.data.georest;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Polygon;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Polygon;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

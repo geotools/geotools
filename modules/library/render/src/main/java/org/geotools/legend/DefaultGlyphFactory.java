@@ -16,13 +16,13 @@
  */
 package org.geotools.legend;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Color;
 import javax.swing.Icon;
 import org.geotools.map.MapLayer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 

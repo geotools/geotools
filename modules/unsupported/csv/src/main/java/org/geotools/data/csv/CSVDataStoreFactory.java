@@ -17,7 +17,6 @@
  */
 package org.geotools.data.csv;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +37,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.util.KVP;
 import org.geotools.util.URLs;
+import org.locationtech.jts.geom.GeometryFactory;
 
 public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 

@@ -16,7 +16,6 @@
  */
 package org.geotools.data.geobuf;
 
-import com.vividsolutions.jts.geom.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.geotools.geometry.jts.JTSFactoryFinder;
+import org.locationtech.jts.geom.*;
 
 /**
  * The GeobufGeometry class encodes and decodes geobuf geometries

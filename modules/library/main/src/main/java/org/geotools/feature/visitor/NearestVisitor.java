@@ -16,11 +16,11 @@
  */
 package org.geotools.feature.visitor;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.expression.Expression;
 

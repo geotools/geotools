@@ -16,8 +16,8 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * Convenience interface to expose methods common to {@link CircularString} and {@link CircularRing}

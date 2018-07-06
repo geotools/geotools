@@ -16,7 +16,7 @@
  */
 package org.geotools.data.efeature.tests.unit.conditions;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.util.Date;
 import java.util.Set;
 import org.eclipse.emf.ecore.EAttribute;

@@ -25,6 +25,7 @@ import it.geosolutions.jaiext.jiffle.parser.node.GetSourceValue;
 import it.geosolutions.jaiext.jiffle.parser.node.ScalarLiteral;
 import it.geosolutions.jaiext.jiffle.runtime.BandTransform;
 import it.geosolutions.jaiext.jiffleop.JiffleDescriptor;
+import it.geosolutions.jaiext.jiffleop.JiffleRIF;
 import it.geosolutions.jaiext.range.Range.DataType;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
@@ -37,6 +38,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.ImageLayout;
+import javax.media.jai.JAI;
 import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -45,6 +47,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.processing.operation.GridCoverage2DRIA;
 import org.geotools.factory.GeoTools;
+import org.geotools.image.jai.Registry;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
@@ -60,6 +63,14 @@ import org.opengis.util.ProgressListener;
 
 @DescribeProcess(title = "Jiffle map algebra", description = "Map algebra powered by Jiffle")
 public class JiffleProcess implements RasterProcess {
+
+    static {
+        Registry.registerRIF(
+                JAI.getDefaultInstance(),
+                new JiffleDescriptor(),
+                new JiffleRIF(),
+                "it.geosolutions.jaiext");
+    }
 
     static final Logger LOGGER = Logging.getLogger(JiffleProcess.class);
 

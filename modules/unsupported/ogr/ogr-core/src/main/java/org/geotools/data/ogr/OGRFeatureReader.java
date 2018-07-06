@@ -16,10 +16,10 @@
  */
 package org.geotools.data.ogr;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

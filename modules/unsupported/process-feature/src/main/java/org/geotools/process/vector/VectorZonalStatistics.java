@@ -17,7 +17,6 @@
  */
 package org.geotools.process.vector;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -35,6 +34,7 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.vector.AggregateProcess.AggregationFunction;
 import org.geotools.process.vector.AggregateProcess.Results;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

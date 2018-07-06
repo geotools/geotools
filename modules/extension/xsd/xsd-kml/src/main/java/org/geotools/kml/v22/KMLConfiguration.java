@@ -1,7 +1,5 @@
 package org.geotools.kml.v22;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.kml.FolderStack;
 import org.geotools.kml.StyleMap;
@@ -39,6 +37,8 @@ import org.geotools.kml.v22.bindings.SchemaTypeBinding;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.Configuration;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;
 
 /**

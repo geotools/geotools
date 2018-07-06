@@ -16,9 +16,9 @@
  */
 package org.geotools.kml.v22;
 
-import com.vividsolutions.jts.geom.Point;
 import java.util.List;
 import org.geotools.xml.Parser;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class KMLPlacemarkLookAtTest extends KMLTestSupport {

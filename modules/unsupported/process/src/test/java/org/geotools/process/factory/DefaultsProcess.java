@@ -16,11 +16,11 @@
  */
 package org.geotools.process.factory;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.referencing.CRS.AxisOrder;
+import org.locationtech.jts.geom.Geometry;
 
 @DescribeProcess(title = "Defaults", description = "Process used to test default value processing")
 public class DefaultsProcess {

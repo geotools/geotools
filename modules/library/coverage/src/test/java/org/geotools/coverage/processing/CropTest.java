@@ -19,11 +19,6 @@ package org.geotools.coverage.processing;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -59,6 +54,11 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -441,7 +441,7 @@ public final class CropTest extends GridProcessingTestBase {
         cs1.setOrdinate(4, 1, mid1 + qspan1);
 
         LinearRing shape1 = geometryFactory.createLinearRing(cs1);
-        com.vividsolutions.jts.geom.Polygon poly1 = geometryFactory.createPolygon(shape1, null);
+        org.locationtech.jts.geom.Polygon poly1 = geometryFactory.createPolygon(shape1, null);
 
         // overlapping square #2
         CoordinateSequence cs2 = new CoordinateArraySequence(5);
@@ -457,7 +457,7 @@ public final class CropTest extends GridProcessingTestBase {
         cs2.setOrdinate(4, 1, mid1 + half1);
 
         LinearRing shape2 = geometryFactory.createLinearRing(cs2);
-        com.vividsolutions.jts.geom.Polygon poly2 = geometryFactory.createPolygon(shape2, null);
+        org.locationtech.jts.geom.Polygon poly2 = geometryFactory.createPolygon(shape2, null);
 
         // Disjuncted square lower left -- will be included
         CoordinateSequence cs3 = new CoordinateArraySequence(5);
@@ -473,7 +473,7 @@ public final class CropTest extends GridProcessingTestBase {
         cs3.setOrdinate(4, 1, oldEnvelope.getMinimum(1));
 
         LinearRing shape3 = geometryFactory.createLinearRing(cs3);
-        com.vividsolutions.jts.geom.Polygon poly3 = geometryFactory.createPolygon(shape3, null);
+        org.locationtech.jts.geom.Polygon poly3 = geometryFactory.createPolygon(shape3, null);
 
         // Disjuncted square lower right -- will be excluded by Envelope
         CoordinateSequence cs4 = new CoordinateArraySequence(5);
@@ -489,11 +489,11 @@ public final class CropTest extends GridProcessingTestBase {
         cs4.setOrdinate(4, 1, oldEnvelope.getMinimum(1));
 
         LinearRing shape4 = geometryFactory.createLinearRing(cs4);
-        com.vividsolutions.jts.geom.Polygon poly4 = geometryFactory.createPolygon(shape4, null);
+        org.locationtech.jts.geom.Polygon poly4 = geometryFactory.createPolygon(shape4, null);
 
         Geometry mpoly =
                 geometryFactory.createMultiPolygon(
-                        new com.vividsolutions.jts.geom.Polygon[] {poly1, poly2});
+                        new org.locationtech.jts.geom.Polygon[] {poly1, poly2});
 
         //        Geometry union = geometryFactory.createGeometryCollection(new Geometry[]{
         //            poly1, poly2, poly3, poly4});
@@ -595,7 +595,7 @@ public final class CropTest extends GridProcessingTestBase {
         cs1.setOrdinate(5, 1, max1);
 
         LinearRing shape1 = geometryFactory.createLinearRing(cs1);
-        com.vividsolutions.jts.geom.Polygon mask = geometryFactory.createPolygon(shape1, null);
+        org.locationtech.jts.geom.Polygon mask = geometryFactory.createPolygon(shape1, null);
 
         ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
         param.parameter("Source").setValue(source);
@@ -651,7 +651,7 @@ public final class CropTest extends GridProcessingTestBase {
         cs1.setOrdinate(4, 1, oldEnvelope.getMaximum(1));
 
         LinearRing shape1 = geometryFactory.createLinearRing(cs1);
-        com.vividsolutions.jts.geom.Polygon poly1 = geometryFactory.createPolygon(shape1, null);
+        org.locationtech.jts.geom.Polygon poly1 = geometryFactory.createPolygon(shape1, null);
 
         ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
         param.parameter("Source").setValue(source);
@@ -714,7 +714,7 @@ public final class CropTest extends GridProcessingTestBase {
         cs1.setOrdinate(3, 1, oldEnvelope.getMaximum(1));
 
         LinearRing shape1 = geometryFactory.createLinearRing(cs1);
-        com.vividsolutions.jts.geom.Polygon poly1 = geometryFactory.createPolygon(shape1, null);
+        org.locationtech.jts.geom.Polygon poly1 = geometryFactory.createPolygon(shape1, null);
 
         ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
         param.parameter("Source").setValue(source);
@@ -778,10 +778,10 @@ public final class CropTest extends GridProcessingTestBase {
         // Creating ROI for cropping
         final ReferencedEnvelope cropBounds =
                 new ReferencedEnvelope(0d, 1d, 0d, 1d, DefaultGeographicCRS.WGS84);
-        com.vividsolutions.jts.geom.Polygon polygon = JTS.toGeometry(cropBounds);
+        org.locationtech.jts.geom.Polygon polygon = JTS.toGeometry(cropBounds);
         Geometry roi =
                 polygon.getFactory()
-                        .createMultiPolygon(new com.vividsolutions.jts.geom.Polygon[] {polygon});
+                        .createMultiPolygon(new org.locationtech.jts.geom.Polygon[] {polygon});
 
         ParameterValueGroup param = processor.getOperation("CoverageCrop").getParameters();
         param.parameter("Source").setValue(source);

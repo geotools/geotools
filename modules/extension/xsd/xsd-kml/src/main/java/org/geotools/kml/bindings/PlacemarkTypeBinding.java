@@ -16,7 +16,6 @@
  */
 package org.geotools.kml.bindings;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -27,6 +26,7 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

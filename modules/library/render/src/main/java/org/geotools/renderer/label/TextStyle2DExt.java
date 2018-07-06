@@ -1,12 +1,12 @@
 package org.geotools.renderer.label;
 
-import com.vividsolutions.jts.algorithm.MinimumDiameter;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.prep.PreparedGeometry;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
+import org.locationtech.jts.algorithm.MinimumDiameter;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.prep.PreparedGeometry;
 
 /**
  * Helper class that keeps the state of the alternate polygon labelling angle to avoid its (sometime

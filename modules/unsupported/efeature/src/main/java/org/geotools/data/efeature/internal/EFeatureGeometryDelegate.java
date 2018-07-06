@@ -5,7 +5,7 @@
  */
 package org.geotools.data.efeature.internal;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.emf.ecore.EAttribute;

@@ -16,8 +16,6 @@
  */
 package org.geotools.geojson.feature;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +26,8 @@ import org.geotools.geojson.IContentHandler;
 import org.geotools.geojson.geom.GeometryCollectionHandler;
 import org.geotools.geojson.geom.GeometryHandler;
 import org.json.simple.parser.ParseException;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

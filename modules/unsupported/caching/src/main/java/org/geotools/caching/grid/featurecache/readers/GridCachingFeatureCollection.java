@@ -1,6 +1,6 @@
 package org.geotools.caching.grid.featurecache.readers;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;

@@ -98,7 +98,7 @@ public class UniqueFIDValidation extends DefaultIntegrityValidation {
      * @return True if there were no errors. False if there were errors.
      * @throws Exception DOCUMENT ME!
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
-     *     com.vividsolutions.jts.geom.Envelope, org.geotools.validation.ValidationResults)
+     *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
     public boolean validate(Map layers, ReferencedEnvelope envelope, ValidationResults results)
             throws Exception {

@@ -17,8 +17,6 @@
 
 package org.geotools.util;
 
-import com.vividsolutions.jts.geom.EmptyGeometry;
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -33,6 +31,8 @@ import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.xs.XSSchema;
+import org.locationtech.jts.geom.EmptyGeometry;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.GeometryAttribute;

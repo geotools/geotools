@@ -16,11 +16,15 @@
  */
 package org.geotools.xml.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.ext.DefaultHandler2;
+import org.xml.sax.ext.EntityResolver2;
 
 /**
  * Handler for validating a document.
@@ -30,10 +34,13 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Justin Deoliveira, OpenGeo
  * @source $URL$
  */
-public class ValidatorHandler extends DefaultHandler {
+public class ValidatorHandler extends DefaultHandler2 {
 
     /** flag to control if an exception is thrown on a validation error */
     boolean failOnValidationError = false;
+
+    /** entity resolver */
+    EntityResolver2 entityResolver;
 
     /** list of validation errors */
     List<Exception> errors;
@@ -44,6 +51,33 @@ public class ValidatorHandler extends DefaultHandler {
 
     public boolean isFailOnValidationError() {
         return failOnValidationError;
+    }
+
+    public void setEntityResolver(EntityResolver entityResolver) {
+        this.entityResolver = (EntityResolver2) entityResolver;
+    }
+
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }
+
+    @Override
+    public InputSource resolveEntity(String publicId, String systemId)
+            throws IOException, SAXException {
+        if (entityResolver != null) {
+            return entityResolver.resolveEntity(publicId, systemId);
+        } else {
+            return super.resolveEntity(publicId, systemId);
+        }
+    }
+
+    @Override
+    public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
+            throws SAXException, IOException {
+        if (entityResolver != null) {
+            return entityResolver.resolveEntity(name, publicId, baseURI, systemId);
+        }
+        return super.resolveEntity(name, publicId, baseURI, systemId);
     }
 
     @Override

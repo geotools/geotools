@@ -428,9 +428,11 @@ public final class ParserTest {
         CoordinateReferenceSystem expected = CRS.decode("EPSG:404000");
         System.out.println("Exp: " + expected);
         System.out.println("Obs: " + observed);
+        assertTrue(
+                "Internal CS",
+                CRS.equalsIgnoreMetadata(
+                        expected.getCoordinateSystem(), observed.getCoordinateSystem()));
 
-        System.out.println("Exp: " + expected.getCoordinateSystem());
-        System.out.println("Obs: " + observed.getCoordinateSystem());
         assertTrue(CRS.equalsIgnoreMetadata(expected, observed));
         assertTrue(expected.equals(observed));
         assertEquals("Incorrect reading", expected, observed);

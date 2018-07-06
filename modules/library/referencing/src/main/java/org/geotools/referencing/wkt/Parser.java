@@ -43,6 +43,7 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
 import org.geotools.referencing.datum.DefaultVerticalDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
+import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -792,6 +793,8 @@ public class Parser extends MathTransformParser {
      *     which method to invokes in the {@link CSFactory} (is it a cartesian coordinate system? a
      *     spherical one? etc.).
      */
+    static final String WILDCARD_CODE = "EPSG:" + CartesianAuthorityFactory.GENERIC_2D_CODE;
+
     private EngineeringCRS parseLocalCS(final Element parent) throws ParseException {
         Element element = parent.pullElement("LOCAL_CS");
         String name = element.pullString("name");
@@ -806,10 +809,16 @@ public class Parser extends MathTransformParser {
         final Map<String, ?> properties = parseAuthority(element, name);
         element.close();
         final CoordinateSystem cs;
-        cs =
-                new AbstractCS(
-                        singletonMap("name", name),
-                        list.toArray(new CoordinateSystemAxis[list.size()]));
+        //
+        if (properties.containsKey("identifiers")
+                && properties.get("identifiers").toString().equalsIgnoreCase(WILDCARD_CODE)) {
+            return CartesianAuthorityFactory.GENERIC_2D;
+        } else {
+            cs =
+                    new AbstractCS(
+                            singletonMap("name", name),
+                            list.toArray(new CoordinateSystemAxis[list.size()]));
+        }
         try {
             return crsFactory.createEngineeringCRS(properties, datum, cs);
         } catch (FactoryException exception) {

@@ -251,6 +251,13 @@ public class ParserTest extends TestCase {
             fail("parsing should throw an exception since referenced file does not exist");
         } catch (FileNotFoundException e) {
         }
+        try {
+            parser.validate(
+                    MLSchemaLocationResolver.class.getResourceAsStream(
+                            "mails-external-entities.xml"));
+            fail("validating should throw an exception since referenced file does not exist");
+        } catch (FileNotFoundException e) {
+        }
 
         // Set an EntityResolver implementation to prevent usage of external entities.
         // When parsing an XML entity, the empty InputSource returned by this resolver provokes
@@ -282,6 +289,13 @@ public class ParserTest extends TestCase {
                     MLSchemaLocationResolver.class.getResourceAsStream(
                             "mails-external-entities.xml"));
             fail("parsing an XML with external entities should throw a MalformedURLException");
+        } catch (MalformedURLException e) {
+        }
+        try {
+            parser.validate(
+                    MLSchemaLocationResolver.class.getResourceAsStream(
+                            "mails-external-entities.xml"));
+            fail("validating an XML with external entities should throw a MalformedURLException");
         } catch (MalformedURLException e) {
         }
 
@@ -319,6 +333,8 @@ public class ParserTest extends TestCase {
 
         // parsing shouldn't throw an exception
         parser.parse(
+                MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
+        parser.validate(
                 MLSchemaLocationResolver.class.getResourceAsStream("mails-external-entities.xml"));
     }
 }

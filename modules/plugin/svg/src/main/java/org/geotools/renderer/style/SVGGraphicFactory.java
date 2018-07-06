@@ -16,9 +16,7 @@
  */
 package org.geotools.renderer.style;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.RenderingHints.Key;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -37,22 +35,20 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.swing.*;
 import javax.swing.Icon;
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.bridge.BridgeContext;
 import org.apache.batik.bridge.DocumentLoader;
 import org.apache.batik.bridge.GVTBuilder;
 import org.apache.batik.bridge.UserAgent;
 import org.apache.batik.bridge.UserAgentAdapter;
-import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.geotools.factory.Factory;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.util.CanonicalSet;
 import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
-import org.geotools.xml.NullEntityResolver;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 import org.w3c.dom.Document;
@@ -60,8 +56,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -96,24 +90,12 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
     /** Hints we care about */
     private final Map<Key, Object> implementationHints = new HashMap<>();
 
-    private EntityResolver resolver;
-
     public SVGGraphicFactory() {
         this(null);
     }
 
     public SVGGraphicFactory(Map<Key, Object> hints) {
-        if (hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)) {
-            // use entity resolver provided (even if null)
-            this.resolver = (EntityResolver) hints.get(Hints.ENTITY_RESOLVER);
-            this.implementationHints.put(Hints.ENTITY_RESOLVER, this.resolver);
-
-            if (this.resolver == null) { // use null instance rather than check each time
-                this.resolver = NullEntityResolver.INSTANCE;
-            }
-        } else {
-            this.resolver = GeoTools.getEntityResolver(null);
-        }
+        // nothing to actually do, see field init, constructor left for backwards compatibility
     }
 
     @Override
@@ -159,22 +141,7 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
             throws SAXException, IOException {
         RenderableSVG svg;
         String parser = XMLResourceDescriptor.getXMLParserClassName();
-        SAXSVGDocumentFactory f =
-                new SAXSVGDocumentFactory(parser) {
-                    @Override
-                    public InputSource resolveEntity(String publicId, String systemId)
-                            throws SAXException {
-                        InputSource source = super.resolveEntity(publicId, systemId);
-                        if (source == null) {
-                            try {
-                                return resolver.resolveEntity(publicId, systemId);
-                            } catch (IOException e) {
-                                throw new SAXException(e);
-                            }
-                        }
-                        return source;
-                    }
-                };
+        SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
         String svgUri = svgfile;
         // Remove parameters from file URLs, as it is not supported by Windows
         if ("file".equals(svgUrl.getProtocol()) && svgUrl.getQuery() != null) {
@@ -311,13 +278,13 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
         return value;
     }
 
-    private static class SVGIcon implements Icon {
+    static class SVGIcon implements Icon {
 
         private int width;
 
         private int height;
 
-        private RenderableSVG svg;
+        RenderableSVG svg;
 
         public SVGIcon(RenderableSVG svg, int size) {
             this.svg = svg;
@@ -356,7 +323,7 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
     protected static class RenderableSVG {
         Rectangle2D bounds;
 
-        private GraphicsNode node;
+        GraphicsNode node;
 
         public RenderableSVG(Document doc) {
             this.node = getGraphicNode(doc);

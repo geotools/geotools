@@ -253,12 +253,14 @@ public class ParserHandler extends DefaultHandler2 {
 
     public void setEntityResolver(EntityResolver entityResolver) {
         this.entityResolver = (EntityResolver2) entityResolver;
+        validator.setEntityResolver(entityResolver);
     }
 
     public EntityResolver getEntityResolver() {
         return entityResolver;
     }
 
+    @Override
     public InputSource resolveEntity(String publicId, String systemId)
             throws IOException, SAXException {
         if (entityResolver != null) {

@@ -49,7 +49,7 @@ import org.opengis.util.InternationalString;
 public class CartesianAuthorityFactory extends DirectAuthorityFactory
         implements CRSAuthorityFactory {
 
-    static final String GENERIC_2D_CODE = "404000";
+    public static final String GENERIC_2D_CODE = "404000";
 
     /** A clone of {@link DefaultEngineeringCRS#GENERIC_2D} with the proper authority name */
     public static final DefaultEngineeringCRS GENERIC_2D =

@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -28,6 +27,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

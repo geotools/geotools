@@ -82,6 +82,12 @@ public class SchemaCache {
     private static final String CACHE_DIRECTORY_NAME = "app-schema-cache";
 
     /**
+     * Key that should be used to setup a system property that sets the location that should be used
+     * for schema cache location.
+     */
+    public static final String PROVIDED_CACHE_LOCATION_KEY = "schema.cache.dir";
+
+    /**
      * Is support for automatic detection of GeoServer data directories or existing cache
      * directories enabled? It is useful to disable this in tests, to prevent downloading.
      */
@@ -365,6 +371,12 @@ public class SchemaCache {
         if (!automaticConfigurationEnabled) {
             return null;
         }
+        // let's check if a specific cache location was provided
+        SchemaCache provided = getProvidedSchemaCache();
+        if (provided != null) {
+            // a specific schema cache location was provided, let's use it
+            return provided;
+        }
         File file = URLs.urlToFile(url);
         while (true) {
             if (file == null) {
@@ -376,6 +388,37 @@ public class SchemaCache {
             }
             file = file.getParentFile();
         }
+    }
+
+    /**
+     * Helper that builds a schema cache if a system property "schema.cache.dir" was set.
+     *
+     * @return a schema cache, or NULL if no schema cache location was provided
+     */
+    private static SchemaCache getProvidedSchemaCache() {
+        String directory = System.getProperty(PROVIDED_CACHE_LOCATION_KEY);
+        if (directory == null) {
+            return null;
+        }
+        // let's try to use the provided cache location
+        File cacheDirectory = new File(directory);
+        if (cacheDirectory.exists() && cacheDirectory.isFile()) {
+            // there is nothing we can do, let's abort the instantiation
+            throw new RuntimeException(
+                    String.format(
+                            "Provided schema cache directory '%s' already exists but it's a file.",
+                            cacheDirectory.getAbsolutePath()));
+        }
+        if (!cacheDirectory.exists()) {
+            // create the schema cache directory
+            cacheDirectory.mkdir();
+        }
+        // looks like we are fine
+        LOGGER.fine(
+                String.format(
+                        "Using provided schema cache directory '%s'.",
+                        cacheDirectory.getAbsolutePath()));
+        return new SchemaCache(cacheDirectory, true, DEFAULT_KEEP_QUERY);
     }
 
     /**

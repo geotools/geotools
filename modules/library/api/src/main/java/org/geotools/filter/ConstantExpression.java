@@ -16,11 +16,11 @@
  */
 package org.geotools.filter;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.ExpressionVisitor;

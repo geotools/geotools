@@ -16,9 +16,6 @@
  */
 package org.geotools.data.wfs.internal.v1_x;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
@@ -29,6 +26,9 @@ import org.geotools.gml2.GML;
 import org.geotools.gml2.bindings.GMLBoxTypeBinding;
 import org.geotools.gml2.bindings.GMLCoordinatesTypeBinding;
 import org.geotools.xml.Configuration;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 import org.picocontainer.MutablePicoContainer;
 
 /** */

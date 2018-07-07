@@ -16,9 +16,9 @@
  */
 package org.geotools.data.geobuf;
 
-import com.vividsolutions.jts.geom.*;
 import java.io.*;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.locationtech.jts.geom.*;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;

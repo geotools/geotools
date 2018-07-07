@@ -19,10 +19,10 @@ package org.geotools.data.wfs.online.v1_1;
 
 import static org.geotools.data.wfs.WFSTestData.CUBEWERX_GOVUNITCE;
 
-import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.junit.Ignore;
+import org.locationtech.jts.geom.Polygon;
 
 /** @source $URL$ */
 @Ignore

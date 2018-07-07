@@ -16,9 +16,6 @@
  */
 package org.geotools.renderer.lite;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -41,6 +38,9 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.operation.MathTransform;
 

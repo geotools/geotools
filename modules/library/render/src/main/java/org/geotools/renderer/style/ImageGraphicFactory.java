@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
@@ -68,7 +69,7 @@ public class ImageGraphicFactory implements ExternalGraphicFactory, GraphicCache
         BufferedImage image = imageCache.get(location);
         if (image == null) {
             try {
-                image = ImageIO.read(location);
+                image = ImageIOExt.readBufferedImage(location);
             } catch (java.io.IOException ioe) {
                 LOGGER.warning("Unable to read image at " + location + " : " + ioe.getMessage());
                 return null;

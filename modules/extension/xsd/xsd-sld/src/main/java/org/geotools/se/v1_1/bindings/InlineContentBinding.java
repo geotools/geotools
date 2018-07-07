@@ -23,11 +23,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.xml.namespace.QName;
 import org.geotools.data.Base64;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.se.v1_1.SE;
 import org.geotools.util.logging.Logging;
 import org.geotools.xml.*;
@@ -117,7 +117,7 @@ public class InlineContentBinding extends AbstractComplexBinding {
         byte[] bytes = Base64.decode(content);
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new ByteArrayInputStream(bytes));
+            image = ImageIOExt.readBufferedImage(new ByteArrayInputStream(bytes));
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.log(Level.WARNING, "could not parse graphic inline content: " + content, e);

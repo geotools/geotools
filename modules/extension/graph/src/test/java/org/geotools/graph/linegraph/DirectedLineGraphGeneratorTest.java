@@ -16,8 +16,6 @@
  */
 package org.geotools.graph.linegraph;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineSegment;
 import junit.framework.TestCase;
 import org.geotools.graph.build.line.BasicDirectedLineGraphGenerator;
 import org.geotools.graph.structure.DirectedEdge;
@@ -26,6 +24,8 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineSegment;
 
 /** @source $URL$ */
 public class DirectedLineGraphGeneratorTest extends TestCase {

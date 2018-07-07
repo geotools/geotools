@@ -17,12 +17,12 @@
 
 package org.geotools.filter.text.ecql;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.commons.Result;
 import org.geotools.filter.text.cql2.CQLException;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 
 /**
  * Builds a point using the coordinates of stack that maintain the coordinates made in the parsing

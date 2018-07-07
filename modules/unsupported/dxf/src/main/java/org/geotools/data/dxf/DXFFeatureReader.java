@@ -3,7 +3,7 @@
  */
 package org.geotools.data.dxf;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;

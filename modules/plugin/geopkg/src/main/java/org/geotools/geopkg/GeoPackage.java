@@ -19,8 +19,6 @@ package org.geotools.geopkg;
 import static java.lang.String.format;
 import static org.geotools.sql.SqlUtil.prepare;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -68,6 +66,8 @@ import org.geotools.jdbc.PrimaryKey;
 import org.geotools.referencing.CRS;
 import org.geotools.sql.SqlUtil;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;

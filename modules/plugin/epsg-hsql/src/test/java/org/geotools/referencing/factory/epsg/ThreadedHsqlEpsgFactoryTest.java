@@ -16,10 +16,16 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Set;
+import org.apache.commons.io.FileUtils;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
@@ -330,5 +336,30 @@ public class ThreadedHsqlEpsgFactoryTest {
         factory.createCoordinateReferenceSystem("EPSG:4327");
         factory.getAuthorityCodes(CoordinateReferenceSystem.class);
         assertTrue(factory.isConnected());
+    }
+
+    /** Test data source creation when <code>java.io.tmpdir</code> contains spaces. */
+    @Test
+    public void testTmpWithSpaces() throws Exception {
+        final String JAVA_IO_TMPDIR_PROPERTY = "java.io.tmpdir";
+        String oldTmpDir = System.getProperty(JAVA_IO_TMPDIR_PROPERTY);
+        File tmpDir = new File("target/tmp with spaces");
+        FileUtils.deleteQuietly(tmpDir);
+        tmpDir.mkdirs();
+        try {
+            System.setProperty(JAVA_IO_TMPDIR_PROPERTY, tmpDir.getPath());
+            // force data source re-creation
+            factory.dispose();
+            assertNotNull(factory.createCoordinateReferenceSystem("EPSG:4326"));
+            String creationMarker =
+                    String.format(
+                            "GeoTools/Databases/HSQL/v%s/EPSG_creation_marker.txt",
+                            ThreadedHsqlEpsgFactory.VERSION);
+            assertTrue((new File(tmpDir, creationMarker)).exists());
+        } finally {
+            System.setProperty(JAVA_IO_TMPDIR_PROPERTY, oldTmpDir);
+            factory.dispose();
+            FileUtils.deleteQuietly(tmpDir);
+        }
     }
 }

@@ -16,13 +16,13 @@
  */
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.geometry.jts.spatialschema.PositionFactoryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.JTSGeometryFactory;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.LineSegment;
 import org.opengis.geometry.coordinate.PointArray;

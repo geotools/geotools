@@ -18,8 +18,6 @@ package org.geotools.gml3;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.WKTReader;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,6 +35,8 @@ import org.geotools.gml3.bindings.TEST;
 import org.geotools.gml3.bindings.TestConfiguration;
 import org.geotools.xml.Encoder;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.w3c.dom.Document;

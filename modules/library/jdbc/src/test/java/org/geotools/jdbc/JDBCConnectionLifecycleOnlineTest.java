@@ -16,8 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,6 +26,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 
 public abstract class JDBCConnectionLifecycleOnlineTest extends JDBCTestSupport {
 

@@ -19,7 +19,7 @@ package org.geotools.data.arcgisrest;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;

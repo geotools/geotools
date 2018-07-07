@@ -17,7 +17,6 @@
 
 package org.geotools.filter.expression;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -28,6 +27,7 @@ import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
 import org.geotools.factory.Hints;
 import org.geotools.feature.xpath.AttributeNodePointer;
 import org.geotools.feature.xpath.AttributeNodePointerFactory;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;

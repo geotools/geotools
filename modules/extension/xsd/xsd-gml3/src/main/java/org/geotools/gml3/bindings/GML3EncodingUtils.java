@@ -16,9 +16,6 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -43,6 +40,9 @@ import org.geotools.xml.ComplexBinding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.XSD;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;

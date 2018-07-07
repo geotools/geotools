@@ -16,7 +16,6 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ import org.geotools.filter.v2_0.FES;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

@@ -20,7 +20,7 @@ import static java.lang.Math.atan2;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequence;
 
 /**
  * Utility class for the test, represents a circle in the origin with a given radius

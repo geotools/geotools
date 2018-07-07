@@ -16,8 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.egr;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Polygon;
 import it.geosolutions.jaiext.iterators.RandomIterFactory;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -47,6 +45,8 @@ import javax.media.jai.iterator.WritableRandomIter;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * A tile of the whole grid space.

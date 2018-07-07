@@ -18,11 +18,11 @@
 
 package org.geotools.process.geometry;
 
-import com.vividsolutions.jts.awt.PointShapeFactory.Point;
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.List;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.Converters;
+import org.locationtech.jts.awt.PointShapeFactory.Point;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;

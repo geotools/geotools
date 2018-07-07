@@ -136,7 +136,7 @@ public abstract class AbstractGridCoverage2DReader implements GridCoverage2DRead
     /** Hints used by the {@link AbstractGridCoverage2DReader} subclasses. */
     protected Hints hints = GeoTools.getDefaultHints();
 
-    /** Highest resolution availaible for this reader. */
+    /** Highest resolution available for this reader. */
     protected double[] highestRes = null;
 
     /** Temp variable used in many readers. */

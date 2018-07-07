@@ -19,9 +19,9 @@ package org.geotools.s3.cache;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Map;
 import java.util.logging.Level;
@@ -54,37 +54,40 @@ public class S3ChunkEntryFactory implements CacheEntryFactory, CacheLoader {
         CacheEntryKey entryKey = (CacheEntryKey) key;
         int nBytes;
         byte[] buffer = new byte[cacheBlockSize];
-        S3ObjectInputStream stream =
+        try (S3Object object =
                 this.initStream(
                         (long) entryKey.getBlock() * (long) this.cacheBlockSize,
                         entryKey.getBucket(),
                         entryKey.getKey(),
                         entryKey.getBlockSize(),
-                        connector.getS3Client());
-        if (stream == null) {
-            throw new RuntimeException("Unable to instantiate S3 stream. See logs for details.");
-        }
-        int readLength = this.cacheBlockSize;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        while (readLength > 0) {
-            nBytes = stream.read(buffer, 0, readLength);
+                        connector.getS3Client())) {
+            if (object == null) {
+                throw new RuntimeException(
+                        "Unable to instantiate S3 stream. See logs for details.");
+            }
+            int readLength = this.cacheBlockSize;
 
-            if (nBytes > 0) {
-                out.write(buffer, 0, nBytes);
-                readLength -= nBytes;
-            } else {
-                break;
+            try (InputStream stream = object.getObjectContent()) {
+                try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                    while (readLength > 0) {
+                        nBytes = stream.read(buffer, 0, readLength);
+
+                        if (nBytes > 0) {
+                            out.write(buffer, 0, nBytes);
+                            readLength -= nBytes;
+                        } else {
+                            break;
+                        }
+                    }
+                    val = out.toByteArray();
+                }
             }
         }
-
-        val = out.toByteArray();
-        out.close();
-        stream.close();
 
         return val;
     }
 
-    private S3ObjectInputStream initStream(
+    private S3Object initStream(
             long offset, String bucket, String key, int blockSize, AmazonS3 s3Client) {
         try {
             S3Object object =
@@ -92,7 +95,7 @@ public class S3ChunkEntryFactory implements CacheEntryFactory, CacheLoader {
                             (new GetObjectRequest(bucket, key))
                                     .withRange(offset, offset + blockSize));
 
-            return object.getObjectContent();
+            return object;
         } catch (Exception e) {
             LOGGER.warning(e.getMessage());
         }

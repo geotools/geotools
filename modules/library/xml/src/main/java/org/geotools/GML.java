@@ -16,7 +16,6 @@
  */
 package org.geotools;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -78,6 +77,7 @@ import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
 import org.geotools.xs.XS;
 import org.geotools.xs.XSConfiguration;
 import org.geotools.xs.XSSchema;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

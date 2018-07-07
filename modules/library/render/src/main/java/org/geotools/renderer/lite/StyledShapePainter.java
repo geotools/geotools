@@ -16,11 +16,6 @@
  */
 package org.geotools.renderer.lite;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Composite;
@@ -40,10 +35,10 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.style.GraphicStyle2D;
 import org.geotools.renderer.style.IconStyle2D;
@@ -52,6 +47,11 @@ import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.PointStyle2D;
 import org.geotools.renderer.style.PolygonStyle2D;
 import org.geotools.renderer.style.Style2D;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.expression.Literal;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
@@ -439,7 +439,8 @@ public class StyledShapePainter {
                     iter.currentSegment(coords);
                     try {
                         BufferedImage image =
-                                ImageIO.read(graphic.getOnlineResource().getLinkage().toURL());
+                                ImageIOExt.readBufferedImage(
+                                        graphic.getOnlineResource().getLinkage().toURL());
                         if ((symbolScale > 0.0) && (symbolScale != 1.0)) {
                             int w = (int) (image.getWidth() / symbolScale);
                             int h = (int) (image.getHeight() / symbolScale);

@@ -17,4 +17,5 @@ org.geotools.process.raster.StyleCoverage
 org.geotools.process.raster.ConvolveCoverageProcess
 org.geotools.process.raster.NormalizeCoverageProcess
 org.geotools.process.raster.TransparencyFillProcess
+org.geotools.process.raster.JiffleProcess
 

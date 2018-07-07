@@ -16,15 +16,15 @@
  */
 package org.geotools.gml3.simple;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 

@@ -22,9 +22,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import org.geotools.data.DataStore;
-import org.geotools.test.OnlineTestCase;
 
-public class SolrDataStoreTest extends OnlineTestCase {
+public class SolrDataStoreTest extends SolrTestSupport {
 
     public void testGetNames() throws IOException {
         String url = fixture.getProperty(SolrDataStoreFactory.URL.key);

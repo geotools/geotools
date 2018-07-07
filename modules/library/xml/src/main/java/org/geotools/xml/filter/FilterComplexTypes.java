@@ -16,7 +16,6 @@
  */
 package org.geotools.xml.filter;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
@@ -48,6 +47,7 @@ import org.geotools.xml.schema.impl.ChoiceGT;
 import org.geotools.xml.schema.impl.FacetGT;
 import org.geotools.xml.schema.impl.SequenceGT;
 import org.geotools.xml.xsi.XSISimpleTypes;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Expression;

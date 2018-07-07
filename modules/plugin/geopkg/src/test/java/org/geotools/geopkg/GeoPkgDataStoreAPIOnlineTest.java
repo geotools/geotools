@@ -16,8 +16,6 @@
  */
 package org.geotools.geopkg;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineString;
 import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.Collections;
@@ -29,6 +27,8 @@ import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.ScreenMap;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 

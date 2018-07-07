@@ -1,12 +1,12 @@
 package org.geotools.tutorial.process;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.OctagonalEnvelope;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.process.factory.StaticMethodsProcessFactory;
 import org.geotools.text.Text;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.OctagonalEnvelope;
 
 public class ProcessTutorial extends StaticMethodsProcessFactory<ProcessTutorial> {
     // constructor start

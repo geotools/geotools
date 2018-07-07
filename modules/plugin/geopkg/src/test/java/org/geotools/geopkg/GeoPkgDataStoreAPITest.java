@@ -18,7 +18,6 @@ package org.geotools.geopkg;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Point;
 import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -35,6 +34,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class GeoPkgDataStoreAPITest {

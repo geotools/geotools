@@ -16,8 +16,6 @@
  */
 package org.geotools.data.property;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -36,6 +34,8 @@ import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.WKTReader2;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;

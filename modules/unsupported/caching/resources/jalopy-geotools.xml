@@ -251,7 +251,7 @@
     <imports>
       <grouping>
         <defaultDepth>0</defaultDepth>
-        <packages>*:0|java:1|javax:1|gnu:1|com.vividsolutions:3|org.opengis:2|org.geotools:2</packages>
+        <packages>*:0|java:1|javax:1|gnu:1|org.locationtech:3|org.opengis:2|org.geotools:2</packages>
       </grouping>
       <policy>disabled</policy>
       <sort>true</sort>

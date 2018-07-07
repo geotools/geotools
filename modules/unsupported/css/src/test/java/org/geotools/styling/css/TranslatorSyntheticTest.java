@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.transform.TransformerException;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.color.DarkenFunction;
 import org.geotools.filter.function.color.SaturateFunction;
 import org.geotools.filter.text.cql2.CQLException;
@@ -565,9 +566,49 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
         assertNull(rs.getColorMap());
         SelectedChannelType[] channels = rs.getChannelSelection().getRGBChannels();
-        assertEquals("band1", channels[0].getChannelName());
-        assertEquals("band5", channels[1].getChannelName());
-        assertEquals("band3", channels[2].getChannelName());
+        assertEquals("band1", channels[0].getChannelName().evaluate(null, String.class));
+        assertEquals("band5", channels[1].getChannelName().evaluate(null, String.class));
+        assertEquals("band3", channels[2].getChannelName().evaluate(null, String.class));
+    }
+
+    /**
+     * Tests expression support in channel selection
+     *
+     * @throws Exception
+     */
+    @Test
+    public void rasterChannelSelectionRGBExpression() throws Exception {
+        String css = "* { raster-channels: [env('B1','1')] '2' '3'; }";
+        rasterChannelSelectionExpression(css);
+    }
+
+    /**
+     * Tests expression support in channel selection, abbreviated syntax
+     *
+     * @throws Exception
+     */
+    @Test
+    public void rasterChannelSelectionRGBExpressionAbbr() throws Exception {
+        String css = "* { raster-channels: @B1(1) '2' '3';}";
+        rasterChannelSelectionExpression(css);
+    }
+
+    private void rasterChannelSelectionExpression(String css) throws Exception {
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        RasterSymbolizer rs = assertSingleSymbolizer(rule, RasterSymbolizer.class);
+        assertNull(rs.getColorMap());
+        SelectedChannelType[] channels = rs.getChannelSelection().getRGBChannels();
+        // check default value
+        EnvFunction.removeLocalValue("B1");
+        assertEquals(1, channels[0].getChannelName().evaluate(null, Integer.class).intValue());
+        // check env value
+        EnvFunction.setLocalValue("B1", "20");
+        assertEquals(20, channels[0].getChannelName().evaluate(null, Integer.class).intValue());
+        EnvFunction.removeLocalValue("B1");
+
+        assertEquals(2, channels[1].getChannelName().evaluate(null, Integer.class).intValue());
+        assertEquals(3, channels[2].getChannelName().evaluate(null, Integer.class).intValue());
     }
 
     @Test

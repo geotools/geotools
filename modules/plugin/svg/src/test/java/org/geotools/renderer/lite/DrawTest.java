@@ -307,6 +307,47 @@ public class DrawTest {
                 1000);
     }
 
+    @Test
+    public void testSvgMark() throws Exception {
+        StreamingRenderer renderer = setupSinglePointRenderer("hospital.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("hospital", renderer, TIME, bounds);
+        ImageAssert.assertEquals(
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/hospital.png"),
+                image,
+                1000);
+    }
+
+    @Test
+    public void testSvgMarkOrientation() throws Exception {
+        StreamingRenderer renderer = setupSinglePointRenderer("atm.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("atm", renderer, TIME, bounds);
+        ImageAssert.assertEquals(
+                new File("./src/test/resources/org/geotools/renderer/lite/test-data/atm.png"),
+                image,
+                1000);
+    }
+
+    /**
+     * This one does not really render as I'd like, but we cannot have a shape in the group that has
+     * its own specific winding rule in Java. The test is there because this one also has a
+     * transformation on the shapes to re-position them.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testSvgMarkTransformedShape() throws Exception {
+        StreamingRenderer renderer = setupSinglePointRenderer("convenience.sld");
+
+        BufferedImage image = RendererBaseTest.showRender("convenience", renderer, TIME, bounds);
+        ImageAssert.assertEquals(
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/convenience.png"),
+                image,
+                1000);
+    }
+
     private StreamingRenderer setupPointRenderer(String pointStyle) throws IOException {
         Style pStyle = RendererBaseTest.loadStyle(this, pointStyle);
         Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");

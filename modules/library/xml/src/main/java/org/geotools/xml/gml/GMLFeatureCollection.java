@@ -16,9 +16,9 @@
  */
 package org.geotools.xml.gml;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * @author dzwiers

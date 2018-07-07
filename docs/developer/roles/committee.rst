@@ -38,7 +38,6 @@ Current PMC members:
 * Christian Mueller
 * Ian Turton
 * Jody Garnett
-* Justin Deoliveira
 * Simone Giannecchini
 
 Our thanks to previous PMC members:
@@ -49,6 +48,7 @@ Our thanks to previous PMC members:
 * Chris Holmes
 * David Blasby
 * Ian Schneider
+* Justin Deoliveira
 * Martin Desruisseaux
 * Michael Bedward
 * David Zwiers

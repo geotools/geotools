@@ -1,6 +1,5 @@
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
@@ -8,6 +7,7 @@ import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

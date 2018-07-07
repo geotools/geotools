@@ -53,14 +53,14 @@ public final class JP2MrSIDFormatFactory extends BaseGridFormatFactorySPI
 
             if (LOGGER.isLoggable(Level.FINE)) {
                 if (available) {
-                    LOGGER.fine("JP2MrSIDFormatFactory is availaible.");
+                    LOGGER.fine("JP2MrSIDFormatFactory is available.");
                 } else {
-                    LOGGER.fine("JP2MrSIDFormatFactory is not availaible.");
+                    LOGGER.fine("JP2MrSIDFormatFactory is not available.");
                 }
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("JP2MrSIDFormatFactory is not availaible.");
+                LOGGER.fine("JP2MrSIDFormatFactory is not available.");
             }
 
             available = false;

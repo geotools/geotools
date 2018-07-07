@@ -16,10 +16,10 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
 import org.w3c.dom.Document;
 
 /** @source $URL$ */

@@ -17,15 +17,15 @@
 
 package org.geotools.filter.text.ecql;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.LinkedList;
 import java.util.List;
 import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.commons.Result;
 import org.geotools.filter.text.cql2.CQLException;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * Builds a Polygon using the lines (shell and Holes) made in the parsing process.

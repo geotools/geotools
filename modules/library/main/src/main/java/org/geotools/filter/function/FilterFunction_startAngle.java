@@ -21,10 +21,10 @@ package org.geotools.filter.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.LineString;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.filter.capability.FunctionName;
 
 /** @source $URL$ */

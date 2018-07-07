@@ -59,6 +59,8 @@
   <!--     stress             Profile to active tests which end in -->
   <!--                        "StressTest.java"                    -->
   <!--                                                             -->
+  <!--     dependencycheck    Profile to check dependency versions -->
+  <!--                                                             -->
   <!--   Example:                                                  -->
   <!--       mvn install -Dall                                     -->
   <!--       mvn eclipse:eclipse -Dall                             -->
@@ -93,10 +95,11 @@
     <test.forkMode>once</test.forkMode>
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.21</imageio.ext.version>
-    <jaiext.version>1.0.22</jaiext.version>
+    <imageio.ext.version>1.1.24</imageio.ext.version>
+    <jts.version>1.15.1</jts.version>
+    <jaiext.version>1.1.1</jaiext.version>
     <netcdf.version>4.6.6</netcdf.version>
-    <jt.version>1.4.0</jt.version>
+    <jt.version>1.5.0</jt.version>
     <java.awt.headless>true</java.awt.headless>
     <sun.java2d.d3d>true</sun.java2d.d3d>
     <jvm.opts></jvm.opts>
@@ -110,6 +113,9 @@
     <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
+    <fmt.action>format</fmt.action>
+    <fmt.skip>false</fmt.skip>
+    <batik.version>1.10</batik.version>
   </properties>
 
   <!-- Profiles set on the command-line overwrite default properties. -->
@@ -196,20 +202,41 @@
         </site>
       </distributionManagement>
     </profile>
+
+    <!-- Dependency version checks -->
     <profile>
-      <id>noLocalChanges</id>
+      <id>dependencycheck</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-scm-plugin</artifactId>
-            <version>1.9.5</version>
+            <groupId>org.commonjava.maven.plugins</groupId>
+            <artifactId>directory-maven-plugin</artifactId>
+            <version>0.3.1</version>
             <executions>
               <execution>
-                <id>exec1</id>
-                <phase>install</phase>
+                <id>directories</id>
                 <goals>
-                   <goal>check-local-modification</goal>
+                  <goal>highest-basedir</goal>
+                </goals>
+                <phase>initialize</phase>
+                <configuration>
+                  <property>geotoolsBaseDir</property>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <version>3.2.1</version>
+            <configuration>
+              <failBuildOnCVSS>8</failBuildOnCVSS>
+              <suppressionFile>${geotoolsBaseDir}/dependency-check-suppression.xml</suppressionFile>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>aggregate</goal>
                 </goals>
               </execution>
             </executions>
@@ -632,12 +659,6 @@
         <artifactId>systems-ucum-java8</artifactId>
         <version>0.7.2</version>
       </dependency-->
-      
-      <dependency>
-        <groupId>systems.uom</groupId>
-        <artifactId>systems-common-java8</artifactId>
-        <version>0.7.2</version>
-      </dependency>
     
       <!-- Java Advanced Imaging (JAI) -->
       <dependency>
@@ -813,9 +834,9 @@
         <version>0.32</version>
       </dependency>
       <dependency>
-        <groupId>com.vividsolutions</groupId>
+        <groupId>org.locationtech.jts</groupId>
         <artifactId>jts-core</artifactId>
-        <version>1.14.0</version>
+	<version>${jts.version}</version>
         <exclusions>
           <exclusion>
             <groupId>xerces</groupId>
@@ -824,9 +845,9 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>com.vividsolutions</groupId>
+        <groupId>org.locationtech.jts</groupId>
         <artifactId>jts-example</artifactId>
-        <version>1.14.0</version>
+	<version>${jts.version}</version>
         <exclusions>
           <exclusion>
             <groupId>xerces</groupId>
@@ -842,72 +863,77 @@
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-transcoder</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-svggen</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-awt-util</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-rasterizer</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-dom</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-bridge</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-gvt</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-svg-dom</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-util</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-css</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-parser</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-xml</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-ext</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-script</artifactId>
-        <version>1.7</version>
+        <version>${batik.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-anim</artifactId>
+        <version>${batik.version}</version>
       </dependency>
 
       <!-- Chart -->
@@ -958,7 +984,7 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.1</version>
+        <version>2.6</version>
       </dependency>
       <dependency>
         <groupId>log4j</groupId>
@@ -1022,7 +1048,7 @@
       <dependency>
         <groupId>org.hsqldb</groupId>
         <artifactId>hsqldb</artifactId>
-        <version>2.3.0</version>
+        <version>2.4.1</version>
       </dependency>
       <dependency>
         <groupId>org.openplans</groupId>
@@ -1116,13 +1142,6 @@
         <artifactId>java-uuid-generator</artifactId>
         <version>3.1.2</version>
       </dependency>
-      <dependency>
-        <!-- Google Common Libraries. Featuring com.google.collect collection 
-          classes -->
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>17.0</version>
-      </dependency>      
       
       <!-- Other random non test dependencies -->
       <dependency>
@@ -1823,13 +1842,13 @@
             <configuration>
                 <verbose>false</verbose>
                 <filesNamePattern>.*\.java</filesNamePattern>
-                <skip>false</skip>
+                <skip>${fmt.skip}</skip>
                 <style>aosp</style>
             </configuration>
             <executions>
                 <execution>
                     <goals>
-                        <goal>format</goal>
+                        <goal>${fmt.action}</goal>
                     </goals>
                 </execution>
             </executions>

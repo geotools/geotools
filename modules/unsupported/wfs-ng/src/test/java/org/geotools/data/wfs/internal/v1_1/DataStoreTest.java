@@ -24,7 +24,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -40,6 +39,7 @@ import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;

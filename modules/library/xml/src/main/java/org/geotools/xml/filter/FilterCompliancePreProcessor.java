@@ -35,6 +35,7 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -854,5 +855,10 @@ public class FilterCompliancePreProcessor implements FilterVisitor {
      */
     public boolean requiresPostProcessing() {
         return requiresPostProcessing;
+    }
+
+    @Override
+    public Object visit(NativeFilter nativeFilter, Object extraData) {
+        throw new UnsupportedOperationException("XML encoding of native filters is not supported.");
     }
 }

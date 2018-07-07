@@ -16,9 +16,6 @@
  */
 package org.geotools.kml.bindings;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -26,6 +23,9 @@ import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:CoordinatesType.

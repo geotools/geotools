@@ -16,7 +16,6 @@
  */
 package org.geotools.data.shapefile;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
@@ -26,6 +25,7 @@ import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.index.Data;
 import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.shapefile.shp.ShapefileReader.Record;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**

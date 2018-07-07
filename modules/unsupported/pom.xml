@@ -57,6 +57,17 @@
 		<!-- but have not passed our QA and Doc requirements -->
 		<!-- so you may/should consider them risky -->
 		<profile>
+			<id>gtopo30</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
+			<modules>
+				<module>gtopo30</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>efeature</id>
 			<modules>
 				<module>efeature</module>
@@ -190,6 +201,12 @@
                 <module>s3-geotiff</module>
             </modules>
         </profile>
+        <profile>
+            <id>ogr</id>
+            <modules>
+                <module>ogr</module>
+            </modules>
+        </profile>
 		<profile>
 			<id>unsupported</id>
 			<activation>
@@ -206,7 +223,8 @@
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>
-                <module>s3-geotiff</module>
+        <module>s3-geotiff</module>
+        <module>gtopo30</module>
 			</modules>
 		</profile>
 

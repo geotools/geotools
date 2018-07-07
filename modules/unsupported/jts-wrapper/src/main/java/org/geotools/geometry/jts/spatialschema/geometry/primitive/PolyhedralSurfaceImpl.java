@@ -110,15 +110,15 @@ public class PolyhedralSurfaceImpl extends GeometryImpl implements PolyhedralSur
      * @return
      * @see com.polexis.lite.spatialschema.geometry.GeometryImpl#computeJTSPeer()
      */
-    protected com.vividsolutions.jts.geom.Geometry computeJTSPeer() {
+    protected org.locationtech.jts.geom.Geometry computeJTSPeer() {
         if (patches.size() > 1) {
             // throw new UnsupportedOperationException("This implementation does not support
             // surfaces with multiple patches.");
-            final com.vividsolutions.jts.geom.Polygon[] polygons =
-                    new com.vividsolutions.jts.geom.Polygon[patches.size()];
+            final org.locationtech.jts.geom.Polygon[] polygons =
+                    new org.locationtech.jts.geom.Polygon[patches.size()];
             for (int i = 0; i < patches.size(); i++) {
                 final JTSGeometry jtsGeometry = (JTSGeometry) patches.get(i);
-                polygons[i] = (com.vividsolutions.jts.geom.Polygon) jtsGeometry.getJTSGeometry();
+                polygons[i] = (org.locationtech.jts.geom.Polygon) jtsGeometry.getJTSGeometry();
             }
             return JTSUtils.GEOMETRY_FACTORY.createMultiPolygon(polygons);
         }

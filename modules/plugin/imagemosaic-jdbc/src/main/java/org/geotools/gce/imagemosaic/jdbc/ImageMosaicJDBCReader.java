@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic.jdbc;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -49,6 +48,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.coverage.grid.Format;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

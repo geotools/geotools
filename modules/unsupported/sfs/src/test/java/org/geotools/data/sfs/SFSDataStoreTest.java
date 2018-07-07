@@ -16,7 +16,6 @@
  */
 package org.geotools.data.sfs;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Iterator;
@@ -25,6 +24,7 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.type.Name;
 
 /** @source $URL$ */

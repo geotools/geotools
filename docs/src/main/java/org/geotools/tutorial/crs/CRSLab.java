@@ -10,7 +10,6 @@
 // docs start source
 package org.geotools.tutorial.crs;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.Serializable;
@@ -46,6 +45,7 @@ import org.geotools.swing.JMapFrame;
 import org.geotools.swing.JProgressWindow;
 import org.geotools.swing.action.SafeAction;
 import org.geotools.swing.data.JFileDataStoreChooser;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;

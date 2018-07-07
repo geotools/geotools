@@ -10,7 +10,6 @@
 package org.geotools.tutorial.csv;
 
 import com.csvreader.CsvReader;
-import com.vividsolutions.jts.geom.Point;
 import java.io.IOException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -19,6 +18,7 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;

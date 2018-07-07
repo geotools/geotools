@@ -261,6 +261,23 @@ public class IndexerUtils {
     }
 
     /**
+     * Return the parameter value (as a boolean) of the specified parameter name from the provider
+     * indexer
+     *
+     * @param parameterName
+     * @param indexer
+     * @return
+     */
+    public static <T extends Enum> T getParameterAsEnum(
+            String parameterName, Class<T> enumClass, Indexer indexer) {
+        String value = getParameter(parameterName, indexer);
+        if (value != null) {
+            return (T) Enum.valueOf(enumClass, value);
+        }
+        return null;
+    }
+
+    /**
      * Return the parameter string value of the specified parameter name from the provided
      * parameters element
      *
@@ -614,6 +631,9 @@ public class IndexerUtils {
         // absolute
         if (props.containsKey(Utils.Prop.ABSOLUTE_PATH))
             setParam(parameters, props, Utils.Prop.ABSOLUTE_PATH);
+
+        if (props.containsKey(Utils.Prop.PATH_TYPE))
+            setParam(parameters, props, Utils.Prop.PATH_TYPE);
 
         // recursive
         if (props.containsKey(Utils.Prop.RECURSIVE))

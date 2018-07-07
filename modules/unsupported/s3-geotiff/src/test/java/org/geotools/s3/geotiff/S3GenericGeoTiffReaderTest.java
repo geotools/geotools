@@ -71,33 +71,35 @@ public class S3GenericGeoTiffReaderTest {
      */
     @Test
     public void testBufferingOutputStream() throws IOException, URISyntaxException {
-        S3ImageInputStreamImpl in = new S3ImageInputStreamImpl("main://test/salinity.tif");
-        FileImageInputStream fileIn = new FileImageInputStream(getSalinityTestFile());
-        long readRemaining = fileIn.length();
-        while (readRemaining > 0) {
-            long readSize = Math.min(2048L, readRemaining);
-            byte[] fileBuffer = new byte[(int) readSize];
-            byte[] s3Buffer = new byte[(int) readSize];
+        try (S3ImageInputStreamImpl in = new S3ImageInputStreamImpl("main://test/salinity.tif")) {
+            try (FileImageInputStream fileIn = new FileImageInputStream(getSalinityTestFile())) {
+                long readRemaining = fileIn.length();
+                while (readRemaining > 0) {
+                    long readSize = Math.min(2048L, readRemaining);
+                    byte[] fileBuffer = new byte[(int) readSize];
+                    byte[] s3Buffer = new byte[(int) readSize];
 
-            int fileBytesRead = fileIn.read(fileBuffer, 0, (int) readSize);
-            int s3BytesRead = in.read(s3Buffer, 0, (int) readSize);
+                    int fileBytesRead = fileIn.read(fileBuffer, 0, (int) readSize);
+                    int s3BytesRead = in.read(s3Buffer, 0, (int) readSize);
 
-            if (!Arrays.equals(fileBuffer, s3Buffer)) {
-                System.out.println("Arrays aren't equal");
+                    if (!Arrays.equals(fileBuffer, s3Buffer)) {
+                        System.out.println("Arrays aren't equal");
+                    }
+
+                    assertEquals(
+                            "Bytes read expected to be equal. File stream is at pos: "
+                                    + (fileIn.getStreamPosition() - 1),
+                            fileBytesRead,
+                            s3BytesRead);
+                    assertArrayEquals(
+                            "Expected the byte arrays to be equals. File stream is at pos: "
+                                    + (fileIn.getStreamPosition() - 1),
+                            fileBuffer,
+                            s3Buffer);
+
+                    readRemaining -= fileBytesRead;
+                }
             }
-
-            assertEquals(
-                    "Bytes read expected to be equal. File stream is at pos: "
-                            + (fileIn.getStreamPosition() - 1),
-                    fileBytesRead,
-                    s3BytesRead);
-            assertArrayEquals(
-                    "Expected the byte arrays to be equals. File stream is at pos: "
-                            + (fileIn.getStreamPosition() - 1),
-                    fileBuffer,
-                    s3Buffer);
-
-            readRemaining -= fileBytesRead;
         }
     }
 

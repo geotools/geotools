@@ -16,8 +16,6 @@
  */
 package org.geotools.geopkg;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.Time;
@@ -26,6 +24,8 @@ import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PrimaryKeyColumn;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Literal;

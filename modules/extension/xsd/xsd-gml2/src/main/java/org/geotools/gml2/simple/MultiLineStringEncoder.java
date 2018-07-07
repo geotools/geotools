@@ -16,11 +16,11 @@
  */
 package org.geotools.gml2.simple;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**

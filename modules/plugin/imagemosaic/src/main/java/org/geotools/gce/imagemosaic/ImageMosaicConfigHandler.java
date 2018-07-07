@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.SampleModel;
@@ -100,6 +99,7 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -781,11 +781,13 @@ public class ImageMosaicConfigHandler {
             CatalogBuilderConfiguration runConfiguration, final File fileBeingProcessed)
             throws IOException {
         // absolute
-        if (Boolean.valueOf(runConfiguration.getParameter(Prop.ABSOLUTE_PATH))) {
+        String pathType = runConfiguration.getParameter(Prop.PATH_TYPE);
+        String absolutePath = runConfiguration.getParameter(Prop.ABSOLUTE_PATH);
+        if (Boolean.valueOf(absolutePath) || PathType.ABSOLUTE.name().equals(pathType)) {
             return fileBeingProcessed.getAbsolutePath();
         }
 
-        // relative
+        // relative (harvesting of PathType.URL is not supported)
         String targetPath = fileBeingProcessed.getCanonicalPath();
         String basePath = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR);
         String relative =
@@ -949,19 +951,37 @@ public class ImageMosaicConfigHandler {
         return catalog;
     }
 
-    private void setReader(Hints hints, final boolean updateHints) {
+    private ImageMosaicReader getImageMosaicReader(Hints hints) {
+        ImageMosaicReader imReader = null;
         if (hints != null && hints.containsKey(Utils.MOSAIC_READER)) {
             Object reader = hints.get(Utils.MOSAIC_READER);
             if (reader instanceof ImageMosaicReader) {
                 if (getParentReader() == null) {
                     setParentReader((ImageMosaicReader) reader);
                 }
-                if (updateHints) {
-                    Hints readerHints = getParentReader().getHints();
-                    readerHints.add(hints);
-                }
+                imReader = (ImageMosaicReader) reader;
             }
         }
+        return imReader;
+    }
+
+    private void setReader(Hints hints, final boolean updateHints) {
+        ImageMosaicReader reader = getImageMosaicReader(hints);
+        if (reader != null && updateHints) {
+            Hints readerHints = reader.getHints();
+            readerHints.add(hints);
+        }
+    }
+
+    private Hints updateRepositoryHints(CatalogBuilderConfiguration configuration, Hints hints) {
+        ImageMosaicReader reader = getImageMosaicReader(hints);
+        if (reader != null) {
+            Hints readerHints = reader.getHints();
+            if (readerHints != null && readerHints.containsKey(Hints.REPOSITORY)) {
+                hints.add(new Hints(Hints.REPOSITORY, readerHints.get(Hints.REPOSITORY)));
+            }
+        }
+        return hints;
     }
 
     private void updateConfigurationHints(
@@ -988,6 +1008,7 @@ public class ImageMosaicConfigHandler {
                         configuration,
                         hints,
                         Utils.AUXILIARY_DATASTORE_PATH);
+        hints = updateRepositoryHints(configuration, hints);
         setReader(hints, true);
     }
 
@@ -1032,6 +1053,8 @@ public class ImageMosaicConfigHandler {
 
         // fileIndex = 0;
         runConfiguration = null;
+
+        this.catalog.dispose();
     }
 
     public boolean getStop() {
@@ -1574,6 +1597,8 @@ public class ImageMosaicConfigHandler {
                     IndexerUtils.getParameterAsBoolean(Prop.CACHING, indexer));
             catalogConfigurationBean.setAbsolutePath(
                     IndexerUtils.getParameterAsBoolean(Prop.ABSOLUTE_PATH, indexer));
+            catalogConfigurationBean.setPathType(
+                    IndexerUtils.getParameterAsEnum(Prop.PATH_TYPE, PathType.class, indexer));
 
             catalogConfigurationBean.setLocationAttribute(
                     IndexerUtils.getParameter(Prop.LOCATION_ATTRIBUTE, indexer));

@@ -17,7 +17,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
@@ -63,6 +62,7 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.coverage.Coverage;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.metadata.spatial.PixelOrientation;

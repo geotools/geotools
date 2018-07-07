@@ -16,13 +16,13 @@
  */
 package org.geotools.renderer.label;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.LineString;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * Allows to move a point cursor along the path of a LineString using a curvilinear coordinate
@@ -290,23 +290,14 @@ public class LineStringCursor {
         // everything inside the same segment
         if (startSegment == endSegment) return 0;
 
-        double maxDifference = 0;
         double prevAngle = getSegmentAngle(startSegment);
+        MaxAngleDiffenceAccumulator accumulator = new MaxAngleDiffenceAccumulator(prevAngle);
         for (int i = startSegment + 1; i <= endSegment; i++) {
             double currAngle = getSegmentAngle(i);
-            double difference = currAngle - prevAngle;
-            // normalize angle, the difference can become 2 * PI
-            if (difference > Math.PI) {
-                difference -= 2 * Math.PI;
-            } else if (difference < -Math.PI) {
-                difference += 2 * Math.PI;
-            }
-            difference = Math.abs(difference);
-            if (difference > maxDifference) maxDifference = difference;
-            prevAngle = currAngle;
+            accumulator.accumulate(currAngle);
         }
 
-        return maxDifference;
+        return accumulator.getMaxDifference();
     }
 
     /**
@@ -328,8 +319,8 @@ public class LineStringCursor {
         double ordinate = startOrdinate; // center of first step
         delegate.moveTo(ordinate);
         int prevSegment = delegate.segment;
-        double prevAngle = getSegmentAngle(prevSegment);
-        double maxDifference = 0;
+        double previousAngle = getSegmentAngle(prevSegment);
+        MaxAngleDiffenceAccumulator accumulator = new MaxAngleDiffenceAccumulator(previousAngle);
         try {
             do {
                 // make sure to more forward enough to both move at least to the next segment
@@ -343,31 +334,52 @@ public class LineStringCursor {
                 }
                 ordinate += distance;
 
-                if (ordinate < endOrdinate) {
+                if (delegate.segment < (delegate.segmentLenghts.length - 1)) {
                     double angle = getSegmentAngle(delegate.segment);
-                    double difference = angle - prevAngle;
-                    // normalize angle, the difference can become 2 * PI
-                    if (difference > Math.PI) {
-                        difference -= 2 * Math.PI;
-                    } else if (difference < -Math.PI) {
-                        difference += 2 * Math.PI;
-                    }
-                    difference = Math.abs(difference);
-                    if (difference > maxDifference) {
-                        maxDifference = difference;
-                    }
-                    prevAngle = angle;
+                    accumulator.accumulate(angle);
                 }
 
                 // move to next segment
                 delegate.segment++;
-            } while (ordinate < endOrdinate);
+            } while (ordinate < endOrdinate
+                    && (delegate.segment < (delegate.segmentLenghts.length - 1)));
         } catch (Exception e) {
             LOGGER.log(Level.INFO, "Error occurred while computing max angle change in label", e);
-            ;
         }
 
-        return maxDifference;
+        return accumulator.getMaxDifference();
+    }
+
+    /**
+     * A simple private class to factor out code that computes subequent angle differences and
+     * accumulates the max value found
+     */
+    static final class MaxAngleDiffenceAccumulator {
+        double previousAngle;
+        double maxDifference;
+
+        MaxAngleDiffenceAccumulator(double previousAngle) {
+            this.previousAngle = previousAngle;
+        }
+
+        void accumulate(double angle) {
+            double difference = angle - previousAngle;
+            // normalize angle, the difference can become 2 * PI
+            if (difference > Math.PI) {
+                difference -= 2 * Math.PI;
+            } else if (difference < -Math.PI) {
+                difference += 2 * Math.PI;
+            }
+            difference = Math.abs(difference);
+            if (difference > maxDifference) {
+                maxDifference = difference;
+            }
+            previousAngle = angle;
+        }
+
+        double getMaxDifference() {
+            return maxDifference;
+        }
     }
 
     /**

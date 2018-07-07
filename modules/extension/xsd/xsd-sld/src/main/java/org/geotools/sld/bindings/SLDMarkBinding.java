@@ -16,11 +16,16 @@
  */
 package org.geotools.sld.bindings;
 
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Mark;
+import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleFactory;
+import org.geotools.util.logging.Logging;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -55,12 +60,19 @@ import org.picocontainer.MutablePicoContainer;
  * @source $URL$
  */
 public class SLDMarkBinding extends AbstractComplexBinding {
+    static final Logger LOGGER = Logging.getLogger(SLDMarkBinding.class);
+
     protected FilterFactory filterFactory;
     protected StyleFactory styleFactory;
+    ResourceLocator resourceLocator;
 
-    public SLDMarkBinding(StyleFactory styleFactory, FilterFactory filterFactory) {
+    public SLDMarkBinding(
+            StyleFactory styleFactory,
+            FilterFactory filterFactory,
+            ResourceLocator resourceLocator) {
         this.styleFactory = styleFactory;
         this.filterFactory = filterFactory;
+        this.resourceLocator = resourceLocator;
     }
 
     /** @generated */
@@ -114,6 +126,15 @@ public class SLDMarkBinding extends AbstractComplexBinding {
         Mark mark = styleFactory.createMark();
 
         if (wkName != null) {
+            // allow references to files containing mark definitions
+            if (wkName.startsWith("file://")) {
+                URL url = resourceLocator.locateResource(wkName);
+                if (url != null) {
+                    wkName = url.toExternalForm();
+                } else {
+                    LOGGER.log(Level.WARNING, "Could not resolve location of " + wkName);
+                }
+            }
             mark.setWellKnownName(filterFactory.literal(wkName));
         }
 

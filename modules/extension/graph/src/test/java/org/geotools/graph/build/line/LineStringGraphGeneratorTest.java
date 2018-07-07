@@ -16,15 +16,15 @@
  */
 package org.geotools.graph.build.line;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import junit.framework.TestCase;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.basic.BasicNode;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
 
 /** @author Anders Bakkevold, Bouvet AS, bakkedev@gmail.com */
 public class LineStringGraphGeneratorTest extends TestCase {

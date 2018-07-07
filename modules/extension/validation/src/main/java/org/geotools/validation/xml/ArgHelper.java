@@ -16,8 +16,6 @@
  */
 package org.geotools.validation.xml;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -32,6 +30,8 @@ import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.filter.FilterDOMParser;
 import org.geotools.filter.FilterTransformer;
 import org.geotools.gml.producer.GeometryTransformer;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;

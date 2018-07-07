@@ -27,6 +27,7 @@ import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ExternalGraphic;
@@ -46,6 +47,7 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
@@ -460,12 +462,54 @@ public class SEExampleTest extends SETestSupport {
         assertEquals(OverlapBehavior.LATEST_ON_TOP, sym.getOverlapBehavior());
 
         SelectedChannelType[] ch = sym.getChannelSelection().getRGBChannels();
-        assertEquals("1", ch[0].getChannelName());
+        assertEquals("1", ch[0].getChannelName().evaluate(null, String.class));
         assertEquals(ContrastMethod.HISTOGRAM, ch[0].getContrastEnhancement().getMethod());
-        assertEquals("2", ch[1].getChannelName());
+        assertEquals("2", ch[1].getChannelName().evaluate(null, String.class));
         assertEquals(
                 2.5, ch[1].getContrastEnhancement().getGammaValue().evaluate(null, Double.class));
-        assertEquals("3", ch[2].getChannelName());
+        assertEquals("3", ch[2].getChannelName().evaluate(null, String.class));
+        assertEquals(ContrastMethod.NORMALIZE, ch[2].getContrastEnhancement().getMethod());
+
+        ColorMap map = sym.getColorMap();
+        assertNotNull(map);
+        assertEquals(2, map.getColorMapEntries().length);
+
+        Color c = map.getColorMapEntry(0).getColor().evaluate(null, Color.class);
+        assertEquals(Color.BLACK, c);
+
+        c = map.getColorMapEntry(1).getColor().evaluate(null, Color.class);
+        assertEquals(Color.WHITE, c);
+
+        assertEquals(
+                1.0, sym.getContrastEnhancement().getGammaValue().evaluate(null, Double.class));
+    }
+
+    /**
+     * Test the Expression parser for SelectChannel
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testParseRasterChannelExpression() throws Exception {
+        RasterSymbolizer sym = (RasterSymbolizer) parse("example-raster-channel-expression.xml");
+        assertEquals(1.0, sym.getOpacity().evaluate(null, Double.class));
+        assertEquals(OverlapBehavior.LATEST_ON_TOP, sym.getOverlapBehavior());
+
+        SelectedChannelType[] ch = sym.getChannelSelection().getRGBChannels();
+
+        // assert default value : 1
+        EnvFunction.removeLocalValue("B1");
+        assertEquals(1, ch[0].getChannelName().evaluate(null, Integer.class).intValue());
+        // assert ENV variable value: B1:20
+        EnvFunction.setLocalValue("B1", "20");
+        assertEquals(20, ch[0].getChannelName().evaluate(null, Integer.class).intValue());
+        EnvFunction.removeLocalValue("B1");
+
+        assertEquals(ContrastMethod.HISTOGRAM, ch[0].getContrastEnhancement().getMethod());
+        assertEquals("2", ch[1].getChannelName().evaluate(null, String.class));
+        assertEquals(
+                2.5, ch[1].getContrastEnhancement().getGammaValue().evaluate(null, Double.class));
+        assertEquals("3", ch[2].getChannelName().evaluate(null, String.class));
         assertEquals(ContrastMethod.NORMALIZE, ch[2].getContrastEnhancement().getMethod());
 
         ColorMap map = sym.getColorMap();
@@ -551,7 +595,12 @@ public class SEExampleTest extends SETestSupport {
         assertEquals(1, rule.symbolizers().size());
 
         RasterSymbolizer sym = (RasterSymbolizer) rule.symbolizers().get(0);
-        assertEquals("Band.band1", sym.getChannelSelection().getGrayChannel().getChannelName());
+        assertEquals(
+                "Band.band1",
+                sym.getChannelSelection()
+                        .getGrayChannel()
+                        .getChannelName()
+                        .evaluate(null, String.class));
     }
 
     public void testParseValidatePointSymbolizerGeomTransform() throws Exception {

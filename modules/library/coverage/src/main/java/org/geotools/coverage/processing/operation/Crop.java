@@ -16,16 +16,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.geom.TopologyException;
-import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import java.awt.Rectangle;
@@ -71,6 +61,16 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.resources.coverage.IntersectUtils;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.PrecisionModel;
+import org.locationtech.jts.geom.TopologyException;
+import org.locationtech.jts.geom.prep.PreparedGeometryFactory;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
@@ -116,7 +116,7 @@ import org.opengis.referencing.operation.TransformException;
  * At least one between <i>Envelope</i> and <i>ROI</i> must be provided. If both of them are
  * provided, the resulting area will be the intersection of them. <br>
  * ROI geometries must be in the same CRS as the source coverage. <br>
- * ROI must be any among a {@link com.vividsolutions.jts.geom.Polygon}, a {@link MultiPolygon}, or a
+ * ROI must be any among a {@link org.locationtech.jts.geom.Polygon}, a {@link MultiPolygon}, or a
  * {@link GeometryCollection} of the two.
  *
  * <p><strong>NOTE</strong> that in case we will use the Mosaic operation with a ROI, such a ROI
@@ -415,7 +415,7 @@ public class Crop extends Operation2D {
         if (cropRoi != null) {
             final Geometry jis =
                     JTS.toGeometry(
-                            (com.vividsolutions.jts.geom.Envelope)
+                            (org.locationtech.jts.geom.Envelope)
                                     new ReferencedEnvelope(intersectionEnvelope));
             if (!IntersectUtils.intersects(cropRoi, jis))
                 throw new CannotCropException(Errors.format(ErrorKeys.CANT_CROP));
@@ -561,9 +561,9 @@ public class Crop extends Operation2D {
                     // envelope(roi)), as the
                     // ROI will do the rest (we'll just carry around a larger image but pixels only
                     // get out within the ROI)
-                    com.vividsolutions.jts.geom.Envelope cropROIEnvelope =
+                    org.locationtech.jts.geom.Envelope cropROIEnvelope =
                             cropROI.getEnvelopeInternal();
-                    com.vividsolutions.jts.geom.Envelope intersection =
+                    org.locationtech.jts.geom.Envelope intersection =
                             cropROIEnvelope.intersection(
                                     ReferencedEnvelope.reference(cropEnvelope));
                     cropEnvelope.setEnvelope(
@@ -906,7 +906,7 @@ public class Crop extends Operation2D {
      * @return
      */
     private static ROI getAsROI(Geometry theGeom) {
-        com.vividsolutions.jts.geom.Envelope env = theGeom.getEnvelopeInternal();
+        org.locationtech.jts.geom.Envelope env = theGeom.getEnvelopeInternal();
         int x = (int) Math.floor(env.getMinX());
         int y = (int) Math.floor(env.getMinY());
         int w = (int) Math.ceil(env.getMaxX()) - x;

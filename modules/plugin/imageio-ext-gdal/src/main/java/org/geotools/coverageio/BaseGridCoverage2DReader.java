@@ -17,7 +17,6 @@
 */
 package org.geotools.coverageio;
 
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
 import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
 import java.awt.Rectangle;
@@ -57,6 +56,7 @@ import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;

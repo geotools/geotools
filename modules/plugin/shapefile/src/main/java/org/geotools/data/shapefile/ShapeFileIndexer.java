@@ -16,8 +16,6 @@
  */
 package org.geotools.data.shapefile;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -45,6 +43,8 @@ import org.geotools.data.shapefile.shp.ShapefileReader;
 import org.geotools.data.shapefile.shp.ShapefileReader.Record;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.util.ProgressListener;
 
 /**

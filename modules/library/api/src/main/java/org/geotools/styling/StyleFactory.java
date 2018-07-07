@@ -267,10 +267,15 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
     public ContrastEnhancement createContrastEnhancement(Expression gammaValue);
 
     public SelectedChannelType createSelectedChannelType(
+            Expression name, ContrastEnhancement enhancement);
+
+    public SelectedChannelType createSelectedChannelType(
             String name, ContrastEnhancement enhancement);
 
     /** @deprecated Use {@link #createSelectedChannelType(String, ContrastEnhancement)} */
     public SelectedChannelType createSelectedChannelType(String name, Expression gammaValue);
+
+    public SelectedChannelType createSelectedChannelType(Expression name, Expression gammaValue);
 
     public ColorMap createColorMap();
 
@@ -704,7 +709,16 @@ public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
      * @return SelectedChannelType
      */
     SelectedChannelType selectedChannelType(
+            Expression channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
+
+    /**
+     * @param channelName
+     * @param contrastEnhancement
+     * @return SelectedChannelType
+     */
+    SelectedChannelType selectedChannelType(
             String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
+
     /**
      * @param reliefFactor
      * @param brightnessOnly

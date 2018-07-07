@@ -18,19 +18,19 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.TopologyException;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.TopologyException;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -132,7 +132,7 @@ public class LiteShapeTest extends TestCase {
         cs.setOrdinate(3, 1, 10);
 
         LineString ls = geomFac.createLineString(cs);
-        LineString copy = (LineString) ls.clone();
+        LineString copy = (LineString) ls.copy();
         LiteShape2 ltCloning =
                 new LiteShape2(
                         ls,
@@ -167,7 +167,7 @@ public class LiteShapeTest extends TestCase {
         return line;
     }
 
-    private com.vividsolutions.jts.geom.Polygon makeSamplePolygon(
+    private org.locationtech.jts.geom.Polygon makeSamplePolygon(
             final GeometryFactory geomFac, double xoff, double yoff) {
         Coordinate[] polygonCoordinates = new Coordinate[10];
         polygonCoordinates[0] = new Coordinate(70 + xoff, 70 + yoff);
@@ -182,7 +182,7 @@ public class LiteShapeTest extends TestCase {
         polygonCoordinates[9] = new Coordinate(70 + xoff, 70 + yoff);
         try {
             LinearRing ring = geomFac.createLinearRing(polygonCoordinates);
-            com.vividsolutions.jts.geom.Polygon polyg = geomFac.createPolygon(ring, null);
+            org.locationtech.jts.geom.Polygon polyg = geomFac.createPolygon(ring, null);
             return polyg;
         } catch (TopologyException te) {
             fail("Error creating sample polygon for testing " + te);

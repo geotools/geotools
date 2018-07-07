@@ -16,8 +16,8 @@
  */
 package org.geotools.graph.structure.line;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import org.geotools.graph.structure.Node;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Represents a node in a line network. A node in a line graph has a coordinate associated with it.

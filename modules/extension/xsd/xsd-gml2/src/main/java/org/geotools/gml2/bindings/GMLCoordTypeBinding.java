@@ -16,14 +16,14 @@
  */
 package org.geotools.gml2.bindings;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import java.math.BigDecimal;
 import javax.xml.namespace.QName;
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:CoordType.

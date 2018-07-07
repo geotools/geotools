@@ -16,8 +16,6 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 import java.awt.geom.Rectangle2D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -25,6 +23,8 @@ import org.geotools.referencing.CRS;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -918,7 +918,7 @@ public class ReferencedEnvelope extends Envelope
         }
 
         if (env.getDimension() >= 3) {
-            // emptiness test according to com.vividsolutions.jts.geom.Envelope
+            // emptiness test according to org.locationtech.jts.geom.Envelope
             if (env.getMaximum(0) < env.getMinimum(0)) {
                 return new ReferencedEnvelope3D(env.getCoordinateReferenceSystem());
             } else {
@@ -926,7 +926,7 @@ public class ReferencedEnvelope extends Envelope
             }
         }
 
-        // emptiness test according to com.vividsolutions.jts.geom.Envelope
+        // emptiness test according to org.locationtech.jts.geom.Envelope
         if (env.getMaximum(0) < env.getMinimum(0))
             return new ReferencedEnvelope(env.getCoordinateReferenceSystem());
 

@@ -63,7 +63,7 @@
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="GeometryAttribute" instanceClassName="org.opengis.feature.GeometryAttribute"
       serializable="false"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="Geometry" instanceClassName="com.vividsolutions.jts.geom.Geometry"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Geometry" instanceClassName="org.locationtech.jts.geom.Geometry"/>
   <eClassifiers xsi:type="ecore:EDataType" name="EStructureInfo" instanceClassName="org.geotools.data.efeature.EStructureInfo"
       serializable="false"/>
   <eClassifiers xsi:type="ecore:EDataType" name="EFeatureInfo" instanceClassName="org.geotools.data.efeature.EFeatureInfo"

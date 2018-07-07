@@ -16,7 +16,6 @@
  */
 package org.geotools.gml2;
 
-import com.vividsolutions.jts.geom.Point;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -29,6 +28,7 @@ import javax.xml.transform.stream.StreamResult;
 import junit.framework.TestCase;
 import org.geotools.xml.Parser;
 import org.geotools.xml.StreamingParser;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 

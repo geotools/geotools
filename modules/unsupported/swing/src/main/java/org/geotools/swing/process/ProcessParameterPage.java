@@ -16,7 +16,6 @@
  */
 package org.geotools.swing.process;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +35,7 @@ import org.geotools.swing.wizard.JField;
 import org.geotools.swing.wizard.JGeometryField;
 import org.geotools.swing.wizard.JPage;
 import org.geotools.swing.wizard.ParamField;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.Name;
 
 /**

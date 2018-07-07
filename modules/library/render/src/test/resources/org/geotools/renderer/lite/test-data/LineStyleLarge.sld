@@ -22,8 +22,7 @@
               <ogc:PropertyName>name</ogc:PropertyName>
             </Label>
             <Font>
-              <CssParameter name="font-family">Dialog</CssParameter>
-              <CssParameter name="font-style">italic</CssParameter>
+              <CssParameter name="font-family">Bitstream Vera Sans</CssParameter>
               <CssParameter name="font-weight">bold</CssParameter>
               <CssParameter name="font-size">48</CssParameter>
               <CssParameter name="font-color">#222222</CssParameter>
@@ -31,10 +30,7 @@
             <Fill>
               <CssParameter name="fill">#333333</CssParameter>
             </Fill>
-            <LabelPlacement>
-              <PointPlacement auto="true">
-              </PointPlacement>
-            </LabelPlacement>
+            <VendorOption name="followLine">true</VendorOption>
           </TextSymbolizer>
         </Rule>
 

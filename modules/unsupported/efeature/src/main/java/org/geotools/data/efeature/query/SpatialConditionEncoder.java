@@ -1,8 +1,8 @@
 package org.geotools.data.efeature.query;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.operation.distance.DistanceOp;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.operation.distance.DistanceOp;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import org.eclipse.emf.ecore.EDataType;

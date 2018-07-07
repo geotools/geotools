@@ -149,7 +149,7 @@ public class PointImpl extends GeometryImpl implements Point {
     }
 
     /** Computes the JTS equivalent of this geometry. */
-    protected com.vividsolutions.jts.geom.Geometry computeJTSPeer() {
+    protected org.locationtech.jts.geom.Geometry computeJTSPeer() {
         return JTSUtils.directPositionToPoint(position);
     }
 

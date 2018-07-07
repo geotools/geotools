@@ -16,9 +16,6 @@
  */
 package org.geotools.renderer.lite;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.index.strtree.STRtree;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -30,6 +27,9 @@ import org.geotools.data.store.DataFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.index.strtree.STRtree;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

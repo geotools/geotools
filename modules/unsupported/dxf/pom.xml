@@ -119,7 +119,7 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.vividsolutions</groupId>
+      <groupId>org.locationtech.jts</groupId>
       <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>

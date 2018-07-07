@@ -1707,7 +1707,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
         SelectedChannelType grayChannel = r.getChannelSelection().getGrayChannel();
-        assertThat(grayChannel.getChannelName(), equalTo("foo"));
+        assertThat(grayChannel.getChannelName().evaluate(null, String.class), equalTo("foo"));
         assertThat(grayChannel.getContrastEnhancement(), nullContrast());
     }
 
@@ -1725,7 +1725,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
         SelectedChannelType grayChannel = r.getChannelSelection().getGrayChannel();
-        assertThat(grayChannel.getChannelName(), equalTo("foo"));
+        assertThat(grayChannel.getChannelName().evaluate(null, String.class), equalTo("foo"));
         assertThat(grayChannel.getContrastEnhancement().getGammaValue(), literal(equalTo("1.2")));
         assertThat(
                 grayChannel.getContrastEnhancement().getMethod(),
@@ -1765,9 +1765,9 @@ public class YsldParseTest {
 
         SelectedChannelType[] rgbChannels = r.getChannelSelection().getRGBChannels();
 
-        assertThat(rgbChannels[0].getChannelName(), equalTo("foo"));
-        assertThat(rgbChannels[1].getChannelName(), equalTo("bar"));
-        assertThat(rgbChannels[2].getChannelName(), equalTo("baz"));
+        assertThat(rgbChannels[0].getChannelName().evaluate(null, String.class), equalTo("foo"));
+        assertThat(rgbChannels[1].getChannelName().evaluate(null, String.class), equalTo("bar"));
+        assertThat(rgbChannels[2].getChannelName().evaluate(null, String.class), equalTo("baz"));
 
         assertThat(rgbChannels[0].getContrastEnhancement(), nullContrast());
         assertThat(rgbChannels[1].getContrastEnhancement().getGammaValue(), nilExpression());
@@ -1784,7 +1784,7 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
         SelectedChannelType grayChannel = r.getChannelSelection().getGrayChannel();
-        assertThat(grayChannel.getChannelName(), equalTo("1"));
+        assertThat(grayChannel.getChannelName().evaluate(null, String.class), equalTo("1"));
         assertThat(grayChannel.getContrastEnhancement(), nullContrast());
     }
 
@@ -1796,11 +1796,11 @@ public class YsldParseTest {
         StyledLayerDescriptor sld = Ysld.parse(yaml);
         RasterSymbolizer r = SLD.rasterSymbolizer(SLD.defaultStyle(sld));
         SelectedChannelType[] rgbChannels = r.getChannelSelection().getRGBChannels();
-        assertThat(rgbChannels[0].getChannelName(), equalTo("1"));
+        assertThat(rgbChannels[0].getChannelName().evaluate(null, String.class), equalTo("1"));
         assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
-        assertThat(rgbChannels[1].getChannelName(), equalTo("2"));
+        assertThat(rgbChannels[1].getChannelName().evaluate(null, String.class), equalTo("2"));
         assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
-        assertThat(rgbChannels[2].getChannelName(), equalTo("3"));
+        assertThat(rgbChannels[2].getChannelName().evaluate(null, String.class), equalTo("3"));
         assertThat(rgbChannels[2].getContrastEnhancement(), nullContrast());
     }
 

@@ -16,10 +16,10 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.LineString;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
 /** @source $URL$ */

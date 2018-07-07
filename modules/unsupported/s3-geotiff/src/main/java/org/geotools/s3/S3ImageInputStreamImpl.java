@@ -17,9 +17,8 @@
 package org.geotools.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3Object;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -73,11 +72,11 @@ public class S3ImageInputStreamImpl extends ImageInputStreamImpl {
         }
 
         AmazonS3 s3Client = this.getS3Client();
-        S3Object object = s3Client.getObject(new GetObjectRequest(this.bucket, this.key));
-        ObjectMetadata meta = object.getObjectMetadata();
+        ObjectMetadata meta =
+                s3Client.getObjectMetadata(new GetObjectMetadataRequest(this.bucket, this.key));
+        this.length = meta.getContentLength();
 
         this.fileName = nameFromKey(this.key);
-        this.length = meta.getContentLength();
         this.cacheBlockSize = CacheManagement.DEFAULT.getCacheConfig().getChunkSizeBytes();
     }
 

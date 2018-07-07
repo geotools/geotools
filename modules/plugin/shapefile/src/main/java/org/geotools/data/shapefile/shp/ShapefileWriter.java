@@ -16,16 +16,16 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
 import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.resources.NIOUtilities;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * ShapefileWriter allows for the storage of geometries in esris shp format. During writing, an

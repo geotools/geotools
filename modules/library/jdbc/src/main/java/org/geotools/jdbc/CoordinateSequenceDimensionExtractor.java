@@ -16,9 +16,9 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFilter;
 
 /**
  * Extracts the maximum dimension value from the geometry coordinate sequences (assumes 2 as the

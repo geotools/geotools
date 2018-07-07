@@ -16,13 +16,6 @@
  */
 package org.geotools.gml4wcs.bindings;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
 import java.util.List;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.geometry.jts.JTS;
@@ -31,6 +24,13 @@ import org.geotools.gml2.bindings.GML2ParsingUtils;
 import org.geotools.xml.BindingWalkerFactory;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.DirectPosition;

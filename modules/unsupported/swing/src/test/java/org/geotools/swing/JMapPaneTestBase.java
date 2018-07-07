@@ -17,7 +17,6 @@
 
 package org.geotools.swing;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Rectangle;
 import java.util.Arrays;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -33,6 +32,7 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.swing.testutils.WaitingMapPaneListener;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

@@ -1,6 +1,6 @@
 package org.geotools.data.efeature;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;

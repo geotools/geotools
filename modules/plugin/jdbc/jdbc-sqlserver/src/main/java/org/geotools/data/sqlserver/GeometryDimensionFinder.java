@@ -16,9 +16,9 @@
  */
 package org.geotools.data.sqlserver;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryComponentFilter;
 
 class GeometryDimensionFinder implements GeometryComponentFilter {
 

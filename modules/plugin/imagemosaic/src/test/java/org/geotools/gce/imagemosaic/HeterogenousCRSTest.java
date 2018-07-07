@@ -22,7 +22,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -68,6 +67,7 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterValue;
@@ -158,6 +158,7 @@ public class HeterogenousCRSTest {
 
         RenderedImage renderImage = gc2d.getRenderedImage();
         ImageAssert.assertEquals(resultsImage, renderImage, 1000);
+        reader.dispose();
     }
 
     private void testMosaic(
@@ -200,6 +201,7 @@ public class HeterogenousCRSTest {
             // images will be pretty similar anyway
             ImageAssert.assertEquals(resultsFile, renderImage, 1000);
         }
+        imReader.dispose();
     }
 
     private ImageMosaicReader getTestMosaic(String testLocation)
@@ -427,6 +429,7 @@ public class HeterogenousCRSTest {
                 assertTrue(geom.toText(), geom.getEnvelopeInternal().getWidth() < 3);
             }
         }
+        imReader.dispose();
     }
 
     @Test
@@ -465,6 +468,7 @@ public class HeterogenousCRSTest {
         assertNotNull(coverage);
         ImageAssert.assertEquals(
                 testFile("hetero_crs_rastermask.png"), coverage.getRenderedImage(), 1000);
+        imReader.dispose();
     }
 
     GeneralParameterValue buildGridGeometryParameter(
@@ -559,6 +563,7 @@ public class HeterogenousCRSTest {
                 assertEquals(8712, resY, 10d);
             }
         }
+        reader.dispose();
     }
 
     @Test

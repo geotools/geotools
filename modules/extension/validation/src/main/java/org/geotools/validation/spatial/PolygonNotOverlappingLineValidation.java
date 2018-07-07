@@ -16,11 +16,11 @@
  */
 package org.geotools.validation.spatial;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Map;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**

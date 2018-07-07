@@ -20,7 +20,6 @@ package org.geotools.grid.hexagon;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import java.util.HashMap;
 import java.util.Map;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -28,6 +27,7 @@ import org.geotools.grid.Neighbor;
 import org.geotools.grid.PolygonBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * Unit tests for the HexagonGridBuilder class.

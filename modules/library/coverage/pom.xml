@@ -111,7 +111,7 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.vividsolutions</groupId>
+      <groupId>org.locationtech.jts</groupId>
       <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
@@ -124,16 +124,6 @@
       <groupId>it.geosolutions.imageio-ext</groupId>
   	  <artifactId>imageio-ext-tiff</artifactId>
       <!-- The version number is specified in the parent POM. -->      
-    </dependency>    
-    
-    <!-- JTS Topology Suite -->
-    <dependency>
-       <groupId>com.vividsolutions</groupId>
-       <artifactId>jts-core</artifactId>
-    </dependency>
-    <dependency>
-       <groupId>com.vividsolutions</groupId>
-       <artifactId>jts-example</artifactId>
     </dependency>
     
     <!--  JAI Tools -->  
@@ -146,7 +136,7 @@
        <artifactId>jt-utils</artifactId>
        <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
        </exclusions>
@@ -158,7 +148,7 @@
 		<artifactId>jt-affine</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -168,7 +158,7 @@
 		<artifactId>jt-algebra</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -178,7 +168,7 @@
 		<artifactId>jt-bandmerge</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -188,7 +178,7 @@
 		<artifactId>jt-bandselect</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -198,7 +188,7 @@
 		<artifactId>jt-bandcombine</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -208,7 +198,7 @@
 		<artifactId>jt-border</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -218,7 +208,7 @@
 		<artifactId>jt-buffer</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -228,7 +218,7 @@
 		<artifactId>jt-crop</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -238,7 +228,7 @@
 		<artifactId>jt-iterators</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -248,7 +238,7 @@
 		<artifactId>jt-lookup</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -258,7 +248,7 @@
 		<artifactId>jt-mosaic</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -268,7 +258,7 @@
 		<artifactId>jt-nullop</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -278,7 +268,7 @@
 		<artifactId>jt-rescale</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -288,7 +278,7 @@
 		<artifactId>jt-scale</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -298,7 +288,7 @@
 		<artifactId>jt-scale2</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -308,7 +298,7 @@
 		<artifactId>jt-stats</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -318,7 +308,7 @@
 		<artifactId>jt-translate</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -328,7 +318,7 @@
 		<artifactId>jt-utilities</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -338,7 +328,7 @@
 		<artifactId>jt-warp</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -348,7 +338,7 @@
 		<artifactId>jt-zonal</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -358,7 +348,7 @@
 		<artifactId>jt-binarize</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -368,7 +358,7 @@
 		<artifactId>jt-format</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -378,7 +368,7 @@
 		<artifactId>jt-colorconvert</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -388,7 +378,7 @@
 		<artifactId>jt-errordiffusion</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -398,7 +388,7 @@
 		<artifactId>jt-orderdither</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -408,7 +398,7 @@
 		<artifactId>jt-colorindexer</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -418,7 +408,7 @@
 		<artifactId>jt-imagefunction</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -428,7 +418,7 @@
 		<artifactId>jt-piecewise</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -438,7 +428,7 @@
 		<artifactId>jt-classifier</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -448,7 +438,7 @@
 		<artifactId>jt-rlookup</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>
@@ -458,7 +448,7 @@
 		<artifactId>jt-vectorbin</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>

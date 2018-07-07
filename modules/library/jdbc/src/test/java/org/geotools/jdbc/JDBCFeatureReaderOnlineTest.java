@@ -16,11 +16,11 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.List;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

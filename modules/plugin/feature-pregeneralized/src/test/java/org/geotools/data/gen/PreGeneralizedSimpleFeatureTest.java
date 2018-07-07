@@ -17,7 +17,6 @@
 
 package org.geotools.data.gen;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -34,6 +33,7 @@ import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
 import org.geotools.feature.NameImpl;
 import org.junit.Assert;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 

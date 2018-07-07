@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.imageio.core.CoreCommonImageMetadata;
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
 import it.geosolutions.imageio.maskband.DatasetLayout;
@@ -92,6 +91,7 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.URLs;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -386,14 +386,15 @@ public class GranuleDescriptor {
                 // do not trust the index, use the reader instead (reprojection might be involved)
                 this.granuleBBOX = ReferencedEnvelope.reference(gcReader.getOriginalEnvelope());
             }
+
             //
             // get info about the raster we have to read
             //
             SpiHelper spiProvider = new SpiHelper(granuleUrl, suggestedSPI, suggestedIsSPI);
             boolean isMultidim = spiProvider.isMultidim();
-
-            GeneralEnvelope envelope = gcReader.getOriginalEnvelope();
-            this.granuleEnvelope = envelope;
+            if (!isMultidim) {
+                this.granuleEnvelope = gcReader.getOriginalEnvelope();
+            }
 
             ovrProvider = new MaskOverviewProvider(layout, granuleUrl, spiProvider);
 

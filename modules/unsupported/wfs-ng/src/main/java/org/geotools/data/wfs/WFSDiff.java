@@ -18,8 +18,6 @@ package org.geotools.data.wfs;
 
 import static org.geotools.data.wfs.internal.Loggers.*;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +27,8 @@ import org.geotools.data.Diff;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.store.ContentState;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;

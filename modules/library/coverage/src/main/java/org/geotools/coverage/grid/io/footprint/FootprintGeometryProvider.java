@@ -16,8 +16,8 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 public interface FootprintGeometryProvider {

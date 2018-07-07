@@ -16,14 +16,14 @@
  */
 package org.geotools.gml2;
 
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 
 /** @source $URL$ */
 public class GMLGeometryTest extends TestCase {

@@ -16,10 +16,6 @@
  */
 package org.geotools.data.wps;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -71,6 +67,10 @@ import org.geotools.wps.WPS;
 import org.geotools.wps.WPSConfiguration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.EncoderDelegate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 

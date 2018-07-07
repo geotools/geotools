@@ -16,11 +16,11 @@
  */
 package org.geotools.data.store;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

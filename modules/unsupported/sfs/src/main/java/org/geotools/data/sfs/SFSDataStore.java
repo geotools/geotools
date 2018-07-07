@@ -16,7 +16,6 @@
  */
 package org.geotools.data.sfs;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +42,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.filter.FilterCapabilities;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.And;
 import org.opengis.filter.ExcludeFilter;

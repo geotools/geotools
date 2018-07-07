@@ -16,9 +16,6 @@
  */
 package org.geotools.filter;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,6 +26,9 @@ import junit.framework.TestSuite;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.function.EnvFunction;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.Or;

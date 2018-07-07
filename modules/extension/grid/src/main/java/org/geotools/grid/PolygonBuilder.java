@@ -17,13 +17,13 @@
 
 package org.geotools.grid;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * The base class for builders that generate polygonal grid elements.

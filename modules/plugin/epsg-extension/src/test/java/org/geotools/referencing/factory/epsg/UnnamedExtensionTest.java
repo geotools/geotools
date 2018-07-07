@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
@@ -32,6 +31,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
+import org.locationtech.jts.geom.Coordinate;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;

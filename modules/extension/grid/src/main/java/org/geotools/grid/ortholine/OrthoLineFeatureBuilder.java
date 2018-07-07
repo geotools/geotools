@@ -17,12 +17,12 @@
 
 package org.geotools.grid.ortholine;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineString;
 import java.util.Map;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.grid.GridElement;
 import org.geotools.grid.GridFeatureBuilder;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

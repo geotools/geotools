@@ -16,7 +16,7 @@
  */
 package org.geotools.data.couchdb;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;

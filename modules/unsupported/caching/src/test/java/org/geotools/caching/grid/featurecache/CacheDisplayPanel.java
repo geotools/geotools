@@ -16,9 +16,9 @@
  */
 package org.geotools.caching.grid.featurecache;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.LineString;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.LineString;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;

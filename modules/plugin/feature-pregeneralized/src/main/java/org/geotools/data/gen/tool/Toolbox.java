@@ -16,8 +16,6 @@
  */
 package org.geotools.data.gen.tool;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -35,6 +33,8 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

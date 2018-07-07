@@ -90,7 +90,14 @@ public class RenderableSVGCache {
         if (svg == null) {
             String parser = XMLResourceDescriptor.getXMLParserClassName();
             SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
-            Document doc = f.createDocument(svgfile);
+            Document doc;
+            int queryIdx = svgfile.indexOf("?");
+            if (svgfile.startsWith("file:/") && queryIdx > 0) {
+                String localPath = svgfile.substring(0, queryIdx);
+                doc = f.createDocument(localPath);
+            } else {
+                doc = f.createDocument(svgfile);
+            }
             Map<String, String> parameters = getParametersFromUrl(svgfile);
             if (!parameters.isEmpty() || hasParameters(doc.getDocumentElement())) {
                 replaceParameters(doc.getDocumentElement(), parameters);

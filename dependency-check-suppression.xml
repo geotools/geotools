@@ -20,4 +20,9 @@
         <gav regex="true">^it\.geosolutions\.imageio-ext:imageio-ext-gdalarcbinarygrid:.*$</gav>
         <cpe>cpe:/a:arc:arc</cpe>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: gt-sde-dummy.jar]]></notes>
+        <gav regex="true">^org\.geotools:gt-sde-dummy:.*$</gav>
+        <cpe>cpe:/a:arc:arc</cpe>
+    </suppress>
 </suppressions>

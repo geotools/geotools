@@ -144,6 +144,8 @@ public class SLDParser {
 
     private EntityResolver entityResolver;
 
+    private boolean disposeInputSource;
+
     /**
      * Create a Stylereader - use if you already have a dom to parse.
      *
@@ -228,6 +230,7 @@ public class SLDParser {
     public void setInput(String filename) throws java.io.FileNotFoundException {
         File f = new File(filename);
         source = new InputSource(new java.io.FileInputStream(f));
+        this.disposeInputSource = true;
         try {
             setSourceUrl(f.toURI().toURL());
         } catch (MalformedURLException e) {
@@ -243,6 +246,7 @@ public class SLDParser {
      */
     public void setInput(File f) throws java.io.FileNotFoundException {
         source = new InputSource(new java.io.FileInputStream(f));
+        this.disposeInputSource = true;
         try {
             setSourceUrl(f.toURI().toURL());
         } catch (MalformedURLException e) {
@@ -258,6 +262,7 @@ public class SLDParser {
      */
     public void setInput(java.net.URL url) throws java.io.IOException {
         source = new InputSource(url.openStream());
+        this.disposeInputSource = true;
         setSourceUrl(url);
     }
 
@@ -331,9 +336,34 @@ public class SLDParser {
             throw new RuntimeException(se);
         } catch (java.io.IOException ie) {
             throw new RuntimeException(ie);
+        } finally {
+            disposeInputSource();
         }
 
         return readDOM(dom);
+    }
+
+    /**
+     * Close the input source stream/reader if they had been created in this class
+     *
+     * @param source
+     */
+    private void disposeInputSource() {
+        if (!disposeInputSource) {
+            return;
+        }
+
+        try {
+            if (source.getByteStream() != null) {
+                source.getByteStream().close();
+            }
+
+            if (source.getCharacterStream() != null) {
+                source.getCharacterStream().close();
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.FINE, "Trouble releasing input source streams", e);
+        }
     }
 
     /** Read styles from the dom that was previously parsed. */
@@ -409,6 +439,8 @@ public class SLDParser {
             throw new RuntimeException(se);
         } catch (java.io.IOException ie) {
             throw new RuntimeException(ie);
+        } finally {
+            disposeInputSource();
         }
     }
 

@@ -1,35 +1,35 @@
-Removing tempfile /tmp/example2259980240560296572
+Removing tempfile /tmp/example6382150442630700157
 transactionExample start
 
 Step 1
 ------
-start     auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-start              t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-start              t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+start     auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+start              t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+start              t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
 
 Step 2 transaction 1 removes feature 'fid1'
 ------
-t1 remove auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-t1 remove          t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-t1 remove          t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t1 remove auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t1 remove          t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t1 remove          t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
 
 Step 3 transaction 2 adds a new feature 'locations.1'
 ------
-t2 add    auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-t2 add             t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-t1 add             t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, new0, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t2 add    auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t2 add             t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t1 add             t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, new0, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
 
 Step 4 transaction 1 commits the removal of feature 'fid1'
 ------
-t1 commit auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-t1 commit          t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-t1 commit          t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, new0, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t1 commit auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t1 commit          t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t1 commit          t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, new0, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
 
 Step 5 transaction 2 commits the addition of 'locations.1'
 ------
-t2 commit auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-t2 commit          t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
-t2 commit          t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t2 commit auto-commit: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.17, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t2 commit          t1: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.17, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
+t2 commit          t2: [locations.14, locations.13, locations.9, locations.12, locations.8, locations.11, locations.17, locations.16, locations.15, locations.3, locations.2, locations.1, locations.7, locations.6, locations.5, locations.4, locations.10]
 
 transactionExample end
 
@@ -50,9 +50,10 @@ LAT,LON,CITY,NUMBER,YEAR
 45.52,-122.681944,Portland,840,2014
 37.5667,129.681944,Seoul,473,2015
 50.733992,7.099814,Bonn,700,2016
+42.3601,-71.0589,Boston,800,2017
 42.3601,-71.0589,Boston,1300,2017
 transactionExample contents end
-Removing tempfile /tmp/example4001732046389682595
+Removing tempfile /tmp/example9149341159383119226
 replaceAll start
 
 
@@ -62,13 +63,13 @@ replaceAll contents start
 LAT,LON,CITY,NUMBER,YEAR
 42.3601,-71.0589,Boston,1300,2017
 replaceAll contents end
-Removing tempfile /tmp/example1691053132180004919
+Removing tempfile /tmp/example8278096520411366096
 featureStoreExample start
 
 
 featureStoreExample end
 
-Removing tempfile /tmp/example128775858542363960
+Removing tempfile /tmp/example312853775903074776
 appendContent start
 
 
@@ -91,8 +92,9 @@ LAT,LON,CITY,NUMBER,YEAR
 45.52,-122.681944,Portland,840,2014
 37.5667,129.681944,Seoul,473,2015
 50.733992,7.099814,Bonn,700,2016
+42.3601,-71.0589,Boston,800,2017
 appendContent contents end
-Removing tempfile /tmp/example5256254780065780176
+Removing tempfile /tmp/example3299238851063308852
 removeAllExample start
 
 remove locations.1
@@ -110,6 +112,7 @@ remove locations.12
 remove locations.13
 remove locations.14
 remove locations.15
+remove locations.16
 commit locations
 
 removeAllExample end

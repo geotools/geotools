@@ -261,7 +261,7 @@ public class ImageMosaicRepositoryTest {
 
     /**
      * Test for GEOS-8311 load a mosaic when it doesn't have a projection set.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -275,7 +275,7 @@ public class ImageMosaicRepositoryTest {
         for (File file : testDirectory.listFiles(f -> f.getName().startsWith("rgba"))) {
             file.delete();
         }
-        //remove the .prj files
+        // remove the .prj files
         for (File file : testDirectory.listFiles(f -> f.getName().endsWith("prj"))) {
             file.delete();
         }
@@ -316,10 +316,10 @@ public class ImageMosaicRepositoryTest {
         reader.dispose();
         ds.dispose();
     }
-    
+
     /**
      * Test for GEOS-8311 load a mosaic when it doesn't have a projection set.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -329,8 +329,8 @@ public class ImageMosaicRepositoryTest {
         File testDataFolder = new File(storeUrl.toURI());
         File testDirectory = crsMosaicFolder.newFolder("no_crs");
         FileUtils.copyDirectory(testDataFolder, testDirectory);
-        
-        //remove the .prj files - there shouldn't be any but check
+
+        // remove the .prj files - there shouldn't be any but check
         for (File file : testDirectory.listFiles(f -> f.getName().endsWith("prj"))) {
             file.delete();
         }
@@ -371,7 +371,6 @@ public class ImageMosaicRepositoryTest {
         reader.dispose();
         ds.dispose();
     }
-
 
     /**
      * Removes the sample image and

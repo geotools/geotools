@@ -260,6 +260,120 @@ public class ImageMosaicRepositoryTest {
     }
 
     /**
+     * Test for GEOS-8311 load a mosaic when it doesn't have a projection set.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void createFromEmptyStoreWithNoProjection() throws Exception {
+        // setup mosaic
+        URL storeUrl = TestData.url(this, "rgba");
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder("rgba_no_proj");
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+        // clean up, other tests might have left the rgba source dir dirty
+        for (File file : testDirectory.listFiles(f -> f.getName().startsWith("rgba"))) {
+            file.delete();
+        }
+        //remove the .prj files
+        for (File file : testDirectory.listFiles(f -> f.getName().endsWith("prj"))) {
+            file.delete();
+        }
+        // signal the intention to use a store name using both datastore.properties and indexer
+        Properties properties = new Properties();
+        properties.put(Utils.Prop.STORE_NAME, "test");
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testDirectory, "datastore.properties"))) {
+            properties.store(fos, null);
+        }
+        properties = new Properties();
+        properties.put(Utils.Prop.TYPENAME, "abcd");
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testDirectory, "indexer.properties"))) {
+            properties.store(fos, null);
+        }
+
+        // setup a directory data store of shapefiles
+        DefaultRepository repository = new DefaultRepository();
+        final Map<String, Serializable> params =
+                Collections.singletonMap(
+                        ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(testDirectory));
+        DataStore ds = new ShapefileDataStoreFactory().createDataStore(params);
+        assertNotNull(ds);
+        repository.register("test", ds);
+
+        // now init, the code should create the expected shapefile
+        Hints hints = new Hints(Hints.REPOSITORY, repository);
+        ImageMosaicReader reader = FORMAT.getReader(testDirectory, hints);
+        final File expectedIndexFile = new File(testDirectory, "abcd.shp");
+        assertTrue(
+                expectedIndexFile.getAbsolutePath() + " does not exist",
+                expectedIndexFile.exists());
+        assertNotNull(reader);
+        GridCoverage2D coverage = reader.read(NO_DEFERRED_LOAD);
+        assertNotNull(coverage);
+        coverage.dispose(true);
+        reader.dispose();
+        ds.dispose();
+    }
+    
+    /**
+     * Test for GEOS-8311 load a mosaic when it doesn't have a projection set.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void createFromEmptyStoreWithNoProjectionGeoTif() throws Exception {
+        // setup mosaic
+        URL storeUrl = TestData.url(this, "nocrs");
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder("no_crs");
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+        
+        //remove the .prj files - there shouldn't be any but check
+        for (File file : testDirectory.listFiles(f -> f.getName().endsWith("prj"))) {
+            file.delete();
+        }
+        // signal the intention to use a store name using both datastore.properties and indexer
+        Properties properties = new Properties();
+        properties.put(Utils.Prop.STORE_NAME, "test");
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testDirectory, "datastore.properties"))) {
+            properties.store(fos, null);
+        }
+        properties = new Properties();
+        properties.put(Utils.Prop.TYPENAME, "abcd");
+        try (FileOutputStream fos =
+                new FileOutputStream(new File(testDirectory, "indexer.properties"))) {
+            properties.store(fos, null);
+        }
+
+        // setup a directory data store of shapefiles
+        DefaultRepository repository = new DefaultRepository();
+        final Map<String, Serializable> params =
+                Collections.singletonMap(
+                        ShapefileDataStoreFactory.URLP.key, URLs.fileToUrl(testDirectory));
+        DataStore ds = new ShapefileDataStoreFactory().createDataStore(params);
+        assertNotNull(ds);
+        repository.register("test", ds);
+
+        // now init, the code should create the expected shapefile
+        Hints hints = new Hints(Hints.REPOSITORY, repository);
+        ImageMosaicReader reader = FORMAT.getReader(testDirectory, hints);
+        final File expectedIndexFile = new File(testDirectory, "abcd.shp");
+        assertTrue(
+                expectedIndexFile.getAbsolutePath() + " does not exist",
+                expectedIndexFile.exists());
+        assertNotNull(reader);
+        GridCoverage2D coverage = reader.read(NO_DEFERRED_LOAD);
+        assertNotNull(coverage);
+        coverage.dispose(true);
+        reader.dispose();
+        ds.dispose();
+    }
+
+
+    /**
      * Removes the sample image and
      *
      * @param directory

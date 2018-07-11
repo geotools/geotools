@@ -20,9 +20,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -407,5 +409,22 @@ public class EnvFunctionTest {
     private void assertEvalStringEquals(final String expectedString, final Function function) {
         String result = (String) function.evaluate(null);
         assertEquals(expectedString, result);
+    }
+
+    @Test
+    public void testGetLocalValues() {
+        final String varName = "foo";
+        final String varValue = "clearLocal";
+
+        EnvFunction.setLocalValue(varName, varValue);
+        Map<String, Object> localValues = EnvFunction.getLocalValues();
+        assertEquals(localValues, Collections.singletonMap(varName.toUpperCase(), varValue));
+
+        try {
+            localValues.put(varName, "fooBar");
+            fail("Should have been read only");
+        } catch (UnsupportedOperationException e) {
+            // as expected
+        }
     }
 }

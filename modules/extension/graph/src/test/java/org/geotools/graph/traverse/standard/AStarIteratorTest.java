@@ -17,10 +17,12 @@
 package org.geotools.graph.traverse.standard;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.graph.GraphTestUtil;
 import org.geotools.graph.build.GraphBuilder;
+import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
 import org.geotools.graph.path.AStarShortestPathFinder;
 import org.geotools.graph.path.Path;
@@ -35,6 +37,7 @@ import org.geotools.graph.traverse.standard.AStarIterator.AStarNode;
 /** @source $URL$ */
 public class AStarIteratorTest extends TestCase {
     public GraphBuilder m_builder;
+    public GraphBuilder m_directed_builder;
 
     public AStarIteratorTest(String name) {
         super(name);
@@ -44,6 +47,7 @@ public class AStarIteratorTest extends TestCase {
         super.setUp();
 
         m_builder = createBuilder();
+        m_directed_builder = createDirectedBuilder();
     }
     /**
      * Test 0: Graph with no bifurcations. 100 nodes. G = 1 for all edges H = TargetsID - currentID
@@ -229,6 +233,99 @@ public class AStarIteratorTest extends TestCase {
         }
     }
 
+    /**
+     * Create an undirected graph with no bifurcations and start a full traversal from start node.
+     * Test getRelated at each node.<br>
+     * <br>
+     * Expected: 1. The first and last node should have one related node. 2. All other nodes should
+     * have two related nodes 3. Related nodes should have an id one greater or one less than the
+     * current node
+     */
+    public void test_4() {
+        final int nnodes = 100;
+        Node[] ends = GraphTestUtil.buildNoBifurcations(builder(), nnodes);
+
+        CountingWalker walker = new CountingWalker();
+
+        final AStarIterator iterator = createIterator(ends[0], ends[ends.length - 1]);
+
+        BasicGraphTraversal traversal =
+                new BasicGraphTraversal(builder().getGraph(), walker, iterator);
+        traversal.init();
+        traversal.traverse();
+
+        GraphVisitor visitor =
+                new GraphVisitor() {
+                    public int visit(Graphable component) {
+
+                        Iterator related = iterator.getRelated(component);
+                        int count = 0;
+                        int expectedCount = 2;
+                        if (component.getID() == 0 || component.getID() == nnodes - 1) {
+                            expectedCount = 1;
+                        }
+                        while (related.hasNext()) {
+                            Graphable relatedComponent = (Graphable) related.next();
+                            assertTrue(
+                                    component.getID() == relatedComponent.getID() - 1
+                                            || component.getID() == relatedComponent.getID() + 1);
+                            count++;
+                        }
+                        assertEquals(expectedCount, count);
+
+                        return 0;
+                    }
+                };
+        builder().getGraph().visitNodes(visitor);
+
+        assertTrue(walker.getCount() == nnodes);
+    }
+
+    /**
+     * Create a directed graph with no bifurcations and start a full traversal from start node. Test
+     * getRelated at each node.<br>
+     * <br>
+     * Expected: 1. The last node should have no related nodes 2. All other nodes should have one
+     * related node 3. Related nodes should have an id one greater than the current node
+     */
+    public void test_5() {
+        final int nnodes = 100;
+        Node[] ends = GraphTestUtil.buildNoBifurcations(directedBuilder(), nnodes);
+
+        CountingWalker walker = new CountingWalker();
+
+        final AStarIterator iterator = createIterator(ends[0], ends[ends.length - 1]);
+
+        BasicGraphTraversal traversal =
+                new BasicGraphTraversal(directedBuilder().getGraph(), walker, iterator);
+        traversal.init();
+        traversal.traverse();
+
+        GraphVisitor visitor =
+                new GraphVisitor() {
+                    public int visit(Graphable component) {
+
+                        Iterator related = iterator.getRelated(component);
+                        int count = 0;
+                        int expectedCount = 1;
+                        if (component.getID() == nnodes - 1) {
+                            expectedCount = 0;
+                        }
+                        while (related.hasNext()) {
+                            Graphable relatedComponent = (Graphable) related.next();
+                            assertTrue(component.getID() == relatedComponent.getID() - 1);
+                            count++;
+                        }
+                        assertEquals(expectedCount, count);
+
+                        return 0;
+                    }
+                };
+        directedBuilder().getGraph().visitNodes(visitor);
+
+        assertTrue(walker.getCount() == nnodes);
+    }
+    
     private class MyVisitor implements GraphVisitor {
         public int count = 0;
 
@@ -246,6 +343,14 @@ public class AStarIteratorTest extends TestCase {
 
     protected GraphBuilder builder() {
         return (m_builder);
+    }
+    
+    protected GraphBuilder createDirectedBuilder() {
+        return (new BasicDirectedGraphBuilder());
+    }
+
+    protected GraphBuilder directedBuilder() {
+        return (m_directed_builder);
     }
 
     protected AStarIterator createIterator(Node source, Node target) {

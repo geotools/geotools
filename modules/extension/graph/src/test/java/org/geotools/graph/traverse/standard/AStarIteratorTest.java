@@ -325,7 +325,7 @@ public class AStarIteratorTest extends TestCase {
 
         assertTrue(walker.getCount() == nnodes);
     }
-    
+
     private class MyVisitor implements GraphVisitor {
         public int count = 0;
 
@@ -344,7 +344,7 @@ public class AStarIteratorTest extends TestCase {
     protected GraphBuilder builder() {
         return (m_builder);
     }
-    
+
     protected GraphBuilder createDirectedBuilder() {
         return (new BasicDirectedGraphBuilder());
     }

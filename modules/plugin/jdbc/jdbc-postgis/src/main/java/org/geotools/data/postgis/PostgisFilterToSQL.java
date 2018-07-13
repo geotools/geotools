@@ -24,6 +24,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -163,5 +164,31 @@ public class PostgisFilterToSQL extends FilterToSQL {
     @Override
     public double getDistanceInNativeUnits(DistanceBufferOperator operator) {
         return super.getDistanceInNativeUnits(operator);
+    }
+
+    /**
+     * Overrides base behavior to handler arrays
+     *
+     * @param filter the comparison to be turned into SQL.
+     * @param extraData
+     * @throws RuntimeException
+     */
+    protected void visitBinaryComparisonOperator(BinaryComparisonOperator filter, Object extraData)
+            throws RuntimeException {
+        Expression left = filter.getExpression1();
+        Expression right = filter.getExpression2();
+        Class rightContext = super.getExpressionType(left);
+        Class leftContext = super.getExpressionType(right);
+
+        // array comparison in PostgreSQL is strict, need to know the base type, that info is
+        // available only in the property name userdata
+        String type = (String) extraData;
+        if ((helper.isArray(rightContext) || helper.isArray(leftContext))
+                && (left instanceof PropertyName || right instanceof PropertyName)) {
+            helper.out = out;
+            helper.visitArrayComparison(filter, left, right, rightContext, leftContext, type);
+        } else {
+            super.visitBinaryComparisonOperator(filter, extraData);
+        }
     }
 }

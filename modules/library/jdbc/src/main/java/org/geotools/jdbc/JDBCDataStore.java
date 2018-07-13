@@ -43,6 +43,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -178,6 +179,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * type.
      */
     public static final String JDBC_NATIVE_TYPENAME = "org.geotools.jdbc.nativeTypeName";
+
+    /**
+     * The key for attribute descriptor user data which specifies the original database column data
+     * type, as a {@link Types} value.
+     */
+    public static final String JDBC_NATIVE_TYPE = "org.geotools.jdbc.nativeType";
 
     /** Used to specify the column alias to use when encoding a column in a select */
     public static final String JDBC_COLUMN_ALIAS = "org.geotools.jdbc.columnAlias";
@@ -699,6 +706,11 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      */
     public Integer getMapping(Class<?> clazz) {
         Integer mapping = getClassToSqlTypeMappings().get(clazz);
+
+        // check for arrays, but don't get fooled by BLOB/CLOB java counterparts
+        if (mapping == null && clazz.isArray()) {
+            mapping = Types.ARRAY;
+        }
 
         if (mapping == null) {
             // no match, try a "fuzzy" match in which we find the super class which matches best
@@ -1831,6 +1843,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                         int srid = getGeometrySRID(g, att);
                         int dimension = getGeometryDimension(g, att);
                         dialect.setGeometryValue(g, dimension, srid, binding, ps, i);
+                    } else if (isArray(att)) {
+                        dialect.setArrayValue(value, att, ps, i, cx);
                     } else {
                         dialect.setValue(value, binding, ps, i, cx);
                     }
@@ -3675,6 +3689,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             Class binding = toSQL.getLiteralTypes().get(i);
             Integer srid = toSQL.getSRIDs().get(i);
             Integer dimension = toSQL.getDimensions().get(i);
+            AttributeDescriptor ad = toSQL.getDescriptors().get(i);
             if (srid == null) {
                 srid = -1;
             }
@@ -3682,14 +3697,29 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                 dimension = 2;
             }
 
-            if (binding != null && Geometry.class.isAssignableFrom(binding))
+            if (binding != null && Geometry.class.isAssignableFrom(binding)) {
                 dialect.setGeometryValue(
                         (Geometry) value, dimension, srid, binding, ps, offset + i + 1);
-            else dialect.setValue(value, binding, ps, offset + i + 1, cx);
+            } else if (ad != null && isArray(ad)) {
+                dialect.setArrayValue(value, ad, ps, offset + i + 1, cx);
+            } else {
+                dialect.setValue(value, binding, ps, offset + i + 1, cx);
+            }
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine((i + 1) + " = " + value);
             }
         }
+    }
+
+    /**
+     * Returns true if the attribute descriptor matches a native SQL array (as recorded in its user
+     * data via {@link #JDBC_NATIVE_TYPE}
+     *
+     * @return
+     */
+    private boolean isArray(AttributeDescriptor att) {
+        Integer nativeType = (Integer) att.getUserData().get(JDBC_NATIVE_TYPE);
+        return Objects.equals(Types.ARRAY, nativeType);
     }
 
     /**

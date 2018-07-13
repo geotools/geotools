@@ -17,6 +17,7 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -102,6 +103,25 @@ public class PostGISDialect extends BasicSQLDialect {
                     put("CIRCULARSTRING", CircularString.class);
                     put("MULTISURFACE", MultiSurface.class);
                     put("BYTEA", byte[].class);
+                }
+            };
+
+    // simple type to class map
+    static final Map<String, Class> SIMPLE_TYPE_TO_CLASS_MAP =
+            new HashMap<String, Class>() {
+                {
+                    put("INT2", Short.class);
+                    put("INT4", Integer.class);
+                    put("INT8", Long.class);
+                    put("FLOAT4", Float.class);
+                    put("FLOAT8", Double.class);
+                    put("BOOL", Boolean.class);
+                    put("VARCHAR", String.class);
+                    put("DATE", java.sql.Date.class);
+                    put("TIME", java.sql.Time.class);
+                    put("TIMESTAMP", java.sql.Timestamp.class);
+                    put("TIMESTAMPZ", java.sql.Timestamp.class);
+                    put("TIMESTAMPTZ", java.sql.Timestamp.class);
                 }
             };
 
@@ -466,7 +486,35 @@ public class PostGISDialect extends BasicSQLDialect {
     public Class<?> getMapping(ResultSet columnMetaData, Connection cx) throws SQLException {
 
         String typeName = columnMetaData.getString("TYPE_NAME");
+        int dataType = columnMetaData.getInt("DATA_TYPE");
 
+        if (dataType == Types.ARRAY && typeName.length() > 1) {
+            // type_name starts with an underscore and then provides the type of data in the array
+            typeName = typeName.substring(1);
+            Class<?> arrayContentType = getMappingInternal(columnMetaData, cx, typeName);
+            // if we did not find it with the above procedure, consult the type to class map
+            // (should contain mappings for all basic java types)
+            if (arrayContentType == null) {
+                arrayContentType = SIMPLE_TYPE_TO_CLASS_MAP.get(typeName.toUpperCase());
+            }
+
+            if (arrayContentType != null) {
+                try {
+                    return Class.forName("[L" + arrayContentType.getName() + ";");
+                } catch (ClassNotFoundException e) {
+                    LOGGER.log(Level.WARNING, "Failed to create Java equivalent of array class", e);
+                    return null;
+                }
+            }
+
+            return null;
+        }
+
+        return getMappingInternal(columnMetaData, cx, typeName);
+    }
+
+    private Class<?> getMappingInternal(ResultSet columnMetaData, Connection cx, String typeName)
+            throws SQLException {
         if ("uuid".equalsIgnoreCase(typeName)) {
             return UUID.class;
         }
@@ -983,6 +1031,7 @@ public class PostGISDialect extends BasicSQLDialect {
         mappings.put("int4", Integer.class);
         mappings.put("bool", Boolean.class);
         mappings.put("character", String.class);
+        mappings.put("varchar", String.class);
         mappings.put("float8", Double.class);
         mappings.put("int", Integer.class);
         mappings.put("float4", Float.class);
@@ -1332,7 +1381,25 @@ public class PostGISDialect extends BasicSQLDialect {
             }
         }
 
+        if (type.isArray() && value != null) {
+            this.encodeArray(value, type, sql);
+            return;
+        }
+
         super.encodeValue(value, type, sql);
+    }
+
+    private void encodeArray(Object value, Class type, StringBuffer sql) {
+        int length = Array.getLength(value);
+        sql.append("ARRAY[");
+        for (int i = 0; i < length; i++) {
+            Object element = Array.get(value, i);
+            encodeValue(element, type.getComponentType(), sql);
+            if (i < (length - 1)) {
+                sql.append(", ");
+            }
+        }
+        sql.append("]");
     }
 
     void encodeByteArrayAsHex(byte[] input, StringBuffer sql) {

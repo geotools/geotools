@@ -277,6 +277,7 @@ public class JDBCFeatureSource extends ContentFeatureSource {
 
                 // store the native database type in the attribute descriptor user data
                 ab.addUserData(JDBCDataStore.JDBC_NATIVE_TYPENAME, column.typeName);
+                ab.addUserData(JDBCDataStore.JDBC_NATIVE_TYPE, column.sqlType);
 
                 // nullability
                 if (!column.nullable) {

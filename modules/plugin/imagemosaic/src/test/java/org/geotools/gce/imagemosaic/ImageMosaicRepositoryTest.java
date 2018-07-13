@@ -287,7 +287,6 @@ public class ImageMosaicRepositoryTest {
         assertNotNull(coverage);
         coverage.dispose(true);
         reader.dispose();
-        // ds.dispose();
     }
 
     /**

@@ -426,8 +426,6 @@ public final class ParserTest {
         CoordinateReferenceSystem observed = parser.parseCoordinateReferenceSystem(wkt);
         final String check = parser.format(observed);
         CoordinateReferenceSystem expected = CRS.decode("EPSG:404000");
-        System.out.println("Exp: " + expected);
-        System.out.println("Obs: " + observed);
         assertTrue(
                 "Internal CS",
                 CRS.equalsIgnoreMetadata(

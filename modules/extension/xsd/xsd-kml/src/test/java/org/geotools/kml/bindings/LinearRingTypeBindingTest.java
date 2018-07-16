@@ -45,6 +45,17 @@ public class LinearRingTypeBindingTest extends KMLTestSupport {
         assertEquals(new Coordinate(1, 1), l.getCoordinateN(3));
     }
 
+    public void testParseInvalidNonClosedPolygon_parsesAndClosesAnyway() throws Exception {
+        buildDocument("<LinearRing><coordinates>1,1 2,2 3,3 4,4</coordinates></LinearRing>");
+
+        LinearRing l = (LinearRing) parse();
+
+        assertEquals(5, l.getNumPoints());
+        assertEquals(new Coordinate(1, 1), l.getCoordinateN(0));
+        assertEquals(new Coordinate(3, 3), l.getCoordinateN(2));
+        assertEquals(new Coordinate(4, 4), l.getCoordinateN(3));
+    }
+
     public void testEncode() throws Exception {
         LinearRing l =
                 new GeometryFactory()

@@ -70,6 +70,14 @@ public final class NetCDFTimeUtilitiesTest {
         Calendar msCal = (Calendar) cal.clone();
         NetCDFTimeUtilities.addTimeUnit(msCal, Calendar.MILLISECOND, 99999999999999l);
         assertEquals(99999999999999l, msCal.getTimeInMillis());
+
+        // halfMonth
+        Calendar monthCal2 = (Calendar) cal.clone();
+        NetCDFTimeUtilities.addTimeUnit(
+                monthCal2,
+                NetCDFTimeUtilities.getTimeUnits("months", 0.5),
+                NetCDFTimeUtilities.getTimeSubUnitsValue("months", 0.5));
+        assertEquals(15, monthCal2.getTimeInMillis() / (1000 * 24 * 60 * 60));
     }
 
     @Test
@@ -102,5 +110,8 @@ public final class NetCDFTimeUtilitiesTest {
         assertEquals(1600, NetCDFTimeUtilities.getTimeSubUnitsValue("second", 1.6d));
         assertEquals(1450, NetCDFTimeUtilities.getTimeSubUnitsValue("sec", 1.45d));
         assertEquals(1200, NetCDFTimeUtilities.getTimeSubUnitsValue("secs", 1.2d));
+
+        assertEquals(Calendar.DAY_OF_MONTH, NetCDFTimeUtilities.getTimeUnits("months", 0.5d));
+        assertEquals(15, NetCDFTimeUtilities.getTimeSubUnitsValue("months", 0.5d));
     }
 }

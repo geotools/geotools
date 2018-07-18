@@ -138,7 +138,27 @@ public class NetCDFTimeUtilities {
             return 0;
         }
         String unit = units.toLowerCase();
-        if (DAY_SET.contains(unit)) {
+        if (MONTH_SET.contains(unit)) {
+            int subUnit = getTimeUnits(units, vd);
+            // Using Panoply approach where a month is made of 30 days
+            // Note that UCAR recommends not using "month" as unit
+            if (subUnit == Calendar.DAY_OF_MONTH) {
+                double days = vd * 30;
+                return (int) days;
+            } else if (subUnit == Calendar.HOUR) {
+                double hours = vd * 30 * 24;
+                return (int) hours;
+            } else if (subUnit == Calendar.MINUTE) {
+                double minutes = vd * 30 * 24 * 60;
+                return (int) minutes;
+            } else if (subUnit == Calendar.SECOND) {
+                double seconds = vd * 30 * 24 * 60 * 60;
+                return (int) seconds;
+            } else if (subUnit == Calendar.MILLISECOND) {
+                double milliseconds = vd * 30 * 24 * 60 * 60 * 1000;
+                return (int) milliseconds;
+            }
+        } else if (DAY_SET.contains(unit)) {
             int subUnit = getTimeUnits(units, vd);
             if (subUnit == Calendar.HOUR) {
                 double hours = vd * 24;
@@ -198,11 +218,23 @@ public class NetCDFTimeUtilities {
         }
         String unit = units.toLowerCase();
         if (MONTH_SET.contains(unit)) {
-            if (vd == null || vd == 0.0)
-                // if no day, it is the first day
-                return Calendar.MONTH;
+            if (vd == null || vd == 0.0) return Calendar.MONTH;
             else {
-                // TODO: FIXME
+                // Using Panoply approach where a month is made of 30 days
+                // Note that UCAR recommends not using "month" as unit
+                double days = vd * 30;
+                if (days - Math.floor(days) == 0.0) return Calendar.DAY_OF_MONTH;
+
+                double hours = days * 24;
+                if (hours - Math.floor(hours) == 0.0) return Calendar.HOUR;
+
+                double minutes = hours * 60;
+                if (minutes - Math.floor(minutes) == 0.0) return Calendar.MINUTE;
+
+                double seconds = minutes * 60;
+                if (seconds - Math.floor(seconds) == 0.0) return Calendar.SECOND;
+
+                return Calendar.MILLISECOND;
             }
         } else if (DAY_SET.contains(unit)) {
             if (vd == null || vd == 0.0) return Calendar.DATE;

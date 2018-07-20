@@ -20,6 +20,7 @@ org.geotools.coverage.processing.operation.Resample
 org.geotools.coverage.processing.operation.Rescale
 org.geotools.coverage.processing.operation.Scale
 org.geotools.coverage.processing.operation.SelectSampleDimension
+org.geotools.coverage.processing.operation.ShadedRelief
 org.geotools.coverage.processing.operation.SubsampleAverage
 org.geotools.coverage.processing.operation.SubtractConst
 org.geotools.coverage.processing.operation.SubtractFromConst

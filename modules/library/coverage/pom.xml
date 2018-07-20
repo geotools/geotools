@@ -453,6 +453,16 @@
          </exclusion>
       </exclusions>
 	</dependency>		
+	<dependency>
+		<groupId>it.geosolutions.jaiext.shadedrelief</groupId>
+		<artifactId>jt-shadedrelief</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>com.vividsolutions</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
+	</dependency>
     
     <!-- Test dependencies -->
     <!--

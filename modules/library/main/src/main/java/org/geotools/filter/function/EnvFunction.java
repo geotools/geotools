@@ -183,6 +183,15 @@ public class EnvFunction extends FunctionExpressionImpl {
         }
     }
 
+    /**
+     * Returns the local values as a read only map
+     *
+     * @return A read only view of the local values
+     */
+    public static Map<String, Object> getLocalValues() {
+        return Collections.unmodifiableMap(localLookup.getTable());
+    }
+
     /** Clear all values from the local (to this thread) lookup table. */
     public static void clearLocalValues() {
         localLookup.getTable().clear();

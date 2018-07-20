@@ -54,7 +54,6 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.logging.Logging;
-import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -91,7 +90,7 @@ public class JiffleProcess implements RasterProcess {
      * @throws ProcessException
      */
     @DescribeResult(name = OUT_RESULT, description = "The map algebra output")
-    public GridCoverage execute(
+    public GridCoverage2D execute(
             @DescribeParameter(name = IN_COVERAGE, description = "Source raster(s)")
                     GridCoverage2D[] coverages,
             @DescribeParameter(

@@ -40,6 +40,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.MathTransform;
 
+import static org.junit.Assert.assertArrayEquals;
+
 /**
  * @author Jody Garnett
  * @source $URL$
@@ -110,7 +112,7 @@ public class CRSTest extends TestCase {
         transform.transform(srcCoords, 0, transformedCoords, 0, 4);
 
         // There's a certain error margin in the improved transformation
-        org.junit.Assert.assertArrayEquals(expectedTransformedCoords, transformedCoords, 0.000003);
+        assertArrayEquals(expectedTransformedCoords, transformedCoords, 0.000003);
     }
 
     public void testAUTO4200() throws Exception {

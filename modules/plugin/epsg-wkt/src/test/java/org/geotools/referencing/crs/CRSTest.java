@@ -16,6 +16,8 @@
  */
 package org.geotools.referencing.crs;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.util.HashMap;
 import java.util.Map;
 import junit.framework.TestCase;
@@ -39,8 +41,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.MathTransform;
-
-import static org.junit.Assert.assertArrayEquals;
 
 /**
  * @author Jody Garnett
@@ -93,19 +93,21 @@ public class CRSTest extends TestCase {
          * 489101   31935.2867  391557.3350   51° 29' 58.46250''   3° 36' 53.15985''
          *                                    51.4995729167        3.614766625
          */
-        double[] srcCoords = new double[] {
-            /* Id: 250317 */ 121784.6113, 487036.9695,
-            /* Id: 610306 */ 176135.0779, 317654.5066,
-            /* Id: 079342 */ 233473.7307, 581727.0264,
-            /* Id: 489101 */ 31935.2867, 391557.3350
-        };
+        double[] srcCoords =
+                new double[] {
+                    /* Id: 250317 */ 121784.6113, 487036.9695,
+                    /* Id: 610306 */ 176135.0779, 317654.5066,
+                    /* Id: 079342 */ 233473.7307, 581727.0264,
+                    /* Id: 489101 */ 31935.2867, 391557.3350
+                };
 
-        double[] expectedTransformedCoords = new double[] {
-            /* Id: 250317 */ 4.899486675, 52.370206575,
-            /* Id: 610306 */ 5.68728731944, 50.8483381889,
-            /* Id: 079342 */ 6.56198793056, 53.2164043639,
-            /* Id: 489101 */ 3.614766625, 51.4995729167,
-        };
+        double[] expectedTransformedCoords =
+                new double[] {
+                    /* Id: 250317 */ 4.899486675, 52.370206575,
+                    /* Id: 610306 */ 5.68728731944, 50.8483381889,
+                    /* Id: 079342 */ 6.56198793056, 53.2164043639,
+                    /* Id: 489101 */ 3.614766625, 51.4995729167,
+                };
 
         double[] transformedCoords = new double[8];
 

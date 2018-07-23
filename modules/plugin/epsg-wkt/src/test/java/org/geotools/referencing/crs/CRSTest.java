@@ -64,79 +64,52 @@ public class CRSTest extends TestCase {
     }
 
     public void testEPSG28992toWGS84() throws Exception {
-        /* Unit test to accompany the fix for https://osgeo-org.atlassian.net/browse/GEOT-5077 */
+        /*
+         * Unit test to accompany the fix for https://osgeo-org.atlassian.net/browse/GEOT-5077
+         */
         CoordinateReferenceSystem epsg28992 = CRS.decode("EPSG:28992");
         CoordinateReferenceSystem wgs84 = DefaultGeographicCRS.WGS84;
 
         MathTransform transform = CRS.findMathTransform(epsg28992, wgs84);
 
-        double[] coord;
-
         /*
          * Test using 4 reference points from the corners of the CRS, obtained from the website of the Dutch national
          * mapping agency at https://rdinfo.kadaster.nl/
+         *
+         * https://rdinfo.kadaster.nl/overzicht_rd_medewerker/rd_punt.html?punt={ID}
+         *
+         * ID      X-RD         Y-RD          Latitude             Longitude
+         * 250317  121784.6113  487036.9695   52° 22' 12.74367''   4° 53' 58.15203''
+         *                                    52.370206575         4.899486675
+         *
+         * 610306  176135.0779  317654.5066   50° 50' 54.01748''   5° 41' 14.23435''
+         *                                    50.8483381889        5.68728731944
+         *
+         * 079342  233473.7307  581727.0264   53° 12' 59.05571''   6° 33' 43.15655''
+         *                                    53.2164043639        6.56198793056
+         *
+         * 489101   31935.2867  391557.3350   51° 29' 58.46250''   3° 36' 53.15985''
+         *                                    51.4995729167        3.614766625
          */
-        double delta = 0.000003;
+        double[] coord250317 = transform.transform(new GeneralDirectPosition(121784.6113, 487036.9695),null).getCoordinate();
+        double[] coord610306 = transform.transform(new GeneralDirectPosition(176135.0779, 317654.5066),null).getCoordinate();
+        double[] coord079342 = transform.transform(new GeneralDirectPosition(233473.7307, 581727.0264),null).getCoordinate();
+        double[] coord489101 = transform.transform(new GeneralDirectPosition(31935.2867, 391557.3350),null).getCoordinate();
 
-        /*
-         * https://rdinfo.kadaster.nl/overzicht_rd_medewerker/rd_punt.html?punt=250317
-         *
-         * X-RD         Y-RD                Latitude            Longitude
-         * 121784.6113 	487036.9695 		52° 22' 12.74367'' 	4° 53' 58.15203''
-         *
-         * Lat 52° 22' 12.74367'' --> 52.370206575
-         * Lon  4° 53' 58.15203'' -->  4.899486675
-         */
-        coord = transform.transform(new GeneralDirectPosition(121784.6113, 487036.9695),null).getCoordinate();
+        // There's a certain error margin in the improved transformation
+        double compareDelta = 0.000003;
 
-        // Allow for a small error margin
-        assertEquals(4.899486675, coord[0], delta);
-        assertEquals(52.370206575, coord[1], delta);
+        assertEquals(4.899486675, coord250317[0], compareDelta);
+        assertEquals(52.370206575, coord250317[1], compareDelta);
 
-        /*
-         * https://rdinfo.kadaster.nl/overzicht_rd_medewerker/rd_punt.html?punt=610306
-         *
-         * X-RD         Y-RD                Latitude            Longitude
-         * 176135.0779 	317654.5066 		50° 50' 54.01748'' 	5° 41' 14.23435''
-         *
-         * Lat 50° 50' 54.01748'' --> 50.8483381889
-         * Lon  5° 41' 14.23435'' -->  5.68728731944
-         */
-        coord = transform.transform(new GeneralDirectPosition(176135.0779, 317654.5066),null).getCoordinate();
+        assertEquals(5.68728731944, coord610306[0], compareDelta);
+        assertEquals(50.8483381889, coord610306[1], compareDelta);
 
-        // Allow for a small error margin
-        assertEquals(5.68728731944, coord[0], delta);
-        assertEquals(50.8483381889, coord[1], delta);
+        assertEquals(6.56198793056, coord079342[0], compareDelta);
+        assertEquals(53.2164043639, coord079342[1], compareDelta);
 
-        /*
-         * https://rdinfo.kadaster.nl/overzicht_rd_medewerker/rd_punt.html?punt=079342
-         *
-         * X-RD         Y-RD                Latitude            Longitude
-         * 233473.7307 	581727.0264 		53° 12' 59.05571'' 	6° 33' 43.15655''
-         *
-         * Lat 53° 12' 59.05571'' --> 53.2164043639
-         * Lon  6° 33' 43.15655'' -->  6.56198793056
-         */
-        coord = transform.transform(new GeneralDirectPosition(233473.7307, 581727.0264),null).getCoordinate();
-
-        // Allow for a small error margin
-        assertEquals(6.56198793056, coord[0], delta);
-        assertEquals(53.2164043639, coord[1], delta);
-
-        /*
-         * https://rdinfo.kadaster.nl/overzicht_rd_medewerker/rd_punt.html?punt=489101
-         *
-         * X-RD         Y-RD                Latitude            Longitude
-         * 31935.2867 	391557.3350 		51° 29' 58.46250'' 	3° 36' 53.15985''
-         *
-         * Lat 51° 29' 58.46250'' --> 51.4995729167
-         * Lon  3° 36' 53.15985'' -->  3.614766625
-         */
-        coord = transform.transform(new GeneralDirectPosition(31935.2867, 391557.3350),null).getCoordinate();
-
-        // Allow for a small error margin
-        assertEquals(3.614766625, coord[0], delta);
-        assertEquals(51.4995729167, coord[1], delta);
+        assertEquals(3.614766625, coord489101[0], compareDelta);
+        assertEquals(51.4995729167, coord489101[1], compareDelta);
     }
 
     public void testAUTO4200() throws Exception {

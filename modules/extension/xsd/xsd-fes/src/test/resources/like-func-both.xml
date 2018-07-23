@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fes:Filter xmlns:fes="http://www.opengis.net/fes/2.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd">
+    <fes:PropertyIsLike matchCase="false" wildCard="*" singleChar="%" escapeChar="\">
+        <fes:Function name="strURLEncode">
+            <fes:ValueReference>property</fes:ValueReference>
+            <fes:Literal>true</fes:Literal>
+        </fes:Function>
+        <fes:Function name="strURLEncode">
+            <fes:Literal>value</fes:Literal>
+            <fes:Literal>false</fes:Literal>
+        </fes:Function>
+    </fes:PropertyIsLike>
+</fes:Filter>

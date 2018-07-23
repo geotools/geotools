@@ -111,7 +111,7 @@ public class CRSTest extends TestCase {
 
         transform.transform(srcCoords, 0, transformedCoords, 0, 4);
 
-        // There's a certain error margin in the improved transformation
+        // No transformation is perfect, so we allow a small delta
         assertArrayEquals(expectedTransformedCoords, transformedCoords, 0.000003);
     }
 

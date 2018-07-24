@@ -29,6 +29,7 @@ public class AllTests extends TestSuite {
         addTest(new TestSuite(NoBifurcationIteratorTest.class));
         addTest(new TestSuite(BreadthFirstTopologicalIteratorTest.class));
         addTest(new TestSuite(DepthFirstTopologicalIteratorTest.class));
+        addTest(new TestSuite(AStarIteratorTest.class));
 
         // addTest(new TestSuite(DepthFirstTraversalTest.class));
         //    addTest(new TestSuite(BreadthFirstTraversalTest.class));

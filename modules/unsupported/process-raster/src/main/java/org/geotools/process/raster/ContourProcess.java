@@ -129,7 +129,7 @@ public class ContourProcess implements RasterProcess {
             @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D gc2d,
             @DescribeParameter(
                         name = "band",
-                        description = "Band number to use for values to be contoured",
+                        description = "Band number (zero base) to use for values to be contoured",
                         min = 0,
                         max = 1
                     )

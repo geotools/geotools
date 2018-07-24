@@ -135,6 +135,8 @@ public class CSVLatLonStrategy extends CSVStrategy {
     // docs start createSchema
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
+        this.featureType = featureType;
+
         List<String> header = new ArrayList<String>();
 
         GeometryDescriptor geometryDescrptor = featureType.getGeometryDescriptor();

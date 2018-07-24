@@ -34,6 +34,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.io.WKBWriter;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
 /** @source $URL$ */
@@ -268,5 +269,19 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
 
     public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
         delegate.setFunctionEncodingEnabled(functionEncodingEnabled);
+    }
+
+    @Override
+    protected String getArrayComponentTypeName(AttributeDescriptor att) throws SQLException {
+        if (att == null) {
+            return null;
+        }
+        String name = (String) att.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME);
+        // in postgresql jdbc the database metadata TYPE_NAME column contains the
+        // array "base type" name, prefixed with an underscore
+        if (name != null && name.startsWith("_")) {
+            return name.substring(1);
+        }
+        return super.getArrayComponentTypeName(att);
     }
 }

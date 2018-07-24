@@ -16,8 +16,12 @@
  */
 package org.geotools.jdbc;
 
+import static java.lang.String.format;
+import static java.lang.reflect.Array.getLength;
+
 import java.io.StringReader;
 import java.math.BigDecimal;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -25,9 +29,13 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 
 /**
  * SQL dialect which uses prepared statements for database interaction.
@@ -125,7 +133,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
         // get the sql type
         Integer sqlType = dataStore.getMapping(binding);
 
-        // handl null case
+        // handle null case
         if (value == null) {
             ps.setNull(column, sqlType);
             return;
@@ -175,6 +183,111 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
             default:
                 ps.setObject(column, value, Types.OTHER);
         }
+    }
+
+    /**
+     * Sets a value in a prepared statement, for the specific case of {@link Array}
+     *
+     * <p>This method uses the standard SQL Array handling, subclasses can override to add special
+     * behavior
+     *
+     * @param value the value.
+     * @param att The full attribute description
+     * @param ps The prepared statement.
+     * @param column The column the value maps to.
+     * @param cx The database connection.
+     * @throws SQLException
+     */
+    public void setArrayValue(
+            Object value, AttributeDescriptor att, PreparedStatement ps, int i, Connection cx)
+            throws SQLException {
+        if (value == null) {
+            ps.setNull(i, Types.ARRAY);
+        } else {
+            String typeName = getArrayComponentTypeName(att);
+            Class<?> componentType =
+                    typeName != null
+                            ? dataStore.getSqlTypeNameToClassMappings().get(typeName)
+                            : String.class;
+            Array array = convertToArray(value, typeName, componentType, cx);
+            ps.setArray(i, array);
+        }
+    }
+
+    /**
+     * Given the full information about the attribute being transformed, figure out the native SQL
+     * Type Name to use when creating a SQL Array object· The default implementation just scans
+     * {@link JDBCDataStore#getSqlTypeNameToClassMappings()} backwards, and will fail in case there
+     * are ambiguities. Subclasses can implement their own logic and eventually use information
+     * contained in the attribute's {@link AttributeDescriptor#getUserData()}, stored at attribute
+     * creation time.
+     *
+     * @param att
+     * @return
+     */
+    protected String getArrayComponentTypeName(AttributeDescriptor att) throws SQLException {
+        Map<String, Class<?>> mappings = dataStore.getSqlTypeNameToClassMappings();
+        Class<?> componentType = att.getType().getBinding().getComponentType();
+        List<String> sqlTypeNames =
+                mappings.entrySet()
+                        .stream()
+                        .filter(e -> e.getValue().equals(componentType))
+                        .map(e -> e.getKey())
+                        .collect(Collectors.toList());
+        if (sqlTypeNames.isEmpty()) {
+            throw new SQLException("Failed to find a SQL type for " + componentType);
+        } else if (sqlTypeNames.size() > 1) {
+            throw new SQLException(
+                    String.format(
+                            "Found multiple SQL type candidates %s for the Java type %s",
+                            sqlTypeNames, componentType.getName()));
+        }
+        return sqlTypeNames.get(0);
+    }
+
+    /**
+     * Converts a given array value into a {@link Array}
+     *
+     * @param value The non null value to be converted
+     * @param binding The attribute binding (of array type
+     * @param connection The connection used to create an {@link Array}
+     * @return The converted array
+     * @throws SQLException
+     */
+    protected Array convertToArray(
+            Object value, String componentTypeName, Class componentType, Connection connection)
+            throws SQLException {
+        int length = getLength(value);
+        Object[] elements = new Object[length];
+        for (int i = 0; i < elements.length; i++) {
+            Object element = java.lang.reflect.Array.get(value, i);
+            if (element == null) {
+                elements[i] = null;
+            } else {
+                Object converted = convertArrayElement(element, componentType);
+                elements[i] = converted;
+            }
+        }
+        return connection.createArrayOf(componentTypeName, elements);
+    }
+
+    /**
+     * Converts a given array element to the desired type, throws an exception in case conversion
+     * failed
+     *
+     * @param value The value to be converted. Must be non null.
+     * @param target The target class
+     * @return The converted value
+     * @throws SQLException In case the conversion failed.
+     */
+    protected Object convertArrayElement(Object value, Class target) throws SQLException {
+        Object converted = Converters.convert(value, target);
+        if (converted == null) {
+            String message =
+                    format("Failed to convert array element %s to target type %s", value, target);
+            throw new SQLException(message);
+        }
+        return converted;
     }
 
     /*

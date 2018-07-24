@@ -17,6 +17,7 @@
 package org.geotools.data.postgis;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -53,6 +54,7 @@ import org.geotools.filter.function.math.FilterFunction_ceil;
 import org.geotools.filter.function.math.FilterFunction_floor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.SQLDialect;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -61,10 +63,14 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.MultiValuedFilter;
 import org.opengis.filter.NativeFilter;
+import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.BBOX3D;
@@ -685,5 +691,200 @@ class FilterToSqlHelper {
             // dunno how to cast, leave as is
             return property;
         }
+    }
+
+    boolean isArray(Expression exp) {
+        if (exp instanceof Literal) {
+            Object value = exp.evaluate(null);
+            return value != null && value.getClass().isArray();
+        }
+        return false;
+    }
+
+    boolean isNull(Expression exp) {
+        return (exp instanceof Literal && (exp.evaluate(null) == null))
+                || exp instanceof NilExpression;
+    }
+
+    boolean isArray(Class clazz) {
+        return clazz != null && clazz.isArray();
+    }
+
+    void visitArrayComparison(
+            BinaryComparisonOperator filter,
+            Expression left,
+            Expression right,
+            Class rightContext,
+            Class leftContext,
+            String type) {
+        String leftCast = "";
+        String rightCast = "";
+        if (left instanceof PropertyName) {
+            rightCast = getArrayTypeCast((PropertyName) left);
+        }
+        if (right instanceof PropertyName) {
+            leftCast = getArrayTypeCast((PropertyName) right);
+        }
+
+        try {
+            // match any against non array literals? we need custom logic
+            MultiValuedFilter.MatchAction matchAction = filter.getMatchAction();
+            if ((matchAction == MultiValuedFilter.MatchAction.ANY
+                            || matchAction == MultiValuedFilter.MatchAction.ONE)
+                    && (!isArray(left) && !isArray(right))) {
+                // the only indexable search in this block
+                if ("=".equalsIgnoreCase(type) && !isNull(left) && !isNull(right)) {
+                    // if using a prepared statement dialect we need the native type info
+                    // contained in the AttributeDescriptor to create a SQL array...
+                    Object leftArrayContext = getArrayComparisonContext(left, right, leftContext);
+                    writeBinaryExpressionMember(left, leftArrayContext);
+                    out.write(leftCast);
+                    // use the overlap operator to avoid deciding which side is the expression
+                    out.write(" && ");
+                    Object rightArrayContext = getArrayComparisonContext(right, left, rightContext);
+                    writeBinaryExpressionMember(right, rightArrayContext);
+                    out.write(rightCast);
+                } else {
+                    // need to un-nest and apply element by element, this is not indexable
+                    if (left instanceof PropertyName) {
+                        rightContext = rightContext.getComponentType();
+                    }
+                    if (right instanceof PropertyName) {
+                        leftContext = leftContext.getComponentType();
+                    }
+
+                    boolean isPropertyLeft = left instanceof PropertyName;
+                    boolean isPropertyRight = right instanceof PropertyName;
+                    // un-nesting the array to do element by element comparisons... the
+                    // generated "table" has "unnest" as the variable name
+                    if (matchAction == MultiValuedFilter.MatchAction.ANY) {
+                        out.write("EXISTS ( SELECT * from unnest(");
+                    } else {
+                        out.write("( SELECT count(*) from unnest(");
+                    }
+                    if (isPropertyLeft) {
+                        left.accept(delegate, null);
+                    } else {
+                        right.accept(delegate, null);
+                    }
+                    out.write(") WHERE ");
+                    // oh fun, if there are nulls we cannot write the same sql
+                    if ((isPropertyLeft && isNull(right))
+                            || (isPropertyRight && isNull(left))
+                                    && ("=".equalsIgnoreCase(type)
+                                            || "!=".equalsIgnoreCase(type))) {
+                        if ("=".equalsIgnoreCase(type)) {
+                            out.write("unnest is NULL");
+                        } else if ("!=".equalsIgnoreCase(type)) {
+                            out.write("unnest is NOT NULL");
+                        }
+                    } else {
+                        // no nulls, but we still have to consider the comparison direction
+                        if (isPropertyLeft) {
+                            out.write("unnest");
+                            out.write(" " + type + " ");
+                            writeBinaryExpressionMember(right, rightContext);
+                        } else {
+                            writeBinaryExpressionMember(left, leftContext);
+                            out.write(" " + type + " ");
+                            out.write("unnest");
+                        }
+                    }
+                    if (matchAction == MultiValuedFilter.MatchAction.ONE) {
+                        out.write(") = 1");
+                    } else {
+                        out.write(")");
+                    }
+                }
+            } else if (matchAction == MultiValuedFilter.MatchAction.ALL
+                    || isArray(left)
+                    || isArray(right)) {
+                // for comparison against array literals we only support match-all style
+                // for the user it would be really strange to ask for equality on an array
+                // and get a positive match on a partial element overlap (filters build
+                // without explicit match action default to "ANY")
+                Object leftArrayContext = getArrayComparisonContext(left, right, leftContext);
+                writeBinaryExpressionMember(left, leftArrayContext);
+                out.write(leftCast);
+                out.write(" " + type + " ");
+                Object rightArrayContext = getArrayComparisonContext(right, left, rightContext);
+                writeBinaryExpressionMember(right, rightArrayContext);
+                out.write(rightCast);
+            }
+
+        } catch (IOException ioe) {
+            throw new RuntimeException("Failed to write out SQL", ioe);
+        }
+    }
+
+    /**
+     * When using prepared statements we need the AttributeDescritor's stored native type name to
+     * set array values in the PreparedStatement
+     *
+     * @param thisExpression
+     * @param otherExpression
+     * @param context
+     * @return
+     */
+    private Object getArrayComparisonContext(
+            Expression thisExpression, Expression otherExpression, Class context) {
+        if (delegate instanceof PreparedFilterToSQL
+                && thisExpression instanceof Literal
+                && otherExpression instanceof PropertyName) {
+            // grab the info from the other side of the comparison
+            AttributeDescriptor ad =
+                    otherExpression.evaluate(delegate.getFeatureType(), AttributeDescriptor.class);
+            if (ad != null) {
+                return ad;
+            }
+        }
+        // all good, no extra info actually needed
+        return context;
+    }
+
+    private void writeBinaryExpressionMember(Expression exp, Object context) throws IOException {
+        if (context != null && exp instanceof BinaryExpression) {
+            writeBinaryExpression(exp, context);
+        } else {
+            exp.accept(delegate, context);
+        }
+    }
+
+    protected void writeBinaryExpression(Expression e, Object context) throws IOException {
+        Writer tmp = out;
+        try {
+            out = new StringWriter();
+            out.write("(");
+            e.accept(delegate, null);
+            out.write(")");
+            if (context instanceof Class) {
+                tmp.write(cast(out.toString(), (Class) context));
+            } else {
+                tmp.write(out.toString());
+            }
+        } finally {
+            out = tmp;
+        }
+    }
+
+    /**
+     * Returns the type cast needed to match this property
+     *
+     * @param pn
+     * @return
+     */
+    String getArrayTypeCast(PropertyName pn) {
+        AttributeDescriptor at = pn.evaluate(delegate.getFeatureType(), AttributeDescriptor.class);
+        if (at != null) {
+            Object value = at.getUserData().get(JDBCDataStore.JDBC_NATIVE_TYPENAME);
+            if (value instanceof String) {
+                String typeName = (String) value;
+                if (typeName.startsWith("_")) {
+                    return "::" + typeName.substring(1) + "[]";
+                }
+            }
+        }
+
+        return "";
     }
 }

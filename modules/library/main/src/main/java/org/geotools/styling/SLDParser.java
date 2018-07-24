@@ -1556,11 +1556,11 @@ public class SLDParser {
                 childName = child.getNodeName();
             }
             if ("BrightnessOnly".equalsIgnoreCase(childName)) {
-                symbol.setBrightnessOnly(Boolean.getBoolean(getFirstChildValue(child)));
+                symbol.setBrightnessOnly(Boolean.parseBoolean(getFirstChildValue(child)));
             } else if ("ReliefFactor".equalsIgnoreCase(childName)) {
                 try {
                     final String reliefString = getFirstChildValue(child);
-                    Expression relief = ExpressionDOMParser.parseExpression(child);
+                    Expression relief = ff.literal(Double.parseDouble(reliefString));
                     symbol.setReliefFactor(relief);
                 } catch (Exception e) {
                     if (LOGGER.isLoggable(Level.WARNING))

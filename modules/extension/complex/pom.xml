@@ -38,7 +38,7 @@
             <groupId>org.geotools</groupId>
             <artifactId>gt-main</artifactId>
             <version>${project.version}</version>
-            <type>test-jar</type> 
+            <classifier>tests</classifier> 
             <scope>test</scope>
 	  </dependency> 
         

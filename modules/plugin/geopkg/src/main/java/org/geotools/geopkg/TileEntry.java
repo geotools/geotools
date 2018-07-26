@@ -19,6 +19,7 @@ package org.geotools.geopkg;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+
 /**
  * Tiles Entry inside a GeoPackage.
  *

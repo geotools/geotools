@@ -40,7 +40,7 @@ The transitive dependency will correctly bring in the required jars::
         <version>${jts.version}</version>
      </dependency>
 
-**Package change to org.locationtech.org**
+**Package change to org.locationtech.jts**
 
 This release changes the package names from ``com.vividsolutions.jts`` to ``org.locationtech.jts``. To update your own code follow the `JTS Upgrade Guide <https://github.com/locationtech/jts/blob/master/MIGRATION.md>`__ instructions.
 

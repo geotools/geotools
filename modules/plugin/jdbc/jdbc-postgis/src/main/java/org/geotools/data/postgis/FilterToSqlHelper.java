@@ -66,6 +66,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.MultiValuedFilter;
 import org.opengis.filter.NativeFilter;
+import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -886,5 +887,39 @@ class FilterToSqlHelper {
         }
 
         return "";
+    }
+
+    public void visitArrayBetween(PropertyIsBetween filter, Class context, Object extraData) {
+        Expression expr = filter.getExpression();
+        Expression lowerbounds = filter.getLowerBoundary();
+        Expression upperbounds = filter.getUpperBoundary();
+
+        try {
+            // we have to un-nest
+            // generated "table" has "unnest" as the variable name
+            MultiValuedFilter.MatchAction matchAction = filter.getMatchAction();
+            if (matchAction == MultiValuedFilter.MatchAction.ANY) {
+                out.write("EXISTS ( SELECT * from unnest(");
+            } else {
+                out.write("( SELECT count(*) from unnest(");
+            }
+            expr.accept(delegate, null);
+            out.write(") WHERE unnest BETWEEN ");
+            lowerbounds.accept(delegate, context);
+            out.write(" AND ");
+            upperbounds.accept(delegate, context);
+
+            if (matchAction == MultiValuedFilter.MatchAction.ONE) {
+                out.write(") = 1");
+            } else if (matchAction == MultiValuedFilter.MatchAction.ALL) {
+                out.write(") = (SELECT COUNT(*) FROM unnest(");
+                expr.accept(delegate, null);
+                out.write("))");
+            } else {
+                out.write(")");
+            }
+        } catch (java.io.IOException ioe) {
+            throw new RuntimeException(IO_ERROR, ioe);
+        }
     }
 }

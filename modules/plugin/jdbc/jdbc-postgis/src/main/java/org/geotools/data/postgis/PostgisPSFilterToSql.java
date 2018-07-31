@@ -21,6 +21,7 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -141,6 +142,26 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
             helper.visitArrayComparison(filter, left, right, rightContext, leftContext, type);
         } else {
             super.visitBinaryComparisonOperator(filter, extraData);
+        }
+    }
+
+    /**
+     * Writes the SQL for the PropertyIsBetween Filter.
+     *
+     * @param filter the Filter to be visited.
+     * @throws RuntimeException for io exception with writer
+     */
+    public Object visit(PropertyIsBetween filter, Object extraData) throws RuntimeException {
+        LOGGER.finer("exporting PropertyIsBetween");
+
+        Expression expr = filter.getExpression();
+        Class context = super.getExpressionType(expr);
+        if (helper.isArray(context)) {
+            helper.out = out;
+            helper.visitArrayBetween(filter, context.getComponentType(), extraData);
+            return extraData;
+        } else {
+            return super.visit(filter, extraData);
         }
     }
 }

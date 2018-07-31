@@ -18,10 +18,12 @@ package org.geotools.data.postgis;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
-import static org.opengis.filter.MultiValuedFilter.*;
+import static org.opengis.filter.MultiValuedFilter.MatchAction;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -295,6 +297,217 @@ public class PostGISArrayOnlineTest extends JDBCTestSupport {
                         MatchAction.ANY),
                 0,
                 1);
+    }
+
+    @Test
+    public void testAnyMatchBetween() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("arraytest"));
+
+        // strings
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("B"),
+                        ff.literal("C"),
+                        MatchAction.ANY),
+                0,
+                1);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("A"),
+                        ff.literal("B"),
+                        MatchAction.ANY),
+                0);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("C"),
+                        ff.literal("F"),
+                        MatchAction.ANY),
+                1);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("D"),
+                        ff.literal("F"),
+                        MatchAction.ANY));
+
+        // ints
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")), ff.literal(1), ff.literal(5), MatchAction.ANY),
+                0,
+                1);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")), ff.literal(1), ff.literal(2), MatchAction.ANY),
+                0);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")), ff.literal(3), ff.literal(5), MatchAction.ANY),
+                1);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")),
+                        ff.literal(8),
+                        ff.literal(100),
+                        MatchAction.ANY));
+
+        // timestamps
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("timestamps")),
+                        ff.literal(expectedDate),
+                        ff.literal(expectedDate),
+                        MatchAction.ANY),
+                0,
+                1);
+        LocalDateTime futureDateTime = expectedDate.toLocalDateTime().plusDays(1);
+        Date laterDate = Date.from(futureDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("timestamps")),
+                        ff.literal(laterDate),
+                        ff.literal(laterDate),
+                        MatchAction.ANY));
+    }
+
+    @Test
+    public void testMatchOneBetween() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("arraytest"));
+
+        // strings
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("B"),
+                        ff.literal("C"),
+                        MatchAction.ONE),
+                0,
+                1);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("A"),
+                        ff.literal("B"),
+                        MatchAction.ONE));
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("C"),
+                        ff.literal("F"),
+                        MatchAction.ONE),
+                1);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("D"),
+                        ff.literal("F"),
+                        MatchAction.ONE));
+
+        // ints
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")), ff.literal(1), ff.literal(5), MatchAction.ONE),
+                1);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")), ff.literal(1), ff.literal(2), MatchAction.ONE));
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")), ff.literal(3), ff.literal(5), MatchAction.ONE),
+                1);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")),
+                        ff.literal(8),
+                        ff.literal(100),
+                        MatchAction.ONE));
+
+        // timestamps
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("timestamps")),
+                        ff.literal(expectedDate),
+                        ff.literal(expectedDate),
+                        MatchAction.ONE),
+                0,
+                1);
+        LocalDateTime futureDateTime = expectedDate.toLocalDateTime().plusDays(1);
+        Date laterDate = Date.from(futureDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("timestamps")),
+                        ff.literal(laterDate),
+                        ff.literal(laterDate),
+                        MatchAction.ONE));
+    }
+
+    @Test
+    public void testMatchAllBetween() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        ContentFeatureSource fs = dataStore.getFeatureSource(tname("arraytest"));
+
+        // strings
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("A"),
+                        ff.literal("C"),
+                        MatchAction.ALL),
+                0);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("strings")),
+                        ff.literal("D"),
+                        ff.literal("F"),
+                        MatchAction.ONE));
+
+        // ints
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")), ff.literal(1), ff.literal(5), MatchAction.ALL),
+                0);
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("ints")), ff.literal(2), ff.literal(3), MatchAction.ALL));
+
+        // timestamps
+        assertMatchedFeatureIds(
+                fs,
+                ff.between(
+                        ff.property(aname("timestamps")),
+                        ff.literal(expectedDate),
+                        ff.literal(expectedDate),
+                        MatchAction.ALL),
+                0);
     }
 
     private void assertMatchedFeatureIds(ContentFeatureSource fs, Filter filter, Integer... ids)

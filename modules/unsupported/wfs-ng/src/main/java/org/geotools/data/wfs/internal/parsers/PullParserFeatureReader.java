@@ -111,7 +111,7 @@ public class PullParserFeatureReader implements GetFeatureParser {
         return feature;
     }
 
-    private Object invertGeometryCoordinates(Geometry geometry) throws TransformException {
+    private Geometry invertGeometryCoordinates(Geometry geometry) throws TransformException {
         return transformer.transform(geometry);
     }
 

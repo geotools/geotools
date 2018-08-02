@@ -560,6 +560,78 @@ public abstract class AbstractGetFeatureParserTest {
     }
 
     @Test
+    public void testParseCubeWerx_RoadSeg_NorthEastAxis() throws Exception {
+        final String[] properties = {"lastUpdateDate", "geometry", "status", "isAnchorSection"};
+        final QName featureName = CUBEWERX_ROADSEG.TYPENAME;
+        final URL schemaLocation = CUBEWERX_ROADSEG.SCHEMA;
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
+
+        final GetFeatureParser parser =
+                getParser(
+                        featureName,
+                        schemaLocation,
+                        featureType,
+                        CUBEWERX_ROADSEG.DATA,
+                        WFSDataStoreFactory.AXIS_ORDER_NORTH_EAST);
+
+        int nof = parser.getNumberOfFeatures();
+        assertEquals(-1, nof);
+
+        final FeatureAssertor assertor = new FeatureAssertor(featureType);
+        List<Geometry> geometries = new ArrayList<Geometry>();
+        geometries.add(
+                GF.createLineString(
+                        new Coordinate[] {
+                            new Coordinate(-160.230234, 21.87064403),
+                            new Coordinate(-160.22929, 21.87069903),
+                            new Coordinate(-160.227474, 21.87080403),
+                            new Coordinate(-160.227439, 21.86885203),
+                            new Coordinate(-160.225335, 21.86891603),
+                            new Coordinate(-160.225266, 21.86722003),
+                            new Coordinate(-160.224406, 21.86724603)
+                        }));
+        assertor.setExpectedGeometries(geometries);
+        testParseGetFeatures(featureName, featureType, parser, assertor, 3);
+    }
+
+    @Test
+    public void testParseCubeWerx_RoadSeg_EastNorthAxis() throws Exception {
+        final String[] properties = {"lastUpdateDate", "geometry", "status", "isAnchorSection"};
+        final QName featureName = CUBEWERX_ROADSEG.TYPENAME;
+        final URL schemaLocation = CUBEWERX_ROADSEG.SCHEMA;
+        final SimpleFeatureType featureType =
+                getTypeView(featureName, schemaLocation, CUBEWERX_ROADSEG.CRS, properties);
+
+        final GetFeatureParser parser =
+                getParser(
+                        featureName,
+                        schemaLocation,
+                        featureType,
+                        CUBEWERX_ROADSEG.DATA,
+                        WFSDataStoreFactory.AXIS_ORDER_EAST_NORTH);
+
+        int nof = parser.getNumberOfFeatures();
+        assertEquals(-1, nof);
+
+        final FeatureAssertor assertor = new FeatureAssertor(featureType);
+        List<Geometry> geometries = new ArrayList<Geometry>();
+        geometries.add(
+                GF.createLineString(
+                        new Coordinate[] {
+                            new Coordinate(21.87064403, -160.230234),
+                            new Coordinate(21.87069903, -160.22929),
+                            new Coordinate(21.87080403, -160.227474),
+                            new Coordinate(21.86885203, -160.227439),
+                            new Coordinate(21.86891603, -160.225335),
+                            new Coordinate(21.86722003, -160.225266),
+                            new Coordinate(21.86724603, -160.224406)
+                        }));
+        assertor.setExpectedGeometries(geometries);
+        testParseGetFeatures(featureName, featureType, parser, assertor, 3);
+    }
+
+    @Test
     public void testParseIonic_StatisticalUnit() throws Exception {
         final String[] properties = {"unitId", "typeAbbreviation", "instanceName", "geometry"};
         final QName featureName = IONIC_STATISTICAL_UNIT.TYPENAME;

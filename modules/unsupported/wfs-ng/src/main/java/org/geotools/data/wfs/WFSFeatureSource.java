@@ -207,21 +207,6 @@ class WFSFeatureSource extends ContentFeatureSource {
         query.setFilter(filter);
     }
 
-    /**
-     * Repleace FastBBOX filters with "real" BBOX filter, so that CRS is correctly included in the
-     * filter we send to the cascaded WFS.
-     *
-     * @param query
-     */
-    private void removeFastBBOXFilterIfNeeded(Query query) {
-        // HACK: we do a double inversion of axis so that we
-        // get the original filter and
-        // FastBBOX accept method does not convert BBOX back to a
-        // FastBBOX again
-        invertAxisInFilter(query);
-        invertAxisInFilter(query);
-    }
-
     protected GetFeatureRequest createGetFeature(Query query, ResultType resultType)
             throws IOException {
         GetFeatureRequest request = client.createGetFeatureRequest();
@@ -234,7 +219,6 @@ class WFSFeatureSource extends ContentFeatureSource {
 
         request.setTypeName(remoteTypeName);
         request.setFullType(remoteSimpleFeatureType);
-        removeFastBBOXFilterIfNeeded(query);
         invertAxisInFilterIfNeeded(query, remoteSimpleFeatureType);
         request.setFilter(query.getFilter());
         request.setResultType(resultType);

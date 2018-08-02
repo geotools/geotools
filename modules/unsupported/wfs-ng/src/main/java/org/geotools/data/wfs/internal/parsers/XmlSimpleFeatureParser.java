@@ -715,7 +715,7 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
             return defaultValue;
         }
         // boolean forceXY = false;
-        // forceXY=true breaks axis flipping handling 
+        // forceXY=true breaks axis flipping handling
         if (srsName.startsWith("http://") && srsName.indexOf('#') != -1) {
             // forceXY = true;
             srsName = "EPSG:" + srsName.substring(1 + srsName.lastIndexOf('#'));

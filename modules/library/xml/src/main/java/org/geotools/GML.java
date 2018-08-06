@@ -353,8 +353,7 @@ public class GML {
                 throw new IllegalStateException(
                         "Cannot encode a feature collection using GML2 (only WFS)");
             }
-        }
-        if (version == Version.WFS1_0) {
+        } else if (version == Version.WFS1_0) {
             org.geotools.wfs.v1_0.WFSConfiguration configuration =
                     new org.geotools.wfs.v1_0.WFSConfiguration();
             configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
@@ -367,8 +366,7 @@ public class GML {
             featureCollectionType.getFeature().add(collection);
 
             e.encode(featureCollectionType, org.geotools.wfs.WFS.FeatureCollection, out);
-        }
-        if (version == Version.WFS1_1) {
+        } else if (version == Version.WFS1_1) {
             org.geotools.wfs.v1_1.WFSConfiguration configuration =
                     new org.geotools.wfs.v1_1.WFSConfiguration();
             configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
@@ -381,6 +379,8 @@ public class GML {
             featureCollectionType.getFeature().add(collection);
 
             e.encode(featureCollectionType, org.geotools.wfs.WFS.FeatureCollection, out);
+        } else {
+            throw new IllegalStateException("Unable to handle requested version");
         }
     }
 

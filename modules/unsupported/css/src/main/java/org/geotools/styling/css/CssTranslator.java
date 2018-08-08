@@ -1460,8 +1460,8 @@ public class CssTranslator {
                 if (size != null) {
                     gb.size(size);
                 }
-                double[] anchor = getDoubleArray(values, propertyName + "-anchor", i);
-                double[] offsets = getDoubleArray(values, propertyName + "-offset", i);
+                Expression[] anchor = getExpressionArray(values, propertyName + "-anchor", i);
+                Expression[] offsets = getExpressionArray(values, propertyName + "-offset", i);
                 if (anchor != null) {
                     if (anchor.length == 2) {
                         gb.anchor().x(anchor[0]);

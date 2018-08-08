@@ -378,6 +378,24 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     }
 
     @Test
+    public void markAnchorDisplacementExpressions() throws Exception {
+        String css =
+                "* { mark: symbol(circle); mark-size: 10; mark-anchor: [a1] [a2]; mark-offset: [o1] [o2];}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        PointSymbolizer ps = assertSingleSymbolizer(rule, PointSymbolizer.class);
+        Graphic g = ps.getGraphic();
+        AnchorPoint ap = g.getAnchorPoint();
+        assertNotNull(ap);
+        assertExpression("a1", ap.getAnchorPointX());
+        assertExpression("a2", ap.getAnchorPointY());
+        Displacement d = g.getDisplacement();
+        assertNotNull(d);
+        assertExpression("o1", d.getDisplacementX());
+        assertExpression("o2", d.getDisplacementY());
+    }
+
+    @Test
     public void markAnchorDisplacementSingleValue() throws Exception {
         String css = "* { mark: symbol(circle); mark-size: 10; mark-anchor: 0.5; mark-offset: 10;}";
         Style style = translate(css);

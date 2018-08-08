@@ -193,7 +193,7 @@ public class CassiniSoldner extends MapProjection {
                             new NamedIdentifier(Citations.EPSG, "Cassini-Soldner"),
                             new NamedIdentifier(Citations.EPSG, "9806"),
                             new NamedIdentifier(Citations.GEOTIFF, "CT_CassiniSoldner"),
-                            new NamedIdentifier(Citations.ESRI, "Cassini_Soldner"),
+                            new NamedIdentifier(Citations.ESRI, "Cassini"),
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(

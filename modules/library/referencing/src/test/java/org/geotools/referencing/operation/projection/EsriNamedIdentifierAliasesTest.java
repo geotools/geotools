@@ -95,10 +95,11 @@ public class EsriNamedIdentifierAliasesTest{
 
 
     /**
-     * Test citations for the ESRI wkt equivalent to EPSG:4088 CRS, which uses EPSG:1029 method - Equidistant Cylindrical (Spherical)
+     * Test citations for the ESRI wkt equivalent to EPSG:4088 CRS, which uses EPSG:1029 method - Equidistant Cylindrical (Spherical).
+     * In this case, the ESRI authority is provided in the WKT, which can create some differences in parsing.
      */
     @Test
-    public void equidistantCylindricalSphericalCitation2() throws Exception {
+    public void equidistantCylindricalSphericalEsriAuthorityCitation() throws Exception {
         // @formatter:off
         String equidistantCylindricalSphericalWkt = "PROJCS[\"World_Equidistant_Cylindrical_(Sphere)\","
                 + "GEOGCS[\"GCS_Sphere_GRS_1980_Authalic\",DATUM[\"D_Sphere_GRS_1980_Authalic\",SPHEROID[\"Sphere_GRS_1980_Authalic\",6371007.0,0.0]],"

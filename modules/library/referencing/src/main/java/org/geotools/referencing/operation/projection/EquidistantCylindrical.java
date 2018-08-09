@@ -269,8 +269,7 @@ public class EquidistantCylindrical extends MapProjection {
                         new NamedIdentifier[] {
                             new NamedIdentifier(
                                     Citations.EPSG, "Equidistant Cylindrical (Spherical)"),
-                            new NamedIdentifier(
-                                    Citations.ESRI, "Equidistant_Cylindrical"),
+                            new NamedIdentifier(Citations.ESRI, "Equidistant_Cylindrical"),
                             new NamedIdentifier(
                                     Citations.GEOTOOLS,
                                     Vocabulary.formatInternational(

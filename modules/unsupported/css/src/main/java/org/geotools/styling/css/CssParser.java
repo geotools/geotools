@@ -387,6 +387,7 @@ public class CssParser extends BaseParser<Object> {
 
     Rule SimpleValue() {
         return FirstOf(
+                None(),
                 URLFunction(),
                 TransformFunction(),
                 Function(),
@@ -396,6 +397,18 @@ public class CssParser extends BaseParser<Object> {
                 ValueIdentifier(),
                 VariableValue(),
                 MixedExpression());
+    }
+
+    Rule None() {
+        return Sequence(
+                String("none"),
+                new Action() {
+                    @Override
+                    public boolean run(Context context) {
+                        push(Value.NONE);
+                        return true;
+                    }
+                });
     }
 
     Rule VariableValue() {

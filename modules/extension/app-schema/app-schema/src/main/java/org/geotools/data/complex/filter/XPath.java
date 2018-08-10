@@ -742,6 +742,23 @@ public class XPath extends XPathUtil {
                 }
             } else {
                 // no conversion required
+                boolean isSimpleContent = Types.isSimpleContentType(type);
+                boolean canHaveTextContent = Types.canHaveTextContent(type);
+                if (isSimpleContent || canHaveTextContent) {
+                    ArrayList<Property> list = new ArrayList<>();
+                    for (Object v : (Collection) value) {
+                        if (v instanceof Property) {
+                            list.add((Property) v);
+                            continue;
+                        }
+                        if (isSimpleContent) {
+                            list.add(buildSimpleContent(type, v));
+                        } else if (canHaveTextContent) {
+                            list.add(buildTextContent(type, v));
+                        }
+                    }
+                    return list;
+                }
                 return value;
             }
         }

@@ -22,7 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.digester.Digester;
@@ -277,6 +280,23 @@ public class XMLConfigDigester {
         digester.addCallParam(attMap + "/ClientProperty/name", 0);
         digester.addCallParam(attMap + "/ClientProperty/value", 1);
 
+        // parse JDBC multiple values element
+        String jdbcMultipleValue = attMap + "/jdbcMultipleValue";
+        digester.addObjectCreate(
+                jdbcMultipleValue, XMLConfigDigester.CONFIG_NS_URI, JdbcMultipleValue.class);
+        digester.addCallMethod(jdbcMultipleValue + "/sourceColumn", "setSourceColumn", 1);
+        digester.addCallParam(jdbcMultipleValue + "/sourceColumn", 0);
+        digester.addCallMethod(jdbcMultipleValue + "/targetTable", "setTargetTable", 1);
+        digester.addCallParam(jdbcMultipleValue + "/targetTable", 0);
+        digester.addCallMethod(jdbcMultipleValue + "/targetColumn", "setTargetColumn", 1);
+        digester.addCallParam(jdbcMultipleValue + "/targetColumn", 0);
+        digester.addCallMethod(jdbcMultipleValue + "/targetValue", "setTargetValue", 1);
+        digester.addCallParam(jdbcMultipleValue + "/targetValue", 0);
+        digester.addSetNext(jdbcMultipleValue, "setMultipleValue");
+
+        // give a chance to extensions to contribute custom surtaxes
+        extensions.forEach(extension -> extension.configXmlDigesterAttributesMappings(digester));
+
         // add the AttributeMapping to the list
         digester.addSetNext(attMap, "add");
 
@@ -311,7 +331,7 @@ public class XMLConfigDigester {
         digester.addObjectCreate(dataStores, XMLConfigDigester.CONFIG_NS_URI, ArrayList.class);
         setCommonSourceDataStoreRules(SourceDataStore.class, "DataStore", digester);
         // extension point allowing data sources to provide a custom syntax for their configuration
-        extensions.forEach(extension -> extension.configXmlDigester(digester));
+        extensions.forEach(extension -> extension.configXmlDigesterDataSources(digester));
         // set the list of SourceDataStores for ComlexDataStoreDTO
         digester.addSetNext(dataStores, "setSourceDataStores");
     }

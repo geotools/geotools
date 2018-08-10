@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,16 +66,19 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
     private static final Name MAPPED_TYPE_NAME = Types.typeName("stations_solr");
     private static final String STATIONS_NAMESPACE = "http://www.stations.org/1.0";
     private static final Name STATION_NAME = new NameImpl(STATIONS_NAMESPACE, "stationName");
+    private static final Name STATION_TAG = new NameImpl(STATIONS_NAMESPACE, "tag");
 
     private static final File TESTS_ROOT_DIR = TestsSolrUtils.createTempDirectory("complex-solr");
 
     private DataAccess<FeatureType, Feature> appSchemaDataStore;
 
     static {
-        // create and set App-Schema cache directory
-        System.setProperty(
-                SchemaCache.PROVIDED_CACHE_LOCATION_KEY,
-                new File(TESTS_ROOT_DIR, "app-schema-cache").getAbsolutePath());
+        if (System.getProperty(SchemaCache.PROVIDED_CACHE_LOCATION_KEY) == null) {
+            // create and set App-Schema cache directory
+            System.setProperty(
+                    SchemaCache.PROVIDED_CACHE_LOCATION_KEY,
+                    new File(TESTS_ROOT_DIR, "app-schema-cache").getAbsolutePath());
+        }
     }
 
     @Override
@@ -122,7 +127,9 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
                 features,
                 "13",
                 "Alessandria",
-                geometryFactory.createPoint(new Coordinate(8.63, 44.92)));
+                geometryFactory.createPoint(new Coordinate(8.63, 44.92)),
+                "ALS_TAG_1",
+                "ALS_TAG_2");
     }
 
     /**
@@ -130,20 +137,36 @@ public final class ComplexFeaturesTest extends OnlineTestCase {
      * is found its attributes are compared for equality with the provided ones.
      */
     private Feature checkFeatureExists(
-            List<Feature> features, String id, String name, Point position) {
+            List<Feature> features, String id, String name, Point position, String... tags) {
         for (Feature feature : features) {
             if (feature.getIdentifier().getID().equals(id)) {
                 // check the station name
-                Property property = feature.getProperty(STATION_NAME);
-                assertThat(property, notNullValue());
-                assertThat(property.getValue(), notNullValue());
-                assertThat(property.getValue(), instanceOf(String.class));
+                Property nameProperty = feature.getProperty(STATION_NAME);
+                assertThat(nameProperty, notNullValue());
+                assertThat(nameProperty.getValue(), notNullValue());
+                assertThat(nameProperty.getValue(), instanceOf(String.class));
                 // check the station geometry
                 assertThat(feature.getDefaultGeometryProperty(), notNullValue());
-                Object value = feature.getDefaultGeometryProperty().getValue();
-                assertThat(value, notNullValue());
-                assertThat(value, instanceOf(Point.class));
-                assertThat(value, is(position));
+                Object geometryValue = feature.getDefaultGeometryProperty().getValue();
+                assertThat(geometryValue, notNullValue());
+                assertThat(geometryValue, instanceOf(Point.class));
+                assertThat(geometryValue, is(position));
+                // check that we got the correct tags
+                Collection<Property> tagProperties = feature.getProperties(STATION_TAG);
+                assertThat(tagProperties.size(), is(tags.length));
+                for (Property tagProperty : tagProperties) {
+                    // extract the tag value
+                    assertThat(tagProperty, notNullValue());
+                    Object tagValue = tagProperty.getValue();
+                    assertThat(tagValue, notNullValue());
+                    assertThat(tagValue, instanceOf(String.class));
+                    // check that is a valid one
+                    int index = Arrays.binarySearch(tags, tagValue);
+                    assertThat(index >= 0, is(true));
+                    assertThat(tags[index], is(tagValue));
+                }
+                for (String tag : tags) {}
+
                 // feature found, we are done
                 return feature;
             }

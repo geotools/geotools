@@ -19,9 +19,14 @@ package org.geotools.styling.css;
 import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -49,6 +54,7 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
@@ -1635,5 +1641,65 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertEquals(expectedKey, parameters.get(0).evaluate(null));
         assertEquals(expectedValueCount, parameters.size() - 1);
         return f;
+    }
+
+    @Test
+    public void testNone() {
+        String css = "* { fill: none }";
+        try {
+            Style style = translate(css);
+            fail("Translation should have failed");
+        } catch (IllegalArgumentException e) {
+            assertThat(
+                    e.getMessage(),
+                    CoreMatchers.startsWith(
+                            "Invalid CSS style, no rule seems to activate any symbolization"));
+        }
+    }
+
+    @Test
+    public void testNoneFillStroke() throws CQLException {
+        String css = "* { fill: red; stroke: none }";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        Filter filter = rule.getFilter();
+        assertEquals(Filter.INCLUDE, filter);
+
+        PolygonSymbolizer ls = assertSingleSymbolizer(rule, PolygonSymbolizer.class);
+        Fill fill = ls.getFill();
+        assertExpression("'#ff0000'", fill.getColor());
+        final Stroke stroke = ls.getStroke();
+        assertNull(stroke);
+    }
+
+    @Test
+    public void testNoneOverrideAndDisable() throws CQLException {
+        String css = "* { stroke: red; [@sd < 10k] { stroke: none }}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        Filter filter = rule.getFilter();
+        assertEquals(Filter.INCLUDE, filter);
+        assertEquals(10000, rule.getMinScaleDenominator(), 0d);
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Stroke stroke = ls.getStroke();
+        assertExpression("'#ff0000'", stroke.getColor());
+    }
+
+    @Test
+    public void testAlternateNone() throws CQLException {
+        String css =
+                "* {"
+                        + "    fill-geometry: [the_geom], [boundary(the_geom)];"
+                        + "    fill: #E8F3E2, none;"
+                        + "    stroke: none, #3EA250;"
+                        + "}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        assertEquals(2, rule.symbolizers().size());
+        PolygonSymbolizer ps = (PolygonSymbolizer) rule.symbolizers().get(0);
+        assertExpression("'#E8F3E2'", ps.getFill().getColor());
+        assertNull(ps.getStroke());
+        LineSymbolizer ls = (LineSymbolizer) rule.symbolizers().get(1);
+        assertExpression("'#3EA250'", ls.getStroke().getColor());
     }
 }

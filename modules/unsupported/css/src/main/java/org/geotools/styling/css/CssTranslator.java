@@ -488,7 +488,11 @@ public class CssTranslator {
                                         + derivedRules);
                     }
                     for (CssRule derived : derivedRules) {
+                        if (!derived.hasNonNullSymbolizerProperty()) {
+                            continue;
+                        }
                         buildSldRule(derived, ftsBuilder, targetFeatureType);
+
                         translatedRuleCount++;
 
                         // Reminder about why this is done the way it's done. These are all rule
@@ -635,7 +639,7 @@ public class CssTranslator {
 
                 // generate the SLD rules
                 for (CssRule cssRule : flattenedRules) {
-                    if (!cssRule.hasSymbolizerProperty()) {
+                    if (!cssRule.hasNonNullSymbolizerProperty()) {
                         continue;
                     }
 
@@ -1016,6 +1020,10 @@ public class CssTranslator {
         }
         int repeatCount = getMaxRepeatCount(values);
         for (int i = 0; i < repeatCount; i++) {
+            Value fill = getValue(values, "fill", i);
+            if (fill == null) {
+                continue;
+            }
             PolygonSymbolizerBuilder pb = ruleBuilder.polygon();
             Expression fillGeometry = getExpression(values, "fill-geometry", i);
             if (fillGeometry != null) {
@@ -1859,13 +1867,17 @@ public class CssTranslator {
             return null;
         }
 
+        Value result = null;
         if (values.size() == 1) {
-            return values.get(0);
-        } else if (i > values.size()) {
-            return null;
-        } else {
-            return values.get(i);
+            result = values.get(0);
+        } else if (i < values.size()) {
+            result = values.get(i);
         }
+
+        if (result == null || result instanceof Value.None) {
+            return null;
+        }
+        return result;
     }
 
     private List<Value> getMultiValue(Map<String, List<Value>> valueMap, String name, int i) {

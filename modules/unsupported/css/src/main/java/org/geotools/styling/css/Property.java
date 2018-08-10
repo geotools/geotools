@@ -104,4 +104,14 @@ public class Property {
     void setValues(List<Value> values) {
         this.values = values;
     }
+
+    /**
+     * Returns true if any of the property values is other than null or None (will return true also
+     * if there is no value)
+     *
+     * @return
+     */
+    public boolean hasValues() {
+        return values.stream().anyMatch(v -> v != null && v != Value.NONE);
+    }
 }

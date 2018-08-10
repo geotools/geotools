@@ -185,7 +185,7 @@ public class CssRule {
             return false;
         }
         for (Property property : psProperties) {
-            if (propertyName.equals(property.getName())) {
+            if (propertyName.equals(property.getName()) && property.hasValues()) {
                 return true;
             }
         }
@@ -506,6 +506,33 @@ public class CssRule {
                 case "label":
                 case "raster-channels":
                     return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if the style has at least one property activating a symbolizer, e.g., fill,
+     * stroke, mark, label or raster-channel
+     *
+     * @param rootProperties
+     * @return
+     */
+    boolean hasNonNullSymbolizerProperty() {
+        List<Property> rootProperties = getProperties().get(PseudoClass.ROOT);
+        if (rootProperties == null) {
+            return false;
+        }
+        for (Property property : rootProperties) {
+            String name = property.getName();
+            switch (name) {
+                case "fill":
+                case "stroke":
+                case "mark":
+                case "label":
+                case "raster-channels":
+                    return property.hasValues();
             }
         }
 

@@ -596,7 +596,8 @@ public class AppSchemaDataAccessConfigurator {
                                 targetXPathSteps,
                                 expectedInstanceOf,
                                 isMultiValued,
-                                clientProperties);
+                                clientProperties,
+                                attDto.getMultipleValue());
             }
 
             if (attDto.isList()) {

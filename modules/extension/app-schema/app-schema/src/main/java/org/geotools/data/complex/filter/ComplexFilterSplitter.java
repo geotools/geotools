@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
@@ -376,6 +377,13 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         }
 
         if (matchingMappings.isEmpty()) {
+            // handle multi value
+            AttributeMapping candidate = mappings.getAttributeMapping(exprSteps);
+            if (candidate != null
+                    && candidate.isMultiValued()
+                    && candidate.getMultipleValue() != null) {
+                return super.visit(expression, notUsed);
+            }
             postStack.push(expression);
             return null;
         } else {

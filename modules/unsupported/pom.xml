@@ -68,12 +68,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>efeature</id>
-			<modules>
-				<module>efeature</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>geometry</id>
 			<activation>
 				<property>
@@ -218,8 +212,6 @@
 				<module>csv</module>
 				<module>epsg-oracle</module>
 				<module>jdbc-ng</module>
-				<module>sfs</module>
-				<module>feature-aggregate</module>
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>

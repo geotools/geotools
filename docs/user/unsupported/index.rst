@@ -19,7 +19,6 @@ Research and Development:
    arcgis-rest
    css
    csv
-   efeature/index
    geojson
    geometry/index
    jts-wrapper
@@ -37,7 +36,6 @@ Unsupported rendering plugins:
 
 Unsupported DataStore implementations:
 
-* :doc:`/library/data/caching` (Example) shows how to to cache a FeatureSource. Intended for use with a web feature server, maintaining a cache of  retrieved features.
 * :doc:`/library/data/csv` (Active) support for the comma-separated values (CSV) file format used for tutorial
 * :doc:`/library/data/dxf` (Inactive) Support for DXF format files
 * :doc:`/library/data/edigeo` (Inactive) Support for EDIGEO file format
@@ -45,13 +43,11 @@ Unsupported DataStore implementations:
 * :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
 * :doc:`/library/data/mongodb` (Unknown) Support for using mongodb (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.
 * :doc:`/library/data/wfs-ng` (Active) Supports communcation with a Web Feature Server using the standard GeoTools DataStore API
-* :doc:`/library/data/sfs` (Unknown) Support for the experimental GeoServer Simple Feature Service
 
 Unsupported Raster modules:
 
 
 * :doc:`/library/coverage/coverageio`
-* :doc:`/library/coverage/image-collection` - publishes a large collection of non georeferenced images as a coverage reader
 * :doc:`/library/coverage/geotiff_new`
 * :doc:`/library/coverage/matlab`
 * :doc:`/library/coverage/multidim` - New plugins supporting NetCDF and Grib formats

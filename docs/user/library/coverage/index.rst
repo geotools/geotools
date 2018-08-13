@@ -71,7 +71,6 @@ Unsupported plugins:
    
    coverageio
    geotiff_new
-   image-collection
    jp2k
    netCDF
    matlab      

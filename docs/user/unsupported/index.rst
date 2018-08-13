@@ -51,7 +51,6 @@ Unsupported Raster modules:
 
 
 * :doc:`/library/coverage/coverageio`
-* :doc:`/library/coverage/image-collection` - publishes a large collection of non georeferenced images as a coverage reader
 * :doc:`/library/coverage/geotiff_new`
 * :doc:`/library/coverage/matlab`
 * :doc:`/library/coverage/multidim` - New plugins supporting NetCDF and Grib formats

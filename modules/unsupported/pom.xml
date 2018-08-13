@@ -68,12 +68,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>efeature</id>
-			<modules>
-				<module>efeature</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>geometry</id>
 			<activation>
 				<property>

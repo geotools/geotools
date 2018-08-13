@@ -19,7 +19,6 @@ Research and Development:
    arcgis-rest
    css
    csv
-   efeature/index
    geojson
    geometry/index
    jts-wrapper

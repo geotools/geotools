@@ -172,7 +172,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Performs the actual test to see if the OGR library and this datastore is available.
      *
-     * <p>Implemetnations of this method should not attempt to handle any fatal exceptions.
+     * <p>Implementations of this method should not attempt to handle any fatal exceptions.
      */
     protected abstract boolean doIsAvailable() throws Throwable;
 

@@ -66,7 +66,6 @@ Unsupported plugins:
 .. toctree::
    :maxdepth: 1
    
-   caching
    csv
    dxf
    edigeo

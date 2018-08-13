@@ -36,7 +36,6 @@ Unsupported rendering plugins:
 
 Unsupported DataStore implementations:
 
-* :doc:`/library/data/caching` (Example) shows how to to cache a FeatureSource. Intended for use with a web feature server, maintaining a cache of  retrieved features.
 * :doc:`/library/data/csv` (Active) support for the comma-separated values (CSV) file format used for tutorial
 * :doc:`/library/data/dxf` (Inactive) Support for DXF format files
 * :doc:`/library/data/edigeo` (Inactive) Support for EDIGEO file format

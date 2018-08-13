@@ -218,7 +218,6 @@
 				<module>csv</module>
 				<module>epsg-oracle</module>
 				<module>jdbc-ng</module>
-				<module>sfs</module>
 				<module>feature-aggregate</module>
 				<module>solr</module>
 				<module>css</module>

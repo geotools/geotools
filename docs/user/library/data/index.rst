@@ -73,6 +73,5 @@ Unsupported plugins:
    excel
    georest
    kml
-   sfs
    solr
    wfs-ng

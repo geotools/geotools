@@ -45,7 +45,6 @@ Unsupported DataStore implementations:
 * :doc:`/library/data/georest` (Unknown) Support for a REST service using GeoJSON
 * :doc:`/library/data/mongodb` (Unknown) Support for using mongodb (https://www.mongodb.com/, https://en.wikipedia.org/wiki/MongoDB) as a feature store.
 * :doc:`/library/data/wfs-ng` (Active) Supports communcation with a Web Feature Server using the standard GeoTools DataStore API
-* :doc:`/library/data/sfs` (Unknown) Support for the experimental GeoServer Simple Feature Service
 
 Unsupported Raster modules:
 

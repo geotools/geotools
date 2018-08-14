@@ -1372,6 +1372,12 @@ public class RasterManager implements Cloneable {
                 metadataName.toLowerCase().endsWith("maximum")
                         ? new MaxVisitor(attributeName)
                         : new MinVisitor(attributeName);
+        /** ** Appended *** */
+        if (getHints().containsKey(Hints.DIMENSIONS_PRESENTATIONS_INFO)) {
+            Hints queryHints = query.getHints();
+            queryHints.add(new RenderingHints(Hints.FEATURE_CALC, visitor));
+        }
+        /** ********************** */
         granuleCatalog.computeAggregateFunction(query, visitor);
         return visitor;
     }
@@ -1388,6 +1394,33 @@ public class RasterManager implements Cloneable {
         Query query = new Query(typeName);
         query.setPropertyNames(Arrays.asList(attribute));
         final UniqueVisitor visitor = new UniqueVisitor(attribute);
+        /** ** Appended *** */
+        Hints rmHints = getHints();
+        Hints queryHints = query.getHints();
+        if (rmHints.containsKey(Hints.DIMENSIONS_PRESENTATIONS_INFO)) {
+            Map<String, Boolean> dimPresentationParam =
+                    (Map<String, Boolean>) rmHints.get(Hints.DIMENSIONS_PRESENTATIONS_INFO);
+            if (dimPresentationParam != null) {
+                Boolean isListPresentation = dimPresentationParam.get(attribute);
+                if (!isListPresentation) {
+                    final FeatureCalc[] visitors = {
+                        new MinVisitor(attribute), new MaxVisitor(attribute)
+                    };
+                    Set values = new HashSet();
+
+                    for (FeatureCalc extremVisitor : visitors) {
+                        queryHints.add(new RenderingHints(Hints.FEATURE_CALC, extremVisitor));
+                        granuleCatalog.computeAggregateFunction(query, extremVisitor);
+                        values.add(extremVisitor.getResult().getValue());
+                    }
+
+                    return values;
+                } else {
+                    queryHints.add(new RenderingHints(Hints.FEATURE_CALC, visitor));
+                }
+            }
+        }
+        /** ****** */
         granuleCatalog.computeAggregateFunction(query, visitor);
         return visitor.getUnique();
     }

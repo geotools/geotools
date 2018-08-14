@@ -302,7 +302,7 @@ information and the ability to create new physical storage.
       :end-before: // createNewDataStore end
    
 6. The Factory Service Provider (SPI) system operates by looking at the META-INF/services
-   folder and checking for implemetnations of DataStoreFactorySpi
+   folder and checking for implementations of DataStoreFactorySpi
 
    To "register" our CSVDataStoreFactory please create the following in `src/main/resources/`:
 

@@ -17,7 +17,9 @@
 package org.geotools.data.transform;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.Query;
@@ -29,12 +31,20 @@ import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.FeatureAttributeVisitor;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.geometry.BoundingBox;
 
 /**
@@ -205,5 +215,57 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             q.setFilter(combined);
         }
         return new TransformFeatureCollection(source, transformer, q);
+    }
+
+    /**
+     * Checks if the visitor is accessing only properties available in the specified feature type,
+     * checks if the target schema contains transformed attributes or as a special case, if it's a
+     * count visitor accessing no properties at all
+     *
+     * @param visitor
+     * @param featureType
+     * @return
+     */
+    protected boolean isTypeCompatible(FeatureVisitor visitor, SimpleFeatureType featureType) {
+        if (visitor instanceof CountVisitor) {
+            // pass through if the CountVisitor has been recognized
+            return true;
+        } else if (visitor instanceof FeatureAttributeVisitor) {
+            // pass through if the target schema contains all the necessary attributes
+            FilterAttributeExtractor extractor = new FilterAttributeExtractor(featureType);
+            for (Expression e : ((FeatureAttributeVisitor) visitor).getExpressions()) {
+                e.accept(extractor, null);
+            }
+            List<String> attNames = new ArrayList<>();
+
+            for (PropertyName pname : extractor.getPropertyNameSet()) {
+                AttributeDescriptor att = (AttributeDescriptor) pname.evaluate(featureType);
+                if (att == null) {
+                    return false;
+                }
+                attNames.add(pname.getPropertyName());
+            }
+            // pass through if the target schema doesn't contain transformed attributes
+            if (transformer.getOriginalNames(attNames).size() == attNames.size()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void accepts(
+            org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
+            throws IOException {
+        Name typeName = transformer.getSource().getName();
+
+        if (isTypeCompatible(visitor, transformer.getSchema())) {
+            source.getDataStore()
+                    .getFeatureSource(typeName)
+                    .getFeatures()
+                    .accepts(visitor, progress);
+        } else {
+            super.accepts(visitor, progress);
+        }
     }
 }

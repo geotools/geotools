@@ -319,7 +319,7 @@ public class GMLWriter {
         coordinates(coordinates, ' ', ' ', sb);
         characters(sb);
     }
-    
+
     void coordinates(CoordinateSequence coordinates, char cs, char ts, StringBuffer sb) {
         sb.setLength(0);
         int n = coordinates.size();

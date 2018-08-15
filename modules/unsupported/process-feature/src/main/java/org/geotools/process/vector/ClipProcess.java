@@ -608,9 +608,9 @@ public class ClipProcess implements VectorProcess {
 
             private void applyZValues(
                     CoordinateSequence cs, int idx, CoordinateSequence csOrig, int origIdx) {
-                
-                if(!cs.hasZ()) return;
-                
+
+                if (!cs.hasZ()) return;
+
                 double lx1 = cs.getOrdinate(idx, 0);
                 double ly1 = cs.getOrdinate(idx, 1);
                 double lz1;

@@ -162,7 +162,7 @@ public final class GeoToolsTest {
 
         version = GeoTools.getVersion(Geometry.class);
         assertNotNull(version);
-        assertEquals("SNAPSHOT", version.toString());
+        assertEquals("RC1", version.toString());
     }
     /** Tests the use of system properties. */
     @Test

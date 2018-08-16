@@ -168,4 +168,14 @@ public interface GMLDelegate {
      * @return
      */
     boolean forceDecimalEncoding();
+
+    /**
+     * Controls if coordinates measures should be included in WFS outputs.
+     *
+     * @return TRUE if measures should be encoded, otherwise FALSE
+     */
+    default boolean getEncodeMeasures() {
+        // by default coordinates measures are encoded
+        return true;
+    }
 }

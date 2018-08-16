@@ -134,6 +134,9 @@ public class GMLConfiguration extends Configuration {
     /** The factory used to create geometries */
     private GeometryFactory geometryFactory;
 
+    /** Controls if coordinates measures should be encoded in GML * */
+    private boolean encodeMeasures;
+
     public GMLConfiguration() {
         this(false);
     }
@@ -391,5 +394,23 @@ public class GMLConfiguration extends Configuration {
      */
     public void setGeometryFactory(GeometryFactory geometryFactory) {
         this.geometryFactory = geometryFactory;
+    }
+
+    /**
+     * Controls if coordinates measures should be included in WFS outputs.
+     *
+     * @return TRUE if measures should be encoded, otherwise FALSE
+     */
+    public boolean getEncodeMeasures() {
+        return encodeMeasures;
+    }
+
+    /**
+     * Sets if coordinates measures should be included in WFS outputs.
+     *
+     * @param encodeMeasures TRUE if measures should be encoded, otherwise FALSE
+     */
+    public void setEncodeMeasures(boolean encodeMeasures) {
+        this.encodeMeasures = encodeMeasures;
     }
 }

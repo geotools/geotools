@@ -231,7 +231,7 @@ public class OffsetCurveBuilderTest {
             curve =
                     new GeometryFactory()
                             .createLineString(
-                                    new PackedCoordinateSequenceFactory().create(ordinates, 2));
+                                    new PackedCoordinateSequenceFactory().create(ordinates, 2, 0));
             simpleOffsetTest(curve, offset);
         }
     }
@@ -283,7 +283,7 @@ public class OffsetCurveBuilderTest {
         curve =
                 new GeometryFactory()
                         .createLineString(
-                                new PackedCoordinateSequenceFactory().create(ordinates, 2));
+                                new PackedCoordinateSequenceFactory().create(ordinates, 2, 0));
         simpleOffsetTest(curve, offset);
     }
 

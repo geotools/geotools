@@ -50,6 +50,16 @@ public class ComplexFeatureConstants {
             new AttributeDescriptorImpl(
                     XSSchema.STRING_TYPE, FEATURE_CHAINING_LINK_NAME, 0, -1, true, null);
 
+    /**
+     * Static attribute name used for the auxiliary default geometry attribute, which is created
+     * when &lt;defaultGeometry&gt; is specified in the feature type mapping configuration.
+     *
+     * <p>The constant represents to the local part of the qualified attribute name; the namespace
+     * URI is generated at runtime and will be the same as the namespace URI of the feature
+     * containing the geometry attribute.
+     */
+    public static final String DEFAULT_GEOMETRY_LOCAL_NAME = "__DEFAULT_GEOMETRY__";
+
     /** Name representation of xlink:href */
     public static final Name XLINK_HREF_NAME = Types.toTypeName(XLINK.HREF);
 

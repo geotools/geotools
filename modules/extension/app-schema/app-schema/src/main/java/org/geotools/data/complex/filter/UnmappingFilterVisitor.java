@@ -17,6 +17,8 @@
 
 package org.geotools.data.complex.filter;
 
+import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -828,7 +830,13 @@ public class UnmappingFilterVisitor implements org.opengis.filter.FilterVisitor,
     }
 
     public List<Expression> visit(PropertyName expr, Object arg1) {
+
         String targetXPath = expr.getPropertyName();
+        // replace the artificial DEFAULT_GEOMETRY property with the actual one
+        if (DEFAULT_GEOMETRY_LOCAL_NAME.equals(targetXPath)) {
+            targetXPath = mappings.getDefaultGeometryXPath();
+        }
+
         NamespaceSupport namespaces = mappings.getNamespaces();
         AttributeDescriptor root = mappings.getTargetFeature();
 

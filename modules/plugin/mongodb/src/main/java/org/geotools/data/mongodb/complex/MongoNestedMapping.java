@@ -139,6 +139,7 @@ public class MongoNestedMapping extends NestedAttributeMapping {
                 new FeatureTypeMapping(
                         staticSource,
                         mapping.getTargetFeature(),
+                        mapping.getDefaultGeometryXPath(),
                         mapping.getAttributeMappings(),
                         mapping.getNamespaces(),
                         mapping.isDenormalised());

@@ -31,6 +31,7 @@ public class FeatureTypeMappingFactory {
     public static FeatureTypeMapping getInstance(
             FeatureSource source,
             AttributeDescriptor target,
+            String defaultGeometryXPath,
             List<AttributeMapping> mappings,
             NamespaceSupport namespaces,
             String itemXpath,
@@ -40,7 +41,8 @@ public class FeatureTypeMappingFactory {
         if (isXmlDataStore) {
             return new XmlFeatureTypeMapping(source, target, mappings, namespaces, itemXpath);
         } else {
-            return new FeatureTypeMapping(source, target, mappings, namespaces, isDenormalised);
+            return new FeatureTypeMapping(
+                    source, target, defaultGeometryXPath, mappings, namespaces, isDenormalised);
         }
     }
 }

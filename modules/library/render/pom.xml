@@ -102,6 +102,11 @@
       <artifactId>gt-cql</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.conversantmedia</groupId>
+      <artifactId>disruptor</artifactId>
+      <version>1.2.13</version>
+    </dependency>
     
     <!-- Test dependencies -->
     <dependency>

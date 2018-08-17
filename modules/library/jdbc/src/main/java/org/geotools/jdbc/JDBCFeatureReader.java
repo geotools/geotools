@@ -319,14 +319,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     protected SimpleFeature readNextFeature() throws IOException {
-        // grab the connection
-        Connection cx;
-        try {
-            cx = st.getConnection();
-        } catch (SQLException e) {
-            throw (IOException) new IOException().initCause(e);
-        }
-
         // figure out the fid
         String fid;
 
@@ -726,7 +718,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                                                         rs,
                                                         rsindex,
                                                         dataStore.getGeometryFactory(),
-                                                        st.getConnection(),
+                                                        cx,
                                                         hints);
                             } else {
                                 values[index] = rs.getObject(rsindex);

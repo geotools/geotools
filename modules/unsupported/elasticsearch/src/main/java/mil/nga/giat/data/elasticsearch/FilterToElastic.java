@@ -38,6 +38,11 @@ import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.And;
@@ -107,10 +112,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
 
 import mil.nga.giat.shaded.es.common.joda.Joda;
 import mil.nga.giat.shaded.joda.time.format.DateTimeFormatter;
@@ -1152,8 +1153,9 @@ public class FilterToElastic implements FilterVisitor, ExpressionVisitor {
             coordinates = linearRing.getCoordinateSequence();
             currentGeometry = factory.createLineString(coordinates);
         }
-
-        final String geoJson = new GeometryJSON().toString(currentGeometry);
+        final PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
+        final int decimalPlaces = precisionModel.getMaximumSignificantDigits();
+        final String geoJson = new GeometryJSON(decimalPlaces).toString(currentGeometry);
         currentShapeBuilder = mapReader.readValue(geoJson);
     }
 

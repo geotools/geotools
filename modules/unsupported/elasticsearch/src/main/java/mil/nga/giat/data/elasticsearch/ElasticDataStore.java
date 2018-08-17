@@ -26,10 +26,9 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.type.Name;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 
 import mil.nga.giat.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
 import mil.nga.giat.shaded.es.common.joda.Joda;

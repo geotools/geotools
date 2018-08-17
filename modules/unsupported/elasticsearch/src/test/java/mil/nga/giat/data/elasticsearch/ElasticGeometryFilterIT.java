@@ -17,11 +17,15 @@
 
 package mil.nga.giat.data.elasticsearch;
 
-import javax.measure.unit.SI;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.junit.Test;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
+
 import static org.junit.Assert.*;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -41,12 +45,6 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 public class ElasticGeometryFilterIT extends ElasticTestSupport {
 
@@ -225,7 +223,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] { 0, 0 }, 2));
-        DWithin f = ff.dwithin(ff.property("geo"), ff.literal(ls), 3, SI.METRE.getSymbol());
+        DWithin f = ff.dwithin(ff.property("geo"), ff.literal(ls), 3, "m");
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(2, features.size());
         SimpleFeatureIterator fsi = features.features();
@@ -242,7 +240,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] { 0, 0 }, 2));
-        Beyond f = ff.beyond(ff.property("geo"), ff.literal(ls), 1, SI.METRE.getSymbol());
+        Beyond f = ff.beyond(ff.property("geo"), ff.literal(ls), 1, "m");
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(9, features.size());
     }
@@ -288,7 +286,7 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         Point ls = gf.createPoint(sf.create(new double[] { 0, 0 }, 2));
-        DWithin f = ff.dwithin(ff.property("geo5"), ff.literal(ls), 3, SI.METRE.getSymbol());
+        DWithin f = ff.dwithin(ff.property("geo5"), ff.literal(ls), 3, "m");
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(2, features.size());
         SimpleFeatureIterator fsi = features.features();

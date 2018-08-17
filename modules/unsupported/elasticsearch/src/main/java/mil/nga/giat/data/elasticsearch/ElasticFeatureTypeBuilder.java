@@ -18,11 +18,10 @@ import mil.nga.giat.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Builds a feature type based on the attributes defined in the 

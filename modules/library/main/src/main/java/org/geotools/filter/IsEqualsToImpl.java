@@ -80,8 +80,12 @@ public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIs
          * them. It is better to fallback on the more generic code following the "if" block in order
          * to ensure consistent behavior.
          */
-        if (value1.equals(value2)) {
+        if (!matchingCase && value1 instanceof String && value2 instanceof String) {
+            return ((String) value1).equalsIgnoreCase((String) value2);
+        } else if (value1.equals(value2)) {
             return true;
+        } else if (value1.getClass().equals(value2.getClass())) {
+            return false;
         }
 
         // if we are doing delayed evaluation of a literal, try conversions to the actual type

@@ -22,16 +22,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
+import org.apache.http.HttpHost;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
 import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
+
 import static org.junit.Assert.*;
 
 public class ElasticDataStoreFinderIT extends ElasticTestSupport {
@@ -100,6 +106,47 @@ public class ElasticDataStoreFinderIT extends ElasticTestSupport {
         }
 
         assertNull(source);
+    }
+
+    @Test
+    public void testCreateRestClient() throws IOException {
+        assertEquals(ImmutableList.of(new HttpHost("localhost", PORT, "http")), getHosts("localhost"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost.localdomain", PORT, "http")), getHosts("localhost.localdomain"));
+
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9201, "http")), getHosts("localhost:9201"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost.localdomain", 9201, "http")), getHosts("localhost.localdomain:9201"));
+
+        assertEquals(ImmutableList.of(new HttpHost("localhost", PORT, "http")), getHosts("http://localhost"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9200, "http")), getHosts("http://localhost:9200"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9201, "http")), getHosts("http://localhost:9201"));
+
+        assertEquals(ImmutableList.of(new HttpHost("localhost", PORT, "https")), getHosts("https://localhost"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9200, "https")), getHosts("https://localhost:9200"));
+        assertEquals(ImmutableList.of(new HttpHost("localhost", 9201, "https")), getHosts("https://localhost:9201"));
+
+        assertEquals(ImmutableList.of(
+                new HttpHost("somehost.somedomain", PORT, "http"),
+                new HttpHost("anotherhost.somedomain", PORT, "http")),
+                getHosts("somehost.somedomain:9200,anotherhost.somedomain:9200"));
+        assertEquals(ImmutableList.of(
+                new HttpHost("somehost.somedomain", PORT, "https"),
+                new HttpHost("anotherhost.somedomain", PORT, "https")),
+                getHosts("https://somehost.somedomain:9200,https://anotherhost.somedomain:9200"));
+        assertEquals(ImmutableList.of(
+                new HttpHost("somehost.somedomain", PORT, "https"),
+                new HttpHost("anotherhost.somedomain", PORT, "https")),
+                getHosts("https://somehost.somedomain:9200, https://anotherhost.somedomain:9200"));
+        assertEquals(ImmutableList.of(
+                new HttpHost("somehost.somedomain", PORT, "https"),
+                new HttpHost("anotherhost.somedomain", PORT, "http")),
+                getHosts("https://somehost.somedomain:9200,anotherhost.somedomain:9200"));
+    }
+
+    private List<HttpHost> getHosts(String hosts) throws IOException {
+        Map<String,Serializable> params = createConnectionParams();
+        params.put(ElasticDataStoreFactory.HOSTNAME.key, hosts);
+        ElasticDataStoreFactory factory = new ElasticDataStoreFactory();
+        return factory.createRestClient(params).getNodes().stream().map(node -> node.getHost()).collect(Collectors.toList());
     }
 
     private FactoryRegistry getServiceRegistry() {

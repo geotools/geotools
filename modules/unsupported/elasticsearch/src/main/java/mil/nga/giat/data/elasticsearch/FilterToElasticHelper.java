@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.measure.unit.SI;
-
 import static mil.nga.giat.data.elasticsearch.ElasticConstants.GEOMETRY_TYPE;
 import static mil.nga.giat.data.elasticsearch.ElasticConstants.MATCH_ALL;
 
@@ -30,6 +28,12 @@ import mil.nga.giat.data.elasticsearch.ElasticAttribute.ElasticGeometryType;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.JTS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateFilter;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.spatial4j.shape.SpatialRelation;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.expression.Expression;
@@ -47,12 +51,6 @@ import org.opengis.filter.spatial.Within;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateFilter;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.Polygon;
 
 class FilterToElasticHelper {
 
@@ -139,7 +137,7 @@ class FilterToElasticHelper {
 
         delegate.queryBuilder = ImmutableMap.of("bool", ImmutableMap.of("must", MATCH_ALL,
                 "filter", ImmutableMap.of("geo_distance", 
-                        ImmutableMap.of("distance", distance+SI.METER.toString(), key, ImmutableList.of(lon,lat)))));
+                        ImmutableMap.of("distance", distance+"m", key, ImmutableList.of(lon,lat)))));
 
         if ((filter instanceof DWithin && swapped)
                 || (filter instanceof Beyond && !swapped)) {

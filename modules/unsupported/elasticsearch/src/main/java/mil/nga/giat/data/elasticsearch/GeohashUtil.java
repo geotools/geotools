@@ -6,8 +6,9 @@ package mil.nga.giat.data.elasticsearch;
 
 import java.util.Map;
 
+import org.locationtech.jts.geom.Envelope;
+
 import com.github.davidmoten.geo.GeoHash;
-import com.vividsolutions.jts.geom.Envelope;
 
 public class GeohashUtil {
 

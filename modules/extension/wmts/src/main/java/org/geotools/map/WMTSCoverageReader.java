@@ -20,6 +20,7 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wmts.WebMapTileServer;
 import org.geotools.data.wmts.model.WMTSLayer;
+import org.geotools.data.wmts.request.AbstractGetTileRequest;
 import org.geotools.data.wmts.request.GetTileRequest;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -435,6 +436,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         // requestEnvelope?
         tileRequest.setRequestedTime(time);
 
+        // Set format for output
+        tileRequest.setProperty(AbstractGetTileRequest.FORMAT, format);
         try {
             this.requestCRS = CRS.decode(requestSrs);
         } catch (Exception e) {

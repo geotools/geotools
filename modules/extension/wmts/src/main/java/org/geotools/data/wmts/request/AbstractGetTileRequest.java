@@ -78,6 +78,9 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
     public static final String TILEMATRIXSET = "TileMatrixSet";
 
+    /** Property used for request format. */
+    public static final String FORMAT = "Format";
+
     private WMTSLayer layer = null;
 
     private String styleName = "";
@@ -212,13 +215,8 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         TileMatrixSet matrixSet = selectMatrixSet();
 
         String requestUrl = onlineResource.toString();
+        String format = findFormat();
         if (WMTSServiceType.REST.equals(type)) {
-            String format = (String) getProperties().get("Format");
-            if (format == null || format.isEmpty()) {
-                format = "image/png";
-                if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("Format not set, trying with " + format);
-            }
             requestUrl = layer.getTemplate(format);
             if (requestUrl == null) {
                 if (LOGGER.isLoggable(Level.INFO))
@@ -237,6 +235,10 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
         wmtsService.getDimensions().put(WMTSTileService.DIMENSION_TIME, requestedTime);
 
+        // Set format mime/type when using KVP requests.
+        if (WMTSServiceType.KVP.equals(type)) {
+            wmtsService.setFormat(format);
+        }
         ((Map)
                         (wmtsService
                                 .getExtrainfo()
@@ -305,6 +307,22 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         tiles.removeAll(tilesOutsideLimits);
 
         return tiles;
+    }
+
+    /**
+     * Find format specified by properties.
+     *
+     * @return non-null string containing mime/type of requested format. Defaults to 'image/png' if
+     *     not set.
+     */
+    private String findFormat() {
+        final Object formatObject = getProperties().get(FORMAT);
+        String format = formatObject == null ? null : formatObject.toString();
+        if (format == null || format.isEmpty()) {
+            format = "image/png";
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Format not set, trying with " + format);
+        }
+        return format;
     }
 
     private TileMatrixSet selectMatrixSet() throws ServiceException, RuntimeException {

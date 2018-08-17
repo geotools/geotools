@@ -25,4 +25,15 @@
         <gav regex="true">^org\.geotools:gt-sde-dummy:.*$</gav>
         <cpe>cpe:/a:arc:arc</cpe>
     </suppress>
+    <suppress>
+        <notes><![CDATA[file name: gt-arcsde-common.jar]]></notes>
+        <gav regex="true">^org\.geotools:gt-arcsde-common:.*$</gav>
+        <cpe>cpe:/a:arc:arc</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: zookeeper-3.4.11.jar]]></notes>
+        <gav regex="true">^org\.apache\.zookeeper:zookeeper:.*$</gav>
+        <cve>CVE-2014-0085</cve>
+        <cve>CVE-2018-8012</cve>
+    </suppress>
 </suppressions>

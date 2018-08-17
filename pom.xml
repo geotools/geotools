@@ -109,7 +109,7 @@
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <postgresql.jdbc.version>42.1.1</postgresql.jdbc.version>
-    <solrj.version>7.2.1</solrj.version>
+    <solrj.version>7.4.0</solrj.version>
     <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>

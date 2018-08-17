@@ -43,6 +43,8 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
 
     Map<String, Integer> index;
 
+    Map<String, AttributeDescriptor> descriptors;
+
     @SuppressWarnings("unchecked")
     public SimpleFeatureTypeImpl(
             Name name,
@@ -63,6 +65,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
                 superType,
                 description);
         index = buildIndex(this);
+        descriptors = buildDescriptorIndex(this);
     }
 
     /** @see org.opengis.feature.simple.SimpleFeatureType#getAttributeDescriptors() */
@@ -114,7 +117,7 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
     }
 
     public AttributeDescriptor getDescriptor(String name) {
-        return (AttributeDescriptor) super.getDescriptor(name);
+        return descriptors.get(name);
     }
 
     public AttributeDescriptor getDescriptor(int index) {
@@ -168,6 +171,25 @@ public class SimpleFeatureTypeImpl extends FeatureTypeImpl implements SimpleFeat
         }
         if (featureType.getGeometryDescriptor() != null) {
             index.put(null, index.get(featureType.getGeometryDescriptor().getLocalName()));
+        }
+        return index;
+    }
+
+    /**
+     * Builds the name -> descriptor index used by simple features for fast attribute lookup
+     *
+     * @param featureType
+     * @return
+     */
+    static Map<String, AttributeDescriptor> buildDescriptorIndex(SimpleFeatureType featureType) {
+        // build an index of attribute name to index
+        Map<String, AttributeDescriptor> index = new HashMap<>();
+        int i = 0;
+        for (AttributeDescriptor ad : featureType.getAttributeDescriptors()) {
+            index.put(ad.getLocalName(), ad);
+        }
+        if (featureType.getGeometryDescriptor() != null) {
+            index.put(null, featureType.getGeometryDescriptor());
         }
         return index;
     }

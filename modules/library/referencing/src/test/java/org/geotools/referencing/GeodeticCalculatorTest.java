@@ -215,6 +215,59 @@ public final class GeodeticCalculatorTest {
     }
 
     @Test
+    public void testGEOT4207() {
+        Point2D startPoint = new Point2D.Double(-33.56099261594231, 1.480512392340082);
+        Point2D destPoint = new Point2D.Double(-33.56099261594231, 1.4805123923400947);
+        GeodeticCalculator calculator = new GeodeticCalculator();
+        calculator.setStartingGeographicPoint(startPoint);
+        calculator.setDestinationGeographicPoint(destPoint);
+        assertEquals(0.001, calculator.getOrthodromicDistance(), 0.001);
+    }
+
+    @Test
+    public void testGEOT4604() {
+        Point2D startPoint = new Point2D.Double(8.54, 47.38);
+
+        GeodeticCalculator calculator = new GeodeticCalculator();
+        calculator.setStartingGeographicPoint(startPoint);
+        calculator.setDirection(0, 100000);
+        Point2D dest = calculator.getDestinationGeographicPoint();
+        double len = calculator.getOrthodromicDistance();
+        assertEquals(100000.0, len, 1.0);
+        assertEquals(8.54, dest.getX(), 1.0E-5);
+        assertEquals(48.27938, dest.getY(), 1.0E-5);
+        calculator.setStartingGeographicPoint(startPoint);
+        calculator.setDirection(90, 100000);
+        dest = calculator.getDestinationGeographicPoint();
+        len = calculator.getOrthodromicDistance();
+        assertEquals(100000.0, len, 1.0);
+        assertEquals(9.86411116, dest.getX(), 1.0E-5);
+        assertEquals(47.37235197, dest.getY(), 1.0E-5);
+    }
+
+    @Test
+    public void testGEOT6026() {
+        GeodeticCalculator calculator = new GeodeticCalculator();
+        calculator.setStartingGeographicPoint(0, 90);
+        calculator.setDirection(10, 50_000);
+        Point2D dest = calculator.getDestinationGeographicPoint();
+        assertEquals(170.0, dest.getX(), 1.0E-5);
+        assertEquals(89.5523482, dest.getY(), 1.0E-5);
+    }
+
+    @Test
+    public void testGEOT6077() {
+        long start = System.currentTimeMillis();
+        GeodeticCalculator calculator = new GeodeticCalculator();
+        calculator.setStartingGeographicPoint(6.95997388, 50.9383611);
+        calculator.setDirection(-156.512, 13.04);
+        Point2D dest = calculator.getDestinationGeographicPoint();
+        long end = System.currentTimeMillis();
+        long timeDelta = end - start;
+        assertTrue(timeDelta < 10);
+    }
+
+    @Test
     public void testGetPathAlongLongitude() {
         GeodeticCalculator calculator = new GeodeticCalculator();
         calculator.setStartingGeographicPoint(0, 10);

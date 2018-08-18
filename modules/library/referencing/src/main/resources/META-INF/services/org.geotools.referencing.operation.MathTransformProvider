@@ -61,3 +61,5 @@ org.geotools.referencing.operation.projection.AzimuthalEquidistant$Provider
 org.geotools.referencing.operation.projection.CylindricalEqualArea$Provider
 org.geotools.referencing.operation.projection.CylindricalEqualArea$BehrmannProvider
 org.geotools.referencing.operation.projection.CylindricalEqualArea$LambertCylindricalEqualAreaProvider
+org.geotools.referencing.operation.projection.EqualArea$Provider
+

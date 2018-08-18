@@ -67,7 +67,7 @@ public final class GeodeticCalculatorTest {
         calculator.setDestinationGeographicPoint(11, 20);
         assertEquals("West", -90, calculator.getAzimuth(), EPS);
         calculator.setDestinationGeographicPoint(12, 19);
-        assertEquals("South", -180, calculator.getAzimuth(), EPS);
+        assertEquals("South", 180, calculator.getAzimuth(), EPS);
     }
 
     /**

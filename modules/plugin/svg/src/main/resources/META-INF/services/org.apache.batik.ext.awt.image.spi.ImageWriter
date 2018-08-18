@@ -1,0 +1,29 @@
+# -----------------------------------------------------------------------------
+#
+#   Licensed to the Apache Software Foundation (ASF) under one or more
+#   contributor license agreements.  See the NOTICE file distributed with
+#   this work for additional information regarding copyright ownership.
+#   The ASF licenses this file to You under the Apache License, Version 2.0
+#   (the "License"); you may not use this file except in compliance with
+#   the License.  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+# This file registers PNG and JPEG writer classes.
+#
+# $Id: org.apache.batik.ext.awt.image.spi.ImageWriter 1733416 2016-03-03 07:07:13Z gadams $
+# -----------------------------------------------------------------------------
+
+# NOTE: the "codec" package is deprecated, there entries are kept here for compatibility with older JVM versions
+# (uses "sun.image", which is only supported in Sun Java implementations and was retired in JDK 7)
+#org.apache.batik.ext.awt.image.codec.png.PNGImageWriter
+
+org.apache.batik.ext.awt.image.codec.imageio.ImageIOPNGImageWriter
+org.apache.batik.ext.awt.image.codec.imageio.ImageIOTIFFImageWriter
+org.apache.batik.ext.awt.image.codec.imageio.ImageIOJPEGImageWriter

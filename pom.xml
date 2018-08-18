@@ -867,6 +867,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-codec</artifactId>
+        <version>${batik.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-svggen</artifactId>
         <version>${batik.version}</version>
       </dependency>

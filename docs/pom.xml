@@ -185,6 +185,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.xmlgraphics</groupId>
+      <artifactId>batik-codec</artifactId>
+      <!-- The version number is specified in the parent POM. --> 
+    </dependency>
+    <dependency>
+      <groupId>org.apache.xmlgraphics</groupId>
       <artifactId>batik-awt-util</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>

@@ -114,6 +114,7 @@
     <dependency>
     	<groupId>org.apache.xmlgraphics</groupId>
     	<artifactId>batik-codec</artifactId>
+    	<scope>test</scope>
     </dependency>
   </dependencies>
 

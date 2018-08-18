@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import org.ejml.MatrixDimensionException;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.MatrixParameterDescriptors;
 import org.geotools.parameter.MatrixParameters;
@@ -475,7 +476,9 @@ public class ProjectiveTransform extends AbstractMathTransform
                 final XMatrix matrix = getGeneralMatrix();
                 try {
                     matrix.invert();
-                } catch (SingularMatrixException | IllegalArgumentException exception) {
+                } catch (SingularMatrixException
+                        | IllegalArgumentException
+                        | MatrixDimensionException exception) {
                     throw new NoninvertibleTransformException(
                             Errors.format(ErrorKeys.NONINVERTIBLE_TRANSFORM), exception);
                 }

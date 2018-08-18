@@ -191,7 +191,7 @@
    <dependency>
      <groupId>net.sf.geographiclib</groupId>
      <artifactId>GeographicLib-Java</artifactId>
-     <version>1.44</version>
+     <version>1.49</version>
    </dependency>
 
 

@@ -498,13 +498,13 @@ public final class GeoTools {
     static String jarVersion(String classLocation) {
         if (classLocation.startsWith("jar:") || classLocation.contains(".jar!")) {
             String location = classLocation.substring(0, classLocation.lastIndexOf("!") + 1);
-            String file = location.substring(location.lastIndexOf(File.pathSeparator)+1);
+            String file = location.substring(location.lastIndexOf(File.pathSeparator) + 1);
             int dash = file.lastIndexOf("-");
             int dot = file.lastIndexOf(".jar");
             if (dash != -1 && dot != -1) {
                 String version = file.substring(dash + 1, dot);
-                if( version.startsWith("RC")||version.equals("SNAPSHOT")) {
-                    dash = file.lastIndexOf("-",dash-1);
+                if (version.startsWith("RC") || version.equals("SNAPSHOT")) {
+                    dash = file.lastIndexOf("-", dash - 1);
                     version = file.substring(dash + 1, dot);
                 }
                 return version;

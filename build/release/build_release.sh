@@ -139,8 +139,8 @@ pushd target > /dev/null
 bin=geotools-$tag-bin.zip
 unzip $bin
 cd geotools-$tag
-rm junit*.jar
-rm *dummy-*
+rm -f junit*.jar
+rm -f *dummy-*
 cd ..
 rm $bin
 zip -r $bin geotools-$tag

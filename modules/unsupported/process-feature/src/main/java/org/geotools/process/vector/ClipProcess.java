@@ -608,16 +608,19 @@ public class ClipProcess implements VectorProcess {
 
             private void applyZValues(
                     CoordinateSequence cs, int idx, CoordinateSequence csOrig, int origIdx) {
+
+                if (!cs.hasZ()) return;
+
                 double lx1 = cs.getOrdinate(idx, 0);
                 double ly1 = cs.getOrdinate(idx, 1);
                 double lz1;
 
-                double ox1 = csOrig.getOrdinate(origIdx, 0);
-                double oy1 = csOrig.getOrdinate(origIdx, 1);
-                double oz1 = csOrig.getOrdinate(origIdx, 2);
-                double ox2 = csOrig.getOrdinate(origIdx + 1, 0);
-                double oy2 = csOrig.getOrdinate(origIdx + 1, 1);
-                double oz2 = csOrig.getOrdinate(origIdx + 1, 2);
+                double ox1 = csOrig.getX(origIdx);
+                double oy1 = csOrig.getY(origIdx);
+                double oz1 = csOrig.getZ(origIdx);
+                double ox2 = csOrig.getX(origIdx + 1);
+                double oy2 = csOrig.getY(origIdx + 1);
+                double oz2 = csOrig.getZ(origIdx + 1);
 
                 if (lx1 == ox1 && ly1 == oy1) {
                     lz1 = oz1;

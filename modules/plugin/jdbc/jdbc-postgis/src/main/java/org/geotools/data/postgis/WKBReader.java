@@ -123,6 +123,8 @@ public class WKBReader {
     // default dimension - will be set on read
     private int inputDimension = 2;
 
+    private int inputMeasures = 0;
+
     private boolean hasSRID = false;
 
     private int SRID = 0;
@@ -193,6 +195,13 @@ public class WKBReader {
         // determine if Z values are present
         boolean hasZ = (typeInt & 0x80000000) != 0;
         inputDimension = hasZ ? 3 : 2;
+        // determine if M values are present
+        boolean hasM = (typeInt & 0x40000000) != 0;
+        if (hasM) {
+            // the coordinates will have a single measure
+            inputMeasures = 1;
+            inputDimension += 1;
+        }
         // determine if SRIDs are present
         hasSRID = (typeInt & 0x20000000) != 0;
 
@@ -402,7 +411,7 @@ public class WKBReader {
     }
 
     private CoordinateSequence readCoordinateSequence(int size) throws IOException {
-        CoordinateSequence seq = JTS.createCS(csFactory, size, inputDimension);
+        CoordinateSequence seq = JTS.createCS(csFactory, size, inputDimension, inputMeasures);
         int targetDim = seq.getDimension();
         if (targetDim > inputDimension) targetDim = inputDimension;
         for (int i = 0; i < size; i++) {

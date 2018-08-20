@@ -65,7 +65,7 @@ public class IonicStrategy extends StrictWFS_1_x_Strategy {
             Envelope e = (Envelope) object;
             if (GML.coordinates.equals(name)) {
                 double[] seq = {e.getMinX(), e.getMinY(), e.getMaxX(), e.getMaxY()};
-                CoordinateSequence coords = new PackedCoordinateSequence.Double(seq, 2);
+                CoordinateSequence coords = new PackedCoordinateSequence.Double(seq, 2, 0);
                 return coords;
             }
 

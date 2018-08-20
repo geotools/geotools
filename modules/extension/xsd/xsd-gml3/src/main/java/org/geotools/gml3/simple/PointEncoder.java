@@ -21,7 +21,6 @@ import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -52,10 +51,7 @@ class PointEncoder extends GeometryEncoder<Point> {
         atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(point, atts);
         handler.startElement(pos, null);
-
-        Coordinate coordinate = geometry.getCoordinate();
-        handler.position(coordinate.x, coordinate.y, coordinate.z);
-
+        handler.position(geometry.getCoordinateSequence());
         handler.endElement(pos);
         handler.endElement(point);
     }

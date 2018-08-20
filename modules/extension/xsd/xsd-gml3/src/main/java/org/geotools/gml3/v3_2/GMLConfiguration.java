@@ -308,6 +308,24 @@ public class GMLConfiguration extends Configuration {
     }
 
     /**
+     * Controls if coordinates measures should be included in WFS outputs.
+     *
+     * @return TRUE if measures should be encoded, otherwise FALSE
+     */
+    public boolean getEncodeMeasures() {
+        return delegate.getEncodeMeasures();
+    }
+
+    /**
+     * Sets if coordinates measures should be included in WFS outputs.
+     *
+     * @param encodeMeasures TRUE if measures should be encoded, otherwise FALSE
+     */
+    public void setEncodeMeasures(boolean encodeMeasures) {
+        delegate.setEncodeMeasures(encodeMeasures);
+    }
+
+    /**
      * Retrieves the geometry factory used to build geometries
      *
      * @return the geometryFactory

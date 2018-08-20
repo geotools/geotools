@@ -685,7 +685,9 @@ public class GeometryClipper {
                         segment[3] = y1;
                         double[] clippedSegment = clipSegment(segment);
                         if (clippedSegment != null) {
-                            CoordinateSequence cs = JTS.createCS(csf, 2, 2);
+                            CoordinateSequence cs =
+                                    JTS.createCS(
+                                            csf, 2, coords.getDimension(), coords.getMeasures());
                             cs.setOrdinate(0, 0, clippedSegment[0]);
                             cs.setOrdinate(0, 1, clippedSegment[1]);
                             cs.setOrdinate(1, 0, clippedSegment[2]);

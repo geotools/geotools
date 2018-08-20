@@ -1357,13 +1357,35 @@ public final class JTS {
      */
     public static CoordinateSequence createCS(
             CoordinateSequenceFactory csFactory, int size, int dimension) {
+        // the coordinates don't have measures
+        return createCS(csFactory, size, dimension, 0);
+    }
+
+    /**
+     * Creates a {@link CoordinateSequence} using the provided factory confirming the provided size
+     * and dimension are respected.
+     *
+     * <p>If the requested dimension is larger than the CoordinateSequence implementation can
+     * provide, then a sequence of maximum possible dimension should be created. An error should not
+     * be thrown.
+     *
+     * <p>This method is functionally identical to calling csFactory.create(size,dim) - it contains
+     * additional logic to work around a limitation on the commonly used
+     * CoordinateArraySequenceFactory.
+     *
+     * @param size the number of coordinates in the sequence
+     * @param dimension the dimension of the coordinates in the sequence
+     * @param measures the measures of the coordinates in the sequence
+     */
+    public static CoordinateSequence createCS(
+            CoordinateSequenceFactory csFactory, int size, int dimension, int measures) {
         CoordinateSequence cs;
         if (csFactory instanceof CoordinateArraySequenceFactory && dimension == 1) {
             // work around JTS 1.14 CoordinateArraySequenceFactory regression ignoring provided
             // dimension
-            cs = new CoordinateArraySequence(size, dimension);
+            cs = new CoordinateArraySequence(size, dimension, measures);
         } else {
-            cs = csFactory.create(size, dimension);
+            cs = csFactory.create(size, dimension, measures);
         }
         if (cs.getDimension() != dimension) {
             // illegal state error, try and fix
@@ -1375,6 +1397,7 @@ public final class JTS {
         }
         return cs;
     }
+
     /**
      * Replacement for geometry.getEnvelopeInternal() that returns ReferencedEnvelope or
      * ReferencedEnvelope3D as appropriate for the provided CRS.

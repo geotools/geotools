@@ -189,7 +189,7 @@ public class GeometryTransformer extends TransformerBase {
                 coords[1] = bounds.getMinY();
                 coords[2] = bounds.getMaxX();
                 coords[3] = bounds.getMaxY();
-                CoordinateSequence coordSeq = new PackedCoordinateSequence.Double(coords, 2);
+                CoordinateSequence coordSeq = new PackedCoordinateSequence.Double(coords, 2, 0);
                 coordWriter.writeCoordinates(coordSeq, contentHandler);
             } catch (SAXException se) {
                 throw new RuntimeException(se);

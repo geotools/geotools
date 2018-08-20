@@ -101,7 +101,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                         namespaces,
                         gml.getNumDecimals(),
                         gml.forceDecimalEncoding(),
-                        gml.getGmlPrefix());
+                        gml.getGmlPrefix(),
+                        gml.getEncodeMeasures());
         boolean featureBounds =
                 !encoder.getConfiguration().hasProperty(GMLConfiguration.NO_FEATURE_BOUNDS);
 

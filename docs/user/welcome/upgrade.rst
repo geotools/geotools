@@ -29,7 +29,7 @@ But first to upgrade - change your dependency to |release| (or an appropriate st
 GeoTools 20.x
 -------------
 
-Upgrade to JTS-1.15
+Upgrade to JTS-1.16
 ^^^^^^^^^^^^^^^^^^^
 
 The transitive dependency will correctly bring in the required jars::

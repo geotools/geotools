@@ -3364,9 +3364,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         sql.append(" FROM ");
         encodeTableName(featureType.getTypeName(), sql, setKeepWhereClausePlaceHolderHint(query));
 
-        /** ** Appended *** */
-        optimizeSQL(featureType, query, sql);
-
         // filtering
         Filter filter = query.getFilter();
         if (filter != null && !Filter.INCLUDE.equals(filter)) {
@@ -3570,74 +3567,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     }
 
     /**
-     * Appended!!! Optimizes sql query to select Unique, Max or Min values for the visitors
-     *
-     * @param featureType the feature type that the query must return (may contain less attributes
-     *     than the native one)
-     * @param query the query to be run. The type name and property will be ignored, as they are
-     *     supposed to have been already embedded into the provided feature type
-     * @param sql The sql query to be used in optimize analysis
-     */
-    protected void optimizeSQL(SimpleFeatureType featureType, Query query, StringBuffer sql) {
-        FeatureVisitor visitor = (FeatureVisitor) query.getHints().get(Hints.FEATURE_CALC);
-        if (visitor == null) {
-            return;
-        }
-        String funcName = getAggregateFunctions().get(visitor.getClass());
-        String attrName = query.getProperties().get(0).getPropertyName();
-
-        if (!funcName.equalsIgnoreCase("distinct")
-                && !funcName.equalsIgnoreCase("MIN")
-                && !funcName.equalsIgnoreCase("MAX")) {
-            return;
-        }
-        String sqlTemplate = "SELECT %s FROM %s%s";
-        StringBuffer sqlParams = new StringBuffer();
-        StringBuffer tableName = new StringBuffer();
-        StringBuffer groupParam = new StringBuffer();
-
-        // primary key
-        PrimaryKey key = null;
-        try {
-            key = getPrimaryKey(featureType);
-        } catch (IOException e) {
-            return;
-        }
-
-        if (funcName.equalsIgnoreCase("distinct")) {
-            // we need to add the primary key columns only if they are not already exposed
-            for (PrimaryKeyColumn col : key.getColumns()) {
-                sqlParams.append("MIN(");
-                dialect.encodeColumnName(null, col.getName(), sqlParams);
-                sqlParams.append("),");
-            }
-            dialect.encodeColumnName(null, attrName, sqlParams);
-            groupParam.append(" GROUP BY ");
-            dialect.encodeColumnName(null, attrName, groupParam);
-        } else if (funcName.equalsIgnoreCase("MIN") || funcName.equalsIgnoreCase("MAX")) {
-            // we need to add the primary key columns only if they are not already exposed
-            for (PrimaryKeyColumn col : key.getColumns()) {
-                sqlParams.append("1,");
-            }
-            sqlParams.append(funcName).append("(");
-            dialect.encodeColumnName(null, attrName, sqlParams);
-            sqlParams.append(")");
-        }
-        try {
-            encodeTableName(featureType.getTypeName(), tableName, query.getHints());
-        } catch (SQLException e) {
-            return;
-        }
-        sql.setLength(0);
-        sql.append(
-                String.format(
-                        sqlTemplate,
-                        sqlParams.toString(),
-                        tableName.toString(),
-                        groupParam.toString()));
-    }
-
-    /**
      * Generates a 'SELECT p1, p2, ... FROM ... WHERE ...' prepared statement.
      *
      * @param featureType the feature type that the query must return (may contain less attributes
@@ -3661,9 +3590,6 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         sql.append(" FROM ");
         encodeTableName(featureType.getTypeName(), sql, setKeepWhereClausePlaceHolderHint(query));
-
-        /** ** Appended *** */
-        optimizeSQL(featureType, query, sql);
 
         // filtering
         PreparedFilterToSQL toSQL = null;

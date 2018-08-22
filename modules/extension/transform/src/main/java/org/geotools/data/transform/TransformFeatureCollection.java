@@ -25,6 +25,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.sort.SortedFeatureIterator;
+import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.AbstractFeatureCollection;
@@ -33,6 +34,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.geometry.BoundingBox;
@@ -205,5 +207,26 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             q.setFilter(combined);
         }
         return new TransformFeatureCollection(source, transformer, q);
+    }
+
+    @Override
+    public void accepts(
+            org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
+            throws IOException {
+        Name typeName = transformer.getSource().getName();
+
+        if (typeName != null) {
+            try {
+                SimpleFeatureSource fs =
+                        (SimpleFeatureSource) source.getDataStore().getFeatureSource(typeName);
+                if (fs instanceof ContentFeatureSource) {
+                    ((ContentFeatureSource) fs).accepts(query, visitor, progress);
+                    return;
+                }
+            } catch (IOException e) {
+                LOGGER.info("Failed to invoke method ContentFeatureSource.accepts()");
+            }
+        }
+        super.accepts(visitor, progress);
     }
 }

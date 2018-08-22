@@ -999,16 +999,6 @@ public class Hints extends RenderingHints {
     public static final Key ENCODE_EWKT = new Key(Boolean.class);
 
     /**
-     * Provides the parameter values to a parameterized dimensions presentation view. The value of
-     * the hint must be a Map<String, Boolean>
-     */
-    public static final ClassKey DIMENSIONS_PRESENTATIONS_INFO = new ClassKey("java.util.Map");
-
-    /** The {@link FeatureCalc} to detect a visitor while SQL query generated */
-    public static final ClassKey FEATURE_CALC =
-            new ClassKey("org.geotools.feature.visitor.FeatureCalc");
-
-    /**
      * Constructs an initially empty set of hints.
      *
      * @since 2.5

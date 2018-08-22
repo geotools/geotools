@@ -35,10 +35,10 @@ import org.geotools.styling.SLDParser;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlUtil;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
 import org.junit.Test;
-import org.yaml.snakeyaml.Yaml;
 
 public class YsldEncodeCookbookTest {
     @Test
@@ -2140,6 +2140,6 @@ public class YsldEncodeCookbookTest {
         ysldEncoder.encode(sld);
 
         // System.out.println(w.toString());
-        return new YamlMap(new Yaml().load(new StringReader(w.toString())));
+        return new YamlMap(YamlUtil.getSafeYaml().load(new StringReader(w.toString())));
     }
 }

@@ -84,6 +84,14 @@ public class SLDTest {
         parser.validate(getClass().getResourceAsStream("linePerpendicularOffset.sld"));
     }
 
+    @Test
+    public void testValidateGammaValueExpression() throws Exception {
+        Parser parser = new Parser(new SLDConfiguration());
+
+        // if a validato error occurs it will blow up with an exception
+        parser.validate(getClass().getResourceAsStream("gammaValueExpression.sld"));
+    }
+
     // Currently disabled, as this does not match either the current or previous behavior
     @Ignore
     // GEOT-5726 - test consistency with org.geotools.styling.SLDParser

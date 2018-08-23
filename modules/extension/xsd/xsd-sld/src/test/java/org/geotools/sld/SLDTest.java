@@ -72,7 +72,7 @@ public class SLDTest {
     public void testValidateTransformation() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
 
-        // if a validato error occurs it will blow up with an exception
+        // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("gcontours.sld"));
     }
 
@@ -80,7 +80,7 @@ public class SLDTest {
     public void testValidatePerpendicularOffset() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
 
-        // if a validato error occurs it will blow up with an exception
+        // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("linePerpendicularOffset.sld"));
     }
 
@@ -88,7 +88,7 @@ public class SLDTest {
     public void testValidateGammaValueExpression() throws Exception {
         Parser parser = new Parser(new SLDConfiguration());
 
-        // if a validato error occurs it will blow up with an exception
+        // if a validation error occurs it will blow up with an exception
         parser.validate(getClass().getResourceAsStream("gammaValueExpression.sld"));
     }
 

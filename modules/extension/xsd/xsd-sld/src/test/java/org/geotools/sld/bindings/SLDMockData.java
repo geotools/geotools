@@ -280,6 +280,18 @@ public class SLDMockData {
         return contrastEnhancement;
     }
 
+    static Element contrastEnhancementExpressionGammaValue(Document document, Node parent) {
+        Element contrastEnhancement = element(SLD.CONTRASTENHANCEMENT, document, parent);
+
+        Element gammaValue = element(SLD.GAMMAVALUE, document, contrastEnhancement);
+        Element addExp = element(OGC.Add, document, gammaValue);
+        Element addLit1 = element(OGC.Literal, document, addExp);
+        addLit1.appendChild(document.createTextNode("1.0"));
+        Element addLit2 = element(OGC.Literal, document, addExp);
+        addLit2.appendChild(document.createTextNode("0.5"));
+        return contrastEnhancement;
+    }
+
     static Element shadedRelief(Document document, Node parent) {
         Element shadedRelief = element(SLD.SHADEDRELIEF, document, parent);
         element(SLD.BRIGHTNESSONLY, document, shadedRelief, "true");

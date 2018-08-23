@@ -38,4 +38,14 @@ public class SLDContrastEnhancementBindingTest extends SLDTestSupport {
         assertNotNull(ce.getMethod());
         assertEquals("histogram", ce.getMethod().name().toLowerCase());
     }
+
+    public void testExpressionGammaValue() throws Exception {
+        SLDMockData.contrastEnhancementExpressionGammaValue(document, document);
+
+        ContrastEnhancement ce = (ContrastEnhancement) parse();
+        assertNotNull(ce);
+
+        assertNotNull(ce.getGammaValue());
+        assertEquals(1.5, Filters.asDouble(ce.getGammaValue()), 0d);
+    }
 }

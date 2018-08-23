@@ -931,7 +931,13 @@
 	</xsd:complexType>
   
   
-  <xsd:element name="GammaValue" type="xsd:double"/>
+  <xsd:element name="GammaValue">
+    <xsd:complexType mixed="true">
+      <xsd:complexContent>
+        <xsd:extension base="sld:ParameterValueType"/>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
 
   <xsd:element name="ShadedRelief">
     <xsd:annotation>

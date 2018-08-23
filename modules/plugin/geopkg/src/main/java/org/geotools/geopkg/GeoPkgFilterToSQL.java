@@ -88,6 +88,7 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
         literalValues.add(literalValue);
         SRIDs.add(currentSRID);
         dimensions.add(currentDimension);
+        descriptors.add(context instanceof AttributeDescriptor ? (AttributeDescriptor)context : null);
 
         Class clazz = null;
         if (context instanceof Class) clazz = (Class) context;

@@ -50,7 +50,7 @@ Using the command line to update your own pom.xml files::
    
 And codebase::
 
-   git grep -l com.vividsolutions | xargs sed -i "s/com.vividsolutions/org.locationtech/
+   git grep -l com.vividsolutions | xargs sed -i "s/com.vividsolutions/org.locationtech/"
 
 **Use of copy rather than clone**
 

@@ -84,11 +84,11 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     protected static Map<String, Class> EsriJTSMapping = new HashMap<String, Class>();
 
     static {
-        EsriJTSMapping.put("esriGeometryPoint", com.vividsolutions.jts.geom.Point.class);
-        EsriJTSMapping.put("esriGeometryMultipoint", com.vividsolutions.jts.geom.MultiPoint.class);
+        EsriJTSMapping.put("esriGeometryPoint", org.locationtech.jts.geom.Point.class);
+        EsriJTSMapping.put("esriGeometryMultipoint", org.locationtech.jts.geom.MultiPoint.class);
         EsriJTSMapping.put(
-                "esriGeometryPolyline", com.vividsolutions.jts.geom.MultiLineString.class);
-        EsriJTSMapping.put("esriGeometryPolygon", com.vividsolutions.jts.geom.MultiPolygon.class);
+                "esriGeometryPolyline", org.locationtech.jts.geom.MultiLineString.class);
+        EsriJTSMapping.put("esriGeometryPolygon", org.locationtech.jts.geom.MultiPolygon.class);
     }
 
     protected ArcGISRestDataStore dataStore;

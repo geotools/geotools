@@ -16,12 +16,12 @@
  */
 package org.geotools.renderer.label;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import org.locationtech.jts.geom.Coordinate;
 
 /** Process all the glyphs of label. */
 abstract class GlyphVectorProcessor {

@@ -16,11 +16,6 @@
  */
 package org.geotools.data.memory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiLineString;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,6 +51,11 @@ import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiLineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -1056,7 +1056,7 @@ public class MemoryDataStoreTest extends DataTestCase {
                     Geometry transformedGeometry =
                             (Geometry) transformedFeature.getAttributes().get(k);
 
-                    Geometry expectedGeometry = (Geometry) sourceGeometry.clone();
+                    Geometry expectedGeometry = sourceGeometry.copy();
                     if (reprojectCRS != null) {
                         expectedGeometry = transformer.transform(expectedGeometry);
                     }

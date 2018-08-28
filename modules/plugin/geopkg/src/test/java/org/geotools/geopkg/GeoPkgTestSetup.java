@@ -16,7 +16,6 @@
  */
 package org.geotools.geopkg;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -31,6 +30,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.sql.SqlUtil;
+import org.locationtech.jts.geom.Geometry;
 
 public class GeoPkgTestSetup extends JDBCTestSetup {
 

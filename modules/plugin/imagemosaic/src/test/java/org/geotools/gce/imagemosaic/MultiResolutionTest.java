@@ -76,6 +76,7 @@ public class MultiResolutionTest {
         gc = reader.read(new ParameterValue<?>[] {pam});
         // gc would be null before bug fix
         Assert.assertNotNull(gc);
+        reader.dispose();
     }
 
     @Test
@@ -108,6 +109,7 @@ public class MultiResolutionTest {
         // few pixels (Very low resolution)
         assertTrue(ri.getWidth() < 20);
         assertTrue(ri.getHeight() < 20);
+        reader.dispose();
     }
 
     @Test
@@ -140,6 +142,7 @@ public class MultiResolutionTest {
         // few pixels (Very low resolution)
         assertTrue(ri.getWidth() < 20);
         assertTrue(ri.getHeight() < 20);
+        reader.dispose();
     }
 
     @Test
@@ -158,6 +161,7 @@ public class MultiResolutionTest {
         GeoTiffReader sfdemReader = tiffFormat.getReader(sfdem);
 
         assertEquals(sfdemReader.getResolutionLevels()[0], reader.getResolutionLevels()[0], 0.001);
+        sfdemReader.dispose();
     }
 
     private void assertEquals(double[] expected, double[] actuals, double epsilon) {

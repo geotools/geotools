@@ -19,14 +19,6 @@ package org.geotools.data.wfs.internal.parsers;
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -45,6 +37,14 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Converters;
 import org.geotools.wfs.WFS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -714,14 +714,15 @@ public class XmlSimpleFeatureParser implements GetFeatureParser {
         if (srsName == null) {
             return defaultValue;
         }
-        boolean forceXY = false;
+        // boolean forceXY = false;
+        // forceXY=true breaks axis flipping handling
         if (srsName.startsWith("http://") && srsName.indexOf('#') != -1) {
-            forceXY = true;
+            // forceXY = true;
             srsName = "EPSG:" + srsName.substring(1 + srsName.lastIndexOf('#'));
         } else if (srsName.startsWith("EPSG:")) {
-            forceXY = true;
+            // forceXY = true;
         }
-        CoordinateReferenceSystem crs = CRS.decode(srsName, forceXY);
+        CoordinateReferenceSystem crs = CRS.decode(srsName); // , forceXY);
         return crs;
     }
 

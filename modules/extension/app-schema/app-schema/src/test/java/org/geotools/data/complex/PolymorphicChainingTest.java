@@ -19,7 +19,6 @@ package org.geotools.data.complex;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.util.Stopwatch;
 import java.net.URL;
 import java.util.*;
 import org.geotools.data.DataAccess;
@@ -32,6 +31,7 @@ import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.util.Stopwatch;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;

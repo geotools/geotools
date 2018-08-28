@@ -516,33 +516,33 @@ public class Hints extends RenderingHints {
     ////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@link com.vividsolutions.jts.geom.GeometryFactory} instance to use.
+     * The {@link org.locationtech.jts.geom.GeometryFactory} instance to use.
      *
      * @see #GEOMETRY_FACTORY
      * @see org.geotools.geometry.jts.FactoryFinder#getGeometryFactory
      */
     public static final ClassKey JTS_GEOMETRY_FACTORY =
-            new ClassKey("com.vividsolutions.jts.geom.GeometryFactory");
+            new ClassKey("org.locationtech.jts.geom.GeometryFactory");
 
     /**
-     * The {@link com.vividsolutions.jts.geom.CoordinateSequenceFactory} instance to use.
+     * The {@link org.locationtech.jts.geom.CoordinateSequenceFactory} instance to use.
      *
      * @see org.geotools.geometry.jts.FactoryFinder#getCoordinateSequenceFactory
      */
     public static final ClassKey JTS_COORDINATE_SEQUENCE_FACTORY =
-            new ClassKey("com.vividsolutions.jts.geom.CoordinateSequenceFactory");
+            new ClassKey("org.locationtech.jts.geom.CoordinateSequenceFactory");
 
     /**
-     * The {@link com.vividsolutions.jts.geom.PrecisionModel} instance to use.
+     * The {@link org.locationtech.jts.geom.PrecisionModel} instance to use.
      *
      * @see org.geotools.geometry.jts.FactoryFinder#getPrecisionModel
      * @see #PRECISION
      */
     public static final Key JTS_PRECISION_MODEL =
-            new Key("com.vividsolutions.jts.geom.PrecisionModel");
+            new Key("org.locationtech.jts.geom.PrecisionModel");
 
     /**
-     * The spatial reference ID for {@link com.vividsolutions.jts.geom.GeometryFactory}.
+     * The spatial reference ID for {@link org.locationtech.jts.geom.GeometryFactory}.
      *
      * @see org.geotools.geometry.jts.FactoryFinder#getGeometryFactory
      * @see #CRS

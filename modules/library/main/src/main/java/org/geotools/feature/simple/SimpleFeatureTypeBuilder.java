@@ -16,7 +16,6 @@
  */
 package org.geotools.feature.simple;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +33,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -185,6 +185,9 @@ public class SimpleFeatureTypeBuilder {
         restrictions().addAll(type.getRestrictions());
         this.defaultCrs = type.getCoordinateReferenceSystem();
         this.defaultCrsSet = true;
+        if (type.getGeometryDescriptor() != null) {
+            this.defaultGeometry = type.getGeometryDescriptor().getLocalName();
+        }
         attributes = null;
         attributes().addAll(type.getAttributeDescriptors());
 
@@ -607,6 +610,9 @@ public class SimpleFeatureTypeBuilder {
             AttributeDescriptor descriptor = iterator.next();
             if (descriptor.getLocalName().equals(attributeName)) {
                 iterator.remove();
+                if (attributeName.equals(defaultGeometry)) {
+                    defaultGeometry = null;
+                }
                 return descriptor;
             }
         }
@@ -847,7 +853,7 @@ public class SimpleFeatureTypeBuilder {
                 String msg =
                         "'"
                                 + this.defaultGeometry
-                                + " specified as default"
+                                + "' specified as default"
                                 + " but could find no such attribute.";
                 throw new IllegalArgumentException(msg);
             }
@@ -1000,6 +1006,8 @@ public class SimpleFeatureTypeBuilder {
         GeometryDescriptor defaultGeometry = original.getGeometryDescriptor();
         if (defaultGeometry != null && types.contains(defaultGeometry.getLocalName())) {
             b.setDefaultGeometry(defaultGeometry.getLocalName());
+        } else {
+            b.setDefaultGeometry(null);
         }
 
         return b.buildFeatureType();

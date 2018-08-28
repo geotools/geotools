@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>unsupported</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>21-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -75,15 +75,14 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.vividsolutions</groupId>
+      <groupId>org.locationtech.jts</groupId>
       <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <!-- The version number is specified in the parent POM. -->
-      <scope>provided</scope>   <!-- Needed for compilation, not for running -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

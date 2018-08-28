@@ -16,10 +16,10 @@
  */
 package org.geotools.filter.expression;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.regex.Pattern;
 import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

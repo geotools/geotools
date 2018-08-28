@@ -20,8 +20,6 @@ import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.sun.media.imageioimpl.common.PackageUtil;
 import com.sun.media.imageioimpl.plugins.gif.GIFImageWriter;
 import com.sun.media.jai.util.ImageUtil;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
@@ -40,12 +38,7 @@ import it.geosolutions.jaiext.stats.Statistics;
 import it.geosolutions.jaiext.stats.Statistics.StatsType;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.Color;
-import java.awt.HeadlessException;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -131,6 +124,8 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ColorUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
@@ -745,7 +740,9 @@ public class ImageWorker {
             PlanarImage img = getPlanarImage();
             Object property = img.getProperty(NoDataContainer.GC_NODATA);
             if (property != null && property != Image.UndefinedProperty) {
-                img.removeProperty(NoDataContainer.GC_NODATA);
+                // this kind of property cannot be unset, but it's possible to set it to
+                // an invalid value
+                img.setProperty(NoDataContainer.GC_NODATA, new Object());
                 image = img;
             }
         }
@@ -1771,8 +1768,12 @@ public class ImageWorker {
             final IndexColorModel icm = (IndexColorModel) cm;
             final SampleModel sm = this.image.getSampleModel();
             final int datatype = sm.getDataType();
-            final boolean gray = ColorUtilities.isGrayPalette(icm, checkTransparent) & optimizeGray;
-            final boolean alpha = icm.hasAlpha();
+            Range noData = getNoData();
+            final boolean gray =
+                    ColorUtilities.isGrayPalette(icm, checkTransparent)
+                            && optimizeGray
+                            && noData == null;
+            final boolean alpha = icm.hasAlpha() || noData != null;
             /*
              * If the image is grayscale, retain only the needed bands.
              */
@@ -1816,6 +1817,19 @@ public class ImageWorker {
                                 }
                                 if (numDestinationBands == 4) {
                                     data[3][i] = a;
+                                }
+                            }
+                        }
+                        if (noData != null
+                                && (numDestinationBands == 2 || numDestinationBands == 4)) {
+                            int noDataValue = noData.getMin().intValue();
+                            for (int i = 0; i < 256; i++) {
+                                if (i == noDataValue) {
+                                    if (numDestinationBands == 2 && gray) {
+                                        data[1][i] = 0;
+                                    } else if (numDestinationBands == 4) {
+                                        data[3][i] = 0;
+                                    }
                                 }
                             }
                         }
@@ -5104,9 +5118,21 @@ public class ImageWorker {
             // background
             if (bgColorIndex == -1) {
                 // we need to expand the image to RGB
-                forceComponentColorModel();
-                addAlphaChannel();
                 bgValues = new double[] {0, 0, 0, 0};
+                if (getNoData() != null) {
+                    ImageWorker delegate = new ImageWorker(getRenderedImage());
+                    delegate.setBackground(bgValues);
+                    delegate.forceComponentColorModel();
+                    setImage(delegate.getRenderedImage());
+                    // nodata has been replaced by transparency
+                    setNoData(null);
+                } else {
+                    forceComponentColorModel();
+                }
+                if (!getRenderedImage().getColorModel().hasAlpha()) {
+                    addAlphaChannel();
+                }
+                image = getRenderedImage();
             } else {
                 // we found the background color in the original image palette therefore we set its
                 // index as the bkg value.

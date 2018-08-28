@@ -398,4 +398,10 @@ public final class ScriptTest {
     public void testAzimuthalEquidistant() throws Exception {
         runScript("scripts/AzimuthalEquidistant.txt");
     }
+
+    /** Run "EqualEarth.txt". */
+    @Test
+    public void testEqualEarth() throws Exception {
+        runScript("scripts/EqualEarth.txt");
+    }
 }

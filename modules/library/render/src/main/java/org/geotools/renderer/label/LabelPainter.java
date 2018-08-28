@@ -16,9 +16,6 @@
  */
 package org.geotools.renderer.label;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
 import java.awt.*;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
@@ -44,6 +41,9 @@ import org.geotools.renderer.style.IconStyle2D;
 import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.renderer.style.TextStyle2D;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * This class performs the layouting and painting of the single label (leaving the label cache the

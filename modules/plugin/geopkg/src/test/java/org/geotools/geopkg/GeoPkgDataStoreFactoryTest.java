@@ -18,7 +18,6 @@ package org.geotools.geopkg;
 
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.geom.Point;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -29,6 +28,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.geom.Point;
 
 public class GeoPkgDataStoreFactoryTest {
 

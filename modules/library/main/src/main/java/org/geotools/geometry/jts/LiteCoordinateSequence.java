@@ -16,19 +16,19 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequence;
 import java.util.ArrayList;
 import java.util.List;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequence;
 
 /**
  * @TODO class description
@@ -57,6 +57,16 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
      * @param coords
      */
     public LiteCoordinateSequence(double[] coords, int dimensions) {
+        this(coords, dimensions, 0);
+    }
+
+    /**
+     * Builds a new packed coordinate sequence
+     *
+     * @param coords
+     */
+    public LiteCoordinateSequence(double[] coords, int dimensions, int measures) {
+        super(dimensions, measures);
         init(coords, dimensions);
     }
 
@@ -84,7 +94,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
      * @param coords
      */
     public LiteCoordinateSequence(double... coords) {
-        init(coords, 2);
+        this(coords, 2, 0);
     }
 
     /**
@@ -93,6 +103,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
      * @param coordinates
      */
     public LiteCoordinateSequence(float[] coordinates, int dimension) {
+        super(dimension, 0);
         double[] dcoords = new double[coordinates.length];
         for (int i = 0; i < coordinates.length; i++) {
             dcoords[i] = coordinates[i];
@@ -115,6 +126,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
      * @param coordinates
      */
     public LiteCoordinateSequence(Coordinate[] coordinates) {
+        super(guessDimension(coordinates == null ? new Coordinate[0] : coordinates), 0);
         if (coordinates == null) coordinates = new Coordinate[0];
         this.dimension = guessDimension(coordinates);
 
@@ -131,7 +143,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
         this.size = coordinates.length;
     }
 
-    private int guessDimension(Coordinate[] coordinates) {
+    private static int guessDimension(Coordinate[] coordinates) {
         for (Coordinate c : coordinates) {
             if (!java.lang.Double.isNaN(c.z)) {
                 return 3;
@@ -148,7 +160,18 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
      * @param dimension
      */
     public LiteCoordinateSequence(int size, int dimension) {
-        this.dimension = dimension;
+        this(size, dimension, 0);
+    }
+
+    /**
+     * Builds a new empty packed coordinate sequence of a given size and dimension
+     *
+     * @param size
+     * @param dimension
+     * @param measures
+     */
+    public LiteCoordinateSequence(int size, int dimension, int measures) {
+        super(dimension, measures);
         coords = new double[size * this.dimension];
         this.size = coords.length / dimension;
     }
@@ -159,6 +182,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
      * @param seq
      */
     public LiteCoordinateSequence(LiteCoordinateSequence seq) {
+        super(seq.getDimension(), seq.getMeasures());
         // a trivial benchmark can show that cloning arrays like this is actually faster
         // than calling clone on the array.
         this.dimension = seq.dimension;
@@ -169,6 +193,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
     }
 
     public LiteCoordinateSequence(CoordinateSequence cs, int dimension) {
+        super(dimension, cs.getMeasures());
         this.size = cs.size();
         this.dimension = dimension;
 
@@ -187,7 +212,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
         }
     }
 
-    /** @see com.vividsolutions.jts.geom.CoordinateSequence#getCoordinate(int) */
+    /** @see org.locationtech.jts.geom.CoordinateSequence#getCoordinate(int) */
     public Coordinate getCoordinateInternal(int i) {
         double x = coords[i * dimension];
         double y = coords[i * dimension + 1];
@@ -195,7 +220,7 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
         return new Coordinate(x, y, z);
     }
 
-    /** @see com.vividsolutions.jts.geom.CoordinateSequence#size() */
+    /** @see org.locationtech.jts.geom.CoordinateSequence#size() */
     public int size() {
         return size;
     }
@@ -207,8 +232,13 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
         return new LiteCoordinateSequence(clone, dimension);
     }
 
+    @Override
+    public PackedCoordinateSequence copy() {
+        return (PackedCoordinateSequence) clone();
+    }
+
     /**
-     * @see com.vividsolutions.jts.geom.CoordinateSequence#getOrdinate(int, int) Beware, for
+     * @see org.locationtech.jts.geom.CoordinateSequence#getOrdinate(int, int) Beware, for
      *     performace reasons the ordinate index is not checked, if it's over dimensions you may not
      *     get an exception but a meaningless value.
      */
@@ -216,17 +246,17 @@ public class LiteCoordinateSequence extends PackedCoordinateSequence {
         return coords[index * dimension + ordinate];
     }
 
-    /** @see com.vividsolutions.jts.geom.CoordinateSequence#getX(int) */
+    /** @see org.locationtech.jts.geom.CoordinateSequence#getX(int) */
     public double getX(int index) {
         return coords[index * dimension];
     }
 
-    /** @see com.vividsolutions.jts.geom.CoordinateSequence#getY(int) */
+    /** @see org.locationtech.jts.geom.CoordinateSequence#getY(int) */
     public double getY(int index) {
         return coords[index * dimension + 1];
     }
 
-    /** @see com.vividsolutions.jts.geom.PackedCoordinateSequence#setOrdinate(int, int, double) */
+    /** @see org.locationtech.jts.geom.PackedCoordinateSequence#setOrdinate(int, int, double) */
     public void setOrdinate(int index, int ordinate, double value) {
         coordRef = null;
         coords[index * dimension + ordinate] = value;

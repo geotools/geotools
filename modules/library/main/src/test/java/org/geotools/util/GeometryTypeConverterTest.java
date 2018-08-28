@@ -1,7 +1,5 @@
 package org.geotools.util;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -17,6 +15,8 @@ import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.MultiCurve;
 import org.geotools.geometry.jts.MultiCurvedGeometry;
 import org.geotools.test.TestData;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 
 /**
  * Test suite for the GeometryTypeConverterFactory Converters.
@@ -77,7 +77,7 @@ public class GeometryTypeConverterTest extends TestCase {
                     parts.length);
 
             Geometry source = wktReader.read(parts[0]);
-            Class<?> target = Class.forName("com.vividsolutions.jts.geom." + parts[1]);
+            Class<?> target = Class.forName("org.locationtech.jts.geom." + parts[1]);
             String expected = parts[2];
             Geometry converted = convert(source, target);
             assertEquals(expected, converted.toText());

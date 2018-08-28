@@ -22,15 +22,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.DefaultCoordinateSequenceFactory;
 import java.util.Random;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.DefaultCoordinateSequenceFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -124,7 +124,6 @@ public class CoordinateSequenceTransformerTest {
 
         assertEquals(reference.getOrdinate(0, 0), transformed.getOrdinate(0, 0), 0.0);
         assertEquals(reference.getOrdinate(0, 1), transformed.getOrdinate(0, 1), 0.0);
-        assertEquals(Double.NaN, transformed.getOrdinate(0, 2), 0.0);
     }
 
     /** The following is basically a copy-and-paste of a previous implementation by Andrea Aime. */

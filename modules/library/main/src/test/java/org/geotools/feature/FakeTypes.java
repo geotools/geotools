@@ -76,7 +76,7 @@ public class FakeTypes {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeometryPropertyType"),
-                        com.vividsolutions.jts.geom.Geometry.class,
+                        org.locationtech.jts.geom.Geometry.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),

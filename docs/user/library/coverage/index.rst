@@ -54,7 +54,6 @@ Format plugins:
    arcsde
    geotiff
    grassraster
-   gtopo30
    image
    imageio
    jdbc/index
@@ -72,7 +71,6 @@ Unsupported plugins:
    
    coverageio
    geotiff_new
-   image-collection
    jp2k
    netCDF
    matlab      

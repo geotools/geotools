@@ -16,12 +16,12 @@
  */
 package org.geotools.graph.build.feature;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.GraphGenerator;
 import org.geotools.graph.build.basic.BasicGraphGenerator;
 import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.Graphable;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**

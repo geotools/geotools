@@ -537,6 +537,14 @@ public class StyleFactoryImpl2 implements org.opengis.style.StyleFactory {
     }
 
     public SelectedChannelTypeImpl selectedChannelType(
+            Expression channelName, org.opengis.style.ContrastEnhancement contrastEnhancement) {
+        SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
+        selectedChannelType.setChannelName(channelName);
+        selectedChannelType.setContrastEnhancement(contrastEnhancement);
+        return selectedChannelType;
+    }
+
+    public SelectedChannelTypeImpl selectedChannelType(
             String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement) {
         SelectedChannelTypeImpl selectedChannelType = new SelectedChannelTypeImpl(filterFactory);
         selectedChannelType.setChannelName(channelName);

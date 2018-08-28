@@ -18,13 +18,7 @@ package org.geotools.renderer.lite;
 
 import static java.lang.Math.abs;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
+import com.conversantmedia.util.concurrent.PushPullBlockingQueue;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -49,15 +43,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.Spliterator;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -127,6 +124,13 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -2043,9 +2047,10 @@ public class StreamingRenderer implements GTRenderer {
 
                         @Override
                         protected GridCoverage2D readCoverage(
-                                GridCoverage2DReader reader, Object params, GridGeometry2D readGG)
+                                GridCoverage2DReader reader,
+                                Object readParams,
+                                GridGeometry2D readGG)
                                 throws IOException {
-                            GeneralParameterValue[] readParams = (GeneralParameterValue[]) params;
                             Interpolation interpolation = getRenderingInterpolation(layer);
                             GridCoverageReaderHelper helper;
                             try {
@@ -2056,7 +2061,7 @@ public class StreamingRenderer implements GTRenderer {
                                                 ReferencedEnvelope.reference(
                                                         readGG.getEnvelope2D()),
                                                 interpolation);
-                                return helper.readCoverage(readParams);
+                                return helper.readCoverage((GeneralParameterValue[]) readParams);
                             } catch (InvalidGridGeometryException | FactoryException e) {
                                 throw new IOException("Failure reading the coverage", e);
                             }
@@ -2844,7 +2849,7 @@ public class StreamingRenderer implements GTRenderer {
      * @return The geometry requested in the symbolizer, or the default geometry if none is
      *     specified
      */
-    private com.vividsolutions.jts.geom.Geometry findGeometry(Object drawMe, Symbolizer s) {
+    private org.locationtech.jts.geom.Geometry findGeometry(Object drawMe, Symbolizer s) {
         Expression geomExpr = s.getGeometry();
 
         // get the geometry
@@ -3757,17 +3762,49 @@ public class StreamingRenderer implements GTRenderer {
      *
      * @author Andrea Aime - GeoSolutions
      */
-    public class RenderingBlockingQueue extends ArrayBlockingQueue<RenderingRequest> {
+    public class RenderingBlockingQueue implements BlockingQueue<RenderingRequest> {
         private static final long serialVersionUID = 4908029658595573833L;
 
+        PushPullBlockingQueue<RenderingRequest> delegate;
+
         public RenderingBlockingQueue(int capacity) {
-            super(capacity);
+            this.delegate = new PushPullBlockingQueue<>(capacity);
+        }
+
+        @Override
+        public boolean add(RenderingRequest renderingRequest) {
+            return delegate.add(renderingRequest);
+        }
+
+        @Override
+        public boolean offer(RenderingRequest renderingRequest) {
+            return delegate.offer(renderingRequest);
+        }
+
+        @Override
+        public RenderingRequest remove() {
+            return delegate.remove();
+        }
+
+        @Override
+        public RenderingRequest poll() {
+            return delegate.poll();
+        }
+
+        @Override
+        public RenderingRequest element() {
+            return delegate.element();
+        }
+
+        @Override
+        public RenderingRequest peek() {
+            return delegate.peek();
         }
 
         @Override
         public void put(RenderingRequest e) throws InterruptedException {
             if (!renderingStopRequested) {
-                super.put(e);
+                delegate.put(e);
                 if (renderingStopRequested) {
                     this.clear();
                 }
@@ -3775,23 +3812,124 @@ public class StreamingRenderer implements GTRenderer {
         }
 
         @Override
+        public boolean offer(RenderingRequest renderingRequest, long timeout, TimeUnit unit)
+                throws InterruptedException {
+            return delegate.offer(renderingRequest, timeout, unit);
+        }
+
+        @Override
         public RenderingRequest take() throws InterruptedException {
             if (!renderingStopRequested) {
-                return super.take();
+                return delegate.take();
             } else {
                 return new EndRequest();
             }
         }
 
         @Override
+        public RenderingRequest poll(long timeout, TimeUnit unit) throws InterruptedException {
+            return delegate.poll(timeout, unit);
+        }
+
+        @Override
+        public int remainingCapacity() {
+            return remainingCapacity();
+        }
+
+        @Override
+        public boolean remove(Object o) {
+            return delegate.remove(o);
+        }
+
+        @Override
+        public boolean containsAll(Collection<?> c) {
+            return delegate.containsAll(c);
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends RenderingRequest> c) {
+            return delegate.addAll(c);
+        }
+
+        @Override
+        public boolean removeAll(Collection<?> c) {
+            return delegate.removeAll(c);
+        }
+
+        @Override
+        public boolean removeIf(Predicate<? super RenderingRequest> filter) {
+            return delegate.removeIf(filter);
+        }
+
+        @Override
+        public boolean retainAll(Collection<?> c) {
+            return delegate.retainAll(c);
+        }
+
+        @Override
+        public void clear() {
+            delegate.clear();
+        }
+
+        @Override
+        public Spliterator<RenderingRequest> spliterator() {
+            return delegate.spliterator();
+        }
+
+        @Override
+        public Stream<RenderingRequest> stream() {
+            return delegate.stream();
+        }
+
+        @Override
+        public Stream<RenderingRequest> parallelStream() {
+            return delegate.parallelStream();
+        }
+
+        @Override
+        public int size() {
+            return delegate.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return delegate.isEmpty();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return delegate.contains(o);
+        }
+
+        @Override
+        public Iterator<RenderingRequest> iterator() {
+            return delegate.iterator();
+        }
+
+        @Override
+        public Object[] toArray() {
+            return delegate.toArray();
+        }
+
+        @Override
+        public <T> T[] toArray(T[] a) {
+            return delegate.toArray(a);
+        }
+
+        @Override
         public int drainTo(Collection<? super RenderingRequest> list) {
             if (!renderingStopRequested) {
-                return super.drainTo(list);
+                return delegate.drainTo(list);
             } else {
                 list.clear();
                 list.add(new EndRequest());
                 return 1;
             }
+        }
+
+        @Override
+        public int drainTo(Collection<? super RenderingRequest> c, int maxElements) {
+            return delegate.drainTo(c, maxElements);
         }
     }
 }

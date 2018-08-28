@@ -1,0 +1,9 @@
+version: 1.0.{build}
+branches:
+  only:
+  - master
+build_script:
+- cmd: mvn install -T2 -Dall -fae -U
+cache: 
+  - C:\Users\appveyor\.m2\ -> pom.xml
+

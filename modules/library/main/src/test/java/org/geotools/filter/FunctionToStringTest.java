@@ -18,8 +18,6 @@ package org.geotools.filter;
 
 import static org.junit.Assert.assertFalse;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +39,8 @@ import org.geotools.filter.function.DefaultFunctionFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;

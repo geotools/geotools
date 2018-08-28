@@ -18,10 +18,6 @@
 package org.geotools.data.csv.parse;
 
 import com.csvreader.CsvWriter;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.io.WKTWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +28,10 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKTReader;
+import org.locationtech.jts.io.WKTWriter;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -69,6 +69,8 @@ public class CSVSpecifiedWKTStrategy extends CSVStrategy {
     // docs start createSchema
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
+        this.featureType = featureType;
+
         List<String> header = new ArrayList<String>();
 
         for (AttributeDescriptor descriptor : featureType.getAttributeDescriptors()) {

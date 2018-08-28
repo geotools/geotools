@@ -16,7 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * This interface is really just a trick for schema building, there are no concrete implementors for

@@ -16,10 +16,6 @@
  */
 package org.geotools.gml2.bindings;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.namespace.QName;
@@ -41,6 +37,10 @@ import org.geotools.xml.Node;
 import org.geotools.xml.impl.AttributeImpl;
 import org.geotools.xml.impl.ElementImpl;
 import org.geotools.xml.impl.NodeImpl;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.picocontainer.MutablePicoContainer;

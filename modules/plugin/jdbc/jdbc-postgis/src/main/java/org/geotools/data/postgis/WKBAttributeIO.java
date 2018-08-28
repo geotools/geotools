@@ -17,10 +17,6 @@
 
 package org.geotools.data.postgis;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.io.ByteArrayInStream;
-import com.vividsolutions.jts.io.WKBWriter;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,6 +24,10 @@ import java.sql.SQLException;
 import java.sql.Types;
 import org.geotools.data.Base64;
 import org.geotools.data.DataSourceException;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.io.ByteArrayInStream;
+import org.locationtech.jts.io.WKBWriter;
 
 /**
  * An attribute IO implementation that can manage the WKB

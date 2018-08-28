@@ -16,7 +16,6 @@
  */
 package org.geotools.geojson;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,16 +29,18 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.lang.reflect.Proxy;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.geotools.util.Converters;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.locationtech.jts.geom.Coordinate;
 
 /** @source $URL$ */
 public class GeoJSONUtil {
@@ -152,8 +153,15 @@ public class GeoJSONUtil {
 
         string(key, sb).append(":");
 
+        value(value, sb);
+        return sb;
+    }
+
+    private static void value(Object value, StringBuilder sb) {
         if (value == null) {
             nul(sb);
+        } else if (value.getClass().isArray()) {
+            array(value, sb);
         } else if (value instanceof Number || value instanceof Boolean || value instanceof Date) {
             literal(value, sb);
         } else {
@@ -163,7 +171,19 @@ public class GeoJSONUtil {
             }
             string(str, sb);
         }
-        return sb;
+    }
+
+    private static void array(Object array, StringBuilder sb) {
+        sb.append("[");
+        int length = Array.getLength(array);
+        for (int i = 0; i < length; i++) {
+            Object value = Array.get(array, i);
+            value(value, sb);
+            if (i < length - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
     }
 
     static StringBuilder literal(Object value, StringBuilder sb) {

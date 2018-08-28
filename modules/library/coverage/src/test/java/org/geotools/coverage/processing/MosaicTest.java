@@ -1065,4 +1065,34 @@ public class MosaicTest extends GridProcessingTestBase {
                 });
         return coverages;
     }
+
+    @Test
+    public void testPadding() {
+        ParameterValueGroup param = processor.getOperation("Mosaic").getParameters();
+
+        // Creation of a List of the input Sources
+        List<GridCoverage2D> sources = new ArrayList<GridCoverage2D>(2);
+        sources.add(coverage1);
+        // Setting of the sources
+        param.parameter("Sources").setValue(sources);
+
+        // Compute a padded grid geometry
+        GridGeometry2D gg1 = coverage1.getGridGeometry();
+        GridEnvelope2D range = gg1.getGridRange2D();
+        GridEnvelope2D range2 =
+                new GridEnvelope2D(range.x - 10, range.y - 10, range.width + 20, range.height + 20);
+        GridGeometry2D targetGG =
+                new GridGeometry2D(
+                        range2, gg1.getGridToCRS(), gg1.getCoordinateReferenceSystem2D());
+        param.parameter("geometry").setValue(targetGG);
+        // Mosaic
+        GridCoverage2D mosaic = (GridCoverage2D) processor.doOperation(param);
+
+        // Check that the final grid has been padded
+        assertEquals(targetGG.getEnvelope2D(), mosaic.getEnvelope2D());
+
+        // Coverage and RenderedImage disposal
+        mosaic.dispose(true);
+        disposeCoveragePlanarImage(mosaic);
+    }
 }

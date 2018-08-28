@@ -29,9 +29,41 @@ But first to upgrade - change your dependency to |release| (or an appropriate st
 GeoTools 20.x
 -------------
 
+Upgrade to JTS-1.16
+^^^^^^^^^^^^^^^^^^^
+
+The transitive dependency will correctly bring in the required jars::
+
+     <dependency>
+        <groupId>org.locationtech.jts</groupId>
+        <artifactId>jts-core</artifactId>
+        <version>${jts.version}</version>
+     </dependency>
+
+**Package change to org.locationtech.jts**
+
+This release changes the package names from ``com.vividsolutions.jts`` to ``org.locationtech.jts``. To update your own code follow the `JTS Upgrade Guide <https://github.com/locationtech/jts/blob/master/MIGRATION.md>`__ instructions.
+
+Using the command line to update your own pom.xml files::
+
+   git grep -l com.vividsolutions | grep pom.xml | xargs sed -i "s/com.vividsolutions/org.locationtech.jts/g"
+   
+And codebase::
+
+   git grep -l com.vividsolutions | xargs sed -i "s/com.vividsolutions/org.locationtech/
+
+**Use of copy rather than clone**
+
+If you are in the habit of using **clone** to duplicate JTS objects (such as Geometry and Coordinate) you will find the **clone** method has been deprecated, and a **copy** method introduced to explicitly perform a deep copy::
+    
+    Geometry duplicate = geom.copy();
+
+Migrate to JSR-363 Units
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 This releases upgrades from the unofficial JSR-275 units library to the official JSR-363 units API.
 
-* Maven transitive dependency will correctly bring in the required jars::
+Maven transitive dependency will correctly bring in the required jars::
    
     <dependency>
        <groupId>systems.uom</groupId>
@@ -39,95 +71,125 @@ This releases upgrades from the unofficial JSR-275 units library to the official
        <version>0.7.2</version>
     </dependency>
 
-* Package names have changed, resulting in some common search and replaces when upgrading:
+Package names have changed, resulting in some common search and replaces when upgrading:
   
-  * Search ``javax.measure.unit.Unit`` replace ``javax.measure.Unit``
-  * Search ``ConversionException`` replace  ``IncommensurableException``
-    
-    This is a checked exception, in areas of the GeoTools library where this was found we now return an IllegalArgument exception.
-    
-  * Search ``converter == UnitConverter.IDENTITY`` replace ``converter.isIdentity()``
-  * Search ``javax.measure.unit.NonSI`` replace ``import si.uom.NonSI``
-  * Search ``javax.measure.unit.SI`` replace ``import si.uom.SI``
-  * Search ``SI.METER`` replace ``SI.METRE``
-  * Search ``javax.measure.converter.UnitConverter`` replace ``javax.measure.UnitConverter``
-  * Search ``javax.measure.unit.UnitFormat`` replace ``import javax.measure.format.UnitFormat``
-  * Search ``Unit.ONE`` replace ``AbstractUnit.ONE``
-  * Search ``Dimensionless.UNIT`` replace ``AbstractUnit.ONE``
-  * Search ``Unit.valueOf(unitString)`` replace ``Units.parseUnit(unitString)``
+* Search ``javax.measure.unit.Unit`` replace ``javax.measure.Unit``
+* Search ``ConversionException`` replace  ``IncommensurableException``
   
-* Getting Unit instances
-
-  If you know the unit to use at compile time, use one of the Unit instances defined as static variables in ``org.geotools.measure.Units``, ``si.uom.SI``, ``si.uom.NonSI`` or ``systems.uom.common.USCustomary``.
-
-  If you need to define new Units at runtime, it is important to immediately try to convert the new unit to one of the existing instances using Units.autocorrect method. Autocorrect applies some tolerance to locate an equivalent Unit. Skipping autocorrect will produce unexpected results and errors due to small differences in units definition.
+  This is a checked exception, in areas of the GeoTools library where this was found we now return an IllegalArgument exception.
   
-  .. code-block:: java
-
-     // the result should be NonSI.DEGREE_ANGLE:
-     Unit<?> deg = Units.autoCorrect(SI.RADIAN.multiply(0.0174532925199433));
-     Unit<?> halfMetre = SI.METRE.divide(2);
-
-  .. code-block:: java
+* Search ``converter == UnitConverter.IDENTITY`` replace ``converter.isIdentity()``
+* Search ``javax.measure.unit.NonSI`` replace ``import si.uom.NonSI``
+* Search ``javax.measure.unit.SI`` replace ``import si.uom.SI``
+* Search ``SI.METER`` replace ``SI.METRE``
+* Search ``javax.measure.converter.UnitConverter`` replace ``javax.measure.UnitConverter``
+* Search ``javax.measure.unit.UnitFormat`` replace ``import javax.measure.format.UnitFormat``
+* Search ``Unit.ONE`` replace ``AbstractUnit.ONE``
+* Search ``Dimensionless.UNIT`` replace ``AbstractUnit.ONE``
+* Search ``Unit.valueOf(unitString)`` replace ``Units.parseUnit(unitString)``
   
-     // the result should be SI.METRE
-     Unit<?> unit = Units.autocorrect(halfMetre.multiply(4).divide(2));
+**Getting Unit instances**
+
+If you know the unit to use at compile time, use one of the Unit instances defined as static variables in ``org.geotools.measure.Units``, ``si.uom.SI``, ``si.uom.NonSI`` or ``systems.uom.common.USCustomary``.
+
+If you need to define new Units at runtime, it is important to immediately try to convert the new unit to one of the existing instances using Units.autocorrect method. Autocorrect applies some tolerance to locate an equivalent Unit. Skipping autocorrect will produce unexpected results and errors due to small differences in units definition.
+
+.. code-block:: java
+
+   // the result should be NonSI.DEGREE_ANGLE:
+   Unit<?> deg = Units.autoCorrect(SI.RADIAN.multiply(0.0174532925199433));
+   Unit<?> halfMetre = SI.METRE.divide(2);
+
+.. code-block:: java
+
+   // the result should be SI.METRE
+   Unit<?> unit = Units.autocorrect(halfMetre.multiply(4).divide(2));
+   
+.. code-block:: java
+   
+   public <T extends Quantity<T>> Unit<T> deriveUnit(Unit<T>  baseUnit, double factor) {
+      return Units.autocorrect(baseUnit.multiply(factor);)
+   }
+
+**Use a specific Quantity whenever possible**
+
+This allows for type-safety checks at compile time:
+
+.. code-block:: java
+
+   Unit<Length> halfMetre = SI.METRE.divide(2);
+   Unit<Length> stupidUnit = Units.autocorrect(halfMetre.multiply(4).divide(2));
      
-  .. code-block:: java
-     
-     public <T extends Quantity<T>> Unit<T> deriveUnit(Unit<T>  baseUnit, double factor) {
-        return Units.autocorrect(baseUnit.multiply(factor);)
-     }
+**Formatting units**
 
-  Use a specific Quantity whenever possible to get type-safety checks at compile time:
+Use ``org.geotools.measure.Units.toName(unit)`` to get the unit name (or unit label if name is not defined).
 
-  .. code-block:: java
+.. code-block:: java
+
+   Unit<?> unit = ...
+   System.out.println(Units.toName(unit)):
+
+Use ``org.geotools.measure.Units.getDefaultFormat().format()`` to get the unit label (ignoring the name).
+
+.. code-block:: java
+
+   // prints "Litre"
+   System.out.println(Units.toName(SI.LITRE))
+   // prints "l"
+   System.out.println(Units.getDefaultFormat().format(SI.LITRE))
+
+.. code-block:: java
+
+   // Most units don't define a name, so it does not make a difference
+   // prints "m"
+   System.out.println(Units.toName(SI.METRE))
+   // prints "m"
+   System.out.println(Units.getDefaultFormat().format(SI.METRE))
   
-     Unit<Length> halfMetre = SI.METRE.divide(2);
-     Unit<Length> stupidUnit = Units.autocorrect(halfMetre.multiply(4).divide(2));
-     
-* Formatting units
+**Converting units**
 
-  Use ``org.geotools.measure.Units.toName(unit)`` to get the unit name (or unit label if name is not defined).
-  Use ``org.geotools.measure.Units.getDefaultFormat().format()`` to get the unit label (ignoring the name).
+If the unit Quantity type is known, use the type-safe getConverterTo() method:
 
-  .. code-block:: java
-  
-     Unit<?> unit = ...
-     System.out.println(Units.toName(unit)):
+.. code-block:: java
 
-  .. code-block:: java
+   Unit<Angle> unit = ...
+   UnitConverter converter = unit.getConverterTo(SI.RADIAN);
+   double convertedQuantity = converter.convert(3.1415);
 
-     // prints "Litre"
-     System.out.println(Units.toName(SI.LITRE))
-     // prints "l"
-     System.out.println(Units.getDefaultFormat().format(SI.LITRE))
+If the Quantity type is undefined, use the convenience method ``org.geotools.measure.Units.getConverterToAny()``. Note that this method throws an IllegalArgumentException if units can't be converted:
 
-  .. code-block:: java
+.. code-block:: java
 
-     // Most units don't define a name, so it does not make a difference
-     // prints "m"
-     System.out.println(Units.toName(SI.METRE))
-     // prints "m"
-     System.out.println(Units.getDefaultFormat().format(SI.METRE))
-  
-* Converting units
+   Unit<?> unit = ...
+   UnitConverter converter = Units.getConverterToAny(unit, SI.RADIAN);
+   double convertedQuantity = converter.convert(3.1415);
 
-  If the unit Quantity type is known, use the type-safe getConverterTo() method:
+**Using units**
 
-  .. code-block:: java
-  
-     Unit<Angle> unit = ...
-     UnitConverter converter = unit.getConverterTo(SI.RADIAN);
-     double convertedQuantity = converter.convert(3.1415);
-  
-  If the Quantity type is undefined, use the convenience method ``org.geotools.measure.Units.getConverterToAny()``. Note that this method throws an IllegalArgumentException if units can't be converted:
+If previously you made use of the Units in your code, to help with unit
+conversion or simply to keep the units straight. You might have code like:
 
-  .. code-block:: java
+.. code-block:: java 
 
-     Unit<?> unit = ...
-     UnitConverter converter = Units.getConverterToAny(unit, SI.RADIAN);
-     double convertedQuantity = converter.convert(3.1415);
+  Measure<Double, Length> dist = Measure.valueOf(distance, SI.METER);
+  System.out.println(dist.doubleValue(SI.KILOMETER) + " Km");
+  System.out.println(dist.doubleValue(NonSI.MILE) + " miles");
+
+You will find it no longer compiles. It should be converted to use the ``Quantity`` classes.
+
+.. code-block:: java
+
+    import javax.measure.Quantity;
+    import javax.measure.quantity.Length;
+    import si.uom.SI;
+    import systems.uom.common.USCustomary;
+
+    import tec.uom.se.quantity.Quantities;
+    import tec.uom.se.unit.MetricPrefix;
+
+    Quantity<Length> dist = Quantities.getQuantity(distance, SI.METRE);
+    System.out.println(dist.to(MetricPrefix.KILO(SI.METRE)).getValue() + " Km");
+    System.out.println(dist.to(USCustomary.MILE) + " miles");
 
 GeoTools 19.x
 -------------

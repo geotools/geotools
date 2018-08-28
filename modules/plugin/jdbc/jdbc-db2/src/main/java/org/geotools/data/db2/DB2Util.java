@@ -17,8 +17,6 @@
  */
 package org.geotools.data.db2;
 
-import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.io.WKTWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -34,6 +32,8 @@ import java.sql.Types;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import org.locationtech.jts.geom.*;
+import org.locationtech.jts.io.WKTWriter;
 
 /** @source $URL$ */
 public class DB2Util {

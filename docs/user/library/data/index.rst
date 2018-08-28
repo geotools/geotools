@@ -66,13 +66,11 @@ Unsupported plugins:
 .. toctree::
    :maxdepth: 1
    
-   caching
    csv
    dxf
    edigeo
    excel
    georest
    kml
-   sfs
    solr
    wfs-ng

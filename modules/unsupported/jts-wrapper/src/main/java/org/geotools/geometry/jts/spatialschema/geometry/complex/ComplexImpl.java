@@ -11,7 +11,6 @@ package org.geotools.geometry.jts.spatialschema.geometry.complex;
 
 // J2SE direct dependencies
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -21,6 +20,7 @@ import java.util.Set;
 import org.geotools.geometry.jts.JTSGeometry;
 import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.geometry.complex.Complex;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

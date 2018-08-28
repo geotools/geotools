@@ -92,9 +92,9 @@ public class SLDTest extends TestCase {
         SelectedChannelType[] selectedChannels =
                 SLD.rasterSymbolizer(s).getChannelSelection().getRGBChannels();
 
-        assertEquals("red", selectedChannels[0].getChannelName());
-        assertEquals("green", selectedChannels[1].getChannelName());
-        assertEquals("blue", selectedChannels[2].getChannelName());
+        assertEquals("red", selectedChannels[0].getChannelName().evaluate(null, String.class));
+        assertEquals("green", selectedChannels[1].getChannelName().evaluate(null, String.class));
+        assertEquals("blue", selectedChannels[2].getChannelName().evaluate(null, String.class));
 
         assertNotSame(SLD.rasterSymbolizer(s), rs);
     }

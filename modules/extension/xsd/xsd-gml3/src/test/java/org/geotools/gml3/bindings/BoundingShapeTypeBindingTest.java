@@ -16,11 +16,11 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Envelope;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

@@ -18,11 +18,10 @@ package org.geotools.data.jdbc;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
@@ -50,6 +49,8 @@ import org.geotools.jdbc.PrimaryKey;
 import org.geotools.referencing.CRS;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -62,6 +63,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -353,6 +355,15 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     public void setFeatureType(SimpleFeatureType featureType) {
         this.featureType = featureType;
+    }
+
+    /**
+     * Returns the feature type set in this encoder, if any
+     *
+     * @return
+     */
+    public SimpleFeatureType getFeatureType() {
+        return this.featureType;
     }
 
     /**
@@ -744,33 +755,8 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             }
         }
 
-        Class leftContext = null, rightContext = null;
-        if (left instanceof PropertyName) {
-            // aha!  It's a propertyname, we should get the class and pass it in
-            // as context to the tree walker.
-            AttributeDescriptor attType = (AttributeDescriptor) left.evaluate(featureType);
-            if (attType != null) {
-                rightContext = attType.getType().getBinding();
-            }
-        } else if (left instanceof Function) {
-            // check for a function return type
-            Class ret = getFunctionReturnType((Function) left);
-            if (ret != null) {
-                rightContext = ret;
-            }
-        }
-
-        if (right instanceof PropertyName) {
-            AttributeDescriptor attType = (AttributeDescriptor) right.evaluate(featureType);
-            if (attType != null) {
-                leftContext = attType.getType().getBinding();
-            }
-        } else if (right instanceof Function) {
-            Class ret = getFunctionReturnType((Function) right);
-            if (ret != null) {
-                leftContext = ret;
-            }
-        }
+        Class rightContext = getExpressionType(left);
+        Class leftContext = getExpressionType(right);
 
         // case sensitivity
         boolean matchCase = true;
@@ -788,19 +774,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         try {
             if (matchCase) {
-                if (leftContext != null && isBinaryExpression(left)) {
-                    writeBinaryExpression(left, leftContext);
-                } else {
-                    left.accept(this, leftContext);
-                }
-
+                writeBinaryExpressionMember(left, leftContext);
                 out.write(" " + type + " ");
-
-                if (rightContext != null && isBinaryExpression(right)) {
-                    writeBinaryExpression(right, rightContext);
-                } else {
-                    right.accept(this, rightContext);
-                }
+                writeBinaryExpressionMember(right, rightContext);
             } else {
                 // wrap both sides in "lower"
                 FunctionImpl f =
@@ -829,6 +805,50 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         }
     }
 
+    /**
+     * Writes out an expression, wrapping it in parenthesis if it's a binary one
+     *
+     * @param exp
+     * @param context
+     * @throws IOException
+     */
+    protected void writeBinaryExpressionMember(Expression exp, Class context) throws IOException {
+        if (context != null && isBinaryExpression(exp)) {
+            writeBinaryExpression(exp, context);
+        } else {
+            exp.accept(this, context);
+        }
+    }
+
+    /**
+     * Returns the expression type, if can be found, or null otherwise. Based on feature type
+     * inspection for attribute references, and function return types otherwise. Cannot yet handle
+     * arithmetics or literals (the latter are actually not useful and should be ignored, expression
+     * in geotools are free to use a string where a number is needed due to the on the fly
+     * conversion, here we are concerned only with types that are a reliable reference).
+     *
+     * @param expression
+     * @return The expression return type, or null if cannot be computed
+     */
+    public Class getExpressionType(Expression expression) {
+        Class binding = null;
+        if (expression instanceof PropertyName) {
+            // aha!  It's a propertyname, we should get the class and pass it in
+            // as context to the tree walker.
+            AttributeDescriptor attType = (AttributeDescriptor) expression.evaluate(featureType);
+            if (attType != null) {
+                binding = attType.getType().getBinding();
+            }
+        } else if (expression instanceof Function) {
+            // check for a function return type
+            Class ret = getFunctionReturnType((Function) expression);
+            if (ret != null) {
+                binding = ret;
+            }
+        }
+        return binding;
+    }
+
     /*
      * write out the binary expression and cast only the end result, not passing any context into
      * encoding the individual parts
@@ -843,7 +863,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         visitInFunction(in, false, negated, null);
     }
 
-    void writeBinaryExpression(Expression e, Class context) throws IOException {
+    protected void writeBinaryExpression(Expression e, Class context) throws IOException {
         Writer tmp = out;
         try {
             out = new StringWriter();
@@ -861,7 +881,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * returns the return type of the function, or null if it could not be determined or is simply
      * of return type Object.class
      */
-    Class getFunctionReturnType(Function f) {
+    protected Class getFunctionReturnType(Function f) {
         Class clazz = Object.class;
         if (f.getFunctionName() != null && f.getFunctionName().getReturn() != null) {
             clazz = f.getFunctionName().getReturn().getType();
@@ -875,7 +895,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /*
      * determines if the function is a binary expression
      */
-    boolean isBinaryExpression(Expression e) {
+    protected boolean isBinaryExpression(Expression e) {
         return e instanceof BinaryExpression;
     }
 
@@ -1456,6 +1476,17 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             java.util.Date date = ((Instant) literal).getPosition().getDate();
             Timestamp ts = new java.sql.Timestamp(date.getTime());
             out.write("'" + ts + "'");
+        } else if (literal.getClass().isArray()) {
+            // write as a SQL99 array
+            out.write("ARRAY[");
+            int length = Array.getLength(literal);
+            for (int i = 0; i < length; i++) {
+                writeLiteral(Array.get(literal, i));
+                if (i < length - 1) {
+                    out.write(", ");
+                }
+            }
+            out.write("]");
         } else {
             // we don't know the type...just convert back to a string
             String encoding = (String) Converters.convert(literal, String.class, null);
@@ -1889,5 +1920,17 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             return null;
         }
         return geom.getCentroid().getCoordinate();
+    }
+
+    @Override
+    public Object visit(NativeFilter filter, Object data) {
+        try {
+            out.write("(" + filter.getNative() + ")");
+        } catch (Exception exception) {
+            throw new RuntimeException(
+                    String.format("Error encoding native filter '%s'.", filter.getNative()),
+                    exception);
+        }
+        return data;
     }
 }

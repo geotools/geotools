@@ -1,7 +1,7 @@
 package org.geotools.xml;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.List;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.Feature;
 
 /**

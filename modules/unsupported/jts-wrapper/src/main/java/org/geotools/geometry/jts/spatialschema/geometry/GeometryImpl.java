@@ -56,7 +56,7 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
      * The JTS equivalent of this geometry. This gets set to null whenever we make changes to the
      * geometry so that we can recompute it.
      */
-    private com.vividsolutions.jts.geom.Geometry jtsPeer;
+    private org.locationtech.jts.geom.Geometry jtsPeer;
 
     /**
      * If this object is part of a composite, this this member should hold a pointer to that
@@ -107,7 +107,7 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
     }
 
     /** Subclasses must override this method to compute the JTS equivalent of this geometry. */
-    protected abstract com.vividsolutions.jts.geom.Geometry computeJTSPeer();
+    protected abstract org.locationtech.jts.geom.Geometry computeJTSPeer();
 
     /**
      * This method must be called by subclasses whenever the user makes a change to the geometry so
@@ -123,7 +123,7 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
      * from a JTS geometry. This prevents the Geometry from having to recompute the JTS peer the
      * first time.
      */
-    protected final void setJTSPeer(com.vividsolutions.jts.geom.Geometry g) {
+    protected final void setJTSPeer(org.locationtech.jts.geom.Geometry g) {
         jtsPeer = g;
     }
 
@@ -131,7 +131,7 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
      * Returns the JTS version of this geometry. If the geometry has not changed since the last time
      * this method was called, it will return the exact same object.
      */
-    public final com.vividsolutions.jts.geom.Geometry getJTSGeometry() {
+    public final org.locationtech.jts.geom.Geometry getJTSGeometry() {
         if (jtsPeer == null) {
             jtsPeer = computeJTSPeer();
         }
@@ -149,14 +149,14 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
 
     /** Returns a Geometry that represents the minimum bounding region of this geometry. */
     public final Geometry getMbRegion() {
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
         return JTSUtils.jtsToGo1(jtsGeom.getEnvelope(), getCoordinateReferenceSystem());
     }
 
     /** Returns a point interior to the geometry. */
     public final DirectPosition getRepresentativePoint() {
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
-        com.vividsolutions.jts.geom.Point p = jtsGeom.getInteriorPoint();
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Point p = jtsGeom.getInteriorPoint();
         return JTSUtils.pointToDirectPosition(p, getCoordinateReferenceSystem());
     }
 
@@ -170,17 +170,17 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
         // don't think they are, but it's not clear what it would mean, nor is
         // it obvious why anyone would call it in the first place.)
 
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
 
         // PENDING(CSD):
         // As far as I could tell, it's not defined what it would mean to
         // compute the boundary of a collection object in 19107.
-        if (jtsGeom instanceof com.vividsolutions.jts.geom.GeometryCollection) {
+        if (jtsGeom instanceof org.locationtech.jts.geom.GeometryCollection) {
             throw new UnsupportedOperationException(
                     "Boundary cannot be computed for multi-primitives.");
         }
 
-        com.vividsolutions.jts.geom.Geometry jtsBoundary = jtsGeom.getBoundary();
+        org.locationtech.jts.geom.Geometry jtsBoundary = jtsGeom.getBoundary();
         int d = jtsGeom.getDimension();
         if (d == 0) {
             // If d is zero, then our geometry is a point.  So the boundary is
@@ -194,7 +194,7 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
             // instanceof check above), so we know that the boundary can't be
             // more than 2 points.
 
-            com.vividsolutions.jts.geom.Coordinate[] coords = jtsBoundary.getCoordinates();
+            org.locationtech.jts.geom.Coordinate[] coords = jtsBoundary.getCoordinates();
             // If coords is emtpy, then this geometry is a ring.  So we return
             // an empty CurveBoundary object (i.e. one with both points set to
             // null).
@@ -225,18 +225,18 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
             // If d == 2, then the boundary is a collection of rings.
             // In particular, the JTS tests indicate that it'll be a
             // MultiLineString.
-            com.vividsolutions.jts.geom.MultiLineString mls =
-                    (com.vividsolutions.jts.geom.MultiLineString) jtsBoundary;
+            org.locationtech.jts.geom.MultiLineString mls =
+                    (org.locationtech.jts.geom.MultiLineString) jtsBoundary;
             int n = mls.getNumGeometries();
             CoordinateReferenceSystem crs = getCoordinateReferenceSystem();
             Ring exteriorRing =
                     JTSUtils.linearRingToRing(
-                            (com.vividsolutions.jts.geom.LineString) mls.getGeometryN(0), crs);
+                            (org.locationtech.jts.geom.LineString) mls.getGeometryN(0), crs);
             Ring[] interiorRings = new Ring[n - 1];
             for (int i = 1; i < n; i++) {
                 interiorRings[n - 1] =
                         JTSUtils.linearRingToRing(
-                                (com.vividsolutions.jts.geom.LineString) mls.getGeometryN(i), crs);
+                                (org.locationtech.jts.geom.LineString) mls.getGeometryN(i), crs);
             }
             SurfaceBoundaryImpl result = new SurfaceBoundaryImpl(crs, exteriorRing, interiorRings);
             return result;
@@ -255,13 +255,13 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
 
     /** Returns true if this object does not cross itself. */
     public final boolean isSimple() {
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
         return jtsGeom.isSimple();
     }
 
     public final boolean isCycle() {
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsBoundary = jtsGeom.getBoundary();
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsBoundary = jtsGeom.getBoundary();
         return jtsBoundary.isEmpty();
     }
 
@@ -271,8 +271,8 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
      * physical meaning (such as when the coordinate system is a latitude/longitude system).
      */
     public final double getDistance(final Geometry geometry) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) geometry).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) geometry).getJTSGeometry();
         return JTSUtils.distance(jtsGeom1, jtsGeom2);
     }
 
@@ -286,27 +286,27 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
      * on this geometry.
      */
     public final int getDimension(final DirectPosition point) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
-        if (jtsGeom instanceof com.vividsolutions.jts.geom.GeometryCollection) {
-            com.vividsolutions.jts.geom.Point p = JTSUtils.directPositionToPoint(point);
-            return getDimension(p, (com.vividsolutions.jts.geom.GeometryCollection) jtsGeom);
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        if (jtsGeom instanceof org.locationtech.jts.geom.GeometryCollection) {
+            org.locationtech.jts.geom.Point p = JTSUtils.directPositionToPoint(point);
+            return getDimension(p, (org.locationtech.jts.geom.GeometryCollection) jtsGeom);
         } else {
             return jtsGeom.getDimension();
         }
     }
 
     private static final int getDimension(
-            final com.vividsolutions.jts.geom.Point p,
-            final com.vividsolutions.jts.geom.GeometryCollection gc) {
+            final org.locationtech.jts.geom.Point p,
+            final org.locationtech.jts.geom.GeometryCollection gc) {
         int min = Integer.MAX_VALUE;
         int n = gc.getNumGeometries();
         for (int i = 0; i < n; i++) {
             int d = Integer.MAX_VALUE;
-            com.vividsolutions.jts.geom.Geometry g = gc.getGeometryN(i);
-            if (g instanceof com.vividsolutions.jts.geom.GeometryCollection) {
+            org.locationtech.jts.geom.Geometry g = gc.getGeometryN(i);
+            if (g instanceof org.locationtech.jts.geom.GeometryCollection) {
                 // If it was a nested GeometryCollection, then just recurse
                 // until we get down to non-collections.
-                d = getDimension(p, (com.vividsolutions.jts.geom.GeometryCollection) g);
+                d = getDimension(p, (org.locationtech.jts.geom.GeometryCollection) g);
             } else {
                 if (g.intersects(p)) d = g.getDimension();
             }
@@ -362,9 +362,9 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
             final CoordinateReferenceSystem newCRS, final MathTransform transform)
             throws TransformException {
         // Get the JTS geometry
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
         // Make a copy since we're going to modify its values
-        jtsGeom = (com.vividsolutions.jts.geom.Geometry) jtsGeom.clone();
+        jtsGeom = (org.locationtech.jts.geom.Geometry) jtsGeom.clone();
         // Get a local variable that has the src CRS
         CoordinateReferenceSystem oldCRS = getCoordinateReferenceSystem();
         // Do the actual work of transforming the vertices
@@ -378,8 +378,8 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
      * @see org.opengis.geometry.coordinate.#getEnvelope()
      */
     public final Envelope getEnvelope() {
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
-        com.vividsolutions.jts.geom.Envelope jtsEnv = jtsGeom.getEnvelopeInternal();
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Envelope jtsEnv = jtsGeom.getEnvelopeInternal();
         CoordinateReferenceSystem crs = getCoordinateReferenceSystem();
         Envelope result =
                 new EnvelopeImpl(
@@ -392,22 +392,22 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
 
     /** Returns the centroid of this geometry. */
     public final DirectPosition getCentroid() {
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
-        com.vividsolutions.jts.geom.Point jtsCentroid = jtsGeom.getCentroid();
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Point jtsCentroid = jtsGeom.getCentroid();
         return JTSUtils.pointToDirectPosition(jtsCentroid, getCoordinateReferenceSystem());
     }
 
     /** Returns the geometric convex hull of this geometry. */
     public final Geometry getConvexHull() {
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsHull = jtsGeom.convexHull();
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsHull = jtsGeom.convexHull();
         return JTSUtils.jtsToGo1(jtsHull, getCoordinateReferenceSystem());
     }
 
     /** Returns an approximate buffer around this object. */
     public final Geometry getBuffer(final double distance) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsBuffer = jtsGeom.buffer(distance);
+        org.locationtech.jts.geom.Geometry jtsGeom = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsBuffer = jtsGeom.buffer(distance);
         return JTSUtils.jtsToGo1(jtsBuffer, getCoordinateReferenceSystem());
     }
 
@@ -449,15 +449,15 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
      * point representation.
      */
     public boolean contains(DirectPosition point) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsGeom2 = JTSUtils.directPositionToPoint(point);
+        org.locationtech.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom2 = JTSUtils.directPositionToPoint(point);
         return JTSUtils.contains(jtsGeom1, jtsGeom2);
     }
 
     /** Returns true if this geometry completely contains the given geometry. */
     public boolean contains(TransfiniteSet pointSet) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
         return JTSUtils.contains(jtsGeom1, jtsGeom2);
     }
 
@@ -466,41 +466,41 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
     }
 
     public TransfiniteSet difference(TransfiniteSet pointSet) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
         return JTSUtils.jtsToGo1(
                 JTSUtils.difference(jtsGeom1, jtsGeom2), getCoordinateReferenceSystem());
     }
 
     public boolean equals(TransfiniteSet pointSet) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
         return JTSUtils.equals(jtsGeom1, jtsGeom2);
     }
 
     public TransfiniteSet intersection(TransfiniteSet pointSet) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
         return JTSUtils.jtsToGo1(
                 JTSUtils.intersection(jtsGeom1, jtsGeom2), getCoordinateReferenceSystem());
     }
 
     public boolean intersects(TransfiniteSet pointSet) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
         return JTSUtils.intersects(jtsGeom1, jtsGeom2);
     }
 
     public TransfiniteSet symmetricDifference(TransfiniteSet pointSet) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
         return JTSUtils.jtsToGo1(
                 JTSUtils.symmetricDifference(jtsGeom1, jtsGeom2), getCoordinateReferenceSystem());
     }
 
     public TransfiniteSet union(TransfiniteSet pointSet) {
-        com.vividsolutions.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
-        com.vividsolutions.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom1 = getJTSGeometry();
+        org.locationtech.jts.geom.Geometry jtsGeom2 = ((JTSGeometry) pointSet).getJTSGeometry();
         return JTSUtils.jtsToGo1(
                 JTSUtils.union(jtsGeom1, jtsGeom2), getCoordinateReferenceSystem());
     }
@@ -565,8 +565,7 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
      * This class implements JTS's CoordinateFilter interface using a GeoAPI MathTransform object to
      * actually perform the work.
      */
-    public static class MathTransformFilter
-            implements com.vividsolutions.jts.geom.CoordinateFilter {
+    public static class MathTransformFilter implements org.locationtech.jts.geom.CoordinateFilter {
         private MathTransform transform;
         private DirectPosition src;
         private DirectPosition dst;
@@ -580,7 +579,7 @@ public abstract class GeometryImpl implements Geometry, Serializable, Cloneable,
             dst = new DirectPositionImpl(newCRS);
         }
 
-        public void filter(com.vividsolutions.jts.geom.Coordinate coord) {
+        public void filter(org.locationtech.jts.geom.Coordinate coord) {
             // Load the input into a DirectPosition
             JTSUtils.coordinateToDirectPosition(coord, src);
             try {

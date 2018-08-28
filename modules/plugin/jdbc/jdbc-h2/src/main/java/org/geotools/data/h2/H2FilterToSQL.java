@@ -16,9 +16,6 @@
  */
 package org.geotools.data.h2;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LinearRing;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,6 +23,10 @@ import java.util.logging.Logger;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -61,6 +62,9 @@ public class H2FilterToSQL extends FilterToSQL {
         caps.addType(Within.class);
         caps.addType(DWithin.class);
         caps.addType(Beyond.class);
+
+        // native filter support
+        caps.addType(NativeFilter.class);
 
         return caps;
     }

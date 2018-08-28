@@ -16,9 +16,6 @@
  */
 package org.geotools.data.wfs;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Level;
@@ -53,6 +50,9 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -186,20 +186,25 @@ class WFSFeatureSource extends ContentFeatureSource {
      *
      * @param query
      */
-    private void invertAxisInFilterIfNeeded(Query query) {
-        boolean invertXY =
-                WFSConfig.invertAxisNeeded(
-                        client.getAxisOrderFilter(), query.getCoordinateSystem());
-        if (invertXY) {
-            Filter filter = query.getFilter();
-
-            FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
-            InvertAxisFilterVisitor visitor =
-                    new InvertAxisFilterVisitor(ff, new GeometryFactory());
-            filter = (Filter) filter.accept(visitor, null);
-
-            query.setFilter(filter);
+    private void invertAxisInFilterIfNeeded(Query query, SimpleFeatureType featureType) {
+        CoordinateReferenceSystem crs = query.getCoordinateSystem();
+        if (crs == null) {
+            crs = featureType.getCoordinateReferenceSystem();
         }
+        boolean invertXY = WFSConfig.invertAxisNeeded(client.getAxisOrderFilter(), crs);
+        if (invertXY) {
+            invertAxisInFilter(query);
+        }
+    }
+
+    private void invertAxisInFilter(Query query) {
+        Filter filter = query.getFilter();
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        InvertAxisFilterVisitor visitor = new InvertAxisFilterVisitor(ff, new GeometryFactory());
+        filter = (Filter) filter.accept(visitor, null);
+
+        query.setFilter(filter);
     }
 
     protected GetFeatureRequest createGetFeature(Query query, ResultType resultType)
@@ -214,9 +219,7 @@ class WFSFeatureSource extends ContentFeatureSource {
 
         request.setTypeName(remoteTypeName);
         request.setFullType(remoteSimpleFeatureType);
-
-        invertAxisInFilterIfNeeded(query);
-
+        invertAxisInFilterIfNeeded(query, remoteSimpleFeatureType);
         request.setFilter(query.getFilter());
         request.setResultType(resultType);
         request.setHints(query.getHints());

@@ -16,12 +16,12 @@
  */
 package org.geotools.swt.control;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.File;
 import java.net.URL;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.geotools.data.Parameter;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Super class that provides additional helper methods useful when implementing your own

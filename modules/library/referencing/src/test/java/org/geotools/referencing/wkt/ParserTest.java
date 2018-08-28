@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.ScriptRunner;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
@@ -33,6 +34,7 @@ import org.geotools.test.TestData;
 import org.junit.*;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.cs.CartesianCS;
@@ -407,5 +409,32 @@ public final class ParserTest {
     @Test
     public void testAuthorityCodeParsing() throws IOException, ParseException {
         testParsing(new Parser(), "wkt/AuthorityCode.txt");
+    }
+
+    @Test
+    public void test404000Parsing()
+            throws IOException, ParseException, NoSuchAuthorityCodeException, FactoryException {
+        final String wkt =
+                "LOCAL_CS[\"Wildcard 2D cartesian plane in metric unit\", \n"
+                        + "  LOCAL_DATUM[\"Unknown\", 0], \n"
+                        + "  UNIT[\"m\", 1.0], \n"
+                        + "  AXIS[\"x\", EAST], \n"
+                        + "  AXIS[\"y\", NORTH], \n"
+                        + "  AUTHORITY[\"EPSG\",\"404000\"]]";
+
+        final Parser parser = new Parser();
+        CoordinateReferenceSystem observed = parser.parseCoordinateReferenceSystem(wkt);
+        final String check = parser.format(observed);
+        CoordinateReferenceSystem expected = CRS.decode("EPSG:404000");
+        assertTrue(
+                "Internal CS",
+                CRS.equalsIgnoreMetadata(
+                        expected.getCoordinateSystem(), observed.getCoordinateSystem()));
+
+        assertTrue(CRS.equalsIgnoreMetadata(expected, observed));
+        assertTrue(expected.equals(observed));
+        assertEquals("Incorrect reading", expected, observed);
+        assertFalse(check.contains("semi_major"));
+        assertFalse(check.contains("semi_minor"));
     }
 }

@@ -835,8 +835,7 @@
       <xsd:element ref="sld:ContrastEnhancement" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
-  <xsd:element name="SourceChannelName" type="xsd:string"/>
-
+  <xsd:element name="SourceChannelName" type="sld:ParameterValueType"/>
   <xsd:element name="OverlapBehavior">
     <xsd:annotation>
       <xsd:documentation>
@@ -932,7 +931,13 @@
 	</xsd:complexType>
   
   
-  <xsd:element name="GammaValue" type="xsd:double"/>
+  <xsd:element name="GammaValue">
+    <xsd:complexType mixed="true">
+      <xsd:complexContent>
+        <xsd:extension base="sld:ParameterValueType"/>
+      </xsd:complexContent>
+    </xsd:complexType>
+  </xsd:element>
 
   <xsd:element name="ShadedRelief">
     <xsd:annotation>

@@ -109,15 +109,15 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             if (map.has(Band.GRAY.key)) {
                 if (map.has(Band.RED.key) || map.has(Band.GREEN.key) || map.has(Band.BLUE.key))
                     throw new IllegalArgumentException("grey and RGB can not be combined");
-                SelectedChannelType gray = factory.style.selectedChannelType(null, null);
+                SelectedChannelType gray = factory.style.selectedChannelType((String) null, null);
                 selection.setGrayChannel(gray);
                 parse(Band.GRAY, gray, map, context);
             } else {
                 if (!(map.has(Band.RED.key) && map.has(Band.GREEN.key) && map.has(Band.BLUE.key)))
                     throw new IllegalArgumentException("all of red green and blue must be preset");
-                SelectedChannelType red = factory.style.selectedChannelType(null, null);
-                SelectedChannelType green = factory.style.selectedChannelType(null, null);
-                SelectedChannelType blue = factory.style.selectedChannelType(null, null);
+                SelectedChannelType red = factory.style.selectedChannelType((String) null, null);
+                SelectedChannelType green = factory.style.selectedChannelType((String) null, null);
+                SelectedChannelType blue = factory.style.selectedChannelType((String) null, null);
                 selection.setRGBChannels(red, green, blue);
                 parse(Band.RED, red, map, context);
                 parse(Band.GREEN, green, map, context);

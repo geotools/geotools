@@ -199,9 +199,8 @@ class BandSelectionNode extends StyleVisitorCoverageProcessingNodeAdapter
         //
         // /////////////////////////////////////////////////////////////////////
         if (sct != null) {
-            final String name = sct.getChannelName();
             try {
-                bandIndex = Integer.parseInt(name);
+                bandIndex = sct.getChannelName().evaluate(null, Integer.class);
             } catch (NumberFormatException e) {
                 // something bad happened
                 final IllegalArgumentException iee =

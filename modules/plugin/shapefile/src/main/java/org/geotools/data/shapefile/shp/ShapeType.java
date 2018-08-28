@@ -16,7 +16,7 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFactory;
 
 /**
  * Not much but a type safe enumeration of file types as ints and names. The descriptions can easily

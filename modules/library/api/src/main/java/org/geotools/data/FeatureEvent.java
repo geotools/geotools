@@ -16,9 +16,9 @@
  */
 package org.geotools.data;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.EventObject;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;

@@ -5,7 +5,6 @@ import static org.geotools.data.shapefile.files.ShpFileType.QIX;
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +32,7 @@ import org.geotools.data.shapefile.shp.IndexFile;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.Identifier;
 

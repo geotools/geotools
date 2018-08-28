@@ -103,7 +103,9 @@ SVG
 
  The GeoVista team have used the Batik project to generate SVG output.
 
- You will need a dependency for gt-svg. This will bring it the correct version of batik for you and add support for SVG icons.
+ You will need to manage the `Batik dependencies
+ <https://xmlgraphics.apache.org/batik/>`_ yourself, make sure to include
+ `batik-codec` if your map contains any image based graphics.
 
 Thanks to James Macgill for the following code example:
 

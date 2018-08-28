@@ -16,15 +16,16 @@
  */
 package org.geotools.renderer.lite;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.TopologyException;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.TopologyException;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
@@ -33,6 +34,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A fast envelope vs envelope bbox used in rendering operations. To be removed one we have an
@@ -77,6 +79,14 @@ class FastBBOX implements BBOX, BinarySpatialOperator, BinaryComparisonOperator 
     }
 
     public String getSRS() {
+        if (envelope instanceof ReferencedEnvelope) {
+            CoordinateReferenceSystem crs =
+                    ((ReferencedEnvelope) envelope).getCoordinateReferenceSystem();
+            // 3D crs are not supported here
+            if (crs != null && crs.getCoordinateSystem().getDimension() == 2) {
+                return CRS.toSRS(((ReferencedEnvelope) envelope).getCoordinateReferenceSystem());
+            }
+        }
         return null;
     }
 

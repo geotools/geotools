@@ -72,6 +72,7 @@ public class RemoteTest {
                 "remote image mosaic",
                 ((PlanarImage) gc.getRenderedImage()).getAsBufferedImage(),
                 Color.BLACK);
+        reader.dispose();
     }
 
     /**

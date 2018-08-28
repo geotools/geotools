@@ -17,7 +17,6 @@
 
 package org.geotools.feature.simple;
 
-import com.vividsolutions.jts.geom.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
@@ -27,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import junit.framework.TestCase;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

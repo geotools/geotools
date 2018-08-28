@@ -16,9 +16,6 @@
  */
 package org.geotools.gml2.bindings;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -26,6 +23,9 @@ import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:BoxType.
@@ -79,7 +79,7 @@ public class GMLBoxTypeBinding extends AbstractComplexBinding {
      * <!-- begin-user-doc -->
      * This method returns an object of type
      *
-     * @link com.vividsolutions.jts.geom.Envelope.
+     * @link org.locationtech.jts.geom.Envelope.
      *     <!-- end-user-doc -->
      * @generated modifiable
      */

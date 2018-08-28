@@ -16,11 +16,11 @@
  */
 package org.geotools.gml2;
 
-import com.vividsolutions.jts.geom.Point;
 import java.io.InputStream;
 import javax.xml.namespace.QName;
 import junit.framework.TestCase;
 import org.geotools.xml.StreamingParser;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** @source $URL$ */

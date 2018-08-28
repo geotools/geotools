@@ -16,14 +16,6 @@
  */
 package org.geotools.gml3.simple;
 
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +36,14 @@ import org.geotools.gml3.bindings.GML3EncodingUtils;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.XSD;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.helpers.AttributesImpl;
@@ -83,6 +83,9 @@ public class GML3FeatureCollectionEncoderDelegate
 
         private boolean encodeSeparateMember;
 
+        /** Controls if coordinates measures should be encoded in GML * */
+        private boolean encodeMeasures;
+
         public GML3Delegate(Encoder encoder) {
             this.gmlPrefix = findGMLPrefix(encoder);
 
@@ -94,6 +97,7 @@ public class GML3FeatureCollectionEncoderDelegate
             this.srsSyntax =
                     (SrsSyntax) encoder.getContext().getComponentInstanceOfType(SrsSyntax.class);
             this.numDecimals = getNumDecimals(encoder.getConfiguration());
+            this.encodeMeasures = getEncodecoordinatesMeasures(encoder.getConfiguration());
             this.encodeSeparateMember =
                     encoder.getConfiguration().hasProperty(GMLConfiguration.ENCODE_FEATURE_MEMBER);
         }
@@ -125,6 +129,21 @@ public class GML3FeatureCollectionEncoderDelegate
                 return 6;
             } else {
                 return config.getNumDecimals();
+            }
+        }
+
+        private boolean getEncodecoordinatesMeasures(Configuration configuration) {
+            GMLConfiguration config;
+            if (configuration instanceof GMLConfiguration) {
+                config = (GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(GMLConfiguration.class);
+            }
+
+            if (config == null) {
+                return true;
+            } else {
+                return config.getEncodeMeasures();
             }
         }
 
@@ -234,6 +253,11 @@ public class GML3FeatureCollectionEncoderDelegate
         @Override
         public boolean forceDecimalEncoding() {
             return false;
+        }
+
+        @Override
+        public boolean getEncodeMeasures() {
+            return encodeMeasures;
         }
     }
 }

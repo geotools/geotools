@@ -16,13 +16,13 @@
  */
 package org.geotools.filter.spatial;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.List;
 import org.geotools.filter.function.BoundedByFunction;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.BinaryComparisonOperator;

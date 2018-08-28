@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2007-2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -254,6 +254,10 @@ public class NetCDFUtilities {
     public static final String SPATIAL_REF = "spatial_ref";
 
     public static final String GEO_TRANSFORM = "GeoTransform";
+
+    // They are recognized from CERP NetCDF Metadata convention
+    // https://www.jem.gov/downloads/CERP%20NetCDF%20standard/CERP_NetCDF_Metadata_Conventions_1.2.pdf
+    public static final String CERP_ESRI_PE_STRING = "esri_pe_string";
 
     public static final String UNIQUE_TIME_ATTRIBUTE = "uniqueTimeAttribute";
 
@@ -1214,6 +1218,54 @@ public class NetCDFUtilities {
         if (dimensions == null) throw new IllegalArgumentException("Illegal dimensions");
         final int nDims = dimensions.length;
         switch (nDims) {
+            case 7:
+                // 7D Arrays
+                if (varDataType == DataType.FLOAT) {
+                    return new ArrayFloat.D7(
+                            dimensions[0],
+                            dimensions[1],
+                            dimensions[2],
+                            dimensions[3],
+                            dimensions[4],
+                            dimensions[5],
+                            dimensions[6]);
+                } else if (varDataType == DataType.DOUBLE) {
+                    return new ArrayDouble.D7(
+                            dimensions[0],
+                            dimensions[1],
+                            dimensions[2],
+                            dimensions[3],
+                            dimensions[4],
+                            dimensions[5],
+                            dimensions[6]);
+                } else if (varDataType == DataType.BYTE) {
+                    return new ArrayByte.D7(
+                            dimensions[0],
+                            dimensions[1],
+                            dimensions[2],
+                            dimensions[3],
+                            dimensions[4],
+                            dimensions[5],
+                            dimensions[6]);
+                } else if (varDataType == DataType.SHORT) {
+                    return new ArrayShort.D7(
+                            dimensions[0],
+                            dimensions[1],
+                            dimensions[2],
+                            dimensions[3],
+                            dimensions[4],
+                            dimensions[5],
+                            dimensions[6]);
+                } else if (varDataType == DataType.INT) {
+                    return new ArrayInt.D7(
+                            dimensions[0],
+                            dimensions[1],
+                            dimensions[2],
+                            dimensions[3],
+                            dimensions[4],
+                            dimensions[5],
+                            dimensions[6]);
+                } else throw new IllegalArgumentException("unsupported Datatype");
             case 6:
                 // 6D Arrays
                 if (varDataType == DataType.FLOAT) {
@@ -1353,7 +1405,8 @@ public class NetCDFUtilities {
                     return new ArrayInt.D1(dimensions[0]);
                 } else throw new IllegalArgumentException("unsupported Datatype");
         }
-        throw new IllegalArgumentException("Unable to create a proper array unsupported Datatype");
+        throw new IllegalArgumentException(
+                "Unable to create a proper array unsupported Datatype; nDims not between 1 and 7");
     }
 
     /**

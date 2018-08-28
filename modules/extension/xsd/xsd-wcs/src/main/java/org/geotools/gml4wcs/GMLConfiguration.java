@@ -1,8 +1,5 @@
 package org.geotools.gml4wcs;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import net.opengis.gml.Gml4wcsFactory;
@@ -28,6 +25,9 @@ import org.geotools.gml4wcs.bindings.TimePositionTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xml.ComplexEMFBinding;
 import org.geotools.xml.Configuration;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;
 
 /**

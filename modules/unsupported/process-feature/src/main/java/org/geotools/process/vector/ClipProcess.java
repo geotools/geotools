@@ -17,22 +17,6 @@
  */
 package org.geotools.process.vector;
 
-import com.vividsolutions.jts.algorithm.LineIntersector;
-import com.vividsolutions.jts.algorithm.RobustLineIntersector;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.LineSegment;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +39,22 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.crs.GeometryDimensionCollector;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.algorithm.LineIntersector;
+import org.locationtech.jts.algorithm.RobustLineIntersector;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFilter;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.LineSegment;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -608,16 +608,19 @@ public class ClipProcess implements VectorProcess {
 
             private void applyZValues(
                     CoordinateSequence cs, int idx, CoordinateSequence csOrig, int origIdx) {
+
+                if (!cs.hasZ()) return;
+
                 double lx1 = cs.getOrdinate(idx, 0);
                 double ly1 = cs.getOrdinate(idx, 1);
                 double lz1;
 
-                double ox1 = csOrig.getOrdinate(origIdx, 0);
-                double oy1 = csOrig.getOrdinate(origIdx, 1);
-                double oz1 = csOrig.getOrdinate(origIdx, 2);
-                double ox2 = csOrig.getOrdinate(origIdx + 1, 0);
-                double oy2 = csOrig.getOrdinate(origIdx + 1, 1);
-                double oz2 = csOrig.getOrdinate(origIdx + 1, 2);
+                double ox1 = csOrig.getX(origIdx);
+                double oy1 = csOrig.getY(origIdx);
+                double oz1 = csOrig.getZ(origIdx);
+                double ox2 = csOrig.getX(origIdx + 1);
+                double oy2 = csOrig.getY(origIdx + 1);
+                double oz2 = csOrig.getZ(origIdx + 1);
 
                 if (lx1 == ox1 && ly1 == oy1) {
                     lz1 = oz1;

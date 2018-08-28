@@ -237,6 +237,7 @@ public class ImageMosaicEgrTest {
                 "2_right.tiff",
                 "1_left.tiff",
                 "0_large.tiff");
+        reader.dispose();
     }
 
     @Test
@@ -290,6 +291,7 @@ public class ImageMosaicEgrTest {
                                 ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
                         new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
         testOutputCoverage(reader, readParams, expectedOutput, "0_large.tiff");
+        reader.dispose();
     }
 
     @Test
@@ -345,6 +347,7 @@ public class ImageMosaicEgrTest {
                                 ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
                         new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
         testOutputCoverage(reader, readParams, expectedOutput, "1_left.tiff", "2_right.tiff");
+        reader.dispose();
     }
 
     @Test
@@ -403,6 +406,7 @@ public class ImageMosaicEgrTest {
                                 ImageMosaicFormat.EXCESS_GRANULE_REMOVAL, ExcessGranulePolicy.ROI),
                         new SimpleEntry<>(ImageMosaicFormat.ALLOW_MULTITHREADING, true));
         testOutputCoverage(reader, readParams, expectedOutput, "0_large.tiff");
+        reader.dispose();
     }
 
     private void testOutputCoverage(

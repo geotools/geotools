@@ -488,7 +488,11 @@ public class CssTranslator {
                                         + derivedRules);
                     }
                     for (CssRule derived : derivedRules) {
+                        if (!derived.hasNonNullSymbolizerProperty()) {
+                            continue;
+                        }
                         buildSldRule(derived, ftsBuilder, targetFeatureType);
+
                         translatedRuleCount++;
 
                         // Reminder about why this is done the way it's done. These are all rule
@@ -635,7 +639,7 @@ public class CssTranslator {
 
                 // generate the SLD rules
                 for (CssRule cssRule : flattenedRules) {
-                    if (!cssRule.hasSymbolizerProperty()) {
+                    if (!cssRule.hasNonNullSymbolizerProperty()) {
                         continue;
                     }
 
@@ -1016,6 +1020,10 @@ public class CssTranslator {
         }
         int repeatCount = getMaxRepeatCount(values);
         for (int i = 0; i < repeatCount; i++) {
+            Value fill = getValue(values, "fill", i);
+            if (fill == null) {
+                continue;
+            }
             PolygonSymbolizerBuilder pb = ruleBuilder.polygon();
             Expression fillGeometry = getExpression(values, "fill-geometry", i);
             if (fillGeometry != null) {
@@ -1240,7 +1248,7 @@ public class CssTranslator {
         int repeatCount = getMaxRepeatCount(values);
         for (int i = 0; i < repeatCount; i++) {
             RasterSymbolizerBuilder rb = ruleBuilder.raster();
-            String[] channelNames = getStringArray(values, "raster-channels", i);
+            Expression[] channelExpressions = getExpressionArray(values, "raster-channels", i);
             String[] constrastEnhancements =
                     getStringArray(values, "raster-contrast-enhancement", i);
             HashMap<String, Expression> constrastParameters = new HashMap<>();
@@ -1254,35 +1262,35 @@ public class CssTranslator {
                     constrastParameters.put(sldKey, getExpression(values, cssKey, i));
                 }
             }
-            double[] gammas = getDoubleArray(values, "raster-gamma", i);
-            if (!"auto".equals(channelNames[0])) {
+            Expression[] gammas = getExpressionArray(values, "raster-gamma", i);
+            if (!"auto".equals(channelExpressions[0].evaluate(null, String.class))) {
                 ChannelSelectionBuilder cs = rb.channelSelection();
-                if (channelNames.length == 1) {
+                if (channelExpressions.length == 1) {
                     applyContrastEnhancement(
-                            cs.gray().channelName(channelNames[0]).contrastEnhancement(),
+                            cs.gray().channelName(channelExpressions[0]).contrastEnhancement(),
                             constrastEnhancements,
                             constrastParameters,
                             gammas,
                             0);
-                } else if (channelNames.length == 2 || channelNames.length > 3) {
+                } else if (channelExpressions.length == 2 || channelExpressions.length > 3) {
                     throw new IllegalArgumentException(
                             "raster-channels can accept the name of one or three bands, not "
-                                    + channelNames.length);
+                                    + channelExpressions.length);
                 } else {
                     applyContrastEnhancement(
-                            cs.red().channelName(channelNames[0]).contrastEnhancement(),
+                            cs.red().channelName(channelExpressions[0]).contrastEnhancement(),
                             constrastEnhancements,
                             constrastParameters,
                             gammas,
                             0);
                     applyContrastEnhancement(
-                            cs.green().channelName(channelNames[1]).contrastEnhancement(),
+                            cs.green().channelName(channelExpressions[1]).contrastEnhancement(),
                             constrastEnhancements,
                             constrastParameters,
                             gammas,
                             1);
                     applyContrastEnhancement(
-                            cs.blue().channelName(channelNames[2]).contrastEnhancement(),
+                            cs.blue().channelName(channelExpressions[2]).contrastEnhancement(),
                             constrastEnhancements,
                             constrastParameters,
                             gammas,
@@ -1375,7 +1383,7 @@ public class CssTranslator {
             ContrastEnhancementBuilder ceb,
             String[] constrastEnhancements,
             Map<String, Expression> constrastParameters,
-            double[] gammas,
+            Expression[] gammas,
             int i) {
         if (constrastEnhancements != null && constrastEnhancements.length > 0) {
             String contrastEnhancementName;
@@ -1405,7 +1413,7 @@ public class CssTranslator {
             ceb.unset();
         }
         if (gammas != null && gammas.length > 0) {
-            double gamma;
+            Expression gamma;
             if (gammas.length > i) {
                 gamma = gammas[0];
             } else {
@@ -1460,8 +1468,8 @@ public class CssTranslator {
                 if (size != null) {
                     gb.size(size);
                 }
-                double[] anchor = getDoubleArray(values, propertyName + "-anchor", i);
-                double[] offsets = getDoubleArray(values, propertyName + "-offset", i);
+                Expression[] anchor = getExpressionArray(values, propertyName + "-anchor", i);
+                Expression[] offsets = getExpressionArray(values, propertyName + "-offset", i);
                 if (anchor != null) {
                     if (anchor.length == 2) {
                         gb.anchor().x(anchor[0]);
@@ -1859,13 +1867,17 @@ public class CssTranslator {
             return null;
         }
 
+        Value result = null;
         if (values.size() == 1) {
-            return values.get(0);
-        } else if (i > values.size()) {
-            return null;
-        } else {
-            return values.get(i);
+            result = values.get(0);
+        } else if (i < values.size()) {
+            result = values.get(i);
         }
+
+        if (result == null || result instanceof Value.None) {
+            return null;
+        }
+        return result;
     }
 
     private List<Value> getMultiValue(Map<String, List<Value>> valueMap, String name, int i) {

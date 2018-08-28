@@ -28,7 +28,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import com.sun.media.imageioimpl.common.PackageUtil;
-import com.vividsolutions.jts.geom.Envelope;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
 import it.geosolutions.jaiext.JAIExt;
@@ -38,11 +37,7 @@ import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -99,6 +94,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -272,6 +268,42 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             for (int j = raster.getMinY(); j < raster.getMinY() + raster.getHeight(); j++)
                 raster.setSample(i, j, 0, (i + j) / 32);
         return new BufferedImage(icm, raster, false, null);
+    }
+
+    /**
+     * Creates a test paletted image with nodata and no transparency
+     *
+     * @return
+     */
+    private static RenderedImage getIndexedRGBNodata() {
+        // a palette with just the first 200 entries filled, the others are all zero (but present!)
+        final byte bb[] = new byte[256];
+        for (int i = 0; i < 256; i++) {
+            if (i < 200) {
+                bb[i] = (byte) i;
+            } else {
+                bb[i] = (byte) 0;
+            }
+        }
+        int noDataValue = 200;
+        NoDataContainer noData = new NoDataContainer(noDataValue);
+        final IndexColorModel icm = new IndexColorModel(8, 256, bb, bb, bb);
+        final WritableRaster raster =
+                RasterFactory.createWritableRaster(
+                        icm.createCompatibleSampleModel(1024, 1024), null);
+        for (int i = raster.getMinX(); i < raster.getMinX() + raster.getWidth(); i++) {
+            for (int j = raster.getMinY(); j < raster.getMinY() + raster.getHeight(); j++) {
+                if (i - raster.getMinX() < raster.getWidth() / 2) {
+                    raster.setSample(i, j, 0, (i + j) / 32);
+                } else {
+                    raster.setSample(i, j, 0, 200);
+                }
+            }
+        }
+        BufferedImage bi = new BufferedImage(icm, raster, false, null);
+        PlanarImage planarImage = PlanarImage.wrapRenderedImage(bi);
+        planarImage.setProperty(NoDataContainer.GC_NODATA, noData);
+        return planarImage;
     }
 
     /**
@@ -1338,6 +1370,49 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         for (int i = 0; i < inputCM.getMapSize(); i++) {
             assertEquals(Math.round(inputCM.getAlpha(i) * 0.5), outputCM.getAlpha(i));
         }
+    }
+
+    @Test
+    public void testIndexedRGBNoDataPrepareForRendering() {
+        RenderedImage image = getIndexedRGBNodata();
+        ImageWorker iw = new ImageWorker(image);
+        iw.prepareForRendering();
+        RenderedImage expanded = iw.getRenderedImage();
+
+        // nodata forced expansion
+        assertTrue(expanded.getColorModel() instanceof ComponentColorModel);
+        assertTrue(expanded.getColorModel().hasAlpha());
+        assertNoData(expanded, null);
+        // check the value has been made transparent
+        assertEquals(
+                0,
+                expanded.getData()
+                        .getSample(
+                                expanded.getMinX() + expanded.getWidth() / 3 * 2,
+                                expanded.getMinY(),
+                                3));
+    }
+
+    @Test
+    public void testIndexedRGBNoDataForceComponentColorModel() {
+        RenderedImage image = getIndexedRGBNodata();
+        ImageWorker iw = new ImageWorker(image);
+        iw.setBackground(new double[] {0, 0, 255});
+        iw.forceComponentColorModel();
+        RenderedImage expanded = iw.getRenderedImage();
+
+        // nodata forced expansion
+        assertTrue(expanded.getColorModel() instanceof ComponentColorModel);
+        assertTrue(expanded.getColorModel().hasAlpha());
+        // assertNoData(expanded, null);
+        // check the value has been made transparent
+        assertEquals(
+                0,
+                expanded.getData()
+                        .getSample(
+                                expanded.getMinX() + expanded.getWidth() / 3 * 2,
+                                expanded.getMinY(),
+                                3));
     }
 
     @Test

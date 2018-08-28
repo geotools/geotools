@@ -9,7 +9,6 @@
  */
 package org.geotools.main;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +21,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.swing.data.JFileDataStoreChooser;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;

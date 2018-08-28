@@ -16,12 +16,12 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Point;
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Point;
 import org.opengis.geometry.DirectPosition;
 import org.w3c.dom.Document;
 

@@ -21,9 +21,9 @@ import static org.geotools.data.mongodb.MongoDataStore.KEY_collection;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 

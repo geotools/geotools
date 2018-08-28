@@ -16,7 +16,7 @@
  */
 package org.geotools.wfs.v2_0.bindings;
 
-import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -27,6 +27,7 @@ import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -98,7 +99,7 @@ public class QueryExpressionTextTypeBinding extends AbstractComplexEMFBinding {
                             dbf.newDocumentBuilder().newDocument(), namespaceContext);
 
             SAXParser saxp = SAXParserFactory.newInstance().newSAXParser();
-            saxp.parse(new ByteArrayInputStream(qe.getValue().getBytes()), h);
+            saxp.parse(new InputSource(new StringReader(qe.getValue())), h);
 
             Document d = h.getDocument();
             e.appendChild(document.importNode(d.getDocumentElement(), true));

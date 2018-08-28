@@ -18,8 +18,6 @@ package org.geotools.data.wfs;
 
 import static org.geotools.data.wfs.internal.URIs.buildURL;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
@@ -38,6 +36,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.ows.ServiceException;
 import org.geotools.util.Version;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 /**
  * A {@link DataStoreFactorySpi} to connect to a Web Feature Service.

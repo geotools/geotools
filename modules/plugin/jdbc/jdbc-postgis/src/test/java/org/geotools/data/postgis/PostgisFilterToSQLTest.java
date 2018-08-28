@@ -16,8 +16,6 @@
  */
 package org.geotools.data.postgis;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.StringWriter;
 import org.geotools.data.jdbc.FilterToSQLException;
 import org.geotools.data.jdbc.SQLFilterTestSupport;
@@ -30,6 +28,8 @@ import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX3D;

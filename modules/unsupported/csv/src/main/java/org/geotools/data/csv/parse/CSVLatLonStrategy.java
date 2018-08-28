@@ -19,9 +19,6 @@ package org.geotools.data.csv.parse;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +31,9 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -135,6 +135,8 @@ public class CSVLatLonStrategy extends CSVStrategy {
     // docs start createSchema
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
+        this.featureType = featureType;
+
         List<String> header = new ArrayList<String>();
 
         GeometryDescriptor geometryDescrptor = featureType.getGeometryDescriptor();

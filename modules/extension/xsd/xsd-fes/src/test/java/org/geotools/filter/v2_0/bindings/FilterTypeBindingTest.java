@@ -16,13 +16,13 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.v1_1.FilterMockData;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.filter.v2_0.FESTestSupport;
 import org.geotools.gml3.v3_2.GML;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;

@@ -12,15 +12,19 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Point;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.geotools.data.csv.CSVFileState;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -413,5 +417,30 @@ public class CSVLatLonStrategyTest {
         assertTrue("next value not read", iterator.hasNext());
         SimpleFeature feature = iterator.next();
         assertNull("Unexpected geometry", feature.getDefaultGeometry());
+    }
+
+    @Test
+    public void testCreateSchema() throws IOException {
+        SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+        builder.setCRS(DefaultGeographicCRS.WGS84);
+        builder.setName("testCreateSchema");
+        builder.add("the_geom", Point.class);
+        builder.add("id", Integer.class);
+        builder.add("int_field", Integer.class);
+        builder.add("string_field", String.class);
+        SimpleFeatureType featureType = builder.buildFeatureType();
+
+        File csvFile = File.createTempFile("testCreateSchema", ".csv");
+        CSVFileState csvFileState = new CSVFileState(csvFile);
+        CSVStrategy strategy = new CSVLatLonStrategy(csvFileState, "lat_field", "long_field");
+        strategy.createSchema(featureType);
+
+        assertEquals(
+                "Stragegy does not have provided feature type",
+                featureType,
+                strategy.getFeatureType());
+        List<String> content = Files.readAllLines(csvFile.toPath());
+        assertEquals("long_field,lat_field,id,int_field,string_field", content.get(0));
+        csvFile.delete();
     }
 }

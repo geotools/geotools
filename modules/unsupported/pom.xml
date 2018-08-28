@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.geotools</groupId>
 		<artifactId>modules</artifactId>
-		<version>20-SNAPSHOT</version>
+		<version>21-SNAPSHOT</version>
 	</parent>
 
 
@@ -57,9 +57,14 @@
 		<!-- but have not passed our QA and Doc requirements -->
 		<!-- so you may/should consider them risky -->
 		<profile>
-			<id>efeature</id>
+			<id>gtopo30</id>
+			<activation>
+				<property>
+					<name>all</name>
+				</property>
+			</activation>
 			<modules>
-				<module>efeature</module>
+				<module>gtopo30</module>
 			</modules>
 		</profile>
 		<profile>
@@ -190,6 +195,12 @@
                 <module>s3-geotiff</module>
             </modules>
         </profile>
+        <profile>
+            <id>ogr</id>
+            <modules>
+                <module>ogr</module>
+            </modules>
+        </profile>
 		<profile>
 			<id>unsupported</id>
 			<activation>
@@ -201,12 +212,11 @@
 				<module>csv</module>
 				<module>epsg-oracle</module>
 				<module>jdbc-ng</module>
-				<module>sfs</module>
-				<module>feature-aggregate</module>
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>
-                <module>s3-geotiff</module>
+        <module>s3-geotiff</module>
+        <module>gtopo30</module>
 			</modules>
 		</profile>
 

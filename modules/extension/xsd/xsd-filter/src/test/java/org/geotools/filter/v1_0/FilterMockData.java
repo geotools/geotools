@@ -16,12 +16,12 @@
  */
 package org.geotools.filter.v1_0;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import javax.xml.namespace.QName;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gml2.GML;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Not;

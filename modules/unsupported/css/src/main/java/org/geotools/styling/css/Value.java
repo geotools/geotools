@@ -33,6 +33,7 @@ import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
+import org.opengis.filter.expression.Expression;
 
 /**
  * A value for a CSS property. Values can be several things, including from literals, expressions,
@@ -43,6 +44,8 @@ import org.opengis.filter.capability.FunctionName;
 abstract class Value {
 
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
+
+    public static final Value NONE = new None();
 
     public static final Map<String, String> COLORS_TO_HEX;
 
@@ -613,6 +616,21 @@ abstract class Value {
             }
 
             return sb.toString();
+        }
+    }
+
+    public static class None extends Value {
+
+        private None() {}
+
+        @Override
+        public org.opengis.filter.expression.Expression toExpression() {
+            return null;
+        }
+
+        @Override
+        public String toLiteral() {
+            return null;
         }
     }
 }

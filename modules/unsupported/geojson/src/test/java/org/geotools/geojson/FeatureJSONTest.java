@@ -16,15 +16,6 @@
  */
 package org.geotools.geojson;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.util.List;
@@ -40,6 +31,15 @@ import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.Feature;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.simple.SimpleFeature;
@@ -52,21 +52,34 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     FeatureJSON fjson = new FeatureJSON();
     SimpleFeatureType featureType;
     SimpleFeatureBuilder fb;
+    SimpleFeatureType featureTypeArray;
+    SimpleFeatureBuilder fbArray;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        setupNonGeometricAttributes(tb);
+        tb.add("geometry", Geometry.class);
+
+        featureType = tb.buildFeatureType();
+        fb = new SimpleFeatureBuilder(featureType);
+
+        setupNonGeometricAttributes(tb);
+        tb.add("array", String[].class);
+        tb.add("geometry", Geometry.class);
+        featureTypeArray = tb.buildFeatureType();
+
+        fbArray = new SimpleFeatureBuilder(featureTypeArray);
+    }
+
+    private void setupNonGeometricAttributes(SimpleFeatureTypeBuilder tb) {
         tb.setName("feature");
         tb.setSRS("EPSG:4326");
         tb.add("int", Integer.class);
         tb.add("double", Double.class);
         tb.add("string", String.class);
-        tb.add("geometry", Geometry.class);
-
-        featureType = tb.buildFeatureType();
-        fb = new SimpleFeatureBuilder(featureType);
     }
 
     public void testFeatureWrite() throws Exception {
@@ -75,6 +88,14 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         fjson.writeFeature(feature(1), writer);
 
         assertEquals(strip(featureText(1)), writer.toString());
+    }
+
+    public void testFeatureArrayWrite() throws Exception {
+
+        StringWriter writer = new StringWriter();
+        fjson.writeFeature(featureArray(1), writer);
+
+        assertEquals(strip(featureArrayText(1, false, false)), strip(writer.toString()));
     }
 
     public void testWriteReadNoProperties() throws Exception {
@@ -104,6 +125,12 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
     public void testFeatureRead() throws Exception {
         SimpleFeature f1 = feature(1);
         SimpleFeature f2 = fjson.readFeature(reader(strip(featureText(1))));
+        assertEqualsLax(f1, f2);
+    }
+
+    public void testFeatureArrayRead() throws Exception {
+        SimpleFeature f1 = featureArray(1);
+        SimpleFeature f2 = fjson.readFeature(reader(strip(featureArrayText(1, false, false))));
         assertEqualsLax(f1, f2);
     }
 
@@ -949,6 +976,16 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         return fb.buildFeature("feature." + val);
     }
 
+    SimpleFeature featureArray(int val) {
+        fbArray.add(val);
+        fbArray.add(val + 0.1);
+        fbArray.add(toString(val));
+        fbArray.add(new String[] {toString(val), toString(val + 1)});
+        fbArray.add(new GeometryFactory().createPoint(new Coordinate(val + 0.1, val + 0.1)));
+
+        return fbArray.buildFeature("feature." + val);
+    }
+
     SimpleFeature featureMissingAttribute(int val) {
         fb.add(val);
         fb.add(val + 0.1);
@@ -998,6 +1035,48 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
                         + "     'string': '"
                         + toString(val)
                         + "'"
+                        + "   },"
+                        + "   'id':'feature."
+                        + val
+                        + "'"
+                        + "}";
+
+        return text;
+    }
+
+    String featureArrayText(int val, boolean missingAttribute, boolean nullAttribute) {
+        if (missingAttribute && nullAttribute) {
+            throw new IllegalArgumentException(
+                    "For tests, use only one of either missingAttribute or nullAttribute");
+        }
+        String text =
+                "{"
+                        + "  'type': 'Feature',"
+                        + "  'geometry': {"
+                        + "     'type': 'Point',"
+                        + "     'coordinates': ["
+                        + (val + 0.1)
+                        + ","
+                        + (val + 0.1)
+                        + "]"
+                        + "   }, "
+                        + "'  properties': {"
+                        + "     'int': "
+                        + val
+                        + ","
+                        + (missingAttribute
+                                ? ""
+                                : (nullAttribute
+                                        ? ("     'double': null,")
+                                        : ("     'double': " + (val + 0.1) + ",")))
+                        + "     'string': '"
+                        + toString(val)
+                        + "',"
+                        + "'array': ['"
+                        + toString(val)
+                        + "','"
+                        + toString(val + 1)
+                        + "']"
                         + "   },"
                         + "   'id':'feature."
                         + val

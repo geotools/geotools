@@ -16,7 +16,6 @@
  */
 package org.geotools.data.shapefile.shp.xml;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.io.IOException;
 import java.io.InputStream;
 import org.geotools.data.shapefile.files.FileReader;
@@ -26,6 +25,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.locationtech.jts.geom.Envelope;
 
 /** @source $URL$ */
 public class ShpXmlFileReader implements FileReader {

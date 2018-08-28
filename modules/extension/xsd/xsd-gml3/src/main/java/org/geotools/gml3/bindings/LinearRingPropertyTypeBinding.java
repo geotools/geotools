@@ -16,12 +16,12 @@
  */
 package org.geotools.gml3.bindings;
 
-import com.vividsolutions.jts.geom.LinearRing;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:LinearRingPropertyType.

@@ -50,7 +50,12 @@ public class OSMService extends WebMercatorTileService {
         18055,
         9027,
         4513,
-        2256
+        2256,
+        1128,
+        564,
+        282,
+        141,
+        70
     };
 
     public OSMService(String name, String baseUrl) {

@@ -16,7 +16,6 @@
  */
 package org.geotools.gml3.v3_2;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import javax.xml.namespace.QName;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.bindings.GMLCoordinatesTypeBinding;
@@ -74,6 +73,7 @@ import org.geotools.gml3.v3_2.bindings.GML32EncodingUtils;
 import org.geotools.gml3.v3_2.bindings.LinearRingTypeBinding;
 import org.geotools.xml.Configuration;
 import org.geotools.xs.XS;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.picocontainer.MutablePicoContainer;
 
 /**
@@ -305,6 +305,24 @@ public class GMLConfiguration extends Configuration {
      */
     public void setNumDecimals(int numDecimals) {
         delegate.setNumDecimals(numDecimals);
+    }
+
+    /**
+     * Controls if coordinates measures should be included in WFS outputs.
+     *
+     * @return TRUE if measures should be encoded, otherwise FALSE
+     */
+    public boolean getEncodeMeasures() {
+        return delegate.getEncodeMeasures();
+    }
+
+    /**
+     * Sets if coordinates measures should be included in WFS outputs.
+     *
+     * @param encodeMeasures TRUE if measures should be encoded, otherwise FALSE
+     */
+    public void setEncodeMeasures(boolean encodeMeasures) {
+        delegate.setEncodeMeasures(encodeMeasures);
     }
 
     /**

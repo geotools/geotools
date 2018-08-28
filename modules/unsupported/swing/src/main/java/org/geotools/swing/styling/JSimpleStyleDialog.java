@@ -17,7 +17,6 @@
 
 package org.geotools.swing.styling;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
@@ -55,6 +54,7 @@ import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbolizer;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;

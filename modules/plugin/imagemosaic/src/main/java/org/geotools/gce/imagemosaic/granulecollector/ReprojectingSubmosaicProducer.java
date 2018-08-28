@@ -17,7 +17,6 @@
 
 package org.geotools.gce.imagemosaic.granulecollector;
 
-import com.vividsolutions.jts.geom.Geometry;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -54,6 +53,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform2D;

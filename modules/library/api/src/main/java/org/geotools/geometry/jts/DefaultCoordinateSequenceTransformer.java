@@ -16,10 +16,10 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -76,7 +76,8 @@ public class DefaultCoordinateSequenceTransformer implements CoordinateSequenceT
         // create a target CS so that the dimensions not contemplated in the source CS
         // are copied over (think Z or M with a 2d CRS)
         int targetCSDim = targetDim + (sequence.getDimension() - sourceDim);
-        CoordinateSequence result = JTS.createCS(csFactory, sequence.size(), targetCSDim);
+        CoordinateSequence result =
+                JTS.createCS(csFactory, sequence.size(), targetCSDim, sequence.getMeasures());
 
         for (int i = 0; i < size; i++) {
             switch (sourceDim) {

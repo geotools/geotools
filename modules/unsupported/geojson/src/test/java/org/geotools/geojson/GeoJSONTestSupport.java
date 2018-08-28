@@ -16,10 +16,12 @@
  */
 package org.geotools.geojson;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
 import junit.framework.TestCase;
+import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** @source $URL$ */
@@ -64,6 +66,10 @@ public class GeoJSONTestSupport extends TestCase {
                     } else {
                         fail();
                     }
+                } else if (o1 != null && o1.getClass().isArray()) {
+                    List c1 = Converters.convert(o1, List.class);
+                    List c2 = Converters.convert(o2, List.class);
+                    assertEquals(c1, c2);
                 } else {
                     assertEquals(o1, o2);
                 }

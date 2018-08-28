@@ -16,10 +16,10 @@
  */
 package org.geotools.validation.spatial;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.Map;
 import org.geotools.validation.DefaultIntegrityValidation;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * PolygonCoveredByFeaturePolygonValidation purpose.
@@ -52,7 +52,7 @@ public class PolygonCoveredByFeaturePolygonValidation extends DefaultIntegrityVa
      * @return True if no features intersect. If they do then the validation failed.
      * @throws Exception DOCUMENT ME!
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
-     *     com.vividsolutions.jts.geom.Envelope, org.geotools.validation.ValidationResults)
+     *     org.locationtech.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
     public boolean validate(Map layers, Envelope envelope, ValidationResults results)
             throws Exception {

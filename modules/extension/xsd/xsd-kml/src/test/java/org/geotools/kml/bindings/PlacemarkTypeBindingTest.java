@@ -16,12 +16,12 @@
  */
 package org.geotools.kml.bindings;
 
-import com.vividsolutions.jts.geom.Point;
 import java.util.List;
 import java.util.Map;
 import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
 import org.geotools.xml.Binding;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

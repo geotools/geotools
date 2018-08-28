@@ -16,11 +16,11 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.List;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * A subclass of {@link MultiPolygon} that can host also {@link CurvePolygon} and will linearize if
@@ -117,5 +117,15 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
     @Override
     public int getCoordinatesDimension() {
         return 2;
+    }
+
+    @Override
+    public MultiSurface copyInternal() {
+        Polygon[] polys = new Polygon[geometries.length];
+        for (int i = 0; i < geometries.length; i++) {
+            polys[i] = (Polygon) geometries[i];
+        }
+
+        return new MultiSurface(polys, factory, tolerance);
     }
 }

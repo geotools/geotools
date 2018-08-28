@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.namespace.QName;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultTransaction;

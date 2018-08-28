@@ -16,9 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,6 +48,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.ScreenMap;
 import org.geotools.util.Converters;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.CoordinateSequenceFactory;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
@@ -319,14 +319,6 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
     }
 
     protected SimpleFeature readNextFeature() throws IOException {
-        // grab the connection
-        Connection cx;
-        try {
-            cx = st.getConnection();
-        } catch (SQLException e) {
-            throw (IOException) new IOException().initCause(e);
-        }
-
         // figure out the fid
         String fid;
 
@@ -384,6 +376,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                             if (screenMap != null) {
                                 if (screenMap.canSimplify(geometry.getEnvelopeInternal())) {
                                     if (screenMap.checkAndSet(geometry.getEnvelopeInternal())) {
+                                        builder.reset();
                                         return null;
                                     } else {
                                         value = screenMap.getSimplifiedShape(geometry);
@@ -435,6 +428,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
         try {
             return builder.buildFeature(fid);
         } catch (IllegalAttributeException e) {
+            builder.reset();
             throw new RuntimeException(e);
         }
     }
@@ -724,7 +718,7 @@ public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, Simpl
                                                         rs,
                                                         rsindex,
                                                         dataStore.getGeometryFactory(),
-                                                        st.getConnection(),
+                                                        cx,
                                                         hints);
                             } else {
                                 values[index] = rs.getObject(rsindex);

@@ -16,7 +16,6 @@
  */
 package org.geotools.validation.attributes;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,6 +31,7 @@ import junit.framework.TestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;

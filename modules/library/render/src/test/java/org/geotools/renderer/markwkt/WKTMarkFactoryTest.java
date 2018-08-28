@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.markwkt;
 
-import com.vividsolutions.jts.geom.LineString;
 import java.io.File;
 import java.net.URL;
 import junit.framework.TestCase;
@@ -26,6 +25,7 @@ import org.geotools.factory.GeoTools;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;

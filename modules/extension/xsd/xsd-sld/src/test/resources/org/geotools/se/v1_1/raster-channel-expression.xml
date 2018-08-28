@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StyledLayerDescriptor xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/StyledLayerDescriptor.xsd" xmlns:se="http://www.opengis.net/se">
+  <NamedLayer>
+    <se:Name>waterabstraction_mln_m3</se:Name>
+    <UserStyle>
+      <se:Name>waterabstraction_mln_m3</se:Name>
+      <se:FeatureTypeStyle>
+        <se:Rule>
+          <se:Name> Data available for other dates</se:Name>
+          <se:Description>
+            <se:Title> Data available for other dates</se:Title>
+          </se:Description>
+          <se:RasterSymbolizer>
+            <se:Opacity>1.0</se:Opacity>
+            <se:ChannelSelection>
+              <se:RedChannel>
+                <se:SourceChannelName>
+                  	<ogc:Function name="env">
+                       <ogc:Literal>B1</ogc:Literal>
+                       <ogc:Literal>5</ogc:Literal>
+                    </ogc:Function>
+                </se:SourceChannelName>
+              </se:RedChannel>
+              <se:GreenChannel>
+                <se:SourceChannelName>2</se:SourceChannelName>
+              </se:GreenChannel>
+              <se:BlueChannel>
+                <se:SourceChannelName>4</se:SourceChannelName>
+              </se:BlueChannel>
+            </se:ChannelSelection>
+          </se:RasterSymbolizer>
+        </se:Rule>
+        
+      </se:FeatureTypeStyle>
+    </UserStyle>
+  </NamedLayer>
+</StyledLayerDescriptor>

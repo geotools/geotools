@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools</groupId>
     <artifactId>plugin</artifactId>
-    <version>20-SNAPSHOT</version>
+    <version>21-SNAPSHOT</version>
   </parent>
 
 
@@ -110,6 +110,11 @@
       <artifactId>gt-xsd-sld</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.xmlgraphics</groupId>
+    	<artifactId>batik-codec</artifactId>
+    	<scope>test</scope>
     </dependency>
   </dependencies>
 

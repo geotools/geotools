@@ -18,9 +18,9 @@ package org.geotools.filter;
 
 // Java Topology Suite dependencies
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.logging.Logger;
 import org.geotools.gml.GMLHandlerJTS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

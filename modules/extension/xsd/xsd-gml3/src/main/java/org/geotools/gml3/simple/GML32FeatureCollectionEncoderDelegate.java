@@ -16,14 +16,6 @@
  */
 package org.geotools.gml3.simple;
 
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -42,6 +34,14 @@ import org.geotools.gml3.v3_2.bindings.GML32EncodingUtils;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.XSD;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
@@ -96,6 +96,9 @@ public class GML32FeatureCollectionEncoderDelegate
 
         int numDecimals;
 
+        /** Controls if coordinates measures should be encoded in GML * */
+        private boolean encodeMeasures;
+
         public GML32Delegate(Encoder encoder) {
             this.gmlUri = org.geotools.gml3.v3_2.GML.NAMESPACE;
             this.gmlPrefix = encoder.getNamespaces().getPrefix(gmlUri);
@@ -105,6 +108,7 @@ public class GML32FeatureCollectionEncoderDelegate
                     (SrsSyntax) encoder.getContext().getComponentInstanceOfType(SrsSyntax.class);
             this.encodingUtils = new GML32EncodingUtils();
             this.numDecimals = getNumDecimals(encoder.getConfiguration());
+            this.encodeMeasures = getEncodecoordinatesMeasures(encoder.getConfiguration());
         }
 
         private int getNumDecimals(Configuration configuration) {
@@ -119,6 +123,22 @@ public class GML32FeatureCollectionEncoderDelegate
                 return 6;
             } else {
                 return config.getNumDecimals();
+            }
+        }
+
+        private boolean getEncodecoordinatesMeasures(Configuration configuration) {
+            org.geotools.gml3.v3_2.GMLConfiguration config;
+            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
+                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
+            }
+
+            if (config == null) {
+                // unless explicitly requested, coordinates measures are not encoded
+                return false;
+            } else {
+                return config.getEncodeMeasures();
             }
         }
 
@@ -214,6 +234,11 @@ public class GML32FeatureCollectionEncoderDelegate
         @Override
         public boolean forceDecimalEncoding() {
             return false;
+        }
+
+        @Override
+        public boolean getEncodeMeasures() {
+            return encodeMeasures;
         }
     }
 }

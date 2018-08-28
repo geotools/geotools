@@ -22,7 +22,6 @@ import static org.geotools.data.wfs.WFSTestData.stream;
 import static org.geotools.data.wfs.WFSTestData.url;
 import static org.junit.Assert.assertEquals;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.HashSet;
 import java.util.Set;
 import org.geotools.data.Query;
@@ -36,6 +35,7 @@ import org.geotools.data.wfs.WFSTestData.TestWFSClient;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;
@@ -101,7 +101,7 @@ public class AxisOrderTest {
     }
 
     @Test
-    public void testGetFeatureWithNorthEastAxisOrderFilter() throws Exception {
+    public void testGetFeatureWithEastNorthAxisOrderFilter() throws Exception {
 
         TestHttpResponse httpResponse =
                 new TestHttpResponse(
@@ -134,15 +134,15 @@ public class AxisOrderTest {
         source.getFeatures(query).features();
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
-        // filter coordinates are inverted
-        assertEquals(815134.0, filter.getMinX(), 0.0);
-        assertEquals(4623055.0, filter.getMinY(), 0.0);
-        assertEquals(820740.0, filter.getMaxX(), 0.0);
-        assertEquals(4629904.0, filter.getMaxY(), 0.0);
+        // filter coordinates are NOT inverted
+        assertEquals(815134.0, filter.getMinY(), 0.0);
+        assertEquals(4623055.0, filter.getMinX(), 0.0);
+        assertEquals(820740.0, filter.getMaxY(), 0.0);
+        assertEquals(4629904.0, filter.getMaxX(), 0.0);
     }
 
     @Test
-    public void testGetFeatureWithEastNorthAxisOrderFilter() throws Exception {
+    public void testGetFeatureWithNorthEastAxisOrderFilter() throws Exception {
 
         TestHttpResponse httpResponse =
                 new TestHttpResponse(
@@ -175,11 +175,13 @@ public class AxisOrderTest {
         source.getFeatures(query).features();
         BBOX filter = (BBOX) wfs.getRequest().getFilter();
 
-        // filter coordinates are NOT inverted
-        assertEquals(4623055.0, filter.getMinX(), 0.0);
-        assertEquals(815134.0, filter.getMinY(), 0.0);
-        assertEquals(4629904.0, filter.getMaxX(), 0.0);
-        assertEquals(820740.0, filter.getMaxY(), 0.0);
+        // filter coordinates ARE inverted (EPSG:3857 is EAST/NORTH, so if we ask for NORTH/EAST,
+        // the filter
+        // should be inverted)
+        assertEquals(4623055.0, filter.getMinY(), 0.0);
+        assertEquals(815134.0, filter.getMinX(), 0.0);
+        assertEquals(4629904.0, filter.getMaxY(), 0.0);
+        assertEquals(820740.0, filter.getMaxX(), 0.0);
     }
 
     @Test

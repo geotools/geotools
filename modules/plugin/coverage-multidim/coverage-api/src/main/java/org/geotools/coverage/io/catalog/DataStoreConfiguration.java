@@ -73,6 +73,7 @@ public class DataStoreConfiguration {
 
     public DataStoreConfiguration(String storeName) {
         this.storeName = storeName;
+        this.shared = true;
     }
 
     public DataStoreFactorySpi getDatastoreSpi() {

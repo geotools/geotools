@@ -34,8 +34,8 @@ import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
  *
  * @see org.geotools.graph.structure.basic.BasicDirectedXYNode
  * @see org.geotools.graph.structure.basic.BasicDirectedEdge
- * @see com.vividsolutions.jts.geom.LineSegment
- * @see com.vividsolutions.jts.geom.Coordinate
+ * @see org.locationtech.jts.geom.LineSegment
+ * @see org.locationtech.jts.geom.Coordinate
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * @source $URL$
  */

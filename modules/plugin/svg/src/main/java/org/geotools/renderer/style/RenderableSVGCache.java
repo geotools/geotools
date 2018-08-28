@@ -17,7 +17,6 @@
 package org.geotools.renderer.style;
 
 import java.awt.RenderingHints.Key;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -30,13 +29,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.apache.batik.dom.svg.SAXSVGDocumentFactory;
+import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.util.XMLResourceDescriptor;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
-import org.geotools.xml.NullEntityResolver;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 import org.w3c.dom.Document;
@@ -45,8 +41,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /** Cache for RenderableSVG instances */
 public class RenderableSVGCache {
@@ -72,18 +66,7 @@ public class RenderableSVGCache {
         this(null);
     }
 
-    public RenderableSVGCache(Map<Key, Object> hints) {
-        if (hints != null && hints.containsKey(Hints.ENTITY_RESOLVER)) {
-            // use entity resolver provided (even if null)
-            this.resolver = (EntityResolver) hints.get(Hints.ENTITY_RESOLVER);
-
-            if (this.resolver == null) { // use null instance rather than check each time
-                this.resolver = NullEntityResolver.INSTANCE;
-            }
-        } else {
-            this.resolver = GeoTools.getEntityResolver(null);
-        }
-    }
+    public RenderableSVGCache(Map<Key, Object> hints) {}
 
     public RenderableSVG getRenderableSVG(Feature feature, Expression url, String format)
             throws Exception {
@@ -106,23 +89,15 @@ public class RenderableSVGCache {
         RenderableSVG svg = glyphCache.get(svgfile);
         if (svg == null) {
             String parser = XMLResourceDescriptor.getXMLParserClassName();
-            SAXSVGDocumentFactory f =
-                    new SAXSVGDocumentFactory(parser) {
-                        @Override
-                        public InputSource resolveEntity(String publicId, String systemId)
-                                throws SAXException {
-                            InputSource source = super.resolveEntity(publicId, systemId);
-                            if (source == null) {
-                                try {
-                                    return resolver.resolveEntity(publicId, systemId);
-                                } catch (IOException e) {
-                                    throw new SAXException(e);
-                                }
-                            }
-                            return source;
-                        }
-                    };
-            Document doc = f.createDocument(svgfile);
+            SAXSVGDocumentFactory f = new SAXSVGDocumentFactory(parser);
+            Document doc;
+            int queryIdx = svgfile.indexOf("?");
+            if (svgfile.startsWith("file:/") && queryIdx > 0) {
+                String localPath = svgfile.substring(0, queryIdx);
+                doc = f.createDocument(localPath);
+            } else {
+                doc = f.createDocument(svgfile);
+            }
             Map<String, String> parameters = getParametersFromUrl(svgfile);
             if (!parameters.isEmpty() || hasParameters(doc.getDocumentElement())) {
                 replaceParameters(doc.getDocumentElement(), parameters);

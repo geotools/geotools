@@ -12,7 +12,7 @@ env:
   global:
     - MAVEN_OPTS=-Xmx512m
 script:
-  - mvn -B -fae -T4 -Dall clean install -PnoLocalChanges
+  - mvn -B -fae -T4 -Dall clean install -Dfmt.action=check
 notifications:
   email: false
   on_failure: never

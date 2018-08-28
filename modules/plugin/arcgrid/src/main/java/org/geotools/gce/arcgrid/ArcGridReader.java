@@ -17,7 +17,6 @@
  */
 package org.geotools.gce.arcgrid;
 
-import com.vividsolutions.jts.io.InStream;
 import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageMetadata;
 import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageReaderSpi;
 import java.awt.Color;
@@ -69,6 +68,7 @@ import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.locationtech.jts.io.InStream;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;

@@ -22,14 +22,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.digester.Digester;
 import org.geotools.data.complex.AppSchemaDataAccessFactory;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
+import org.geotools.data.complex.spi.CustomSourceDataStore;
 import org.geotools.util.InterpolationProperties;
 import org.geotools.util.URLs;
 import org.xml.sax.SAXException;
@@ -52,7 +51,7 @@ public class XMLConfigDigester {
                     XMLConfigDigester.class.getPackage().getName());
 
     /** Namespace URI for the AppSchemaDataAccess configuration files */
-    private static final String CONFIG_NS_URI = "http://www.geotools.org/app-schema";
+    public static final String CONFIG_NS_URI = "http://www.geotools.org/app-schema";
 
     /** Name of the interpolation property for the configuration file. */
     private static final String CONFIG_FILE_PROPERTY = "config.file";
@@ -62,6 +61,8 @@ public class XMLConfigDigester {
 
     /** Properties */
     protected InterpolationProperties properties;
+
+    private final List<CustomSourceDataStore> extensions;
 
     /** Creates a new XMLConfigReader object. */
     public XMLConfigDigester() {
@@ -75,6 +76,7 @@ public class XMLConfigDigester {
      */
     public XMLConfigDigester(InterpolationProperties properties) {
         this.properties = properties;
+        this.extensions = CustomSourceDataStore.loadExtensions();
     }
 
     /**
@@ -307,32 +309,43 @@ public class XMLConfigDigester {
     private void setSourceDataStoresRules(Digester digester) {
         final String dataStores = "AppSchemaDataAccess/sourceDataStores";
         digester.addObjectCreate(dataStores, XMLConfigDigester.CONFIG_NS_URI, ArrayList.class);
-
-        // create a SourceDataStore for each DataStore tag
-        digester.addObjectCreate(
-                dataStores + "/DataStore", XMLConfigDigester.CONFIG_NS_URI, SourceDataStore.class);
-        digester.addCallMethod(dataStores + "/DataStore/id", "setId", 1);
-        digester.addCallParam(dataStores + "/DataStore/id", 0);
-
-        digester.addObjectCreate(
-                dataStores + "/DataStore/parameters",
-                XMLConfigDigester.CONFIG_NS_URI,
-                HashMap.class);
-        digester.addCallMethod(dataStores + "/DataStore/parameters/Parameter", "put", 2);
-        digester.addCallParam(dataStores + "/DataStore/parameters/Parameter/name", 0);
-        digester.addCallParam(dataStores + "/DataStore/parameters/Parameter/value", 1);
-        digester.addSetNext(dataStores + "/DataStore/parameters", "setParams");
-
-        // isDataAccess is a flag to denote that we want to connect to the data access
-        // that is connected to the data store specified
-        digester.addCallMethod(dataStores + "/DataStore/isDataAccess", "setDataAccess", 1);
-        digester.addCallParam(dataStores + "/DataStore/isDataAccess", 0);
-
-        // add the SourceDataStore to the list
-        digester.addSetNext(dataStores + "/DataStore", "add");
-
+        setCommonSourceDataStoreRules(SourceDataStore.class, "DataStore", digester);
+        // extension point allowing data sources to provide a custom syntax for their configuration
+        extensions.forEach(extension -> extension.configXmlDigester(digester));
         // set the list of SourceDataStores for ComlexDataStoreDTO
         digester.addSetNext(dataStores, "setSourceDataStores");
+    }
+
+    /**
+     * Helper method that can be used by stores to contribute their own XML configurations.
+     *
+     * @param datStoreType the data store class
+     * @param dataStoreTag custom tag name
+     * @param digester the XML parser configuration to use
+     */
+    public static void setCommonSourceDataStoreRules(
+            Class<? extends SourceDataStore> datStoreType, String dataStoreTag, Digester digester) {
+        String dataStores = "AppSchemaDataAccess/sourceDataStores/";
+        // create a SourceDataStore for each DataStore tag
+        digester.addObjectCreate(
+                dataStores + dataStoreTag, XMLConfigDigester.CONFIG_NS_URI, datStoreType);
+        digester.addCallMethod(dataStores + dataStoreTag + "/id", "setId", 1);
+        digester.addCallParam(dataStores + dataStoreTag + "/id", 0);
+        // handle the parameters
+        digester.addObjectCreate(
+                dataStores + dataStoreTag + "/parameters",
+                XMLConfigDigester.CONFIG_NS_URI,
+                HashMap.class);
+        digester.addCallMethod(dataStores + dataStoreTag + "/parameters/Parameter", "put", 2);
+        digester.addCallParam(dataStores + dataStoreTag + "/parameters/Parameter/name", 0);
+        digester.addCallParam(dataStores + dataStoreTag + "/parameters/Parameter/value", 1);
+        digester.addSetNext(dataStores + dataStoreTag + "/parameters", "setParams");
+        // isDataAccess is a flag to denote that we want to connect to the data access that is
+        // connected to the data store specified
+        digester.addCallMethod(dataStores + dataStoreTag + "/isDataAccess", "setDataAccess", 1);
+        digester.addCallParam(dataStores + dataStoreTag + "/isDataAccess", 0);
+        // add the SourceDataStore to the list
+        digester.addSetNext(dataStores + dataStoreTag, "add");
     }
 
     private void setNamespacesRules(Digester digester) {

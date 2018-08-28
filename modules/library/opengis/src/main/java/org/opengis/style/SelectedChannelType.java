@@ -11,6 +11,7 @@ package org.opengis.style;
 
 import org.opengis.annotation.Extension;
 import org.opengis.annotation.XmlElement;
+import org.opengis.filter.expression.Expression;
 
 /**
  * A class to hold Channel information for use in ChannelSelection objects.
@@ -29,10 +30,10 @@ public interface SelectedChannelType {
     /**
      * Returns the channel's name.
      *
-     * @return String
+     * @return Expression
      */
     @XmlElement("SourceChannelName")
-    public String getChannelName();
+    public Expression getChannelName();
 
     /**
      * Contrast enhancement may be applied to each channel in isolation.

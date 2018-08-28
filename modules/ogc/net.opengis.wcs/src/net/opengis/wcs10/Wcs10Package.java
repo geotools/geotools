@@ -3816,10 +3816,10 @@ public interface Wcs10Package extends EPackage {
     int WCS_CAPABILITY_TYPE_FEATURE_COUNT = 5;
 
     /**
-	 * The meta object id for the '{@link com.vividsolutions.jts.geom.Envelope <em>Envelope</em>}' class.
+	 * The meta object id for the '{@link org.locationtech.jts.geom.Envelope <em>Envelope</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see com.vividsolutions.jts.geom.Envelope
+	 * @see org.locationtech.jts.geom.Envelope
 	 * @see net.opengis.wcs10.impl.Wcs10PackageImpl#getEnvelope()
 	 * @generated
 	 */
@@ -6652,12 +6652,12 @@ public interface Wcs10Package extends EPackage {
     EAttribute getWCSCapabilityType_Version();
 
     /**
-	 * Returns the meta object for class '{@link com.vividsolutions.jts.geom.Envelope <em>Envelope</em>}'.
+	 * Returns the meta object for class '{@link org.locationtech.jts.geom.Envelope <em>Envelope</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Envelope</em>'.
-	 * @see com.vividsolutions.jts.geom.Envelope
-	 * @model instanceClass="com.vividsolutions.jts.geom.Envelope"
+	 * @see org.locationtech.jts.geom.Envelope
+	 * @model instanceClass="org.locationtech.jts.geom.Envelope"
 	 * @generated
 	 */
 	EClass getEnvelope();
@@ -8913,10 +8913,10 @@ public interface Wcs10Package extends EPackage {
         EAttribute WCS_CAPABILITY_TYPE__VERSION = eINSTANCE.getWCSCapabilityType_Version();
 
         /**
-		 * The meta object literal for the '{@link com.vividsolutions.jts.geom.Envelope <em>Envelope</em>}' class.
+		 * The meta object literal for the '{@link org.locationtech.jts.geom.Envelope <em>Envelope</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see com.vividsolutions.jts.geom.Envelope
+		 * @see org.locationtech.jts.geom.Envelope
 		 * @see net.opengis.wcs10.impl.Wcs10PackageImpl#getEnvelope()
 		 * @generated
 		 */

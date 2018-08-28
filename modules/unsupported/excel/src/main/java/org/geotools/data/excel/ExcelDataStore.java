@@ -23,7 +23,7 @@ package org.geotools.data.excel;
  * @author iant
  */
 
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;

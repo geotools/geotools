@@ -74,7 +74,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * version number if there is some changes related to the EPSG-HSQL plugin rather then the EPSG
      * database itself (for example additional database index).
      */
-    public static final Version VERSION = new Version("8.6.0.0");
+    public static final Version VERSION = new Version("8.6.0.1");
 
     /**
      * The key for fetching the database directory from {@linkplain System#getProperty(String)
@@ -157,7 +157,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
 
     /** Returns the directory to uses in the temporary directory folder. */
     private static File getTemporaryDirectory() {
-        File directory = new File(System.getProperty("java.io.tmpdir", "."), "Geotools");
+        File directory = new File(System.getProperty("java.io.tmpdir", "."), "GeoTools");
         if (directory.isDirectory() || directory.mkdir()) {
             directory = new File(directory, "Databases/HSQL");
             if (directory.isDirectory() || directory.mkdirs()) {
@@ -211,7 +211,6 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
             url.append(DATABASE_NAME);
             url.append(";shutdown=true;readonly=true");
             source.setDatabase(url.toString());
-            assert directory.equals(getDirectory(source)) : url;
         }
         /*
          * If the temporary directory do not exists or can't be created, lets the 'database'
@@ -309,7 +308,18 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
                 }
             }
         }
-        FactoryUsingHSQL factory = new FactoryUsingHSQL(hints, getDataSource());
+        FactoryUsingHSQL factory =
+                new FactoryUsingHSQL(hints, getDataSource()) {
+                    @Override
+                    protected void shutdown(boolean active) throws SQLException {
+                        // Disabled because finalizer shutdown causes concurrent EPSG lookup via
+                        // other FactoryUsingHSQL instances using the same database URL and thus
+                        // the same org.hsqldb.Database instance to fail in, for example,
+                        // GeoServer gs-main unit tests.
+                        // Note that createDataSource() opens the database with "shutdown=true"
+                        // so the database will be shutdown when the last session is closed.
+                    }
+                };
         factory.setValidationQuery("CALL NOW()");
         return factory;
     }

@@ -16,11 +16,11 @@
  */
 package org.geotools.gml;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Vector;
 import java.util.logging.Logger;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.xml.sax.Attributes;

@@ -19,7 +19,6 @@ package org.geotools.data.mongodb;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -30,6 +29,7 @@ import org.geotools.data.mongodb.complex.MongoComplexUtilities;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;

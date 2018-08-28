@@ -19,8 +19,6 @@ package org.geotools.arcsde.data;
 
 import com.esri.sde.sdk.client.SeLayer;
 import com.esri.sde.sdk.client.SeVersion;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.versioning.AutoCommitVersionHandler;
 import org.geotools.data.Query;
@@ -32,6 +30,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.FilterFactory;

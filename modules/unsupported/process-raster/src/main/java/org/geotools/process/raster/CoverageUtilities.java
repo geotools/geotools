@@ -16,9 +16,6 @@
  */
 package org.geotools.process.raster;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.geom.AffineTransform;
@@ -41,6 +38,9 @@ import org.geotools.resources.ClassChanger;
 import org.geotools.util.Utilities;
 import org.jaitools.media.jai.rangelookup.RangeLookupTable;
 import org.jaitools.numeric.Range;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opengis.coverage.SampleDimensionType;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.DirectPosition;

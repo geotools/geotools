@@ -18,17 +18,6 @@ package org.geotools.renderer.crs;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateFilter;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryComponentFilter;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKBReader;
-import com.vividsolutions.jts.io.WKTReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
@@ -42,6 +31,17 @@ import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateFilter;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.io.WKBReader;
+import org.locationtech.jts.io.WKTReader;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.SingleCRS;
@@ -434,7 +434,7 @@ public class ProjectionHandlerTest {
                 new WKTReader()
                         .read(
                                 "POLYGON ((2139122 5880020, 2139122 5880030, 2139922 5880030, 2139122 5880020))");
-        Geometry original = (Geometry) g.clone();
+        Geometry original = g.copy();
 
         // rendering bounds only slightly bigger than geometry
         ReferencedEnvelope world = new ReferencedEnvelope(178, 181, -1, 1, WGS84);
@@ -865,7 +865,7 @@ public class ProjectionHandlerTest {
                 new WKTReader()
                         .read(
                                 "MULTIPOLYGON(((-73 60, -73 83, -11 83, -11 60, -73 60)),((-10 60, -10 61, -11 61, -11 60, -10 60)))");
-        Geometry original = (Geometry) g.clone();
+        Geometry original = g.copy();
         //
         ProjectionHandler handler = ProjectionHandlerFinder.getHandler(world, WGS84, true);
         assertTrue(handler.requiresProcessing(g));

@@ -1,11 +1,11 @@
 package org.geotools.api;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.locationtech.jts.geom.Envelope;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -80,7 +80,7 @@ public class APIExamples {
     //
     private void exampleEnvelope() throws Exception {
         // exampleEnvelope start
-        com.vividsolutions.jts.geom.Envelope envelope = new Envelope(0, 10, 0, 20);
+        org.locationtech.jts.geom.Envelope envelope = new Envelope(0, 10, 0, 20);
         double xMin = envelope.getMinX();
         double yMin = envelope.getMinY();
 
@@ -212,7 +212,7 @@ public class APIExamples {
         CoordinateReferenceSystem crs = null; // can be 2D or 3D
         org.opengis.geometry.Envelope opengis_env =
                 null; // can be instance of ReferencedEnvelope(3D)
-        com.vividsolutions.jts.geom.Envelope jts_env =
+        org.locationtech.jts.geom.Envelope jts_env =
                 null; // can be instance of ReferencedEnvelope(3D)
         BoundingBox bbox = null; // can be instance of ReferencedEnvelope(3D)
 
@@ -226,7 +226,7 @@ public class APIExamples {
         // Envelope to determine type
         env = ReferencedEnvelope.create(opengis_env, crs);
 
-        // safely create ReferencedEnvelope from com.vividsolutions.jts.geom.Envelope, uses
+        // safely create ReferencedEnvelope from org.locationtech.jts.geom.Envelope, uses
         // dimension in Envelope to determine type
         env = ReferencedEnvelope.create(jts_env, crs);
 
@@ -234,7 +234,7 @@ public class APIExamples {
         // --> if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion
         env = ReferencedEnvelope.reference(opengis_env);
 
-        // safely reference com.vividsolutions.jts.geom.Envelope as ReferencedEnvelope
+        // safely reference org.locationtech.jts.geom.Envelope as ReferencedEnvelope
         // --> if it is a ReferencedEnvelope(3D), simply cast it; if not, create a conversion
         env = ReferencedEnvelope.reference(jts_env);
 

@@ -18,9 +18,9 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.assertEquals;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
 
 public class WKTWriter2Test {
 

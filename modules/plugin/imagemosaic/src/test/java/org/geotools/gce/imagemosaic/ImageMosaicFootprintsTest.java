@@ -22,13 +22,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import com.vividsolutions.jts.densify.Densifier;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKBWriter;
-import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.io.WKTWriter;
-import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 import java.awt.Dimension;
@@ -81,6 +74,13 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.locationtech.jts.densify.Densifier;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.io.WKBWriter;
+import org.locationtech.jts.io.WKTReader;
+import org.locationtech.jts.io.WKTWriter;
+import org.locationtech.jts.precision.EnhancedPrecisionOp;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -1114,6 +1114,7 @@ public class ImageMosaicFootprintsTest {
         assertEquals(0, result[1]);
         assertTrue(0 != result[2]);
         assertTrue(0 != result[3]);
+        reader.dispose();
     }
 
     @Test
@@ -1158,6 +1159,8 @@ public class ImageMosaicFootprintsTest {
         assertEquals(0, result[1]);
         assertTrue(0 != result[2]);
         assertTrue(0 != result[3]);
+
+        reader.dispose();
     }
 
     @Test
@@ -1511,5 +1514,7 @@ public class ImageMosaicFootprintsTest {
 
         int numComponents = coverage.getRenderedImage().getColorModel().getNumComponents();
         assertEquals(numComponents, 4);
+
+        reader.dispose();
     }
 }

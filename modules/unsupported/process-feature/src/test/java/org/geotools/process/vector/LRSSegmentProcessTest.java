@@ -16,7 +16,6 @@
  */
 package org.geotools.process.vector;
 
-import com.vividsolutions.jts.geom.MultiLineString;
 import java.io.File;
 import java.io.IOException;
 import org.geotools.data.DataStore;
@@ -31,6 +30,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.MultiLineString;
 import org.opengis.feature.Feature;
 
 /** @source $URL$ */

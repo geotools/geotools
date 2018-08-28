@@ -17,8 +17,6 @@
 
 package org.geotools.data.complex.config;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -38,6 +36,8 @@ import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xs.XS;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;

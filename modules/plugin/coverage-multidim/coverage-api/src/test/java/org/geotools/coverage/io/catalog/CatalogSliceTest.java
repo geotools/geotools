@@ -16,8 +16,6 @@
  */
 package org.geotools.coverage.io.catalog;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
@@ -45,6 +43,8 @@ import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

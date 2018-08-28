@@ -17,8 +17,10 @@
 package org.geotools.filter.function;
 
 import org.geotools.data.Query;
+import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.filter.expression.Function;
+import org.opengis.parameter.GeneralParameterValue;
 
 /**
  * An interface to be implemented by processes or by filter functions meant to be integrated as
@@ -56,4 +58,16 @@ public interface RenderingTransformation extends Function {
      * @return The transformed query, or null if no inversion is possible/meaningful
      */
     GridGeometry invertGridGeometry(Query targetQuery, GridGeometry targetGridGeometry);
+
+    /**
+     * Allows the transformation to customize the read
+     *
+     * @param reader
+     * @param params
+     * @return
+     */
+    default GeneralParameterValue[] customizeReadParams(
+            GridCoverageReader reader, GeneralParameterValue[] params) {
+        return params;
+    }
 }

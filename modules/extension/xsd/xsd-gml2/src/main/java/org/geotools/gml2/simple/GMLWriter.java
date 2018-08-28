@@ -16,12 +16,12 @@
  */
 package org.geotools.gml2.simple;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
 import java.text.FieldPosition;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml2.GML;
 import org.geotools.xml.XMLUtils;
+import org.locationtech.jts.geom.CoordinateSequence;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;

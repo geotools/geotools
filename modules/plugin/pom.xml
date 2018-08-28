@@ -53,7 +53,6 @@
     <module>feature-pregeneralized</module>
     <module>geotiff</module>
     <module>grassraster</module>
-    <module>gtopo30</module>
     <module>image</module>
     <module>imagemosaic</module>
     <module>imageio-ext-gdal</module>
@@ -61,7 +60,6 @@
     <module>imagemosaic-jdbc</module>
     <module>jdbc</module>
     <module>jp2k</module>
-    <module>ogr</module>
     <module>property</module>
     <module>referencing3D</module>
     <module>shapefile</module>
@@ -70,6 +68,16 @@
     <module>geopkg</module>
     <module>mongodb</module>
   </modules>
+
+  <!-- temporarily kicking OGR out of the build -->
+  <profiles>
+    <profile>
+        <id>pending</id>
+        <modules>
+          <module>ogr</module>
+        </modules>
+    </profile>
+  </profiles>
 
 </project>
 

@@ -16,7 +16,6 @@
  */
 package org.geotools.styling.css.util;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -25,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**

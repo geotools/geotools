@@ -172,7 +172,7 @@ If that is not the case, the following are the full dependencies of the GeoTools
     |  |  \- org.geotools:gt-metadata:jar:<VERSION>    
     |  |     \- org.geotools:gt-opengis:jar:<VERSION>    
     |  |        \- net.java.dev.jsr-275:jsr-275:jar:1.0-beta-2    
-    |  +- com.vividsolutions:jts:jar:1.11    
+    |  +- org.locationtech:jts:jar:1.11    
     |  |  \- xerces:xercesImpl:jar:2.7.1     (version managed from 2.4.0)
     |  \- it.geosolutions.imageio-ext:imageio-ext-tiff:jar:1.0.8    
     |     \- it.geosolutions.imageio-ext:imageio-ext-utilities:jar:1.0.8    

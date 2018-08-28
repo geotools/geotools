@@ -17,9 +17,9 @@
 
 package org.geotools.grid;
 
-import com.vividsolutions.jts.geom.Polygon;
 import java.util.Map;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

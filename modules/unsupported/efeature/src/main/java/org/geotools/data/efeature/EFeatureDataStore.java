@@ -1,6 +1,6 @@
 package org.geotools.data.efeature;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

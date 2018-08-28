@@ -103,9 +103,9 @@ final class HttpStaticServer {
             String relativePath =
                     URLs.urlToFile(URLs.getParentUrl(this.getClass().getResource(resourcePath)))
                             .getPath();
-            resource = resource.replaceAll("\\{relative\\}", relativePath);
-            resource = resource.replaceAll("\\{host\\}", getHost());
-            resource = resource.replaceAll("\\{port\\}", String.valueOf(getPort()));
+            resource = resource.replace("{relative}", relativePath);
+            resource = resource.replace("{host}", getHost());
+            resource = resource.replace("{port}", String.valueOf(getPort()));
             // register the resource
             resources.put(resourceName, resource);
             LOGGER.info(String.format("Resource %s added.", buildUrl(resourceName)));

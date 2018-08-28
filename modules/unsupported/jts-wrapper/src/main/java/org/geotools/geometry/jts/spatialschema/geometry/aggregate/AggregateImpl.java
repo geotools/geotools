@@ -32,14 +32,14 @@ public abstract class AggregateImpl extends GeometryImpl implements Aggregate {
         this.elements = new HashSet();
     }
 
-    protected com.vividsolutions.jts.geom.Geometry computeJTSPeer() {
+    protected org.locationtech.jts.geom.Geometry computeJTSPeer() {
         ArrayList childParts = new ArrayList();
         Iterator children = elements.iterator();
         while (children.hasNext()) {
             JTSGeometry jtsGeom = (JTSGeometry) children.next();
             childParts.add(jtsGeom.getJTSGeometry());
         }
-        com.vividsolutions.jts.geom.Geometry result =
+        org.locationtech.jts.geom.Geometry result =
                 JTSUtils.GEOMETRY_FACTORY.buildGeometry(childParts);
         return result;
     }

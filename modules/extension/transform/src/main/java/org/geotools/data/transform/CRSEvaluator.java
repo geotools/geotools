@@ -16,8 +16,8 @@
  */
 package org.geotools.data.transform;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;

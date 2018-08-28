@@ -22,7 +22,6 @@ import static org.geotools.data.wfs.WFSTestData.stream;
 import static org.geotools.data.wfs.WFSTestData.url;
 import static org.junit.Assert.assertEquals;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.HashSet;
 import java.util.Set;
 import org.geotools.data.Query;
@@ -36,6 +35,7 @@ import org.geotools.data.wfs.WFSTestData.TestWFSClient;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.identity.FeatureId;

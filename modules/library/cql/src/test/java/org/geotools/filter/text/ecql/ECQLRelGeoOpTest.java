@@ -17,7 +17,6 @@
 
 package org.geotools.filter.text.ecql;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.function.FilterFunction_buffer;
@@ -26,6 +25,7 @@ import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLRelGeoOpTest;
 import org.junit.Assert;
 import org.junit.Test;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;

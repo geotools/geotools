@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.label;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -26,6 +25,7 @@ import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * The Labelling information that is put in the label cache.

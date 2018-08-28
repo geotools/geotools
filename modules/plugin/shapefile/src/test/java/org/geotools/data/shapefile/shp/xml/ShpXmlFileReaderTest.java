@@ -18,13 +18,13 @@ package org.geotools.data.shapefile.shp.xml;
 
 import static org.junit.Assert.*;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.net.URL;
 import org.geotools.TestData;
 import org.geotools.data.shapefile.TestCaseSupport;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.junit.Before;
 import org.junit.Test;
+import org.locationtech.jts.geom.Envelope;
 
 /** @source $URL$ */
 public class ShpXmlFileReaderTest {

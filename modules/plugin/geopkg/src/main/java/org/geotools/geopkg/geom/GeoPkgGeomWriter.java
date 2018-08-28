@@ -16,16 +16,16 @@
  */
 package org.geotools.geopkg.geom;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ByteOrderValues;
-import com.vividsolutions.jts.io.OutStream;
-import com.vividsolutions.jts.io.OutputStreamOutStream;
-import com.vividsolutions.jts.io.WKBWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import org.geotools.geopkg.geom.GeometryHeaderFlags.GeopackageBinaryType;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.ByteOrderValues;
+import org.locationtech.jts.io.OutStream;
+import org.locationtech.jts.io.OutputStreamOutStream;
+import org.locationtech.jts.io.WKBWriter;
 
 /**
  * Translates a vividsolutions Geometry to a GeoPackage geometry BLOB.

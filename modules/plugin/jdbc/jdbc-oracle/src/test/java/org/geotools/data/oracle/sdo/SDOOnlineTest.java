@@ -19,8 +19,6 @@
  */
 package org.geotools.data.oracle.sdo;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import oracle.jdbc.OracleConnection;
@@ -30,6 +28,8 @@ import org.geotools.data.jdbc.datasource.UnWrapper;
 import org.geotools.data.oracle.OracleTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKTReader;
 
 /**
  * Test the functionality of the {@link SDO} utility class.

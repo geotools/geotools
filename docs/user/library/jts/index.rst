@@ -27,7 +27,7 @@ The GeoTools provides some help for working with JTS:
 **Maven**::
    
       <dependency>
-        <groupId>com.vividsolutions</groupId>
+        <groupId>org.locationtech</groupId>
         <artifactId>jts</artifactId>
         <version>1.13</version>
       </dependency>

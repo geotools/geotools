@@ -56,13 +56,14 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
     public void run() {
 
         SimpleFeatureIterator it = null;
+        GranuleCatalog catalog = null;
         try {
 
             configHandler.indexingPreamble();
             startTransaction();
 
             // start looking into catalog
-            final GranuleCatalog catalog = configHandler.getCatalog();
+            catalog = configHandler.getCatalog();
             String locationAttrName =
                     configHandler.getRunConfiguration().getParameter(Prop.LOCATION_ATTRIBUTE);
             String requestedTypeName =
@@ -222,6 +223,17 @@ class ImageMosaicDatastoreWalker extends ImageMosaicWalker {
                 }
                 // notify listeners
                 eventHandler.fireException(e);
+            }
+
+            try {
+                if (catalog != null) {
+                    catalog.dispose();
+                }
+            } catch (RuntimeException e) {
+                String message = "Failed to dispose harvesting catalog";
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(Level.WARNING, message, e);
+                }
             }
         }
     }

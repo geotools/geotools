@@ -15,7 +15,7 @@
  */
 package org.geotools.data.edigeo;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.FileNotFoundException;

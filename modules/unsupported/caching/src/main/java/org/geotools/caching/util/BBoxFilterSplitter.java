@@ -16,8 +16,8 @@
  */
 package org.geotools.caching.util;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import java.util.Iterator;
 import java.util.Stack;
 import org.geotools.factory.CommonFactoryFinder;

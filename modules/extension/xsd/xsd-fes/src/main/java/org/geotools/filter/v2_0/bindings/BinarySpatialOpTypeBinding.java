@@ -16,12 +16,12 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
-import com.vividsolutions.jts.geom.Geometry;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.EncoderDelegate;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BinarySpatialOperator;

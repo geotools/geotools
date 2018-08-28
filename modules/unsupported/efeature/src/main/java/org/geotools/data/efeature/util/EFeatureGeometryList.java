@@ -1,6 +1,6 @@
 package org.geotools.data.efeature.util;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;

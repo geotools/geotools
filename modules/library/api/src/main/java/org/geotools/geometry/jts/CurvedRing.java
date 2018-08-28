@@ -16,7 +16,7 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.LinearRing;
+import org.locationtech.jts.geom.LinearRing;
 
 /**
  * Marker interface identifying closed curved geometries

@@ -235,6 +235,7 @@ public class GranuleTest extends Assert {
                         .getRaster();
         assertEquals(translatedRaster.getWidth(), 50);
         assertEquals(translatedRaster.getHeight(), 50);
+        reader.dispose();
     }
 
     static final String NZTM_WKT_NE =
@@ -355,5 +356,6 @@ public class GranuleTest extends Assert {
         assertEquals(1612003.2265, checkCropBBox.getMaximum(0), 0.0001);
         assertEquals(6162000.4515, checkCropBBox.getMinimum(1), 0.0001);
         assertEquals(6198002.1165, checkCropBBox.getMaximum(1), 0.0001);
+        reader.dispose();
     }
 }

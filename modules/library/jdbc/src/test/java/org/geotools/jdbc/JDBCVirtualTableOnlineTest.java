@@ -1,6 +1,5 @@
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.LineString;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +18,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -48,6 +48,10 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         }
         dialect.encodeTableName(tname("river"), sb);
         VirtualTable vt = new VirtualTable("riverFull", sb.toString());
+        dataStore.addVirtualTable(vt);
+
+        sb.append(" where 1 = 1 :where_clause:");
+        vt = new VirtualTable("riverFullPlaceHolder", sb.toString());
         dataStore.addVirtualTable(vt);
 
         // a first vt with a condition, computing a new field
@@ -115,7 +119,10 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
     public void testGuessGeometry() throws Exception {
         SimpleFeatureType type = dataStore.getSchema("riverFull");
         assertNotNull(type);
-
+        assertNotNull(type.getGeometryDescriptor());
+        // perform the same tests with the place holder for the where clause
+        type = dataStore.getSchema("riverFullPlaceHolder");
+        assertNotNull(type);
         assertNotNull(type.getGeometryDescriptor());
     }
 
@@ -169,6 +176,10 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
     public void testBounds() throws Exception {
         FeatureSource fsView = dataStore.getFeatureSource("riverReduced");
         ReferencedEnvelope env = fsView.getBounds();
+        assertNotNull(env);
+        // perform the same tests with the place holder for the where clause
+        fsView = dataStore.getFeatureSource("riverFullPlaceHolder");
+        env = fsView.getBounds();
         assertNotNull(env);
     }
 
@@ -363,5 +374,39 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
         int count = fsFull.getCount(joinQuery);
 
         assertEquals(expectedCount, count);
+    }
+
+    public void testJoinViewsWithPlaceHolder() {
+        Query joinQuery = new Query("riverFullPlaceHolder");
+        FilterFactory ff = dataStore.getFilterFactory();
+        Join join =
+                new Join(
+                        "riverFullPlaceHolder",
+                        ff.equal(
+                                ff.property("a." + aname("river")),
+                                ff.property(aname("river")),
+                                false));
+        join.setAlias("a");
+        joinQuery.getJoins().add(join);
+        try {
+            dataStore.getFeatureSource("riverFullPlaceHolder").getCount(joinQuery);
+        } catch (Exception exception) {
+            assertTrue(
+                    exception
+                            .getMessage()
+                            .contains(
+                                    "Joins between virtual tables that provide a "
+                                            + ":where_placeholder: are not supported"));
+            return;
+        }
+        fail("count query should have fail with an exception");
+    }
+
+    public void testPaginationWithPlaceHolder() throws Exception {
+        Query query = new Query("riverFullPlaceHolder");
+        query.setStartIndex(1);
+        query.setMaxFeatures(2);
+        int count = dataStore.getFeatureSource("riverFullPlaceHolder").getCount(query);
+        assertTrue(count == 1);
     }
 }

@@ -18,7 +18,6 @@ package org.geotools.data.wfs.integration;
 
 import static org.geotools.data.wfs.WFSTestData.url;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
@@ -71,6 +70,7 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xml.impl.ParserHandler.ContextCustomizer;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;

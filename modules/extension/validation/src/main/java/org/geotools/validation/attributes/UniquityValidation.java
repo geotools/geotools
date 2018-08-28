@@ -16,11 +16,11 @@
  */
 package org.geotools.validation.attributes;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.validation.DefaultIntegrityValidation;
 import org.geotools.validation.ValidationResults;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Tests to that an attribute's value is unique across the entire FeatureType.

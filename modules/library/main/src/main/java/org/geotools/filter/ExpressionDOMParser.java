@@ -18,20 +18,20 @@
  */
 package org.geotools.filter;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.TopologyException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.TopologyException;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
@@ -506,7 +506,7 @@ public final class ExpressionDOMParser {
             type = GML_BOX;
             coordList = parseCoords(child);
 
-            com.vividsolutions.jts.geom.Envelope env = new com.vividsolutions.jts.geom.Envelope();
+            org.locationtech.jts.geom.Envelope env = new org.locationtech.jts.geom.Envelope();
 
             for (int i = 0; i < coordList.size(); i++) {
                 env.expandToInclude((Coordinate) coordList.get(i));
@@ -519,11 +519,11 @@ public final class ExpressionDOMParser {
             coords[4] = new Coordinate(env.getMinX(), env.getMinY());
 
             // return new ReferencedEnvelope( env, null );
-            com.vividsolutions.jts.geom.LinearRing ring = null;
+            org.locationtech.jts.geom.LinearRing ring = null;
 
             try {
                 ring = gfac.createLinearRing(coords);
-            } catch (com.vividsolutions.jts.geom.TopologyException tope) {
+            } catch (org.locationtech.jts.geom.TopologyException tope) {
                 LOGGER.fine("Topology Exception in GMLBox" + tope);
 
                 return null;
@@ -600,7 +600,7 @@ public final class ExpressionDOMParser {
             LOGGER.finer("LinearRing");
             coordList = parseCoords(child);
 
-            com.vividsolutions.jts.geom.LinearRing ring = null;
+            org.locationtech.jts.geom.LinearRing ring = null;
 
             try {
                 ring = gfac.createLinearRing((Coordinate[]) coordList.toArray(new Coordinate[] {}));
@@ -618,7 +618,7 @@ public final class ExpressionDOMParser {
             type = GML_LINESTRING;
             coordList = parseCoords(child);
 
-            com.vividsolutions.jts.geom.LineString line = null;
+            org.locationtech.jts.geom.LineString line = null;
             line = gfac.createLineString((Coordinate[]) coordList.toArray(new Coordinate[] {}));
 
             return line;
@@ -629,7 +629,7 @@ public final class ExpressionDOMParser {
             type = GML_POINT;
             coordList = parseCoords(child);
 
-            com.vividsolutions.jts.geom.Point point = null;
+            org.locationtech.jts.geom.Point point = null;
             point = gfac.createPoint((Coordinate) coordList.get(0));
 
             return point;

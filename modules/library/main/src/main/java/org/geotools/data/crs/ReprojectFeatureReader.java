@@ -16,7 +16,6 @@
  */
 package org.geotools.data.crs;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.DataSourceException;
@@ -28,6 +27,7 @@ import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.CRS;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.FactoryException;

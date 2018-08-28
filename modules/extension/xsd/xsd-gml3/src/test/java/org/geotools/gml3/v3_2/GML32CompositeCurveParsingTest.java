@@ -1,7 +1,7 @@
 package org.geotools.gml3.v3_2;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.xml.Parser;
+import org.locationtech.jts.geom.Geometry;
 
 public class GML32CompositeCurveParsingTest extends GML32TestSupport {
 

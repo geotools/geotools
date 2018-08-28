@@ -19,12 +19,12 @@ package org.geotools.filter;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.Attribute;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -43,7 +43,7 @@ import org.opengis.filter.expression.Expression;
  * <br>
  * <br>
  * This function takes a single argument expression which must evaluate to an instanceof {@link
- * com.vividsolutions.jts.geom.Geometry}.
+ * org.locationtech.jts.geom.Geometry}.
  *
  * @author Justin Deoliveira (The Open Planning Project)
  * @source $URL$

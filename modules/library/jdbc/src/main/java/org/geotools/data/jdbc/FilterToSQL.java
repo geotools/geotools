@@ -18,8 +18,6 @@ package org.geotools.data.jdbc;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -50,6 +48,8 @@ import org.geotools.jdbc.PrimaryKey;
 import org.geotools.referencing.CRS;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -62,6 +62,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsBetween;
@@ -1889,5 +1890,17 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
             return null;
         }
         return geom.getCentroid().getCoordinate();
+    }
+
+    @Override
+    public Object visit(NativeFilter filter, Object data) {
+        try {
+            out.write("(" + filter.getNative() + ")");
+        } catch (Exception exception) {
+            throw new RuntimeException(
+                    String.format("Error encoding native filter '%s'.", filter.getNative()),
+                    exception);
+        }
+        return data;
     }
 }

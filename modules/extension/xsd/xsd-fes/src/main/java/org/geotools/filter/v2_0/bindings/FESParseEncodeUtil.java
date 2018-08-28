@@ -16,13 +16,13 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;

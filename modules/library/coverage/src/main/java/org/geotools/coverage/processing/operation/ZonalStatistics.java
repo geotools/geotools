@@ -16,11 +16,6 @@
  */
 package org.geotools.coverage.processing.operation;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.util.AffineTransformation;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import it.geosolutions.jaiext.zonal.ZonalStatsDescriptor;
 import it.geosolutions.jaiext.zonal.ZoneGeometry;
@@ -49,6 +44,11 @@ import org.geotools.parameter.ImagingParameters;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.util.AffineTransformation;
+import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.metadata.spatial.PixelOrientation;

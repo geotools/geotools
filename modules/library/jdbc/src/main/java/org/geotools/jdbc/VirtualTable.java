@@ -16,7 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,8 +28,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.data.Query;
 import org.geotools.factory.Hints;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Geometry;
+import org.opengis.filter.Filter;
 
 /**
  * Describes a virtual table, that is, a feature type created starting from a generic SQL query.
@@ -51,6 +53,13 @@ import org.geotools.util.logging.Logging;
  * @source $URL$
  */
 public class VirtualTable implements Serializable {
+
+    private static final Hints.Key KEEP_WHERE_CLAUSE_PLACE_HOLDER_KEY =
+            new Hints.Key(Boolean.class);
+
+    public static String WHERE_CLAUSE_PLACE_HOLDER = ":where_clause:";
+    public static int WHERE_CLAUSE_PLACE_HOLDER_LENGTH = 14;
+
     static final Logger LOGGER = Logging.getLogger(VirtualTable.class);
 
     String name;
@@ -70,6 +79,40 @@ public class VirtualTable implements Serializable {
             new ConcurrentHashMap<String, VirtualTableParameter>();
 
     boolean escapeSql = false;
+
+    /**
+     * If the provided query has a filter of a where clause place holder exists it will be
+     * preserved.
+     *
+     * @param query the query to test
+     * @return a query hints map that will contain an entry specifying if the the where clause place
+     *     holder should be keep or not
+     */
+    public static Hints setKeepWhereClausePlaceHolderHint(Query query) {
+        Filter filter = query.getFilter();
+        return setKeepWhereClausePlaceHolderHint(
+                query.getHints(), filter != null && filter != Filter.INCLUDE);
+    }
+
+    /**
+     * Will add an entry to query hints specifying if the the where clause place holder should be
+     * keep or not. If the provided hints is NULL a new one will be instantiated and returned.
+     *
+     * @param hints query hints to update, if NULL a new hints map will be created
+     * @param keepWhereClausePlaceHolder TRUE if the where clause place holder should be keep
+     * @return a query hints map that will contain an entry specifying if the the where clause place
+     *     holder should be keep or not
+     */
+    public static Hints setKeepWhereClausePlaceHolderHint(
+            Hints hints, boolean keepWhereClausePlaceHolder) {
+        if (hints == null) {
+            // create the hints map
+            hints = new Hints();
+        }
+        // just put the provide value in the hints overriding any existing value
+        hints.put(KEEP_WHERE_CLAUSE_PLACE_HOLDER_KEY, keepWhereClausePlaceHolder);
+        return hints;
+    }
 
     /**
      * Builds a new virtual table stating its name and the query to be executed to work on it
@@ -173,8 +216,13 @@ public class VirtualTable implements Serializable {
 
     public String expandParameters(Hints hints) throws SQLException {
         // no need for expansion if we don't have parameters
+        String result = sql;
+        if (!keepWhereClausePlaceHolder(hints)) {
+            // remove the where clause place holder
+            result = removeWhereClausePlaceHolder(result);
+        }
         if (parameters.size() == 0) {
-            return sql;
+            return result;
         }
 
         // grab the parameter values
@@ -187,7 +235,6 @@ public class VirtualTable implements Serializable {
         }
 
         // perform the expansion, checking for validity and applying default values as needed
-        String result = sql;
         for (VirtualTableParameter param : parameters.values()) {
             String value = values.get(param.getName());
             if (value == null) {
@@ -393,5 +440,38 @@ public class VirtualTable implements Serializable {
     @Override
     public String toString() {
         return "VirtualTable [name=" + name + ", sql=" + sql + "]";
+    }
+
+    /**
+     * Helper method that return TRUE if the where clause place holder should be keep, otherwise
+     * FALSE if it should be removed.
+     */
+    private static boolean keepWhereClausePlaceHolder(Hints hints) {
+        if (hints == null) {
+            // no hints provided, we are done
+            return false;
+        }
+        // let's see if the where clause place holder needs to be removed
+        Object value = hints.get(KEEP_WHERE_CLAUSE_PLACE_HOLDER_KEY);
+        return value != null && value instanceof Boolean && (boolean) value;
+    }
+
+    /**
+     * Helper method that will remove, if present, the where clause place holder from the provided
+     * SQL query. If multiple where clause place holders are present an exception will be throw.
+     */
+    private static String removeWhereClausePlaceHolder(String sql) {
+        int whereClauseIndex = sql.indexOf(WHERE_CLAUSE_PLACE_HOLDER);
+        if (whereClauseIndex < 0) {
+            // no where clause place holder provided
+            return sql;
+        }
+        if (whereClauseIndex != sql.lastIndexOf(WHERE_CLAUSE_PLACE_HOLDER)) {
+            // only a single where clause place holder is supported
+            throw new RuntimeException(
+                    String.format("SQL contains multiple where clause placeholders: %s.", sql));
+        }
+        // remove the where clause place holder
+        return sql.replace(WHERE_CLAUSE_PLACE_HOLDER, "");
     }
 }

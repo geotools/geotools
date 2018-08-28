@@ -18,13 +18,6 @@ package org.geotools.renderer.lite;
 
 import static java.lang.Math.abs;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
@@ -127,6 +120,13 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -2043,9 +2043,10 @@ public class StreamingRenderer implements GTRenderer {
 
                         @Override
                         protected GridCoverage2D readCoverage(
-                                GridCoverage2DReader reader, Object params, GridGeometry2D readGG)
+                                GridCoverage2DReader reader,
+                                Object readParams,
+                                GridGeometry2D readGG)
                                 throws IOException {
-                            GeneralParameterValue[] readParams = (GeneralParameterValue[]) params;
                             Interpolation interpolation = getRenderingInterpolation(layer);
                             GridCoverageReaderHelper helper;
                             try {
@@ -2056,7 +2057,7 @@ public class StreamingRenderer implements GTRenderer {
                                                 ReferencedEnvelope.reference(
                                                         readGG.getEnvelope2D()),
                                                 interpolation);
-                                return helper.readCoverage(readParams);
+                                return helper.readCoverage((GeneralParameterValue[]) readParams);
                             } catch (InvalidGridGeometryException | FactoryException e) {
                                 throw new IOException("Failure reading the coverage", e);
                             }
@@ -2844,7 +2845,7 @@ public class StreamingRenderer implements GTRenderer {
      * @return The geometry requested in the symbolizer, or the default geometry if none is
      *     specified
      */
-    private com.vividsolutions.jts.geom.Geometry findGeometry(Object drawMe, Symbolizer s) {
+    private org.locationtech.jts.geom.Geometry findGeometry(Object drawMe, Symbolizer s) {
         Expression geomExpr = s.getGeometry();
 
         // get the geometry

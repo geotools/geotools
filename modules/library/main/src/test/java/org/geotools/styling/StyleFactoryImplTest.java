@@ -22,7 +22,9 @@ import java.util.Random;
 import java.util.logging.Logger;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
+import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -342,5 +344,21 @@ public class StyleFactoryImplTest extends TestCase {
         RasterSymbolizer rs = styleFactory.getDefaultRasterSymbolizer();
         assertNull(rs.getGeometryPropertyName());
         assertNull(rs.getGeometry());
+    }
+
+    // Test Expression usage in SelectedChannel for styleFactory
+    @Test
+    public void testSelectedChannelExpression() {
+        SelectedChannelType sct =
+                styleFactory.selectedChannelType(
+                        filterFactory.function(
+                                "env", filterFactory.literal("B1"), filterFactory.literal("1")),
+                        null);
+        final String b1 = "B1";
+        EnvFunction.removeLocalValue("B1");
+        assertEquals(1, sct.getChannelName().evaluate(null, Integer.class).intValue());
+        EnvFunction.setLocalValue(b1, "20");
+        assertEquals(20, sct.getChannelName().evaluate(null, Integer.class).intValue());
+        EnvFunction.removeLocalValue("B1");
     }
 }

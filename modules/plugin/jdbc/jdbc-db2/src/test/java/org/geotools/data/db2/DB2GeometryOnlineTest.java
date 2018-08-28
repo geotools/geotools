@@ -16,10 +16,10 @@
  */
 package org.geotools.data.db2;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.LinearRing;
 
 /** @source $URL$ */
 public class DB2GeometryOnlineTest extends JDBCGeometryOnlineTest {

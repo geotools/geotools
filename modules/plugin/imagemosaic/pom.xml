@@ -120,7 +120,7 @@
       <!-- version specified in root pom -->
     </dependency>
     <dependency>
-      <groupId>com.vividsolutions</groupId>
+      <groupId>org.locationtech.jts</groupId>
       <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
@@ -173,7 +173,7 @@
       <artifactId>jt-utils</artifactId>
       <exclusions>
         <exclusion>
-           <groupId>com.vividsolutions</groupId>
+           <groupId>org.locationtech.jts</groupId>
            <artifactId>jts</artifactId>
         </exclusion>
       </exclusions>
@@ -183,7 +183,7 @@
       <artifactId>jt-vectorbinarize</artifactId>
       <exclusions>
          <exclusion>
-            <groupId>com.vividsolutions</groupId>
+            <groupId>org.locationtech.jts</groupId>
             <artifactId>jts</artifactId>
          </exclusion>
       </exclusions>

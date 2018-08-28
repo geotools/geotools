@@ -4,13 +4,13 @@ package org.geotools.arcsde.data;
 import com.esri.sde.sdk.client.SeRow;
 import com.esri.sde.sdk.client.SeShape;
 import com.esri.sde.sdk.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
+import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 
 /**
  * This is an experimental implementation of {@link com.esri.sde.sdk.geom.GeometryFactory} that
@@ -24,8 +24,8 @@ import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
  */
 public class SeToJTSGeometryFactory implements GeometryFactory {
 
-    protected static com.vividsolutions.jts.geom.GeometryFactory gf =
-            new com.vividsolutions.jts.geom.GeometryFactory(new LiteCoordinateSequenceFactory());
+    protected static org.locationtech.jts.geom.GeometryFactory gf =
+            new org.locationtech.jts.geom.GeometryFactory(new LiteCoordinateSequenceFactory());
 
     private SeToJTSGeometryFactory delegate;
 

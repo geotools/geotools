@@ -16,7 +16,7 @@
  */
 package org.geotools.geopkg.geom;
 
-import com.vividsolutions.jts.io.ByteOrderValues;
+import org.locationtech.jts.io.ByteOrderValues;
 
 /**
  * The Geopackage Geometry BLOB Header Flags (see Geopackage specs).

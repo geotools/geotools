@@ -16,10 +16,10 @@
  */
 package org.geotools.styling.css.util;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Date;
 import java.util.List;
 import org.geotools.filter.visitor.DefaultFilterVisitor;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;

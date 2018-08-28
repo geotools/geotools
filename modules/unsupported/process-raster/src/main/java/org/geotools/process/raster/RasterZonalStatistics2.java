@@ -17,8 +17,6 @@
 package org.geotools.process.raster;
 
 import com.sun.media.jai.util.SunTileCache;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.stats.Statistics.StatsType;
 import it.geosolutions.jaiext.zonal.ZonalStatsDescriptor;
@@ -36,6 +34,8 @@ import org.geotools.coverage.processing.operation.ZonalStatistics;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.parameter.ParameterValueGroup;
 

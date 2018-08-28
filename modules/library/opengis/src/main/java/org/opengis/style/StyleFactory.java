@@ -435,7 +435,16 @@ public interface StyleFactory {
      * @return SelectedChannelType
      */
     SelectedChannelType selectedChannelType(
-            String channelName, ContrastEnhancement contrastEnhancement);
+            Expression channelName, ContrastEnhancement contrastEnhancement);
+
+    /**
+     * @param channelName
+     * @param contrastEnhancement
+     * @return SelectedChannelType
+     */
+    SelectedChannelType selectedChannelType(
+            String channelName, org.opengis.style.ContrastEnhancement contrastEnhancement);
+
     /**
      * @param reliefFactor
      * @param brightnessOnly

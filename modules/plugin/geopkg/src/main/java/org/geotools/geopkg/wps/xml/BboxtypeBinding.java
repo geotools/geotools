@@ -16,10 +16,10 @@
  */
 package org.geotools.geopkg.wps.xml;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.math.BigDecimal;
 import javax.xml.namespace.QName;
 import org.geotools.xml.*;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Binding object for the type http://www.opengis.net/gpkg:bboxtype.

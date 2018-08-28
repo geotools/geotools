@@ -242,22 +242,22 @@ public class CurveImpl extends GeometryImpl implements Curve {
         return null;
     }
 
-    protected com.vividsolutions.jts.geom.Geometry computeJTSPeer() {
+    protected org.locationtech.jts.geom.Geometry computeJTSPeer() {
         // For each segment that comprises us, get the JTS peer.
         int n = curveSegments.size();
         ArrayList allCoords = new ArrayList();
         for (int i = 0; i < n; i++) {
             JTSGeometry g = (JTSGeometry) curveSegments.get(i);
-            com.vividsolutions.jts.geom.LineString jts =
-                    (com.vividsolutions.jts.geom.LineString) g.getJTSGeometry();
+            org.locationtech.jts.geom.LineString jts =
+                    (org.locationtech.jts.geom.LineString) g.getJTSGeometry();
             int m = jts.getNumPoints();
             for (int j = 0; j < m; j++) {
                 allCoords.add(jts.getCoordinateN(j));
             }
             if (i != (n - 1)) allCoords.remove(allCoords.size() - 1);
         }
-        com.vividsolutions.jts.geom.Coordinate[] coords =
-                new com.vividsolutions.jts.geom.Coordinate[allCoords.size()];
+        org.locationtech.jts.geom.Coordinate[] coords =
+                new org.locationtech.jts.geom.Coordinate[allCoords.size()];
         allCoords.toArray(coords);
         return JTSUtils.GEOMETRY_FACTORY.createLineString(coords);
     }

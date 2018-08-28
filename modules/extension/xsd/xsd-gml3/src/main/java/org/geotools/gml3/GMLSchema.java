@@ -990,7 +990,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "AbstractGeometryType"),
-                        com.vividsolutions.jts.geom.Geometry.class,
+                        org.locationtech.jts.geom.Geometry.class,
                         false,
                         true,
                         Collections.<Filter>emptyList(),
@@ -1221,7 +1221,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PointType"),
-                        com.vividsolutions.jts.geom.Point.class,
+                        org.locationtech.jts.geom.Point.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -1268,7 +1268,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PointPropertyType"),
-                        com.vividsolutions.jts.geom.Point.class,
+                        org.locationtech.jts.geom.Point.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -2091,7 +2091,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolygonType"),
-                        com.vividsolutions.jts.geom.Polygon.class,
+                        org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -5114,7 +5114,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LinearRingType"),
-                        com.vividsolutions.jts.geom.LinearRing.class,
+                        org.locationtech.jts.geom.LinearRing.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -5150,7 +5150,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LinearRingPropertyType"),
-                        com.vividsolutions.jts.geom.LinearRing.class,
+                        org.locationtech.jts.geom.LinearRing.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -7978,7 +7978,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPointType"),
-                        com.vividsolutions.jts.geom.MultiPoint.class,
+                        org.locationtech.jts.geom.MultiPoint.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -8020,7 +8020,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPointPropertyType"),
-                        com.vividsolutions.jts.geom.MultiPoint.class,
+                        org.locationtech.jts.geom.MultiPoint.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -11375,7 +11375,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SurfacePropertyType"),
-                        com.vividsolutions.jts.geom.Polygon.class,
+                        org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -11464,7 +11464,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSurfaceType"),
-                        com.vividsolutions.jts.geom.MultiPolygon.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -12163,7 +12163,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LineStringType"),
-                        com.vividsolutions.jts.geom.LineString.class,
+                        org.locationtech.jts.geom.LineString.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -12212,7 +12212,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "LineStringPropertyType"),
-                        com.vividsolutions.jts.geom.LineString.class,
+                        org.locationtech.jts.geom.LineString.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -12251,7 +12251,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiLineStringType"),
-                        com.vividsolutions.jts.geom.MultiLineString.class,
+                        org.locationtech.jts.geom.MultiLineString.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -12294,7 +12294,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiLineStringPropertyType"),
-                        com.vividsolutions.jts.geom.MultiLineString.class,
+                        org.locationtech.jts.geom.MultiLineString.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -13138,7 +13138,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiSurfacePropertyType"),
-                        com.vividsolutions.jts.geom.MultiPolygon.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -14934,7 +14934,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "SurfaceType"),
-                        com.vividsolutions.jts.geom.Polygon.class,
+                        org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -20062,7 +20062,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiGeometryPropertyType"),
-                        com.vividsolutions.jts.geom.GeometryCollection.class,
+                        org.locationtech.jts.geom.GeometryCollection.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -29019,7 +29019,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "PolygonPropertyType"),
-                        com.vividsolutions.jts.geom.Polygon.class,
+                        org.locationtech.jts.geom.Polygon.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -29058,7 +29058,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPolygonType"),
-                        com.vividsolutions.jts.geom.MultiPolygon.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -29102,7 +29102,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiPolygonPropertyType"),
-                        com.vividsolutions.jts.geom.MultiPolygon.class,
+                        org.locationtech.jts.geom.MultiPolygon.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -30312,7 +30312,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "GeometryPropertyType"),
-                        com.vividsolutions.jts.geom.Geometry.class,
+                        org.locationtech.jts.geom.Geometry.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),
@@ -30402,7 +30402,7 @@ public class GMLSchema extends SchemaImpl {
         builtType =
                 new AttributeTypeImpl(
                         new NameImpl("http://www.opengis.net/gml", "MultiGeometryType"),
-                        com.vividsolutions.jts.geom.GeometryCollection.class,
+                        org.locationtech.jts.geom.GeometryCollection.class,
                         false,
                         false,
                         Collections.<Filter>emptyList(),

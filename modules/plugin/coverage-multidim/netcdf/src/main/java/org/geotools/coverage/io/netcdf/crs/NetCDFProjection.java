@@ -60,6 +60,129 @@ public class NetCDFProjection {
     private static final java.util.logging.Logger LOGGER =
             Logger.getLogger(NetCDFProjection.class.toString());
 
+    /**
+     * Inner class for CoordinateReferenceSystem parsing on top of different NetCDF attributes, such
+     * as {@link NetCDFUtilities#SPATIAL_REF}, {@link NetCDFUtilities#CERP_ESRI_PE_STRING}, {@link
+     * NetCDFUtilities#GRID_MAPPING}.
+     */
+    abstract static class CRSParser {
+        protected Attribute attribute;
+
+        private CRSParser(Attribute attribute) {
+            this.attribute = attribute;
+        }
+
+        /**
+         * Parse the Coordinate Reference System
+         *
+         * @param variable
+         * @return
+         * @throws FactoryException
+         */
+        abstract CoordinateReferenceSystem parseCoordinateReferenceSystem(Variable variable)
+                throws FactoryException;
+
+        /**
+         * Extract the {@link CoordinateReferenceSystem} from a NetCDF attribute (if present)
+         * containing a WKT String
+         *
+         * @param wktAttribute the NetCDF {@link Attribute} if any, containing WKT definition.
+         * @return
+         */
+        private static CoordinateReferenceSystem parseWKT(Attribute wktAttribute) {
+            CoordinateReferenceSystem crs = null;
+            if (wktAttribute != null) {
+                String wkt = wktAttribute.getStringValue();
+                try {
+                    crs = CRS.parseWKT(wkt);
+                } catch (FactoryException e) {
+                    if (LOGGER.isLoggable(Level.WARNING)) {
+                        LOGGER.warning("Unable to setup a CRS from the specified WKT: " + wkt);
+                    }
+                }
+            }
+            return crs;
+        }
+
+        /**
+         * Get a proper {@link CRSParser} for the input Variable.
+         *
+         * @param var
+         * @return
+         */
+        public static NetCDFProjection.CRSParser getCRSParser(Variable var) {
+            if (var != null) {
+                Attribute attr = null;
+                // check on crs related attributes which may contain a fully
+                // defined WKT or a grid mapping reference
+                if ((attr = var.findAttribute(NetCDFUtilities.CERP_ESRI_PE_STRING)) != null) {
+                    return new WKTCRSParser(attr);
+                } else if ((attr = var.findAttribute(NetCDFUtilities.SPATIAL_REF)) != null) {
+                    return new WKTCRSParser(attr);
+                } else if ((attr = var.findAttribute(NetCDFUtilities.GRID_MAPPING_NAME)) != null) {
+                    return new GridMappingCRSParser(attr);
+                }
+            }
+            return null;
+        }
+
+        /** A CRSParser implementation based on a WKT String */
+        static class WKTCRSParser extends CRSParser {
+            public WKTCRSParser(Attribute attribute) {
+                super(attribute);
+            }
+
+            @Override
+            public CoordinateReferenceSystem parseCoordinateReferenceSystem(Variable variable) {
+                return parseWKT(attribute);
+            }
+        }
+
+        /** A CRSParser implementation based on a GridMapping definition */
+        static class GridMappingCRSParser extends CRSParser {
+            // This type of parser extracts the type of projection from the attribute
+            // and setup a CRS from the variable's attributes containing definitions
+
+            public GridMappingCRSParser(Attribute attribute) {
+                super(attribute);
+            }
+
+            @Override
+            public CoordinateReferenceSystem parseCoordinateReferenceSystem(Variable var)
+                    throws FactoryException {
+
+                String mappingName = attribute.getStringValue();
+                String projectionName = getProjectionName(mappingName, var);
+
+                // Getting the proper projection and set the projection parameters
+                NetCDFProjection projection = supportedProjections.get(projectionName);
+                if (projection == null) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.fine("Unsupported grid_mapping_name: " + projectionName);
+                    }
+                    return null;
+                }
+                String ogcName = projection.getOGCName();
+
+                // The OGC projection parameters
+                ParameterValueGroup netcdfParameters =
+                        ProjectionBuilder.getDefaultparameters(ogcName);
+
+                // Get the OGC to NetCDF projection parameters
+                Map<String, String> paramsMapping = projection.getParameters();
+                Set<String> keys = paramsMapping.keySet();
+                for (String ogcParameterKey : keys) {
+                    handleParam(paramsMapping, netcdfParameters, ogcParameterKey, var);
+                }
+
+                return ProjectionBuilder.buildCRS(
+                        Collections.singletonMap(NetCDFUtilities.NAME, projectionName),
+                        projection.getOgcParameters(netcdfParameters),
+                        buildEllipsoid(var, SI.METRE));
+            }
+        }
+    }
+
     /** NetCDF CF projection constructor */
     public NetCDFProjection(
             String projectionName, String ogcName, Map<String, String> parametersMapping) {
@@ -404,59 +527,28 @@ public class NetCDFProjection {
      * @throws FactoryException
      */
     public static CoordinateReferenceSystem parseProjection(Variable var) throws FactoryException {
-        // Preliminar check on spatial_ref attribute which may contain a fully defined WKT
-        // as an instance, being set from GDAL, or a GeoTools NetCDF ouput
+        return parseProjection(var, CRSParser.getCRSParser(var));
+    }
 
-        Attribute spatialRef = var.findAttribute(NetCDFUtilities.SPATIAL_REF);
-        CoordinateReferenceSystem crs = parseSpatialRef(spatialRef);
-        if (crs != null) {
-            return crs;
-        }
-
-        // Spatial ref is missing: fallback on GridMapping
-        Attribute gridMappingName = var.findAttribute(NetCDFUtilities.GRID_MAPPING_NAME);
-        if (gridMappingName == null) {
+    /**
+     * Extract the georeferencing projection information from the specified variable and setup a
+     * {@link CoordinateReferenceSystem} instance
+     *
+     * @throws FactoryException
+     */
+    public static CoordinateReferenceSystem parseProjection(Variable var, CRSParser crsParser)
+            throws FactoryException {
+        if (crsParser == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine(
-                        "No grid_mapping_name attribute has been found.\n "
+                        "No referencing attributes have been found.\n "
                                 + "Unable to parse a CF projection from this variable.\n"
                                 + "This probably means that is WGS84 or unsupported");
             }
             return null;
         }
 
-        // special Management for multiple standard parallels to use
-        // the proper projection
-        String mappingName = gridMappingName.getStringValue();
-        String projectionName = getProjectionName(mappingName, var);
-
-        // Getting the proper projection and set the projection parameters
-        NetCDFProjection projection = supportedProjections.get(projectionName);
-        if (projection == null) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Unsupported grid_mapping_name: " + projectionName);
-            }
-            return null;
-        }
-        String ogcName = projection.getOGCName();
-
-        // The OGC projection parameters
-        ParameterValueGroup netcdfParameters = ProjectionBuilder.getDefaultparameters(ogcName);
-
-        // Get the OGC to NetCDF projection parameters
-        Map<String, String> netCDFParamsMapping = projection.getParameters();
-        Set<String> ogcParameterKeys = netCDFParamsMapping.keySet();
-        for (String ogcParameterKey : ogcParameterKeys) {
-            handleParam(netCDFParamsMapping, netcdfParameters, ogcParameterKey, var);
-        }
-        ParameterValueGroup ogcParameters = projection.getOgcParameters(netcdfParameters);
-
-        // Ellipsoid
-        Ellipsoid ellipsoid = buildEllipsoid(var, SI.METRE);
-        return ProjectionBuilder.buildCRS(
-                java.util.Collections.singletonMap(NetCDFUtilities.NAME, projectionName),
-                ogcParameters,
-                ellipsoid);
+        return crsParser.parseCoordinateReferenceSystem(var);
     }
 
     /**
@@ -521,28 +613,6 @@ public class NetCDFProjection {
                     : cfParam;
         }
         return null;
-    }
-
-    /**
-     * Extract the {@link CoordinateReferenceSystem} from the {@link NetCDFUtilities#SPATIAL_REF}
-     * attribute if present.
-     *
-     * @param spatialRef the NetCDF SPATIAL_REF {@link Attribute} if any
-     * @return
-     */
-    private static CoordinateReferenceSystem parseSpatialRef(Attribute spatialRef) {
-        CoordinateReferenceSystem crs = null;
-        if (spatialRef != null) {
-            String wkt = spatialRef.getStringValue();
-            try {
-                crs = CRS.parseWKT(wkt);
-            } catch (FactoryException e) {
-                if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning("Unable to setup a CRS from the specified WKT: " + wkt);
-                }
-            }
-        }
-        return crs;
     }
 
     /**
@@ -611,6 +681,8 @@ public class NetCDFProjection {
         String projectionName = mappingName;
         if (mappingName.equalsIgnoreCase(CF.LAMBERT_CONFORMAL_CONIC)) {
             Attribute standardParallel = var.findAttribute(CF.STANDARD_PARALLEL);
+            // special Management for multiple standard parallels to use
+            // the proper projection
             projectionName =
                     CF.LAMBERT_CONFORMAL_CONIC
                             + (standardParallel.getLength() == 1 ? "_1SP" : "_2SP");
@@ -630,7 +702,7 @@ public class NetCDFProjection {
      */
     public static CoordinateReferenceSystem parseProjection(NetcdfDataset dataset) {
         Attribute attribute = dataset.findAttribute(NetCDFUtilities.SPATIAL_REF);
-        return parseSpatialRef(attribute);
+        return CRSParser.parseWKT(attribute);
     }
 
     /**
@@ -658,7 +730,7 @@ public class NetCDFProjection {
     }
 
     /**
-     * Look for a CoordinateReferenceSystem defined into a gridMapping variable
+     * Look for a CoordinateReferenceSystem defined into a variable
      *
      * @param dataset
      * @param defaultCrs
@@ -670,20 +742,14 @@ public class NetCDFProjection {
         List<Variable> variables = dataset.getVariables();
         CoordinateReferenceSystem crs = defaultCrs;
         for (Variable variable : variables) {
-
-            // TODO: Support for multiple coordinates 2D definitions within the same dataset
-            Attribute attrib = variable.findAttribute(NetCDFUtilities.GRID_MAPPING_NAME);
+            CRSParser attrib = CRSParser.getCRSParser(variable);
             if (attrib != null) {
-                // Grid Mapping found
-                crs = NetCDFProjection.parseProjection(variable);
+                // Referencing info found
+                crs = NetCDFProjection.parseProjection(variable, attrib);
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    if (crs != null) {
-                        LOGGER.fine(
-                                "Detected NetCDFProjection through gridMapping variable: "
-                                        + crs.toWKT());
-                    } else {
-                        LOGGER.fine("Detected NetCDFProjection through gridMapping variable: null");
-                    }
+                    LOGGER.fine(
+                            "Detected NetCDFProjection through gridMapping variable: "
+                                    + (crs != null ? crs.toWKT() : "null"));
                 }
                 break;
             }

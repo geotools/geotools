@@ -16,7 +16,6 @@
  */
 package org.geotools.feature.simple;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +25,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureBuilder;
 import org.geotools.feature.type.Types;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureFactory;
 import org.opengis.feature.IllegalAttributeException;
@@ -409,7 +409,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
                 Object copy = value;
                 if (value instanceof Geometry) {
                     Geometry geometry = (Geometry) value;
-                    copy = geometry.clone();
+                    copy = geometry.copy();
                 }
                 builder.set(property.getName(), copy);
             } catch (Exception e) {

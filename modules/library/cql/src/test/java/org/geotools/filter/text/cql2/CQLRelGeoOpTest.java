@@ -17,12 +17,12 @@
 
 package org.geotools.filter.text.cql2;
 
-import com.vividsolutions.jts.geom.Point;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.locationtech.jts.geom.Point;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;

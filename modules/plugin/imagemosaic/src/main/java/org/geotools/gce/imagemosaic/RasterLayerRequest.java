@@ -16,7 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
@@ -41,6 +40,7 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.SpatialRequestHelper.CoverageProperties;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.metadata.Identifier;

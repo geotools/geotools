@@ -21,9 +21,6 @@ import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageDecoder;
 import com.sun.media.jai.codec.SeekableStream;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKBReader;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -48,6 +45,9 @@ import org.geotools.gce.imagemosaic.jdbc.ImageLevelInfo;
 import org.geotools.gce.imagemosaic.jdbc.TileQueueElement;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.util.logging.Logging;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.io.WKBReader;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

@@ -16,7 +16,6 @@
  */
 package org.geotools.wfs.bindings;
 
-import com.vividsolutions.jts.geom.Geometry;
 import javax.xml.namespace.QName;
 import net.opengis.wfs.PropertyType;
 import net.opengis.wfs.WfsFactory;
@@ -26,6 +25,7 @@ import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.EncoderDelegate;
 import org.geotools.xml.Node;
+import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.ContentHandler;

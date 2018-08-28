@@ -16,13 +16,13 @@ featuretype attributes list:
   YEAR (0,1,nillable) type: YEAR binding: String
 attribute 0    name: Location
 attribute 0    type: GeometryTypeImpl Location<Point>
-attribute 0 binding: class com.vividsolutions.jts.geom.Point
+attribute 0 binding: class org.locationtech.jts.geom.Point
 attribute 'CITY'    name: CITY
 attribute 'CITT'    type: AttributeTypeImpl CITY<String>
 attribute 'CITY' binding: class java.lang.String
 default geom    name: Location
 default geom    type: GeometryTypeImpl Location<Point>
-default geom binding: class com.vividsolutions.jts.geom.Point
+default geom binding: class org.locationtech.jts.geom.Point
 default geom     crs: CRS:84
 
 example2 end

@@ -18,7 +18,6 @@ package org.geotools.filter;
 
 // Java Topology Suite dependencies
 
-import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
@@ -26,6 +25,7 @@ import org.geotools.filter.expression.AddImpl;
 import org.geotools.filter.expression.DivideImpl;
 import org.geotools.filter.expression.MultiplyImpl;
 import org.geotools.filter.expression.SubtractImpl;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.BinaryExpression;

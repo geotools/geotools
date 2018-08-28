@@ -17,7 +17,7 @@
  */
 package org.geotools.process.vector;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.locationtech.jts.geom.Envelope;
 
 /**
  * Computes a Heat Map surface from a set of irregular data points, each containing a positive

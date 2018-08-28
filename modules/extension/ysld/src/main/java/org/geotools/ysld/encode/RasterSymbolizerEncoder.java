@@ -174,7 +174,7 @@ public class RasterSymbolizerEncoder extends SymbolizerEncoder<RasterSymbolizer>
         @Override
         protected void encode(SelectedChannelType channel) {
             push(band.key);
-            put("name", channel.getChannelName());
+            put("name", channel.getChannelName().evaluate(null, String.class));
             if (!emptyContrastEnhancement(channel.getContrastEnhancement())) {
                 inline(new ContrastEnhancementEncoder(channel.getContrastEnhancement()));
             }

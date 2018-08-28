@@ -16,8 +16,8 @@
  */
 package org.geotools.geometry.jts;
 
-import com.vividsolutions.jts.geom.LineString;
 import java.util.List;
+import org.locationtech.jts.geom.LineString;
 
 /**
  * Convenience interface to expose methods common to {@link CompoundCurve} and {@link CompoundRing}

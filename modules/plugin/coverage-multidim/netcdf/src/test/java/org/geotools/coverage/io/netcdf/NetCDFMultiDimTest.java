@@ -194,6 +194,7 @@ public class NetCDFMultiDimTest {
                 29,
                 30,
                 31);
+        reader.dispose();
     }
 
     @SuppressWarnings("rawtypes")
@@ -398,6 +399,7 @@ public class NetCDFMultiDimTest {
 
         System.setProperty(NetCDFUtilities.PARAMS_MAX_KEY, "");
         System.setProperty(NetCDFUtilities.PARAMS_MIN_KEY, "");
+        reader.dispose();
     }
 
     private void checkFoursome(
@@ -629,6 +631,7 @@ public class NetCDFMultiDimTest {
                 37,
                 38,
                 39);
+        reader.dispose();
     }
 
     /** @throws Exception */

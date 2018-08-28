@@ -28,6 +28,7 @@ Research and Development:
    swing/index
    swt/index
    wps
+   gtopo30
    sample
 
 Unsupported rendering plugins:

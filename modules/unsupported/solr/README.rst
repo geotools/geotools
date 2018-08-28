@@ -1,5 +1,5 @@
-Online Tests
-^^^^^^^^^^^^
+Simple Store Online Tests
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Apache Solr data store online tests will run if a fixture file exists and contains
 the URL of a valid Apache Solr instance core.
@@ -24,6 +24,9 @@ the necessary schemas and load the necessary data.
 Unfortunately is not possible to create using Solar API a new core in a
 reliable way. So before running this plugin integration tests a core needs to be
 manually created.
+
+Is worth notice that support for advanced geometries, like polygons, is necessary. Which
+means that JTS support should be correctly configured in the Apache Solr instance.
 
 A new core can be created using Apache Solr web console ``http://localhost:8983/solr/#/~cores``.
 Although, this method requires the manual setup of the core directory in the server.

@@ -15,9 +15,11 @@ package org.geotools.data.wfs.internal.v2_0;
 
 import static org.junit.Assert.assertNotNull;
 import java.net.URL;
+import org.geotools.wfs.v2_0.WFSConfiguration;
+import org.geotools.xml.Parser;
 import org.junit.Before;
 import org.junit.Test;
-import net.opengis.wfs20.impl.Wfs20FactoryImpl;
+import net.opengis.wfs20.WFSCapabilitiesType;
 
 /**
  * Test class for {@link Capabilities200ServiceInfo}.
@@ -38,9 +40,11 @@ public class Capabilities200ServiceInfoTest {
     } catch (Exception ex) {
       throw new RuntimeException(ex);
     }
-    Wfs20FactoryImpl fac = new Wfs20FactoryImpl();
+    WFSConfiguration configuration = new org.geotools.wfs.v2_0.WFSConfiguration();
+    Parser parser = new Parser(configuration);
+    WFSCapabilitiesType type = (WFSCapabilitiesType) parser.parse(getCapsUrl.openStream());
     featureType = new Capabilities200ServiceInfo("http://schemas.opengis.net/wfs/2.0/wfs.xsd",
-        getCapsUrl, fac.createWFSCapabilitiesType());
+        getCapsUrl, type);
   }
 
   // One parameter, no view params, no mappings => no parameters

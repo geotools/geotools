@@ -34,17 +34,16 @@ public class Capabilities200ServiceInfoTest {
 
   @Before
   public void setup() {
-    URL getCapsUrl;
     try {
-      getCapsUrl = new URL(SERVER_URL);
+      URL getCapsUrl = new URL(SERVER_URL);
+      WFSConfiguration configuration = new org.geotools.wfs.v2_0.WFSConfiguration();
+      Parser parser = new Parser(configuration);
+      WFSCapabilitiesType type = (WFSCapabilitiesType) parser.parse(getCapsUrl.openStream());
+      featureType = new Capabilities200ServiceInfo("http://schemas.opengis.net/wfs/2.0/wfs.xsd",
+          getCapsUrl, type);
     } catch (Exception ex) {
       throw new RuntimeException(ex);
     }
-    WFSConfiguration configuration = new org.geotools.wfs.v2_0.WFSConfiguration();
-    Parser parser = new Parser(configuration);
-    WFSCapabilitiesType type = (WFSCapabilitiesType) parser.parse(getCapsUrl.openStream());
-    featureType = new Capabilities200ServiceInfo("http://schemas.opengis.net/wfs/2.0/wfs.xsd",
-        getCapsUrl, type);
   }
 
   // One parameter, no view params, no mappings => no parameters

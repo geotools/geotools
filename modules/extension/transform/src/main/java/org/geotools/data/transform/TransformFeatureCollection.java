@@ -226,7 +226,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
      * @param featureType
      * @return
      */
-    private boolean isTypeCompatible(FeatureVisitor visitor, SimpleFeatureType featureType) {
+    protected boolean isTypeCompatible(FeatureVisitor visitor, SimpleFeatureType featureType) {
         if (visitor instanceof CountVisitor) {
             // pass through if the CountVisitor has been recognized
             return true;

@@ -15,27 +15,27 @@ package org.geotools.data.wmts.model;
 
 import static org.geotools.wmts.WMTSTestUtils.createCapabilities;
 import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 
 /** @source $URL$ */
 public class WMTSServiceTest {
 
-  public WMTSServiceTest() {}
+    public WMTSServiceTest() {}
 
-  @Test
-  public void testParser2() throws Exception {
-    WMTSCapabilities capabilities = createCapabilities("admin_ch.getcapa.xml");
-    try {
-      WMTSService service = (WMTSService) capabilities.getService();
-      assertNotNull(service.get_abstract());
-    } catch (Exception e) {
-      e.printStackTrace();
-      if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-        System.err.println("Unable to test - timed out: " + e);
-      } else {
-        throw (e);
-      }
+    @Test
+    public void testParser2() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("admin_ch.getcapa.xml");
+        try {
+            WMTSService service = (WMTSService) capabilities.getService();
+            assertNotNull(service.get_abstract());
+        } catch (Exception e) {
+            e.printStackTrace();
+            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+                System.err.println("Unable to test - timed out: " + e);
+            } else {
+                throw (e);
+            }
+        }
     }
-  }
-
 }

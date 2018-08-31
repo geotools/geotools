@@ -13,7 +13,6 @@
  */
 package org.geotools.data.wmts.model;
 
-import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import net.opengis.ows11.LanguageStringType;
@@ -28,35 +27,37 @@ import org.geotools.data.ows.Service;
  */
 public class WMTSService extends Service {
 
-  public WMTSService(ServiceIdentificationType serviceType) {
+    public WMTSService(ServiceIdentificationType serviceType) {
 
-    String title = serviceType.getTitle().isEmpty() ? "N/A"
-        : ((LanguageStringType) serviceType.getTitle().get(0)).getValue();
-    setTitle(title);
-    setName(serviceType.getServiceType().getValue());
+        String title =
+                serviceType.getTitle().isEmpty()
+                        ? "N/A"
+                        : ((LanguageStringType) serviceType.getTitle().get(0)).getValue();
+        setTitle(title);
+        setName(serviceType.getServiceType().getValue());
 
-    // The Abstract is of Type LanguageStringType, not String.
-    StringBuilder sb = new StringBuilder();
-    for (Object line : serviceType.getAbstract()) {
-      if (line instanceof LanguageStringType) {
-        sb.append(((LanguageStringType) line).getValue());
-      } else {
-        sb.append(line);
-      }
-    } // end of for
+        // The Abstract is of Type LanguageStringType, not String.
+        StringBuilder sb = new StringBuilder();
+        for (Object line : serviceType.getAbstract()) {
+            if (line instanceof LanguageStringType) {
+                sb.append(((LanguageStringType) line).getValue());
+            } else {
+                sb.append(line);
+            }
+        } // end of for
 
-    set_abstract(sb.toString());
+        set_abstract(sb.toString());
 
-    List<String> retList = new ArrayList<>();
+        List<String> retList = new ArrayList<>();
 
-    for (Object okti : serviceType.getKeywords()) {
-      KeywordsTypeImpl kti = (KeywordsTypeImpl) okti;
-      for (Object olsti : kti.getKeyword()) {
-        LanguageStringTypeImpl lsti = (LanguageStringTypeImpl) olsti;
-        retList.add(lsti.getValue());
-      }
+        for (Object okti : serviceType.getKeywords()) {
+            KeywordsTypeImpl kti = (KeywordsTypeImpl) okti;
+            for (Object olsti : kti.getKeyword()) {
+                LanguageStringTypeImpl lsti = (LanguageStringTypeImpl) olsti;
+                retList.add(lsti.getValue());
+            }
+        }
+
+        setKeywordList(retList.toArray(new String[retList.size()]));
     }
-
-    setKeywordList(retList.toArray(new String[retList.size()]));
-  }
 }

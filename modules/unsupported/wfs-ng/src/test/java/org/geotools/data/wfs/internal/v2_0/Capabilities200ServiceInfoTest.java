@@ -14,12 +14,13 @@
 package org.geotools.data.wfs.internal.v2_0;
 
 import static org.junit.Assert.assertNotNull;
+
 import java.net.URL;
+import net.opengis.wfs20.WFSCapabilitiesType;
 import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.xml.Parser;
 import org.junit.Before;
 import org.junit.Test;
-import net.opengis.wfs20.WFSCapabilitiesType;
 
 /**
  * Test class for {@link Capabilities200ServiceInfo}.
@@ -27,37 +28,37 @@ import net.opengis.wfs20.WFSCapabilitiesType;
  * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
  */
 public class Capabilities200ServiceInfoTest {
-  public static final String SERVER_URL =
-      "http://laermkartierung1.eisenbahn-bundesamt.de/deegree/services/wfs?service=WFS&request=GetCapabilities"; // $NON-NLS-1$
+    public static final String SERVER_URL =
+            "http://laermkartierung1.eisenbahn-bundesamt.de/deegree/services/wfs?service=WFS&request=GetCapabilities"; // $NON-NLS-1$
 
-  private Capabilities200ServiceInfo featureType;
+    private Capabilities200ServiceInfo featureType;
 
-  @Before
-  public void setup() {
-    try {
-      URL getCapsUrl = new URL(SERVER_URL);
-      WFSConfiguration configuration = new org.geotools.wfs.v2_0.WFSConfiguration();
-      Parser parser = new Parser(configuration);
-      WFSCapabilitiesType type = (WFSCapabilitiesType) parser.parse(getCapsUrl.openStream());
-      featureType = new Capabilities200ServiceInfo("http://schemas.opengis.net/wfs/2.0/wfs.xsd",
-          getCapsUrl, type);
-    } catch (Exception ex) {
-      throw new RuntimeException(ex);
+    @Before
+    public void setup() {
+        try {
+            URL getCapsUrl = new URL(SERVER_URL);
+            WFSConfiguration configuration = new org.geotools.wfs.v2_0.WFSConfiguration();
+            Parser parser = new Parser(configuration);
+            WFSCapabilitiesType type = (WFSCapabilitiesType) parser.parse(getCapsUrl.openStream());
+            featureType =
+                    new Capabilities200ServiceInfo(
+                            "http://schemas.opengis.net/wfs/2.0/wfs.xsd", getCapsUrl, type);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
-  }
 
-  // One parameter, no view params, no mappings => no parameters
-  @Test
-  public void testGetDescription() {
-    String descResult = featureType.getDescription();
-    assertNotNull(descResult);
-  }
+    // One parameter, no view params, no mappings => no parameters
+    @Test
+    public void testGetDescription() {
+        String descResult = featureType.getDescription();
+        assertNotNull(descResult);
+    }
 
-  // One parameter, no view params, no mappings => no parameters
-  @Test
-  public void testGetTitle() {
-    String descResult = featureType.getTitle();
-    assertNotNull(descResult);
-  }
-
+    // One parameter, no view params, no mappings => no parameters
+    @Test
+    public void testGetTitle() {
+        String descResult = featureType.getTitle();
+        assertNotNull(descResult);
+    }
 }

@@ -20,144 +20,145 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.Icon;
-import org.geotools.data.ServiceInfo;
-import org.geotools.data.wfs.WFSServiceInfo;
 import net.opengis.ows11.KeywordsType;
 import net.opengis.ows11.LanguageStringType;
 import net.opengis.ows11.OnlineResourceType;
 import net.opengis.ows11.ServiceIdentificationType;
 import net.opengis.ows11.ServiceProviderType;
 import net.opengis.wfs20.WFSCapabilitiesType;
+import org.geotools.data.ServiceInfo;
+import org.geotools.data.wfs.WFSServiceInfo;
 
 /**
  * Adapts a WFS capabilities document to {@link ServiceInfo}
- * 
+ *
  * @author unknown
  * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
  */
 public final class Capabilities200ServiceInfo implements WFSServiceInfo {
 
-  private final WFSCapabilitiesType capabilities;
+    private final WFSCapabilitiesType capabilities;
 
-  private final URI schemaUri;
+    private final URI schemaUri;
 
-  private final URI getCapsUrl;
+    private final URI getCapsUrl;
 
-  public Capabilities200ServiceInfo(String schemaUri, URL getCapsUrl,
-      WFSCapabilitiesType capabilities) {
-    try {
-      this.getCapsUrl = getCapsUrl.toURI();
-      this.schemaUri = new URI(schemaUri);
-    } catch (URISyntaxException e) {
-      throw new RuntimeException(e);
-    }
-    this.capabilities = capabilities;
-  }
-
-  /**
-   * Maps to the capabilities' service identification abstract
-   *
-   * @see ServiceInfo#getDescription()
-   */
-  public String getDescription() {
-    ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
-    if (serviceIdentification == null) {
-      return null;
-    }
-
-    // The Abstract is of Type LanguageStringType, not String.
-    StringBuilder sb = new StringBuilder();
-    for (Object line : serviceIdentification.getAbstract()) {
-      if (line instanceof LanguageStringType) {
-        sb.append(((LanguageStringType) line).getValue());
-      } else {
-        sb.append(line);
-      }
-    } // end of for
-
-    return sb.toString();
-  }
-
-  /**
-   * @return {@code null}
-   * @see ServiceInfo#getDescription()
-   */
-  public Icon getIcon() {
-    return null; // talk to Eclesia the icons are in renderer?
-  }
-
-  /**
-   * Maps to the capabilities' service identification keywords list
-   *
-   * @see ServiceInfo#getDescription()
-   */
-  public Set<String> getKeywords() {
-    Set<String> kws = new HashSet<String>();
-    ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
-    if (serviceIdentification != null) {
-      @SuppressWarnings("unchecked")
-      List<KeywordsType> keywords = serviceIdentification.getKeywords();
-      if (keywords != null) {
-        for (KeywordsType k : keywords) {
-          for (LanguageStringType s : (List<LanguageStringType>) k.getKeyword()) {
-            kws.add(s.getValue());
-          }
+    public Capabilities200ServiceInfo(
+            String schemaUri, URL getCapsUrl, WFSCapabilitiesType capabilities) {
+        try {
+            this.getCapsUrl = getCapsUrl.toURI();
+            this.schemaUri = new URI(schemaUri);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
         }
-        kws.remove(null);
-      }
-    }
-    return kws;
-  }
-
-  /** @see ServiceInfo#getPublisher() */
-  public URI getPublisher() {
-    ServiceProviderType serviceProvider = capabilities.getServiceProvider();
-    if (null == serviceProvider) {
-      return null;
-    }
-    OnlineResourceType providerSite = serviceProvider.getProviderSite();
-    if (null == providerSite) {
-      return null;
-    }
-    String href = providerSite.getHref();
-    try {
-      return href == null ? null : new URI(href);
-    } catch (URISyntaxException e) {
-      return null;
-    }
-  }
-
-  /**
-   * Maps to the WFS xsd schema in schemas.opengis.net
-   *
-   * @see ServiceInfo#getSchema()
-   */
-  public URI getSchema() {
-    return schemaUri;
-  }
-
-  /**
-   * Maps to the URL of the capabilities document
-   *
-   * @see ServiceInfo#getSource()
-   */
-  public URI getSource() {
-    return getCapsUrl;
-  }
-
-  /** @see ServiceInfo#getTitle() */
-  public String getTitle() {
-    ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
-    if (serviceIdentification == null || serviceIdentification.getTitle() == null
-        || serviceIdentification.getTitle().isEmpty()) {
-      return null;
+        this.capabilities = capabilities;
     }
 
-    return ((LanguageStringType) serviceIdentification.getTitle().get(0)).getValue();
-  }
+    /**
+     * Maps to the capabilities' service identification abstract
+     *
+     * @see ServiceInfo#getDescription()
+     */
+    public String getDescription() {
+        ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
+        if (serviceIdentification == null) {
+            return null;
+        }
 
-  /** @see WFSServiceInfo#getVersion() */
-  public String getVersion() {
-    return capabilities.getVersion();
-  }
+        // The Abstract is of Type LanguageStringType, not String.
+        StringBuilder sb = new StringBuilder();
+        for (Object line : serviceIdentification.getAbstract()) {
+            if (line instanceof LanguageStringType) {
+                sb.append(((LanguageStringType) line).getValue());
+            } else {
+                sb.append(line);
+            }
+        } // end of for
+
+        return sb.toString();
+    }
+
+    /**
+     * @return {@code null}
+     * @see ServiceInfo#getDescription()
+     */
+    public Icon getIcon() {
+        return null; // talk to Eclesia the icons are in renderer?
+    }
+
+    /**
+     * Maps to the capabilities' service identification keywords list
+     *
+     * @see ServiceInfo#getDescription()
+     */
+    public Set<String> getKeywords() {
+        Set<String> kws = new HashSet<String>();
+        ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
+        if (serviceIdentification != null) {
+            @SuppressWarnings("unchecked")
+            List<KeywordsType> keywords = serviceIdentification.getKeywords();
+            if (keywords != null) {
+                for (KeywordsType k : keywords) {
+                    for (LanguageStringType s : (List<LanguageStringType>) k.getKeyword()) {
+                        kws.add(s.getValue());
+                    }
+                }
+                kws.remove(null);
+            }
+        }
+        return kws;
+    }
+
+    /** @see ServiceInfo#getPublisher() */
+    public URI getPublisher() {
+        ServiceProviderType serviceProvider = capabilities.getServiceProvider();
+        if (null == serviceProvider) {
+            return null;
+        }
+        OnlineResourceType providerSite = serviceProvider.getProviderSite();
+        if (null == providerSite) {
+            return null;
+        }
+        String href = providerSite.getHref();
+        try {
+            return href == null ? null : new URI(href);
+        } catch (URISyntaxException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Maps to the WFS xsd schema in schemas.opengis.net
+     *
+     * @see ServiceInfo#getSchema()
+     */
+    public URI getSchema() {
+        return schemaUri;
+    }
+
+    /**
+     * Maps to the URL of the capabilities document
+     *
+     * @see ServiceInfo#getSource()
+     */
+    public URI getSource() {
+        return getCapsUrl;
+    }
+
+    /** @see ServiceInfo#getTitle() */
+    public String getTitle() {
+        ServiceIdentificationType serviceIdentification = capabilities.getServiceIdentification();
+        if (serviceIdentification == null
+                || serviceIdentification.getTitle() == null
+                || serviceIdentification.getTitle().isEmpty()) {
+            return null;
+        }
+
+        return ((LanguageStringType) serviceIdentification.getTitle().get(0)).getValue();
+    }
+
+    /** @see WFSServiceInfo#getVersion() */
+    public String getVersion() {
+        return capabilities.getVersion();
+    }
 }

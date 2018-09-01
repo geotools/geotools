@@ -155,7 +155,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
             e.printStackTrace();
         } finally {
             try {
-                if (con != null || !con.isClosed()) {
+                if (con != null && !con.isClosed()) {
                     con.close();
                 }
             } catch (SQLException e) {

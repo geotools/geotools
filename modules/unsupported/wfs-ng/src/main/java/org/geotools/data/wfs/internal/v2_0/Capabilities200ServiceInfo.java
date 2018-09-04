@@ -1,18 +1,15 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+ * GeoTools - The Open Source Java GIS Toolkit http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  */
 package org.geotools.data.wfs.internal.v2_0;
 
@@ -32,7 +29,12 @@ import net.opengis.wfs20.WFSCapabilitiesType;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.wfs.WFSServiceInfo;
 
-/** Adapts a WFS capabilities document to {@link ServiceInfo} */
+/**
+ * Adapts a WFS capabilities document to {@link ServiceInfo}
+ *
+ * @author unknown
+ * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
+ */
 public final class Capabilities200ServiceInfo implements WFSServiceInfo {
 
     private final WFSCapabilitiesType capabilities;
@@ -62,9 +64,18 @@ public final class Capabilities200ServiceInfo implements WFSServiceInfo {
         if (serviceIdentification == null) {
             return null;
         }
-        @SuppressWarnings("unchecked")
-        List<String> abs = serviceIdentification.getAbstract();
-        return abs == null || abs.isEmpty() ? null : abs.get(0);
+
+        // The Abstract is of Type LanguageStringType, not String.
+        StringBuilder sb = new StringBuilder();
+        for (Object line : serviceIdentification.getAbstract()) {
+            if (line instanceof LanguageStringType) {
+                sb.append(((LanguageStringType) line).getValue());
+            } else {
+                sb.append(line);
+            }
+        } // end of for
+
+        return sb.toString();
     }
 
     /**
@@ -142,7 +153,8 @@ public final class Capabilities200ServiceInfo implements WFSServiceInfo {
                 || serviceIdentification.getTitle().isEmpty()) {
             return null;
         }
-        return String.valueOf(serviceIdentification.getTitle().get(0));
+
+        return ((LanguageStringType) serviceIdentification.getTitle().get(0)).getValue();
     }
 
     /** @see WFSServiceInfo#getVersion() */

@@ -1,18 +1,15 @@
 /*
- *    GeoTools - The Open Source Java GIS Toolkit
- *    http://geotools.org
+ * GeoTools - The Open Source Java GIS Toolkit http://geotools.org
  *
- *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ * (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
- *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General Public
- *    License as published by the Free Software Foundation;
- *    version 2.1 of the License.
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; version 2.1 of
+ * the License.
  *
- *    This library is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *    Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  */
 package org.geotools.data.wmts.model;
 
@@ -76,6 +73,7 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
+ * @author Matthias Schulze (LDBV at ldbv dot bayern dot de)
  */
 public class WMTSCapabilities extends Capabilities {
 
@@ -339,6 +337,18 @@ public class WMTSCapabilities extends Capabilities {
         String title = ((LanguageStringType) layerType.getTitle().get(0)).getValue();
         WMTSLayer layer = new WMTSLayer(title);
         layer.setName(layerType.getIdentifier().getValue());
+
+        // The Abstract is of Type LanguageStringType, not String.
+        StringBuilder sb = new StringBuilder();
+        for (Object line : layerType.getAbstract()) {
+            if (line instanceof LanguageStringType) {
+                sb.append(((LanguageStringType) line).getValue());
+            } else {
+                sb.append(line);
+            }
+        } // end of for
+        layer.set_abstract(sb.toString());
+
         EList<TileMatrixSetLinkType> tmsLinks = layerType.getTileMatrixSetLink();
         for (TileMatrixSetLinkType linkType : tmsLinks) {
             TileMatrixSetLink link = new TileMatrixSetLink();

@@ -96,7 +96,7 @@
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
     <imageio.ext.version>1.1.25</imageio.ext.version>
-    <jts.version>1.15.1</jts.version>
+    <jts.version>1.16.0-RC1</jts.version>
     <jaiext.version>1.1.1</jaiext.version>
     <netcdf.version>4.6.6</netcdf.version>
     <jt.version>1.5.0</jt.version>
@@ -108,7 +108,7 @@
     <fork.javac>true</fork.javac>
     <javac.maxHeapSize>256M</javac.maxHeapSize>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <postgresql.jdbc.version>42.1.1</postgresql.jdbc.version>
+    <postgresql.jdbc.version>42.2.5</postgresql.jdbc.version>
     <solrj.version>7.4.0</solrj.version>
     <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
@@ -253,7 +253,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>20-SNAPSHOT</version>
+  <version>21-SNAPSHOT</version>
   <name>GeoTools</name>
 
   <scm>
@@ -831,7 +831,7 @@
       <dependency>
         <groupId>org.ejml</groupId>
         <artifactId>ejml-ddense</artifactId>
-        <version>0.32</version>
+        <version>0.34</version>
       </dependency>
       <dependency>
         <groupId>org.locationtech.jts</groupId>
@@ -863,6 +863,11 @@
       <dependency>
         <groupId>org.apache.xmlgraphics</groupId>
         <artifactId>batik-transcoder</artifactId>
+        <version>${batik.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.xmlgraphics</groupId>
+        <artifactId>batik-codec</artifactId>
         <version>${batik.version}</version>
       </dependency>
       <dependency>
@@ -1126,23 +1131,7 @@
 		<artifactId>org.eclipse.xsd</artifactId>
 		<version>2.12.0</version>
 	</dependency>
-	
-      <dependency>
-        <groupId>com.sleepycat</groupId>
-        <artifactId>je</artifactId>
-        <version>4.1.7</version>
-      </dependency> 
-      <dependency>
-        <groupId>com.caucho</groupId>
-        <artifactId>resin-hessian</artifactId>
-        <version>4.0.20</version>
-      </dependency>      
-      <dependency>
-        <groupId>com.fasterxml.uuid</groupId>
-        <artifactId>java-uuid-generator</artifactId>
-        <version>3.1.2</version>
-      </dependency>
-      
+	    
       <!-- Other random non test dependencies -->
       <dependency>
         <groupId>net.sf.ehcache</groupId>

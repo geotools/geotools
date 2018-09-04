@@ -76,7 +76,8 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         LinearRing shell =
-                gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2));
+                gf.createLinearRing(
+                        sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2, 0));
         Polygon polygon = gf.createPolygon(shell, null);
         Contains cs = ff.contains(ff.literal(polygon), ff.property(aname("geom")));
 
@@ -115,7 +116,8 @@ public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnline
         GeometryFactory gf = new GeometryFactory();
         PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
         LinearRing shell =
-                gf.createLinearRing(sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2));
+                gf.createLinearRing(
+                        sf.create(new double[] {2, -1, 2, 5, 4, 5, 4, -1, 2, -1}, 2, 0));
         Polygon polygon = gf.createPolygon(shell, null);
         Contains cs = ff.contains(ff.literal(polygon), ff.property(aname("geom")));
 

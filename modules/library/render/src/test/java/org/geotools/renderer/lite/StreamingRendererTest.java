@@ -407,7 +407,7 @@ public class StreamingRendererTest {
                 new StreamingRenderer() {
 
                     // makes it easy to reproduce the deadlock, just two features are sufficient
-                    protected BlockingQueue<RenderingRequest> getRequestsQueue() {
+                    protected RenderingBlockingQueue getRequestsQueue() {
                         return new RenderingBlockingQueue(1);
                     }
                 };

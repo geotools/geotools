@@ -95,9 +95,8 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
         } else if (request.getStrategy().getVersion().equals(Versions.v1_0_0.toString())) {
             config = new org.geotools.wfs.v1_0.WFSConfiguration();
         }
-        return new PullParserFeatureReader(config, in, queryType);
-
-        // TODO: what about axis order issue solved in old parser?
+        return new PullParserFeatureReader(
+                config, in, queryType, request.getStrategy().getConfig().getAxisOrder());
     }
 
     @Override

@@ -769,7 +769,7 @@ public class SLDStyleTest extends TestCase {
         assertEquals("histogram", rcs.getMethod().name().toLowerCase());
 
         ContrastEnhancement gcs = greenChannel.getContrastEnhancement();
-        Double ggamma = (Double) gcs.getGammaValue().evaluate(null);
+        Double ggamma = (Double) gcs.getGammaValue().evaluate(null, Double.class);
         assertEquals(2.8, ggamma.doubleValue());
 
         ContrastEnhancement bcs = blueChannel.getContrastEnhancement();
@@ -787,8 +787,70 @@ public class SLDStyleTest extends TestCase {
 
         // ContrastEnhancement
         ContrastEnhancement ce = rs.getContrastEnhancement();
-        Double v = (Double) ce.getGammaValue().evaluate(null);
+        Double v = (Double) ce.getGammaValue().evaluate(null, Double.class);
         assertEquals(1.0, v.doubleValue());
+    }
+
+    /**
+     * Tests the parsing of a raster symbolizer sld
+     *
+     * @throws IOException
+     */
+    public void testParseRasterSymbolizerWithExpressionGammaValue() throws IOException {
+        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        java.net.URL surl = TestData.getResource(this, "rasterSymbolizerGammaValue.sld");
+        SLDParser stylereader = new SLDParser(factory, surl);
+
+        Style[] styles = stylereader.readXML();
+        assertEquals(1, styles.length);
+        assertEquals(1, styles[0].getFeatureTypeStyles().length);
+        assertEquals(1, styles[0].getFeatureTypeStyles()[0].getRules().length);
+
+        Rule r = styles[0].getFeatureTypeStyles()[0].getRules()[0];
+        assertEquals(1, r.getSymbolizers().length);
+
+        RasterSymbolizer rs = (RasterSymbolizer) r.getSymbolizers()[0];
+
+        // opacity
+        assertEquals(0.75, SLD.opacity(rs));
+
+        // channels
+        ChannelSelection cs = rs.getChannelSelection();
+        SelectedChannelType redChannel = cs.getRGBChannels()[0];
+        SelectedChannelType greenChannel = cs.getRGBChannels()[1];
+        SelectedChannelType blueChannel = cs.getRGBChannels()[2];
+
+        // channel names
+        assertEquals("1", redChannel.getChannelName().evaluate(null, String.class));
+        assertEquals("2", greenChannel.getChannelName().evaluate(null, String.class));
+        assertEquals("6", blueChannel.getChannelName().evaluate(null, String.class));
+
+        // contrast enhancement
+        ContrastEnhancement rcs = redChannel.getContrastEnhancement();
+
+        assertEquals("histogram", rcs.getMethod().name().toLowerCase());
+
+        ContrastEnhancement gcs = greenChannel.getContrastEnhancement();
+        Double ggamma = (Double) gcs.getGammaValue().evaluate(null, Double.class);
+        assertEquals(3.8, ggamma.doubleValue());
+
+        ContrastEnhancement bcs = blueChannel.getContrastEnhancement();
+        ContrastMethod m = bcs.getMethod();
+        assertEquals("normalize", m.name().toLowerCase());
+
+        // overlap behaviour
+        Expression overlapExpr = rs.getOverlap();
+        String type = (String) overlapExpr.evaluate(null);
+        assertEquals("LATEST_ON_TOP", type);
+
+        org.opengis.style.OverlapBehavior overlapBehavior = rs.getOverlapBehavior();
+        type = overlapBehavior.name();
+        assertEquals("LATEST_ON_TOP", type);
+
+        // ContrastEnhancement
+        ContrastEnhancement ce = rs.getContrastEnhancement();
+        Double v = (Double) ce.getGammaValue().evaluate(null, Double.class);
+        assertEquals(1.5, v.doubleValue());
     }
 
     /**

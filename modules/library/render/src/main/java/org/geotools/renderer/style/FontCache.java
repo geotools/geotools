@@ -142,12 +142,14 @@ public class FontCache {
 
             File file = new File(fontUrl);
 
-            try {
-                is = new FileInputStream(file);
-            } catch (FileNotFoundException fne) {
-                // this may be ok - but we should mention it
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info("Bad file name in SLDStyleFactory" + fontUrl + "\n" + fne);
+            if (file.exists()) {
+                try {
+                    is = new FileInputStream(file);
+                } catch (FileNotFoundException fne) {
+                    // this may be ok - but we should mention it
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.info("Bad file name in SLDStyleFactory" + fontUrl + "\n" + fne);
+                    }
                 }
             }
         }
@@ -169,17 +171,25 @@ public class FontCache {
             return java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, is);
         } catch (FontFormatException ffe) {
             if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.info("Font format error in SLDStyleFactory " + fontUrl + "\n" + ffe);
+                LOGGER.info("Font format error in FontCache " + fontUrl + "\n" + ffe);
             }
 
             return null;
         } catch (IOException ioe) {
             // we'll ignore this for the moment
             if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.info("IO error in SLDStyleFactory " + fontUrl + "\n" + ioe);
+                LOGGER.info("IO error in FontCache " + fontUrl + "\n" + ioe);
             }
 
             return null;
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    LOGGER.info("IO error in FontCache" + fontUrl + "\n" + e);
+                }
+            }
         }
     }
 

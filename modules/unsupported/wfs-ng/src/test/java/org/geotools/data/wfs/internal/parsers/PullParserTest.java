@@ -37,12 +37,14 @@ public class PullParserTest extends AbstractGetFeatureParserTest {
             final QName featureName,
             final URL schemaLocation,
             final SimpleFeatureType featureType,
-            final URL getFeaturesRequest)
+            final URL getFeaturesRequest,
+            String axisOrder)
             throws IOException {
 
         InputStream inputStream = new BufferedInputStream(getFeaturesRequest.openStream());
         GetFeatureParser parser =
-                new PullParserFeatureReader(new WFSConfiguration(), inputStream, featureType);
+                new PullParserFeatureReader(
+                        new WFSConfiguration(), inputStream, featureType, axisOrder);
         return parser;
     }
 

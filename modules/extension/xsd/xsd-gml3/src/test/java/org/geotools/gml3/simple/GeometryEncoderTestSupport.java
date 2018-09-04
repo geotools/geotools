@@ -62,6 +62,12 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
 
     protected Document encode(GeometryEncoder encoder, Geometry geometry, String gmlId)
             throws Exception {
+        return encode(encoder, geometry, true, gmlId);
+    }
+
+    protected Document encode(
+            GeometryEncoder encoder, Geometry geometry, boolean encodeMeasures, String gmlId)
+            throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         // create the document serializer
@@ -80,7 +86,8 @@ public abstract class GeometryEncoderTestSupport extends GML3TestSupport {
         xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "xml");
         xmls.setResult(new StreamResult(out));
 
-        GMLWriter handler = new GMLWriter(xmls, gtEncoder.getNamespaces(), 6, false, "gml");
+        GMLWriter handler =
+                new GMLWriter(xmls, gtEncoder.getNamespaces(), 6, false, "gml", encodeMeasures);
         handler.startDocument();
         handler.startPrefixMapping("gml", GML.NAMESPACE);
         handler.endPrefixMapping("gml");

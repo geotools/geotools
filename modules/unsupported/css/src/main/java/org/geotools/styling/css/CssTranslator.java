@@ -1262,7 +1262,7 @@ public class CssTranslator {
                     constrastParameters.put(sldKey, getExpression(values, cssKey, i));
                 }
             }
-            double[] gammas = getDoubleArray(values, "raster-gamma", i);
+            Expression[] gammas = getExpressionArray(values, "raster-gamma", i);
             if (!"auto".equals(channelExpressions[0].evaluate(null, String.class))) {
                 ChannelSelectionBuilder cs = rb.channelSelection();
                 if (channelExpressions.length == 1) {
@@ -1383,7 +1383,7 @@ public class CssTranslator {
             ContrastEnhancementBuilder ceb,
             String[] constrastEnhancements,
             Map<String, Expression> constrastParameters,
-            double[] gammas,
+            Expression[] gammas,
             int i) {
         if (constrastEnhancements != null && constrastEnhancements.length > 0) {
             String contrastEnhancementName;
@@ -1413,7 +1413,7 @@ public class CssTranslator {
             ceb.unset();
         }
         if (gammas != null && gammas.length > 0) {
-            double gamma;
+            Expression gamma;
             if (gammas.length > i) {
                 gamma = gammas[0];
             } else {

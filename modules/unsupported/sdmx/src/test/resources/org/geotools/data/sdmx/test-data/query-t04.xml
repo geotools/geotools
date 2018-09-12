@@ -1,0 +1,31 @@
+﻿<?xml version="1.0"?>
+<message:CompactData xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:compact="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/compact" xmlns:ABS="http://oecd.stat.org/Data" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd http://oecd.stat.org/Data http://stat.data.abs.gov.au/restsdmx/sdmx.ashx/GetSchema/ABS_CENSUS2011_T04">
+  <Header>
+    <ID>none</ID>
+    <Test>false</Test>
+    <Truncated>false</Truncated>
+    <Prepared>2017-05-05T04:45:19</Prepared>
+    <Sender id="ABS">
+      <Name xml:lang="en">Australian Bureau of Statistics</Name>
+      <Name xml:lang="fr">Australian Bureau of Statistics</Name>
+    </Sender>
+  </Header>
+  <ABS:DataSet xmlns:ABS="http://oecd.stat.org/Data" keyFamilyURI="http://stat.data.abs.gov.au/restsdmx/sdmx.ashx/GetKeyFamily/ABS_CENSUS2011_T04">
+    <ABS:Series MEASURE="3" MSTP="TOT" AGE="TOT" STATE="0" REGIONTYPE="AUS" REGION="0" FREQUENCY="A" TIME_FORMAT="P1Y">
+      <ABS:Obs TIME="2001" OBS_VALUE="15038339"/>
+      <ABS:Obs TIME="2006" OBS_VALUE="16103825"/>
+      <ABS:Obs TIME="2011" OBS_VALUE="17565158"/>
+    </ABS:Series>
+    <ABS:Series MEASURE="1" MSTP="TOT" AGE="TOT" STATE="0" REGIONTYPE="AUS" REGION="0" FREQUENCY="A" TIME_FORMAT="P1Y">
+      <ABS:Obs TIME="2001" OBS_VALUE="7347379"/>
+      <ABS:Obs TIME="2006" OBS_VALUE="7864865"/>
+      <ABS:Obs TIME="2011" OBS_VALUE="8600148"/>
+    </ABS:Series>
+    <ABS:Annotations>
+      <common:Annotation xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common">
+        <common:AnnotationTitle>Statistical usage warning</common:AnnotationTitle>
+        <common:AnnotationText>ABS.Stat beta is continuing to be developed.  Data will be updated as soon as possible following its 11:30 am release on the ABS website.</common:AnnotationText>
+      </common:Annotation>
+    </ABS:Annotations>
+  </ABS:DataSet>
+</message:CompactData>

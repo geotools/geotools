@@ -1,0 +1,2550 @@
+<?xml version="1.0"?>
+<message:Structure xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure" xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message" xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/structure http://www.sdmx.org/docs/2_0/SDMXStructure.xsd http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message http://www.sdmx.org/docs/2_0/SDMXMessage.xsd">
+  <Header xmlns="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message">
+    <ID>
+      none<!--Statistical usage warning ABS.Stat beta is continuing to be 
+        developed. Data will be updated as soon as possible following its 11:30 am 
+        release on the ABS website. -->
+    </ID>
+    <Test>false</Test>
+    <Truncated>false</Truncated>
+    <Prepared>2017-04-13T03:22:11</Prepared>
+    <Sender id="ABS">
+      <Name xml:lang="en">Australian Bureau of Statistics</Name>
+      <Name xml:lang="fr">Australian Bureau of Statistics</Name>
+    </Sender>
+  </Header>
+  <message:CodeLists>
+    <CodeList id="CL_ABS_SEIFA_LGA_LGA_2011" agencyID="ABS">
+      <Name xml:lang="en">Local Government Areas - 2011</Name>
+      <Name xml:lang="fr">Local Government Areas - 2011</Name>
+      <Code value="10050" parentCode="1">
+        <Description xml:lang="en">Albury (C)</Description>
+        <Description xml:lang="fr">Albury (C)</Description>
+      </Code>
+      <Code value="1">
+        <Description xml:lang="en">New South Wales</Description>
+        <Description xml:lang="fr">New South Wales</Description>
+      </Code>
+      <Code value="10110" parentCode="1">
+        <Description xml:lang="en">Armidale Dumaresq (A)</Description>
+        <Description xml:lang="fr">Armidale Dumaresq (A)</Description>
+      </Code>
+      <Code value="10150" parentCode="1">
+        <Description xml:lang="en">Ashfield (A)</Description>
+        <Description xml:lang="fr">Ashfield (A)</Description>
+      </Code>
+      <Code value="10200" parentCode="1">
+        <Description xml:lang="en">Auburn (C)</Description>
+        <Description xml:lang="fr">Auburn (C)</Description>
+      </Code>
+      <Code value="10250" parentCode="1">
+        <Description xml:lang="en">Ballina (A)</Description>
+        <Description xml:lang="fr">Ballina (A)</Description>
+      </Code>
+      <Code value="10300" parentCode="1">
+        <Description xml:lang="en">Balranald (A)</Description>
+        <Description xml:lang="fr">Balranald (A)</Description>
+      </Code>
+      <Code value="10350" parentCode="1">
+        <Description xml:lang="en">Bankstown (C)</Description>
+        <Description xml:lang="fr">Bankstown (C)</Description>
+      </Code>
+      <Code value="10470" parentCode="1">
+        <Description xml:lang="en">Bathurst Regional (A)</Description>
+        <Description xml:lang="fr">Bathurst Regional (A)</Description>
+      </Code>
+      <Code value="10550" parentCode="1">
+        <Description xml:lang="en">Bega Valley (A)</Description>
+        <Description xml:lang="fr">Bega Valley (A)</Description>
+      </Code>
+      <Code value="10600" parentCode="1">
+        <Description xml:lang="en">Bellingen (A)</Description>
+        <Description xml:lang="fr">Bellingen (A)</Description>
+      </Code>
+      <Code value="10650" parentCode="1">
+        <Description xml:lang="en">Berrigan (A)</Description>
+        <Description xml:lang="fr">Berrigan (A)</Description>
+      </Code>
+      <Code value="10750" parentCode="1">
+        <Description xml:lang="en">Blacktown (C)</Description>
+        <Description xml:lang="fr">Blacktown (C)</Description>
+      </Code>
+      <Code value="10800" parentCode="1">
+        <Description xml:lang="en">Bland (A)</Description>
+        <Description xml:lang="fr">Bland (A)</Description>
+      </Code>
+      <Code value="10850" parentCode="1">
+        <Description xml:lang="en">Blayney (A)</Description>
+        <Description xml:lang="fr">Blayney (A)</Description>
+      </Code>
+      <Code value="10900" parentCode="1">
+        <Description xml:lang="en">Blue Mountains (C)</Description>
+        <Description xml:lang="fr">Blue Mountains (C)</Description>
+      </Code>
+      <Code value="10950" parentCode="1">
+        <Description xml:lang="en">Bogan (A)</Description>
+        <Description xml:lang="fr">Bogan (A)</Description>
+      </Code>
+      <Code value="11000" parentCode="1">
+        <Description xml:lang="en">Bombala (A)</Description>
+        <Description xml:lang="fr">Bombala (A)</Description>
+      </Code>
+      <Code value="11050" parentCode="1">
+        <Description xml:lang="en">Boorowa (A)</Description>
+        <Description xml:lang="fr">Boorowa (A)</Description>
+      </Code>
+      <Code value="11100" parentCode="1">
+        <Description xml:lang="en">Botany Bay (C)</Description>
+        <Description xml:lang="fr">Botany Bay (C)</Description>
+      </Code>
+      <Code value="11150" parentCode="1">
+        <Description xml:lang="en">Bourke (A)</Description>
+        <Description xml:lang="fr">Bourke (A)</Description>
+      </Code>
+      <Code value="11200" parentCode="1">
+        <Description xml:lang="en">Brewarrina (A)</Description>
+        <Description xml:lang="fr">Brewarrina (A)</Description>
+      </Code>
+      <Code value="11250" parentCode="1">
+        <Description xml:lang="en">Broken Hill (C)</Description>
+        <Description xml:lang="fr">Broken Hill (C)</Description>
+      </Code>
+      <Code value="11300" parentCode="1">
+        <Description xml:lang="en">Burwood (A)</Description>
+        <Description xml:lang="fr">Burwood (A)</Description>
+      </Code>
+      <Code value="11350" parentCode="1">
+        <Description xml:lang="en">Byron (A)</Description>
+        <Description xml:lang="fr">Byron (A)</Description>
+      </Code>
+      <Code value="11400" parentCode="1">
+        <Description xml:lang="en">Cabonne (A)</Description>
+        <Description xml:lang="fr">Cabonne (A)</Description>
+      </Code>
+      <Code value="11450" parentCode="1">
+        <Description xml:lang="en">Camden (A)</Description>
+        <Description xml:lang="fr">Camden (A)</Description>
+      </Code>
+      <Code value="11500" parentCode="1">
+        <Description xml:lang="en">Campbelltown (C)</Description>
+        <Description xml:lang="fr">Campbelltown (C)</Description>
+      </Code>
+      <Code value="11520" parentCode="1">
+        <Description xml:lang="en">Canada Bay (A)</Description>
+        <Description xml:lang="fr">Canada Bay (A)</Description>
+      </Code>
+      <Code value="11550" parentCode="1">
+        <Description xml:lang="en">Canterbury (C)</Description>
+        <Description xml:lang="fr">Canterbury (C)</Description>
+      </Code>
+      <Code value="11600" parentCode="1">
+        <Description xml:lang="en">Carrathool (A)</Description>
+        <Description xml:lang="fr">Carrathool (A)</Description>
+      </Code>
+      <Code value="11700" parentCode="1">
+        <Description xml:lang="en">Central Darling (A)</Description>
+        <Description xml:lang="fr">Central Darling (A)</Description>
+      </Code>
+      <Code value="11720" parentCode="1">
+        <Description xml:lang="en">Cessnock (C)</Description>
+        <Description xml:lang="fr">Cessnock (C)</Description>
+      </Code>
+      <Code value="11730" parentCode="1">
+        <Description xml:lang="en">Clarence Valley (A)</Description>
+        <Description xml:lang="fr">Clarence Valley (A)</Description>
+      </Code>
+      <Code value="11750" parentCode="1">
+        <Description xml:lang="en">Cobar (A)</Description>
+        <Description xml:lang="fr">Cobar (A)</Description>
+      </Code>
+      <Code value="11800" parentCode="1">
+        <Description xml:lang="en">Coffs Harbour (C)</Description>
+        <Description xml:lang="fr">Coffs Harbour (C)</Description>
+      </Code>
+      <Code value="11860" parentCode="1">
+        <Description xml:lang="en">Conargo (A)</Description>
+        <Description xml:lang="fr">Conargo (A)</Description>
+      </Code>
+      <Code value="12000" parentCode="1">
+        <Description xml:lang="en">Coolamon (A)</Description>
+        <Description xml:lang="fr">Coolamon (A)</Description>
+      </Code>
+      <Code value="12050" parentCode="1">
+        <Description xml:lang="en">Cooma-Monaro (A)</Description>
+        <Description xml:lang="fr">Cooma-Monaro (A)</Description>
+      </Code>
+      <Code value="12150" parentCode="1">
+        <Description xml:lang="en">Coonamble (A)</Description>
+        <Description xml:lang="fr">Coonamble (A)</Description>
+      </Code>
+      <Code value="12200" parentCode="1">
+        <Description xml:lang="en">Cootamundra (A)</Description>
+        <Description xml:lang="fr">Cootamundra (A)</Description>
+      </Code>
+      <Code value="12300" parentCode="1">
+        <Description xml:lang="en">Corowa Shire (A)</Description>
+        <Description xml:lang="fr">Corowa Shire (A)</Description>
+      </Code>
+      <Code value="12350" parentCode="1">
+        <Description xml:lang="en">Cowra (A)</Description>
+        <Description xml:lang="fr">Cowra (A)</Description>
+      </Code>
+      <Code value="12500" parentCode="1">
+        <Description xml:lang="en">Deniliquin (A)</Description>
+        <Description xml:lang="fr">Deniliquin (A)</Description>
+      </Code>
+      <Code value="12600" parentCode="1">
+        <Description xml:lang="en">Dubbo (C)</Description>
+        <Description xml:lang="fr">Dubbo (C)</Description>
+      </Code>
+      <Code value="12700" parentCode="1">
+        <Description xml:lang="en">Dungog (A)</Description>
+        <Description xml:lang="fr">Dungog (A)</Description>
+      </Code>
+      <Code value="12750" parentCode="1">
+        <Description xml:lang="en">Eurobodalla (A)</Description>
+        <Description xml:lang="fr">Eurobodalla (A)</Description>
+      </Code>
+      <Code value="12850" parentCode="1">
+        <Description xml:lang="en">Fairfield (C)</Description>
+        <Description xml:lang="fr">Fairfield (C)</Description>
+      </Code>
+      <Code value="12900" parentCode="1">
+        <Description xml:lang="en">Forbes (A)</Description>
+        <Description xml:lang="fr">Forbes (A)</Description>
+      </Code>
+      <Code value="12950" parentCode="1">
+        <Description xml:lang="en">Gilgandra (A)</Description>
+        <Description xml:lang="fr">Gilgandra (A)</Description>
+      </Code>
+      <Code value="13010" parentCode="1">
+        <Description xml:lang="en">Glen Innes Severn (A)</Description>
+        <Description xml:lang="fr">Glen Innes Severn (A)</Description>
+      </Code>
+      <Code value="13050" parentCode="1">
+        <Description xml:lang="en">Gloucester (A)</Description>
+        <Description xml:lang="fr">Gloucester (A)</Description>
+      </Code>
+      <Code value="13100" parentCode="1">
+        <Description xml:lang="en">Gosford (C)</Description>
+        <Description xml:lang="fr">Gosford (C)</Description>
+      </Code>
+      <Code value="13310" parentCode="1">
+        <Description xml:lang="en">Goulburn Mulwaree (A)</Description>
+        <Description xml:lang="fr">Goulburn Mulwaree (A)</Description>
+      </Code>
+      <Code value="13320" parentCode="1">
+        <Description xml:lang="en">Great Lakes (A)</Description>
+        <Description xml:lang="fr">Great Lakes (A)</Description>
+      </Code>
+      <Code value="13340" parentCode="1">
+        <Description xml:lang="en">Greater Hume Shire (A)</Description>
+        <Description xml:lang="fr">Greater Hume Shire (A)</Description>
+      </Code>
+      <Code value="13380" parentCode="1">
+        <Description xml:lang="en">Greater Taree (C)</Description>
+        <Description xml:lang="fr">Greater Taree (C)</Description>
+      </Code>
+      <Code value="13450" parentCode="1">
+        <Description xml:lang="en">Griffith (C)</Description>
+        <Description xml:lang="fr">Griffith (C)</Description>
+      </Code>
+      <Code value="13500" parentCode="1">
+        <Description xml:lang="en">Gundagai (A)</Description>
+        <Description xml:lang="fr">Gundagai (A)</Description>
+      </Code>
+      <Code value="13550" parentCode="1">
+        <Description xml:lang="en">Gunnedah (A)</Description>
+        <Description xml:lang="fr">Gunnedah (A)</Description>
+      </Code>
+      <Code value="13650" parentCode="1">
+        <Description xml:lang="en">Guyra (A)</Description>
+        <Description xml:lang="fr">Guyra (A)</Description>
+      </Code>
+      <Code value="13660" parentCode="1">
+        <Description xml:lang="en">Gwydir (A)</Description>
+        <Description xml:lang="fr">Gwydir (A)</Description>
+      </Code>
+      <Code value="13700" parentCode="1">
+        <Description xml:lang="en">Harden (A)</Description>
+        <Description xml:lang="fr">Harden (A)</Description>
+      </Code>
+      <Code value="13800" parentCode="1">
+        <Description xml:lang="en">Hawkesbury (C)</Description>
+        <Description xml:lang="fr">Hawkesbury (C)</Description>
+      </Code>
+      <Code value="13850" parentCode="1">
+        <Description xml:lang="en">Hay (A)</Description>
+        <Description xml:lang="fr">Hay (A)</Description>
+      </Code>
+      <Code value="13950" parentCode="1">
+        <Description xml:lang="en">Holroyd (C)</Description>
+        <Description xml:lang="fr">Holroyd (C)</Description>
+      </Code>
+      <Code value="14000" parentCode="1">
+        <Description xml:lang="en">Hornsby (A)</Description>
+        <Description xml:lang="fr">Hornsby (A)</Description>
+      </Code>
+      <Code value="14100" parentCode="1">
+        <Description xml:lang="en">Hunters Hill (A)</Description>
+        <Description xml:lang="fr">Hunters Hill (A)</Description>
+      </Code>
+      <Code value="14150" parentCode="1">
+        <Description xml:lang="en">Hurstville (C)</Description>
+        <Description xml:lang="fr">Hurstville (C)</Description>
+      </Code>
+      <Code value="14200" parentCode="1">
+        <Description xml:lang="en">Inverell (A)</Description>
+        <Description xml:lang="fr">Inverell (A)</Description>
+      </Code>
+      <Code value="14250" parentCode="1">
+        <Description xml:lang="en">Jerilderie (A)</Description>
+        <Description xml:lang="fr">Jerilderie (A)</Description>
+      </Code>
+      <Code value="14300" parentCode="1">
+        <Description xml:lang="en">Junee (A)</Description>
+        <Description xml:lang="fr">Junee (A)</Description>
+      </Code>
+      <Code value="14350" parentCode="1">
+        <Description xml:lang="en">Kempsey (A)</Description>
+        <Description xml:lang="fr">Kempsey (A)</Description>
+      </Code>
+      <Code value="14400" parentCode="1">
+        <Description xml:lang="en">Kiama (A)</Description>
+        <Description xml:lang="fr">Kiama (A)</Description>
+      </Code>
+      <Code value="14450" parentCode="1">
+        <Description xml:lang="en">Kogarah (C)</Description>
+        <Description xml:lang="fr">Kogarah (C)</Description>
+      </Code>
+      <Code value="14500" parentCode="1">
+        <Description xml:lang="en">Ku-ring-gai (A)</Description>
+        <Description xml:lang="fr">Ku-ring-gai (A)</Description>
+      </Code>
+      <Code value="14550" parentCode="1">
+        <Description xml:lang="en">Kyogle (A)</Description>
+        <Description xml:lang="fr">Kyogle (A)</Description>
+      </Code>
+      <Code value="14600" parentCode="1">
+        <Description xml:lang="en">Lachlan (A)</Description>
+        <Description xml:lang="fr">Lachlan (A)</Description>
+      </Code>
+      <Code value="14650" parentCode="1">
+        <Description xml:lang="en">Lake Macquarie (C)</Description>
+        <Description xml:lang="fr">Lake Macquarie (C)</Description>
+      </Code>
+      <Code value="14700" parentCode="1">
+        <Description xml:lang="en">Lane Cove (A)</Description>
+        <Description xml:lang="fr">Lane Cove (A)</Description>
+      </Code>
+      <Code value="14750" parentCode="1">
+        <Description xml:lang="en">Leeton (A)</Description>
+        <Description xml:lang="fr">Leeton (A)</Description>
+      </Code>
+      <Code value="14800" parentCode="1">
+        <Description xml:lang="en">Leichhardt (A)</Description>
+        <Description xml:lang="fr">Leichhardt (A)</Description>
+      </Code>
+      <Code value="14850" parentCode="1">
+        <Description xml:lang="en">Lismore (C)</Description>
+        <Description xml:lang="fr">Lismore (C)</Description>
+      </Code>
+      <Code value="14870" parentCode="1">
+        <Description xml:lang="en">Lithgow (C)</Description>
+        <Description xml:lang="fr">Lithgow (C)</Description>
+      </Code>
+      <Code value="14900" parentCode="1">
+        <Description xml:lang="en">Liverpool (C)</Description>
+        <Description xml:lang="fr">Liverpool (C)</Description>
+      </Code>
+      <Code value="14920" parentCode="1">
+        <Description xml:lang="en">Liverpool Plains (A)</Description>
+        <Description xml:lang="fr">Liverpool Plains (A)</Description>
+      </Code>
+      <Code value="14950" parentCode="1">
+        <Description xml:lang="en">Lockhart (A)</Description>
+        <Description xml:lang="fr">Lockhart (A)</Description>
+      </Code>
+      <Code value="15050" parentCode="1">
+        <Description xml:lang="en">Maitland (C)</Description>
+        <Description xml:lang="fr">Maitland (C)</Description>
+      </Code>
+      <Code value="15150" parentCode="1">
+        <Description xml:lang="en">Manly (A)</Description>
+        <Description xml:lang="fr">Manly (A)</Description>
+      </Code>
+      <Code value="15200" parentCode="1">
+        <Description xml:lang="en">Marrickville (A)</Description>
+        <Description xml:lang="fr">Marrickville (A)</Description>
+      </Code>
+      <Code value="15270" parentCode="1">
+        <Description xml:lang="en">Mid-Western Regional (A)</Description>
+        <Description xml:lang="fr">Mid-Western Regional (A)</Description>
+      </Code>
+      <Code value="15300" parentCode="1">
+        <Description xml:lang="en">Moree Plains (A)</Description>
+        <Description xml:lang="fr">Moree Plains (A)</Description>
+      </Code>
+      <Code value="15350" parentCode="1">
+        <Description xml:lang="en">Mosman (A)</Description>
+        <Description xml:lang="fr">Mosman (A)</Description>
+      </Code>
+      <Code value="15500" parentCode="1">
+        <Description xml:lang="en">Murray (A)</Description>
+        <Description xml:lang="fr">Murray (A)</Description>
+      </Code>
+      <Code value="15550" parentCode="1">
+        <Description xml:lang="en">Murrumbidgee (A)</Description>
+        <Description xml:lang="fr">Murrumbidgee (A)</Description>
+      </Code>
+      <Code value="15650" parentCode="1">
+        <Description xml:lang="en">Muswellbrook (A)</Description>
+        <Description xml:lang="fr">Muswellbrook (A)</Description>
+      </Code>
+      <Code value="15700" parentCode="1">
+        <Description xml:lang="en">Nambucca (A)</Description>
+        <Description xml:lang="fr">Nambucca (A)</Description>
+      </Code>
+      <Code value="15750" parentCode="1">
+        <Description xml:lang="en">Narrabri (A)</Description>
+        <Description xml:lang="fr">Narrabri (A)</Description>
+      </Code>
+      <Code value="15800" parentCode="1">
+        <Description xml:lang="en">Narrandera (A)</Description>
+        <Description xml:lang="fr">Narrandera (A)</Description>
+      </Code>
+      <Code value="15850" parentCode="1">
+        <Description xml:lang="en">Narromine (A)</Description>
+        <Description xml:lang="fr">Narromine (A)</Description>
+      </Code>
+      <Code value="15900" parentCode="1">
+        <Description xml:lang="en">Newcastle (C)</Description>
+        <Description xml:lang="fr">Newcastle (C)</Description>
+      </Code>
+      <Code value="15950" parentCode="1">
+        <Description xml:lang="en">North Sydney (A)</Description>
+        <Description xml:lang="fr">North Sydney (A)</Description>
+      </Code>
+      <Code value="16100" parentCode="1">
+        <Description xml:lang="en">Oberon (A)</Description>
+        <Description xml:lang="fr">Oberon (A)</Description>
+      </Code>
+      <Code value="16150" parentCode="1">
+        <Description xml:lang="en">Orange (C)</Description>
+        <Description xml:lang="fr">Orange (C)</Description>
+      </Code>
+      <Code value="16180" parentCode="1">
+        <Description xml:lang="en">Palerang (A)</Description>
+        <Description xml:lang="fr">Palerang (A)</Description>
+      </Code>
+      <Code value="16200" parentCode="1">
+        <Description xml:lang="en">Parkes (A)</Description>
+        <Description xml:lang="fr">Parkes (A)</Description>
+      </Code>
+      <Code value="16250" parentCode="1">
+        <Description xml:lang="en">Parramatta (C)</Description>
+        <Description xml:lang="fr">Parramatta (C)</Description>
+      </Code>
+      <Code value="16350" parentCode="1">
+        <Description xml:lang="en">Penrith (C)</Description>
+        <Description xml:lang="fr">Penrith (C)</Description>
+      </Code>
+      <Code value="16370" parentCode="1">
+        <Description xml:lang="en">Pittwater (A)</Description>
+        <Description xml:lang="fr">Pittwater (A)</Description>
+      </Code>
+      <Code value="16380" parentCode="1">
+        <Description xml:lang="en">Port Macquarie-Hastings (A)</Description>
+        <Description xml:lang="fr">Port Macquarie-Hastings (A)</Description>
+      </Code>
+      <Code value="16400" parentCode="1">
+        <Description xml:lang="en">Port Stephens (A)</Description>
+        <Description xml:lang="fr">Port Stephens (A)</Description>
+      </Code>
+      <Code value="16470" parentCode="1">
+        <Description xml:lang="en">Queanbeyan (C)</Description>
+        <Description xml:lang="fr">Queanbeyan (C)</Description>
+      </Code>
+      <Code value="16550" parentCode="1">
+        <Description xml:lang="en">Randwick (C)</Description>
+        <Description xml:lang="fr">Randwick (C)</Description>
+      </Code>
+      <Code value="16610" parentCode="1">
+        <Description xml:lang="en">Richmond Valley (A)</Description>
+        <Description xml:lang="fr">Richmond Valley (A)</Description>
+      </Code>
+      <Code value="16650" parentCode="1">
+        <Description xml:lang="en">Rockdale (C)</Description>
+        <Description xml:lang="fr">Rockdale (C)</Description>
+      </Code>
+      <Code value="16700" parentCode="1">
+        <Description xml:lang="en">Ryde (C)</Description>
+        <Description xml:lang="fr">Ryde (C)</Description>
+      </Code>
+      <Code value="16900" parentCode="1">
+        <Description xml:lang="en">Shellharbour (C)</Description>
+        <Description xml:lang="fr">Shellharbour (C)</Description>
+      </Code>
+      <Code value="16950" parentCode="1">
+        <Description xml:lang="en">Shoalhaven (C)</Description>
+        <Description xml:lang="fr">Shoalhaven (C)</Description>
+      </Code>
+      <Code value="17000" parentCode="1">
+        <Description xml:lang="en">Singleton (A)</Description>
+        <Description xml:lang="fr">Singleton (A)</Description>
+      </Code>
+      <Code value="17050" parentCode="1">
+        <Description xml:lang="en">Snowy River (A)</Description>
+        <Description xml:lang="fr">Snowy River (A)</Description>
+      </Code>
+      <Code value="17100" parentCode="1">
+        <Description xml:lang="en">Strathfield (A)</Description>
+        <Description xml:lang="fr">Strathfield (A)</Description>
+      </Code>
+      <Code value="17150" parentCode="1">
+        <Description xml:lang="en">Sutherland Shire (A)</Description>
+        <Description xml:lang="fr">Sutherland Shire (A)</Description>
+      </Code>
+      <Code value="17200" parentCode="1">
+        <Description xml:lang="en">Sydney (C)</Description>
+        <Description xml:lang="fr">Sydney (C)</Description>
+      </Code>
+      <Code value="17310" parentCode="1">
+        <Description xml:lang="en">Tamworth Regional (A)</Description>
+        <Description xml:lang="fr">Tamworth Regional (A)</Description>
+      </Code>
+      <Code value="17350" parentCode="1">
+        <Description xml:lang="en">Temora (A)</Description>
+        <Description xml:lang="fr">Temora (A)</Description>
+      </Code>
+      <Code value="17400" parentCode="1">
+        <Description xml:lang="en">Tenterfield (A)</Description>
+        <Description xml:lang="fr">Tenterfield (A)</Description>
+      </Code>
+      <Code value="17420" parentCode="1">
+        <Description xml:lang="en">The Hills Shire (A)</Description>
+        <Description xml:lang="fr">The Hills Shire (A)</Description>
+      </Code>
+      <Code value="17450" parentCode="1">
+        <Description xml:lang="en">Tumbarumba (A)</Description>
+        <Description xml:lang="fr">Tumbarumba (A)</Description>
+      </Code>
+      <Code value="17500" parentCode="1">
+        <Description xml:lang="en">Tumut Shire (A)</Description>
+        <Description xml:lang="fr">Tumut Shire (A)</Description>
+      </Code>
+      <Code value="17550" parentCode="1">
+        <Description xml:lang="en">Tweed (A)</Description>
+        <Description xml:lang="fr">Tweed (A)</Description>
+      </Code>
+      <Code value="17620" parentCode="1">
+        <Description xml:lang="en">Upper Hunter Shire (A)</Description>
+        <Description xml:lang="fr">Upper Hunter Shire (A)</Description>
+      </Code>
+      <Code value="17640" parentCode="1">
+        <Description xml:lang="en">Upper Lachlan Shire (A)</Description>
+        <Description xml:lang="fr">Upper Lachlan Shire (A)</Description>
+      </Code>
+      <Code value="17650" parentCode="1">
+        <Description xml:lang="en">Uralla (A)</Description>
+        <Description xml:lang="fr">Uralla (A)</Description>
+      </Code>
+      <Code value="17700" parentCode="1">
+        <Description xml:lang="en">Urana (A)</Description>
+        <Description xml:lang="fr">Urana (A)</Description>
+      </Code>
+      <Code value="17750" parentCode="1">
+        <Description xml:lang="en">Wagga Wagga (C)</Description>
+        <Description xml:lang="fr">Wagga Wagga (C)</Description>
+      </Code>
+      <Code value="17800" parentCode="1">
+        <Description xml:lang="en">Wakool (A)</Description>
+        <Description xml:lang="fr">Wakool (A)</Description>
+      </Code>
+      <Code value="17850" parentCode="1">
+        <Description xml:lang="en">Walcha (A)</Description>
+        <Description xml:lang="fr">Walcha (A)</Description>
+      </Code>
+      <Code value="17900" parentCode="1">
+        <Description xml:lang="en">Walgett (A)</Description>
+        <Description xml:lang="fr">Walgett (A)</Description>
+      </Code>
+      <Code value="17950" parentCode="1">
+        <Description xml:lang="en">Warren (A)</Description>
+        <Description xml:lang="fr">Warren (A)</Description>
+      </Code>
+      <Code value="18000" parentCode="1">
+        <Description xml:lang="en">Warringah (A)</Description>
+        <Description xml:lang="fr">Warringah (A)</Description>
+      </Code>
+      <Code value="18020" parentCode="1">
+        <Description xml:lang="en">Warrumbungle Shire (A)</Description>
+        <Description xml:lang="fr">Warrumbungle Shire (A)</Description>
+      </Code>
+      <Code value="18050" parentCode="1">
+        <Description xml:lang="en">Waverley (A)</Description>
+        <Description xml:lang="fr">Waverley (A)</Description>
+      </Code>
+      <Code value="18100" parentCode="1">
+        <Description xml:lang="en">Weddin (A)</Description>
+        <Description xml:lang="fr">Weddin (A)</Description>
+      </Code>
+      <Code value="18150" parentCode="1">
+        <Description xml:lang="en">Wellington (A)</Description>
+        <Description xml:lang="fr">Wellington (A)</Description>
+      </Code>
+      <Code value="18200" parentCode="1">
+        <Description xml:lang="en">Wentworth (A)</Description>
+        <Description xml:lang="fr">Wentworth (A)</Description>
+      </Code>
+      <Code value="18250" parentCode="1">
+        <Description xml:lang="en">Willoughby (C)</Description>
+        <Description xml:lang="fr">Willoughby (C)</Description>
+      </Code>
+      <Code value="18350" parentCode="1">
+        <Description xml:lang="en">Wingecarribee (A)</Description>
+        <Description xml:lang="fr">Wingecarribee (A)</Description>
+      </Code>
+      <Code value="18400" parentCode="1">
+        <Description xml:lang="en">Wollondilly (A)</Description>
+        <Description xml:lang="fr">Wollondilly (A)</Description>
+      </Code>
+      <Code value="18450" parentCode="1">
+        <Description xml:lang="en">Wollongong (C)</Description>
+        <Description xml:lang="fr">Wollongong (C)</Description>
+      </Code>
+      <Code value="18500" parentCode="1">
+        <Description xml:lang="en">Woollahra (A)</Description>
+        <Description xml:lang="fr">Woollahra (A)</Description>
+      </Code>
+      <Code value="18550" parentCode="1">
+        <Description xml:lang="en">Wyong (A)</Description>
+        <Description xml:lang="fr">Wyong (A)</Description>
+      </Code>
+      <Code value="18710" parentCode="1">
+        <Description xml:lang="en">Yass Valley (A)</Description>
+        <Description xml:lang="fr">Yass Valley (A)</Description>
+      </Code>
+      <Code value="18750" parentCode="1">
+        <Description xml:lang="en">Young (A)</Description>
+        <Description xml:lang="fr">Young (A)</Description>
+      </Code>
+      <Code value="19399" parentCode="1">
+        <Description xml:lang="en">Unincorporated NSW</Description>
+        <Description xml:lang="fr">Unincorporated NSW</Description>
+      </Code>
+      <Code value="20110" parentCode="2">
+        <Description xml:lang="en">Alpine (S)</Description>
+        <Description xml:lang="fr">Alpine (S)</Description>
+      </Code>
+      <Code value="2">
+        <Description xml:lang="en">Victoria</Description>
+        <Description xml:lang="fr">Victoria</Description>
+      </Code>
+      <Code value="20260" parentCode="2">
+        <Description xml:lang="en">Ararat (RC)</Description>
+        <Description xml:lang="fr">Ararat (RC)</Description>
+      </Code>
+      <Code value="20570" parentCode="2">
+        <Description xml:lang="en">Ballarat (C)</Description>
+        <Description xml:lang="fr">Ballarat (C)</Description>
+      </Code>
+      <Code value="20660" parentCode="2">
+        <Description xml:lang="en">Banyule (C)</Description>
+        <Description xml:lang="fr">Banyule (C)</Description>
+      </Code>
+      <Code value="20740" parentCode="2">
+        <Description xml:lang="en">Bass Coast (S)</Description>
+        <Description xml:lang="fr">Bass Coast (S)</Description>
+      </Code>
+      <Code value="20830" parentCode="2">
+        <Description xml:lang="en">Baw Baw (S)</Description>
+        <Description xml:lang="fr">Baw Baw (S)</Description>
+      </Code>
+      <Code value="20910" parentCode="2">
+        <Description xml:lang="en">Bayside (C)</Description>
+        <Description xml:lang="fr">Bayside (C)</Description>
+      </Code>
+      <Code value="21010" parentCode="2">
+        <Description xml:lang="en">Benalla (RC)</Description>
+        <Description xml:lang="fr">Benalla (RC)</Description>
+      </Code>
+      <Code value="21110" parentCode="2">
+        <Description xml:lang="en">Boroondara (C)</Description>
+        <Description xml:lang="fr">Boroondara (C)</Description>
+      </Code>
+      <Code value="21180" parentCode="2">
+        <Description xml:lang="en">Brimbank (C)</Description>
+        <Description xml:lang="fr">Brimbank (C)</Description>
+      </Code>
+      <Code value="21270" parentCode="2">
+        <Description xml:lang="en">Buloke (S)</Description>
+        <Description xml:lang="fr">Buloke (S)</Description>
+      </Code>
+      <Code value="21370" parentCode="2">
+        <Description xml:lang="en">Campaspe (S)</Description>
+        <Description xml:lang="fr">Campaspe (S)</Description>
+      </Code>
+      <Code value="21450" parentCode="2">
+        <Description xml:lang="en">Cardinia (S)</Description>
+        <Description xml:lang="fr">Cardinia (S)</Description>
+      </Code>
+      <Code value="21610" parentCode="2">
+        <Description xml:lang="en">Casey (C)</Description>
+        <Description xml:lang="fr">Casey (C)</Description>
+      </Code>
+      <Code value="21670" parentCode="2">
+        <Description xml:lang="en">Central Goldfields (S)</Description>
+        <Description xml:lang="fr">Central Goldfields (S)</Description>
+      </Code>
+      <Code value="21750" parentCode="2">
+        <Description xml:lang="en">Colac-Otway (S)</Description>
+        <Description xml:lang="fr">Colac-Otway (S)</Description>
+      </Code>
+      <Code value="21830" parentCode="2">
+        <Description xml:lang="en">Corangamite (S)</Description>
+        <Description xml:lang="fr">Corangamite (S)</Description>
+      </Code>
+      <Code value="21890" parentCode="2">
+        <Description xml:lang="en">Darebin (C)</Description>
+        <Description xml:lang="fr">Darebin (C)</Description>
+      </Code>
+      <Code value="22110" parentCode="2">
+        <Description xml:lang="en">East Gippsland (S)</Description>
+        <Description xml:lang="fr">East Gippsland (S)</Description>
+      </Code>
+      <Code value="22170" parentCode="2">
+        <Description xml:lang="en">Frankston (C)</Description>
+        <Description xml:lang="fr">Frankston (C)</Description>
+      </Code>
+      <Code value="22250" parentCode="2">
+        <Description xml:lang="en">Gannawarra (S)</Description>
+        <Description xml:lang="fr">Gannawarra (S)</Description>
+      </Code>
+      <Code value="22310" parentCode="2">
+        <Description xml:lang="en">Glen Eira (C)</Description>
+        <Description xml:lang="fr">Glen Eira (C)</Description>
+      </Code>
+      <Code value="22410" parentCode="2">
+        <Description xml:lang="en">Glenelg (S)</Description>
+        <Description xml:lang="fr">Glenelg (S)</Description>
+      </Code>
+      <Code value="22490" parentCode="2">
+        <Description xml:lang="en">Golden Plains (S)</Description>
+        <Description xml:lang="fr">Golden Plains (S)</Description>
+      </Code>
+      <Code value="22620" parentCode="2">
+        <Description xml:lang="en">Greater Bendigo (C)</Description>
+        <Description xml:lang="fr">Greater Bendigo (C)</Description>
+      </Code>
+      <Code value="22670" parentCode="2">
+        <Description xml:lang="en">Greater Dandenong (C)</Description>
+        <Description xml:lang="fr">Greater Dandenong (C)</Description>
+      </Code>
+      <Code value="22750" parentCode="2">
+        <Description xml:lang="en">Greater Geelong (C)</Description>
+        <Description xml:lang="fr">Greater Geelong (C)</Description>
+      </Code>
+      <Code value="22830" parentCode="2">
+        <Description xml:lang="en">Greater Shepparton (C)</Description>
+        <Description xml:lang="fr">Greater Shepparton (C)</Description>
+      </Code>
+      <Code value="22910" parentCode="2">
+        <Description xml:lang="en">Hepburn (S)</Description>
+        <Description xml:lang="fr">Hepburn (S)</Description>
+      </Code>
+      <Code value="22980" parentCode="2">
+        <Description xml:lang="en">Hindmarsh (S)</Description>
+        <Description xml:lang="fr">Hindmarsh (S)</Description>
+      </Code>
+      <Code value="23110" parentCode="2">
+        <Description xml:lang="en">Hobsons Bay (C)</Description>
+        <Description xml:lang="fr">Hobsons Bay (C)</Description>
+      </Code>
+      <Code value="23190" parentCode="2">
+        <Description xml:lang="en">Horsham (RC)</Description>
+        <Description xml:lang="fr">Horsham (RC)</Description>
+      </Code>
+      <Code value="23270" parentCode="2">
+        <Description xml:lang="en">Hume (C)</Description>
+        <Description xml:lang="fr">Hume (C)</Description>
+      </Code>
+      <Code value="23350" parentCode="2">
+        <Description xml:lang="en">Indigo (S)</Description>
+        <Description xml:lang="fr">Indigo (S)</Description>
+      </Code>
+      <Code value="23430" parentCode="2">
+        <Description xml:lang="en">Kingston (C)</Description>
+        <Description xml:lang="fr">Kingston (C)</Description>
+      </Code>
+      <Code value="23670" parentCode="2">
+        <Description xml:lang="en">Knox (C)</Description>
+        <Description xml:lang="fr">Knox (C)</Description>
+      </Code>
+      <Code value="23810" parentCode="2">
+        <Description xml:lang="en">Latrobe (C)</Description>
+        <Description xml:lang="fr">Latrobe (C)</Description>
+      </Code>
+      <Code value="23940" parentCode="2">
+        <Description xml:lang="en">Loddon (S)</Description>
+        <Description xml:lang="fr">Loddon (S)</Description>
+      </Code>
+      <Code value="24130" parentCode="2">
+        <Description xml:lang="en">Macedon Ranges (S)</Description>
+        <Description xml:lang="fr">Macedon Ranges (S)</Description>
+      </Code>
+      <Code value="24210" parentCode="2">
+        <Description xml:lang="en">Manningham (C)</Description>
+        <Description xml:lang="fr">Manningham (C)</Description>
+      </Code>
+      <Code value="24250" parentCode="2">
+        <Description xml:lang="en">Mansfield (S)</Description>
+        <Description xml:lang="fr">Mansfield (S)</Description>
+      </Code>
+      <Code value="24330" parentCode="2">
+        <Description xml:lang="en">Maribyrnong (C)</Description>
+        <Description xml:lang="fr">Maribyrnong (C)</Description>
+      </Code>
+      <Code value="24410" parentCode="2">
+        <Description xml:lang="en">Maroondah (C)</Description>
+        <Description xml:lang="fr">Maroondah (C)</Description>
+      </Code>
+      <Code value="24600" parentCode="2">
+        <Description xml:lang="en">Melbourne (C)</Description>
+        <Description xml:lang="fr">Melbourne (C)</Description>
+      </Code>
+      <Code value="24650" parentCode="2">
+        <Description xml:lang="en">Melton (S)</Description>
+        <Description xml:lang="fr">Melton (S)</Description>
+      </Code>
+      <Code value="24780" parentCode="2">
+        <Description xml:lang="en">Mildura (RC)</Description>
+        <Description xml:lang="fr">Mildura (RC)</Description>
+      </Code>
+      <Code value="24850" parentCode="2">
+        <Description xml:lang="en">Mitchell (S)</Description>
+        <Description xml:lang="fr">Mitchell (S)</Description>
+      </Code>
+      <Code value="24900" parentCode="2">
+        <Description xml:lang="en">Moira (S)</Description>
+        <Description xml:lang="fr">Moira (S)</Description>
+      </Code>
+      <Code value="24970" parentCode="2">
+        <Description xml:lang="en">Monash (C)</Description>
+        <Description xml:lang="fr">Monash (C)</Description>
+      </Code>
+      <Code value="25060" parentCode="2">
+        <Description xml:lang="en">Moonee Valley (C)</Description>
+        <Description xml:lang="fr">Moonee Valley (C)</Description>
+      </Code>
+      <Code value="25150" parentCode="2">
+        <Description xml:lang="en">Moorabool (S)</Description>
+        <Description xml:lang="fr">Moorabool (S)</Description>
+      </Code>
+      <Code value="25250" parentCode="2">
+        <Description xml:lang="en">Moreland (C)</Description>
+        <Description xml:lang="fr">Moreland (C)</Description>
+      </Code>
+      <Code value="25340" parentCode="2">
+        <Description xml:lang="en">Mornington Peninsula (S)</Description>
+        <Description xml:lang="fr">Mornington Peninsula (S)</Description>
+      </Code>
+      <Code value="25430" parentCode="2">
+        <Description xml:lang="en">Mount Alexander (S)</Description>
+        <Description xml:lang="fr">Mount Alexander (S)</Description>
+      </Code>
+      <Code value="25490" parentCode="2">
+        <Description xml:lang="en">Moyne (S)</Description>
+        <Description xml:lang="fr">Moyne (S)</Description>
+      </Code>
+      <Code value="25620" parentCode="2">
+        <Description xml:lang="en">Murrindindi (S)</Description>
+        <Description xml:lang="fr">Murrindindi (S)</Description>
+      </Code>
+      <Code value="25710" parentCode="2">
+        <Description xml:lang="en">Nillumbik (S)</Description>
+        <Description xml:lang="fr">Nillumbik (S)</Description>
+      </Code>
+      <Code value="25810" parentCode="2">
+        <Description xml:lang="en">Northern Grampians (S)</Description>
+        <Description xml:lang="fr">Northern Grampians (S)</Description>
+      </Code>
+      <Code value="25900" parentCode="2">
+        <Description xml:lang="en">Port Phillip (C)</Description>
+        <Description xml:lang="fr">Port Phillip (C)</Description>
+      </Code>
+      <Code value="25990" parentCode="2">
+        <Description xml:lang="en">Pyrenees (S)</Description>
+        <Description xml:lang="fr">Pyrenees (S)</Description>
+      </Code>
+      <Code value="26080" parentCode="2">
+        <Description xml:lang="en">Queenscliffe (B)</Description>
+        <Description xml:lang="fr">Queenscliffe (B)</Description>
+      </Code>
+      <Code value="26170" parentCode="2">
+        <Description xml:lang="en">South Gippsland (S)</Description>
+        <Description xml:lang="fr">South Gippsland (S)</Description>
+      </Code>
+      <Code value="26260" parentCode="2">
+        <Description xml:lang="en">Southern Grampians (S)</Description>
+        <Description xml:lang="fr">Southern Grampians (S)</Description>
+      </Code>
+      <Code value="26350" parentCode="2">
+        <Description xml:lang="en">Stonnington (C)</Description>
+        <Description xml:lang="fr">Stonnington (C)</Description>
+      </Code>
+      <Code value="26430" parentCode="2">
+        <Description xml:lang="en">Strathbogie (S)</Description>
+        <Description xml:lang="fr">Strathbogie (S)</Description>
+      </Code>
+      <Code value="26490" parentCode="2">
+        <Description xml:lang="en">Surf Coast (S)</Description>
+        <Description xml:lang="fr">Surf Coast (S)</Description>
+      </Code>
+      <Code value="26610" parentCode="2">
+        <Description xml:lang="en">Swan Hill (RC)</Description>
+        <Description xml:lang="fr">Swan Hill (RC)</Description>
+      </Code>
+      <Code value="26670" parentCode="2">
+        <Description xml:lang="en">Towong (S)</Description>
+        <Description xml:lang="fr">Towong (S)</Description>
+      </Code>
+      <Code value="26700" parentCode="2">
+        <Description xml:lang="en">Wangaratta (RC)</Description>
+        <Description xml:lang="fr">Wangaratta (RC)</Description>
+      </Code>
+      <Code value="26730" parentCode="2">
+        <Description xml:lang="en">Warrnambool (C)</Description>
+        <Description xml:lang="fr">Warrnambool (C)</Description>
+      </Code>
+      <Code value="26810" parentCode="2">
+        <Description xml:lang="en">Wellington (S)</Description>
+        <Description xml:lang="fr">Wellington (S)</Description>
+      </Code>
+      <Code value="26890" parentCode="2">
+        <Description xml:lang="en">West Wimmera (S)</Description>
+        <Description xml:lang="fr">West Wimmera (S)</Description>
+      </Code>
+      <Code value="26980" parentCode="2">
+        <Description xml:lang="en">Whitehorse (C)</Description>
+        <Description xml:lang="fr">Whitehorse (C)</Description>
+      </Code>
+      <Code value="27070" parentCode="2">
+        <Description xml:lang="en">Whittlesea (C)</Description>
+        <Description xml:lang="fr">Whittlesea (C)</Description>
+      </Code>
+      <Code value="27170" parentCode="2">
+        <Description xml:lang="en">Wodonga (RC)</Description>
+        <Description xml:lang="fr">Wodonga (RC)</Description>
+      </Code>
+      <Code value="27260" parentCode="2">
+        <Description xml:lang="en">Wyndham (C)</Description>
+        <Description xml:lang="fr">Wyndham (C)</Description>
+      </Code>
+      <Code value="27350" parentCode="2">
+        <Description xml:lang="en">Yarra (C)</Description>
+        <Description xml:lang="fr">Yarra (C)</Description>
+      </Code>
+      <Code value="27450" parentCode="2">
+        <Description xml:lang="en">Yarra Ranges (S)</Description>
+        <Description xml:lang="fr">Yarra Ranges (S)</Description>
+      </Code>
+      <Code value="27630" parentCode="2">
+        <Description xml:lang="en">Yarriambiack (S)</Description>
+        <Description xml:lang="fr">Yarriambiack (S)</Description>
+      </Code>
+      <Code value="29399" parentCode="2">
+        <Description xml:lang="en">Unincorporated Vic</Description>
+        <Description xml:lang="fr">Unincorporated Vic</Description>
+      </Code>
+      <Code value="30250" parentCode="3">
+        <Description xml:lang="en">Aurukun (S)</Description>
+        <Description xml:lang="fr">Aurukun (S)</Description>
+      </Code>
+      <Code value="3">
+        <Description xml:lang="en">Queensland</Description>
+        <Description xml:lang="fr">Queensland</Description>
+      </Code>
+      <Code value="30300" parentCode="3">
+        <Description xml:lang="en">Balonne (S)</Description>
+        <Description xml:lang="fr">Balonne (S)</Description>
+      </Code>
+      <Code value="30370" parentCode="3">
+        <Description xml:lang="en">Banana (S)</Description>
+        <Description xml:lang="fr">Banana (S)</Description>
+      </Code>
+      <Code value="30410" parentCode="3">
+        <Description xml:lang="en">Barcaldine (R)</Description>
+        <Description xml:lang="fr">Barcaldine (R)</Description>
+      </Code>
+      <Code value="30450" parentCode="3">
+        <Description xml:lang="en">Barcoo (S)</Description>
+        <Description xml:lang="fr">Barcoo (S)</Description>
+      </Code>
+      <Code value="30760" parentCode="3">
+        <Description xml:lang="en">Blackall Tambo (R)</Description>
+        <Description xml:lang="fr">Blackall Tambo (R)</Description>
+      </Code>
+      <Code value="30900" parentCode="3">
+        <Description xml:lang="en">Boulia (S)</Description>
+        <Description xml:lang="fr">Boulia (S)</Description>
+      </Code>
+      <Code value="31000" parentCode="3">
+        <Description xml:lang="en">Brisbane (C)</Description>
+        <Description xml:lang="fr">Brisbane (C)</Description>
+      </Code>
+      <Code value="31750" parentCode="3">
+        <Description xml:lang="en">Bulloo (S)</Description>
+        <Description xml:lang="fr">Bulloo (S)</Description>
+      </Code>
+      <Code value="31820" parentCode="3">
+        <Description xml:lang="en">Bundaberg (R)</Description>
+        <Description xml:lang="fr">Bundaberg (R)</Description>
+      </Code>
+      <Code value="31900" parentCode="3">
+        <Description xml:lang="en">Burdekin (S)</Description>
+        <Description xml:lang="fr">Burdekin (S)</Description>
+      </Code>
+      <Code value="31950" parentCode="3">
+        <Description xml:lang="en">Burke (S)</Description>
+        <Description xml:lang="fr">Burke (S)</Description>
+      </Code>
+      <Code value="32070" parentCode="3">
+        <Description xml:lang="en">Cairns (R)</Description>
+        <Description xml:lang="fr">Cairns (R)</Description>
+      </Code>
+      <Code value="32250" parentCode="3">
+        <Description xml:lang="en">Carpentaria (S)</Description>
+        <Description xml:lang="fr">Carpentaria (S)</Description>
+      </Code>
+      <Code value="32260" parentCode="3">
+        <Description xml:lang="en">Cassowary Coast (R)</Description>
+        <Description xml:lang="fr">Cassowary Coast (R)</Description>
+      </Code>
+      <Code value="32270" parentCode="3">
+        <Description xml:lang="en">Central Highlands (R)</Description>
+        <Description xml:lang="fr">Central Highlands (R)</Description>
+      </Code>
+      <Code value="32310" parentCode="3">
+        <Description xml:lang="en">Charters Towers (R)</Description>
+        <Description xml:lang="fr">Charters Towers (R)</Description>
+      </Code>
+      <Code value="32330" parentCode="3">
+        <Description xml:lang="en">Cherbourg (S)</Description>
+        <Description xml:lang="fr">Cherbourg (S)</Description>
+      </Code>
+      <Code value="32450" parentCode="3">
+        <Description xml:lang="en">Cloncurry (S)</Description>
+        <Description xml:lang="fr">Cloncurry (S)</Description>
+      </Code>
+      <Code value="32500" parentCode="3">
+        <Description xml:lang="en">Cook (S)</Description>
+        <Description xml:lang="fr">Cook (S)</Description>
+      </Code>
+      <Code value="32600" parentCode="3">
+        <Description xml:lang="en">Croydon (S)</Description>
+        <Description xml:lang="fr">Croydon (S)</Description>
+      </Code>
+      <Code value="32750" parentCode="3">
+        <Description xml:lang="en">Diamantina (S)</Description>
+        <Description xml:lang="fr">Diamantina (S)</Description>
+      </Code>
+      <Code value="32770" parentCode="3">
+        <Description xml:lang="en">Doomadgee (S)</Description>
+        <Description xml:lang="fr">Doomadgee (S)</Description>
+      </Code>
+      <Code value="33100" parentCode="3">
+        <Description xml:lang="en">Etheridge (S)</Description>
+        <Description xml:lang="fr">Etheridge (S)</Description>
+      </Code>
+      <Code value="33200" parentCode="3">
+        <Description xml:lang="en">Flinders (S)</Description>
+        <Description xml:lang="fr">Flinders (S)</Description>
+      </Code>
+      <Code value="33220" parentCode="3">
+        <Description xml:lang="en">Fraser Coast (R)</Description>
+        <Description xml:lang="fr">Fraser Coast (R)</Description>
+      </Code>
+      <Code value="33360" parentCode="3">
+        <Description xml:lang="en">Gladstone (R)</Description>
+        <Description xml:lang="fr">Gladstone (R)</Description>
+      </Code>
+      <Code value="33430" parentCode="3">
+        <Description xml:lang="en">Gold Coast (C)</Description>
+        <Description xml:lang="fr">Gold Coast (C)</Description>
+      </Code>
+      <Code value="33610" parentCode="3">
+        <Description xml:lang="en">Goondiwindi (R)</Description>
+        <Description xml:lang="fr">Goondiwindi (R)</Description>
+      </Code>
+      <Code value="33620" parentCode="3">
+        <Description xml:lang="en">Gympie (R)</Description>
+        <Description xml:lang="fr">Gympie (R)</Description>
+      </Code>
+      <Code value="33800" parentCode="3">
+        <Description xml:lang="en">Hinchinbrook (S)</Description>
+        <Description xml:lang="fr">Hinchinbrook (S)</Description>
+      </Code>
+      <Code value="33830" parentCode="3">
+        <Description xml:lang="en">Hope Vale (S)</Description>
+        <Description xml:lang="fr">Hope Vale (S)</Description>
+      </Code>
+      <Code value="33960" parentCode="3">
+        <Description xml:lang="en">Ipswich (C)</Description>
+        <Description xml:lang="fr">Ipswich (C)</Description>
+      </Code>
+      <Code value="33980" parentCode="3">
+        <Description xml:lang="en">Isaac (R)</Description>
+        <Description xml:lang="fr">Isaac (R)</Description>
+      </Code>
+      <Code value="34420" parentCode="3">
+        <Description xml:lang="en">Kowanyama (S)</Description>
+        <Description xml:lang="fr">Kowanyama (S)</Description>
+      </Code>
+      <Code value="34570" parentCode="3">
+        <Description xml:lang="en">Lockhart River (S)</Description>
+        <Description xml:lang="fr">Lockhart River (S)</Description>
+      </Code>
+      <Code value="34580" parentCode="3">
+        <Description xml:lang="en">Lockyer Valley (R)</Description>
+        <Description xml:lang="fr">Lockyer Valley (R)</Description>
+      </Code>
+      <Code value="34590" parentCode="3">
+        <Description xml:lang="en">Logan (C)</Description>
+        <Description xml:lang="fr">Logan (C)</Description>
+      </Code>
+      <Code value="34710" parentCode="3">
+        <Description xml:lang="en">Longreach (R)</Description>
+        <Description xml:lang="fr">Longreach (R)</Description>
+      </Code>
+      <Code value="34770" parentCode="3">
+        <Description xml:lang="en">Mackay (R)</Description>
+        <Description xml:lang="fr">Mackay (R)</Description>
+      </Code>
+      <Code value="34800" parentCode="3">
+        <Description xml:lang="en">McKinlay (S)</Description>
+        <Description xml:lang="fr">McKinlay (S)</Description>
+      </Code>
+      <Code value="34830" parentCode="3">
+        <Description xml:lang="en">Mapoon (S)</Description>
+        <Description xml:lang="fr">Mapoon (S)</Description>
+      </Code>
+      <Code value="34860" parentCode="3">
+        <Description xml:lang="en">Maranoa (R)</Description>
+        <Description xml:lang="fr">Maranoa (R)</Description>
+      </Code>
+      <Code value="35010" parentCode="3">
+        <Description xml:lang="en">Moreton Bay (R)</Description>
+        <Description xml:lang="fr">Moreton Bay (R)</Description>
+      </Code>
+      <Code value="35250" parentCode="3">
+        <Description xml:lang="en">Mornington (S)</Description>
+        <Description xml:lang="fr">Mornington (S)</Description>
+      </Code>
+      <Code value="35300" parentCode="3">
+        <Description xml:lang="en">Mount Isa (C)</Description>
+        <Description xml:lang="fr">Mount Isa (C)</Description>
+      </Code>
+      <Code value="35600" parentCode="3">
+        <Description xml:lang="en">Murweh (S)</Description>
+        <Description xml:lang="fr">Murweh (S)</Description>
+      </Code>
+      <Code value="35670" parentCode="3">
+        <Description xml:lang="en">Napranum (S)</Description>
+        <Description xml:lang="fr">Napranum (S)</Description>
+      </Code>
+      <Code value="35760" parentCode="3">
+        <Description xml:lang="en">North Burnett (R)</Description>
+        <Description xml:lang="fr">North Burnett (R)</Description>
+      </Code>
+      <Code value="35780" parentCode="3">
+        <Description xml:lang="en">Northern Peninsula Area (R)</Description>
+        <Description xml:lang="fr">Northern Peninsula Area (R)</Description>
+      </Code>
+      <Code value="35790" parentCode="3">
+        <Description xml:lang="en">Palm Island (S)</Description>
+        <Description xml:lang="fr">Palm Island (S)</Description>
+      </Code>
+      <Code value="35800" parentCode="3">
+        <Description xml:lang="en">Paroo (S)</Description>
+        <Description xml:lang="fr">Paroo (S)</Description>
+      </Code>
+      <Code value="36070" parentCode="3">
+        <Description xml:lang="en">Pormpuraaw (S)</Description>
+        <Description xml:lang="fr">Pormpuraaw (S)</Description>
+      </Code>
+      <Code value="36150" parentCode="3">
+        <Description xml:lang="en">Quilpie (S)</Description>
+        <Description xml:lang="fr">Quilpie (S)</Description>
+      </Code>
+      <Code value="36250" parentCode="3">
+        <Description xml:lang="en">Redland (C)</Description>
+        <Description xml:lang="fr">Redland (C)</Description>
+      </Code>
+      <Code value="36300" parentCode="3">
+        <Description xml:lang="en">Richmond (S)</Description>
+        <Description xml:lang="fr">Richmond (S)</Description>
+      </Code>
+      <Code value="36360" parentCode="3">
+        <Description xml:lang="en">Rockhampton (R)</Description>
+        <Description xml:lang="fr">Rockhampton (R)</Description>
+      </Code>
+      <Code value="36510" parentCode="3">
+        <Description xml:lang="en">Scenic Rim (R)</Description>
+        <Description xml:lang="fr">Scenic Rim (R)</Description>
+      </Code>
+      <Code value="36580" parentCode="3">
+        <Description xml:lang="en">Somerset (R)</Description>
+        <Description xml:lang="fr">Somerset (R)</Description>
+      </Code>
+      <Code value="36630" parentCode="3">
+        <Description xml:lang="en">South Burnett (R)</Description>
+        <Description xml:lang="fr">South Burnett (R)</Description>
+      </Code>
+      <Code value="36660" parentCode="3">
+        <Description xml:lang="en">Southern Downs (R)</Description>
+        <Description xml:lang="fr">Southern Downs (R)</Description>
+      </Code>
+      <Code value="36710" parentCode="3">
+        <Description xml:lang="en">Sunshine Coast (R)</Description>
+        <Description xml:lang="fr">Sunshine Coast (R)</Description>
+      </Code>
+      <Code value="36810" parentCode="3">
+        <Description xml:lang="en">Tablelands (R)</Description>
+        <Description xml:lang="fr">Tablelands (R)</Description>
+      </Code>
+      <Code value="36910" parentCode="3">
+        <Description xml:lang="en">Toowoomba (R)</Description>
+        <Description xml:lang="fr">Toowoomba (R)</Description>
+      </Code>
+      <Code value="36950" parentCode="3">
+        <Description xml:lang="en">Torres (S)</Description>
+        <Description xml:lang="fr">Torres (S)</Description>
+      </Code>
+      <Code value="36960" parentCode="3">
+        <Description xml:lang="en">Torres Strait Island (R)</Description>
+        <Description xml:lang="fr">Torres Strait Island (R)</Description>
+      </Code>
+      <Code value="37010" parentCode="3">
+        <Description xml:lang="en">Townsville (C)</Description>
+        <Description xml:lang="fr">Townsville (C)</Description>
+      </Code>
+      <Code value="37300" parentCode="3">
+        <Description xml:lang="en">Weipa (T)</Description>
+        <Description xml:lang="fr">Weipa (T)</Description>
+      </Code>
+      <Code value="37310" parentCode="3">
+        <Description xml:lang="en">Western Downs (R)</Description>
+        <Description xml:lang="fr">Western Downs (R)</Description>
+      </Code>
+      <Code value="37340" parentCode="3">
+        <Description xml:lang="en">Whitsunday (R)</Description>
+        <Description xml:lang="fr">Whitsunday (R)</Description>
+      </Code>
+      <Code value="37400" parentCode="3">
+        <Description xml:lang="en">Winton (S)</Description>
+        <Description xml:lang="fr">Winton (S)</Description>
+      </Code>
+      <Code value="37550" parentCode="3">
+        <Description xml:lang="en">Woorabinda (S)</Description>
+        <Description xml:lang="fr">Woorabinda (S)</Description>
+      </Code>
+      <Code value="37570" parentCode="3">
+        <Description xml:lang="en">Wujal Wujal (S)</Description>
+        <Description xml:lang="fr">Wujal Wujal (S)</Description>
+      </Code>
+      <Code value="37600" parentCode="3">
+        <Description xml:lang="en">Yarrabah (S)</Description>
+        <Description xml:lang="fr">Yarrabah (S)</Description>
+      </Code>
+      <Code value="40070" parentCode="4">
+        <Description xml:lang="en">Adelaide (C)</Description>
+        <Description xml:lang="fr">Adelaide (C)</Description>
+      </Code>
+      <Code value="4">
+        <Description xml:lang="en">South Australia</Description>
+        <Description xml:lang="fr">South Australia</Description>
+      </Code>
+      <Code value="40120" parentCode="4">
+        <Description xml:lang="en">Adelaide Hills (DC)</Description>
+        <Description xml:lang="fr">Adelaide Hills (DC)</Description>
+      </Code>
+      <Code value="40220" parentCode="4">
+        <Description xml:lang="en">Alexandrina (DC)</Description>
+        <Description xml:lang="fr">Alexandrina (DC)</Description>
+      </Code>
+      <Code value="40250" parentCode="4">
+        <Description xml:lang="en">Anangu Pitjantjatjara (AC)</Description>
+        <Description xml:lang="fr">Anangu Pitjantjatjara (AC)</Description>
+      </Code>
+      <Code value="40310" parentCode="4">
+        <Description xml:lang="en">Barossa (DC)</Description>
+        <Description xml:lang="fr">Barossa (DC)</Description>
+      </Code>
+      <Code value="40430" parentCode="4">
+        <Description xml:lang="en">Barunga West (DC)</Description>
+        <Description xml:lang="fr">Barunga West (DC)</Description>
+      </Code>
+      <Code value="40520" parentCode="4">
+        <Description xml:lang="en">Berri and Barmera (DC)</Description>
+        <Description xml:lang="fr">Berri and Barmera (DC)</Description>
+      </Code>
+      <Code value="40700" parentCode="4">
+        <Description xml:lang="en">Burnside (C)</Description>
+        <Description xml:lang="fr">Burnside (C)</Description>
+      </Code>
+      <Code value="40910" parentCode="4">
+        <Description xml:lang="en">Campbelltown (C)</Description>
+        <Description xml:lang="fr">Campbelltown (C)</Description>
+      </Code>
+      <Code value="41010" parentCode="4">
+        <Description xml:lang="en">Ceduna (DC)</Description>
+        <Description xml:lang="fr">Ceduna (DC)</Description>
+      </Code>
+      <Code value="41060" parentCode="4">
+        <Description xml:lang="en">Charles Sturt (C)</Description>
+        <Description xml:lang="fr">Charles Sturt (C)</Description>
+      </Code>
+      <Code value="41140" parentCode="4">
+        <Description xml:lang="en">Clare and Gilbert Valleys (DC)</Description>
+        <Description xml:lang="fr">Clare and Gilbert Valleys (DC)</Description>
+      </Code>
+      <Code value="41190" parentCode="4">
+        <Description xml:lang="en">Cleve (DC)</Description>
+        <Description xml:lang="fr">Cleve (DC)</Description>
+      </Code>
+      <Code value="41330" parentCode="4">
+        <Description xml:lang="en">Coober Pedy (DC)</Description>
+        <Description xml:lang="fr">Coober Pedy (DC)</Description>
+      </Code>
+      <Code value="41560" parentCode="4">
+        <Description xml:lang="en">Copper Coast (DC)</Description>
+        <Description xml:lang="fr">Copper Coast (DC)</Description>
+      </Code>
+      <Code value="41750" parentCode="4">
+        <Description xml:lang="en">Elliston (DC)</Description>
+        <Description xml:lang="fr">Elliston (DC)</Description>
+      </Code>
+      <Code value="41830" parentCode="4">
+        <Description xml:lang="en">Flinders Ranges (DC)</Description>
+        <Description xml:lang="fr">Flinders Ranges (DC)</Description>
+      </Code>
+      <Code value="41960" parentCode="4">
+        <Description xml:lang="en">Franklin Harbour (DC)</Description>
+        <Description xml:lang="fr">Franklin Harbour (DC)</Description>
+      </Code>
+      <Code value="42030" parentCode="4">
+        <Description xml:lang="en">Gawler (T)</Description>
+        <Description xml:lang="fr">Gawler (T)</Description>
+      </Code>
+      <Code value="42110" parentCode="4">
+        <Description xml:lang="en">Goyder (DC)</Description>
+        <Description xml:lang="fr">Goyder (DC)</Description>
+      </Code>
+      <Code value="42250" parentCode="4">
+        <Description xml:lang="en">Grant (DC)</Description>
+        <Description xml:lang="fr">Grant (DC)</Description>
+      </Code>
+      <Code value="42600" parentCode="4">
+        <Description xml:lang="en">Holdfast Bay (C)</Description>
+        <Description xml:lang="fr">Holdfast Bay (C)</Description>
+      </Code>
+      <Code value="42750" parentCode="4">
+        <Description xml:lang="en">Kangaroo Island (DC)</Description>
+        <Description xml:lang="fr">Kangaroo Island (DC)</Description>
+      </Code>
+      <Code value="43080" parentCode="4">
+        <Description xml:lang="en">Karoonda East Murray (DC)</Description>
+        <Description xml:lang="fr">Karoonda East Murray (DC)</Description>
+      </Code>
+      <Code value="43220" parentCode="4">
+        <Description xml:lang="en">Kimba (DC)</Description>
+        <Description xml:lang="fr">Kimba (DC)</Description>
+      </Code>
+      <Code value="43360" parentCode="4">
+        <Description xml:lang="en">Kingston (DC)</Description>
+        <Description xml:lang="fr">Kingston (DC)</Description>
+      </Code>
+      <Code value="43650" parentCode="4">
+        <Description xml:lang="en">Light (RegC)</Description>
+        <Description xml:lang="fr">Light (RegC)</Description>
+      </Code>
+      <Code value="43710" parentCode="4">
+        <Description xml:lang="en">Lower Eyre Peninsula (DC)</Description>
+        <Description xml:lang="fr">Lower Eyre Peninsula (DC)</Description>
+      </Code>
+      <Code value="43790" parentCode="4">
+        <Description xml:lang="en">Loxton Waikerie (DC)</Description>
+        <Description xml:lang="fr">Loxton Waikerie (DC)</Description>
+      </Code>
+      <Code value="43920" parentCode="4">
+        <Description xml:lang="en">Mallala (DC)</Description>
+        <Description xml:lang="fr">Mallala (DC)</Description>
+      </Code>
+      <Code value="44000" parentCode="4">
+        <Description xml:lang="en">Maralinga Tjarutja (AC)</Description>
+        <Description xml:lang="fr">Maralinga Tjarutja (AC)</Description>
+      </Code>
+      <Code value="44060" parentCode="4">
+        <Description xml:lang="en">Marion (C)</Description>
+        <Description xml:lang="fr">Marion (C)</Description>
+      </Code>
+      <Code value="44210" parentCode="4">
+        <Description xml:lang="en">Mid Murray (DC)</Description>
+        <Description xml:lang="fr">Mid Murray (DC)</Description>
+      </Code>
+      <Code value="44340" parentCode="4">
+        <Description xml:lang="en">Mitcham (C)</Description>
+        <Description xml:lang="fr">Mitcham (C)</Description>
+      </Code>
+      <Code value="44550" parentCode="4">
+        <Description xml:lang="en">Mount Barker (DC)</Description>
+        <Description xml:lang="fr">Mount Barker (DC)</Description>
+      </Code>
+      <Code value="44620" parentCode="4">
+        <Description xml:lang="en">Mount Gambier (C)</Description>
+        <Description xml:lang="fr">Mount Gambier (C)</Description>
+      </Code>
+      <Code value="44830" parentCode="4">
+        <Description xml:lang="en">Mount Remarkable (DC)</Description>
+        <Description xml:lang="fr">Mount Remarkable (DC)</Description>
+      </Code>
+      <Code value="45040" parentCode="4">
+        <Description xml:lang="en">Murray Bridge (RC)</Description>
+        <Description xml:lang="fr">Murray Bridge (RC)</Description>
+      </Code>
+      <Code value="45090" parentCode="4">
+        <Description xml:lang="en">Naracoorte and Lucindale (DC)</Description>
+        <Description xml:lang="fr">Naracoorte and Lucindale (DC)</Description>
+      </Code>
+      <Code value="45120" parentCode="4">
+        <Description xml:lang="en">Northern Areas (DC)</Description>
+        <Description xml:lang="fr">Northern Areas (DC)</Description>
+      </Code>
+      <Code value="45290" parentCode="4">
+        <Description xml:lang="en">Norwood Payneham St Peters (C)</Description>
+        <Description xml:lang="fr">Norwood Payneham St Peters (C)</Description>
+      </Code>
+      <Code value="45340" parentCode="4">
+        <Description xml:lang="en">Onkaparinga (C)</Description>
+        <Description xml:lang="fr">Onkaparinga (C)</Description>
+      </Code>
+      <Code value="45400" parentCode="4">
+        <Description xml:lang="en">Orroroo/Carrieton (DC)</Description>
+        <Description xml:lang="fr">Orroroo/Carrieton (DC)</Description>
+      </Code>
+      <Code value="45540" parentCode="4">
+        <Description xml:lang="en">Peterborough (DC)</Description>
+        <Description xml:lang="fr">Peterborough (DC)</Description>
+      </Code>
+      <Code value="45680" parentCode="4">
+        <Description xml:lang="en">Playford (C)</Description>
+        <Description xml:lang="fr">Playford (C)</Description>
+      </Code>
+      <Code value="45890" parentCode="4">
+        <Description xml:lang="en">Port Adelaide Enfield (C)</Description>
+        <Description xml:lang="fr">Port Adelaide Enfield (C)</Description>
+      </Code>
+      <Code value="46090" parentCode="4">
+        <Description xml:lang="en">Port Augusta (C)</Description>
+        <Description xml:lang="fr">Port Augusta (C)</Description>
+      </Code>
+      <Code value="46300" parentCode="4">
+        <Description xml:lang="en">Port Lincoln (C)</Description>
+        <Description xml:lang="fr">Port Lincoln (C)</Description>
+      </Code>
+      <Code value="46450" parentCode="4">
+        <Description xml:lang="en">Port Pirie City and Dists (M)</Description>
+        <Description xml:lang="fr">Port Pirie City and Dists (M)</Description>
+      </Code>
+      <Code value="46510" parentCode="4">
+        <Description xml:lang="en">Prospect (C)</Description>
+        <Description xml:lang="fr">Prospect (C)</Description>
+      </Code>
+      <Code value="46670" parentCode="4">
+        <Description xml:lang="en">Renmark Paringa (DC)</Description>
+        <Description xml:lang="fr">Renmark Paringa (DC)</Description>
+      </Code>
+      <Code value="46860" parentCode="4">
+        <Description xml:lang="en">Robe (DC)</Description>
+        <Description xml:lang="fr">Robe (DC)</Description>
+      </Code>
+      <Code value="46970" parentCode="4">
+        <Description xml:lang="en">Roxby Downs (M)</Description>
+        <Description xml:lang="fr">Roxby Downs (M)</Description>
+      </Code>
+      <Code value="47140" parentCode="4">
+        <Description xml:lang="en">Salisbury (C)</Description>
+        <Description xml:lang="fr">Salisbury (C)</Description>
+      </Code>
+      <Code value="47290" parentCode="4">
+        <Description xml:lang="en">Southern Mallee (DC)</Description>
+        <Description xml:lang="fr">Southern Mallee (DC)</Description>
+      </Code>
+      <Code value="47490" parentCode="4">
+        <Description xml:lang="en">Streaky Bay (DC)</Description>
+        <Description xml:lang="fr">Streaky Bay (DC)</Description>
+      </Code>
+      <Code value="47630" parentCode="4">
+        <Description xml:lang="en">Tatiara (DC)</Description>
+        <Description xml:lang="fr">Tatiara (DC)</Description>
+      </Code>
+      <Code value="47700" parentCode="4">
+        <Description xml:lang="en">Tea Tree Gully (C)</Description>
+        <Description xml:lang="fr">Tea Tree Gully (C)</Description>
+      </Code>
+      <Code value="47800" parentCode="4">
+        <Description xml:lang="en">The Coorong (DC)</Description>
+        <Description xml:lang="fr">The Coorong (DC)</Description>
+      </Code>
+      <Code value="47910" parentCode="4">
+        <Description xml:lang="en">Tumby Bay (DC)</Description>
+        <Description xml:lang="fr">Tumby Bay (DC)</Description>
+      </Code>
+      <Code value="47980" parentCode="4">
+        <Description xml:lang="en">Unley (C)</Description>
+        <Description xml:lang="fr">Unley (C)</Description>
+      </Code>
+      <Code value="48050" parentCode="4">
+        <Description xml:lang="en">Victor Harbor (C)</Description>
+        <Description xml:lang="fr">Victor Harbor (C)</Description>
+      </Code>
+      <Code value="48130" parentCode="4">
+        <Description xml:lang="en">Wakefield (DC)</Description>
+        <Description xml:lang="fr">Wakefield (DC)</Description>
+      </Code>
+      <Code value="48260" parentCode="4">
+        <Description xml:lang="en">Walkerville (M)</Description>
+        <Description xml:lang="fr">Walkerville (M)</Description>
+      </Code>
+      <Code value="48340" parentCode="4">
+        <Description xml:lang="en">Wattle Range (DC)</Description>
+        <Description xml:lang="fr">Wattle Range (DC)</Description>
+      </Code>
+      <Code value="48410" parentCode="4">
+        <Description xml:lang="en">West Torrens (C)</Description>
+        <Description xml:lang="fr">West Torrens (C)</Description>
+      </Code>
+      <Code value="48540" parentCode="4">
+        <Description xml:lang="en">Whyalla (C)</Description>
+        <Description xml:lang="fr">Whyalla (C)</Description>
+      </Code>
+      <Code value="48640" parentCode="4">
+        <Description xml:lang="en">Wudinna (DC)</Description>
+        <Description xml:lang="fr">Wudinna (DC)</Description>
+      </Code>
+      <Code value="48750" parentCode="4">
+        <Description xml:lang="en">Yankalilla (DC)</Description>
+        <Description xml:lang="fr">Yankalilla (DC)</Description>
+      </Code>
+      <Code value="48830" parentCode="4">
+        <Description xml:lang="en">Yorke Peninsula (DC)</Description>
+        <Description xml:lang="fr">Yorke Peninsula (DC)</Description>
+      </Code>
+      <Code value="49399" parentCode="4">
+        <Description xml:lang="en">Unincorporated SA</Description>
+        <Description xml:lang="fr">Unincorporated SA</Description>
+      </Code>
+      <Code value="50080" parentCode="5">
+        <Description xml:lang="en">Albany (C)</Description>
+        <Description xml:lang="fr">Albany (C)</Description>
+      </Code>
+      <Code value="5">
+        <Description xml:lang="en">Western Australia</Description>
+        <Description xml:lang="fr">Western Australia</Description>
+      </Code>
+      <Code value="50210" parentCode="5">
+        <Description xml:lang="en">Armadale (C)</Description>
+        <Description xml:lang="fr">Armadale (C)</Description>
+      </Code>
+      <Code value="50250" parentCode="5">
+        <Description xml:lang="en">Ashburton (S)</Description>
+        <Description xml:lang="fr">Ashburton (S)</Description>
+      </Code>
+      <Code value="50280" parentCode="5">
+        <Description xml:lang="en">Augusta-Margaret River (S)</Description>
+        <Description xml:lang="fr">Augusta-Margaret River (S)</Description>
+      </Code>
+      <Code value="50350" parentCode="5">
+        <Description xml:lang="en">Bassendean (T)</Description>
+        <Description xml:lang="fr">Bassendean (T)</Description>
+      </Code>
+      <Code value="50420" parentCode="5">
+        <Description xml:lang="en">Bayswater (C)</Description>
+        <Description xml:lang="fr">Bayswater (C)</Description>
+      </Code>
+      <Code value="50490" parentCode="5">
+        <Description xml:lang="en">Belmont (C)</Description>
+        <Description xml:lang="fr">Belmont (C)</Description>
+      </Code>
+      <Code value="50560" parentCode="5">
+        <Description xml:lang="en">Beverley (S)</Description>
+        <Description xml:lang="fr">Beverley (S)</Description>
+      </Code>
+      <Code value="50630" parentCode="5">
+        <Description xml:lang="en">Boddington (S)</Description>
+        <Description xml:lang="fr">Boddington (S)</Description>
+      </Code>
+      <Code value="50770" parentCode="5">
+        <Description xml:lang="en">Boyup Brook (S)</Description>
+        <Description xml:lang="fr">Boyup Brook (S)</Description>
+      </Code>
+      <Code value="50840" parentCode="5">
+        <Description xml:lang="en">Bridgetown-Greenbushes (S)</Description>
+        <Description xml:lang="fr">Bridgetown-Greenbushes (S)</Description>
+      </Code>
+      <Code value="50910" parentCode="5">
+        <Description xml:lang="en">Brookton (S)</Description>
+        <Description xml:lang="fr">Brookton (S)</Description>
+      </Code>
+      <Code value="50980" parentCode="5">
+        <Description xml:lang="en">Broome (S)</Description>
+        <Description xml:lang="fr">Broome (S)</Description>
+      </Code>
+      <Code value="51080" parentCode="5">
+        <Description xml:lang="en">Broomehill-Tambellup (S)</Description>
+        <Description xml:lang="fr">Broomehill-Tambellup (S)</Description>
+      </Code>
+      <Code value="51120" parentCode="5">
+        <Description xml:lang="en">Bruce Rock (S)</Description>
+        <Description xml:lang="fr">Bruce Rock (S)</Description>
+      </Code>
+      <Code value="51190" parentCode="5">
+        <Description xml:lang="en">Bunbury (C)</Description>
+        <Description xml:lang="fr">Bunbury (C)</Description>
+      </Code>
+      <Code value="51260" parentCode="5">
+        <Description xml:lang="en">Busselton (S)</Description>
+        <Description xml:lang="fr">Busselton (S)</Description>
+      </Code>
+      <Code value="51310" parentCode="5">
+        <Description xml:lang="en">Cambridge (T)</Description>
+        <Description xml:lang="fr">Cambridge (T)</Description>
+      </Code>
+      <Code value="51330" parentCode="5">
+        <Description xml:lang="en">Canning (C)</Description>
+        <Description xml:lang="fr">Canning (C)</Description>
+      </Code>
+      <Code value="51400" parentCode="5">
+        <Description xml:lang="en">Capel (S)</Description>
+        <Description xml:lang="fr">Capel (S)</Description>
+      </Code>
+      <Code value="51470" parentCode="5">
+        <Description xml:lang="en">Carnamah (S)</Description>
+        <Description xml:lang="fr">Carnamah (S)</Description>
+      </Code>
+      <Code value="51540" parentCode="5">
+        <Description xml:lang="en">Carnarvon (S)</Description>
+        <Description xml:lang="fr">Carnarvon (S)</Description>
+      </Code>
+      <Code value="51610" parentCode="5">
+        <Description xml:lang="en">Chapman Valley (S)</Description>
+        <Description xml:lang="fr">Chapman Valley (S)</Description>
+      </Code>
+      <Code value="51680" parentCode="5">
+        <Description xml:lang="en">Chittering (S)</Description>
+        <Description xml:lang="fr">Chittering (S)</Description>
+      </Code>
+      <Code value="51750" parentCode="5">
+        <Description xml:lang="en">Claremont (T)</Description>
+        <Description xml:lang="fr">Claremont (T)</Description>
+      </Code>
+      <Code value="51820" parentCode="5">
+        <Description xml:lang="en">Cockburn (C)</Description>
+        <Description xml:lang="fr">Cockburn (C)</Description>
+      </Code>
+      <Code value="51890" parentCode="5">
+        <Description xml:lang="en">Collie (S)</Description>
+        <Description xml:lang="fr">Collie (S)</Description>
+      </Code>
+      <Code value="51960" parentCode="5">
+        <Description xml:lang="en">Coolgardie (S)</Description>
+        <Description xml:lang="fr">Coolgardie (S)</Description>
+      </Code>
+      <Code value="52030" parentCode="5">
+        <Description xml:lang="en">Coorow (S)</Description>
+        <Description xml:lang="fr">Coorow (S)</Description>
+      </Code>
+      <Code value="52100" parentCode="5">
+        <Description xml:lang="en">Corrigin (S)</Description>
+        <Description xml:lang="fr">Corrigin (S)</Description>
+      </Code>
+      <Code value="52170" parentCode="5">
+        <Description xml:lang="en">Cottesloe (T)</Description>
+        <Description xml:lang="fr">Cottesloe (T)</Description>
+      </Code>
+      <Code value="52240" parentCode="5">
+        <Description xml:lang="en">Cranbrook (S)</Description>
+        <Description xml:lang="fr">Cranbrook (S)</Description>
+      </Code>
+      <Code value="52310" parentCode="5">
+        <Description xml:lang="en">Cuballing (S)</Description>
+        <Description xml:lang="fr">Cuballing (S)</Description>
+      </Code>
+      <Code value="52380" parentCode="5">
+        <Description xml:lang="en">Cue (S)</Description>
+        <Description xml:lang="fr">Cue (S)</Description>
+      </Code>
+      <Code value="52450" parentCode="5">
+        <Description xml:lang="en">Cunderdin (S)</Description>
+        <Description xml:lang="fr">Cunderdin (S)</Description>
+      </Code>
+      <Code value="52520" parentCode="5">
+        <Description xml:lang="en">Dalwallinu (S)</Description>
+        <Description xml:lang="fr">Dalwallinu (S)</Description>
+      </Code>
+      <Code value="52590" parentCode="5">
+        <Description xml:lang="en">Dandaragan (S)</Description>
+        <Description xml:lang="fr">Dandaragan (S)</Description>
+      </Code>
+      <Code value="52660" parentCode="5">
+        <Description xml:lang="en">Dardanup (S)</Description>
+        <Description xml:lang="fr">Dardanup (S)</Description>
+      </Code>
+      <Code value="52730" parentCode="5">
+        <Description xml:lang="en">Denmark (S)</Description>
+        <Description xml:lang="fr">Denmark (S)</Description>
+      </Code>
+      <Code value="52800" parentCode="5">
+        <Description xml:lang="en">Derby-West Kimberley (S)</Description>
+        <Description xml:lang="fr">Derby-West Kimberley (S)</Description>
+      </Code>
+      <Code value="52870" parentCode="5">
+        <Description xml:lang="en">Donnybrook-Balingup (S)</Description>
+        <Description xml:lang="fr">Donnybrook-Balingup (S)</Description>
+      </Code>
+      <Code value="52940" parentCode="5">
+        <Description xml:lang="en">Dowerin (S)</Description>
+        <Description xml:lang="fr">Dowerin (S)</Description>
+      </Code>
+      <Code value="53010" parentCode="5">
+        <Description xml:lang="en">Dumbleyung (S)</Description>
+        <Description xml:lang="fr">Dumbleyung (S)</Description>
+      </Code>
+      <Code value="53080" parentCode="5">
+        <Description xml:lang="en">Dundas (S)</Description>
+        <Description xml:lang="fr">Dundas (S)</Description>
+      </Code>
+      <Code value="53150" parentCode="5">
+        <Description xml:lang="en">East Fremantle (T)</Description>
+        <Description xml:lang="fr">East Fremantle (T)</Description>
+      </Code>
+      <Code value="53220" parentCode="5">
+        <Description xml:lang="en">East Pilbara (S)</Description>
+        <Description xml:lang="fr">East Pilbara (S)</Description>
+      </Code>
+      <Code value="53290" parentCode="5">
+        <Description xml:lang="en">Esperance (S)</Description>
+        <Description xml:lang="fr">Esperance (S)</Description>
+      </Code>
+      <Code value="53360" parentCode="5">
+        <Description xml:lang="en">Exmouth (S)</Description>
+        <Description xml:lang="fr">Exmouth (S)</Description>
+      </Code>
+      <Code value="53430" parentCode="5">
+        <Description xml:lang="en">Fremantle (C)</Description>
+        <Description xml:lang="fr">Fremantle (C)</Description>
+      </Code>
+      <Code value="53520" parentCode="5">
+        <Description xml:lang="en">Geraldton-Greenough (C)</Description>
+        <Description xml:lang="fr">Geraldton-Greenough (C)</Description>
+      </Code>
+      <Code value="53570" parentCode="5">
+        <Description xml:lang="en">Gingin (S)</Description>
+        <Description xml:lang="fr">Gingin (S)</Description>
+      </Code>
+      <Code value="53640" parentCode="5">
+        <Description xml:lang="en">Gnowangerup (S)</Description>
+        <Description xml:lang="fr">Gnowangerup (S)</Description>
+      </Code>
+      <Code value="53710" parentCode="5">
+        <Description xml:lang="en">Goomalling (S)</Description>
+        <Description xml:lang="fr">Goomalling (S)</Description>
+      </Code>
+      <Code value="53780" parentCode="5">
+        <Description xml:lang="en">Gosnells (C)</Description>
+        <Description xml:lang="fr">Gosnells (C)</Description>
+      </Code>
+      <Code value="53920" parentCode="5">
+        <Description xml:lang="en">Halls Creek (S)</Description>
+        <Description xml:lang="fr">Halls Creek (S)</Description>
+      </Code>
+      <Code value="53990" parentCode="5">
+        <Description xml:lang="en">Harvey (S)</Description>
+        <Description xml:lang="fr">Harvey (S)</Description>
+      </Code>
+      <Code value="54060" parentCode="5">
+        <Description xml:lang="en">Irwin (S)</Description>
+        <Description xml:lang="fr">Irwin (S)</Description>
+      </Code>
+      <Code value="54130" parentCode="5">
+        <Description xml:lang="en">Jerramungup (S)</Description>
+        <Description xml:lang="fr">Jerramungup (S)</Description>
+      </Code>
+      <Code value="54170" parentCode="5">
+        <Description xml:lang="en">Joondalup (C)</Description>
+        <Description xml:lang="fr">Joondalup (C)</Description>
+      </Code>
+      <Code value="54200" parentCode="5">
+        <Description xml:lang="en">Kalamunda (S)</Description>
+        <Description xml:lang="fr">Kalamunda (S)</Description>
+      </Code>
+      <Code value="54280" parentCode="5">
+        <Description xml:lang="en">Kalgoorlie/Boulder (C)</Description>
+        <Description xml:lang="fr">Kalgoorlie/Boulder (C)</Description>
+      </Code>
+      <Code value="54340" parentCode="5">
+        <Description xml:lang="en">Katanning (S)</Description>
+        <Description xml:lang="fr">Katanning (S)</Description>
+      </Code>
+      <Code value="54410" parentCode="5">
+        <Description xml:lang="en">Kellerberrin (S)</Description>
+        <Description xml:lang="fr">Kellerberrin (S)</Description>
+      </Code>
+      <Code value="54480" parentCode="5">
+        <Description xml:lang="en">Kent (S)</Description>
+        <Description xml:lang="fr">Kent (S)</Description>
+      </Code>
+      <Code value="54550" parentCode="5">
+        <Description xml:lang="en">Kojonup (S)</Description>
+        <Description xml:lang="fr">Kojonup (S)</Description>
+      </Code>
+      <Code value="54620" parentCode="5">
+        <Description xml:lang="en">Kondinin (S)</Description>
+        <Description xml:lang="fr">Kondinin (S)</Description>
+      </Code>
+      <Code value="54690" parentCode="5">
+        <Description xml:lang="en">Koorda (S)</Description>
+        <Description xml:lang="fr">Koorda (S)</Description>
+      </Code>
+      <Code value="54760" parentCode="5">
+        <Description xml:lang="en">Kulin (S)</Description>
+        <Description xml:lang="fr">Kulin (S)</Description>
+      </Code>
+      <Code value="54830" parentCode="5">
+        <Description xml:lang="en">Kwinana (T)</Description>
+        <Description xml:lang="fr">Kwinana (T)</Description>
+      </Code>
+      <Code value="54900" parentCode="5">
+        <Description xml:lang="en">Lake Grace (S)</Description>
+        <Description xml:lang="fr">Lake Grace (S)</Description>
+      </Code>
+      <Code value="54970" parentCode="5">
+        <Description xml:lang="en">Laverton (S)</Description>
+        <Description xml:lang="fr">Laverton (S)</Description>
+      </Code>
+      <Code value="55040" parentCode="5">
+        <Description xml:lang="en">Leonora (S)</Description>
+        <Description xml:lang="fr">Leonora (S)</Description>
+      </Code>
+      <Code value="55110" parentCode="5">
+        <Description xml:lang="en">Mandurah (C)</Description>
+        <Description xml:lang="fr">Mandurah (C)</Description>
+      </Code>
+      <Code value="55180" parentCode="5">
+        <Description xml:lang="en">Manjimup (S)</Description>
+        <Description xml:lang="fr">Manjimup (S)</Description>
+      </Code>
+      <Code value="55250" parentCode="5">
+        <Description xml:lang="en">Meekatharra (S)</Description>
+        <Description xml:lang="fr">Meekatharra (S)</Description>
+      </Code>
+      <Code value="55320" parentCode="5">
+        <Description xml:lang="en">Melville (C)</Description>
+        <Description xml:lang="fr">Melville (C)</Description>
+      </Code>
+      <Code value="55390" parentCode="5">
+        <Description xml:lang="en">Menzies (S)</Description>
+        <Description xml:lang="fr">Menzies (S)</Description>
+      </Code>
+      <Code value="55460" parentCode="5">
+        <Description xml:lang="en">Merredin (S)</Description>
+        <Description xml:lang="fr">Merredin (S)</Description>
+      </Code>
+      <Code value="55530" parentCode="5">
+        <Description xml:lang="en">Mingenew (S)</Description>
+        <Description xml:lang="fr">Mingenew (S)</Description>
+      </Code>
+      <Code value="55600" parentCode="5">
+        <Description xml:lang="en">Moora (S)</Description>
+        <Description xml:lang="fr">Moora (S)</Description>
+      </Code>
+      <Code value="55670" parentCode="5">
+        <Description xml:lang="en">Morawa (S)</Description>
+        <Description xml:lang="fr">Morawa (S)</Description>
+      </Code>
+      <Code value="55740" parentCode="5">
+        <Description xml:lang="en">Mosman Park (T)</Description>
+        <Description xml:lang="fr">Mosman Park (T)</Description>
+      </Code>
+      <Code value="55810" parentCode="5">
+        <Description xml:lang="en">Mount Magnet (S)</Description>
+        <Description xml:lang="fr">Mount Magnet (S)</Description>
+      </Code>
+      <Code value="55880" parentCode="5">
+        <Description xml:lang="en">Mount Marshall (S)</Description>
+        <Description xml:lang="fr">Mount Marshall (S)</Description>
+      </Code>
+      <Code value="55950" parentCode="5">
+        <Description xml:lang="en">Mukinbudin (S)</Description>
+        <Description xml:lang="fr">Mukinbudin (S)</Description>
+      </Code>
+      <Code value="56020" parentCode="5">
+        <Description xml:lang="en">Mullewa (S)</Description>
+        <Description xml:lang="fr">Mullewa (S)</Description>
+      </Code>
+      <Code value="56090" parentCode="5">
+        <Description xml:lang="en">Mundaring (S)</Description>
+        <Description xml:lang="fr">Mundaring (S)</Description>
+      </Code>
+      <Code value="56160" parentCode="5">
+        <Description xml:lang="en">Murchison (S)</Description>
+        <Description xml:lang="fr">Murchison (S)</Description>
+      </Code>
+      <Code value="56230" parentCode="5">
+        <Description xml:lang="en">Murray (S)</Description>
+        <Description xml:lang="fr">Murray (S)</Description>
+      </Code>
+      <Code value="56300" parentCode="5">
+        <Description xml:lang="en">Nannup (S)</Description>
+        <Description xml:lang="fr">Nannup (S)</Description>
+      </Code>
+      <Code value="56370" parentCode="5">
+        <Description xml:lang="en">Narembeen (S)</Description>
+        <Description xml:lang="fr">Narembeen (S)</Description>
+      </Code>
+      <Code value="56450" parentCode="5">
+        <Description xml:lang="en">Narrogin (S)</Description>
+        <Description xml:lang="fr">Narrogin (S)</Description>
+      </Code>
+      <Code value="56520" parentCode="5">
+        <Description xml:lang="en">Narrogin (T)</Description>
+        <Description xml:lang="fr">Narrogin (T)</Description>
+      </Code>
+      <Code value="56580" parentCode="5">
+        <Description xml:lang="en">Nedlands (C)</Description>
+        <Description xml:lang="fr">Nedlands (C)</Description>
+      </Code>
+      <Code value="56620" parentCode="5">
+        <Description xml:lang="en">Ngaanyatjarraku (S)</Description>
+        <Description xml:lang="fr">Ngaanyatjarraku (S)</Description>
+      </Code>
+      <Code value="56730" parentCode="5">
+        <Description xml:lang="en">Northam (S)</Description>
+        <Description xml:lang="fr">Northam (S)</Description>
+      </Code>
+      <Code value="56790" parentCode="5">
+        <Description xml:lang="en">Northampton (S)</Description>
+        <Description xml:lang="fr">Northampton (S)</Description>
+      </Code>
+      <Code value="56860" parentCode="5">
+        <Description xml:lang="en">Nungarin (S)</Description>
+        <Description xml:lang="fr">Nungarin (S)</Description>
+      </Code>
+      <Code value="56930" parentCode="5">
+        <Description xml:lang="en">Peppermint Grove (S)</Description>
+        <Description xml:lang="fr">Peppermint Grove (S)</Description>
+      </Code>
+      <Code value="57000" parentCode="5">
+        <Description xml:lang="en">Perenjori (S)</Description>
+        <Description xml:lang="fr">Perenjori (S)</Description>
+      </Code>
+      <Code value="57080" parentCode="5">
+        <Description xml:lang="en">Perth (C)</Description>
+        <Description xml:lang="fr">Perth (C)</Description>
+      </Code>
+      <Code value="57140" parentCode="5">
+        <Description xml:lang="en">Pingelly (S)</Description>
+        <Description xml:lang="fr">Pingelly (S)</Description>
+      </Code>
+      <Code value="57210" parentCode="5">
+        <Description xml:lang="en">Plantagenet (S)</Description>
+        <Description xml:lang="fr">Plantagenet (S)</Description>
+      </Code>
+      <Code value="57280" parentCode="5">
+        <Description xml:lang="en">Port Hedland (T)</Description>
+        <Description xml:lang="fr">Port Hedland (T)</Description>
+      </Code>
+      <Code value="57350" parentCode="5">
+        <Description xml:lang="en">Quairading (S)</Description>
+        <Description xml:lang="fr">Quairading (S)</Description>
+      </Code>
+      <Code value="57420" parentCode="5">
+        <Description xml:lang="en">Ravensthorpe (S)</Description>
+        <Description xml:lang="fr">Ravensthorpe (S)</Description>
+      </Code>
+      <Code value="57490" parentCode="5">
+        <Description xml:lang="en">Rockingham (C)</Description>
+        <Description xml:lang="fr">Rockingham (C)</Description>
+      </Code>
+      <Code value="57560" parentCode="5">
+        <Description xml:lang="en">Roebourne (S)</Description>
+        <Description xml:lang="fr">Roebourne (S)</Description>
+      </Code>
+      <Code value="57630" parentCode="5">
+        <Description xml:lang="en">Sandstone (S)</Description>
+        <Description xml:lang="fr">Sandstone (S)</Description>
+      </Code>
+      <Code value="57700" parentCode="5">
+        <Description xml:lang="en">Serpentine-Jarrahdale (S)</Description>
+        <Description xml:lang="fr">Serpentine-Jarrahdale (S)</Description>
+      </Code>
+      <Code value="57770" parentCode="5">
+        <Description xml:lang="en">Shark Bay (S)</Description>
+        <Description xml:lang="fr">Shark Bay (S)</Description>
+      </Code>
+      <Code value="57840" parentCode="5">
+        <Description xml:lang="en">South Perth (C)</Description>
+        <Description xml:lang="fr">South Perth (C)</Description>
+      </Code>
+      <Code value="57910" parentCode="5">
+        <Description xml:lang="en">Stirling (C)</Description>
+        <Description xml:lang="fr">Stirling (C)</Description>
+      </Code>
+      <Code value="57980" parentCode="5">
+        <Description xml:lang="en">Subiaco (C)</Description>
+        <Description xml:lang="fr">Subiaco (C)</Description>
+      </Code>
+      <Code value="58050" parentCode="5">
+        <Description xml:lang="en">Swan (C)</Description>
+        <Description xml:lang="fr">Swan (C)</Description>
+      </Code>
+      <Code value="58190" parentCode="5">
+        <Description xml:lang="en">Tammin (S)</Description>
+        <Description xml:lang="fr">Tammin (S)</Description>
+      </Code>
+      <Code value="58260" parentCode="5">
+        <Description xml:lang="en">Three Springs (S)</Description>
+        <Description xml:lang="fr">Three Springs (S)</Description>
+      </Code>
+      <Code value="58330" parentCode="5">
+        <Description xml:lang="en">Toodyay (S)</Description>
+        <Description xml:lang="fr">Toodyay (S)</Description>
+      </Code>
+      <Code value="58400" parentCode="5">
+        <Description xml:lang="en">Trayning (S)</Description>
+        <Description xml:lang="fr">Trayning (S)</Description>
+      </Code>
+      <Code value="58470" parentCode="5">
+        <Description xml:lang="en">Upper Gascoyne (S)</Description>
+        <Description xml:lang="fr">Upper Gascoyne (S)</Description>
+      </Code>
+      <Code value="58510" parentCode="5">
+        <Description xml:lang="en">Victoria Park (T)</Description>
+        <Description xml:lang="fr">Victoria Park (T)</Description>
+      </Code>
+      <Code value="58540" parentCode="5">
+        <Description xml:lang="en">Victoria Plains (S)</Description>
+        <Description xml:lang="fr">Victoria Plains (S)</Description>
+      </Code>
+      <Code value="58570" parentCode="5">
+        <Description xml:lang="en">Vincent (T)</Description>
+        <Description xml:lang="fr">Vincent (T)</Description>
+      </Code>
+      <Code value="58610" parentCode="5">
+        <Description xml:lang="en">Wagin (S)</Description>
+        <Description xml:lang="fr">Wagin (S)</Description>
+      </Code>
+      <Code value="58680" parentCode="5">
+        <Description xml:lang="en">Wandering (S)</Description>
+        <Description xml:lang="fr">Wandering (S)</Description>
+      </Code>
+      <Code value="58760" parentCode="5">
+        <Description xml:lang="en">Wanneroo (C)</Description>
+        <Description xml:lang="fr">Wanneroo (C)</Description>
+      </Code>
+      <Code value="58820" parentCode="5">
+        <Description xml:lang="en">Waroona (S)</Description>
+        <Description xml:lang="fr">Waroona (S)</Description>
+      </Code>
+      <Code value="58890" parentCode="5">
+        <Description xml:lang="en">West Arthur (S)</Description>
+        <Description xml:lang="fr">West Arthur (S)</Description>
+      </Code>
+      <Code value="59030" parentCode="5">
+        <Description xml:lang="en">Westonia (S)</Description>
+        <Description xml:lang="fr">Westonia (S)</Description>
+      </Code>
+      <Code value="59100" parentCode="5">
+        <Description xml:lang="en">Wickepin (S)</Description>
+        <Description xml:lang="fr">Wickepin (S)</Description>
+      </Code>
+      <Code value="59170" parentCode="5">
+        <Description xml:lang="en">Williams (S)</Description>
+        <Description xml:lang="fr">Williams (S)</Description>
+      </Code>
+      <Code value="59250" parentCode="5">
+        <Description xml:lang="en">Wiluna (S)</Description>
+        <Description xml:lang="fr">Wiluna (S)</Description>
+      </Code>
+      <Code value="59310" parentCode="5">
+        <Description xml:lang="en">Wongan-Ballidu (S)</Description>
+        <Description xml:lang="fr">Wongan-Ballidu (S)</Description>
+      </Code>
+      <Code value="59320" parentCode="5">
+        <Description xml:lang="en">Woodanilling (S)</Description>
+        <Description xml:lang="fr">Woodanilling (S)</Description>
+      </Code>
+      <Code value="59330" parentCode="5">
+        <Description xml:lang="en">Wyalkatchem (S)</Description>
+        <Description xml:lang="fr">Wyalkatchem (S)</Description>
+      </Code>
+      <Code value="59340" parentCode="5">
+        <Description xml:lang="en">Wyndham-East Kimberley (S)</Description>
+        <Description xml:lang="fr">Wyndham-East Kimberley (S)</Description>
+      </Code>
+      <Code value="59350" parentCode="5">
+        <Description xml:lang="en">Yalgoo (S)</Description>
+        <Description xml:lang="fr">Yalgoo (S)</Description>
+      </Code>
+      <Code value="59360" parentCode="5">
+        <Description xml:lang="en">Yilgarn (S)</Description>
+        <Description xml:lang="fr">Yilgarn (S)</Description>
+      </Code>
+      <Code value="59370" parentCode="5">
+        <Description xml:lang="en">York (S)</Description>
+        <Description xml:lang="fr">York (S)</Description>
+      </Code>
+      <Code value="60210" parentCode="6">
+        <Description xml:lang="en">Break O'Day (M)</Description>
+        <Description xml:lang="fr">Break O'Day (M)</Description>
+      </Code>
+      <Code value="6">
+        <Description xml:lang="en">Tasmania</Description>
+        <Description xml:lang="fr">Tasmania</Description>
+      </Code>
+      <Code value="60410" parentCode="6">
+        <Description xml:lang="en">Brighton (M)</Description>
+        <Description xml:lang="fr">Brighton (M)</Description>
+      </Code>
+      <Code value="60610" parentCode="6">
+        <Description xml:lang="en">Burnie (C)</Description>
+        <Description xml:lang="fr">Burnie (C)</Description>
+      </Code>
+      <Code value="60810" parentCode="6">
+        <Description xml:lang="en">Central Coast (M)</Description>
+        <Description xml:lang="fr">Central Coast (M)</Description>
+      </Code>
+      <Code value="61010" parentCode="6">
+        <Description xml:lang="en">Central Highlands (M)</Description>
+        <Description xml:lang="fr">Central Highlands (M)</Description>
+      </Code>
+      <Code value="61210" parentCode="6">
+        <Description xml:lang="en">Circular Head (M)</Description>
+        <Description xml:lang="fr">Circular Head (M)</Description>
+      </Code>
+      <Code value="61410" parentCode="6">
+        <Description xml:lang="en">Clarence (C)</Description>
+        <Description xml:lang="fr">Clarence (C)</Description>
+      </Code>
+      <Code value="61510" parentCode="6">
+        <Description xml:lang="en">Derwent Valley (M)</Description>
+        <Description xml:lang="fr">Derwent Valley (M)</Description>
+      </Code>
+      <Code value="61610" parentCode="6">
+        <Description xml:lang="en">Devonport (C)</Description>
+        <Description xml:lang="fr">Devonport (C)</Description>
+      </Code>
+      <Code value="61810" parentCode="6">
+        <Description xml:lang="en">Dorset (M)</Description>
+        <Description xml:lang="fr">Dorset (M)</Description>
+      </Code>
+      <Code value="62010" parentCode="6">
+        <Description xml:lang="en">Flinders (M)</Description>
+        <Description xml:lang="fr">Flinders (M)</Description>
+      </Code>
+      <Code value="62210" parentCode="6">
+        <Description xml:lang="en">George Town (M)</Description>
+        <Description xml:lang="fr">George Town (M)</Description>
+      </Code>
+      <Code value="62410" parentCode="6">
+        <Description xml:lang="en">Glamorgan/Spring Bay (M)</Description>
+        <Description xml:lang="fr">Glamorgan/Spring Bay (M)</Description>
+      </Code>
+      <Code value="62610" parentCode="6">
+        <Description xml:lang="en">Glenorchy (C)</Description>
+        <Description xml:lang="fr">Glenorchy (C)</Description>
+      </Code>
+      <Code value="62810" parentCode="6">
+        <Description xml:lang="en">Hobart (C)</Description>
+        <Description xml:lang="fr">Hobart (C)</Description>
+      </Code>
+      <Code value="63010" parentCode="6">
+        <Description xml:lang="en">Huon Valley (M)</Description>
+        <Description xml:lang="fr">Huon Valley (M)</Description>
+      </Code>
+      <Code value="63210" parentCode="6">
+        <Description xml:lang="en">Kentish (M)</Description>
+        <Description xml:lang="fr">Kentish (M)</Description>
+      </Code>
+      <Code value="63410" parentCode="6">
+        <Description xml:lang="en">King Island (M)</Description>
+        <Description xml:lang="fr">King Island (M)</Description>
+      </Code>
+      <Code value="63610" parentCode="6">
+        <Description xml:lang="en">Kingborough (M)</Description>
+        <Description xml:lang="fr">Kingborough (M)</Description>
+      </Code>
+      <Code value="63810" parentCode="6">
+        <Description xml:lang="en">Latrobe (M)</Description>
+        <Description xml:lang="fr">Latrobe (M)</Description>
+      </Code>
+      <Code value="64010" parentCode="6">
+        <Description xml:lang="en">Launceston (C)</Description>
+        <Description xml:lang="fr">Launceston (C)</Description>
+      </Code>
+      <Code value="64210" parentCode="6">
+        <Description xml:lang="en">Meander Valley (M)</Description>
+        <Description xml:lang="fr">Meander Valley (M)</Description>
+      </Code>
+      <Code value="64610" parentCode="6">
+        <Description xml:lang="en">Northern Midlands (M)</Description>
+        <Description xml:lang="fr">Northern Midlands (M)</Description>
+      </Code>
+      <Code value="64810" parentCode="6">
+        <Description xml:lang="en">Sorell (M)</Description>
+        <Description xml:lang="fr">Sorell (M)</Description>
+      </Code>
+      <Code value="65010" parentCode="6">
+        <Description xml:lang="en">Southern Midlands (M)</Description>
+        <Description xml:lang="fr">Southern Midlands (M)</Description>
+      </Code>
+      <Code value="65210" parentCode="6">
+        <Description xml:lang="en">Tasman (M)</Description>
+        <Description xml:lang="fr">Tasman (M)</Description>
+      </Code>
+      <Code value="65410" parentCode="6">
+        <Description xml:lang="en">Waratah/Wynyard (M)</Description>
+        <Description xml:lang="fr">Waratah/Wynyard (M)</Description>
+      </Code>
+      <Code value="65610" parentCode="6">
+        <Description xml:lang="en">West Coast (M)</Description>
+        <Description xml:lang="fr">West Coast (M)</Description>
+      </Code>
+      <Code value="65810" parentCode="6">
+        <Description xml:lang="en">West Tamar (M)</Description>
+        <Description xml:lang="fr">West Tamar (M)</Description>
+      </Code>
+      <Code value="70200" parentCode="7">
+        <Description xml:lang="en">Alice Springs (T)</Description>
+        <Description xml:lang="fr">Alice Springs (T)</Description>
+      </Code>
+      <Code value="7">
+        <Description xml:lang="en">Northern Territory</Description>
+        <Description xml:lang="fr">Northern Territory</Description>
+      </Code>
+      <Code value="70420" parentCode="7">
+        <Description xml:lang="en">Barkly (S)</Description>
+        <Description xml:lang="fr">Barkly (S)</Description>
+      </Code>
+      <Code value="70540" parentCode="7">
+        <Description xml:lang="en">Belyuen (S)</Description>
+        <Description xml:lang="fr">Belyuen (S)</Description>
+      </Code>
+      <Code value="70620" parentCode="7">
+        <Description xml:lang="en">Central Desert (S)</Description>
+        <Description xml:lang="fr">Central Desert (S)</Description>
+      </Code>
+      <Code value="70700" parentCode="7">
+        <Description xml:lang="en">Coomalie (S)</Description>
+        <Description xml:lang="fr">Coomalie (S)</Description>
+      </Code>
+      <Code value="71000" parentCode="7">
+        <Description xml:lang="en">Darwin (C)</Description>
+        <Description xml:lang="fr">Darwin (C)</Description>
+      </Code>
+      <Code value="71300" parentCode="7">
+        <Description xml:lang="en">East Arnhem (S)</Description>
+        <Description xml:lang="fr">East Arnhem (S)</Description>
+      </Code>
+      <Code value="72200" parentCode="7">
+        <Description xml:lang="en">Katherine (T)</Description>
+        <Description xml:lang="fr">Katherine (T)</Description>
+      </Code>
+      <Code value="72300" parentCode="7">
+        <Description xml:lang="en">Litchfield (M)</Description>
+        <Description xml:lang="fr">Litchfield (M)</Description>
+      </Code>
+      <Code value="72330" parentCode="7">
+        <Description xml:lang="en">MacDonnell (S)</Description>
+        <Description xml:lang="fr">MacDonnell (S)</Description>
+      </Code>
+      <Code value="72800" parentCode="7">
+        <Description xml:lang="en">Palmerston (C)</Description>
+        <Description xml:lang="fr">Palmerston (C)</Description>
+      </Code>
+      <Code value="73600" parentCode="7">
+        <Description xml:lang="en">Roper Gulf (S)</Description>
+        <Description xml:lang="fr">Roper Gulf (S)</Description>
+      </Code>
+      <Code value="74050" parentCode="7">
+        <Description xml:lang="en">Tiwi Islands (S)</Description>
+        <Description xml:lang="fr">Tiwi Islands (S)</Description>
+      </Code>
+      <Code value="74500" parentCode="7">
+        <Description xml:lang="en">Victoria-Daly (S)</Description>
+        <Description xml:lang="fr">Victoria-Daly (S)</Description>
+      </Code>
+      <Code value="74560" parentCode="7">
+        <Description xml:lang="en">Wagait (S)</Description>
+        <Description xml:lang="fr">Wagait (S)</Description>
+      </Code>
+      <Code value="74660" parentCode="7">
+        <Description xml:lang="en">West Arnhem (S)</Description>
+        <Description xml:lang="fr">West Arnhem (S)</Description>
+      </Code>
+      <Code value="79399" parentCode="7">
+        <Description xml:lang="en">Unincorporated NT</Description>
+        <Description xml:lang="fr">Unincorporated NT</Description>
+      </Code>
+      <Code value="89399" parentCode="8">
+        <Description xml:lang="en">Unincorporated ACT</Description>
+        <Description xml:lang="fr">Unincorporated ACT</Description>
+      </Code>
+      <Code value="8">
+        <Description xml:lang="en">Australian Capital Territory</Description>
+        <Description xml:lang="fr">Australian Capital Territory</Description>
+      </Code>
+    </CodeList>
+    <CodeList id="CL_ABS_SEIFA_LGA_INDEX_TYPE" agencyID="ABS">
+      <Name xml:lang="en">Index Type</Name>
+      <Name xml:lang="fr">Index Type</Name>
+      <Code value="IRSAD">
+        <Description xml:lang="en">Index of Relative
+          Socio-economic Advantage and Disadvantage</Description>
+        <Description xml:lang="fr">Index of Relative
+          Socio-economic Advantage and Disadvantage</Description>
+      </Code>
+      <Code value="IRSD">
+        <Description xml:lang="en">Index of Relative
+          Socio-economic Disadvantage</Description>
+        <Description xml:lang="fr">Index of Relative
+          Socio-economic Disadvantage</Description>
+      </Code>
+      <Code value="IER">
+        <Description xml:lang="en">Index of Economic Resources</Description>
+        <Description xml:lang="fr">Index of Economic Resources</Description>
+      </Code>
+      <Code value="IEO">
+        <Description xml:lang="en">Index of Education and
+          Occupation</Description>
+        <Description xml:lang="fr">Index of Education and
+          Occupation</Description>
+      </Code>
+    </CodeList>
+    <CodeList id="CL_ABS_SEIFA_LGA_MEASURE" agencyID="ABS">
+      <Name xml:lang="en">Measure</Name>
+      <Name xml:lang="fr">Measure</Name>
+      <Code value="SCORE">
+        <Description xml:lang="en">Score</Description>
+        <Description xml:lang="fr">Score</Description>
+      </Code>
+      <Code value="RWAR" parentCode="RWA">
+        <Description xml:lang="en">Rank within Australia</Description>
+        <Description xml:lang="fr">Rank within Australia</Description>
+      </Code>
+      <Code value="RWA">
+        <Description xml:lang="en">RANK WITHIN AUSTRALIA</Description>
+        <Description xml:lang="fr">RANK WITHIN AUSTRALIA</Description>
+      </Code>
+      <Code value="RWAD" parentCode="RWA">
+        <Description xml:lang="en">Rank within Australia - Decile</Description>
+        <Description xml:lang="fr">Rank within Australia - Decile</Description>
+      </Code>
+      <Code value="RWAP" parentCode="RWA">
+        <Description xml:lang="en">Rank within Australia -
+          Percentile</Description>
+        <Description xml:lang="fr">Rank within Australia -
+          Percentile</Description>
+      </Code>
+      <Code value="RWSR" parentCode="RWST">
+        <Description xml:lang="en">Rank within State or Territory</Description>
+        <Description xml:lang="fr">Rank within State or Territory</Description>
+      </Code>
+      <Code value="RWST">
+        <Description xml:lang="en">RANK WITHIN STATE AND
+          TERRITORY</Description>
+        <Description xml:lang="fr">RANK WITHIN STATE AND
+          TERRITORY</Description>
+      </Code>
+      <Code value="RWSD" parentCode="RWST">
+        <Description xml:lang="en">Rank within State or Territory
+          - Decile</Description>
+        <Description xml:lang="fr">Rank within State or Territory
+          - Decile</Description>
+      </Code>
+      <Code value="RWSP" parentCode="RWST">
+        <Description xml:lang="en">Rank within State or Territory
+          - Percentile</Description>
+        <Description xml:lang="fr">Rank within State or Territory
+          - Percentile</Description>
+      </Code>
+      <Code value="MINS">
+        <Description xml:lang="en">Minimum score for SA1s in area</Description>
+        <Description xml:lang="fr">Minimum score for SA1s in area</Description>
+      </Code>
+      <Code value="MAXS">
+        <Description xml:lang="en">Maximum score for SA1s in area</Description>
+        <Description xml:lang="fr">Maximum score for SA1s in area</Description>
+      </Code>
+      <Code value="URP">
+        <Description xml:lang="en">Usual resident population</Description>
+        <Description xml:lang="fr">Usual resident population</Description>
+      </Code>
+    </CodeList>
+    <CodeList id="CL_ABS_SEIFA_LGA_TIME" agencyID="ABS">
+      <Name xml:lang="en">Time</Name>
+      <Name xml:lang="fr">Time</Name>
+      <Code value="2011">
+        <Description xml:lang="en">2011</Description>
+        <Description xml:lang="fr">2011</Description>
+      </Code>
+    </CodeList>
+    <CodeList id="CL_ABS_SEIFA_LGA_OBS_STATUS" agencyID="ABS">
+      <Name xml:lang="en">Observation Status</Name>
+      <Code value="n">
+        <Description xml:lang="en">not available for publication
+          but included in totals where applicable, unless otherwise
+          indicated</Description>
+        <Description xml:lang="fr">not available for publication
+          but included in totals where applicable, unless otherwise
+          indicated</Description>
+      </Code>
+      <Code value="o">
+        <Description xml:lang="en">nil or rounded to zero,
+          including null cells</Description>
+        <Description xml:lang="fr">nil or rounded to zero,
+          including null cells</Description>
+      </Code>
+      <Code value="p">
+        <Description xml:lang="en">preliminary figure or series
+          subject to revision</Description>
+        <Description xml:lang="fr">preliminary figure or series
+          subject to revision</Description>
+      </Code>
+      <Code value="q">
+        <Description xml:lang="en">not available</Description>
+        <Description xml:lang="fr">not available</Description>
+      </Code>
+      <Code value="r">
+        <Description xml:lang="en">revised</Description>
+        <Description xml:lang="fr">revised</Description>
+      </Code>
+      <Code value="s">
+        <Description xml:lang="en">not currently available due to
+          break in time series</Description>
+        <Description xml:lang="fr">not currently available due to
+          break in time series</Description>
+      </Code>
+      <Code value="t">
+        <Description xml:lang="en">not yet available</Description>
+        <Description xml:lang="fr">not yet available</Description>
+      </Code>
+      <Code value="u">
+        <Description xml:lang="en">not applicable</Description>
+        <Description xml:lang="fr">not applicable</Description>
+      </Code>
+      <Code value="v">
+        <Description xml:lang="en">not available for publication
+          but included in totals where applicable, unless otherwise
+          indicated</Description>
+        <Description xml:lang="fr">not available for publication
+          but included in totals where applicable, unless otherwise
+          indicated</Description>
+      </Code>
+      <Code value="w">
+        <Description xml:lang="en">estimate is subject to
+          sampling variability too high for most practical purposes</Description>
+        <Description xml:lang="fr">estimate is subject to
+          sampling variability too high for most practical purposes</Description>
+      </Code>
+      <Code value="x">
+        <Description xml:lang="en">estimate has a relative
+          standard error of 10% to less than 25% and should be used with
+          caution</Description>
+        <Description xml:lang="fr">estimate has a relative
+          standard error of 10% to less than 25% and should be used with
+          caution</Description>
+      </Code>
+      <Code value="y">
+        <Description xml:lang="en">estimate has a relative
+          standard error between 25% and 50% and should be used with
+          caution</Description>
+        <Description xml:lang="fr">estimate has a relative
+          standard error between 25% and 50% and should be used with
+          caution</Description>
+      </Code>
+      <Code value="z">
+        <Description xml:lang="en">estimate has a relative
+          standard error greater than 50% and is considered too
+          unreliable for general use</Description>
+        <Description xml:lang="fr">estimate has a relative
+          standard error greater than 50% and is considered too
+          unreliable for general use</Description>
+      </Code>
+    </CodeList>
+    <CodeList id="CL_ABS_SEIFA_LGA_TIME_FORMAT" agencyID="ABS">
+      <Name xml:lang="en">ABS_SEIFA_LGA_TIME_FORMAT codelist</Name>
+      <Code value="P1Y">
+        <Description xml:lang="en">Annual</Description>
+      </Code>
+      <Code value="P1M">
+        <Description xml:lang="en">Monthly</Description>
+      </Code>
+      <Code value="P3M">
+        <Description xml:lang="en">Quarterly</Description>
+      </Code>
+      <Code value="P6M">
+        <Description xml:lang="en">Half-yearly</Description>
+      </Code>
+      <Code value="P1D">
+        <Description xml:lang="en">Daily</Description>
+      </Code>
+    </CodeList>
+  </message:CodeLists>
+  <message:Concepts>
+    <Concept id="LGA_2011" agencyID="ABS">
+      <Name xml:lang="en">Local Government Areas - 2011</Name>
+      <Name xml:lang="fr">Local Government Areas - 2011</Name>
+    </Concept>
+    <Concept id="INDEX_TYPE" agencyID="ABS">
+      <Name xml:lang="en">Index Type</Name>
+      <Name xml:lang="fr">Index Type</Name>
+    </Concept>
+    <Concept id="MEASURE" agencyID="ABS">
+      <Name xml:lang="en">Measure</Name>
+      <Name xml:lang="fr">Measure</Name>
+    </Concept>
+    <Concept id="TIME" agencyID="ABS">
+      <Name xml:lang="en">Time</Name>
+      <Name xml:lang="fr">Time</Name>
+    </Concept>
+    <Concept id="OBS_VALUE" agencyID="ABS">
+      <Name xml:lang="en">Observation Value</Name>
+    </Concept>
+    <Concept id="TIME_FORMAT" agencyID="ABS">
+      <Name xml:lang="en">Time Format</Name>
+    </Concept>
+    <Concept id="OBS_STATUS" agencyID="ABS">
+      <Name xml:lang="en">Observation Status</Name>
+    </Concept>
+  </message:Concepts>
+  <message:KeyFamilies>
+    <KeyFamily id="ABS_SEIFA_LGA" agencyID="ABS">
+      <Name xml:lang="en">SEIFA by Local Government Area (LGA)</Name>
+      <Name xml:lang="fr">SEIFA by Local Government Area (LGA)</Name>
+      <Components>
+        <Dimension codelist="CL_ABS_SEIFA_LGA_LGA_2011" conceptRef="LGA_2011"/>
+        <Dimension codelist="CL_ABS_SEIFA_LGA_INDEX_TYPE" conceptRef="INDEX_TYPE"/>
+        <Dimension codelist="CL_ABS_SEIFA_LGA_MEASURE" conceptRef="MEASURE" isMeasureDimension="true"/>
+        <TimeDimension codelist="CL_ABS_SEIFA_LGA_TIME" conceptRef="TIME"/>
+        <PrimaryMeasure conceptRef="OBS_VALUE">
+          <TextFormat textType="Double"/>
+        </PrimaryMeasure>
+        <Attribute codelist="CL_ABS_SEIFA_LGA_OBS_STATUS" conceptRef="OBS_STATUS" assignmentStatus="Conditional" attachmentLevel="Observation"/>
+        <Attribute codelist="CL_ABS_SEIFA_LGA_TIME_FORMAT" conceptRef="TIME_FORMAT" assignmentStatus="Conditional" attachmentLevel="Series" isTimeFormat="true"/>
+      </Components>
+    </KeyFamily>
+  </message:KeyFamilies>
+</message:Structure>

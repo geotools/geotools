@@ -239,7 +239,8 @@
 		<module>process-feature</module>
 		<module>geojson</module>
 		<module>mbtiles</module>
-		<module>wfs-ng</module>
+		<module>sdmx</module>
+		<module>epa-vic</module>
 
 	</modules>
 

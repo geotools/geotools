@@ -71,6 +71,19 @@ public class EpaVicDataStoreIT {
         }
 
         assertEquals(count, count2);
+
+        q =
+                new Query(
+                        "measurement",
+                        ECQL.toFilter(
+                                "BBOX(geometry,96.816766,-43.740510,159.109219,-9.142176,'EPSG:4283') "
+                                        + "AND (MonitorId IN ('PM10')) AND (TimeBaseId IN ('24HR_RAV')) "
+                                        + "AND (DateTimeRecorded BETWEEN '2018-03-21T00:00:00' AND '2019-03-23T00:00:00')"));
+        ds = EpaVicDataStoreFactoryTest.createDefaultEPAServerTestDataStore();
+        featureSource = ds.getFeatureSource("measurement");
+        count = featureSource.getCount(q);
+
+        assertTrue(count > 3000);
     }
 
     @Test

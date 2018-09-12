@@ -91,12 +91,19 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
                             (eqExpr) -> {
                                 if (eqExpr instanceof And) {
                                     this.visit((And) eqExpr, map);
+                                    return;
+                                }
+                                if (eqExpr instanceof Or) {
+                                    this.visit((Or) eqExpr, map);
+                                    return;
                                 }
                                 if (eqExpr instanceof PropertyIsEqualTo) {
                                     this.visit((PropertyIsEqualTo) eqExpr, map);
+                                    return;
                                 }
                                 if (eqExpr instanceof PropertyIsBetween) {
                                     this.visit((PropertyIsBetween) eqExpr, map);
+                                    return;
                                 }
                             });
 
@@ -104,7 +111,18 @@ public class EpaVicFeatureSource extends ContentFeatureSource {
         }
 
         public Object visit(Or expr, Object data) {
-            return (Map<String, String>) data;
+            Map<String, String> map = (Map<String, String>) data;
+
+            expr.getChildren()
+                    .forEach(
+                            (eqExpr) -> {
+                                if (eqExpr instanceof PropertyIsEqualTo) {
+                                    this.visit((PropertyIsEqualTo) eqExpr, map);
+                                    return;
+                                }
+                            });
+
+            return map;
         }
 
         public Object visit(PropertyIsEqualTo expr, Object data) {

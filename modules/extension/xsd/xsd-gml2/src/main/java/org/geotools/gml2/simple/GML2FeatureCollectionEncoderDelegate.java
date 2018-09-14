@@ -63,10 +63,16 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
         private int numDecimals;
 
+        private boolean padWithZeros;
+
+        private boolean decimalEncoding;
+
         public GML2Delegate(Encoder encoder) {
             this.gmlPrefix = encoder.getNamespaces().getPrefix(GML.NAMESPACE);
             this.featureMember = FEATURE_MEMBER.derive(gmlPrefix);
             this.numDecimals = getNumDecimals(encoder.getConfiguration());
+            this.padWithZeros = getPadWithZeros(encoder.getConfiguration());
+            this.decimalEncoding = getForceDecimalEncoding(encoder.getConfiguration());
         }
 
         private int getNumDecimals(Configuration configuration) {
@@ -81,6 +87,36 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
                 return 6;
             } else {
                 return config.getNumDecimals();
+            }
+        }
+
+        private boolean getPadWithZeros(Configuration configuration) {
+            GMLConfiguration config;
+            if (configuration instanceof GMLConfiguration) {
+                config = (GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(GMLConfiguration.class);
+            }
+
+            if (config == null) {
+                return false;
+            } else {
+                return config.getPadWithZeros();
+            }
+        }
+
+        private boolean getForceDecimalEncoding(Configuration configuration) {
+            GMLConfiguration config;
+            if (configuration instanceof GMLConfiguration) {
+                config = (GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(GMLConfiguration.class);
+            }
+
+            if (config == null) {
+                return true;
+            } else {
+                return config.getForceDecimalEncoding();
             }
         }
 
@@ -171,7 +207,12 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
 
         @Override
         public boolean forceDecimalEncoding() {
-            return true;
+            return decimalEncoding;
+        }
+
+        @Override
+        public boolean padWithZeros() {
+            return padWithZeros;
         }
     }
 }

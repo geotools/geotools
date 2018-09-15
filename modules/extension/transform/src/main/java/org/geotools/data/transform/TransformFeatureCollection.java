@@ -17,9 +17,7 @@
 package org.geotools.data.transform;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.Query;
@@ -33,19 +31,21 @@ import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
-import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.geometry.BoundingBox;
+import org.opengis.util.ProgressListener;
 
 /**
  * A transforming collection based on the {@link TransformFeatureSource} definitions
@@ -231,24 +231,25 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             // pass through if the CountVisitor has been recognized
             return true;
         } else if (visitor instanceof FeatureAttributeVisitor) {
-            // pass through if the target schema contains all the necessary attributes
-            FilterAttributeExtractor extractor = new FilterAttributeExtractor(featureType);
+            // allow passing down if the properties requested are not computed not renamed,
+            // thus can be passed to the delegate collection as is
             for (Expression e : ((FeatureAttributeVisitor) visitor).getExpressions()) {
-                e.accept(extractor, null);
-            }
-            List<String> attNames = new ArrayList<>();
-
-            for (PropertyName pname : extractor.getPropertyNameSet()) {
-                AttributeDescriptor att = (AttributeDescriptor) pname.evaluate(featureType);
-                if (att == null) {
+                if (!(e instanceof PropertyName)) {
                     return false;
                 }
-                attNames.add(pname.getPropertyName());
+                PropertyName externalName = (PropertyName) e;
+                Expression attributeExpression =
+                        transformer.getExpression(externalName.getPropertyName());
+                if (!(attributeExpression instanceof PropertyName)) {
+                    return false;
+                }
+                if (!((PropertyName) attributeExpression)
+                        .getPropertyName()
+                        .equals(externalName.getPropertyName())) {
+                    return false;
+                }
             }
-            // pass through if the target schema doesn't contain transformed attributes
-            if (transformer.getOriginalNames(attNames).size() == attNames.size()) {
-                return true;
-            }
+            return true;
         }
         return false;
     }
@@ -257,15 +258,44 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
-        Name typeName = transformer.getSource().getName();
-
         if (isTypeCompatible(visitor, transformer.getSchema())) {
-            source.getDataStore()
-                    .getFeatureSource(typeName)
-                    .getFeatures()
-                    .accepts(visitor, progress);
+            delegateVisitor(visitor, progress);
+        } else if (visitor instanceof MinVisitor) {
+            MinVisitor original = (MinVisitor) visitor;
+            Expression transformedExpression =
+                    transformer.transformExpression(original.getExpression());
+            MinVisitor transformedVisitor = new MinVisitor(transformedExpression);
+            delegateVisitor(transformedVisitor, progress);
+            original.setValue(transformedVisitor.getResult().getValue());
+        } else if (visitor instanceof MaxVisitor) {
+            MaxVisitor original = (MaxVisitor) visitor;
+            Expression transformedExpression =
+                    transformer.transformExpression(original.getExpression());
+            MaxVisitor transformedVisitor = new MaxVisitor(transformedExpression);
+            delegateVisitor(transformedVisitor, progress);
+            original.setValue(transformedVisitor.getResult().getValue());
+        } else if (visitor instanceof UniqueVisitor) {
+            UniqueVisitor original = (UniqueVisitor) visitor;
+            Expression transformedExpression =
+                    transformer.transformExpression(original.getExpression());
+            UniqueVisitor transformedVisitor = new UniqueVisitor(transformedExpression);
+            transformedVisitor.setMaxFeatures(original.getMaxFeatures());
+            transformedVisitor.setStartIndex(original.getStartIndex());
+            transformedVisitor.setPreserveOrder(original.isPreserveOrder());
+            delegateVisitor(transformedVisitor, progress);
+            original.setValue(transformedVisitor.getResult().getValue());
         } else {
             super.accepts(visitor, progress);
         }
+    }
+
+    protected void delegateVisitor(FeatureVisitor visitor, ProgressListener progress)
+            throws IOException {
+        Name typeName = transformer.getSource().getName();
+        Query txQuery = transformer.transformQuery(query);
+        source.getDataStore()
+                .getFeatureSource(typeName)
+                .getFeatures(txQuery)
+                .accepts(visitor, progress);
     }
 }

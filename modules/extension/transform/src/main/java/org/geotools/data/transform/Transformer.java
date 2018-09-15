@@ -251,6 +251,18 @@ class Transformer {
     }
 
     /**
+     * Injects the transformed attribute expressions into the expression to make it runnable against
+     * the original data
+     *
+     * @param filter
+     * @return
+     */
+    Expression transformExpression(Expression expression) {
+        TransformFilterVisitor transformer = new TransformFilterVisitor(expressions);
+        return (Expression) expression.accept(transformer, null);
+    }
+
+    /**
      * Transforms a query so that it can be run against the original feature source and provides all
      * the necessary attributes to evaluate the requested expressions
      *

@@ -23,10 +23,10 @@ import java.io.StringWriter;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import org.geotools.ysld.YamlMap;
+import org.geotools.ysld.YamlUtil;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
 import org.junit.Test;
-import org.yaml.snakeyaml.Yaml;
 
 public class SldTransformerTest {
 
@@ -1943,7 +1943,7 @@ public class SldTransformerTest {
 
     YamlMap yaml(SldTransformer transformer) throws Exception {
         String yaml = ((StringWriter) transformer.context().output()).toString();
-        return new YamlMap(new Yaml().load(yaml));
+        return new YamlMap(YamlUtil.getSafeYaml().load(yaml));
     }
 
     YamlMap transform(String dirname, String filename) throws Exception {

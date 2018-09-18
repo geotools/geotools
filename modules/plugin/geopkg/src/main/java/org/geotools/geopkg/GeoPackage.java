@@ -161,6 +161,11 @@ public class GeoPackage {
 
     /** Creates a GeoPackage from an existing file specifying database credentials. */
     public GeoPackage(File file, String user, String passwd) throws IOException {
+        this(file, user, passwd, false);
+    }
+
+    /** Creates a GeoPackage from an existing file specifying database credentials. */
+    public GeoPackage(File file, String user, String passwd, boolean readOnly) throws IOException {
         this.file = file;
 
         Map params = new HashMap();
@@ -169,6 +174,9 @@ public class GeoPackage {
         }
         if (passwd != null) {
             params.put(GeoPkgDataStoreFactory.PASSWD.key, passwd);
+        }
+        if (readOnly) {
+            params.put(GeoPkgDataStoreFactory.READ_ONLY.key, readOnly);
         }
 
         params.put(GeoPkgDataStoreFactory.DATABASE.key, file.getPath());
@@ -1307,7 +1315,7 @@ public class GeoPackage {
     }
 
     /**
-     * Retrieve tiles within certain zooms and column/row boundaries
+     * Retrieve tiles within certain zooms and column/row boundaries.
      *
      * @param entry the tile entry
      * @param lowZoom low zoom boundary
@@ -1331,24 +1339,9 @@ public class GeoPackage {
 
         try {
             List<String> q = new ArrayList();
-            if (lowZoom != null) {
-                q.add("zoom_level >= " + lowZoom);
-            }
-            if (highZoom != null) {
-                q.add("zoom_level <= " + highZoom);
-            }
-            if (lowCol != null) {
-                q.add("tile_column >= " + lowCol);
-            }
-            if (highCol != null) {
-                q.add("tile_column <= " + highCol);
-            }
-            if (lowRow != null) {
-                q.add("tile_row >= " + lowRow);
-            }
-            if (highRow != null) {
-                q.add("tile_row <= " + highRow);
-            }
+            addRange("zoom_level", lowZoom, highZoom, q);
+            addRange("tile_column", lowCol, highCol, q);
+            addRange("tile_row", lowRow, highRow, q);
 
             StringBuffer sql = new StringBuffer("SELECT * FROM ").append(entry.getTableName());
             if (!q.isEmpty()) {
@@ -1368,6 +1361,19 @@ public class GeoPackage {
 
         } catch (SQLException e) {
             throw new IOException(e);
+        }
+    }
+
+    public void addRange(String attribute, Integer low, Integer high, List<String> q) {
+        if (low != null && high != null && low == high) {
+            q.add(attribute + " = " + low);
+        } else {
+            if (low != null) {
+                q.add(attribute + " >= " + low);
+            }
+            if (high != null) {
+                q.add(attribute + " <= " + high);
+            }
         }
     }
 

@@ -16,9 +16,12 @@
  */
 package org.geotools.data.postgis;
 
+import static com.sun.tools.doclint.Entity.and;
+import static com.sun.tools.doclint.Entity.para;
 import static org.geotools.data.postgis.PostgisNGDataStoreFactory.SIMPLIFY;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -32,11 +35,17 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.KVP;
+import org.postgresql.jdbc.SslMode;
 
-/** @source $URL$ */
+
+/**
+ * @source $URL$
+ */
 public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
 
-    /** parameter for database type */
+    /**
+     * parameter for database type
+     */
     public static final Param DBTYPE =
             new Param(
                     "dbtype",
@@ -46,7 +55,9 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     "postgis",
                     Collections.singletonMap(Parameter.LEVEL, "program"));
 
-    /** enables using && in bbox queries */
+    /**
+     * enables using && in bbox queries
+     */
     public static final Param LOOSEBBOX =
             new Param(
                     "Loose bbox",
@@ -55,7 +66,9 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     false,
                     Boolean.TRUE);
 
-    /** parameter that enables estimated extends instead of exact ones */
+    /**
+     * parameter that enables estimated extends instead of exact ones
+     */
     public static final Param ESTIMATED_EXTENTS =
             new Param(
                     "Estimated extends",
@@ -64,13 +77,19 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     false,
                     Boolean.TRUE);
 
-    /** parameter for database port */
+    /**
+     * parameter for database port
+     */
     public static final Param PORT = new Param("port", Integer.class, "Port", true, 5432);
 
-    /** parameter for database schema */
+    /**
+     * parameter for database schema
+     */
     public static final Param SCHEMA = new Param("schema", String.class, "Schema", false, "public");
 
-    /** attempt to create the database if missing */
+    /**
+     * attempt to create the database if missing
+     */
     public static final Param CREATE_DB_IF_MISSING =
             new Param(
                     "create database",
@@ -81,7 +100,9 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     Param.LEVEL,
                     "advanced");
 
-    /** attempt to create the database if missing */
+    /**
+     * attempt to create the database if missing
+     */
     public static final Param CREATE_PARAMS =
             new Param(
                     "create database params",
@@ -92,7 +113,9 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     Param.LEVEL,
                     "advanced");
 
-    /** Wheter a prepared statements based dialect should be used, or not */
+    /**
+     * Wheter a prepared statements based dialect should be used, or not
+     */
     public static final Param PREPARED_STATEMENTS =
             new Param(
                     "preparedStatements",
@@ -101,7 +124,9 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     false,
                     Boolean.FALSE);
 
-    /** Enables direct encoding of selected filter functions in sql */
+    /**
+     * Enables direct encoding of selected filter functions in sql
+     */
     public static final Param ENCODE_FUNCTIONS =
             new Param(
                     "encode functions",
@@ -115,7 +140,9 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     new Boolean(true),
                     new KVP(Param.LEVEL, "advanced"));
 
-    /** Enables usage of ST_Simplify when the queries contain geometry simplification hints */
+    /**
+     * Enables usage of ST_Simplify when the queries contain geometry simplification hints
+     */
     public static final Param SIMPLIFY =
             new Param(
                     "Support on the fly geometry simplification",
@@ -123,6 +150,35 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                     "When enabled, operations such as map rendering will pass a hint that will enable the usage of ST_Simplify",
                     false,
                     Boolean.TRUE);
+
+    public static final Param SSL_MODE =
+            new Param("sslmode",
+                    SslMode.class,
+                    "Tell the driver to use a TLS encryption based on a " +
+                            "keyword. Use of SSL_ROOTCERT, SSL_KEY and SSL_CERT may be required",
+                    false,
+                    SslMode.PREFER
+            );
+
+    public static final Param SSL_ROOTCERT =
+            new Param("sslrootcert",
+                    Path.class,
+                    "root certificate, generaly CA.",
+                    false,
+                    "$HOME/ca.crt");
+    public static final Param SSL_KEY =
+            new Param("sslkey",
+                    Path.class,
+                    "SSL key file linked to the ssl cert",
+                    false,
+                    "$HOME/cert.key");
+
+    public static final Param SSL_CERT =
+            new Param("sslcert",
+                    Path.class,
+                    "SSL cert, X509 format. the cert cannot be encrypted",
+                    false,
+                    "$HOME/cert.crt");
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
@@ -222,6 +278,11 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(SIMPLIFY.key, SIMPLIFY);
         parameters.put(CREATE_DB_IF_MISSING.key, CREATE_DB_IF_MISSING);
         parameters.put(CREATE_PARAMS.key, CREATE_PARAMS);
+        parameters.put(SSL_MODE.key, SSL_MODE);
+        parameters.put(SSL_ROOTCERT.key, SSL_ROOTCERT);
+        parameters.put(SSL_KEY.key, SSL_KEY);
+        parameters.put(SSL_CERT.key, SSL_CERT);
+
     }
 
     @Override
@@ -234,7 +295,16 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         String host = (String) HOST.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         int port = (Integer) PORT.lookUp(params);
-        return "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
+        SslMode sslMode = (SslMode) SSL_MODE.lookUp(params);
+        Path sslCa =  (Path)SSL_ROOTCERT.lookUp(params);
+        Path sslKey = (Path) SSL_KEY.lookUp(params);
+        Path sslCert = (Path) SSL_CERT.lookUp(params);
+        String jdbcUrl = String.format("jdbc:postgresql://%s:%s/%s", host, port, db);
+        jdbcUrl = String.format("%s?sslmode=%s", jdbcUrl, sslMode.value);
+        if (!sslCa.toString().isEmpty() && !sslCert.toString().isEmpty() && !sslKey.toString().isEmpty()) {
+            jdbcUrl = String.format("%s&sslrootcert=%S&sslcert=%s&sslkey=%s", jdbcUrl, sslCa, sslCert, sslKey);
+        }
+        return jdbcUrl;
     }
 
     protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
@@ -255,17 +325,19 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
 
             if (!canConnect) {
                 // get the connection params
-                String host = (String) HOST.lookUp(params);
-                int port = (Integer) PORT.lookUp(params);
                 String db = (String) DATABASE.lookUp(params);
                 String user = (String) USER.lookUp(params);
                 String password = (String) PASSWD.lookUp(params);
+                String ssl_mode = (String) SSL_MODE.lookUp(params);
 
                 Statement st = null;
                 try {
                     // connect to template1 instead
-                    String url = "jdbc:postgresql" + "://" + host + ":" + port + "/template1";
-                    cx = getConnection(user, password, url);
+                    // TODO make a copy of the map (hash map ?)
+                    //Map<String, Object> newParams = new Map<String, Object>(params);
+                    //newParams.replace(DATABASE.key, "template1");
+                    //String jdbcUrl = getJDBCUrl(newParams);
+                    cx = getConnection(user, password, getJDBCUrl(params));
 
                     // create the database
 
@@ -289,8 +361,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
                 // and eventually try to create them
                 ResultSet rs = null;
                 try {
-                    String url = "jdbc:postgresql" + "://" + host + ":" + port + "/" + db;
-                    cx = DriverManager.getConnection(url, user, password);
+                    cx = DriverManager.getConnection(getJDBCUrl(params), user, password);
 
                     // check we have postgis
                     st = cx.createStatement();
@@ -336,18 +407,22 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
     public void dropDatabase(Map<String, Object> params) throws IOException {
         JDBCDataStore closer = new JDBCDataStore();
         // get the connection params
-        String host = (String) HOST.lookUp(params);
-        int port = (Integer) PORT.lookUp(params);
         String db = (String) DATABASE.lookUp(params);
         String user = (String) USER.lookUp(params);
         String password = (String) PASSWD.lookUp(params);
+        // TODO make a copy of the map (hash map ?)
+        //Map<String, Object> newParams = new Map<String, Object>(params);
+        //newParams.replace(DATABASE.key, "template1");
+        //String jdbcUrl = getJDBCUrl(newParams);
+        String jdbcUrl = getJDBCUrl(params);
+
 
         Connection cx = null;
         Statement st = null;
         try {
             // connect to template1 instead
-            String url = "jdbc:postgresql" + "://" + host + ":" + port + "/template1";
-            cx = getConnection(user, password, url);
+            //String url = "jdbc:postgresql" + "://" + host + ":" + port + "/template1";
+            cx = getConnection(user, password, jdbcUrl);
 
             // drop the database
             String sql = "DROP DATABASE \"" + db + "\"";

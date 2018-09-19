@@ -122,7 +122,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                     "The specified coverageName " + coverageName + "is not supported");
         }
 
-        return new GeneralEnvelope(tiles.get(coverageName).getBounds());
+        return new GeneralEnvelope(tiles.get(coverageName).getTileMatrixSetBounds());
     }
 
     @Override

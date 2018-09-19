@@ -49,7 +49,14 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
                     Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** parameter for database instance */
-    public static final Param DATABASE = new Param("database", File.class, "Database", true);
+    public static final Param DATABASE =
+            new Param(
+                    "database",
+                    File.class,
+                    "Database",
+                    true,
+                    null,
+                    Collections.singletonMap(Param.EXT, "gpkg"));
 
     public static final Param READ_ONLY = new Param("read_only", Boolean.class, "Read only", false);
 

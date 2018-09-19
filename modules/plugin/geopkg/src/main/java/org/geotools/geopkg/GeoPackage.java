@@ -1580,6 +1580,47 @@ public class GeoPackage {
         } finally {
             close(psm);
         }
+        // use the tile matrix set bounds rather that gpkg_contents bounds
+        // per spec, the tile matrix set bounds should be exact and used to calculate tile
+        // coordinates
+        // and in contrast the gpkg_contents is "informational" only
+        psm =
+                cx.prepareStatement(
+                        format("SELECT * FROM %s WHERE table_name = ? LIMIT 1", TILE_MATRIX_SET));
+        try {
+            psm.setString(1, e.getTableName());
+
+            ResultSet rsm = psm.executeQuery();
+            try {
+                if (rsm.next()) {
+
+                    int srid = rsm.getInt("srs_id");
+                    e.setSrid(srid);
+
+                    CoordinateReferenceSystem crs;
+                    try {
+                        crs = CRS.decode("EPSG:" + srid);
+                    } catch (Exception ex) {
+                        // not a major concern, by spec the tile matrix set srs should match the
+                        // gpkg_contents srs_id
+                        // which can found in the tile entry bounds
+                        crs = e.getBounds().getCoordinateReferenceSystem();
+                    }
+
+                    e.setTileMatrixSetBounds(
+                            new ReferencedEnvelope(
+                                    rsm.getDouble("min_x"),
+                                    rsm.getDouble("max_x"),
+                                    rsm.getDouble("min_y"),
+                                    rsm.getDouble("max_y"),
+                                    crs));
+                }
+            } finally {
+                close(rsm);
+            }
+        } finally {
+            close(psm);
+        }
         return e;
     }
 

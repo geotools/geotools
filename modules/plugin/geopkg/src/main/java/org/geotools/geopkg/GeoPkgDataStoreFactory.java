@@ -51,6 +51,8 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database instance */
     public static final Param DATABASE = new Param("database", File.class, "Database", true);
 
+    public static final Param READ_ONLY = new Param("read_only", Boolean.class, "Read only", false);
+
     /** base location to store database files */
     File baseDirectory = null;
 
@@ -156,7 +158,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         // url
         dataSource.setUrl(getJDBCUrl(params));
 
-        addConnectionProperties(dataSource);
+        addConnectionProperties(dataSource, params);
 
         dataSource.setAccessToUnderlyingConnectionAllowed(true);
 
@@ -185,10 +187,17 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         return ds;
     }
 
-    static void addConnectionProperties(BasicDataSource dataSource) {
+    static void addConnectionProperties(BasicDataSource dataSource, Map configuration)
+            throws IOException {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
         config.enableLoadExtension(true);
+        Object synchronous = READ_ONLY.lookUp(configuration);
+        if (Boolean.TRUE.equals(synchronous)) {
+            config.setPragma(SQLiteConfig.Pragma.SYNCHRONOUS, "OFF");
+            config.setReadOnly(true);
+        }
+        // config.setPragma(SQLiteConfig.Pragma.MMAP_SIZE, "268435456");
 
         for (Map.Entry e : config.toProperties().entrySet()) {
             dataSource.addConnectionProperty((String) e.getKey(), (String) e.getValue());

@@ -49,7 +49,14 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
                     Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** parameter for database instance */
-    public static final Param DATABASE = new Param("database", File.class, "Database", true);
+    public static final Param DATABASE =
+            new Param(
+                    "database",
+                    File.class,
+                    "Database",
+                    true,
+                    null,
+                    Collections.singletonMap(Param.EXT, "gpkg"));
 
     /** base location to store database files */
     File baseDirectory = null;

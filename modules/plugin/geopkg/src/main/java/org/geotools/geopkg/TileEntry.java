@@ -16,9 +16,9 @@
  */
 package org.geotools.geopkg;
 
-import com.vividsolutions.jts.geom.Envelope;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Tiles Entry inside a GeoPackage.
@@ -30,7 +30,7 @@ public class TileEntry extends Entry {
 
     List<TileMatrix> tileMatricies = new ArrayList();
 
-    Envelope tileMatrixSetBounds;
+    ReferencedEnvelope tileMatrixSetBounds;
 
     public TileEntry() {
         setDataType(DataType.Tile);
@@ -48,7 +48,9 @@ public class TileEntry extends Entry {
         super.init(e);
         setTileMatricies(e.getTileMatricies());
         this.tileMatrixSetBounds =
-                e.tileMatrixSetBounds == null ? null : new Envelope(e.tileMatrixSetBounds);
+                e.tileMatrixSetBounds == null
+                        ? null
+                        : new ReferencedEnvelope(e.tileMatrixSetBounds);
     }
 
     /**
@@ -58,11 +60,11 @@ public class TileEntry extends Entry {
      *
      * @return
      */
-    public Envelope getTileMatrixSetBounds() {
+    public ReferencedEnvelope getTileMatrixSetBounds() {
         return tileMatrixSetBounds != null ? tileMatrixSetBounds : bounds;
     }
 
-    public void setTileMatrixSetBounds(Envelope tileMatrixSetBounds) {
+    public void setTileMatrixSetBounds(ReferencedEnvelope tileMatrixSetBounds) {
         this.tileMatrixSetBounds = tileMatrixSetBounds;
     }
 }

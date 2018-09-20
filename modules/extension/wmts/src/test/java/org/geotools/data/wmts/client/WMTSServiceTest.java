@@ -181,7 +181,8 @@ public class WMTSServiceTest {
         for (int i = 0; i < services.length; i++) {
             for (int k = 0; k < scales.length; k++) {
                 Set<Tile> tiles = services[i].findTilesInExtent(env, scales[k], true, 100);
-                System.out.println(tiles.size());
+                // System.out.println(tiles.size());
+                assertTrue(tiles.size() > 0);
             }
         }
     }

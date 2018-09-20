@@ -73,6 +73,7 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import javax.media.jai.Interpolation;
 import javax.media.jai.RenderedOp;
 import javax.swing.*;
 import junit.framework.JUnit4TestAdapter;
@@ -132,7 +133,14 @@ import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -5335,5 +5343,48 @@ public class ImageMosaicReaderTest extends Assert {
         } finally {
             reader.dispose();
         }
+    }
+
+    @Test
+    public void testNoDataRescaleStats() throws Exception {
+        // For this test the input files havethe nodata value that is very high compared
+        // to the valid data, ask for a geometry that requires some translation, and
+        // check that did not result in interpolating the nodata
+        String testLocation = "nodata_high";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        ImageMosaicReader reader = new ImageMosaicReader(testDataFolder, null);
+        Assert.assertNotNull(reader);
+
+        GridGeometry2D gg =
+                new GridGeometry2D(
+                        new GridEnvelope2D(0, 0, 1, 3),
+                        new ReferencedEnvelope(151, 152, 85, 88, DefaultGeographicCRS.WGS84));
+        ParameterValue<GridGeometry2D> ggValue =
+                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        ggValue.setValue(gg);
+        ParameterValue<Interpolation> interpValue = AbstractGridFormat.INTERPOLATION.createValue();
+        interpValue.setValue(Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] {ggValue, interpValue});
+        NoDataContainer noData = (NoDataContainer) coverage.getProperty(NoDataContainer.GC_NODATA);
+        assertEquals(9.96920996838686905e+36, noData.getAsSingleValue(), 0.1);
+
+        // check the pixels have the expected values
+        RenderedImage ri = coverage.getRenderedImage();
+        assertEquals(1, ri.getWidth());
+        assertEquals(3, ri.getHeight());
+        float[] pixel = new float[1];
+        // nodata got preserved (an interpolated value showed up before the fix)
+        ri.getData().getPixel(0, 0, pixel);
+        assertEquals(9.96920996838686905e+36, pixel[0], 0.1);
+        ri.getData().getPixel(0, 1, pixel);
+        assertEquals(311.92, pixel[0], 0.1);
+        ri.getData().getPixel(0, 2, pixel);
+        assertEquals(311.77, pixel[0], 0.1);
+
+        coverage.dispose(true);
+        reader.dispose();
     }
 }

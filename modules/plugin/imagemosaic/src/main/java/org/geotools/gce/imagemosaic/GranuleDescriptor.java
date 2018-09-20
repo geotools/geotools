@@ -1386,6 +1386,9 @@ public class GranuleDescriptor {
 
                 ImageWorker iw = new ImageWorker(raster);
                 iw.setRenderingHints(localHints);
+                if (iw.getNoData() == null && this.noData != null) {
+                    iw.setNoData(this.noData.getAsRange());
+                }
                 iw.affine(finalRaster2Model, interpolation, request.getBackgroundValues());
                 RenderedImage renderedImage = iw.getRenderedImage();
                 Object roi = renderedImage.getProperty("ROI");

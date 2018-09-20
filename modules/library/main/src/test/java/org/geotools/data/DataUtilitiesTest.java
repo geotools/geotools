@@ -439,40 +439,37 @@ public class DataUtilitiesTest extends DataTestCase {
         String text = DataUtilities.encodeFeature(feature1);
         assertEquals("fid1=1|Jody Garnett\\nSteering Committee|POINT (1 2)", text);
     }
-    
+
     /**
      * Test createType and encode can handle com.vividsolutions.jts and org.locationtech.jts
      * bindings.
      */
     public void testDecodeGeometrySpec() throws Exception {
-        SimpleFeatureType featureType1,featureType2;
-        
-        featureType1 =
-                DataUtilities.createType(
-                        "Contact", "id:Integer,party:String,geom:Geometry");
+        SimpleFeatureType featureType1, featureType2;
+
+        featureType1 = DataUtilities.createType("Contact", "id:Integer,party:String,geom:Geometry");
         featureType2 =
                 DataUtilities.createType(
-                        "Contact", "id:Integer,party:String,geom:org.locationtech.jts.geom.Geometry");
-        
-        assertEquals( featureType1, featureType2);
+                        "Contact",
+                        "id:Integer,party:String,geom:org.locationtech.jts.geom.Geometry");
+
+        assertEquals(featureType1, featureType2);
         featureType2 =
                 DataUtilities.createType(
-                        "Contact", "id:Integer,party:String,geom:com.vividsolutions.jts.geom.Geometry");
-        assertEquals( featureType1, featureType2);
-        
+                        "Contact",
+                        "id:Integer,party:String,geom:com.vividsolutions.jts.geom.Geometry");
+        assertEquals(featureType1, featureType2);
+
         assertEquals(
                 DataUtilities.createAttribute("point:Point"),
-                DataUtilities.createAttribute("point:com.vividsolutions.jts.geom.Point")
-                );
+                DataUtilities.createAttribute("point:com.vividsolutions.jts.geom.Point"));
         assertEquals(
                 DataUtilities.createAttribute("point:Point"),
-                DataUtilities.createAttribute("point:org.locationtech.jts.geom.Point")
-                );
-        
+                DataUtilities.createAttribute("point:org.locationtech.jts.geom.Point"));
+
         assertEquals(
                 DataUtilities.createAttribute("area:Polygon"),
-                DataUtilities.createAttribute("area:com.vividsolutions.jts.geom.Polygon")
-                );
+                DataUtilities.createAttribute("area:com.vividsolutions.jts.geom.Polygon"));
     }
     /*
      * Test for Feature template(FeatureType)

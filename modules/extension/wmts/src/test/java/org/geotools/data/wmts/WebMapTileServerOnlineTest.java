@@ -19,7 +19,6 @@ package org.geotools.data.wmts;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import org.geotools.data.ows.Layer;
@@ -116,14 +115,6 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
 
         request.setRequestedWidth(800);
         request.setRequestedHeight(400);
-
-        String format = "image/png";
-        List<String> formats = layer.getFormats();
-        assertTrue(formats.size() > 0);
-        if (!formats.contains("image/png")) {
-            format = (String) formats.get(0);
-        }
-        // request.setFormat(format);
 
         ReferencedEnvelope re = new ReferencedEnvelope(-180, 180, -90, 90, CRS.decode("EPSG:4326"));
         request.setRequestedBBox(re);

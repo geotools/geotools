@@ -253,7 +253,7 @@
   <groupId>org.geotools</groupId>
   <artifactId>geotools</artifactId>
   <packaging>pom</packaging>
-  <version>20-SNAPSHOT</version>
+  <version>20.0</version>
   <name>GeoTools</name>
 
   <scm>

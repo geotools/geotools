@@ -50,10 +50,10 @@ public class Quickstart {
         String name = "topp:states";
         name = "osm";
         WMTSLayer wlayer = (WMTSLayer) server.getCapabilities().getLayer(name);
-        System.out.println(wlayer.getLatLonBoundingBox());
+        // System.out.println(wlayer.getLatLonBoundingBox());
         WMTSMapLayer mapLayer = new WMTSMapLayer(server, wlayer);
         map.addLayer(mapLayer);
-        System.out.println(mapLayer.getBounds());
+        // System.out.println(mapLayer.getBounds());
         File file = new File("/data/natural_earth/110m_physical/110m_coastline.shp");
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         SimpleFeatureSource featureSource = store.getFeatureSource();

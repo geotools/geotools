@@ -18,7 +18,6 @@ package org.geotools.map;
 
 import static org.junit.Assert.*;
 
-import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -77,15 +76,15 @@ public class WMTSCoverageReaderTest {
 
         int width = 400;
         int height = 200;
-        Color backgroundColor = Color.WHITE;
         ReferencedEnvelope grid = wcr.initTileRequest(bbox, width, height, null);
         assertNotNull(grid);
         GetTileRequest mapRequest = wcr.getTileRequest();
         mapRequest.setCRS(grid.getCoordinateReferenceSystem());
         Set<Tile> responses = wcr.wmts.issueRequest(mapRequest);
         for (Tile t : responses) {
-            System.out.println(t);
-            System.out.println(t.getTileIdentifier() + " " + t.getExtent());
+            /*System.out.println(t);
+            System.out.println(t.getTileIdentifier() + " " + t.getExtent());*/
+            assertNotNull(t);
         }
     }
 

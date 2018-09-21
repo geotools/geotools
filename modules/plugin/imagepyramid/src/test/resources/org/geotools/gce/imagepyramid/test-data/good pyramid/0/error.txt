@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2006-09-22T15:33:59</date>
+  <millis>1158932039937</millis>
+  <sequence>21</sequence>
+  <logger>class it.geosolutions.utils.imagemosaic.MosaicIndexBuilder</logger>
+  <level>SEVERE</level>
+  <class>it.geosolutions.utils.imagemosaic.MosaicIndexBuilder</class>
+  <method>run</method>
+  <thread>10</thread>
+  <message>Unable to delete original file: file:/C:/work/data/pyramid_test/0/mosaic.shx</message>
+  <exception>
+    <message>java.io.IOException: Unable to delete original file: file:/C:/work/data/pyramid_test/0/mosaic.shx</message>
+    <frame>
+      <class>org.geotools.data.shapefile.ShapefileDataStore</class>
+      <method>copyAndDelete</method>
+      <line>1103</line>
+    </frame>
+    <frame>
+      <class>org.geotools.data.shapefile.ShapefileDataStore</class>
+      <method>createSchema</method>
+      <line>793</line>
+    </frame>
+    <frame>
+      <class>it.geosolutions.utils.imagemosaic.MosaicIndexBuilder</class>
+      <method>run</method>
+      <line>397</line>
+    </frame>
+    <frame>
+      <class>java.lang.Thread</class>
+      <method>run</method>
+      <line>595</line>
+    </frame>
+  </exception>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+</log>

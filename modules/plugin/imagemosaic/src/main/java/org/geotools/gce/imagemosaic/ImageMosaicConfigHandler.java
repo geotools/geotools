@@ -1794,7 +1794,7 @@ public class ImageMosaicConfigHandler {
 
     private boolean isHigherResolution(double[][] a, double[][] b) {
         for (int i = 0; i < Math.min(a.length, b.length); i++) {
-            for (int j = 0; i < Math.min(a[i].length, b[i].length); i++) {
+            for (int j = 0; j < Math.min(a[i].length, b[i].length); j++) {
                 if (a[i][j] < b[i][j]) {
                     return true;
                 } else if (a[i][j] > b[i][j]) {

@@ -17,7 +17,11 @@
 package org.geotools.data.ows;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -113,7 +117,8 @@ public class MultithreadedHttpClientTest {
         System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "localhost");
         MultithreadedHttpClient sut = new MultithreadedHttpTestClient();
-        when(mockHttpClient.executeMethod(isNull(), any(HttpMethod.class))).thenReturn(200);
+        when(mockHttpClient.executeMethod(any(HostConfiguration.class), any(HttpMethod.class)))
+                .thenReturn(200);
         sut.get(new URL("http://localhost"));
 
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "\"localhost|www.geotools.org\"");
@@ -121,7 +126,8 @@ public class MultithreadedHttpClientTest {
         sut.get(new URL("http://localhost"));
         // HttpClient.executeMethod(HostConfig, HttpMethod) has to be called
         // (with HostConfig)
-        verify(mockHttpClient, times(2)).executeMethod(any(), any(HttpMethod.class));
+        verify(mockHttpClient, times(2))
+                .executeMethod(any(HostConfiguration.class), any(HttpMethod.class));
     }
 
     /** Save original system properties for later restore to avoid affecting other tests. */

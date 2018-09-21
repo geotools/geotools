@@ -101,9 +101,10 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>    
+    <dependency>
       <groupId>com.mockrunner</groupId>
-      <artifactId>mockrunner-jdbc</artifactId>
+      <artifactId>mockrunner</artifactId>
+      <!-- The version number is specified in the parent POM. -->
       <scope>test</scope>
     </dependency>
     <dependency>

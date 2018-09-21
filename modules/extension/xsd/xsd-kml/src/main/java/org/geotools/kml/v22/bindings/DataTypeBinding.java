@@ -71,7 +71,11 @@ public class DataTypeBinding extends AbstractComplexBinding {
             return data.getKey().toString();
         }
         if ("value".equals(name.getLocalPart())) {
-            return data.getValue().toString();
+            if (data.getValue() != null) {
+                return data.getValue().toString();
+            } else {
+                return null;
+            }
         }
 
         return super.getProperty(object, name);

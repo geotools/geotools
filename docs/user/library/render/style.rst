@@ -281,14 +281,14 @@ FeatureTypeStyle includes vendor options specific to the GeoTools rendering engi
      
      // multiply buffer from feature type style 0, onto composite-base provided by feature type style 1 
      style.featureTypeStyles().get(0).getOptions().put("composite","multiply, 0.5");
-     style.featureTypeStyles().get(1).getOptions().put("composite-base", true ); 
+     style.featureTypeStyles().get(1).getOptions().put("composite-base", "true"); 
      
 * firstMatch: stops rule evaluation after the first match (making it easier to work with datasets where content is classified by distinct attribute values)
   
   .. code-block:: java
   
      // exit rules on first match, like a switch statement 
-     fts.getOptions().put( "first", true ); 
+     fts.getOptions().put("ruleEvaluation", "first"); 
 
 * sortBy: Control order features are retrieved, controlling drawing order.
 

@@ -288,7 +288,7 @@ FeatureTypeStyle includes vendor options specific to the GeoTools rendering engi
   .. code-block:: java
   
      // exit rules on first match, like a switch statement 
-     fts.getOptions().put( "first", true ); 
+     fts.getOptions().put("ruleEvaluation", "first"); 
 
 * sortBy: Control order features are retrieved, controlling drawing order.
 

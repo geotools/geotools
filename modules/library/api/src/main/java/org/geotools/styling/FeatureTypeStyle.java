@@ -131,7 +131,7 @@ public interface FeatureTypeStyle extends org.opengis.style.FeatureTypeStyle {
     /**
      * String value controlling cross layer z-ordering. Several feature type styles in the same
      * sortByGroup will have their features globally ordered before painting, for example, in order
-     * to respect their real world relationships. FeatureTypeStype are grouped only if they are
+     * to respect their real world relationships. FeatureTypeStyle are grouped only if they are
      * adjacent in the overall MapContent (even across layers). In case compositing is used in the
      * same FeatureTypeStyle, the first value in group will be used for the entire group.
      */

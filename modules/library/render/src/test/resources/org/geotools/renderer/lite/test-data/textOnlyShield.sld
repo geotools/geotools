@@ -24,7 +24,7 @@
               <Size>32</Size>
             </Graphic>
             <Font>
-              <CssParameter name="font-family">SansSerif</CssParameter>
+              <CssParameter name="font-family">Bitstream Vera Sans</CssParameter>
               <!-- this used to cause an infinite loop -->
               <CssParameter name="font-size">0</CssParameter>
             </Font>

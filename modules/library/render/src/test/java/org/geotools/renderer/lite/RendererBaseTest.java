@@ -16,14 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.HeadlessException;
-import java.awt.Panel;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
@@ -37,6 +30,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.style.FontCache;
 import org.geotools.sld.v1_1.SLDConfiguration;
 import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.NamedLayer;
@@ -371,5 +365,15 @@ public abstract class RendererBaseTest {
             actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), 255);
         }
         return actual;
+    }
+
+    /** Configure the Bistream Vera Sans font so that it's available to the JVM */
+    public static void setupVeraFonts() throws IOException, FontFormatException {
+        FontCache.getDefaultInstance()
+                .registerFont(
+                        java.awt.Font.createFont(
+                                java.awt.Font.TRUETYPE_FONT,
+                                TestData.getResource(RendererBaseTest.class, "Vera.ttf")
+                                        .openStream()));
     }
 }

@@ -19,7 +19,6 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
-import java.awt.Font;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -30,7 +29,6 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.test.TestData;
@@ -56,11 +54,7 @@ public class RepeatedLabelTest {
 
         bounds = new ReferencedEnvelope(2, 8, 2, 8, DefaultGeographicCRS.WGS84);
 
-        FontCache.getDefaultInstance()
-                .registerFont(
-                        Font.createFont(
-                                Font.TRUETYPE_FONT,
-                                TestData.getResource(this, "Vera.ttf").openStream()));
+        RendererBaseTest.setupVeraFonts();
     }
 
     @Test
@@ -96,7 +90,7 @@ public class RepeatedLabelTest {
                         "src/test/resources/org/geotools/renderer/lite/test-data/"
                                 + styleName
                                 + ".png");
-        int tolerance = 1000;
+        int tolerance = 1400;
         ImageAssert.assertEquals(expected, image, tolerance);
     }
 
@@ -108,7 +102,7 @@ public class RepeatedLabelTest {
     @Test
     public void testLabelSquareBordersWithHoles() throws Exception {
         checkRepeatedLabelsPolygonBorder(
-                squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 1000);
+                squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 1400);
     }
 
     @Test
@@ -129,7 +123,7 @@ public class RepeatedLabelTest {
     public void testLabelSquareBordersHolesPositiveOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(5);
         checkRepeatedLabelsPolygonBorder(
-                squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-offset", visitor, 1000);
+                squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-offset", visitor, 1400);
     }
 
     @Test
@@ -140,7 +134,7 @@ public class RepeatedLabelTest {
                 "repeatedLabelsAlongLine",
                 "poly-hole-perp-negative-offset",
                 visitor,
-                1000);
+                1400);
     }
 
     private void checkRepeatedLabelsPolygonBorder(

@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,6 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.MapContext;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
@@ -66,14 +65,10 @@ public class LabelingTest extends TestCase {
     private static final int CENTERY = 40;
 
     /*
-     * @see TestCase#setUp()
+     * Setting up the Vera fonts
      */
     protected void setUp() throws Exception {
-        FontCache.getDefaultInstance()
-                .registerFont(
-                        java.awt.Font.createFont(
-                                java.awt.Font.TRUETYPE_FONT,
-                                TestData.getResource(this, "Vera.ttf").openStream()));
+        RendererBaseTest.setupVeraFonts();
     }
 
     /*
@@ -261,7 +256,7 @@ public class LabelingTest extends TestCase {
         String refPath =
                 "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelSharpTurn2.png";
         // small tolerance
-        ImageAssert.assertEquals(new File(refPath), image, 300);
+        ImageAssert.assertEquals(new File(refPath), image, 1000);
     }
 
     private SimpleFeatureCollection createLineFeatureCollection() throws Exception {

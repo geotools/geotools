@@ -21,12 +21,10 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
-import org.geotools.renderer.lite.LineTest;
-import org.geotools.renderer.style.FontCache;
+import org.geotools.renderer.lite.RendererBaseTest;
 import org.geotools.styling.Font;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.test.TestData;
 import org.geotools.test.TestGraphics;
 import org.geotools.util.NumberRange;
 import org.junit.Before;
@@ -76,11 +74,7 @@ public class LabelCacheImplTest {
 
     @Before
     public void setVeraFont() throws IOException, FontFormatException {
-        FontCache.getDefaultInstance()
-                .registerFont(
-                        java.awt.Font.createFont(
-                                java.awt.Font.TRUETYPE_FONT,
-                                TestData.getResource(LineTest.class, "Vera.ttf").openStream()));
+        RendererBaseTest.setupVeraFonts();
     }
 
     @Test

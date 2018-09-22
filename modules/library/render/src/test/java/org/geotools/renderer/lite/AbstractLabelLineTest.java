@@ -19,11 +19,7 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +32,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
@@ -51,11 +46,7 @@ public abstract class AbstractLabelLineTest {
 
     @Before
     public void setUp() throws Exception {
-        FontCache.getDefaultInstance()
-                .registerFont(
-                        Font.createFont(
-                                Font.TRUETYPE_FONT,
-                                TestData.getResource(this, "Vera.ttf").openStream()));
+        RendererBaseTest.setupVeraFonts();
 
         // load the data, in this case a set of different linestring
         File property = new File(TestData.getResource(this, "nonStraightLines.properties").toURI());

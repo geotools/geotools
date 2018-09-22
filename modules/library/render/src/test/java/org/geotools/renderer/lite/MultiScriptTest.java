@@ -60,7 +60,7 @@ public class MultiScriptTest extends TestCase {
 
     private static final long TIME = 10000;
 
-    static final int TOLERANCE = 600;
+    static final int TOLERANCE = 3000;
 
     GeometryFactory gf = new GeometryFactory();
 
@@ -72,12 +72,7 @@ public class MultiScriptTest extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        // register a cross platform test
-        FontCache.getDefaultInstance()
-                .registerFont(
-                        Font.createFont(
-                                Font.TRUETYPE_FONT,
-                                TestData.getResource(this, "Vera.ttf").openStream()));
+        RendererBaseTest.setupVeraFonts();
         FontCache.getDefaultInstance()
                 .registerFont(
                         Font.createFont(

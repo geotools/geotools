@@ -18,6 +18,7 @@ package org.geotools.data.mysql;
 
 import java.util.HashMap;
 import junit.framework.TestCase;
+import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 
 /** @source $URL$ */
@@ -40,5 +41,25 @@ public class MySQLDataStoreFactoryTest extends TestCase {
         params.put(JDBCDataStoreFactory.PORT.key, "3306");
         params.put(JDBCDataStoreFactory.USER.key, "mysqluser");
         assertTrue(factory.canProcess(params));
+    }
+
+    /**
+     * check fix of possible NPE issue during MySQLVersion56 check (pull request #2033)
+     *
+     * @throws Exception
+     */
+    public void testNoNpeOnConnectionFailure() throws Exception {
+        // create a dummy JDBC store
+        JDBCDataStore store = new JDBCDataStore();
+        store.setSQLDialect(new MySQLDialectBasic(store));
+
+        // Connection creation should fail since store does not
+        // actually exist. Test ensures that no NPE is thrown
+        // from final block of method
+        try {
+            factory.isMySqlVersion56(store);
+        } catch (NullPointerException e) {
+            fail("an exception occured during checking of MySQL version " + e);
+        }
     }
 }

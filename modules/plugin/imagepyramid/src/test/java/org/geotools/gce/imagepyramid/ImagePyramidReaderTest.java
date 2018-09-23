@@ -24,6 +24,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
@@ -113,10 +114,33 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     @Test
     public void testAutomaticBuildGdalRetile() throws IOException {
         final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
+        buildPyramid(testFile, "goodpyramid");
+    }
+
+    /**
+     * Tests automatic building of all the mosaic and pyramid files from a gdal_retile like
+     * directory structure
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testWindowsPath() throws IOException {
+        final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
+        buildPyramid(testFile, "good pyramid");
+    }
+
+    /**
+     * @param testFile
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+    private void buildPyramid(final URL testFile, String targetName)
+            throws IOException, FileNotFoundException {
         File sourceDir = URLs.urlToFile(testFile).getParentFile();
-        File targetDir = File.createTempFile("pyramid", "tst", TestData.file(this, "."));
+        File targetDir = File.createTempFile(targetName, "tst", TestData.file(this, "."));
         targetDir.delete();
         targetDir.mkdir();
+
         try {
             prepareEmptyMosaic(sourceDir, targetDir);
 

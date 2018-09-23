@@ -114,7 +114,7 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
     @Test
     public void testAutomaticBuildGdalRetile() throws IOException {
         final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
-        buildPyramid(testFile);
+        buildPyramid(testFile, "goodpyramid");
     }
 
     /**
@@ -125,9 +125,8 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
      */
     @Test
     public void testWindowsPath() throws IOException {
-        final URL testFile = TestData.getResource(this, "good pyramid/" + TEST_FILE);
-        System.out.println(testFile.toString());
-        buildPyramid(testFile);
+        final URL testFile = TestData.getResource(this, "goodpyramid/" + TEST_FILE);
+        buildPyramid(testFile, "good pyramid");
     }
 
     /**
@@ -135,11 +134,13 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
      * @throws IOException
      * @throws FileNotFoundException
      */
-    private void buildPyramid(final URL testFile) throws IOException, FileNotFoundException {
+    private void buildPyramid(final URL testFile, String targetName)
+            throws IOException, FileNotFoundException {
         File sourceDir = URLs.urlToFile(testFile).getParentFile();
-        File targetDir = File.createTempFile("pyramid", "tst", TestData.file(this, "."));
+        File targetDir = File.createTempFile(targetName, "tst", TestData.file(this, "."));
         targetDir.delete();
         targetDir.mkdir();
+
         try {
             prepareEmptyMosaic(sourceDir, targetDir);
 

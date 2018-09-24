@@ -16,17 +16,6 @@
  */
 package org.geotools.data.solr;
 
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
@@ -40,11 +29,29 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
 /**
  * This class contains helper methods typically used when dealing with Apache Solr integration
  * tests.
  */
 public final class TestsSolrUtils {
+
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(TestsSolrUtils.class);
 
     /**
      * Instantiates a new Apache Solr client using the provided base URL. The provided base URL
@@ -112,6 +119,21 @@ public final class TestsSolrUtils {
     }
 
     /**
+     * Create field type named bboxCoord capable of storing geographical coordinates.
+     *
+     * @param client Sorl client to use, should already point to the desired core
+     */
+    public static void createBboxCoordType(HttpSolrClient client) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("name", "bboxCoord");
+        attributes.put("class", "solr.TrieDoubleField");
+        attributes.put("precisionStep", "8");
+        attributes.put("docValues", "true");
+        // create or replace the field type definition
+        createFieldType(client, attributes);
+    }
+
+    /**
      * Create field type named bbox capable of handling envelopes. If a field type named bbox
      * already exists its definition will be replaced.
      *
@@ -121,7 +143,7 @@ public final class TestsSolrUtils {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("name", "bbox");
         attributes.put("class", "solr.BBoxField");
-        attributes.put("numberType", "double");
+        attributes.put("numberType", "bboxCoord");
         attributes.put("geo", "true");
         // create or replace the field type definition
         createFieldType(client, attributes);
@@ -178,21 +200,29 @@ public final class TestsSolrUtils {
     public static void createFieldType(HttpSolrClient client, Map<String, Object> attributes) {
         FieldTypeDefinition typeDefinition = new FieldTypeDefinition();
         typeDefinition.setAttributes(attributes);
-        // try to create the field type
-        Response addResponse =
-                runSolrRequest(client, new SchemaRequest.AddFieldType(typeDefinition));
-        if (!addResponse.hasErrors()) {
-            // no errors, which means that the field type was correctly created
-            return;
+        try {
+            // try to create the field type
+            Response addResponse =
+                    runSolrRequest(client, new SchemaRequest.AddFieldType(typeDefinition));
+            if (!addResponse.hasErrors()) {
+                // no errors, which means that the field type was correctly created
+                return;
+            } else {
+                // log the error message and move on
+                LOGGER.log(Level.FINE, addResponse.getMessage());
+            }
+        } catch (Exception exception) {
+            // ignore the exception, we will try to replace the type
+            LOGGER.log(
+                    Level.FINE,
+                    "Something bad bad when creating a field type in Solr.",
+                    exception);
         }
         // something bad happen, let's assume that a field type with the same name already exists
         Response replaceResponse =
                 runSolrRequest(client, new SchemaRequest.ReplaceFieldType(typeDefinition));
-        if (replaceResponse.hasErrors()) {
-            // trying to replace the field type failed, let's throw an exception with all the
-            // messages errors
-            Response.throwIfNeeded(addResponse, replaceResponse);
-        }
+        // if something bad happen, let's throw an exception
+        replaceResponse.throwIfNeeded();
     }
 
     /**
@@ -204,22 +234,43 @@ public final class TestsSolrUtils {
      * @param type field type name
      */
     public static void createField(HttpSolrClient client, String name, String type) {
+        createField(client, name, type, false);
+    }
+
+    /**
+     * Helper method that creates a new field using the provided name and type (field type name). If
+     * a field with the same name already exists itd definition will be replaced.
+     *
+     * @param client Sorl client to use, should already point to the desired core
+     * @param name name of the field
+     * @param type field type name
+     * @param multiValued TRUE if field is multi valued, otherwise FALSE
+     */
+    public static void createField(
+            HttpSolrClient client, String name, String type, boolean multiValued) {
         Map<String, Object> field = new HashMap<>();
         field.put("name", name);
         field.put("type", type);
-        // try to create the field
-        Response addResponse = runSolrRequest(client, new SchemaRequest.AddField(field));
-        if (!addResponse.hasErrors()) {
-            // no errors, which means that the field was correctly created
-            return;
+        field.put("multiValued", multiValued ? "true" : "false");
+        try {
+            // try to create the field
+            Response addResponse = runSolrRequest(client, new SchemaRequest.AddField(field));
+            if (!addResponse.hasErrors()) {
+                // no errors, which means that the field was correctly created
+                return;
+            } else {
+                // log the error message and move on
+                LOGGER.log(Level.FINE, addResponse.getMessage());
+            }
+        } catch (Exception exception) {
+            // ignore the exception, we will try to replace the type
+            LOGGER.log(
+                    Level.FINE, "Something bad bad when creating a field in Solr.", exception);
         }
         // something bad happen, let's assume that a field with the same name already exists
         Response replaceResponse = runSolrRequest(client, new SchemaRequest.ReplaceField(field));
-        if (replaceResponse.hasErrors()) {
-            // trying to replace the field definition failed, let's throw an exception with all the
-            // messages errors
-            Response.throwIfNeeded(addResponse, replaceResponse);
-        }
+        // if something bad happen, let's throw an exception
+        replaceResponse.throwIfNeeded();
     }
 
     /**
@@ -324,32 +375,33 @@ public final class TestsSolrUtils {
     }
 
     /**
-     * Helper method that creates a new field in the target index schema.
+     * Create field type named tlongs capable of handling long integers.
      *
-     * @param client the HTTP Solr client
-     * @param name the field name
-     * @param type the field type
-     * @param multiValued TRUE if the type is multi valued, otherwise FALSE
+     * @param client Sorl client to use, should already point to the desired core
      */
-    public static void createField(
-            HttpSolrClient client, String name, String type, boolean multiValued) {
-        Map<String, Object> field = new HashMap<>();
-        field.put("name", name);
-        field.put("type", type);
-        field.put("multiValued", multiValued ? "true" : "false");
-        // try to create the field
-        Response addResponse = runSolrRequest(client, new SchemaRequest.AddField(field));
-        if (!addResponse.hasErrors()) {
-            // no errors, which means that the field was correctly created
-            return;
-        }
-        // something bad happen, let's assume that a field with the same name already exists
-        Response replaceResponse = runSolrRequest(client, new SchemaRequest.ReplaceField(field));
-        if (replaceResponse.hasErrors()) {
-            // trying to replace the field definition failed, let's throw an exception with all the
-            // messages errors
-            Response.throwIfNeeded(addResponse, replaceResponse);
-        }
+    public static void createTlongsFieldType(HttpSolrClient client) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("name", "tlongs");
+        attributes.put("class", "solr.TrieLongField");
+        attributes.put("precisionStep", "8");
+        attributes.put("positionIncrementGap", "0");
+        // create or replace the field type definition
+        createFieldType(client, attributes);
+    }
+
+    /**
+     * Create field type named tdates capable of handling dates.
+     *
+     * @param client Sorl client to use, should already point to the desired core
+     */
+    public static void createTdatesType(HttpSolrClient client) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("name", "tdates");
+        attributes.put("class", "solr.TrieDateField");
+        attributes.put("precisionStep", "6");
+        attributes.put("positionIncrementGap", "0");
+        // create or replace the field type definition
+        createFieldType(client, attributes);
     }
 
     /** Helper container class for Solr responses errors messages. */
@@ -409,11 +461,12 @@ public final class TestsSolrUtils {
             // merge all errors messages in a single string
             String errors =
                     Arrays.stream(responses)
+                            .filter(Objects::nonNull)
                             .filter(Response::hasErrors)
                             .map(Response::getMessage)
                             .collect(Collectors.joining(", "));
             if (!errors.isEmpty()) {
-                // at leats one message errors exists, let's throw an exception
+                // at least one message errors exists, let's throw an exception
                 throw new RuntimeException(
                         String.format(
                                 "Something bad happen when executing Solr request(s) '%s'.",

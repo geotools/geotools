@@ -76,6 +76,8 @@ public final class StationsSetup {
     private static void setupStationsIndexSchema(HttpSolrClient client) {
         // make sure that the JTS based geometry field type is available
         TestsSolrUtils.createGeometryFieldType(client);
+        TestsSolrUtils.createTlongsFieldType(client);
+        TestsSolrUtils.createTdatesType(client);
         // get the index schema specification
         SchemaField.SchemaFields schemaFields =
                 parseXmlResource(

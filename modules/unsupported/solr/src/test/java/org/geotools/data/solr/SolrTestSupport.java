@@ -74,6 +74,7 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         TestsSolrUtils.cleanIndex(solrClient);
         // make sure the needed geometry field types exist in the managed schema
         TestsSolrUtils.createWktFieldType(this.solrClient);
+        TestsSolrUtils.createBboxCoordType(this.solrClient);
         TestsSolrUtils.createBboxFieldType(this.solrClient);
         // make sure geometry fields are correctly indexed
         TestsSolrUtils.createWktField(this.solrClient, "geo");

@@ -18,8 +18,10 @@
 package org.geotools.process.geometry;
 
 import org.geotools.geometry.jts.GeometryBuilder;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.distance.DistanceOp;
 
 /**
@@ -72,13 +74,52 @@ public class Cell implements Comparable<Cell> {
     // signed distance from point to polygon outline (negative if point is
     // outside)
     private double pointToPolygonDist(Point point, MultiPolygon polygon) {
-        boolean inside = polygon.contains(point);
-        double dist = DistanceOp.distance(point, polygon.getBoundary());
+      
+        boolean inside = false;
+        double minDistSq = Double.POSITIVE_INFINITY;
+        
+        for(int k=0;k<polygon.getNumGeometries();k++) {
+           Coordinate[] ring = polygon.getGeometryN(k).getCoordinates();
+          for(int i=0,len = ring.length,j=len-1;i<len;j=i++) {
+            Coordinate a = ring[i];
+            Coordinate b = ring[j];
+            if((a.y> y != b.y > y) &&
+                (x < (b.x - a.x) * (y - a.y) / (b.y - a.y) + a.x)) inside = !inside;
+            minDistSq = Math.min(minDistSq, getSegDistSq(x, y, a, b));
+          }
+        }
 
         // Points outside has a negative distance and thus will be weighted down later.
-        return (inside ? 1 : -1) * dist;
+        return (inside ? 1 : -1) * Math.sqrt(minDistSq);
     }
+ // get squared distance from a point to a segment
+    private double getSegDistSq(double px, double py, Coordinate a, Coordinate b) {
 
+        double x = a.x;
+        double y = a.y;
+        double dx = b.x - x;
+        double dy = b.y - y;
+
+        if (dx != 0.0 || dy != 0.0) {
+
+            double t = ((px - x) * dx + (py - y) * dy) / (dx * dx + dy * dy);
+
+            if (t > 1) {
+                x = b.x;
+                y = b.y;
+
+            } else if (t > 0) {
+                x += dx * t;
+                y += dy * t;
+            }
+        }
+
+        dx = px - x;
+        dy = py - y;
+
+        return dx * dx + dy * dy;
+    }
+    
     public double getMax() {
         return max;
     }

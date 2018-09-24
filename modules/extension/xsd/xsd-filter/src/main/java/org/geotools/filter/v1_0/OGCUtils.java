@@ -99,7 +99,7 @@ public class OGCUtils {
      * @param node The parse tree.
      * @return A two element array of expressions for a BinarySpatialOp type.
      */
-    static Expression[] spatial(Node node, FilterFactory2 ff, GeometryFactory gf) {
+    public static Expression[] spatial(Node node, FilterFactory2 ff, GeometryFactory gf) {
         List names = node.getChildValues(PropertyName.class);
         if (names.size() == 2) {
             // join

@@ -20,8 +20,10 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.*;
+import org.geotools.xml.AbstractComplexBinding;
 import org.opengis.filter.spatial.DistanceBufferOperator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:DistanceBufferType.
@@ -69,6 +71,18 @@ public class DistanceBufferTypeBinding extends AbstractComplexBinding {
     //    public Object getProperty(Object object, QName name) throws Exception {
     //        return FESParseEncodeUtil.getProperty((DistanceBufferOperator) object, name);
     //    }
+
+    @Override
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        DistanceBufferOperator buffer = (DistanceBufferOperator) object;
+        Element e = document.createElementNS(value.getNamespaceURI(), "fes:Distance");
+        e.setTextContent(Double.toString(buffer.getDistance()));
+        if (buffer.getDistanceUnits() != null) {
+            e.setAttribute("uom", buffer.getDistanceUnits());
+        }
+        value.appendChild(e);
+        return value;
+    }
 
     @Override
     public List getProperties(Object object, XSDElementDeclaration element) throws Exception {

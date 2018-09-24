@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fes:Filter xmlns:fes="http://www.opengis.net/fes/2.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd">
+    <fes:DWithin>
+        <fes:Distance uom="meters">542.3231</fes:Distance>
+        <fes:ValueReference>location</fes:ValueReference>
+        <fes:Literal>POINT (30 10)</fes:Literal>
+    </fes:DWithin>
+</fes:Filter>

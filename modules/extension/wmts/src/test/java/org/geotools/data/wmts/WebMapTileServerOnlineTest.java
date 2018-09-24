@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -90,7 +91,9 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         example.put("kvp_layer", "topp:states");
         example.put("rest_server", "http://raspberrypi:9000/wmts/1.0.0/WMTSCapabilities.xml");
         example.put("rest_layer", "topp:states");
-        example.put("esri_server", "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Toronto/ImageServer/WMTS/1.0.0/WMTSCapabilities.xml");
+        example.put(
+                "esri_server",
+                "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Toronto/ImageServer/WMTS/1.0.0/WMTSCapabilities.xml");
         return example;
     }
 
@@ -171,109 +174,122 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
         assertEquals(-66.969849, envelope.getMaximum(1), 0.0001);
         assertEquals(49.371735, envelope.getMaximum(0), 0.0001);
     }
+
     private WMTSTileService createKVPService() throws Exception {
-      try {
-        URL capaResource =
-            getClass().getClassLoader().getResource("test-data/geosolutions_getcapa_kvp.xml");
-        assertNotNull("Can't find KVP getCapa file", capaResource);
-        File capaFile = new File(capaResource.toURI());
-        WMTSCapabilities capa = createCapabilities(capaFile);
+        try {
+            URL capaResource =
+                    getClass()
+                            .getClassLoader()
+                            .getResource("test-data/geosolutions_getcapa_kvp.xml");
+            assertNotNull("Can't find KVP getCapa file", capaResource);
+            File capaFile = new File(capaResource.toURI());
+            WMTSCapabilities capa = createCapabilities(capaFile);
 
-        String baseURL =
-            "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
+            String baseURL =
+                    "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
 
-        WMTSLayer layer = capa.getLayer("unesco:Unesco_point");
-        TileMatrixSet matrixSet = capa.getMatrixSet("EPSG:900913");
-        assertNotNull(layer);
-        assertNotNull(matrixSet);
+            WMTSLayer layer = capa.getLayer("unesco:Unesco_point");
+            TileMatrixSet matrixSet = capa.getMatrixSet("EPSG:900913");
+            assertNotNull(layer);
+            assertNotNull(matrixSet);
 
-        return new WMTSTileService(baseURL, WMTSServiceType.KVP, layer, null, matrixSet);
+            return new WMTSTileService(baseURL, WMTSServiceType.KVP, layer, null, matrixSet);
 
-      } catch (URISyntaxException ex) {
-        fail(ex.getMessage());
-        return null;
-      }
+        } catch (URISyntaxException ex) {
+            fail(ex.getMessage());
+            return null;
+        }
     }
 
     private WMTSTileService createRESTService() throws Exception {
-      try {
-        URL capaResource = getClass().getClassLoader().getResource("test-data/zamg.getcapa.xml");
-        assertNotNull("Can't find REST getCapa file", capaResource);
-        File capaFile = new File(capaResource.toURI());
-        WMTSCapabilities capa = createCapabilities(capaFile);
+        try {
+            URL capaResource =
+                    getClass().getClassLoader().getResource("test-data/zamg.getcapa.xml");
+            assertNotNull("Can't find REST getCapa file", capaResource);
+            File capaFile = new File(capaResource.toURI());
+            WMTSCapabilities capa = createCapabilities(capaFile);
 
-        String baseURL = "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/WMTSCapabilities.xml";
-        return new WMTSTileService(
-            baseURL, WMTSServiceType.REST, capa.getLayer("grey"), null, capa.getMatrixSet("statmap"));
+            String baseURL =
+                    "http://wmsx.zamg.ac.at/mapcacheStatmap/wmts/1.0.0/WMTSCapabilities.xml";
+            return new WMTSTileService(
+                    baseURL,
+                    WMTSServiceType.REST,
+                    capa.getLayer("grey"),
+                    null,
+                    capa.getMatrixSet("statmap"));
 
-      } catch (URISyntaxException ex) {
-        fail(ex.getMessage());
-        return null;
-      }
+        } catch (URISyntaxException ex) {
+            fail(ex.getMessage());
+            return null;
+        }
     }
 
     @Test
     public void testScales() {
-      // double[][] expected =
-      // {{20,31},{559082264.029,5.590822639508929E8},{1066.36479192,1066.36479192}};
-      // double[][] expected =
-      // {{14,31},{559082264.029,2.925714285714286E7},{1066.36479192,1066.36479192}};
-      double[][] expected = {
-        {14, 2.925714285714286E7, 3571.4285714285716}, // REST
-        {31, 5.590822639508929E8, 68247.34667369298}
-      }; // KVP
-      double delta = 0.00001;
-      for (int i = 0; i < services.length; i++) {
-        double[] scales = services[i].getScaleList();
-        String msg = services[i].getType() + "::" + services[i].getLayerName();
-        assertEquals(msg, (int) expected[i][0], scales.length);
-        assertEquals(msg, expected[i][1], scales[0], delta);
-        assertEquals(msg, expected[i][2], scales[13], delta);
-      }
+        // double[][] expected =
+        // {{20,31},{559082264.029,5.590822639508929E8},{1066.36479192,1066.36479192}};
+        // double[][] expected =
+        // {{14,31},{559082264.029,2.925714285714286E7},{1066.36479192,1066.36479192}};
+        double[][] expected = {
+            {14, 2.925714285714286E7, 3571.4285714285716}, // REST
+            {31, 5.590822639508929E8, 68247.34667369298}
+        }; // KVP
+        double delta = 0.00001;
+        for (int i = 0; i < services.length; i++) {
+            double[] scales = services[i].getScaleList();
+            String msg = services[i].getType() + "::" + services[i].getLayerName();
+            assertEquals(msg, (int) expected[i][0], scales.length);
+            assertEquals(msg, expected[i][1], scales[0], delta);
+            assertEquals(msg, expected[i][2], scales[13], delta);
+        }
     }
 
     @Test
     public void testCRS() throws NoSuchAuthorityCodeException, FactoryException {
-      for (int i = 0; i < services.length; i++) {
-        CoordinateReferenceSystem crs = services[i].getProjectedTileCrs();
-        assertEquals("Mismatching CRS in " + services[i].getName(), _crs[i].getName(), crs.getName());
-      }
+        for (int i = 0; i < services.length; i++) {
+            CoordinateReferenceSystem crs = services[i].getProjectedTileCrs();
+            assertEquals(
+                    "Mismatching CRS in " + services[i].getName(),
+                    _crs[i].getName(),
+                    crs.getName());
+        }
     }
 
     @Test
     public void testWebMercatorBounds() {
-      ReferencedEnvelope[] expected = new ReferencedEnvelope[2];
-      expected[0] = new ReferencedEnvelope(0.0, 180.0, -1.0, 0.0, _crs[0]);
-      // expected[1] = new
-      // ReferencedEnvelope(-180.0,180.0,-85.06,85.06,DefaultGeographicCRS.WGS84);
-      expected[1] =
-          new ReferencedEnvelope(7.4667, 18.0339, 36.6749, 46.6564, DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope[] expected = new ReferencedEnvelope[2];
+        expected[0] = new ReferencedEnvelope(0.0, 180.0, -1.0, 0.0, _crs[0]);
+        // expected[1] = new
+        // ReferencedEnvelope(-180.0,180.0,-85.06,85.06,DefaultGeographicCRS.WGS84);
+        expected[1] =
+                new ReferencedEnvelope(
+                        7.4667, 18.0339, 36.6749, 46.6564, DefaultGeographicCRS.WGS84);
 
-      double delta = 0.001;
+        double delta = 0.001;
 
-      for (int i = 1; i < 2; i++) { // FIXME: fix env for rest
-        ReferencedEnvelope env = services[i].getBounds();
-        String msg = services[i].getType() + "::" + services[i].getLayerName();
-        assertEquals(msg, expected[i].getMinimum(1), env.getMinimum(1), delta);
-        assertEquals(msg, expected[i].getMinimum(0), env.getMinimum(0), delta);
-        assertEquals(msg, expected[i].getMaximum(1), env.getMaximum(1), delta);
-        assertEquals(msg, expected[i].getMaximum(0), env.getMaximum(0), delta);
-      }
+        for (int i = 1; i < 2; i++) { // FIXME: fix env for rest
+            ReferencedEnvelope env = services[i].getBounds();
+            String msg = services[i].getType() + "::" + services[i].getLayerName();
+            assertEquals(msg, expected[i].getMinimum(1), env.getMinimum(1), delta);
+            assertEquals(msg, expected[i].getMinimum(0), env.getMinimum(0), delta);
+            assertEquals(msg, expected[i].getMaximum(1), env.getMaximum(1), delta);
+            assertEquals(msg, expected[i].getMaximum(0), env.getMaximum(0), delta);
+        }
     }
 
     @Test
     public void testFindTilesInExtent() {
-      ReferencedEnvelope env =
-          new ReferencedEnvelope(-80, 80, -180.0, 180.0, DefaultGeographicCRS.WGS84);
-      int million = (int) 1e6;
-      int scales[] = {100 * million, 25 * million, 10 * million, million, 500000};
-      for (int i = 0; i < services.length; i++) {
-        for (int k = 0; k < scales.length; k++) {
-          Set<Tile> tiles = services[i].findTilesInExtent(env, scales[k], true, 100);
-          // System.out.println(tiles.size());
-          assertTrue(tiles.size() > 0);
+        ReferencedEnvelope env =
+                new ReferencedEnvelope(-80, 80, -180.0, 180.0, DefaultGeographicCRS.WGS84);
+        int million = (int) 1e6;
+        int scales[] = {100 * million, 25 * million, 10 * million, million, 500000};
+        for (int i = 0; i < services.length; i++) {
+            for (int k = 0; k < scales.length; k++) {
+                Set<Tile> tiles = services[i].findTilesInExtent(env, scales[k], true, 100);
+                // System.out.println(tiles.size());
+                assertTrue(tiles.size() > 0);
+            }
         }
-      }
     }
     /*
      * ESRI ArcGis Servers require that the style is named and not left blank. Sadly the WMTS specification agrees with them.
@@ -303,7 +319,7 @@ public class WebMapTileServerOnlineTest extends OnlineTestCase {
             assertTrue(tile.getUrl().toString().contains("style=default"));
         }
     }
-    
+
     @Override
     protected String getFixtureId() {
         return "wmts";

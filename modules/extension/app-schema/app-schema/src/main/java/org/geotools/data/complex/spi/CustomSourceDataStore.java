@@ -51,11 +51,20 @@ public interface CustomSourceDataStore {
             SourceDataStore dataStoreConfig, AppSchemaDataAccessDTO appSchemaConfig);
 
     /**
-     * Allows a data store to provide its own configuration tot he XML parser \ digester.
+     * Allows a data store to provide its own configuration to the XML parser \ digester for data
+     * sources.
      *
      * @param digester XML parser \ digester
      */
-    void configXmlDigester(Digester digester);
+    void configXmlDigesterDataSources(Digester digester);
+
+    /**
+     * Allows a data store to provide its own configuration to the XML parser \ digester for
+     * attributes mappings.
+     *
+     * @param digester XML parser \ digester
+     */
+    void configXmlDigesterAttributesMappings(Digester digester);
 
     /**
      * Allows a data store to build its own iterator that will be used by App-Schema core to

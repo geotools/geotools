@@ -127,6 +127,12 @@ public class AttributeMapping implements Serializable {
     private Map clientProperties;
 
     /**
+     * Mapping of attributes with 1..N cardinality. Each data store is free to contribute is own
+     * syntax (e.g. Solr multi values to support multi valuated fields).
+     */
+    private MultipleValue multipleValue;
+
+    /**
      * Returns the expression whose evaluation result against a Feature of the source FeatureType is
      * going to be the value of the target attribute in output FeatureType.
      *
@@ -451,5 +457,13 @@ public class AttributeMapping implements Serializable {
 
     public void setIdentifierExpression(String identifierExpression) {
         this.identifierExpression = identifierExpression;
+    }
+
+    public MultipleValue getMultipleValue() {
+        return multipleValue;
+    }
+
+    public void setMultipleValue(MultipleValue multipleValue) {
+        this.multipleValue = multipleValue;
     }
 }

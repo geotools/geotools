@@ -53,6 +53,16 @@
                         <OCQL>station_location</OCQL>
                     </sourceExpression>
                 </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:position</targetAttribute>
+                    <sourceExpression>
+                        <OCQL>station_location</OCQL>
+                    </sourceExpression>
+                </AttributeMapping>
+                <AttributeMapping>
+                    <targetAttribute>st:tag</targetAttribute>
+                    <solrMultipleValue>station_tag</solrMultipleValue>
+                </AttributeMapping>
             </attributeMappings>
         </FeatureTypeMapping>
     </typeMappings>

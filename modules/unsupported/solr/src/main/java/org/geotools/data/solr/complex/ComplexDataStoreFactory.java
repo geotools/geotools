@@ -58,7 +58,7 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
     private final FilterFactory filterFactory = new FilterFactoryImplReportInvalidProperty();
 
     @Override
-    public void configXmlDigester(Digester digester) {
+    public void configXmlDigesterDataSources(Digester digester) {
         XMLConfigDigester.setCommonSourceDataStoreRules(
                 ComplexDataStoreConfigWithContext.class, "SolrDataStore", digester);
         String dataStores = "AppSchemaDataAccess/sourceDataStores/";
@@ -72,6 +72,18 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
         digester.addCallParam(dataStores + "SolrDataStore/index/geometry/srid", 1);
         digester.addCallParam(dataStores + "SolrDataStore/index/geometry/type", 2);
         digester.addCallParam(dataStores + "SolrDataStore/index/geometry", 3, "default");
+    }
+
+    @Override
+    public void configXmlDigesterAttributesMappings(Digester digester) {
+        String rootPath =
+                "AppSchemaDataAccess/typeMappings/FeatureTypeMapping/attributeMappings/AttributeMapping";
+        String multipleValuePath = rootPath + "/solrMultipleValue";
+        digester.addObjectCreate(
+                multipleValuePath, XMLConfigDigester.CONFIG_NS_URI, SolrMultipleValue.class);
+        digester.addCallMethod(multipleValuePath, "setExpression", 1);
+        digester.addCallParam(multipleValuePath, 0);
+        digester.addSetNext(multipleValuePath, "setMultipleValue");
     }
 
     @Override
@@ -174,6 +186,12 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             // client properties
             for (Object value : attributeMapping.getClientProperties().values()) {
                 attributes.addAll(extractAttributesNames(parseExpression(value)));
+            }
+            // solr multiple values expressions
+            if (attributeMapping.getMultipleValue() instanceof SolrMultipleValue) {
+                SolrMultipleValue multipleValue =
+                        (SolrMultipleValue) attributeMapping.getMultipleValue();
+                attributes.addAll(extractAttributesNames(multipleValue.getExpression()));
             }
         }
         return attributes;

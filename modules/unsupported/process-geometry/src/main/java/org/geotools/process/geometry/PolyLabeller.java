@@ -54,9 +54,9 @@ public class PolyLabeller {
             throw new IllegalStateException("Can not label empty geometries");
         }
 
-        if (!polygon.isValid()) {
+       /* if (!polygon.isValid()) {
             throw new IllegalStateException("Can not label invalid geometries");
-        }
+        }*/
 
         // find the bounding box of the outer ring
         double minX, minY, maxX, maxY;

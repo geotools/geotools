@@ -16,9 +16,9 @@
  */
 package org.geotools.gml.producer;
 
-import java.nio.CharBuffer;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -74,15 +74,19 @@ public final class CoordinateFormatter {
         return sb.toString();
     }
 
-    private StringBuffer eventuallyPad(StringBuffer formatted) {
+    private String zeroPad(String formatted) {
         if (padWithZeros) {
             int numDecimals = coordFormatter.getMaximumFractionDigits();
             if (formatted.indexOf(".") == -1) {
-                return formatted.append("." + repeatZeros(numDecimals));
+                return formatted + "." + repeatZeros(numDecimals);
             } else {
-                int decimals = numDecimals - formatted.toString().split("\\.")[1].length();
+                int decimals =
+                        numDecimals
+                                - formatted
+                                        .substring(formatted.toString().indexOf('.') + 1)
+                                        .length();
                 if (formatted.toString().toLowerCase().indexOf("e") == -1 && decimals > 0) {
-                    return formatted.append(repeatZeros(decimals));
+                    return formatted + repeatZeros(decimals);
                 }
             }
         }
@@ -90,7 +94,9 @@ public final class CoordinateFormatter {
     }
 
     private String repeatZeros(int num) {
-        return CharBuffer.allocate(num).toString().replace('\0', '0');
+        char[] zeros = new char[num];
+        Arrays.fill(zeros, '0');
+        return new String(zeros);
     }
 
     /**
@@ -100,24 +106,25 @@ public final class CoordinateFormatter {
      * @param sb
      */
     public StringBuffer format(double x, StringBuffer sb) {
-        StringBuffer temp = new StringBuffer();
+        String formatted;
         if ((Math.abs(x) >= DECIMAL_MIN && x < DECIMAL_MAX) || x == 0) {
             x = truncate(x);
             long lx = (long) x;
             if (lx == x) {
-                temp.append(lx);
+                formatted = lx + "";
             } else {
-                temp.append(x);
+                formatted = x + "";
             }
         } else {
             if (forcedDecimal) {
+                StringBuffer temp = new StringBuffer();
                 coordFormatter.format(x, temp, ZERO);
+                formatted = temp.toString();
             } else {
-                temp.append(truncate(x));
+                formatted = truncate(x) + "";
             }
         }
-
-        return sb.append(eventuallyPad(temp));
+        return sb.append(zeroPad(formatted));
     }
 
     final double truncate(double x) {

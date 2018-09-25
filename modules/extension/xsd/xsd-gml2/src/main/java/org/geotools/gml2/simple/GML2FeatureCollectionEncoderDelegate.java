@@ -76,12 +76,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
         }
 
         private int getNumDecimals(Configuration configuration) {
-            GMLConfiguration config;
-            if (configuration instanceof GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
-            } else {
-                config = configuration.getDependency(GMLConfiguration.class);
-            }
+            GMLConfiguration config = getGMLConfiguration(configuration);
 
             if (config == null) {
                 return 6;
@@ -91,12 +86,7 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
         }
 
         private boolean getPadWithZeros(Configuration configuration) {
-            GMLConfiguration config;
-            if (configuration instanceof GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
-            } else {
-                config = configuration.getDependency(GMLConfiguration.class);
-            }
+            GMLConfiguration config = getGMLConfiguration(configuration);
 
             if (config == null) {
                 return false;
@@ -106,18 +96,23 @@ public class GML2FeatureCollectionEncoderDelegate extends FeatureCollectionEncod
         }
 
         private boolean getForceDecimalEncoding(Configuration configuration) {
-            GMLConfiguration config;
-            if (configuration instanceof GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
-            } else {
-                config = configuration.getDependency(GMLConfiguration.class);
-            }
+            GMLConfiguration config = getGMLConfiguration(configuration);
 
             if (config == null) {
                 return true;
             } else {
                 return config.getForceDecimalEncoding();
             }
+        }
+
+        private GMLConfiguration getGMLConfiguration(Configuration configuration) {
+            GMLConfiguration config;
+            if (configuration instanceof GMLConfiguration) {
+                config = (GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(GMLConfiguration.class);
+            }
+            return config;
         }
 
         public List getFeatureProperties(

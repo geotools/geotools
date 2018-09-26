@@ -95,12 +95,35 @@ public class GeometryTransformer extends TransformerBase {
             coordWriter.setNamespaceUri(nsUri);
         }
 
+        public GeometryTranslator(ContentHandler handler, int numDecimals) {
+            this(handler, "gml", GMLUtils.GML_URL, numDecimals, false, false);
+        }
+
+        public GeometryTranslator(
+                ContentHandler handler, String prefix, String nsUri, int numDecimals) {
+            this(handler, prefix, nsUri, numDecimals, false, false);
+        }
+
+        public GeometryTranslator(
+                ContentHandler handler, int numDecimals, boolean isDummyZEnabled) {
+            this(handler, numDecimals, false, false, isDummyZEnabled);
+        }
+
         public GeometryTranslator(
                 ContentHandler handler,
                 int numDecimals,
                 boolean padWithZeros,
                 boolean forceDecimalEncoding) {
             this(handler, "gml", GMLUtils.GML_URL, numDecimals, padWithZeros, forceDecimalEncoding);
+        }
+
+        public GeometryTranslator(
+                ContentHandler handler,
+                String prefix,
+                String nsUri,
+                int numDecimals,
+                boolean isDummyZEnabled) {
+            this(handler, prefix, nsUri, numDecimals, false, false, isDummyZEnabled);
         }
 
         public GeometryTranslator(

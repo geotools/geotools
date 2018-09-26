@@ -72,6 +72,14 @@ public class CoordinateWriter {
         this(numDecimals, false, true);
     }
 
+    public CoordinateWriter(int numDecimals, boolean isDummyZEnabled) {
+        this(numDecimals, false, true, isDummyZEnabled);
+    }
+
+    public CoordinateWriter(int numDecimals, String tupleDelim, String coordDelim) {
+        this(numDecimals, false, true, tupleDelim, coordDelim);
+    }
+
     public CoordinateWriter(
             int numDecimals,
             boolean padWithZeros,
@@ -80,8 +88,26 @@ public class CoordinateWriter {
         this(numDecimals, padWithZeros, forceDecimalEncoding, " ", ",", isDummyZEnabled);
     }
 
+    public CoordinateWriter(
+            int numDecimals, String tupleDelim, String coordDelim, boolean useDummyZ) {
+        this(numDecimals, false, true, tupleDelim, coordDelim, useDummyZ);
+    }
+
     public CoordinateWriter(int numDecimals, boolean padWithZeros, boolean forceDecimalEncoding) {
         this(numDecimals, padWithZeros, forceDecimalEncoding, false);
+    }
+
+    public CoordinateWriter(
+            int numDecimals,
+            String tupleDelim,
+            String coordDelim,
+            boolean useDummyZ,
+            double zValue) {
+        this(numDecimals, false, true, tupleDelim, coordDelim, useDummyZ, zValue);
+    }
+
+    public CoordinateWriter(int numDecimals, boolean useDummyZ, int dimension) {
+        this(numDecimals, false, true, useDummyZ, dimension);
     }
 
     // TODO: check gml spec - can it be strings?  Or just chars?
@@ -92,6 +118,16 @@ public class CoordinateWriter {
             String tupleDelim,
             String coordDelim) {
         this(numDecimals, padWithZeros, forceDecimalEncoding, tupleDelim, coordDelim, false);
+    }
+
+    public CoordinateWriter(
+            int numDecimals,
+            String tupleDelim,
+            String coordDelim,
+            boolean useZ,
+            double z,
+            int dimension) {
+        this(numDecimals, false, true, tupleDelim, coordDelim, useZ, z, dimension);
     }
 
     public CoordinateWriter(

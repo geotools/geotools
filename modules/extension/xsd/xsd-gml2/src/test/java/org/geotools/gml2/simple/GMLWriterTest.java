@@ -106,11 +106,34 @@ public class GMLWriterTest extends GMLTestSupport {
         assertEquals("0,0,50", xpath.evaluate("//gml:coordinates", doc));
     }
 
+    public void testCoordinatesFormatting() throws Exception {
+        PointEncoder encoder = new PointEncoder(gtEncoder, "gml");
+        Geometry geometry = new WKTReader2().read("POINT(21396814.969 0 50)");
+        Document doc = encode(encoder, geometry, 2, true, false);
+        assertEquals("21396814.97,0,50", xpath.evaluate("//gml:coordinates", doc));
+
+        doc = encode(encoder, geometry, 4, true, true);
+        assertEquals("21396814.9690,0.0000,50.0000", xpath.evaluate("//gml:coordinates", doc));
+
+        doc = encode(encoder, geometry, 4, false, false);
+        assertEquals("2.1396814969E7,0,50", xpath.evaluate("//gml:coordinates", doc));
+    }
+
     protected Configuration createConfiguration() {
         return new GMLConfiguration();
     }
 
     protected Document encode(GeometryEncoder encoder, Geometry geometry) throws Exception {
+        return encode(encoder, geometry, 6, false, false);
+    }
+
+    protected Document encode(
+            GeometryEncoder encoder,
+            Geometry geometry,
+            int numDecimals,
+            boolean forceDecimals,
+            boolean padWithZeros)
+            throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         // create the document serializer
@@ -129,7 +152,14 @@ public class GMLWriterTest extends GMLTestSupport {
         xmls.getTransformer().setOutputProperty(OutputKeys.METHOD, "XML");
         xmls.setResult(new StreamResult(out));
 
-        GMLWriter handler = new GMLWriter(xmls, gtEncoder.getNamespaces(), 6, false, "gml");
+        GMLWriter handler =
+                new GMLWriter(
+                        xmls,
+                        gtEncoder.getNamespaces(),
+                        numDecimals,
+                        forceDecimals,
+                        padWithZeros,
+                        "gml");
         handler.startDocument();
         handler.startPrefixMapping("gml", GML.NAMESPACE);
         handler.endPrefixMapping("gml");

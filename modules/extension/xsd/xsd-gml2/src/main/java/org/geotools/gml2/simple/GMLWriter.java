@@ -96,8 +96,9 @@ public class GMLWriter {
             NamespaceSupport namespaces,
             int numDecimals,
             boolean forceDecimal,
+            boolean padWithZeros,
             String gmlPrefix) {
-        this(delegate, namespaces, numDecimals, forceDecimal, gmlPrefix, true);
+        this(delegate, namespaces, numDecimals, forceDecimal, padWithZeros, gmlPrefix, true);
     }
 
     /**
@@ -115,6 +116,7 @@ public class GMLWriter {
             NamespaceSupport namespaces,
             int numDecimals,
             boolean forceDecimal,
+            boolean padWithZeros,
             String gmlPrefix,
             boolean encodeMeasures) {
         this.handler = delegate;
@@ -130,6 +132,7 @@ public class GMLWriter {
 
         this.coordFormatter = new CoordinateFormatter(numDecimals);
         this.coordFormatter.setForcedDecimal(forceDecimal);
+        this.coordFormatter.setPadWithZeros(padWithZeros);
 
         this.encodeMeasures = encodeMeasures;
     }

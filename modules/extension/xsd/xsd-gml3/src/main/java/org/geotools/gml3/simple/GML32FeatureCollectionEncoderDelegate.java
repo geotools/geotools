@@ -96,6 +96,10 @@ public class GML32FeatureCollectionEncoderDelegate
 
         int numDecimals;
 
+        private boolean padWithZeros;
+
+        private boolean decimalEncoding;
+
         /** Controls if coordinates measures should be encoded in GML * */
         private boolean encodeMeasures;
 
@@ -108,6 +112,8 @@ public class GML32FeatureCollectionEncoderDelegate
                     (SrsSyntax) encoder.getContext().getComponentInstanceOfType(SrsSyntax.class);
             this.encodingUtils = new GML32EncodingUtils();
             this.numDecimals = getNumDecimals(encoder.getConfiguration());
+            this.padWithZeros = getPadWithZeros(encoder.getConfiguration());
+            this.decimalEncoding = getForceDecimalEncoding(encoder.getConfiguration());
             this.encodeMeasures = getEncodecoordinatesMeasures(encoder.getConfiguration());
         }
 
@@ -123,6 +129,36 @@ public class GML32FeatureCollectionEncoderDelegate
                 return 6;
             } else {
                 return config.getNumDecimals();
+            }
+        }
+
+        private boolean getPadWithZeros(Configuration configuration) {
+            org.geotools.gml3.v3_2.GMLConfiguration config;
+            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
+                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
+            }
+
+            if (config == null) {
+                return false;
+            } else {
+                return config.getPadWithZeros();
+            }
+        }
+
+        private boolean getForceDecimalEncoding(Configuration configuration) {
+            org.geotools.gml3.v3_2.GMLConfiguration config;
+            if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
+                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
+            } else {
+                config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
+            }
+
+            if (config == null) {
+                return true;
+            } else {
+                return config.getForceDecimalEncoding();
             }
         }
 
@@ -233,12 +269,17 @@ public class GML32FeatureCollectionEncoderDelegate
 
         @Override
         public boolean forceDecimalEncoding() {
-            return false;
+            return decimalEncoding;
         }
 
         @Override
         public boolean getEncodeMeasures() {
             return encodeMeasures;
+        }
+
+        @Override
+        public boolean padWithZeros() {
+            return padWithZeros;
         }
     }
 }

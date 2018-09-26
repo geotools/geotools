@@ -19,25 +19,22 @@
  */
 package org.geotools.referencing.wkt;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 import org.geotools.measure.Units;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
+import org.geotools.util.GeoToolsUnitFormat;
 import org.opengis.metadata.citation.Citation;
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
-import tec.uom.se.format.SimpleUnitFormat;
 
 /**
  * Provides unit formatting for EPSG and ESRI WKT dialects
  *
  * @author Andrea Aime - GeoSolutions
  */
-abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
+abstract class GeoToolsCRSUnitFormat extends GeoToolsUnitFormat {
 
     /** Holds the standard unit format. */
     private static final ESRIFormat ESRI = new ESRIFormat();
@@ -58,41 +55,7 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
      *
      * @author Andrea Aime - GeoSolutions
      */
-    abstract static class BaseGT2Format extends DefaultFormat {
-        protected void initUnits() {
-            /**
-             * Labels and alias are only defined on the DEFAULT format instance, so these
-             * definitions are not inherited by subclassing DefaultFormat. Therefore, we need to
-             * clone these definitions in our GT formats
-             */
-            DefaultFormat base = (DefaultFormat) Units.getDefaultFormat();
-            try {
-
-                java.lang.reflect.Field nameToUnitField =
-                        DefaultFormat.class.getDeclaredField("_nameToUnit");
-                nameToUnitField.setAccessible(true);
-                HashMap<String, Unit<?>> nameToUnitMap =
-                        (HashMap<String, Unit<?>>) nameToUnitField.get(base);
-
-                java.lang.reflect.Field unitToNameField =
-                        DefaultFormat.class.getDeclaredField("_unitToName");
-                unitToNameField.setAccessible(true);
-                HashMap<String, Unit<?>> unitToNameMap =
-                        (HashMap<String, Unit<?>>) unitToNameField.get(base);
-                for (Map.Entry<String, Unit<?>> entry : nameToUnitMap.entrySet()) {
-                    String name = entry.getKey();
-                    Unit<?> unit = entry.getValue();
-                    if (unitToNameMap.containsKey(unit) && name.equals(unitToNameMap.get(unit))) {
-                        label(unit, name);
-                        addUnit(unit);
-                    } else {
-                        alias(unit, name);
-                    }
-                }
-            } catch (Throwable t) {
-                // we tried...
-            }
-        }
+    static class BaseGT2Format extends GeoToolsUnitFormat.BaseGT2Format {
 
         protected static void esriLabelsAndAliases(BaseGT2Format format) {
             format.label(NonSI.DEGREE_ANGLE, "Degree");
@@ -105,8 +68,6 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
         protected static void epsgLabelsAndAliases(BaseGT2Format format) {
             format.label(NonSI.DEGREE_ANGLE, "degree");
         }
-
-        protected abstract void addUnit(Unit<?> unit);
     }
 
     /**
@@ -119,12 +80,9 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
 
         public EPSGFormat() {
             super();
-            initUnits();
+            initUnits(Units.getDefaultFormat());
             epsgLabelsAndAliases(this);
         }
-
-        @Override
-        protected void addUnit(Unit<?> unit) {}
     }
 
     /**
@@ -137,11 +95,8 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
 
         public ESRIFormat() {
             super();
-            initUnits();
+            initUnits(Units.getDefaultFormat());
             esriLabelsAndAliases(this);
         }
-
-        @Override
-        protected void addUnit(Unit<?> unit) {}
     }
 }

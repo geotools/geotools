@@ -135,14 +135,14 @@ public class Formatter {
 
     public void setAuthority(Citation authority) {
         this.authority = authority;
-        this.unitFormat = GeoToolsUnitFormat.getInstance(authority);
+        this.unitFormat = GeoToolsCRSUnitFormat.getInstance(authority);
     }
 
     /** The object to use for formatting numbers. */
     private final NumberFormat numberFormat;
 
     /** The object to use for formatting units. */
-    private UnitFormat unitFormat = GeoToolsUnitFormat.getInstance(Citations.EPSG);
+    private UnitFormat unitFormat = GeoToolsCRSUnitFormat.getInstance(Citations.EPSG);
 
     /** Dummy field position. */
     private final FieldPosition dummy = new FieldPosition(0);

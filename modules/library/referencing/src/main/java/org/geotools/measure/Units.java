@@ -161,7 +161,8 @@ public final class Units {
      */
     @SuppressWarnings("unchecked")
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
-        return DefaultUnitParser.getInstance().getEquivalentUnit(unit);
+        return DefaultUnitParser.getInstance(SimpleUnitFormat.Flavor.Default)
+                .getEquivalentUnit(unit);
     }
 
     /**

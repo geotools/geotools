@@ -839,7 +839,7 @@ public final class GridCoverageRenderer {
         // symbolizer. Reader should have taken care o proper channel order, based on initial
         // symbolizer channel definition
         RasterSymbolizer finalSymbolizer = symbolizer;
-        if (isBandsSelectionApplicable(reader, symbolizer)) {
+        if (symbolizer != null && isBandsSelectionApplicable(reader, symbolizer)) {
             readParams = applyBandsSelectionParameter(reader, readParams, symbolizer);
             finalSymbolizer = setupSymbolizerForBandsSelection(symbolizer);
         }

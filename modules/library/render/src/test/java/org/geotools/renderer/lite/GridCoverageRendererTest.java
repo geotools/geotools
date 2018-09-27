@@ -2216,6 +2216,33 @@ public class GridCoverageRendererTest {
         assertEquals(0, counter.features);
     }
 
+    @Test
+    public void testNullSymbolizer() throws Exception {
+        CoordinateReferenceSystem googleMercator = CRS.decode("EPSG:3857");
+        ReferencedEnvelope mapExtent =
+                new ReferencedEnvelope(
+                        -20037508.34, 20037508.34, -20037508.34, 20037508.34, googleMercator);
+        Rectangle screenSize =
+                new Rectangle(200, (int) (mapExtent.getHeight() / mapExtent.getWidth() * 200));
+        AffineTransform w2s = RendererUtilities.worldToScreenTransform(mapExtent, screenSize);
+        GridCoverageRenderer renderer =
+                new GridCoverageRenderer(googleMercator, mapExtent, screenSize, w2s);
+
+        GridCoverage2D coverage = worldReader.read(null);
+        RenderedImage image =
+                renderer.renderImage(
+                        coverage,
+                        null,
+                        Interpolation.getInstance(Interpolation.INTERP_BICUBIC),
+                        Color.RED,
+                        256,
+                        256);
+        File reference =
+                new File(
+                        "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/googleMercatorBicubic.png");
+        ImageAssert.assertEquals(reference, image, 0);
+    }
+
     /**
      * Test custom PADDING is being used when provided as Hint
      *

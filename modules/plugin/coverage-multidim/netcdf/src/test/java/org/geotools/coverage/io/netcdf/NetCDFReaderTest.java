@@ -87,6 +87,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
+import si.uom.SI;
 import ucar.nc2.dataset.NetcdfDataset;
 
 public class NetCDFReaderTest extends Assert {
@@ -1430,6 +1431,15 @@ public class NetCDFReaderTest extends Assert {
         assertNotNull(sourceUrl);
         assertEquals("file", sourceUrl.getProtocol());
         assertTrue(sourceUrl.getPath().endsWith("O3-NO2.nc"));
+        reader.dispose();
+    }
+
+    @Test
+    public void testPreserveUnit() throws Exception {
+        NetCDFReader reader = new NetCDFReader(TestData.file(this, "sst.nc"), null);
+        GridCoverage2D coverage = reader.read(reader.getGridCoverageNames()[0], null);
+        assertEquals(SI.CELSIUS, coverage.getSampleDimension(0).getUnits());
+        coverage.dispose(true);
         reader.dispose();
     }
 }

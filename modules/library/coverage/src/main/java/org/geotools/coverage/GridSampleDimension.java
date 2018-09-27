@@ -117,6 +117,9 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      */
     private final InternationalString description;
 
+    /** Fallback unit information, used when the category list is not available */
+    private Unit units;
+
     /**
      * Constructs a sample dimension with specified name and no category.
      *
@@ -479,6 +482,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
         // TODO: 'list(...)' should be inlined there if only Sun was to fix RFE #4093999
         // ("Relax constraint on placement of this()/super() call in constructors").
         this(description, list(categories, units), 1, 0);
+        this.units = units;
     }
 
     /** Constructs a list of categories. Used by constructors only. */
@@ -556,6 +560,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
             scale = other.scale;
             offset = other.offset;
             description = other.getDescription();
+            this.units = other.units;
         } else {
             categories = null;
             hasQualitative = false;
@@ -896,7 +901,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
      * dimension has no units.
      */
     public Unit<?> getUnits() {
-        return (categories != null) ? categories.getUnits() : null;
+        return (categories != null) ? categories.getUnits() : units;
     }
 
     /**

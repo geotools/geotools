@@ -60,6 +60,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
+import javax.media.jai.RenderedOp;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 import org.apache.commons.beanutils.MethodUtils;
@@ -1373,6 +1374,12 @@ public class GranuleDescriptor {
                         return null;
                     }
                     pi.setProperty("ROI", transformed);
+                    if (pi instanceof RenderedOp) {
+                        // For some reason the "ROI" property is sometime lost
+                        // when getting the rendering
+                        PlanarImage theImage = ((RenderedOp) pi).getRendering();
+                        theImage.setProperty("ROI", transformed);
+                    }
                     raster = pi;
 
                 } catch (NoninvertibleTransformException e) {

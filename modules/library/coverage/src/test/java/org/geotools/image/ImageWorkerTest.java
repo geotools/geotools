@@ -208,6 +208,10 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return image;
     }
 
+    private static BufferedImage getSyntheticRGB(Color color) {
+        return getSyntheticRGB(color, 128);
+    }
+
     /**
      * Creates a test image in RGB with either {@link ComponentColorModel} or {@link
      * DirectColorModel}.
@@ -216,9 +220,9 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *     </code> otherwise.
      * @return
      */
-    private static BufferedImage getSyntheticRGB(Color color) {
-        final int width = 128;
-        final int height = 128;
+    private static BufferedImage getSyntheticRGB(Color color, int sideSize) {
+        final int width = sideSize;
+        final int height = sideSize;
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         final WritableRaster raster = image.getRaster();
         for (int y = 0; y < height; y++) {
@@ -231,6 +235,10 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         return image;
     }
 
+    private static BufferedImage getSyntheticSolidGray(byte gray) {
+        return getSyntheticSolidGray(gray, 128);
+    }
+
     /**
      * Creates a test image in RGB with either {@link ComponentColorModel} or {@link
      * DirectColorModel}.
@@ -239,9 +247,9 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
      *     </code> otherwise.
      * @return
      */
-    private static BufferedImage getSyntheticSolidGray(byte gray) {
-        final int width = 128;
-        final int height = 128;
+    private static BufferedImage getSyntheticSolidGray(byte gray, int sideSize) {
+        final int width = sideSize;
+        final int height = sideSize;
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
         final WritableRaster raster = image.getRaster();
         for (int y = 0; y < height; y++) {
@@ -2092,6 +2100,93 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     public void testWarpROIWithoutJAIExt() throws IOException, TransformException {
         JAIExt.initJAIEXT(false);
         assertWarpROI();
+    }
+
+    @Test
+    public void testAlphaInterpolation() {
+
+        // All image pixels are initialized to RED.
+        BufferedImage red = getSyntheticRGB(Color.RED, 512);
+        BufferedImage alphaChannel = getSyntheticSolidGray((byte) 255, 512);
+
+        final int w = red.getWidth();
+        final int h = red.getHeight();
+        final int specialPixelsOriginX = w / 2;
+        final int specialPixelsOriginY = h / 2;
+
+        // Setting the top left quarter of the image to all zeros
+        int[] zero = new int[] {0, 0, 0};
+        int[] redValues = new int[] {255, 0, 0};
+        WritableRaster raster = red.getRaster();
+        WritableRaster alphaRaster = alphaChannel.getRaster();
+        for (int i = 0; i < specialPixelsOriginX; i++) {
+            for (int j = 0; j < specialPixelsOriginY; j++) {
+                raster.setPixel(i, j, zero);
+                alphaRaster.setSample(i, j, 0, 0);
+            }
+        }
+
+        // Setting the edge of the quarter with some red teeth for future interpolation
+        // Alpha follows the teeth edges.
+        //      **
+        //       *
+        //      **
+        //       *
+        // * * * *
+        // *******
+        int[] values = null;
+        for (int i = specialPixelsOriginX; i < specialPixelsOriginX + 3; i += 3) {
+            for (int j = 0; j < specialPixelsOriginY; j += 6) {
+                for (int k = 0; k < 3; k++) {
+                    for (int l = 0; l < 6; l++) {
+                        values = l > 2 ? redValues : zero;
+                        raster.setPixel(i + k, j + l, values);
+                        alphaRaster.setSample(i + k, j + l, 0, values[0]);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < specialPixelsOriginX; i += 6) {
+            for (int j = specialPixelsOriginY; j < specialPixelsOriginY + 3; j += 3) {
+                for (int l = 0; l < 3; l++) {
+                    for (int k = 0; k < 6; k++) {
+                        values = k > 2 ? redValues : zero;
+                        raster.setPixel(i + k, j + l, values);
+                        alphaRaster.setSample(i + k, j + l, 0, values[0]);
+                    }
+                }
+            }
+        }
+        // Applying transparency to create RGBA image
+        ImageWorker iw = new ImageWorker(red);
+        iw.addBand(alphaChannel, false, true, null);
+        RenderedImage rgbA = iw.getRenderedImage();
+
+        ImageWorker scalingWorker =
+                new ImageWorker(rgbA)
+                        .scale(
+                                0.5,
+                                0.5,
+                                0,
+                                0,
+                                Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
+        RenderedImage result = scalingWorker.getRenderedImage();
+
+        // Check alpha has not been interpolated
+        SampleModel sm = result.getSampleModel();
+        assertEquals(4, sm.getNumBands());
+        ColorModel cm = result.getColorModel();
+        assertTrue(cm.hasAlpha());
+        Raster alpha = result.getData();
+
+        // Checking alpha component for pixels is either fully opaque (255) or
+        // fully transparent (0) (No interpolation occurred on alpha)
+        for (int i = 0; i < specialPixelsOriginX; i++) {
+            for (int j = 0; j < specialPixelsOriginY; j++) {
+                int sample = alpha.getSample(i, j, 3);
+                assertTrue(sample == 0 || sample == 255);
+            }
+        }
     }
 
     public void assertWarpROI() throws IOException, TransformException {

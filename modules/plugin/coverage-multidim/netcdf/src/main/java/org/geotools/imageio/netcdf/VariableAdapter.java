@@ -79,7 +79,6 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
-import tec.uom.se.format.SimpleUnitFormat;
 import ucar.nc2.Dimension;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
@@ -933,11 +932,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
         String unitString = variableDS.getUnitsString();
         if (unitString != null) {
             try {
-                for (UnitCharReplacement replacement : UNIT_CHARS_REPLACEMENTS) {
-                    unitString = replacement.replace(unitString);
-                }
-                unit = SimpleUnitFormat.getInstance().parse(unitString);
-
+                unit = NetCDFUnitFormat.parse(unitString);
             } catch (ParserException parseException) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(

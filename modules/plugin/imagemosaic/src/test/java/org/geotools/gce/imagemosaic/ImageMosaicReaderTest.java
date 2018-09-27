@@ -2863,8 +2863,8 @@ public class ImageMosaicReaderTest extends Assert {
     public void testHarvestSpatialTwoReaders() throws Exception {
         File source = URLs.urlToFile(rgbURL);
         File testDataDir = TestData.file(this, ".");
-        File directory1 = new File(testDataDir, "rgbHarvest1");
-        File directory2 = new File(testDataDir, "rgbHarvest2");
+        File directory1 = new File(testDataDir, "rgbHarvest1_tr");
+        File directory2 = new File(testDataDir, "rgbHarvest2_tr");
         if (directory1.exists()) {
             FileUtils.deleteDirectory(directory1);
         }

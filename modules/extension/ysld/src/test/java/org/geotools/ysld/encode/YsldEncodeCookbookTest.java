@@ -2185,7 +2185,6 @@ public class YsldEncodeCookbookTest {
         YsldEncoder ysldEncoder = new YsldEncoder(w, new UomMapper());
         ysldEncoder.encode(sld);
 
-        // System.out.println(w.toString());
         return new YamlMap(YamlUtil.getSafeYaml().load(new StringReader(w.toString())));
     }
 }

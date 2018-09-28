@@ -31,6 +31,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -598,7 +599,7 @@ public class YsldEncodeTest {
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
         YamlMap yaml = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
 
         assertThat(
@@ -820,7 +821,7 @@ public class YsldEncodeTest {
         StringWriter out = new StringWriter();
         Ysld.encode(sld(p), out);
 
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
     }
 
     @Test
@@ -1501,7 +1502,7 @@ public class YsldEncodeTest {
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld(p), out);
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
         YamlMap result =
@@ -1538,8 +1539,8 @@ public class YsldEncodeTest {
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld(p), out);
-        LOG.fine( out.toString() );
-        
+        LOG.fine(out.toString());
+
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
         YamlMap result =
                 obj.seq("feature-styles")
@@ -1574,7 +1575,7 @@ public class YsldEncodeTest {
         StringWriter out = new StringWriter();
         Ysld.encode(sld(p), out);
 
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
         YamlMap result =
@@ -1591,7 +1592,7 @@ public class YsldEncodeTest {
 
         assertThat(kvpLine(out.toString(), "fill-color"), equalTo("'#ABCDEF'"));
     }
-    
+
     @Test
     public void testColourLiteral() throws Exception {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
@@ -1608,7 +1609,7 @@ public class YsldEncodeTest {
         StringWriter out = new StringWriter();
         Ysld.encode(sld(p), out);
 
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
         YamlMap result =
@@ -1635,7 +1636,7 @@ public class YsldEncodeTest {
         StringWriter out = new StringWriter();
         Ysld.encode(sld(fts), out);
 
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
         YamlMap result = obj.seq("feature-styles").map(0);
@@ -1652,7 +1653,7 @@ public class YsldEncodeTest {
         StringWriter out = new StringWriter();
         Ysld.encode(sld(fts), out);
 
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
         YamlMap result =
@@ -1676,7 +1677,7 @@ public class YsldEncodeTest {
         StringWriter out = new StringWriter();
         Ysld.encode(sld(fts), out);
 
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
         YamlMap result =
@@ -1700,7 +1701,7 @@ public class YsldEncodeTest {
         StringWriter out = new StringWriter();
         Ysld.encode(sld(fts), out);
 
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
         YamlMap result =
@@ -1724,7 +1725,7 @@ public class YsldEncodeTest {
         StringWriter out = new StringWriter();
         Ysld.encode(sld(fts), out);
 
-        LOG.fine( out.toString() );
+        LOG.fine(out.toString());
 
         YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
         YamlMap result =

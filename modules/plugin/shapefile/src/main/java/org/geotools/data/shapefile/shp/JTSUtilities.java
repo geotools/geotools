@@ -168,7 +168,8 @@ public class JTSUtilities {
         CoordinateSequence csOrig = lr.getCoordinateSequence();
         int numPoints = csOrig.size();
         int dimensions = csOrig.getDimension();
-        CoordinateSequence csNew = JTS.createCS(csf, numPoints, dimensions);
+
+        CoordinateSequence csNew = JTS.createCS(csf, numPoints, dimensions, csOrig.getMeasures());
 
         for (int i = 0; i < numPoints; i++) {
             for (int j = 0; j < dimensions; j++) {

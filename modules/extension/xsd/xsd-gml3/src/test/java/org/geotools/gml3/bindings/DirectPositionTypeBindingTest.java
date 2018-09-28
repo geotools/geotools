@@ -20,7 +20,11 @@ import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.junit.Test;
 import org.locationtech.jts.geom.CoordinateSequence;
+import org.locationtech.jts.geom.CoordinateXYM;
+import org.locationtech.jts.geom.CoordinateXYZM;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.geometry.DirectPosition;
 import org.w3c.dom.Document;
@@ -64,5 +68,25 @@ public class DirectPositionTypeBindingTest extends GML3TestSupport {
         CoordinateSequence seq = point.getCoordinateSequence();
         Document doc = encode(seq, GML.pos);
         checkPosOrdinates(doc, 3);
+    }
+
+    /** Tests encoding for X, Y, M ordinates number */
+    @Test
+    public void testEncodeXYM() throws Exception {
+        GeometryFactory gf = new GeometryFactory();
+        Point pointM = gf.createPoint(new CoordinateXYM(1, 1, 4));
+        CoordinateSequence seq = pointM.getCoordinateSequence();
+        Document doc = encode(seq, GML.pos);
+        checkPosOrdinates(doc, 4);
+    }
+
+    /** Tests encoding for X, Y, Z, M ordinates number */
+    @Test
+    public void testEncodeZM() throws Exception {
+        GeometryFactory gf = new GeometryFactory();
+        Point pointM = gf.createPoint(new CoordinateXYZM(1, 1, 2, 4));
+        CoordinateSequence seq = pointM.getCoordinateSequence();
+        Document doc = encode(seq, GML.pos);
+        checkPosOrdinates(doc, 4);
     }
 }

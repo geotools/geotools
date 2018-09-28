@@ -16,7 +16,16 @@
  */
 package org.geotools.renderer.crs;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -37,6 +46,7 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.GeometryComponentFilter;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
@@ -423,6 +433,54 @@ public class ProjectionHandlerTest {
         // check the geometry is in the same area as the rendering envelope
         assertEquals(mercatorEnvelope.getMinX(), env.getMinX(), EPS);
         assertEquals(mercatorEnvelope.getMaxX(), env.getMaxX(), EPS);
+    }
+
+    /** Checks that the measures of XYM geometries are not transformed. */
+    @Test
+    public void testXymGeometriesMeasuresArePreserved() throws Exception {
+        // build a XYM geometry and reproject it
+        Geometry geometry = new WKTReader().read("LINESTRINGM(170 -40 2, 190 40 7)");
+        MathTransform transform = CRS.findMathTransform(WGS84, MERCATOR, true);
+        Geometry transformed = JTS.transform(geometry, transform);
+        // check that coordinates where transformed but measures preserved
+        assertThat(transformed, instanceOf(LineString.class));
+        LineString line = (LineString) transformed;
+        assertThat(line.getCoordinateSequence().getDimension(), is(3));
+        assertThat(line.getCoordinateSequence().getMeasures(), is(1));
+        // check the first coordinate
+        assertThat(line.getCoordinateSequence().getX(0), closeTo(1.8924313434856504E7, EPS));
+        assertThat(line.getCoordinateSequence().getY(0), closeTo(-4838471.398061137, EPS));
+        assertThat(line.getCoordinateSequence().getZ(0), is(Double.NaN));
+        assertThat(line.getCoordinateSequence().getM(0), is(2.0));
+        // check the second coordinate
+        assertThat(line.getCoordinateSequence().getX(1), closeTo(2.115070325072198E7, EPS));
+        assertThat(line.getCoordinateSequence().getY(1), closeTo(4838471.398061137, EPS));
+        assertThat(line.getCoordinateSequence().getZ(1), is(Double.NaN));
+        assertThat(line.getCoordinateSequence().getM(1), is(7.0));
+    }
+
+    /** Checks that the measures of XYZM geometries are not transformed. */
+    @Test
+    public void testXyzmGeometriesMeasuresArePreserved() throws Exception {
+        // build a XYM geometry and reproject it
+        Geometry geometry = new WKTReader().read("LINESTRINGZM(170 -40 10 2, 190 40 15 7)");
+        MathTransform transform = CRS.findMathTransform(WGS84, MERCATOR, true);
+        Geometry transformed = JTS.transform(geometry, transform);
+        // check that coordinates where transformed but measures preserved
+        assertThat(transformed, instanceOf(LineString.class));
+        LineString line = (LineString) transformed;
+        assertThat(line.getCoordinateSequence().getDimension(), is(4));
+        assertThat(line.getCoordinateSequence().getMeasures(), is(1));
+        // check the first coordinate
+        assertThat(line.getCoordinateSequence().getX(0), closeTo(1.8924313434856504E7, EPS));
+        assertThat(line.getCoordinateSequence().getY(0), closeTo(-4838471.398061137, EPS));
+        assertThat(line.getCoordinateSequence().getZ(0), is(10.0));
+        assertThat(line.getCoordinateSequence().getM(0), is(2.0));
+        // check the second coordinate
+        assertThat(line.getCoordinateSequence().getX(1), closeTo(2.115070325072198E7, EPS));
+        assertThat(line.getCoordinateSequence().getY(1), closeTo(4838471.398061137, EPS));
+        assertThat(line.getCoordinateSequence().getZ(1), is(15.0));
+        assertThat(line.getCoordinateSequence().getM(1), is(7.0));
     }
 
     @Test

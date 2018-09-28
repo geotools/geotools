@@ -458,13 +458,30 @@ public class PolygonHandler implements ShapeHandler {
         }
 
         if (shapeType == ShapeType.POLYGONM || shapeType == ShapeType.POLYGONZ) {
-            // m
-            buffer.putDouble(-10E40);
-            buffer.putDouble(-10E40);
-
-            for (int t = 0; t < npoints; t++) {
-                buffer.putDouble(-10E40);
+            // obtain all M values
+            List<Double> values = new ArrayList<>();
+            for (int ringN = 0; ringN < nrings; ringN++) {
+                CoordinateSequence coords = coordinates[ringN];
+                final int seqSize = coords.size();
+                double m;
+                for (int coordN = 0; coordN < seqSize; coordN++) {
+                    m = coords.getM(coordN);
+                    values.add(m);
+                }
             }
+
+            // m min
+            double edge = values.stream().min(Double::compare).get();
+            buffer.putDouble(!Double.isNaN(edge) ? edge : -10E40);
+            // m max
+            edge = values.stream().max(Double::compare).get();
+            buffer.putDouble(!Double.isNaN(edge) ? edge : -10E40);
+
+            // m values
+            values.forEach(
+                    x -> {
+                        buffer.putDouble(!Double.isNaN(x) ? x : -10E40);
+                    });
         }
     }
 }

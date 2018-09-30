@@ -1436,9 +1436,31 @@
         <version>1.0-beta-2</version>
       </extension>
     </extensions>
-
-
+    
+   
     <plugins>
+    
+     <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>regex-property</id>
+            <goals>
+              <goal>regex-property</goal>
+            </goals>
+            <configuration>
+              <name>moduleIdentifier</name>
+              <value>${project.groupId}.${project.artifactId}</value>
+              <regex>gt-</regex>
+              <replacement></replacement>
+              <failIfNoMatch>false</failIfNoMatch>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    
       <plugin>
         <groupId>org.commonjava.maven.plugins</groupId>
         <artifactId>directory-maven-plugin</artifactId>
@@ -1572,6 +1594,7 @@
               <Project-Version>${project.version}</Project-Version>
               <Git-Revision>${build.commit.id}</Git-Revision>
               <Build-Timestamp>${build.timestamp}</Build-Timestamp>
+              <Automatic-Module-Name>${moduleIdentifier}</Automatic-Module-Name>
             </manifestEntries>
           </archive>
         </configuration>

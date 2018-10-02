@@ -207,7 +207,7 @@ public class NetCDFReaderTest extends Assert {
         }
         NetcdfDataset.setDefaultEnhanceMode(newEnhanceMode);
         File file = TestData.file(this, "o3_no2_so.nc");
-        final NetCDFReader reader = new NetCDFReader(file, null);
+        NetCDFReader reader = new NetCDFReader(file, null);
         String coverageName = "NO2";
         GeneralParameterValue[] values = new GeneralParameterValue[] {};
         GridCoverage2D coverage = reader.read(coverageName, values);
@@ -219,7 +219,14 @@ public class NetCDFReaderTest extends Assert {
                         new float[1]);
 
         assertEquals(1.615991, result[0], 1e-6f);
+        reader.dispose();
 
+        // let's open a file containing a time variable with _FillValue attribute
+        file = TestData.file(this, "o3_no2_so_fv_time.nc");
+        reader = new NetCDFReader(file, null);
+        assertEquals(
+                "2012-04-01T00:00:00.000Z",
+                reader.getMetadataValue(coverageName, "TIME_DOMAIN_MINIMUM"));
         NetcdfDataset.setDefaultEnhanceMode(currentEnhanceMode);
         System.setProperty(NetCDFUtilities.ENHANCE_SCALE_MISSING, currentEnhanceMode.toString());
         reader.dispose();

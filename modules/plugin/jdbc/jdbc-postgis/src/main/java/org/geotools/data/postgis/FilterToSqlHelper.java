@@ -59,6 +59,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.NativeFilter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -173,6 +174,9 @@ class FilterToSqlHelper {
             caps.addType(FilterFunction_ceil.class);
             caps.addType(FilterFunction_floor.class);
         }
+
+        // native filter support
+        caps.addType(NativeFilter.class);
 
         return caps;
     }

@@ -335,4 +335,15 @@ public interface FilterFactory2 extends FilterFactory {
      * Checks if the feature's geometry is completely contained by the specified constant geometry.
      */
     Within within(Expression geometry1, Expression geometry2, MatchAction matchAction);
+
+    /**
+     * Builds a new native filter, which will should be delegated to the data store.
+     *
+     * @param nativeFilter the native filter
+     * @return the build native filter
+     */
+    default NativeFilter nativeFilter(String nativeFilter) {
+        throw new UnsupportedOperationException(
+                "Native filter building is not supported by this filter factory.");
+    }
 }

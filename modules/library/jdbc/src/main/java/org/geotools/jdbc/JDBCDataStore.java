@@ -16,6 +16,10 @@
  */
 package org.geotools.jdbc;
 
+import static org.geotools.jdbc.VirtualTable.WHERE_CLAUSE_PLACE_HOLDER;
+import static org.geotools.jdbc.VirtualTable.WHERE_CLAUSE_PLACE_HOLDER_LENGTH;
+import static org.geotools.jdbc.VirtualTable.setKeepWhereClausePlaceHolderHint;
+
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
@@ -3361,13 +3365,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
 
         // from
         sql.append(" FROM ");
-        encodeTableName(featureType.getTypeName(), sql, query.getHints());
+        encodeTableName(featureType.getTypeName(), sql, setKeepWhereClausePlaceHolderHint(query));
 
         // filtering
         Filter filter = query.getFilter();
         if (filter != null && !Filter.INCLUDE.equals(filter)) {
             sql.append(" WHERE ");
-
             // encode filter
             filter(featureType, filter, sql);
         }
@@ -3494,7 +3497,17 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
                             ? createPreparedFilterToSQL(fullSchema)
                             : createFilterToSQL(fullSchema);
             toSQL.setInline(true);
-            sql.append(" ").append(toSQL.encodeToString(filter));
+            String filterSql = toSQL.encodeToString(filter);
+            int whereClauseIndex = sql.indexOf(WHERE_CLAUSE_PLACE_HOLDER);
+            if (whereClauseIndex != -1) {
+                sql.replace(
+                        whereClauseIndex,
+                        whereClauseIndex + WHERE_CLAUSE_PLACE_HOLDER_LENGTH,
+                        "AND " + filterSql);
+                sql.append("1 = 1");
+            } else {
+                sql.append(filterSql);
+            }
             return toSQL;
         } catch (FilterToSQLException e) {
             throw new RuntimeException(e);
@@ -3570,7 +3583,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         dialect.encodePostSelect(featureType, sql);
 
         sql.append(" FROM ");
-        encodeTableName(featureType.getTypeName(), sql, query.getHints());
+        encodeTableName(featureType.getTypeName(), sql, setKeepWhereClausePlaceHolderHint(query));
 
         // filtering
         PreparedFilterToSQL toSQL = null;
@@ -3725,7 +3738,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         sql.append(" FROM ");
-        encodeTableName(featureType.getTypeName(), sql, query.getHints());
+        encodeTableName(featureType.getTypeName(), sql, setKeepWhereClausePlaceHolderHint(query));
 
         Filter filter = query.getFilter();
         if (filter != null && !Filter.INCLUDE.equals(filter)) {
@@ -3782,7 +3795,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         }
 
         sql.append(" FROM ");
-        encodeTableName(featureType.getTypeName(), sql, query.getHints());
+        encodeTableName(featureType.getTypeName(), sql, setKeepWhereClausePlaceHolderHint(query));
 
         // encode the filter
         PreparedFilterToSQL toSQL = null;
@@ -3791,7 +3804,17 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             // encode filter
             try {
                 toSQL = createPreparedFilterToSQL(featureType);
-                sql.append(" ").append(toSQL.encodeToString(filter));
+                int whereClauseIndex = sql.indexOf(WHERE_CLAUSE_PLACE_HOLDER);
+                if (whereClauseIndex != -1) {
+                    toSQL.setInline(true);
+                    sql.replace(
+                            whereClauseIndex,
+                            whereClauseIndex + WHERE_CLAUSE_PLACE_HOLDER_LENGTH,
+                            "AND " + toSQL.encodeToString(filter));
+                    toSQL.setInline(false);
+                } else {
+                    sql.append(toSQL.encodeToString(filter));
+                }
             } catch (FilterToSQLException e) {
                 throw new RuntimeException(e);
             }
@@ -4039,7 +4062,8 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
         if (join != null) {
             encodeTableJoin(featureType, join, query, sql);
         } else {
-            encodeTableName(featureType.getTypeName(), sql, query.getHints());
+            encodeTableName(
+                    featureType.getTypeName(), sql, setKeepWhereClausePlaceHolderHint(query));
         }
 
         List<FilterToSQL> toSQL = new ArrayList();
@@ -4693,7 +4717,10 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             dialect.encodeJoin(part.getJoin().getType(), sql);
             sql.append(" ");
             encodeAliasedTableName(
-                    part.getQueryFeatureType().getTypeName(), sql, null, part.getAlias());
+                    part.getQueryFeatureType().getTypeName(),
+                    sql,
+                    setKeepWhereClausePlaceHolderHint(null, true),
+                    part.getAlias());
             sql.append(" ON ");
 
             Filter j = part.getJoinFilter();
@@ -4708,6 +4735,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
             } catch (FilterToSQLException e) {
                 throw new RuntimeException(e);
             }
+        }
+        if (sql.indexOf(WHERE_CLAUSE_PLACE_HOLDER) >= 0) {
+            // this means that one of the joined table provided a placeholder
+            throw new RuntimeException(
+                    "Joins between virtual tables that provide a :where_placeholder: are not supported: "
+                            + sql);
         }
     }
 

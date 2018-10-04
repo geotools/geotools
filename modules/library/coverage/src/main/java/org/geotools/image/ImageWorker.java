@@ -4427,6 +4427,30 @@ public class ImageWorker {
                 pb.set((float) scalingParams[i], i);
             }
         }
+        RenderedImage sourceImage = pb.getRenderedSource(0);
+        ColorModel cm = sourceImage.getColorModel();
+        SampleModel sm = sourceImage.getSampleModel();
+        final int numBands = sm.getNumBands();
+        RenderedImage alphaChannel = null;
+
+        // When interpolation is not nearest, Alpha should not be interpolated the same way
+        // as normal bands to avoid partial transparencies
+        if (cm.hasAlpha()
+                && (numBands == 2 || numBands == 4)
+                && (interpolation != null
+                        && (interpolation.getWidth() > 1 || interpolation.getHeight() > 1))) {
+
+            // Extract Alpha for future re-attach
+            ImageWorker noAlpha =
+                    new ImageWorker(sourceImage).setRenderingHints(hints).retainBands(numBands - 1);
+            alphaChannel =
+                    new ImageWorker(sourceImage)
+                            .setRenderingHints(hints)
+                            .retainLastBand()
+                            .getRenderedImage();
+            pb.setSource(noAlpha.getRenderedImage(), 0);
+        }
+
         pb.set(interpolation, 4);
         pb.set(roi, 5);
         pb.set(nodata, 7);
@@ -4435,7 +4459,45 @@ public class ImageWorker {
                 pb.set(background, 8);
             }
         }
-        image = JAI.create(SCALE_OP_NAME, pb, hints);
+        RenderedImage scaledImage = JAI.create(SCALE_OP_NAME, pb, hints);
+        image = scaledImage;
+        if (alphaChannel != null) {
+            // Need to scale alpha separately (with nearest interpolation)
+            // to avoid partial transparency
+            ParameterBlock pb2 = new ParameterBlock();
+            pb2.setSource(alphaChannel, 0);
+            for (int i = 0; i < 4; i++) {
+                if (USE_JAI_SCALE2) {
+                    pb2.set(scalingParams[i], i);
+                } else {
+                    pb2.set((float) scalingParams[i], i);
+                }
+            }
+            pb2.set(Interpolation.getInstance(Interpolation.INTERP_NEAREST), 4);
+            pb2.set(roi, 5);
+            pb2.set(nodata, 7);
+            alphaChannel = JAI.create(SCALE_OP_NAME, pb2, hints);
+
+            // Now, re-attach the scaled alpha to the scaled image
+            ImageLayout newImageLayout = null;
+            if (hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
+                ImageLayout layout = (ImageLayout) hints.get(JAI.KEY_IMAGE_LAYOUT);
+                newImageLayout =
+                        new ImageLayout2(
+                                layout.getTileGridXOffset(null),
+                                layout.getTileGridYOffset(null),
+                                layout.getTileWidth(null),
+                                layout.getTileHeight(null),
+                                sm,
+                                cm);
+                RenderingHints hints2 = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, newImageLayout);
+                ImageWorker merging =
+                        new ImageWorker(scaledImage)
+                                .setRenderingHints(hints2)
+                                .addBand(alphaChannel, false, true, null);
+                image = merging.getRenderedImage();
+            }
+        }
     }
 
     /**
@@ -4449,15 +4511,27 @@ public class ImageWorker {
         // getting the new ROI property
         if (forceUpdate || roi != null) {
             Object prop = null;
+            RenderedImage localImage = image;
+            // there might be the case that the image comes from a bandMerge
+            // so let's try to extract the ROI from the source image
+            if (localImage instanceof RenderedOp) {
+                String operationName = ((RenderedOp) localImage).getOperationName();
+                if ("BandMerge".equalsIgnoreCase(operationName)) {
+                    Vector<RenderedImage> sources = localImage.getSources();
+                    if (!sources.isEmpty()) {
+                        localImage = sources.get(0);
+                    }
+                }
+            }
             if (opName != null) {
                 // Extract the roi using a property generator
                 PropertyGenerator gen =
                         getOperationDescriptor(opName)
                                 .getPropertyGenerators(RenderedRegistryMode.MODE_NAME)[0];
-                prop = gen.getProperty("roi", image);
+                prop = gen.getProperty("roi", localImage);
             } else {
                 // extract the roi from the image
-                prop = image.getProperty("roi");
+                prop = localImage.getProperty("roi");
             }
             // Actual ROI update
             if (prop != null && prop instanceof ROI) {

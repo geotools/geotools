@@ -34,6 +34,7 @@ import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.util.SoftValueHashMap;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -48,7 +49,9 @@ import org.opengis.filter.Filter;
  */
 class DataAccessStoreWrapper implements DataStore {
 
-    DataAccess<FeatureType, Feature> delegate;
+    DataAccess delegate;
+
+    SoftValueHashMap<String, Name> NAME_CACHE = new SoftValueHashMap<>();
 
     public DataAccessStoreWrapper(DataAccess<FeatureType, Feature> delegate) {
         this.delegate = delegate;
@@ -128,6 +131,10 @@ class DataAccessStoreWrapper implements DataStore {
 
     @Override
     public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
+        // simple case, no lookups needed
+        if (delegate instanceof DataStore) {
+            return ((DataStore) delegate).getFeatureSource(typeName);
+        }
         Name name = getNameFromLocal(typeName);
         return DataUtilities.simple(delegate.getFeatureSource(name));
     }
@@ -140,18 +147,23 @@ class DataAccessStoreWrapper implements DataStore {
      * @throws IOException
      */
     private Name getNameFromLocal(String typeName) throws IOException {
-        // TODO: cache?
-        Stream<Name> stream = delegate.getNames().stream();
-        Set<Name> names =
-                stream.filter(name -> typeName.equals(name.getLocalPart()))
-                        .collect(Collectors.toSet());
-        if (names.isEmpty()) {
-            throw new IOException("Could not find a type name '" + typeName + "'");
-        } else if (names.size() > 1) {
-            throw new IOException("Found multiple matches for '" + typeName + "': " + names);
-        } else {
-            return names.iterator().next();
+        Name result = NAME_CACHE.get(typeName);
+        if (result == null) {
+            Stream<Name> stream = delegate.getNames().stream();
+            Set<Name> names =
+                    stream.filter(name -> typeName.equals(name.getLocalPart()))
+                            .collect(Collectors.toSet());
+            if (names.isEmpty()) {
+                throw new IOException("Could not find a type name '" + typeName + "'");
+            } else if (names.size() > 1) {
+                throw new IOException("Found multiple matches for '" + typeName + "': " + names);
+            } else {
+                result = names.iterator().next();
+                NAME_CACHE.put(typeName, result);
+            }
         }
+
+        return result;
     }
 
     @Override
@@ -193,5 +205,9 @@ class DataAccessStoreWrapper implements DataStore {
     @Override
     public LockingManager getLockingManager() {
         return null;
+    }
+
+    public boolean wraps(DataAccess access) {
+        return delegate == access;
     }
 }

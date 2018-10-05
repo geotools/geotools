@@ -45,6 +45,8 @@ public class RepositoryDataStoreCatalog extends AbstractGTDataStoreGranuleCatalo
 
     private Name storeName;
 
+    private DataAccessStoreWrapper cachedWrapped;
+
     public RepositoryDataStoreCatalog(
             Properties params,
             boolean create,
@@ -110,7 +112,13 @@ public class RepositoryDataStoreCatalog extends AbstractGTDataStoreGranuleCatalo
             // see if we can fall back on a data access exposing simple feature types
             DataAccess access = repository.access(storeName);
             if (access != null) {
-                dataStore = new DataAccessStoreWrapper(access);
+                if (cachedWrapped != null && cachedWrapped.wraps(access)) {
+                    return cachedWrapped;
+                } else {
+                    DataAccessStoreWrapper wrapper = new DataAccessStoreWrapper(access);
+                    cachedWrapped = wrapper;
+                    dataStore = wrapper;
+                }
             } else {
                 throw new IllegalStateException(
                         "Could not find a data store with name " + flatStoreName);

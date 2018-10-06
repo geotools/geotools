@@ -369,10 +369,11 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
                 assertNotNull(crs);
                 count++;
             } catch (FactoryException e) {
-                System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
+                // System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
             }
         }
-        System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total + "%)");
+        // System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total +
+        // "%)");
     }
 
     public void testSRSAxisOrder() throws Exception {
@@ -669,7 +670,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             envelope.add(40061162.89695589, 37753756.60975308);
 
             Envelope transformed = CRS.transform(envelope, DefaultGeographicCRS.WGS84);
-            System.out.println(transformed);
+            // System.out.println(transformed);
         } finally {
             MapProjection.SKIP_SANITY_CHECKS = false;
         }

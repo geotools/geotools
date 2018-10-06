@@ -215,7 +215,7 @@ public class XmlComplexFeatureParserTest {
                 typeRegistry.getDescriptor(
                         new NameImpl("urn:cgi:xmlns:CGI:GeoSciML:2.0", ":", "Borehole"), null);
         FeatureType featureType = (FeatureType) descriptor.getType();
-        System.out.println(featureType);
+        // System.out.println(featureType);
 
         // Arrange
         XmlComplexFeatureParser boreholeParser =

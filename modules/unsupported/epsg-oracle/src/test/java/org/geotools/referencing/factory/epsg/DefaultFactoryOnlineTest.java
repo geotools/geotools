@@ -82,8 +82,8 @@ public class DefaultFactoryOnlineTest extends OracleOnlineTestCase {
                                             ThreadedEpsgFactory.class));
             extensive |= TestData.isExtensiveTest();
             if (verbose) {
-                System.out.print("Database version: ");
-                System.out.println(factory.getImplementationHints().get(Hints.VERSION));
+                // System.out.print("Database version: ");
+                // System.out.println(factory.getImplementationHints().get(Hints.VERSION));
             }
         }
         // No 'tearDown()' method: we rely on the ThreadedEpsgFactory shutdown hook.
@@ -595,10 +595,10 @@ public class DefaultFactoryOnlineTest extends OracleOnlineTestCase {
         assertFalse(transform.equals(operation3.getMathTransform()));
         assertEquals(1.0, AbstractCoordinateOperation.getAccuracy(operation3), 1E-6);
         if (false) {
-            System.out.println(operation3);
-            System.out.println(operation3.getSourceCRS());
-            System.out.println(operation3.getTargetCRS());
-            System.out.println(operation3.getMathTransform());
+            // System.out.println(operation3);
+            // System.out.println(operation3.getSourceCRS());
+            // System.out.println(operation3.getTargetCRS());
+            // System.out.println(operation3.getMathTransform());
         }
         /*
          * Tests "BD72 to WGS 84 (1)" (EPSG:1609) creation. This one has an unusual unit for the
@@ -674,20 +674,20 @@ public class DefaultFactoryOnlineTest extends OracleOnlineTestCase {
             }
         }
         if (verbose) {
-            System.out.print("Number of coordinate operations:    ");
-            System.out.println(identifiers.size());
-            System.out.print("Number of tested operations:        ");
-            System.out.println(count);
-            System.out.print("Number of recognized operations:    ");
-            System.out.println(created);
-            System.out.print("Number of operations with accuracy: ");
-            System.out.println(valid);
-            System.out.print("Minimal accuracy value (meters):    ");
-            System.out.println(min);
-            System.out.print("Maximal accuracy value (meters):    ");
-            System.out.println(max);
-            System.out.print("Average accuracy value (meters):    ");
-            System.out.println(sum / valid);
+            // System.out.print("Number of coordinate operations:    ");
+            // System.out.println(identifiers.size());
+            // System.out.print("Number of tested operations:        ");
+            // System.out.println(count);
+            // System.out.print("Number of recognized operations:    ");
+            // System.out.println(created);
+            // System.out.print("Number of operations with accuracy: ");
+            // System.out.println(valid);
+            // System.out.print("Minimal accuracy value (meters):    ");
+            // System.out.println(min);
+            // System.out.print("Maximal accuracy value (meters):    ");
+            // System.out.println(max);
+            // System.out.print("Average accuracy value (meters):    ");
+            // System.out.println(sum / valid);
         }
     }
 

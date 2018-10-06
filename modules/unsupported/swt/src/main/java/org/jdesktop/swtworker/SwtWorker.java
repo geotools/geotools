@@ -160,7 +160,7 @@ import org.eclipse.swt.widgets.Display;
  *     });
  *
  * task.execute();
- * System.out.println(task.get()); //prints all prime numbers we have got
+ * // System.out.println(task.get()); //prints all prime numbers we have got
  * </pre>
  *
  * <p>Because {@code SwingWorker} implements {@code Runnable}, a {@code SwingWorker} can be

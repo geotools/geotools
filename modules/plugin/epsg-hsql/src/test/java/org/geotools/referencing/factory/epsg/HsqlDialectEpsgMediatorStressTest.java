@@ -352,7 +352,7 @@ public class HsqlDialectEpsgMediatorStressTest extends TestCase {
                     }
                 } catch (Exception e) {
                     exceptions++;
-                    System.out.println("Exception in Thread " + id + ", EPSG: " + code2);
+                    // System.out.println("Exception in Thread " + id + ", EPSG: " + code2);
                     // TODO: save exception
                     // e.printStackTrace();
                 }

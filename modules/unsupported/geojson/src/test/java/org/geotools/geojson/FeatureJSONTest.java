@@ -697,7 +697,7 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         String collectionText = collectionText(true, true, false, false, true);
         SimpleFeatureType ftype = fjson.readFeatureCollectionSchema((strip(collectionText)), true);
 
-        System.out.println("type: " + ftype);
+        // System.out.println("type: " + ftype);
 
         assertEquals(4, ftype.getAttributeCount());
 

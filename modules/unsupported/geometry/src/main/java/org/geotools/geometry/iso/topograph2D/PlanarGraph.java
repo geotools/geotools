@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 import org.geotools.geometry.iso.util.algorithm2D.CGAlgorithms;
+import org.geotools.util.logging.Logging;
 
 /**
  * The computation of the <code>IntersectionMatrix</code> relies on the use of a structure called a
@@ -44,6 +46,8 @@ import org.geotools.geometry.iso.util.algorithm2D.CGAlgorithms;
  * @source $URL$
  */
 public class PlanarGraph {
+
+    static final Logger LOGGER = Logging.getLogger(PlanarGraph.class);
 
     public static final CGAlgorithms cga = new CGAlgorithms();
 
@@ -234,13 +238,5 @@ public class PlanarGraph {
             e.print(out);
             e.eiList.print(out);
         }
-    }
-
-    void debugPrint(Object o) {
-        System.out.print(o);
-    }
-
-    void debugPrintln(Object o) {
-        System.out.println(o);
     }
 }

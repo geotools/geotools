@@ -181,13 +181,13 @@ public class ArcSDEQueryTest {
         Filter sqlFilter = filters.getSqlFilter();
         Filter unsupportedFilter = filters.getUnsupportedFilter();
 
-        System.out.println(
-                "geom: "
-                        + geometryFilter
-                        + ", sql: "
-                        + sqlFilter
-                        + ", unsupp: "
-                        + unsupportedFilter);
+        // System.out.println(
+        //                "geom: "
+        //                        + geometryFilter
+        //                        + ", sql: "
+        //                        + sqlFilter
+        //                        + ", unsupp: "
+        //                        + unsupportedFilter);
 
         assertTrue(geometryFilter instanceof BBOX);
         assertTrue(sqlFilter instanceof PropertyIsGreaterThan);
@@ -216,13 +216,13 @@ public class ArcSDEQueryTest {
         sqlFilter = filters.getSqlFilter();
         unsupportedFilter = filters.getUnsupportedFilter();
 
-        System.out.println(
-                "geom: "
-                        + geometryFilter
-                        + ", sql: "
-                        + sqlFilter
-                        + ", unsupp: "
-                        + unsupportedFilter);
+        // System.out.println(
+        //                "geom: "
+        //                        + geometryFilter
+        //                        + ", sql: "
+        //                        + sqlFilter
+        //                        + ", unsupp: "
+        //                        + unsupportedFilter);
 
         Assert.assertEquals(Filter.INCLUDE, geometryFilter);
         assertTrue(String.valueOf(sqlFilter), sqlFilter instanceof And);
@@ -248,13 +248,13 @@ public class ArcSDEQueryTest {
         sqlFilter = filters.getSqlFilter();
         unsupportedFilter = filters.getUnsupportedFilter();
 
-        System.out.println(
-                "geom: "
-                        + geometryFilter
-                        + ", sql: "
-                        + sqlFilter
-                        + ", unsupp: "
-                        + unsupportedFilter);
+        // System.out.println(
+        //                "geom: "
+        //                        + geometryFilter
+        //                        + ", sql: "
+        //                        + sqlFilter
+        //                        + ", unsupp: "
+        //                        + unsupportedFilter);
 
         // this one should have been simplified
         assertTrue(sqlFilter instanceof Id);

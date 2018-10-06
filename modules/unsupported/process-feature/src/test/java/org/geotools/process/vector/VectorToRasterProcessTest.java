@@ -160,7 +160,7 @@ public class VectorToRasterProcessTest {
     /** Runs the Process.execute method using LineStrings with float values. */
     @Test
     public void executeProcessWithFloat() throws Exception {
-        System.out.println("   execute process using float values");
+        // System.out.println("   execute process using float values");
         Process p = Processors.createProcess(new NameImpl("vec", "VectorToRaster"));
         assertNotNull(p);
 
@@ -486,11 +486,11 @@ public class VectorToRasterProcessTest {
             do {
                 iter.getPixel(pixel);
                 for (int i = 0; i < nb; i++) {
-                    System.out.print(pixel[i]);
+                    // System.out.print(pixel[i]);
                 }
             } while (!iter.nextPixelDone());
             iter.startPixels();
-            System.out.println();
+            // System.out.println();
         } while (!iter.nextLineDone());
     }
 
@@ -505,11 +505,11 @@ public class VectorToRasterProcessTest {
             do {
                 iter.getPixel(pixel);
                 for (int i = 0; i < nb; i++) {
-                    System.out.print(pixel[i]);
+                    // System.out.print(pixel[i]);
                 }
             } while (!iter.nextPixelDone());
             iter.startPixels();
-            System.out.println();
+            // System.out.println();
         } while (!iter.nextLineDone());
     }
 }

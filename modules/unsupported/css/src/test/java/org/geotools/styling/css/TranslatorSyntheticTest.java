@@ -1121,7 +1121,7 @@ public class TranslatorSyntheticTest extends CssBaseTest {
     private void printStyle(Style style) throws TransformerException {
         SLDTransformer transformer = new SLDTransformer();
         String xml = transformer.transform(style);
-        System.out.println(xml);
+        LOGGER.info(xml);
     }
 
     @Test

@@ -171,7 +171,7 @@ public class GeoTiffReaderTest extends org.junit.Assert {
         if (TestData.isInteractiveTest()) {
             IIOMetadataDumper iIOMetadataDumper =
                     new IIOMetadataDumper(reader.getMetadata().getRootNode());
-            System.out.println(iIOMetadataDumper.getMetadata());
+            // System.out.println(iIOMetadataDumper.getMetadata());
         }
         // reading the coverage
         GridCoverage2D coverage1 = reader.read(null);

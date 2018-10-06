@@ -222,7 +222,7 @@ public class YsldValidateTest {
 
     List<MarkedYAMLException> dump(List<MarkedYAMLException> errors) {
         for (MarkedYAMLException e : errors) {
-            System.out.println(e.toString());
+            // System.out.println(e.toString());
         }
         return errors;
     }

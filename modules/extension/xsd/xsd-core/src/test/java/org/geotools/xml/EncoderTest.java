@@ -2,12 +2,10 @@ package org.geotools.xml;
 
 import java.math.BigInteger;
 import java.util.Calendar;
-import javax.xml.namespace.QName;
 import junit.framework.TestCase;
 import org.geotools.ml.Envelope;
 import org.geotools.ml.MLConfiguration;
 import org.geotools.ml.Mail;
-import org.geotools.ml.bindings.ML;
 
 public class EncoderTest extends TestCase {
 
@@ -23,7 +21,7 @@ public class EncoderTest extends TestCase {
         // e.setIndenting(true);
         // e.setIndentSize(4);
 
-        System.out.println(e.encodeAsString(ml, new QName(ML.NAMESPACE, "mails")));
+        // System.out.println(e.encodeAsString(ml, new QName(ML.NAMESPACE, "mails")));
     }
 
     /** Tests for {@link Encoder#setOmitXMLDeclaration(boolean)} */

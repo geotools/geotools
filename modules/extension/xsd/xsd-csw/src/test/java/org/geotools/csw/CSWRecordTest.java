@@ -112,7 +112,7 @@ public class CSWRecordTest {
     public void testRoundTripRecord() throws Exception {
         RecordType record = (RecordType) parser.parse(getClass().getResourceAsStream("Record.xml"));
         String encoded = encoder.encodeAsString(record, CSW.Record);
-        System.out.println(encoded);
+        // System.out.println(encoded);
         RecordType reparsed = (RecordType) parser.parse(new StringReader(encoded));
         assertTrue(EMFUtils.emfEquals(record, reparsed));
     }

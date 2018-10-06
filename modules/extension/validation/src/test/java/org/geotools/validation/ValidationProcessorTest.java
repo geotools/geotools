@@ -125,7 +125,7 @@ public class ValidationProcessorTest extends DataTestCase {
         /*
         String[] messages = validationResults.getFailedMessages();
         for (int i=0; i<validationResults.getFailedMessages().length; i++)
-        	System.out.println(messages[i]);
+        	// System.out.println(messages[i]);
         */
 
     }

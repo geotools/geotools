@@ -246,7 +246,7 @@ public class GMLParserTest extends TestCase {
             //            System.out.println("Feature "+j+" : "+ft);
             j++;
         }
-        System.out.println("Found " + j + " Features");
+        // System.out.println("Found " + j + " Features");
     }
 
     public void skippedtestOneFeatureWrite() {
@@ -277,7 +277,7 @@ public class GMLParserTest extends TestCase {
             //        assertNotNull("New Document missing", doc);
             //
             //        assertTrue("file was not created +f",f.exists());
-            System.out.println(f);
+            // System.out.println(f);
         } catch (SAXException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -320,7 +320,7 @@ public class GMLParserTest extends TestCase {
             //        assertNotNull("New Document missing", doc);
             //
             //        assertTrue("file was not created +f",f.exists());
-            System.out.println(f);
+            // System.out.println(f);
         } catch (SAXException e) {
             e.printStackTrace();
             fail(e.toString());

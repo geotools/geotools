@@ -19,12 +19,16 @@ package org.geotools.graph.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /** @source $URL$ */
 public class ParseErrorHandler extends DefaultHandler implements Serializable {
+
+    static final Logger LOGGER = Logging.getLogger(ParseErrorHandler.class);
 
     ArrayList m_parseErrors = null;
 
@@ -54,7 +58,7 @@ public class ParseErrorHandler extends DefaultHandler implements Serializable {
     public void printErrors() {
         for (Iterator itr = m_parseErrors.iterator(); itr.hasNext(); ) {
             SAXParseException e = (SAXParseException) itr.next();
-            System.out.println(e.getMessage());
+            LOGGER.severe(e.getMessage());
         }
     }
 

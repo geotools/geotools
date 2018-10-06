@@ -935,8 +935,7 @@ public class ArcSDEJavaApiTest {
                              * are defined in the dbtune table.
                              */
                             if (LOGGER.isLoggable(Level.FINE)) {
-                                System.out.println(
-                                        "\n--> Creating a table using DBMS Default Keyword");
+                                LOGGER.fine("\n--> Creating a table using DBMS Default Keyword");
                             }
                             SeColumnDefinition[] tmpCols =
                                     new SeColumnDefinition[] {
@@ -945,7 +944,7 @@ public class ArcSDEJavaApiTest {
                                     };
                             table.create(tmpCols, testData.getConfigKeyword());
                             if (LOGGER.isLoggable(Level.FINE)) {
-                                System.out.println(" - Done.");
+                                LOGGER.fine(" - Done.");
                             }
                             SeColumnDefinition[] colDefs = new SeColumnDefinition[7];
 

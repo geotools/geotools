@@ -17,6 +17,9 @@
 package org.geotools.gml;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -32,6 +35,9 @@ import org.locationtech.jts.geom.TopologyException;
  * @version $Id$
  */
 public class SubHandlerLinearRing extends SubHandler {
+
+    static final Logger LOGGER = Logging.getLogger(SubHandlerLinearRing.class);
+
     /** Internal coordinate list. */
     private ArrayList coordinateList = new ArrayList();
 
@@ -85,7 +91,7 @@ public class SubHandlerLinearRing extends SubHandler {
             ring.setSRID(getSRID());
             return ring;
         } catch (TopologyException e) {
-            System.err.println("Caught Topology exception in GMLLinearRingHandler");
+            LOGGER.log(Level.FINE, "Caught Topology exception in GMLLinearRingHandler", e);
 
             return null;
         }

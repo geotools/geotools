@@ -219,7 +219,7 @@ public class CRSTest extends TestCase {
         MathTransform transform = CRS.findMathTransform(BC_ALBERS, WGS84);
 
         Polygon polyAfter = (Polygon) JTS.transform(poly1, transform);
-        System.out.println(polyAfter);
+        // System.out.println(polyAfter);
 
         assertEnvelopeEquals(poly3, polyAfter, 0.00000000000001);
 
@@ -257,7 +257,7 @@ public class CRSTest extends TestCase {
         MathTransform transform = CRS.findMathTransform(BC_ALBERS, WGS84);
 
         Polygon polyAfter = (Polygon) JTS.transform(poly1, transform);
-        System.out.println(polyAfter);
+        // System.out.println(polyAfter);
 
         assertEnvelopeEquals(poly3, polyAfter, 0.00000000000001);
 

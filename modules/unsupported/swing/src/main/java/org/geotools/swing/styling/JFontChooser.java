@@ -279,7 +279,7 @@ public class JFontChooser extends JDialog {
             String familyName = ((Literal) family).getValue().toString();
             for (int index = 0; index < families.length; index++) {
                 if (families[index].equalsIgnoreCase(familyName)) {
-                    System.out.println("got family index: " + index);
+                    // System.out.println("got family index: " + index);
                     familyIndex = index;
                     break;
                 }

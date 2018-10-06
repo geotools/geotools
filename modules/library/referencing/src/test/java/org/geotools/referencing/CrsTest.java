@@ -479,7 +479,7 @@ public final class CrsTest {
             originalEnvelope.setEnvelope(-9000000, -9000000, 900000, 9000000);
             // back to wgs84
             GeneralEnvelope wgs84Envelope = CRS.transform(originalEnvelope, WGS84);
-            System.out.println(wgs84Envelope);
+            // System.out.println(wgs84Envelope);
             // and then again in target crs, the result should contain the input, but not taking
             // into account the origin in -150, it ended up not doing so
             GeneralEnvelope transformed = CRS.transform(wgs84Envelope, crs);

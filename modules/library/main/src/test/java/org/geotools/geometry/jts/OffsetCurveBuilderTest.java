@@ -80,8 +80,8 @@ public class OffsetCurveBuilderTest {
                 @Override
                 protected void failed(Throwable e, org.junit.runner.Description description) {
                     if (curve != null) {
-                        System.out.println("Original geometry: " + curve);
-                        System.out.println("Offset geometry: " + offsetCurve);
+                        // System.out.println("Original geometry: " + curve);
+                        // System.out.println("Offset geometry: " + offsetCurve);
                     }
                     if (curve != null && INTERACTIVE) {
                         displayCurves(true);
@@ -468,6 +468,6 @@ public class OffsetCurveBuilderTest {
                     }
                 });
 
-        System.out.println(geom.toText());
+        // System.out.println(geom.toText());
     }
 }

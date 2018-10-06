@@ -184,17 +184,17 @@ public class RobustLineIntersector extends LineIntersector {
          * 483675.17050843034) int point = (2097408.2633752143,1144595.8008114607)
          */
         if (!isInSegmentEnvelopes(intPt)) {
-            System.out.println("Intersection outside segment envelopes: " + intPt);
+            // System.out.println("Intersection outside segment envelopes: " + intPt);
         }
         /*
          * // disabled until a better solution is found if (!
-         * isInSegmentEnvelopes(intPt)) { System.out.println("first value
+         * isInSegmentEnvelopes(intPt)) { // System.out.println("first value
          * outside segment envelopes: " + intPt);
          *
          * IteratedBisectionIntersector ibi = new
          * IteratedBisectionIntersector(p1, p2, q1, q2); intPt =
          * ibi.getIntersection(); } if (! isInSegmentEnvelopes(intPt)) {
-         * System.out.println("ERROR - outside segment envelopes: " + intPt);
+         * // System.out.println("ERROR - outside segment envelopes: " + intPt);
          *
          * IteratedBisectionIntersector ibi = new
          * IteratedBisectionIntersector(p1, p2, q1, q2); Coordinate testPt =

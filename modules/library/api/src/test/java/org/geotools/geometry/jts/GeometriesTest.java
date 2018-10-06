@@ -56,7 +56,7 @@ public class GeometriesTest {
 
     @Test
     public void testGetBinding() {
-        System.out.println("   getBinding");
+        // System.out.println("   getBinding");
 
         assertEquals(Point.class, Geometries.POINT.getBinding());
         assertEquals(MultiPoint.class, Geometries.MULTIPOINT.getBinding());
@@ -70,7 +70,7 @@ public class GeometriesTest {
 
     @Test
     public void testGetByObject() {
-        System.out.println("   get (by object)");
+        // System.out.println("   get (by object)");
 
         Geometry point = geomFactory.createPoint(coords[0]);
         assertEquals(Geometries.POINT, Geometries.get(point));
@@ -131,7 +131,7 @@ public class GeometriesTest {
     /** Tests getName and getSimpleName */
     @Test
     public void testGetName() {
-        System.out.println("   getName and getSimpleName");
+        // System.out.println("   getName and getSimpleName");
 
         for (Geometries type : Geometries.values()) {
             String className = type.getBinding().getSimpleName();
@@ -147,7 +147,7 @@ public class GeometriesTest {
 
     @Test
     public void testGetForSQLType() {
-        System.out.println("   getSQLType and getForSQLType");
+        // System.out.println("   getSQLType and getForSQLType");
         for (Geometries type : Geometries.values()) {
             int sqlType = type.getSQLType();
             assertEquals(type, Geometries.getForSQLType(sqlType));

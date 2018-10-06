@@ -300,13 +300,14 @@ public class GSSSchema extends SchemaImpl {
         Schema schema = new GSSSchema();
         for (Entry<Name, AttributeType> entry :
                 new TreeMap<Name, AttributeType>(schema).entrySet()) {
-            System.out.println("Type: " + entry.getValue().getName());
-            System.out.println("    Super type: " + entry.getValue().getSuper().getName());
+            // System.out.println("Type: " + entry.getValue().getName());
+            // System.out.println("    Super type: " + entry.getValue().getSuper().getName());
             if (entry.getValue() instanceof ComplexType) {
                 for (PropertyDescriptor descriptor :
                         ((ComplexType) entry.getValue()).getDescriptors()) {
-                    System.out.println("    Property descriptor: " + descriptor.getName());
-                    System.out.println("        Property type: " + descriptor.getType().getName());
+                    // System.out.println("    Property descriptor: " + descriptor.getName());
+                    // System.out.println("        Property type: " +
+                    // descriptor.getType().getName());
                 }
             }
         }

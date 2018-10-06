@@ -1348,7 +1348,7 @@ public class YsldParseTest {
         // need to use the geotools.styling interface as it provides the accessors for the entries.
         ColorMap map = (ColorMap) symb.getColorMap();
 
-        System.out.println(map.getColorMapEntry(0).getColor().evaluate(null));
+        // System.out.println(map.getColorMapEntry(0).getColor().evaluate(null));
         Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
         Color colour2 = (Color) map.getColorMapEntry(1).getColor().evaluate(null);
         Color colour3 = (Color) map.getColorMapEntry(2).getColor().evaluate(null);

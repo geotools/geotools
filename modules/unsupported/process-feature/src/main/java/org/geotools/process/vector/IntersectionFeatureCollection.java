@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -654,7 +655,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
                 fb.set("areaA", areaA);
                 fb.set("areaB", areaB);
             } catch (Exception e) {
-                System.out.println("" + e);
+                logger.log(Level.FINE, "", e);
                 fb.set("areaA", -1);
                 fb.set("areaB", -1);
             }

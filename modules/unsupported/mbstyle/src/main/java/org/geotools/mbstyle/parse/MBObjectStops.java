@@ -19,7 +19,12 @@ package org.geotools.mbstyle.parse;
 import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.geotools.gml.SubHandlerLinearRing;
 import org.geotools.mbstyle.layer.MBLayer;
+import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -33,6 +38,8 @@ import org.json.simple.parser.ParseException;
  * @author David Vick (Boundless)
  */
 public class MBObjectStops {
+
+    static final Logger LOGGER = Logging.getLogger(MBObjectStops.class);
 
     JSONParser parser = new JSONParser();
     public LayerStops ls = new LayerStops();
@@ -64,7 +71,7 @@ public class MBObjectStops {
             }
 
         } catch (ParseException e) {
-            System.out.println(e.getLocalizedMessage());
+            LOGGER.log(Level.INFO, "Failed to parse MBStiles", e);
         }
     }
 

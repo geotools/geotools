@@ -74,7 +74,7 @@ public class StyleGeneratorTest extends DataTestCase {
             }
 
             it.close();
-            System.out.println(filterInfo + ")");
+            // System.out.println(filterInfo + ")");
         }
     }
 

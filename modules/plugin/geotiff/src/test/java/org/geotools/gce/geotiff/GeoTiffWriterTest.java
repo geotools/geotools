@@ -103,7 +103,7 @@ public class GeoTiffWriterTest extends Assert {
         if (TestData.isInteractiveTest()) {
             IIOMetadataDumper iIOMetadataDumper =
                     new IIOMetadataDumper(((GeoTiffReader) reader).getMetadata().getRootNode());
-            System.out.println(iIOMetadataDumper.getMetadata());
+            // System.out.println(iIOMetadataDumper.getMetadata());
         }
         assertTrue(
                 CRS.findMathTransform(reader.getCrs(), DefaultGeographicCRS.WGS84, true)

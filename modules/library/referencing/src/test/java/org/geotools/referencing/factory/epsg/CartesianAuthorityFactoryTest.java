@@ -81,7 +81,7 @@ public class CartesianAuthorityFactoryTest {
                         + CODE
                         + "\"]]";
 
-        System.out.println(wkt);
+        // System.out.println(wkt);
         assertEquals(expected, wkt);
     }
 }

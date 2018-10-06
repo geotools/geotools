@@ -298,7 +298,7 @@ public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
         if (buttonId == OK) {
             try {
                 String styleToString = styleToString(style);
-                System.out.println(styleToString);
+                // System.out.println(styleToString);
             } catch (Exception e) {
                 e.printStackTrace();
             }

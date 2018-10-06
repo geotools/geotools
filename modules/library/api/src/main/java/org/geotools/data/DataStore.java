@@ -93,7 +93,7 @@ public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> 
      *     SimpleFeatureStore fstore = (SimpleFeatureStore) fs;
      * }
      * else {
-     *     System.out.println("We do not have write access to roads");
+     *     // System.out.println("We do not have write access to roads");
      * }
      * </code></pre>
      *

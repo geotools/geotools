@@ -661,7 +661,7 @@ public class StyleTransformTest {
         StyledLayerDescriptor sld = mbStyle.transform();
         SLDTransformer styleTransform = new SLDTransformer();
         String xml = styleTransform.transform(sld);
-        System.out.print(xml);
+        // System.out.print(xml);
         List<MBLayer> layers = mbStyle.layers("test-source");
         List<FeatureTypeStyle> fts = layers.get(0).transform(mbStyle);
         Rule r = fts.get(0).rules().get(0);

@@ -68,7 +68,7 @@ public class PolymorphicChainingTest extends AppSchemaTestSupport {
         sw.start();
         loadDataAccesses();
         sw.stop();
-        System.out.println("Set up time: " + sw.getTimeString());
+        // System.out.println("Set up time: " + sw.getTimeString());
     }
 
     /**

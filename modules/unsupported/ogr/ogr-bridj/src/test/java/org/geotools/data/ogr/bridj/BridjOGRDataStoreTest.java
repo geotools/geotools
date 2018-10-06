@@ -11,6 +11,6 @@ public class BridjOGRDataStoreTest extends OGRDataStoreTest {
 
     public void testVersion() {
         Pointer<Byte> result = OgrLibrary.GDALVersionInfo(Pointer.pointerToCString("--version"));
-        System.out.println(result.getCString());
+        // System.out.println(result.getCString());
     }
 }

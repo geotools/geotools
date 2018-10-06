@@ -19,6 +19,8 @@ package org.geotools.data.shapefile.shp;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 
 /**
  * @author jamesm
@@ -28,6 +30,8 @@ import java.nio.ByteOrder;
  *     /geotools/data/shapefile/shp/ShapefileHeader.java $
  */
 public class ShapefileHeader {
+
+    static final Logger LOGGER = Logging.getLogger(ShapefileHeader.class);
 
     public static final int MAGIC = 9994;
 
@@ -53,7 +57,7 @@ public class ShapefileHeader {
         if (fileCode != MAGIC) {
             String message = "Wrong magic number, expected " + MAGIC + ", got " + fileCode;
             if (!strict) {
-                System.err.println(message);
+                LOGGER.info(message);
             } else {
                 throw new java.io.IOException(message);
             }
@@ -64,7 +68,7 @@ public class ShapefileHeader {
         if (version != VERSION) {
             String message = "Wrong version, expected " + MAGIC + ", got " + version;
             if (!strict) {
-                System.err.println(message);
+                LOGGER.info(message);
             } else {
                 throw new java.io.IOException(message);
             }

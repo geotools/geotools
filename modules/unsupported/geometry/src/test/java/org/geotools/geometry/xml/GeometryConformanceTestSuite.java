@@ -75,7 +75,7 @@ public class GeometryConformanceTestSuite extends TestSuite {
             for (int i = 0; i < tests.length; i++) {
                 File testFile = tests[i];
                 Properties excludes = findExclusions(testFile);
-                System.out.println("file: " + testFile.getName());
+                // System.out.println("file: " + testFile.getName());
                 if (!isAllExcluded(excludes)) {
                     InputStream inputStream = testFile.toURI().toURL().openStream();
                     try {

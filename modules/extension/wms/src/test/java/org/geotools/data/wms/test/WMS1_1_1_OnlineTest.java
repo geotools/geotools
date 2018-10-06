@@ -261,7 +261,7 @@ public class WMS1_1_1_OnlineTest extends WMS1_1_0_OnlineTest {
 
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + ce);
+                // System.err.println("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }

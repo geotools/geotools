@@ -89,7 +89,7 @@ public class RingImpl extends CompositeCurveImpl implements Ring {
             }
             LineString jtsLineString = JTSUtils.GEOMETRY_FACTORY.createLineString(coords);
             /*
-            System.err.println("  Created JTS LineString, point count " + jtsLineString.getNumPoints()
+            // System.err.println("  Created JTS LineString, point count " + jtsLineString.getNumPoints()
             	+ ", length " + jtsLineString.getLength() + "\n  simple? " + jtsLineString.isSimple()
             	+ "; valid? " + jtsLineString.isValid() + "; closed? " + jtsLineString.isClosed());
             	*/

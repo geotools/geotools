@@ -32,7 +32,7 @@ public class WMTSServiceTest {
         } catch (Exception e) {
             e.printStackTrace();
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + e);
+                // System.err.println("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }

@@ -689,7 +689,7 @@ public class SLDParserTest {
 
         for (String methodName : new String[] {"Logarithmic", "Exponential"}) {
             String target = contrastEnhancelogExp.replace("METHOD", methodName);
-            System.out.println(target);
+            // System.out.println(target);
             node = builder.parse(new ByteArrayInputStream(target.getBytes()));
             ce = parser.parseContrastEnhancement(node.getDocumentElement());
             method = ce.getMethod();

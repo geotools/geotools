@@ -102,15 +102,16 @@ public class FunctionToStringTest {
                     String result = expression.toString();
 
                     if (result.contains("@")) {
-                        System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING MISSING");
+                        // System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING
+                        // MISSING");
                     }
                 } else {
                     fail = true;
-                    System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
+                    // System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
                 }
             } catch (Exception e) {
                 fail = true;
-                System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
+                // System.err.println(functionName.getName() + "\t\t\t" + "TOSTRING FAIL");
             }
         }
 

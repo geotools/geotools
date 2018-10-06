@@ -45,7 +45,7 @@ public class StyleSourcesTest {
         Map<String, MBSource> sourceMap = testStyle.getSources();
 
         for (Entry<String, MBSource> e : sourceMap.entrySet()) {
-            System.out.println(e.getKey() + "(" + e.getValue().getClass().getSimpleName() + ")");
+            // System.out.println(e.getKey() + "(" + e.getValue().getClass().getSimpleName() + ")");
         }
 
         assertEquals(10, sourceMap.size());

@@ -900,7 +900,7 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
                         sds.getFeatureWriter(
                                 sds.getTypeNames()[0], Filter.INCLUDE, Transaction.AUTO_COMMIT);
                 SimpleFeature feature = writer.next();
-                System.out.println(feature);
+                // System.out.println(feature);
                 writer.remove();
             } finally {
                 if (writer != null) {

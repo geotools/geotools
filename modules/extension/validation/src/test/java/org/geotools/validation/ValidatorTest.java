@@ -190,7 +190,7 @@ public class ValidatorTest extends TestCase {
         DefaultFeatureResults results = new DefaultFeatureResults();
         fixture.processor.runFeatureTests("LAKES", add, results);
 
-        System.out.println(results.error);
+        // System.out.println(results.error);
         assertEquals("lakes test", 2, results.error.size());
 
         // results = new DefaultFeatureResults();

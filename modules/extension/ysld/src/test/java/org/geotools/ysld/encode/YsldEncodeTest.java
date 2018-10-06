@@ -594,7 +594,7 @@ public class YsldEncodeTest {
 
         StringWriter out = new StringWriter();
         Ysld.encode(sld, out);
-        System.out.println(out.toString());
+        // System.out.println(out.toString());
         YamlMap yaml = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
 
         assertThat(
@@ -816,7 +816,7 @@ public class YsldEncodeTest {
         StringWriter out = new StringWriter();
         Ysld.encode(sld(p), out);
 
-        System.out.println(out.toString());
+        // System.out.println(out.toString());
     }
 
     @Test

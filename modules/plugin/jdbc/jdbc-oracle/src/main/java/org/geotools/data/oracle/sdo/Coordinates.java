@@ -131,6 +131,7 @@ public class Coordinates {
                                 .toObjectArray();
             }
 
+            /*
             System.out.println("subCoordArray.length = " + subCoordArray.length);
             System.out.println("subCoordArray: ");
             System.out.print("X   ");
@@ -158,6 +159,7 @@ public class Coordinates {
                 System.out.print(subAttributeArray[1][p] + " ");
 
             System.out.println("");
+            */
 
             CoordinateAccess c =
                     (CoordinateAccess)

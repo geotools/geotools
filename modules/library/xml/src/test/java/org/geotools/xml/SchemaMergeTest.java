@@ -65,7 +65,7 @@ public class SchemaMergeTest extends TestCase {
 
             try {
                 assertNotNull("Schema missing", contentHandler.getSchema());
-                System.out.println(contentHandler.getSchema());
+                // System.out.println(contentHandler.getSchema());
 
                 Schema schema = contentHandler.getSchema();
 

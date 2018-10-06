@@ -29,6 +29,8 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -36,6 +38,8 @@ import org.junit.Test;
 
 /** @author tkunicki@boundlessgeo.com */
 public class MongoSchemaDBStoreTest extends MongoSchemaStoreTest<MongoSchemaDBStore> {
+
+    static final Logger LOGGER = Logging.getLogger(MongoSchemaDBStore.class);
 
     Map<MongoSchemaDBStore, MongoClientURI> clientURIs =
             new HashMap<MongoSchemaDBStore, MongoClientURI>();
@@ -72,14 +76,14 @@ public class MongoSchemaDBStoreTest extends MongoSchemaStoreTest<MongoSchemaDBSt
                             client.getDB(DEFAULT_databaseName)
                                     .collectionExists(DEFAULT_collectionName);
                 }
-                System.out.println(
+                LOGGER.info(
                         "Performing "
                                 + MongoSchemaDBStoreTest.class.getSimpleName()
                                 + " tests with "
                                 + clientURI);
             } catch (Exception e) {
                 client = null;
-                System.err.println(
+                LOGGER.warning(
                         "Exception initializing "
                                 + MongoSchemaDBStoreTest.class.getSimpleName()
                                 + " tests with "
@@ -88,7 +92,7 @@ public class MongoSchemaDBStoreTest extends MongoSchemaStoreTest<MongoSchemaDBSt
                                 + e);
             } catch (Error e) {
                 client = null;
-                System.out.println(
+                LOGGER.warning(
                         "Error initializing "
                                 + MongoSchemaDBStoreTest.class.getSimpleName()
                                 + " tests with "

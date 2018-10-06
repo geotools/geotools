@@ -389,7 +389,7 @@ public class DbaseFileHeader {
                 // if this is the last field and we still haven't found the
                 // named field
                 if (i == j && i == fields.length - 1) {
-                    System.err.println(
+                    logger.warning(
                             "Could not find a field named '" + inFieldName + "' for removal");
                     return retCol;
                 }

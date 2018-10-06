@@ -24,8 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
+import org.geotools.util.logging.Logging;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 
@@ -34,6 +37,8 @@ import org.opengis.filter.expression.Expression;
  * @source $URL$
  */
 public class CustomGlyphRenderer implements GlyphRenderer {
+
+    static final Logger LOGGER = Logging.getLogger(CustomGlyphRenderer.class);
 
     private GlyphPropertiesList list = new GlyphPropertiesList();
     private boolean maxFound = false;
@@ -102,7 +107,8 @@ public class CustomGlyphRenderer implements GlyphRenderer {
             } else {
                 // DO I WANT TO THROW AN EXCEPTION OR ADD THE NEW PROPERTY TO THE LIST OR DO
                 // NOTHING?
-                System.out.println(
+                LOGGER.log(
+                        Level.WARNING,
                         "Tried to set the property "
                                 + nextName
                                 + " to a glyph that does not have this property.");

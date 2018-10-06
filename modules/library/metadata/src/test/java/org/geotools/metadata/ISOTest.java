@@ -194,7 +194,7 @@ public final class ISOTest {
             assertSetters(new PropertyAccessor(impl, type), done);
         }
         if (VERBOSE) {
-            System.out.println(done);
+            // System.out.println(done);
         }
     }
 

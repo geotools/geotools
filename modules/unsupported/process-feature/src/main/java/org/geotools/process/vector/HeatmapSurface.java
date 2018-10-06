@@ -171,21 +171,21 @@ public class HeatmapSurface {
 
             int dia = 2 * boxKernelRadius + 1;
             float kernelVal = kernelVal(boxKernelRadius);
-            System.out.println(boxKernelRadius + " kernel val = " + kernelVal);
+            // System.out.println(boxKernelRadius + " kernel val = " + kernelVal);
 
             if (count == 0) {
                 val = val * 1 * kernelVal;
             } else {
                 val = val * dia * kernelVal;
             }
-            System.out.println("norm val = " + val);
+            // System.out.println("norm val = " + val);
             if (count == 0) {
                 val = val * 1 * kernelVal;
             } else {
                 val = val * dia * kernelVal;
             }
         }
-        System.out.println("norm factor = " + val);
+        // System.out.println("norm factor = " + val);
     }
 
     /**

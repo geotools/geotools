@@ -96,7 +96,7 @@ public class LargePolygonsPerfTest {
     }
 
     private void log(String s) {
-        System.err.println(s);
+        // System.err.println(s);
     }
 
     @Test

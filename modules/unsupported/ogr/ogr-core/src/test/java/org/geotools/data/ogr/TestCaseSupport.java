@@ -109,7 +109,7 @@ public abstract class TestCaseSupport extends TestCase {
                 AVAILABLE = true;
             } catch (Throwable e) {
                 AVAILABLE = false;
-                System.out.println("Failed to initialize GDAL, error is: " + e);
+                // System.out.println("Failed to initialize GDAL, error is: " + e);
             }
         }
         return AVAILABLE;

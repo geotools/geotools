@@ -1126,7 +1126,7 @@ public class TestData {
                         reg.getInfo();
                         reg.setMultiVersion(true);
                         reg.alter();
-                        System.err.println(tableName + " successfully made versioned");
+                        // System.err.println(tableName + " successfully made versioned");
                         return null;
                     }
                 };

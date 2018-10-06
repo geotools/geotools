@@ -69,7 +69,7 @@ public class XMLParserTest extends TestCase {
             Object doc = DocumentFactory.getInstance(u, null, Level.WARNING);
 
             assertNotNull("Document missing", doc);
-            System.out.println(doc);
+            // System.out.println(doc);
         } catch (SAXException e) {
             e.printStackTrace();
             fail(e.toString());
@@ -103,7 +103,7 @@ public class XMLParserTest extends TestCase {
             assertNotNull("New Document missing", doc);
 
             assertTrue("file was not created +f", f.exists());
-            System.out.println(f);
+            // System.out.println(f);
         } catch (SAXException e) {
             e.printStackTrace();
             fail(e.toString());

@@ -16,6 +16,7 @@
  */
 package org.geotools.gml;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Polygon;
@@ -88,7 +89,7 @@ public class SubHandlerBox extends SubHandler {
         try {
             r = geometryFactory.createLinearRing(c);
         } catch (org.locationtech.jts.geom.TopologyException e) {
-            System.err.println("Topology Exception in GMLBoxHandler");
+            LOGGER.log(Level.FINE, "Topology Exception in GMLBoxHandler", e);
 
             return null; // could this be handled better?
         }

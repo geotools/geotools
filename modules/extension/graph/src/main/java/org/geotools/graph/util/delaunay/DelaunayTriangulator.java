@@ -167,7 +167,7 @@ public class DelaunayTriangulator {
 
         // add nodes one at a time.
         for (int i = 0; i < nodes.length; i++) {
-            System.out.println("triangulating node " + i);
+            // System.out.println("triangulating node " + i);
             triangleList = insertNode(tempNodes[i], triangleList);
         }
 

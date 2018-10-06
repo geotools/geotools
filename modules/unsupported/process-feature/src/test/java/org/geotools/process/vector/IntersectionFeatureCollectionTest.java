@@ -201,7 +201,7 @@ public class IntersectionFeatureCollectionTest {
                         true,
                         true);
 
-        System.out.println("count " + output2.getSchema().getAttributeCount());
+        // System.out.println("count " + output2.getSchema().getAttributeCount());
         assertNotNull(output2.getSchema().getDescriptor("the_geom"));
         assertNotNull(output2.getSchema().getDescriptor("zones_str1"));
         assertNotNull(output2.getSchema().getDescriptor("features_str2"));

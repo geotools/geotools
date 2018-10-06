@@ -33,7 +33,7 @@ import javax.swing.event.DocumentListener;
  * JIntegerField control = new JIntegerField(initialValue, allowNegatives);
  * control.addValueChangedListener( new ValueChangedListener() {
  *     public void onValueChanged( ValueChangedEvent ev ) {
- *         System.out.println("The new value is " + ev.getValue());
+ *         // System.out.println("The new value is " + ev.getValue());
  *     }
  * });
  * </code></pre>

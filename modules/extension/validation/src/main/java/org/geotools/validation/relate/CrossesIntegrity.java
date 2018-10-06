@@ -269,19 +269,23 @@ public class CrossesIntegrity extends RelationIntegrity {
                                                 + "("
                                                 + f2.getID()
                                                 + ")");
-                                System.out.println(
-                                        ((Geometry) f1.getDefaultGeometry()).getGeometryType()
-                                                + " "
-                                                + getGeomTypeRefA()
-                                                + "("
-                                                + f1.getID()
-                                                + ")"
-                                                + " crossed "
-                                                + getGeomTypeRefA()
-                                                + "("
-                                                + f2.getID()
-                                                + "), Result was not "
-                                                + expected);
+                                // System.out.println(
+                                //                                        ((Geometry)
+                                // f1.getDefaultGeometry()).getGeometryType()
+                                //                                                + " "
+                                //                                                +
+                                // getGeomTypeRefA()
+                                //                                                + "("
+                                //                                                + f1.getID()
+                                //                                                + ")"
+                                //                                                + " crossed "
+                                //                                                +
+                                // getGeomTypeRefA()
+                                //                                                + "("
+                                //                                                + f2.getID()
+                                //                                                + "), Result was
+                                // not "
+                                //                                                + expected);
                                 success = false;
                             }
                         }

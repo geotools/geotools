@@ -70,7 +70,7 @@ public class PreGeneralizedDataStoreTest extends TestCase {
 
             ServiceInfo si = ds.getInfo();
             assertTrue(si != null);
-            System.out.println(si);
+            // System.out.println(si);
 
             List<Name> names = ds.getNames();
             assertTrue(names.contains(new NameImpl(typeName)));

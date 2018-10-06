@@ -125,7 +125,7 @@ public class GMLStreamingParserStressTest extends TestCase {
             }
 
             assertTrue("# features " + i, i > 20);
-            System.out.println("\n # Features = " + i);
+            // System.out.println("\n # Features = " + i);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -157,7 +157,7 @@ public class GMLStreamingParserStressTest extends TestCase {
             }
 
             assertTrue("# features" + i, i > 20);
-            System.out.println("\n # Features = " + i);
+            // System.out.println("\n # Features = " + i);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -211,7 +211,7 @@ public class GMLStreamingParserStressTest extends TestCase {
                 }
             }
             assertTrue("Must have used both readers", (count1 > 20 && count2 > 20));
-            System.out.println("\n# Features: " + count1 + " , " + count2);
+            // System.out.println("\n# Features: " + count1 + " , " + count2);
 
         } catch (Throwable e) {
             e.printStackTrace();

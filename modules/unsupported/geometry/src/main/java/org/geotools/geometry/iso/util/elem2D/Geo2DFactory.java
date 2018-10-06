@@ -161,8 +161,8 @@ public class Geo2DFactory {
     public static Object[] splitEdge(Edge2D edge, Point2D p) {
 
         if (edge.getLeftSimplex() != null || edge.getRightSimplex() != null) {
-            System.out.println(
-                    "error connectSimplexSimplex(Simplex2D simplex0, Simplex2D simplex1)");
+            // System.out.println("error connectSimplexSimplex(Simplex2D simplex0, Simplex2D
+            // simplex1)");
             return null;
         }
 
@@ -190,7 +190,7 @@ public class Geo2DFactory {
      */
     private static void connect(Edge2D edge, Node2D n0, Node2D n1) {
         if (edge.hasPoint(n0) && edge.hasPoint(n1)) {
-            System.out.println("error connect(Edge2D edge, Node2D n0, Node2D n1)");
+            // System.out.println("error connect(Edge2D edge, Node2D n0, Node2D n1)");
         }
         edge.setNodes(n0, n1);
         n0.linkEdge(edge);

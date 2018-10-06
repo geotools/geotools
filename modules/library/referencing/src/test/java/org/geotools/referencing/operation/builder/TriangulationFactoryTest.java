@@ -59,7 +59,7 @@ public final class TriangulationFactoryTest {
         try {
             new TriangulationFactory(quad, vertices);
         } catch (TriangulationException e) {
-            System.out.println(e.getMessage());
+            // System.out.println(e.getMessage());
         }
     }
 

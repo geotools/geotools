@@ -261,8 +261,8 @@ public class SpatialFilterTest {
     public void testOrBBoxFilter() throws Exception {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
-        System.out.println(
-                this.dataStore.getFeatureSource(ft.getName().getLocalPart()).getBounds());
+        // System.out.println(
+        // this.dataStore.getFeatureSource(ft.getName().getLocalPart()).getBounds());
 
         // build a or of bbox so that
         // - the intersection of the bboxes is empty
@@ -480,17 +480,17 @@ public class SpatialFilterTest {
     private void runTestWithFilter(
             FeatureType ft, Filter filter, boolean empty, /* Nullable */ Integer expectedCount)
             throws Exception {
-        System.err.println("****************");
-        System.err.println("**");
-        System.err.println("** TESTING FILTER: " + filter);
-        System.err.println("**");
-        System.err.println("****************");
+        // System.err.println("****************");
+        // System.err.println("**");
+        // System.err.println("** TESTING FILTER: " + filter);
+        // System.err.println("**");
+        // System.err.println("****************");
 
         // First, read using the slow, built-in mechanisms
         String[] propertyNames = safePropertyNames(ft);
         final String typeName = testData.getTempTableName();
         Query allQuery = new Query(typeName, Filter.INCLUDE, propertyNames);
-        System.err.println("Performing slow read...");
+        // System.err.println("Performing slow read...");
 
         long startTime = System.currentTimeMillis();
         FeatureReader<SimpleFeatureType, SimpleFeature> fr =
@@ -502,10 +502,10 @@ public class SpatialFilterTest {
         ffr.close();
 
         long endTime = System.currentTimeMillis();
-        System.err.println("Slow read took " + (endTime - startTime) + " milliseconds.");
+        // System.err.println("Slow read took " + (endTime - startTime) + " milliseconds.");
 
         // Now read using DataStore's mechanisms.
-        System.err.println("Performing fast read...");
+        // System.err.println("Performing fast read...");
         startTime = System.currentTimeMillis();
 
         Query filteringQuery =
@@ -516,7 +516,7 @@ public class SpatialFilterTest {
         collectResults(fr, fastResults);
         fr.close();
         endTime = System.currentTimeMillis();
-        System.err.println("Fast read took " + (endTime - startTime) + " milliseconds.");
+        // System.err.println("Fast read took " + (endTime - startTime) + " milliseconds.");
 
         assertFeatureListsSimilar(slowResults, fastResults);
 

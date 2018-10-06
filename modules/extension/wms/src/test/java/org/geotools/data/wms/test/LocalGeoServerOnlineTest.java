@@ -371,8 +371,8 @@ public class LocalGeoServerOnlineTest extends TestCase {
         boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         String context = "srs=" + srs + " forceXY=" + forceXY + " Version=" + version;
         if (Color.WHITE.equals(sample)) {
-            System.out.println("FAIL: " + context + ": GetMap BBOX=" + envelope);
-            System.out.println("--> " + url);
+            // System.out.println("FAIL: " + context + ": GetMap BBOX=" + envelope);
+            // System.out.println("--> " + url);
             fail(context + ": GetMap BBOX=" + envelope);
         } else {
             // System.out.println("PASS: "+ context+": GetMap BBOX=" + bbox);
@@ -427,9 +427,9 @@ public class LocalGeoServerOnlineTest extends TestCase {
         boolean forceXY = Boolean.getBoolean(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
         String context = "srs=" + srs + " forceXY=" + forceXY + " Version=" + version;
         if (!info.contains("tasmania_water_bodies.3")) {
-            System.out.println("FAIL: " + context + ": GetFeatureInfo BBOX=" + envelope);
-            System.out.println("GETMAP         --> " + url);
-            System.out.println("GETFEATUREINFO --> " + url2);
+            // System.out.println("FAIL: " + context + ": GetFeatureInfo BBOX=" + envelope);
+            // System.out.println("GETMAP         --> " + url);
+            // System.out.println("GETFEATUREINFO --> " + url2);
             fail(context + ": GetFeatureInfo BBOX=" + envelope);
         }
     }

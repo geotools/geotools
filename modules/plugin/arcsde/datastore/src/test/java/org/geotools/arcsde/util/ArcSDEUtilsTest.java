@@ -82,7 +82,7 @@ public class ArcSDEUtilsTest {
                 if (coordsys != null) {
                     coordsystems.put(i, coordsys.toString());
                 } else {
-                    System.err.println("No PeProjectedCS found for code " + i);
+                    // System.err.println("No PeProjectedCS found for code " + i);
                 }
             }
             for (int i : geogtranCodelist) {
@@ -90,7 +90,7 @@ public class ArcSDEUtilsTest {
                 if (coordsys != null) {
                     coordsystems.put(i, coordsys.toString());
                 } else {
-                    System.err.println("No PeGeographicCS found for code " + i);
+                    // System.err.println("No PeGeographicCS found for code " + i);
                 }
             }
 

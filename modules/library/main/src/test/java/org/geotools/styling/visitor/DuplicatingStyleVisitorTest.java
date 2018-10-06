@@ -668,7 +668,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         int controlEqHash = controlEqual.hashCode();
         int testHash = test.hashCode();
         if (controlEqHash != testHash) {
-            System.out.println("Warning  - Equal objects should return equal hashcodes");
+            // System.out.println("Warning  - Equal objects should return equal hashcodes");
         }
     }
 

@@ -64,7 +64,7 @@ public class CubewerksOnlineTest {
             try {
                 stream = url_100.openStream();
             } catch (Throwable t) {
-                System.err.println("Server is not available. test disabled ");
+                // System.err.println("Server is not available. test disabled ");
                 url_100 = null;
                 url_110 = null;
             } finally {

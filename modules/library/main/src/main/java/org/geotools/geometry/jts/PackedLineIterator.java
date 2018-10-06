@@ -276,7 +276,6 @@ public final class PackedLineIterator extends AbstractLiteIterator {
 
     /** @see java.awt.geom.PathIterator#currentSegment(double[]) */
     public int currentSegment(double[] coords) {
-        System.out.println("Double!");
         return 0;
     }
 }

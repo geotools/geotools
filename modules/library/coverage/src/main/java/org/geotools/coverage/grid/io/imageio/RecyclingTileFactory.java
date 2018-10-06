@@ -372,7 +372,7 @@ public class RecyclingTileFactory extends Observable
                             + db.getNumBanks()
                             + " "
                             + db.getSize());
-            // System.out.println("recycleTile(); key = "+key);
+            System.out.println("recycleTile(); key = " + key);
         }
 
         synchronized (recycledArrays) {
@@ -406,7 +406,7 @@ public class RecyclingTileFactory extends Observable
                             + numBanks
                             + " "
                             + arrayLength);
-            // System.out.println("Attempting to get array for key "+key);
+            System.out.println("Attempting to get array for key " + key);
         }
 
         synchronized (recycledArrays) {

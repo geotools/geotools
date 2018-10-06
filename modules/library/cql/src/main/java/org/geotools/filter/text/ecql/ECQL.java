@@ -270,7 +270,7 @@ public class ECQL {
 
                 List<Filter> filters = ECQL.toFilterList(line);
                 for (Filter filter : filters) {
-                    System.out.println();
+                    // System.out.println();
                     filterTransformer.transform(filter, System.out);
                 }
             } catch (IOException e1) {

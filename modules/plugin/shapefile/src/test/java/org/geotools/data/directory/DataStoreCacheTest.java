@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Arrays;
 import org.junit.Test;
 
 /** @source $URL$ */
@@ -22,7 +21,7 @@ public class DataStoreCacheTest extends DirectoryTestSupport {
         tempDir = f.getParentFile();
 
         DirectoryTypeCache cache = new DirectoryTypeCache(tempDir, getFileStoreFactory());
-        System.out.println(cache.getTypeNames());
+        // System.out.println(cache.getTypeNames());
         assertEquals(2, cache.getTypeNames().size());
         assertTrue(cache.getTypeNames().contains("archsites"));
         assertTrue(cache.getTypeNames().contains("bugsites"));
@@ -65,7 +64,7 @@ public class DataStoreCacheTest extends DirectoryTestSupport {
         assertTrue(new File(tempDir, "archsites.shp").delete());
         assertTrue(new File(tempDir, "archsites.dbf").delete());
         assertTrue(new File(tempDir, "archsites.shx").delete());
-        System.out.println(Arrays.asList(tempDir.listFiles()));
+        // System.out.println(Arrays.asList(tempDir.listFiles()));
         assertEquals(1, cache.getTypeNames().size());
         assertTrue(cache.getTypeNames().contains("bugsites"));
         cache.dispose();

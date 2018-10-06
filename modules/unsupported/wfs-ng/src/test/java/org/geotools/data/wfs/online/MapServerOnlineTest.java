@@ -104,7 +104,7 @@ public class MapServerOnlineTest {
                 assertEquals("1.1.0", wfs110_with_get.getInfo().getVersion());
                 assertEquals("2.0.0", wfs200.getInfo().getVersion());
             } catch (Exception e) {
-                System.err.println("Server is not available. test disabled ");
+                // System.err.println("Server is not available. test disabled ");
                 url_100 = null;
             }
         }
@@ -176,7 +176,7 @@ public class MapServerOnlineTest {
         try {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                System.out.println(feature.getID());
+                // System.out.println(feature.getID());
             }
         } finally {
             iterator.close();
@@ -223,7 +223,7 @@ public class MapServerOnlineTest {
         try {
             while (iterator.hasNext()) {
                 SimpleFeature feature = iterator.next();
-                System.out.println(feature.getID());
+                // System.out.println(feature.getID());
             }
         } finally {
             iterator.close();

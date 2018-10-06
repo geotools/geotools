@@ -210,9 +210,9 @@ public abstract class OnlineTestCase extends TestCase {
                             + "values and remove the .example suffix to enable the test");
             fout.flush();
             fout.close();
-            System.out.println("Wrote example fixture file to " + exFixtureFile);
+            // System.out.println("Wrote example fixture file to " + exFixtureFile);
         } catch (IOException ioe) {
-            System.out.println("Unable to write out example fixture " + exFixtureFile);
+            // System.out.println("Unable to write out example fixture " + exFixtureFile);
             ioe.printStackTrace();
         }
     }

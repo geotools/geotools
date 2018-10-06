@@ -136,7 +136,7 @@ public String toString(String prefix) { return prefix + toString(); }
  * @see org.geotools.filter.text.generated.parsers.Node#dump(java.lang.String)
  */
 public void dump(String prefix) {
-    System.out.println(toString(prefix));
+    // System.out.println(toString(prefix));
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
 	Node n = (Node)children[i];

@@ -297,7 +297,7 @@ public abstract class EdgeEndStar {
     }
 
     public void print(PrintStream out) {
-        System.out.println("EdgeEndStar:   " + getCoordinate());
+        // System.out.println("EdgeEndStar:   " + getCoordinate());
         for (Iterator it = iterator(); it.hasNext(); ) {
             EdgeEnd e = (EdgeEnd) it.next();
             e.print(out);

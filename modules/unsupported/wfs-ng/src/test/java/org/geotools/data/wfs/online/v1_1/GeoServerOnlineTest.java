@@ -208,7 +208,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
             try {
                 ((SimpleFeatureStore) fs).removeFeatures(filterFac.not(startingFeatures));
             } catch (Exception e) {
-                System.out.println(e);
+                // System.out.println(e);
             }
         }
     }

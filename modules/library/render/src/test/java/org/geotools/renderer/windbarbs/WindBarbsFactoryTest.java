@@ -466,8 +466,8 @@ public class WindBarbsFactoryTest extends Assert {
                             WindBarbsFactory.WINDBARBS_PREFIX
                                     + "default(100)[kts]?vectorLength=30");
             Shape shp = (Shape) wbf.getShape(null, this.exp, this.feature);
-            System.out.println(
-                    WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString());
+            // System.out.println(
+            //        WindBarbsFactoryTest.WKT_WRITER.write(JTS.toGeometry(shp)).toString());
             ShapePanel p = new ShapePanel();
             p.shp = shp;
 

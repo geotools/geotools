@@ -62,7 +62,7 @@ public class SchemaParser2Test extends TestCase {
         }
 
         assertNotNull("Schema missing", s);
-        System.out.println(s);
+        // System.out.println(s);
 
         Schema s2 = null;
         s2 = SchemaFactory.getInstance(targetNS);

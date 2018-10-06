@@ -16,6 +16,8 @@
  */
 package org.geotools.gml;
 
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.xml.sax.helpers.XMLFilterImpl;
 
@@ -28,7 +30,10 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * @version $Id$
  */
 public class TestHandler extends XMLFilterImpl implements GMLHandlerJTS {
+
+    static final Logger LOGGER = Logging.getLogger(TestHandler.class);
+
     public void geometry(Geometry geometry) {
-        System.out.println("here is the geometry: " + geometry.toString());
+        LOGGER.info("here is the geometry: " + geometry);
     }
 }

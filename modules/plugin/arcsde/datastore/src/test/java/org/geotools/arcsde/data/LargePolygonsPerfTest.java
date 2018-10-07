@@ -75,7 +75,7 @@ public class LargePolygonsPerfTest {
             // test.testRender();
             LargePolygonsPerfTest.oneTimeTearDown();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

@@ -2110,7 +2110,7 @@ public class DataUtilities {
             // read the value and decode any interesting characters
             stringValue = decodeEscapedCharacters(rawText);
         } catch (RuntimeException huh) {
-            huh.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", huh);
             stringValue = null;
         }
         // check for special <null> flag

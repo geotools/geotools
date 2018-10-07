@@ -68,7 +68,7 @@ public class GazetteerNameValidationBeanInfoTest extends TestCase {
                     (new URL("http://http://hydra/time/"))
                             .equals(url.getReadMethod().invoke(gnv, null)));
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }

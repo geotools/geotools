@@ -21,8 +21,6 @@ import static org.geotools.mbstyle.function.ZoomLevelFunction.EPSG_3857_O_SCALE;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.geotools.gml.SubHandlerLinearRing;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.util.logging.Logging;
 import org.json.simple.JSONArray;

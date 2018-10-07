@@ -210,7 +210,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(topLayer.getSrs().size(), 1);
             assertTrue(topLayer.getSrs().contains("EPSG:27700"));
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

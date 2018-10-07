@@ -167,7 +167,7 @@ public class StyleGeneratorTest extends DataTestCase {
                     null);
         } catch (IOException e) {
             fail(e.getMessage());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         ExplicitClassifier classifier = new ExplicitClassifier(binValues2);
@@ -207,7 +207,7 @@ public class StyleGeneratorTest extends DataTestCase {
                     null);
         } catch (IOException e) {
             fail(e.getMessage());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 }

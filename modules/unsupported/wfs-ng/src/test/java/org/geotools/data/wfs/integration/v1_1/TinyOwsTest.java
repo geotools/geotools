@@ -107,7 +107,7 @@ public class TinyOwsTest {
         try {
             XMLAssert.assertXMLEqual(control, actualXml);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw new IOException(e);
         }
     }

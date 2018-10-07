@@ -61,7 +61,7 @@ public class PlugIn {
         try {
             beanInfo = Introspector.getBeanInfo(type);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw new ValidationException(
                     "Could not use the '" + name + "' plugIn:" + type.getName());
         }

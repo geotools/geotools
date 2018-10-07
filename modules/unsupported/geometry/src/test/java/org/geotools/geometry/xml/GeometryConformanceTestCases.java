@@ -323,7 +323,8 @@ public class GeometryConformanceTestCases extends TestCase {
                                 op.setExpectedResult(expectedResult);
                                 testCase.addTestOperation(op);
                             } catch (ParseException e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                             }
                         }
                     }

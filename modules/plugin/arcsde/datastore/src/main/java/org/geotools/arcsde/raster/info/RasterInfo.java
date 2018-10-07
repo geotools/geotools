@@ -455,7 +455,7 @@ public final class RasterInfo {
         try {
             srs = CRS.lookupIdentifier(getCoordinateReferenceSystem(), false);
         } catch (FactoryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         sb.append(", bands: ").append(getNumBands());
         sb.append(", levels: ").append(getNumLevels());

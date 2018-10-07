@@ -921,7 +921,7 @@ public class ArcSDEFeatureStoreTest {
                 store.removeFeatures(fid1Filter);
                 store.removeFeatures(fid2Filter);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 throw e;
             }
         }
@@ -1430,7 +1430,8 @@ public class ArcSDEFeatureStoreTest {
                                 // System.err.println("rolling back!.");
                                 transaction.rollback();
                             } catch (IOException e1) {
-                                e1.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e1);
                             }
                         } finally {
                             done[0] = true;
@@ -1476,7 +1477,7 @@ public class ArcSDEFeatureStoreTest {
             // System.err.println("closing transaction.");
             transaction.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         Throwable worker1Error = errors[0];
         Throwable worker2Error = errors[1];
@@ -1487,10 +1488,12 @@ public class ArcSDEFeatureStoreTest {
                     " -- worker2: " + (worker2Error == null ? "ok." : worker2Error.getMessage());
 
             if (worker1Error != null) {
-                worker1Error.printStackTrace();
+                java.util.logging.Logger.getGlobal()
+                        .log(java.util.logging.Level.INFO, "", worker1Error);
             }
             if (worker2Error != null) {
-                worker2Error.printStackTrace();
+                java.util.logging.Logger.getGlobal()
+                        .log(java.util.logging.Level.INFO, "", worker2Error);
             }
             fail(errMessg);
         }

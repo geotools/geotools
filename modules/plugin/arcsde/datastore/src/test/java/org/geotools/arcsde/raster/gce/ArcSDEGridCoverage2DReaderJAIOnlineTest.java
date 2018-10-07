@@ -680,7 +680,7 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
                 writer.write(coverage, null);
                 // System.out.println(" - wrote in " + t + "ms" + destination);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 throw e;
             }
         }
@@ -702,7 +702,7 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         try {
             ImageIO.write(image, "TIFF", targetFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }

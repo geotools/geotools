@@ -300,7 +300,7 @@ public class SimpleStyleConfigurator extends AbstractSimpleConfigurator {
                 String styleToString = styleToString(style);
                 // System.out.println(styleToString);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
         super.buttonPressed(buttonId);

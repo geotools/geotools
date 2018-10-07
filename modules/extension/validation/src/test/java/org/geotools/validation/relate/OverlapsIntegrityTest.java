@@ -86,14 +86,14 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
         try {
             map.put("my:line", mds.getFeatureSource("line"));
         } catch (IOException e1) {
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }
 
         try {
             vr.setValidation(overlap);
             assertFalse(overlap.validate(map, lineBounds, vr));
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -108,7 +108,7 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
             map.put("my:line", mds.getFeatureSource("line"));
         } catch (IOException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }
 
         try {
@@ -117,7 +117,7 @@ public class OverlapsIntegrityTest extends SpatialTestCase {
             assertFalse(overlap.validate(map, lineBounds, vr));
             // (RoadValidationResults)vr;
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 }

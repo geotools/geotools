@@ -113,7 +113,7 @@ public class GetCapabilitiesResponse extends org.geotools.data.ows.GetCapabiliti
                         break;
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 }
             }
 

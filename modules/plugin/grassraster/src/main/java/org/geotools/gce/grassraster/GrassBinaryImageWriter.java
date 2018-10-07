@@ -199,7 +199,7 @@ public class GrassBinaryImageWriter extends ImageWriter {
         try {
             rasterWriter.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         super.dispose();
     }

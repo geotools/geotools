@@ -161,7 +161,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         try (SimpleFeatureIterator fi = featureSource.getFeatures(f).features()) {
             fail("This query should have failed, it contains an invalid filter");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             // fine
         }
     }

@@ -1176,7 +1176,8 @@ public class Rendering2DTest extends TestCase {
                     public void featureRenderer(SimpleFeature feature) {}
 
                     public void errorOccurred(Exception e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                         fail(
                                 "Got an exception during rendering, this should not happen, "
                                         + "not even with emtpy geometries");

@@ -272,7 +272,7 @@ public class IntersectionFeatureCollection implements VectorProcess {
             if (denom != 0) return numeratorArea / denom;
             return 0;
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return -1;
         }
     }

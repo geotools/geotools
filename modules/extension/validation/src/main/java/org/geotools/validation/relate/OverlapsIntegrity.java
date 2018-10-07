@@ -55,9 +55,10 @@ import org.opengis.filter.spatial.Disjoint;
  *     <p>OverlapsIntegrity overlap = new OverlapsIntegrity(); overlap.setExpected(false);
  *     overlap.setGeomTypeRefA("my:line");
  *     <p>Map map = new HashMap(); try { map.put("my:line", mds.getFeatureSource("line")); } catch
- *     (IOException e1) { e1.printStackTrace(); }
+ *     (IOException e1) {java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "",
+ *     e1); }
  *     <p>try { assertFalse(overlap.validate(map, lineBounds, vr)); } catch (Exception e) {
- *     e.printStackTrace(); }
+ *     java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e); }
  */
 public class OverlapsIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =

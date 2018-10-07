@@ -570,7 +570,7 @@ public class SLDTransformerTest {
             assertTrue(
                     pointSymbolizer.getUnitOfMeasure().equals(pointSymbolizer2.getUnitOfMeasure()));
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -734,7 +734,7 @@ public class SLDTransformerTest {
 
             assertTrue(pointSymbolizer2.getUnitOfMeasure() == null);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

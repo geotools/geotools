@@ -211,9 +211,11 @@ public class FunctionToStringTest {
                     try {
                         newObj = type.newInstance();
                     } catch (InstantiationException e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                     }
 
                     parameters.add(ff.literal(newObj));

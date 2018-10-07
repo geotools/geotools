@@ -244,7 +244,7 @@ public class Import extends AbstractCmd {
                 try {
                     config = Config.readFrom(getURLFromString(args[i + 1]));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                     System.exit(1);
                 }
                 if (config != null
@@ -419,7 +419,7 @@ public class Import extends AbstractCmd {
             }
             con.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(1);
         }
         System.exit(0);

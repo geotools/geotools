@@ -45,7 +45,7 @@ public class SpatiaLiteDataStoreFactoryTest extends TestCase {
                 super.run(result);
             }
         } catch (Throwable t) {
-            t.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
         }
     }
 

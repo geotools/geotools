@@ -363,7 +363,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
                 ++count;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             features.close();
@@ -384,7 +384,7 @@ public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
                 ++count2;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             features2.close();

@@ -71,14 +71,14 @@ public class XMLWriter {
                     writeArgument((ArgumentDTO) dto.getArgs().get(i.next()), w);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
                 // 	error log it;
             }
 
             cw.closeTag("plugin");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
             // error log it;
         }
@@ -101,14 +101,14 @@ public class XMLWriter {
                     writeArgument((ArgumentDTO) dto.getArgs().get(i.next()), w);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
                 // 	error log it;
             }
 
             cw.closeTag("test");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
             // error log it;
         }
@@ -138,14 +138,14 @@ public class XMLWriter {
                     writeTest((TestDTO) dto.getTests().get(i.next()), w);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
                 // 	error log it;
             }
 
             cw.closeTag("suite");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
             // error log it;
         }
@@ -167,14 +167,14 @@ public class XMLWriter {
                 cw.writeln(ArgHelper.getArgumentEncoding(dto.getValue()));
             } catch (Exception e) {
                 // do nothing, just don't write it out
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
                 // error log it;
             }
 
             cw.closeTag("argument");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
             // error log it;
         }

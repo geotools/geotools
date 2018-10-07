@@ -93,7 +93,7 @@ public abstract class AbstractTest extends TestCase {
         try {
             initOutputDir();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
             LOGGER.severe("Cannot init " + OUTPUTDIR_RESOURCES + ", skipping test");
 
@@ -192,7 +192,7 @@ public abstract class AbstractTest extends TestCase {
         try {
             Connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         try {
@@ -275,7 +275,7 @@ public abstract class AbstractTest extends TestCase {
         try {
             Connection.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -293,7 +293,7 @@ public abstract class AbstractTest extends TestCase {
             gen.generate();
         } catch (Exception e) {
             Assert.fail(e.getMessage());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -375,7 +375,7 @@ public abstract class AbstractTest extends TestCase {
 
             Connection.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
     }
@@ -563,7 +563,7 @@ public abstract class AbstractTest extends TestCase {
 
             Connection.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
     }
@@ -895,7 +895,7 @@ public abstract class AbstractTest extends TestCase {
             Connection = getDBDialect().getConnection();
         } catch (Exception e) {
             Assert.fail("Error getting connection");
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -905,7 +905,7 @@ public abstract class AbstractTest extends TestCase {
                 Connection.close();
             } catch (SQLException e) {
                 Assert.fail("Error closing connection");
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             } finally {
                 Connection = null;
             }

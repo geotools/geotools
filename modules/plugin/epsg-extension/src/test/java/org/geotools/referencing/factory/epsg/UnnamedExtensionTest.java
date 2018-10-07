@@ -177,7 +177,7 @@ public class UnnamedExtensionTest extends TestCase {
 
             Assert.assertEquals(destCoordOfficial, destCoordGoogle);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getClass().getSimpleName() + " should not be thrown.");
         }
     }

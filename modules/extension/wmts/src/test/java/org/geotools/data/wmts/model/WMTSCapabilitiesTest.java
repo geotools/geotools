@@ -97,7 +97,7 @@ public class WMTSCapabilitiesTest extends TestCase {
             CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
                 // System.err.println("Unable to test - timed out: " + e);
             } else {
@@ -163,7 +163,7 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertNotNull(bbox);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
                 // System.err.println("Unable to test - timed out: " + e);
             } else {
@@ -213,7 +213,7 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertNotNull(bbox);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
                 // System.err.println("Unable to test - timed out: " + e);
             } else {

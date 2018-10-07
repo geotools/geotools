@@ -414,7 +414,7 @@ final class Command {
             arguments.err.println(exception.getLocalizedMessage());
         } catch (Exception exception) {
             out.flush();
-            exception.printStackTrace(arguments.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
         }
     }
 }

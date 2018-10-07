@@ -383,7 +383,7 @@ public abstract class ComplexTestData {
         try {
             fakeCrs = CRS.decode("EPSG:4326");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw new RuntimeException(e);
         }
         builder.setCRS(fakeCrs);

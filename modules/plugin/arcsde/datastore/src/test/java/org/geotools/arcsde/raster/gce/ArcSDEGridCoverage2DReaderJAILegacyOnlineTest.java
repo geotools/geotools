@@ -310,7 +310,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
             test.testReadIMG_USGSQUADM();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(-1);
         }
     }
@@ -406,7 +406,8 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
                                     }
                                 }
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                                 throw e;
                             }
                             return null;
@@ -710,7 +711,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
             t = System.currentTimeMillis() - t;
             // System.out.println(" - wrote in " + t + "ms" + file);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }

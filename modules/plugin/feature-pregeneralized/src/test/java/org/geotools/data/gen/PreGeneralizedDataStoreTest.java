@@ -84,7 +84,7 @@ public class PreGeneralizedDataStoreTest extends TestCase {
 
             ds.dispose();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail();
         }
     }
@@ -100,7 +100,7 @@ public class PreGeneralizedDataStoreTest extends TestCase {
             ds = new PreGeneralizedDataStore(ginfos, TestSetup.REPOSITORY);
             typeName = ds.getTypeNames()[0];
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
         }
 

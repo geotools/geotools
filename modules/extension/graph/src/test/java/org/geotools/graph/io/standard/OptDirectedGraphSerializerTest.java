@@ -97,7 +97,7 @@ public class OptDirectedGraphSerializerTest extends TestCase {
             assertTrue(after.getNodesOfDegree(2).size() == nnodes - 2);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
         }
     }
@@ -158,7 +158,7 @@ public class OptDirectedGraphSerializerTest extends TestCase {
                     };
             assertTrue(after.queryNodes(visitor).size() == Math.pow(2, k)); // leaves
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
         }
     }

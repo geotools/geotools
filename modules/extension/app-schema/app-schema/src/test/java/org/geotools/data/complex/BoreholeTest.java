@@ -141,7 +141,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         try {
             schemaIndex = loadSchema(schemaBase + "commonSchemas/XMML/1/borehole.xsd");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
 

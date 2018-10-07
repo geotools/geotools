@@ -24,7 +24,7 @@ public class TestExplicitBoundsShape extends TestCase {
             assertNotNull(target);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
@@ -73,7 +73,7 @@ public class TestExplicitBoundsShape extends TestCase {
 
             verify(shape);
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
@@ -105,7 +105,7 @@ public class TestExplicitBoundsShape extends TestCase {
             verify(shape);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
@@ -124,7 +124,7 @@ public class TestExplicitBoundsShape extends TestCase {
             assertFalse(target.equals(shape));
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
@@ -139,7 +139,7 @@ public class TestExplicitBoundsShape extends TestCase {
             assertFalse(target.equals(null));
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
@@ -154,7 +154,7 @@ public class TestExplicitBoundsShape extends TestCase {
             assertFalse(target.equals(new Object()));
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
@@ -168,7 +168,7 @@ public class TestExplicitBoundsShape extends TestCase {
             assertTrue(target.equals(target));
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
@@ -193,7 +193,7 @@ public class TestExplicitBoundsShape extends TestCase {
             assertFalse(target.equals(another));
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Should not throw " + e.getClass().getSimpleName());
         }
     }
@@ -210,7 +210,7 @@ public class TestExplicitBoundsShape extends TestCase {
             assertFalse(shape.hashCode() == target.hashCode());
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("Should not throw " + e.getClass().getSimpleName());
         }
     }

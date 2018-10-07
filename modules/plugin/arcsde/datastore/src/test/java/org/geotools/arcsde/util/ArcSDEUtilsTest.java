@@ -105,10 +105,10 @@ public class ArcSDEUtilsTest {
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (PeProjectionException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 }

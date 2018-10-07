@@ -22,11 +22,9 @@ import java.awt.Rectangle;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.io.ExpandedTabWriter;
 
 /**
  * A set of utilities methods for painting in a {@link Graphics2D} handle. Method in this class was
@@ -110,7 +108,7 @@ public final class GraphicsUtilities {
      */
     public static String printStackTrace(final Throwable exception) {
         final StringWriter writer = new StringWriter();
-        exception.printStackTrace(new PrintWriter(new ExpandedTabWriter(writer, TAB_WIDTH)));
+        java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
         return writer.toString();
     }
 }

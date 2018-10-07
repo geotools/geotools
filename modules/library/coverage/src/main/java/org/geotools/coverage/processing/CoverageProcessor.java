@@ -666,7 +666,7 @@ public class CoverageProcessor {
             arguments.out.println(exception.getLocalizedMessage());
         } catch (IOException exception) {
             // Should not occurs
-            exception.printStackTrace(arguments.out);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
         }
         arguments.out.flush();
     }

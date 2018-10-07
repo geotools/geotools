@@ -74,7 +74,7 @@ public class LinePolygonAbstractValidationBeanInfo extends DefaultIntegrityValid
             pd = pd2;
 
             // TODO error, log here
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         return pd;

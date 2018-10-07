@@ -76,7 +76,7 @@ public class UomRescaleStyleVisitorTest {
         try {
             new UomRescaleStyleVisitor(1);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -132,7 +132,7 @@ public class UomRescaleStyleVisitorTest {
             assertEquals(Math.round(expectedRescaledSize), Math.round(rescaledSize));
             assertNotSame(rescaledPointSymb, pointSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -166,7 +166,7 @@ public class UomRescaleStyleVisitorTest {
                     rescaledLineSymb.getPerpendicularOffset().evaluate(null, Double.class),
                     0.1d);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -208,7 +208,7 @@ public class UomRescaleStyleVisitorTest {
             int rescaledGraphicMargin = Converters.convert(splitted[0], Integer.class).intValue();
             assertEquals(expectedGraphicMargin, rescaledGraphicMargin);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -294,7 +294,7 @@ public class UomRescaleStyleVisitorTest {
             assertEquals(expectedGraphicMargin1, rescaledGraphicMargin1);
             assertEquals(expectedGraphicMargin2, rescaledGraphicMargin2);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -333,7 +333,7 @@ public class UomRescaleStyleVisitorTest {
             assertEquals(expectedDashArray, rescaledDynamicDashArray);
             assertNotSame(rescaledLineSymb, lineSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -509,7 +509,7 @@ public class UomRescaleStyleVisitorTest {
             assertNull(rescaledLineSymb.getStroke());
             assertNotSame(rescaledLineSymb, lineSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -534,7 +534,7 @@ public class UomRescaleStyleVisitorTest {
             assertNull(rescaledPolySymb.getStroke());
             assertNotSame(rescaledPolySymb, polySymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -594,7 +594,7 @@ public class UomRescaleStyleVisitorTest {
             assertEquals(Math.round(expectedRescaledInitialGap), Math.round(rescaledInitialGap));
             assertNotSame(rescaledTextSymb, textSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }
@@ -652,7 +652,7 @@ public class UomRescaleStyleVisitorTest {
             assertNotSame(SI.METRE, rescaledLineSymb.getUnitOfMeasure());
             assertNotSame(rescaledLineSymb, lineSymb);
         } catch (Exception e2) {
-            e2.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e2);
             fail(e2.getClass().getSimpleName() + " should not be thrown.");
         }
     }

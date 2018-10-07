@@ -691,7 +691,7 @@ public class DefaultMathTransformFactory extends ReferencingFactory
             arguments.err.println(exception.getLocalizedMessage());
             return;
         } catch (Exception exception) {
-            exception.printStackTrace(arguments.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
             return;
         }
         arguments.out.flush();

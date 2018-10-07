@@ -367,7 +367,7 @@ public class TestData {
                 insertData(tempTableLayer, session, tempTableColumns);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();
@@ -410,7 +410,7 @@ public class TestData {
             tempTableColumns =
                     createBaseTable(session, tempTable, tempTableLayer, configKeyword, true);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();

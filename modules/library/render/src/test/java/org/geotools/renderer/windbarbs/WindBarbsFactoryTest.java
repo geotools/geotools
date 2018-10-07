@@ -479,7 +479,7 @@ public class WindBarbsFactoryTest extends Assert {
             System.in.read();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
             return;
         }

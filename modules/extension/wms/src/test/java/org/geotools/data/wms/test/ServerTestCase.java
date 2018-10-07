@@ -54,15 +54,15 @@ public class ServerTestCase extends TestCase {
         try {
             super.runBare();
         } catch (ConnectException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (UnknownHostException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (NoRouteToHostException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (FileNotFoundException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (IOException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -70,15 +70,15 @@ public class ServerTestCase extends TestCase {
         try {
             super.runTest();
         } catch (ConnectException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (UnknownHostException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (NoRouteToHostException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (FileNotFoundException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (IOException e) {
-            e.printStackTrace(System.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 }

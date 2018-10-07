@@ -71,10 +71,10 @@ public class XMLParserTest extends TestCase {
             assertNotNull("Document missing", doc);
             // System.out.println(doc);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -105,7 +105,7 @@ public class XMLParserTest extends TestCase {
             assertTrue("file was not created +f", f.exists());
             // System.out.println(f);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } catch (Throwable e) {
             assertTrue(e instanceof OperationNotSupportedException);

@@ -4968,7 +4968,7 @@ public class WMSComplexTypes {
             try {
                 return new URL(href);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 return null;
             }
         }

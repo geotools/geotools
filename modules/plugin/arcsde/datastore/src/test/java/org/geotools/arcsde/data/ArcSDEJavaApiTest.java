@@ -124,7 +124,7 @@ public class ArcSDEJavaApiTest {
             try {
                 session.dispose();
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
         session = null;
@@ -314,7 +314,7 @@ public class ArcSDEJavaApiTest {
 
             assertEquals(expCount, actualCount);
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }
@@ -348,7 +348,7 @@ public class ArcSDEJavaApiTest {
 
             assertEquals(expCount, actualCount);
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }
@@ -1212,7 +1212,7 @@ public class ArcSDEJavaApiTest {
             assertNotNull(noTransRow);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             if (!commited) {
                 transSession.rollbackTransaction();

@@ -204,7 +204,7 @@ public class SDEJavaApiJoinTest {
      * G.BSUFF AND B.RT = G.RT)" + " ORDER BY B.QS, B.RT, B.NUMB, B.BSUFF";
      *
      * try { store.registerView(typeName, definitionQuery); } catch (Exception e) {
-     * e.printStackTrace(); throw e; }
+     *java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e); throw e; }
      *
      * SimpleFeatureType type = (SimpleFeatureType) store.getSchema(typeName); assertNotNull(type);
      *
@@ -558,7 +558,7 @@ public class SDEJavaApiJoinTest {
             }
             assertEquals(expectedCount, count);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();
@@ -625,7 +625,7 @@ public class SDEJavaApiJoinTest {
             }
             assertEquals(expectedCount, count);
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();
@@ -722,7 +722,7 @@ public class SDEJavaApiJoinTest {
             }
             assertEquals(expectedCount, count);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();
@@ -785,7 +785,7 @@ public class SDEJavaApiJoinTest {
             }
             assertEquals(expectedCount, count);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();

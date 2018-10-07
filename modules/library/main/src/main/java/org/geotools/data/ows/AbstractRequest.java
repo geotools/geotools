@@ -167,7 +167,7 @@ public abstract class AbstractRequest implements Request {
         try {
             return new URL(url);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             // If something is wrong here, this is something wrong with the code above.
         }
 

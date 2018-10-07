@@ -207,7 +207,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
                 Class<?> lenient = Class.forName("org.geotools.feature.LenientFeatureFactoryImpl");
                 hints.put(Hints.FEATURE_FACTORY, lenient);
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
         return (FeatureFactory) lookup(FeatureFactory.class, hints, Hints.FEATURE_FACTORY);

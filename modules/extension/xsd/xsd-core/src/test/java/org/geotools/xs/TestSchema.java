@@ -149,7 +149,7 @@ public abstract class TestSchema extends TestCase {
 
             return (ElementInstance) map.get(name);
         } catch (Throwable t) {
-            t.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
 
             return null;
         }

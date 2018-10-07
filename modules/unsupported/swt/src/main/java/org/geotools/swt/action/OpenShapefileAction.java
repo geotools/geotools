@@ -65,7 +65,7 @@ public class OpenShapefileAction extends MapAction implements ISelectionChangedL
                 mapPane.redraw();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

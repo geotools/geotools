@@ -357,7 +357,7 @@ public class GeometryConverter {
             // BUG: make sure I am correct
             return new CHAR(s, CharacterSet.make(CharacterSet.ISO_LATIN_1_CHARSET));
         } catch (SQLException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return null;
     }

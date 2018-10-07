@@ -423,7 +423,7 @@ public class ogcComplexTypes {
 
                     output.endElement(element.getNamespace(), element.getName());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 }
 
             } else {

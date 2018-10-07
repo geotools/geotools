@@ -333,7 +333,7 @@ public class EdigeoDataStore extends AbstractDataStore {
                 String namespace = edigeoDir.getParentFile().getName();
                 featureType = DataUtilities.createType(namespace + "." + typeName, typeSpec);
             } catch (SchemaException e) {
-                e.printStackTrace();
+               java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 throw new DataSourceException(typeName + " schema not available", e);
             }
         }

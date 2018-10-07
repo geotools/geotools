@@ -215,7 +215,7 @@ public class BasicGraphSerializerTest extends TestCase {
             after.visitNodes(visitor);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
         }
     }
@@ -269,7 +269,7 @@ public class BasicGraphSerializerTest extends TestCase {
                     };
             after.visitNodes(visitor);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             assertTrue(false);
         }
     }

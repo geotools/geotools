@@ -219,7 +219,7 @@ public class AStarIteratorTest extends TestCase {
         try {
             p = walker.getPath();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         p.getEdges();
         assertTrue(p.size() == 4);

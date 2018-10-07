@@ -96,7 +96,7 @@ public class GMLStreamingParserStressTest extends TestCase {
             assertTrue("# features = " + i, i == 70);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } finally {
             if (fr != null) {
@@ -128,7 +128,7 @@ public class GMLStreamingParserStressTest extends TestCase {
             // System.out.println("\n # Features = " + i);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } finally {
             if (fr != null) {
@@ -160,7 +160,7 @@ public class GMLStreamingParserStressTest extends TestCase {
             // System.out.println("\n # Features = " + i);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } finally {
             if (fr != null) {
@@ -214,7 +214,7 @@ public class GMLStreamingParserStressTest extends TestCase {
             // System.out.println("\n# Features: " + count1 + " , " + count2);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } finally {
             if (fr1 != null) {

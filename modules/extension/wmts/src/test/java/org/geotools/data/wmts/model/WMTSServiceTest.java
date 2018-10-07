@@ -30,7 +30,7 @@ public class WMTSServiceTest {
             WMTSService service = (WMTSService) capabilities.getService();
             assertNotNull(service.get_abstract());
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
                 // System.err.println("Unable to test - timed out: " + e);
             } else {

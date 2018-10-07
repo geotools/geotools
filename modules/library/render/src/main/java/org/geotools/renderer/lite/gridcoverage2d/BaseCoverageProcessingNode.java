@@ -243,7 +243,7 @@ public abstract class BaseCoverageProcessingNode implements CoverageProcessingNo
                 if (error == null) output = (GridCoverage2D) result;
             } catch (Throwable t) {
                 // something bad happened
-                t.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
                 output = null;
                 error = t;
             }

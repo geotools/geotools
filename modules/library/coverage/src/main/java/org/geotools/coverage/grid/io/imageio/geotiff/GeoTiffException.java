@@ -183,7 +183,8 @@ public final class GeoTiffException extends IOException {
 
         // print out the localized message
         Throwable t = getCause();
-        if (t != null) t.printStackTrace(message);
+        if (t != null)
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
 
         // close and return
         message.close();

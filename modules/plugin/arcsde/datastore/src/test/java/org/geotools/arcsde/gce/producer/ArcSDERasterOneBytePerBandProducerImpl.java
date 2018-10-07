@@ -86,7 +86,8 @@ public class ArcSDERasterOneBytePerBandProducerImpl extends ArcSDERasterProducer
                                 }
                                 consumer.rasterComplete(SeRasterConsumer.STATICIMAGEDONE);
                             } catch (Exception se) {
-                                se.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", se);
                                 consumer.rasterComplete(SeRasterConsumer.IMAGEERROR);
                             }
                         }

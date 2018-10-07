@@ -218,7 +218,7 @@ public class ClobTestData {
         try {
             deleteTable(connPool, getTempTableName());
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -299,7 +299,7 @@ public class ClobTestData {
                 insertData(tempTableLayer, session, tempTableColumns);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         } finally {
             session.dispose();

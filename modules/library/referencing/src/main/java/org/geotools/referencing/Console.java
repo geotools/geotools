@@ -301,7 +301,8 @@ public class Console extends AbstractConsole {
                         throw unexpectedArgument("stacktrace");
                     }
                     if (lastError != null) {
-                        lastError.printStackTrace(err);
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", lastError);
                     }
                     return;
                 }

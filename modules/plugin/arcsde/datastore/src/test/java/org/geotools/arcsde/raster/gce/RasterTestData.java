@@ -453,7 +453,8 @@ public class RasterTestData {
                             insert.execute();
                             insert.close();
                         } catch (SeException se) {
-                            se.printStackTrace();
+                            java.util.logging.Logger.getGlobal()
+                                    .log(java.util.logging.Level.INFO, "", se);
                             throw se;
                         }
 
@@ -976,7 +977,8 @@ public class RasterTestData {
                                             consumer.rasterComplete(
                                                     SeRasterConsumer.STATICIMAGEDONE);
                                         } catch (Exception se) {
-                                            se.printStackTrace();
+                                            java.util.logging.Logger.getGlobal()
+                                                    .log(java.util.logging.Level.INFO, "", se);
                                             consumer.rasterComplete(SeRasterConsumer.IMAGEERROR);
                                         }
                                     }
@@ -1072,7 +1074,8 @@ public class RasterTestData {
                                 band1.setColorMap(colorMapType, dataBuffer);
                                 band1.alter();
                             } catch (SeException e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                                 throw new ArcSdeException(e);
                             }
                         }
@@ -1760,7 +1763,7 @@ public class RasterTestData {
             testData.describeRasters();
             testData.tearDown();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 }

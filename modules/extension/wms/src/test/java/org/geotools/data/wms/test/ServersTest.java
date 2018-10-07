@@ -180,13 +180,13 @@ public class ServersTest extends TestCase {
             out.println("failed.");
             passed = false;
             out.println("IOException: " + e.getMessage());
-            e.printStackTrace(out);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return passed;
         } catch (SAXException e) {
             out.println("failed.");
             passed = false;
             out.println("SAXException: " + e.getMessage());
-            e.printStackTrace(out);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return passed;
         }
 
@@ -319,12 +319,12 @@ public class ServersTest extends TestCase {
             out.println("failed.");
             passed = false;
             out.println("IOException: " + e.getMessage());
-            e.printStackTrace(out);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (SAXException e) {
             out.println("failed.");
             passed = false;
             out.println("SAXException: " + e.getMessage());
-            e.printStackTrace(out);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             out.println(request.getFinalURL());
         }

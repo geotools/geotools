@@ -281,7 +281,8 @@ public class IntegrationTestWFSClient extends WFSClient {
                                     serverFiltered.close();
                                 }
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                                 throw new RuntimeException(e);
                             }
                         }

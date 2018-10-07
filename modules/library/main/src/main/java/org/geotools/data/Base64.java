@@ -427,7 +427,7 @@ public class Base64 {
             oos.writeObject(serializableObject);
         } // end try
         catch (java.io.IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return null;
         } // end catch
         finally {
@@ -549,7 +549,7 @@ public class Base64 {
                 gzos.close();
             } // end try
             catch (java.io.IOException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 return null;
             } // end catch
             finally {
@@ -928,11 +928,11 @@ public class Base64 {
             obj = ois.readObject();
         } // end try
         catch (java.io.IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             obj = null;
         } // end catch
         catch (java.lang.ClassNotFoundException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             obj = null;
         } // end catch
         finally {

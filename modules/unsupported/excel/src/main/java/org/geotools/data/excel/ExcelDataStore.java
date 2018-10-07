@@ -90,7 +90,7 @@ public class ExcelDataStore extends ContentDataStore {
 
         } catch (InvalidFormatException e1) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+           java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }
         sheet = workbook.getSheet(sheet2);
         headerRowIndex = headerRow;
@@ -101,10 +101,10 @@ public class ExcelDataStore extends ContentDataStore {
             setProjection(CRS.decode(projectionString));
         } catch (NoSuchAuthorityCodeException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+           java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } catch (FactoryException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+           java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

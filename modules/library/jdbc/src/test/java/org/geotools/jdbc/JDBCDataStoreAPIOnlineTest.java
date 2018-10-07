@@ -101,7 +101,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             assertTrue(contains(names, tname("road")));
             assertTrue(contains(names, tname("river")));
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("An IOException has been thrown!");
         }
     }

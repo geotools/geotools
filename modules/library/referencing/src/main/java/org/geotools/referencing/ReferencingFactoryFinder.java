@@ -776,7 +776,7 @@ public final class ReferencingFactoryFinder extends FactoryFinder {
         try {
             listProviders(arguments.out, arguments.locale);
         } catch (Exception exception) {
-            exception.printStackTrace(arguments.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
         }
     }
 }

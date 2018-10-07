@@ -110,7 +110,8 @@ public class ReprojectionTest extends TestCase {
                     public void featureRenderer(SimpleFeature feature) {}
 
                     public void errorOccurred(Exception e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                         errors++;
                     }
                 });

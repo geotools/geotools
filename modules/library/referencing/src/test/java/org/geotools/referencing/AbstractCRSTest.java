@@ -719,7 +719,7 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
             CRS.decode("EPSG:4326");
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         }
     }

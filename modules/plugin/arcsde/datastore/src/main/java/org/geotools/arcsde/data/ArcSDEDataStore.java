@@ -256,7 +256,7 @@ public class ArcSDEDataStore implements DataStore {
                             ? FeatureTypes.DEFAULT_NAMESPACE
                             : new URI(typeInfoCache.getNamesapceURI()));
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return info;
     }

@@ -103,7 +103,7 @@ public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
         } catch (SQLException e) {
             System.out.println(
                     "Failed to check if the user has database creation privileges and postgis is an available extension");
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return false;
         } finally {
             closer.closeSafe(rs);

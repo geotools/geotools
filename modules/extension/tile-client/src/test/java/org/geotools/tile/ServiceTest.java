@@ -60,7 +60,7 @@ public abstract class ServiceTest {
             MERCATOR_CRS = CRS.decode("EPSG:3857");
 
         } catch (FactoryException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getLocalizedMessage());
         }
 

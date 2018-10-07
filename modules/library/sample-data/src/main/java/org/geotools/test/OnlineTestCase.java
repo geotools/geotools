@@ -137,7 +137,7 @@ public abstract class OnlineTestCase extends TestCase {
                                     + fixtureId
                                     + " tests, resources not available: "
                                     + t.getMessage());
-                    t.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
                     available = Boolean.FALSE;
                 }
                 online.put(fixtureId, available);
@@ -192,7 +192,7 @@ public abstract class OnlineTestCase extends TestCase {
                     FixtureUtilities.printSkipNotice(fixtureId, fixtureFile);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
     }
@@ -213,7 +213,7 @@ public abstract class OnlineTestCase extends TestCase {
             // System.out.println("Wrote example fixture file to " + exFixtureFile);
         } catch (IOException ioe) {
             // System.out.println("Unable to write out example fixture " + exFixtureFile);
-            ioe.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ioe);
         }
     }
     /**
@@ -237,7 +237,7 @@ public abstract class OnlineTestCase extends TestCase {
                 // disable the test
                 fixture = null;
                 // leave some trace of the swallowed exception
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             } else {
                 // do not swallow the exception
                 throw e;

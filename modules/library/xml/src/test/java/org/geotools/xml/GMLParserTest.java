@@ -128,7 +128,7 @@ public class GMLParserTest extends TestCase {
             checkFeatureCollection((SimpleFeatureCollection) doc);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -161,7 +161,7 @@ public class GMLParserTest extends TestCase {
             checkFeatureCollection((SimpleFeatureCollection) doc);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -194,7 +194,7 @@ public class GMLParserTest extends TestCase {
             checkFeatureCollection((SimpleFeatureCollection) doc);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -227,7 +227,7 @@ public class GMLParserTest extends TestCase {
             checkFeatureCollection((SimpleFeatureCollection) doc);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -279,10 +279,10 @@ public class GMLParserTest extends TestCase {
             //        assertTrue("file was not created +f",f.exists());
             // System.out.println(f);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -322,10 +322,10 @@ public class GMLParserTest extends TestCase {
             //        assertTrue("file was not created +f",f.exists());
             // System.out.println(f);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }

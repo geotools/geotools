@@ -617,7 +617,7 @@ public class FeatureTransformer extends TransformerBase {
                     throw new IllegalArgumentException("Cannot encode " + o);
                 }
             } catch (IOException ioe) {
-                ioe.printStackTrace(System.out);
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ioe);
                 throw new RuntimeException("error reading FeatureResults", ioe);
             }
         }

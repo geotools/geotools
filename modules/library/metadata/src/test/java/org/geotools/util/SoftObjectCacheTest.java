@@ -124,7 +124,7 @@ public class SoftObjectCacheTest {
                 cache.put(key1, value1);
                 values = new Object[] {cache.get(key1)};
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             } finally {
                 try {
                     cache.writeUnLock(key1);

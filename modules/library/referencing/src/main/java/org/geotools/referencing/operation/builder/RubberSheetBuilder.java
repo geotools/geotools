@@ -183,7 +183,7 @@ public class RubberSheetBuilder extends MathTransformBuilder {
             } catch (Exception e) {
                 // should never reach here because AffineTransformBuilder(pts)
                 // should not throw any Exception.
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
 

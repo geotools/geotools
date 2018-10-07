@@ -688,7 +688,8 @@ public class CQLTemporalPredicateTest {
                             Filter filter = CompilerUtil.parseFilter(language, predicate);
                             Assert.assertNotNull(filter);
                         } catch (CQLException e) {
-                            e.printStackTrace();
+                            java.util.logging.Logger.getGlobal()
+                                    .log(java.util.logging.Level.INFO, "", e);
                         }
                     }
                 };

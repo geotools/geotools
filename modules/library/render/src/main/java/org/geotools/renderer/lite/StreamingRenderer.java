@@ -74,9 +74,11 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.GeometryTransformationVisitor;
 import org.geotools.filter.spatial.DefaultCRSFilterVisitor;
 import org.geotools.filter.spatial.ReprojectingFilterVisitor;
+import org.geotools.filter.visitor.DefaultFilterVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.filter.visitor.SpatialFilterVisitor;
 import org.geotools.geometry.jts.Decimator;
@@ -142,6 +144,7 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.parameter.GeneralParameterValue;
@@ -1883,17 +1886,55 @@ public class StreamingRenderer implements GTRenderer {
         List<Rule> ruleList = new ArrayList<Rule>();
         List<Rule> elseRuleList = new ArrayList<Rule>();
 
-        for (Rule r : fts.rules()) {
+        for (Rule r : fts.rules())
             if (isWithInScale(r)) {
                 if (r.isElseFilter()) {
                     elseRuleList.add(r);
                 } else {
-                    ruleList.add(r);
+                    // rules can have dynamic bits related to env variables that we evaluate and
+                    // skip at this this time
+                    if (!Filter.INCLUDE.equals(r.getFilter()) && hasEnvVariables(r.getFilter())) {
+                        DuplicatingStyleVisitor cloner =
+                                new DuplicatingStyleVisitor() {
+                                    SimplifyingFilterVisitor simplifier =
+                                            new SimplifyingFilterVisitor();
+
+                                    @Override
+                                    protected Filter copy(Filter filter) {
+                                        if (filter == null) return null;
+                                        return (Filter) filter.accept(simplifier, ff);
+                                    }
+                                };
+                        r.accept(cloner);
+                        Rule copy = (Rule) cloner.getCopy();
+                        if (!Filter.EXCLUDE.equals(copy.getFilter())) {
+                            ruleList.add(copy);
+                        }
+                    } else {
+                        ruleList.add(r);
+                    }
                 }
             }
-        }
 
         return Arrays.asList(ruleList, elseRuleList);
+    }
+
+    private boolean hasEnvVariables(Filter filter) {
+        if (filter == null) {
+            return false;
+        }
+        DefaultFilterVisitor envFunctionChecker =
+                new DefaultFilterVisitor() {
+                    @Override
+                    public Object visit(Function expression, Object data) {
+                        if (Boolean.TRUE.equals(super.visit(expression, data))) {
+                            return true;
+                        } else {
+                            return expression instanceof EnvFunction;
+                        }
+                    }
+                };
+        return Boolean.TRUE.equals(filter.accept(envFunctionChecker, null));
     }
 
     /**

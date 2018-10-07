@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
@@ -73,6 +74,8 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
     static PropertyAccessor FID_ACCESS = new FidFeaturePropertyAccessor();
 
+    static final Pattern FID_PATTERN = Pattern.compile("@(\\w+:)?id");
+
     public PropertyAccessor createPropertyAccessor(
             Class type, String xpath, Class target, Hints hints) {
 
@@ -95,7 +98,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
             return DEFAULT_GEOMETRY_ACCESS;
 
         // check for fid access
-        if (xpath.matches("@(\\w+:)?id")) return FID_ACCESS;
+        if (FID_PATTERN.matcher(xpath).matches()) return FID_ACCESS;
 
         // check for simple property access
         // if (xpath.matches("(\\w+:)?(\\w+)")) {
@@ -123,7 +126,7 @@ public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 
         public boolean canHandle(Object object, String xpath, Class target) {
             // we only work against feature, not feature type
-            return object instanceof Attribute && xpath.matches("@(\\w+:)?id");
+            return object instanceof Attribute && FID_PATTERN.matcher(xpath).matches();
         }
 
         public Object get(Object object, String xpath, Class target) {

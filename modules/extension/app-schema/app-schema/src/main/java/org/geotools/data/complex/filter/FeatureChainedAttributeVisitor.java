@@ -61,12 +61,15 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
 
     private List<FeatureChainedAttributeDescriptor> attributes;
 
+    private boolean conditionalMappingFound;
+
     public FeatureChainedAttributeVisitor(FeatureTypeMapping root) {
         if (root == null) {
             throw new NullPointerException("root mapping is null");
         }
         this.attributes = new ArrayList<>();
         this.rootMapping = root;
+        this.conditionalMappingFound = false;
     }
 
     @Override
@@ -213,6 +216,7 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
     }
 
     private void logConditionalMappingFound(FeatureTypeMapping containerType, StepList xpath) {
+        conditionalMappingFound = true;
         if (LOGGER.isLoggable(Level.FINE)) {
             QName qname = getFeatureTypeQName(containerType);
             String prefixedName = qname.getPrefix() + ":" + qname.getLocalPart();
@@ -248,14 +252,14 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         return new QName(uri, localPart, prefix);
     }
 
-    private boolean isClientProperty(StepList steps) {
+    static boolean isClientProperty(StepList steps) {
         if (steps.isEmpty()) {
             return false;
         }
         return steps.get(steps.size() - 1).isXmlAttribute();
     }
 
-    private boolean isXlinkHref(StepList steps) {
+    static boolean isXlinkHref(StepList steps) {
         if (steps.isEmpty()) {
             return false;
         }
@@ -263,6 +267,13 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
         // must get the value from the nested attribute mapping instead, i.e. from another table
         // if it's to get the values from the local table, it shouldn't be set with feature chaining
         return steps.get(steps.size() - 1).getName().equals(XLINK.HREF);
+    }
+
+    static boolean isFid(StepList steps) {
+        if (steps.isEmpty()) {
+            return false;
+        }
+        return steps.get(steps.size() - 1).toString().matches("@(\\w+:)?id");
     }
 
     /**
@@ -273,6 +284,17 @@ public class FeatureChainedAttributeVisitor extends DefaultExpressionVisitor {
      */
     public List<FeatureChainedAttributeDescriptor> getFeatureChainedAttributes() {
         return attributes;
+    }
+
+    /**
+     * Tells clients whether or not a conditional mapping was found in the feature chain when the
+     * latest expression was visited.
+     *
+     * @return {@code true} if a conditional mapping was found in the feature chain, {@code false}
+     *     otherwise
+     */
+    public boolean conditionalMappingWasFound() {
+        return conditionalMappingFound;
     }
 
     /**

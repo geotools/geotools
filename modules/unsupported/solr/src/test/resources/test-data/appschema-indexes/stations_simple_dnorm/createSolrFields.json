@@ -1,0 +1,19 @@
+{
+  "add-field":[
+  { "name":"otherid",
+   	"type":"int",
+   	"multiValued":false },
+ 	{ "name":"name",
+   	"type":"strings",
+   	"multiValued":false },
+    { "name":"location_name",
+   	"type":"strings",
+   	"multiValued":false },
+ 	{ "name":"position",
+   	"type":"geometry",
+   	"multiValued":false },
+   	{ "name":"comment",
+   	"type":"strings",
+   	"multiValued":false }
+  ]
+}

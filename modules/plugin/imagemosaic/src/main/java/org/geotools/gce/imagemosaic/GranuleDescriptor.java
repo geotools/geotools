@@ -1026,46 +1026,6 @@ public class GranuleDescriptor {
             // get info about the raster we have to read
             //
 
-            // get a stream
-            assert cachedStreamSPI != null : "no cachedStreamSPI available!";
-            inStream =
-                    cachedStreamSPI.createInputStreamInstance(
-                            granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
-            if (inStream == null) return null;
-
-            // get a reader and try to cache the relevant SPI
-            if (cachedReaderSPI == null) {
-                reader = ImageIOExt.getImageioReader(inStream);
-                if (reader != null) cachedReaderSPI = reader.getOriginatingProvider();
-            } else reader = cachedReaderSPI.createReaderInstance();
-            if (reader == null) {
-                if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
-                    LOGGER.warning(
-                            new StringBuilder("Unable to get s reader for granuleDescriptor ")
-                                    .append(this.toString())
-                                    .append(" with request ")
-                                    .append(request.toString())
-                                    .append(" Resulting in no granule loaded: Empty result")
-                                    .toString());
-                }
-                return null;
-            }
-            // set input
-            customizeReaderInitialization(reader, hints);
-            reader.setInput(inStream);
-
-            // check if the reader wants to be aware of the current request
-            if (MethodUtils.getAccessibleMethod(
-                            reader.getClass(), "setRasterLayerRequest", RasterLayerRequest.class)
-                    != null) {
-                try {
-                    MethodUtils.invokeMethod(reader, "setRasterLayerRequest", request);
-                } catch (Exception exception) {
-                    throw new RuntimeException(
-                            "Error setting raster layer request on reader.", exception);
-                }
-            }
-
             // Checking for heterogeneous granules and if the mosaic is not multidimensional
             if (request.isHeterogeneousGranules()
                     && (originator == null || originator.getAttribute("imageindex") == null)) {
@@ -1093,16 +1053,6 @@ public class GranuleDescriptor {
             URL granuleURLUpdated = granuleUrl;
             // If the file is external we must update the Granule elements
             if (isExternal) {
-                // Disposing File Reader and Stream
-                try {
-                    if (inStream != null) {
-                        inStream.close();
-                    }
-                } finally {
-                    if (reader != null) {
-                        reader.dispose();
-                    }
-                }
                 granuleURLUpdated = ovrProvider.getOvrURL();
                 assert ovrProvider.getExternalOverviewInputStreamSpi() != null
                         : "no cachedStreamSPI available for external overview!";
@@ -1114,7 +1064,7 @@ public class GranuleDescriptor {
                                         ImageIO.getUseCache(),
                                         ImageIO.getCacheDirectory());
                 // get a reader and try to cache the relevant SPI
-                reader = ovrProvider.getImageReaderSpi().createReaderInstance();
+                reader = ovrProvider.getExternalOverviewReaderSpi().createReaderInstance();
                 if (reader == null) {
                     if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
                         LOGGER.warning(
@@ -1134,6 +1084,46 @@ public class GranuleDescriptor {
 
             } else {
                 ovrIndex = ovrProvider.getOverviewIndex(imageIndex);
+
+                // get a stream
+                assert cachedStreamSPI != null : "no cachedStreamSPI available!";
+                inStream =
+                        cachedStreamSPI.createInputStreamInstance(
+                                granuleUrl, ImageIO.getUseCache(), ImageIO.getCacheDirectory());
+                if (inStream == null) return null;
+
+                // get a reader and try to cache the relevant SPI
+                if (cachedReaderSPI == null) {
+                    reader = ImageIOExt.getImageioReader(inStream);
+                    if (reader != null) cachedReaderSPI = reader.getOriginatingProvider();
+                } else reader = cachedReaderSPI.createReaderInstance();
+                if (reader == null) {
+                    if (LOGGER.isLoggable(java.util.logging.Level.WARNING)) {
+                        LOGGER.warning(
+                                new StringBuilder("Unable to get s reader for granuleDescriptor ")
+                                        .append(this.toString())
+                                        .append(" with request ")
+                                        .append(request.toString())
+                                        .append(" Resulting in no granule loaded: Empty result")
+                                        .toString());
+                    }
+                    return null;
+                }
+            }
+            // set input
+            customizeReaderInitialization(reader, hints);
+            reader.setInput(inStream);
+
+            // check if the reader wants to be aware of the current request
+            if (MethodUtils.getAccessibleMethod(
+                            reader.getClass(), "setRasterLayerRequest", RasterLayerRequest.class)
+                    != null) {
+                try {
+                    MethodUtils.invokeMethod(reader, "setRasterLayerRequest", request);
+                } catch (Exception exception) {
+                    throw new RuntimeException(
+                            "Error setting raster layer request on reader.", exception);
+                }
             }
 
             // get selected level and base level dimensions

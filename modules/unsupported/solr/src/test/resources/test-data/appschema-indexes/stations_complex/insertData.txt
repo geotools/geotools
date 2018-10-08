@@ -1,0 +1,39 @@
+
+http://localhost:8983/solr/stations/update/json/docs?commit=true
+
+[
+	{
+    	"station_id": "7",
+        "station_name": "Bologna",
+        "stations_comments": "The probability of precipitation (POP), is defined as the likelihood of occurrence (expressed as a percent) of a measurable amount of liquid precipitation",
+        "observation_id": "3",
+    	"observation_description": "temperature, wind"
+	},
+    {
+    	"station_id": "7",
+        "station_name": "Bologna",
+        "stations_comments": "The probability of precipitation (POP), is defined as the likelihood of occurrence (expressed as a percent) of a measurable amount of liquid precipitation",
+        "observation_id": "4",
+    	"observation_description": "precipitation on a routine basis"
+	},
+    {
+    	"station_id": "7",
+        "station_name": "Bologna",
+        "stations_comments": "The probability of precipitation (POP), is defined as the likelihood of occurrence (expressed as a percent) of a measurable amount of liquid precipitation",
+        "observation_id": "5"
+	},
+    {
+    	"station_id": "13",
+        "station_name": "Alessandria",
+        "stations_comments": "No risk of severe thunderstorms.",
+        "observation_id": "1",
+    	"observation_description": " sky condition"
+	},
+    {
+    	"station_id": "13",
+        "station_name": "Alessandria",
+        "stations_comments": "No risk of severe thunderstorms.",
+        "observation_id": "2",
+    	"observation_description": " We know that some users may have experienced difficulty accessing OneDrive for Business on Linux"
+	}
+]

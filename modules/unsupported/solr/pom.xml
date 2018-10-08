@@ -94,6 +94,13 @@
       <version>1.7.7</version>
       <scope>test</scope>
     </dependency>
+	<dependency>
+	    <groupId>org.geotools.jdbc</groupId>
+	    <artifactId>gt-jdbc-postgis</artifactId>
+	    <version>${project.version}</version>
+	    <scope>test</scope>
+	</dependency>
+	    
   </dependencies>
   
   <build>

@@ -102,7 +102,8 @@ public class PointHandler implements ShapeHandler {
     }
 
     public void write(ByteBuffer buffer, Object geometry) {
-        Coordinate c = ((Point) geometry).getCoordinate();
+        Point point = (Point) geometry;
+        Coordinate c = point.getCoordinate();
 
         buffer.putDouble(c.x);
         buffer.putDouble(c.y);
@@ -116,7 +117,8 @@ public class PointHandler implements ShapeHandler {
         }
 
         if ((shapeType == ShapeType.POINTZ) || (shapeType == ShapeType.POINTM)) {
-            buffer.putDouble(-10E40); // M
+            double m = point.getCoordinateSequence().getM(0);
+            buffer.putDouble(!Double.isNaN(m) ? m : 0.0); // M
         }
     }
 }

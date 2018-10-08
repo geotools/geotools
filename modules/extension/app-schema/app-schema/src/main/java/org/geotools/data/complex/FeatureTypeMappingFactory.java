@@ -31,6 +31,7 @@ public class FeatureTypeMappingFactory {
 
     public static FeatureTypeMapping getInstance(
             FeatureSource source,
+            FeatureSource indexSource,
             AttributeDescriptor target,
             String defaultGeometryXPath,
             List<AttributeMapping> mappings,
@@ -46,6 +47,7 @@ public class FeatureTypeMappingFactory {
             featureTypeMapping =
                     new FeatureTypeMapping(
                             source,
+                            indexSource,
                             target,
                             defaultGeometryXPath,
                             mappings,

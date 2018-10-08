@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.apache.commons.digester.Digester;
 import org.geotools.data.DataAccess;
 import org.geotools.data.Query;
@@ -126,6 +127,12 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             // get all the attributes names used in the feature type mapping
             Set<String> attributes = extractAttributesNames(mapping);
             indexesConfig.addAttributes(mapping.getSourceTypeName(), attributes);
+            if (isDenormalizedIndexMode(mapping, dataStoreConfig)) {
+                // set as denormalizedIndexMode
+                indexesConfig
+                        .getIndexConfig(getTypeName(mapping, dataStoreConfig))
+                        .setDenormalizedIndexMode(true);
+            }
         }
         // build the Apache Solr store
         return new SolrDataStore(
@@ -288,5 +295,78 @@ public final class ComplexDataStoreFactory implements CustomSourceDataStore {
             throw new RuntimeException(
                     String.format("Error parsing expression '%s'.", expression), exception);
         }
+    }
+
+    //    private Set<String> parseIndexModeAttributes(TypeMapping mapping) {
+    //        Set<String> attributes = new HashSet<>();
+    //        // basic feature attributes:
+    //        ((List<AttributeMapping>) mapping.getAttributeMappings())
+    //                .stream()
+    //                .filter(
+    //                        attributeMapping ->
+    //                                StringUtils.isNotEmpty(attributeMapping.getIndexField()))
+    //                .forEach(
+    //                        attributeMapping -> {
+    //                            attributes.add(attributeMapping.getIndexField());
+    //                        });
+    //        // chained features attributes:
+    //
+    //        return attributes;
+    //    }
+
+    private Set<String> parseSourceModeAttributes(TypeMapping mapping) {
+        Set<String> attributes = new HashSet<>();
+        ((List<AttributeMapping>) mapping.getAttributeMappings())
+                .forEach(
+                        attributeMapping -> {
+                            // mapped attributes
+                            Expression expression =
+                                    parseExpression(attributeMapping.getSourceExpression());
+                            attributes.addAll(extractAttributesNames(expression));
+                            if (attributeMapping.getMultipleValue() instanceof SolrMultipleValue) {
+                                expression =
+                                        ((SolrMultipleValue) attributeMapping.getMultipleValue())
+                                                .getExpression();
+                                attributes.addAll(extractAttributesNames(expression));
+                            }
+                            // mapped identifiers
+                            expression =
+                                    parseExpression(attributeMapping.getIdentifierExpression());
+                            attributes.addAll(extractAttributesNames(expression));
+                            // mapped client properties
+                            attributes.addAll(
+                                    (Set<String>)
+                                            attributeMapping
+                                                    .getClientProperties()
+                                                    .values()
+                                                    .stream()
+                                                    .flatMap(
+                                                            value ->
+                                                                    extractAttributesNames(
+                                                                                    parseExpression(
+                                                                                            value))
+                                                                            .stream())
+                                                    .collect(Collectors.toSet()));
+                        });
+        return attributes;
+    }
+
+    private Set<String> parseAttributeNames(TypeMapping mapping, SourceDataStore dataStoreConfig) {
+        // if mapping index points to dataStore: is index use case
+        //        if (dataStoreConfig.getId().equals(mapping.getIndexDataStore())) {
+        //            return parseIndexModeAttributes(mapping);
+        //        }
+        return parseSourceModeAttributes(mapping);
+    }
+
+    private String getTypeName(TypeMapping mapping, SourceDataStore dataStoreConfig) {
+        if (dataStoreConfig.getId().equals(mapping.getIndexDataStore())) {
+            return mapping.getIndexTypeName();
+        }
+        return mapping.getSourceTypeName();
+    }
+
+    private boolean isDenormalizedIndexMode(TypeMapping mapping, SourceDataStore dataStoreConfig) {
+        return dataStoreConfig.getId().equals(mapping.getIndexDataStore());
     }
 }

@@ -126,6 +126,9 @@ public class AttributeMapping implements Serializable {
      */
     private Map clientProperties;
 
+    /** Field name in external index layer */
+    private String indexField;
+
     /**
      * Mapping of attributes with 1..N cardinality. Each data store is free to contribute is own
      * syntax (e.g. Solr multi values to support multi valuated fields).
@@ -465,5 +468,13 @@ public class AttributeMapping implements Serializable {
 
     public void setMultipleValue(MultipleValue multipleValue) {
         this.multipleValue = multipleValue;
+    }
+
+    public String getIndexField() {
+        return indexField;
+    }
+
+    public void setIndexField(String indexField) {
+        this.indexField = indexField;
     }
 }

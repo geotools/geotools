@@ -216,6 +216,15 @@ public class XMLConfigDigester {
         digester.addCallMethod(typeMapping + "/isDenormalised", "setIsDenormalised", 1);
         digester.addCallParam(typeMapping + "/isDenormalised", 0);
 
+        // indexDataStore is datastore designated to be index layer only
+        digester.addCallMethod(typeMapping + "/indexDataStore", "setIndexDataStore", 1);
+        digester.addCallParam(typeMapping + "/indexDataStore", 0);
+        // indexType is Type name for index layer
+        digester.addCallMethod(typeMapping + "/indexType", "setIndexTypeName", 1);
+        digester.addCallParam(typeMapping + "/indexType", 0);
+        digester.addCallMethod(typeMapping + "/IndexTypeName", "setIndexTypeName", 1);
+        digester.addCallParam(typeMapping + "/IndexTypeName", 0);
+
         // create attribute mappings
         final String attMappings = typeMapping + "/attributeMappings";
         digester.addObjectCreate(attMappings, XMLConfigDigester.CONFIG_NS_URI, ArrayList.class);
@@ -280,7 +289,15 @@ public class XMLConfigDigester {
         digester.addCallParam(attMap + "/ClientProperty/name", 0);
         digester.addCallParam(attMap + "/ClientProperty/value", 1);
 
-        // parse JDBC multiple values element
+        // Field name in external index layer
+        digester.addCallMethod(attMap + "/indexField", "setIndexField", 1);
+        digester.addCallParam(attMap + "/indexField", 0);
+        digester.addCallMethod(attMap + "/IndexAttribute", "setIndexField", 1);
+        digester.addCallParam(attMap + "/IndexAttribute", 0);
+        digester.addCallMethod(attMap + "/IndexIdAttribute", "setIndexField", 1);
+        digester.addCallParam(attMap + "/IndexIdAttribute", 0);
+
+        // parse JDBC multi value element
         String jdbcMultipleValue = attMap + "/jdbcMultipleValue";
         digester.addObjectCreate(
                 jdbcMultipleValue, XMLConfigDigester.CONFIG_NS_URI, JdbcMultipleValue.class);

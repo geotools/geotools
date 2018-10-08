@@ -120,6 +120,29 @@ public class MappingFeatureIteratorFactory {
             Filter unrolledFilter,
             Transaction transaction)
             throws IOException {
+        return MappingFeatureIteratorFactory.getInstance(
+                store, mapping, query, unrolledFilter, transaction, true);
+    }
+
+    public static IMappingFeatureIterator getInstance(
+            AppSchemaDataAccess store,
+            FeatureTypeMapping mapping,
+            Query query,
+            Filter unrolledFilter,
+            Transaction transaction,
+            boolean indexEnable)
+            throws IOException {
+
+        // if this feature type mapping uses an external index and indexing is enable
+        // then create a specific iterator
+        if (indexEnable && mapping.getIndexSource() != null) {
+            IndexedMappingFeatureIteratorFactory factory =
+                    new IndexedMappingFeatureIteratorFactory(
+                            store, mapping, query, unrolledFilter, transaction);
+            if (factory.getIndexModeProcessor().isIndexDrivenIteratorCase()) {
+                return factory.buildInstance();
+            }
+        }
 
         if (mapping instanceof XmlFeatureTypeMapping) {
             return new XmlMappingFeatureIterator(store, mapping, query);

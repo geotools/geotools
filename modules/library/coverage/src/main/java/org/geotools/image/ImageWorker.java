@@ -1747,20 +1747,26 @@ public class ImageWorker {
      * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel
      * component color model} preserving transparency. This is used especially in order to go from
      * {@link PackedColorModel} to {@link ComponentColorModel}, which seems to be well accepted from
-     * {@code PNGEncoder} and {@code TIFFEncoder}.
+     * {@code PNGEncoder} and {@code TIFFEncoder}. The omitAlphaOnExpand param allows to explicity
+     * avoid producing an alpha band when expanding an {@link IndexColorModel} to {@link
+     * ComponentColorModel}. This may be useful when preparing an Image for JPEG encoding which do
+     * not support alpha band, avoiding the need of a BandSelect right after the color expansion.
+     * Note that this flag has only effect when expanding from {@link IndexColorModel} so alpha is
+     * preserved if input colorModel is already a ComponentColorModel.
      *
      * <p>This code is adapted from jai-interests mailing list archive.
      *
      * @param checkTransparent
      * @param optimizeGray
+     * @param omitAlphaOnExpand
      * @return this {@link ImageWorker}.
      * @see FormatDescriptor
      */
     public final ImageWorker forceComponentColorModel(
-            boolean checkTransparent, boolean optimizeGray) {
+            boolean checkTransparent, boolean optimizeGray, boolean omitAlphaOnExpand) {
         final ColorModel cm = image.getColorModel();
         if (cm instanceof ComponentColorModel) {
-            // Already an component color model - nothing to do.
+            // Already a component color model - nothing to do.
             return this;
         }
         // shortcut for index color model
@@ -1773,7 +1779,7 @@ public class ImageWorker {
                     ColorUtilities.isGrayPalette(icm, checkTransparent)
                             && optimizeGray
                             && noData == null;
-            final boolean alpha = icm.hasAlpha() || noData != null;
+            final boolean alpha = (icm.hasAlpha() || noData != null) && !omitAlphaOnExpand;
             /*
              * If the image is grayscale, retain only the needed bands.
              */
@@ -1947,6 +1953,24 @@ public class ImageWorker {
      */
     public final ImageWorker forceComponentColorModel(boolean checkTransparent) {
         return forceComponentColorModel(checkTransparent, true);
+    }
+
+    /**
+     * Reformats the {@linkplain ColorModel color model} to a {@linkplain ComponentColorModel
+     * component color model} preserving transparency. This is used especially in order to go from
+     * {@link PackedColorModel} to {@link ComponentColorModel}, which seems to be well accepted from
+     * {@code PNGEncoder} and {@code TIFFEncoder}.
+     *
+     * <p>This code is adapted from jai-interests mailing list archive.
+     *
+     * @param checkTransparent tells this method to not consider fully transparent pixels when
+     *     optimizing grayscale palettes.
+     * @return this {@link ImageWorker}.
+     * @see FormatDescriptor
+     */
+    public final ImageWorker forceComponentColorModel(
+            boolean checkTransparent, boolean optimizeGray) {
+        return forceComponentColorModel(checkTransparent, optimizeGray, false);
     }
 
     /**

@@ -1424,6 +1424,22 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     }
 
     @Test
+    public void testIndexedRGBNoDataForceComponentColorModelNoAlpha() {
+        RenderedImage image = getIndexedRGBNodata();
+        ImageWorker iw = new ImageWorker(image);
+        iw.setBackground(new double[] {0, 0, 255});
+        iw.forceComponentColorModel(false, true, true);
+        RenderedImage expanded = iw.getRenderedImage();
+
+        // nodata forced expansion
+        assertTrue(expanded.getColorModel() instanceof ComponentColorModel);
+
+        // Make sure there is noAlpha
+        assertFalse(expanded.getColorModel().hasAlpha());
+        assertEquals(3, expanded.getColorModel().getNumComponents());
+    }
+
+    @Test
     public void testOptimizeAffine() throws Exception {
         BufferedImage bi = new BufferedImage(100, 100, BufferedImage.TYPE_3BYTE_BGR);
         ImageWorker iw = new ImageWorker(bi);

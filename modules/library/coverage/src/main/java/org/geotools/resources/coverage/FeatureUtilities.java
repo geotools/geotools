@@ -301,8 +301,8 @@ public final class FeatureUtilities {
             if (!isIdentity) worldToGridTransform.transform(coords, 0, coords, 0, 1);
 
             // send it back to the returned polygon
-            final int x = (int) (coords[0] + 0.5d);
-            final int y = (int) (coords[1] + 0.5d);
+            final int x = (int) Math.round(coords[0]);
+            final int y = (int) Math.round(coords[1]);
             if (points != null) points.add(new Point2D.Double(coords[0], coords[1]));
 
             // send it back to the returned polygon

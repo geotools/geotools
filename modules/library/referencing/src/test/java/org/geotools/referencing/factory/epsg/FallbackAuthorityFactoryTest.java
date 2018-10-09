@@ -74,7 +74,7 @@ public final class FallbackAuthorityFactoryTest {
         Set<CRSAuthorityFactory> factories =
                 ReferencingFactoryFinder.getCRSAuthorityFactories(null);
         for (CRSAuthorityFactory factory : factories) {
-            System.out.println("--> " + factory.getClass().getSimpleName());
+            // System.out.println("--> " + factory.getClass().getSimpleName());
         }
         boolean foundWkt = false;
         boolean foundExtra = false;
@@ -82,7 +82,7 @@ public final class FallbackAuthorityFactoryTest {
             CRSAuthorityFactory factory = (CRSAuthorityFactory) it.next();
             Class<?> type = factory.getClass();
             if (VERBOSE) {
-                System.out.println(type);
+                // System.out.println(type);
             }
             if (type == FactoryEPSGExtra.class) {
                 foundExtra = true;

@@ -100,7 +100,7 @@ public class KMLParsingTest extends TestCase {
         encoder.setIndenting(true);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         encoder.encode(features, KML.kml, out);
-        System.out.println(new String(out.toByteArray()));
+        // System.out.println(new String(out.toByteArray()));
 
         DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document d = db.parse(new ByteArrayInputStream(out.toByteArray()));

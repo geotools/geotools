@@ -46,7 +46,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testFindInterpolateFunction() throws Exception {
-        System.out.println("   testFindInterpolateFunction");
+        // System.out.println("   testFindInterpolateFunction");
 
         Literal fallback = ff2.literal("NOT_FOUND");
         setupParameters(data, values);
@@ -58,7 +58,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testLinearNumericInterpolation() throws Exception {
-        System.out.println("   testLinearNumericInterpolation");
+        // System.out.println("   testLinearNumericInterpolation");
 
         setupParameters(data, values);
         parameters.add(ff2.literal(InterpolateFunction.METHOD_NUMERIC));
@@ -93,7 +93,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testLinearColorInterpolation() throws Exception {
-        System.out.println("   testLinearColorInterpolation");
+        // System.out.println("   testLinearColorInterpolation");
 
         setupParameters(data, colors);
         parameters.add(ff2.literal(InterpolateFunction.METHOD_COLOR));
@@ -135,7 +135,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testCosineNumericInterpolation() throws Exception {
-        System.out.println("   testCosineNumericInterpolation");
+        // System.out.println("   testCosineNumericInterpolation");
 
         setupParameters(data, values);
         parameters.add(ff2.literal(InterpolateFunction.METHOD_NUMERIC));
@@ -174,7 +174,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testCubicNumericInterpolation() throws Exception {
-        System.out.println("   testCubicNumericInterpolation");
+        // System.out.println("   testCubicNumericInterpolation");
 
         setupParameters(data, values);
         parameters.add(ff2.literal(InterpolateFunction.METHOD_NUMERIC));
@@ -208,7 +208,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testAsRasterData() throws Exception {
-        System.out.println("   testRasterData");
+        // System.out.println("   testRasterData");
 
         setupParameters(data, colors);
         parameters.set(0, ff2.literal("RasterData"));
@@ -251,7 +251,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testForOutOfRangeColorValues() {
-        System.out.println("   out of range color values");
+        // System.out.println("   out of range color values");
 
         parameters = new ArrayList<Expression>();
         parameters.add(ff2.literal("RasterData"));
@@ -285,7 +285,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testNoMethodParameter() throws Exception {
-        System.out.println("   testNoMethodParameter");
+        // System.out.println("   testNoMethodParameter");
 
         setupParameters(data, values);
         parameters.add(ff2.literal(InterpolateFunction.MODE_LINEAR));
@@ -305,7 +305,7 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testNoModeParameter() throws Exception {
-        System.out.println("   testNoModeParameter");
+        // System.out.println("   testNoModeParameter");
 
         setupParameters(data, values);
         parameters.add(ff2.literal(InterpolateFunction.METHOD_NUMERIC));

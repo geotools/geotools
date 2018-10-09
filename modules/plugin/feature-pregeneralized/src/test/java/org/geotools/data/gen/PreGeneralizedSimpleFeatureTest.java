@@ -99,7 +99,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             }
             return original.getNumPoints() > simplified.getNumPoints();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
             return false;
         }
@@ -117,7 +117,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             ds = new PreGeneralizedDataStore(ginfos, TestSetup.REPOSITORY);
             fCollection = ds.getFeatureSource(typeName).getFeatures();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
         }
 
@@ -223,7 +223,7 @@ public class PreGeneralizedSimpleFeatureTest extends TestCase {
             ds = new PreGeneralizedDataStore(ginfos, TestSetup.REPOSITORY);
             fCollection = ds.getFeatureSource(typeName).getFeatures();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
         }
 

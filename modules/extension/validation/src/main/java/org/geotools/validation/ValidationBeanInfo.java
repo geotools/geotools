@@ -65,7 +65,7 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
             return pd;
         } catch (IntrospectionException e) {
             // TODO error, log here
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
             return new PropertyDescriptor[0];
         }
@@ -209,7 +209,7 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
                 url = new URL(value.toString());
             } catch (MalformedURLException e) {
                 // TODO error, log this
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
 

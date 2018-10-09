@@ -173,7 +173,8 @@ public class SLDInlineFeatureParser {
             try {
                 f.setAttribute(childName, value);
             } catch (Exception e) {
-                e.printStackTrace(); // we hid this from the user
+                java.util.logging.Logger.getGlobal()
+                        .log(java.util.logging.Level.INFO, "", e); // we hid this from the user
             }
         }
         return f;

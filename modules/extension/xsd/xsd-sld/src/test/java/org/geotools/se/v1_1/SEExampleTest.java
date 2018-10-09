@@ -331,7 +331,7 @@ public class SEExampleTest extends SETestSupport {
         assertEquals(Color.BLACK, fill.getColor().evaluate(null, Color.class));
 
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        System.out.println(sym.getPriority());
+        // System.out.println(sym.getPriority());
         assertEquals(ff.property("people"), sym.getPriority());
 
         Map<String, String> options = sym.getOptions();

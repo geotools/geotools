@@ -75,7 +75,7 @@ public class LargePolygonsPerfTest {
             // test.testRender();
             LargePolygonsPerfTest.oneTimeTearDown();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -96,7 +96,7 @@ public class LargePolygonsPerfTest {
     }
 
     private void log(String s) {
-        System.err.println(s);
+        // System.err.println(s);
     }
 
     @Test

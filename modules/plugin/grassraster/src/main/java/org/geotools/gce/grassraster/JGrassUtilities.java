@@ -705,7 +705,7 @@ public class JGrassUtilities {
             } while (!rectIter.nextPixelDone());
             rectIter.startPixels();
             y++;
-            System.out.println();
+            // System.out.println();
         } while (!rectIter.nextLineDone());
     }
 }

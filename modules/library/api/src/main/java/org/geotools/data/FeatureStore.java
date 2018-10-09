@@ -44,7 +44,7 @@ import org.opengis.filter.identity.FeatureId;
  *         featureStore.addFeatures( someFeatures );
  *         t.commit();
  *     } catch (Exception ex) {
- *         ex.printStackTrace();
+ *        java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
  *         t.rollback();
  *     } finally {
  *         t.close();
@@ -153,7 +153,7 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
      *     t.commit();
      * } catch ( IOException ex ) {
      *     // something went wrong;
-     *     ex.printStackTrace();
+     *    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
      *     t.rollback();
      * } finally {
      *     t.close();
@@ -174,7 +174,7 @@ public interface FeatureStore<T extends FeatureType, F extends Feature>
      *     t.commit();
      * } catch( IOException erp ){
      *     // something went wrong;
-     *     ex.printStackTrace();
+     *    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
      *     t.rollback();
      * }
      * </code></pre>

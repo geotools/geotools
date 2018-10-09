@@ -29,7 +29,7 @@ public class ToolboxTest extends TestCase {
         try {
             tb.parse(new String[] {"validate", "src/test/resources/geninfo_vertical.xml"});
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail();
         }
     }

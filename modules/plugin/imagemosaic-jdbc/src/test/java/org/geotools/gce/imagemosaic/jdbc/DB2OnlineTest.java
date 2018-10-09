@@ -111,7 +111,7 @@ public class DB2OnlineTest extends AbstractTest {
             LOGGER.log(Level.INFO, s.getInt(2) + "|" + s.getString(3));
         } catch (SQLException e) {
             Assert.fail(e.getMessage());
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

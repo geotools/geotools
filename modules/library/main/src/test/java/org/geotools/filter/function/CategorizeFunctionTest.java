@@ -42,7 +42,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testFindCategorizeFunction() throws Exception {
-        System.out.println("   testFindCategorizeFunction");
+        // System.out.println("   testFindCategorizeFunction");
 
         Literal fallback = ff2.literal("NOT_FOUND");
         parameters.add(ff2.property("value"));
@@ -56,7 +56,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testNoThresholds() throws Exception {
-        System.out.println("   testNoThresholds");
+        // System.out.println("   testNoThresholds");
 
         final int categoryValue = 42;
 
@@ -74,7 +74,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
      */
     @Test
     public void testSucceedingThresholds() throws Exception {
-        System.out.println("   testSucceedingThresholds");
+        // System.out.println("   testSucceedingThresholds");
 
         final String[] categories = {"low", "mid", "high", "super"};
         final Double[] thresholds = {0.0, 50.0, 100.0};
@@ -107,7 +107,7 @@ public class CategorizeFunctionTest extends SEFunctionTestBase {
      */
     @Test
     public void testPrecedingThresholds() throws Exception {
-        System.out.println("   testPrecedingThresholds");
+        // System.out.println("   testPrecedingThresholds");
 
         final String[] categories = {"low", "mid", "high", "super"};
         final Double[] thresholds = {0.0, 50.0, 100.0};

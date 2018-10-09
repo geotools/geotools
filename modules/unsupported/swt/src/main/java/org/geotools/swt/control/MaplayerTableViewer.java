@@ -216,7 +216,7 @@ public class MaplayerTableViewer extends TableViewer implements ISelectionChange
             try {
                 doSetStyle(element);
             } catch (IOException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
             pane.redraw();
         }

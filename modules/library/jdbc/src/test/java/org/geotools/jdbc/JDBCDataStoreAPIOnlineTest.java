@@ -101,7 +101,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             assertTrue(contains(names, tname("road")));
             assertTrue(contains(names, tname("river")));
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail("An IOException has been thrown!");
         }
     }
@@ -770,7 +770,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             try (FeatureReader<SimpleFeatureType, SimpleFeature> reader =
                     dataStore.getFeatureReader(new Query(tname("road"), Filter.INCLUDE), t2)) {
                 td.newRoad = findFeature(reader, aname("name"), "r4");
-                System.out.println("newRoad:" + td.newRoad);
+                // System.out.println("newRoad:" + td.newRoad);
                 ADD[ADD.length - 1] = td.newRoad;
                 FINAL[FINAL.length - 1] = td.newRoad;
             }
@@ -1592,10 +1592,10 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
             //            }
         }
 
-        System.out.println("not found:" + feature);
+        // System.out.println("not found:" + feature);
 
         for (int i = 0; i < array.length; i++) {
-            System.out.println(i + ":" + array[i]);
+            // System.out.println(i + ":" + array[i]);
         }
 
         fail("array has no match for " + feature);

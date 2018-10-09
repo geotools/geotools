@@ -91,7 +91,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeA.setDegree(4);
@@ -112,7 +112,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeA.setDegree(4);
@@ -133,7 +133,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeA.setDegree(4);
@@ -148,7 +148,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeB.setDegree(4);
@@ -163,7 +163,7 @@ public class OptEdgeTest extends TestCase {
         try {
             setUp();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         m_nodeA.setDegree(4);

@@ -161,7 +161,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
 
             return xmlS1.equals(xmlS2);
         } catch (TransformerException te) {
-            te.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", te);
             return false;
         }
     }
@@ -668,7 +668,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
         int controlEqHash = controlEqual.hashCode();
         int testHash = test.hashCode();
         if (controlEqHash != testHash) {
-            System.out.println("Warning  - Equal objects should return equal hashcodes");
+            // System.out.println("Warning  - Equal objects should return equal hashcodes");
         }
     }
 

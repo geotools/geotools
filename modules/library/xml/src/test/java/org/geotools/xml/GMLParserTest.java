@@ -128,7 +128,7 @@ public class GMLParserTest extends TestCase {
             checkFeatureCollection((SimpleFeatureCollection) doc);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -161,7 +161,7 @@ public class GMLParserTest extends TestCase {
             checkFeatureCollection((SimpleFeatureCollection) doc);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -194,7 +194,7 @@ public class GMLParserTest extends TestCase {
             checkFeatureCollection((SimpleFeatureCollection) doc);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -227,7 +227,7 @@ public class GMLParserTest extends TestCase {
             checkFeatureCollection((SimpleFeatureCollection) doc);
 
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -246,7 +246,7 @@ public class GMLParserTest extends TestCase {
             //            System.out.println("Feature "+j+" : "+ft);
             j++;
         }
-        System.out.println("Found " + j + " Features");
+        // System.out.println("Found " + j + " Features");
     }
 
     public void skippedtestOneFeatureWrite() {
@@ -277,12 +277,12 @@ public class GMLParserTest extends TestCase {
             //        assertNotNull("New Document missing", doc);
             //
             //        assertTrue("file was not created +f",f.exists());
-            System.out.println(f);
+            // System.out.println(f);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }
@@ -320,12 +320,12 @@ public class GMLParserTest extends TestCase {
             //        assertNotNull("New Document missing", doc);
             //
             //        assertTrue("file was not created +f",f.exists());
-            System.out.println(f);
+            // System.out.println(f);
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         } catch (Throwable e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }

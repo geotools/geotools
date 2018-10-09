@@ -82,7 +82,7 @@ public class TileViewer {
 
             env = env.transform(ServiceTest.MERCATOR_CRS, true);
         } catch (TransformException | FactoryException e1) {
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }
 
         map.getViewport().setBounds(env);
@@ -165,7 +165,7 @@ public class TileViewer {
             Style shpStyle = SLD.createPolygonStyle(Color.BLUE, null, 0.50f);
             map.addLayer(new FeatureLayer(shapefileSource, shpStyle));
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

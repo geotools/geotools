@@ -68,7 +68,7 @@ public class EnvFunctionTest {
     /** Tests the use of two thread-local tables with same var names and different values */
     @Test
     public void testSetLocalValues() throws Exception {
-        System.out.println("   setLocalValues");
+        // System.out.println("   setLocalValues");
 
         final String key1 = "foo";
         final String key2 = "bar";
@@ -126,7 +126,7 @@ public class EnvFunctionTest {
     /** Tests the use of a single var name with two thread-local values */
     @Test
     public void testSetLocalValue() throws Exception {
-        System.out.println("   setLocalValue");
+        // System.out.println("   setLocalValue");
 
         final String varName = "foo";
         final int[] values = {1, 2};
@@ -169,7 +169,7 @@ public class EnvFunctionTest {
     /** Tests setting global values and accessing them from different threads */
     @Test
     public void testSetGlobalValues() throws Exception {
-        System.out.println("   setGlobalValues");
+        // System.out.println("   setGlobalValues");
 
         final Map<String, Object> table = new HashMap<String, Object>();
         table.put("foo", 1);
@@ -219,7 +219,7 @@ public class EnvFunctionTest {
     /** Tests setting a global value and accessing it from different threads */
     @Test
     public void testSetGlobalValue() throws Exception {
-        System.out.println("   setGlobalValue");
+        // System.out.println("   setGlobalValue");
 
         final String varName = "foo";
         final String varValue = "a global value";
@@ -244,7 +244,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testCaseInsensitiveGlobalLookup() {
-        System.out.println("   test case-insensitive global lookup");
+        // System.out.println("   test case-insensitive global lookup");
 
         final String varName = "foo";
         final String altVarName = "FoO";
@@ -257,7 +257,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testCaseInsensitiveLocalLookup() {
-        System.out.println("   test case-insensitive local lookup");
+        // System.out.println("   test case-insensitive local lookup");
 
         final String varName = "foo";
         final String altVarName = "FoO";
@@ -270,7 +270,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testClearGlobal() {
-        System.out.println("   clearGlobalValues");
+        // System.out.println("   clearGlobalValues");
 
         final String varName = "foo";
         final String varValue = "clearGlobal";
@@ -283,7 +283,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testClearLocal() {
-        System.out.println("   clearLocalValues");
+        // System.out.println("   clearLocalValues");
 
         final String varName = "foo";
         final String varValue = "clearLocal";
@@ -296,14 +296,14 @@ public class EnvFunctionTest {
 
     @Test
     public void testGetArgCount() {
-        System.out.println("   getArgCount");
+        // System.out.println("   getArgCount");
         EnvFunction fn = new EnvFunction();
         assertEquals(1, fn.getFunctionName().getArgumentCount());
     }
 
     @Test
     public void testLiteralDefaultValue() {
-        System.out.println("   literal default value");
+        // System.out.println("   literal default value");
 
         int defaultValue = 42;
 
@@ -316,7 +316,7 @@ public class EnvFunctionTest {
 
     @Test
     public void testNonLiteralDefaultValue() {
-        System.out.println("   non-literal default value");
+        // System.out.println("   non-literal default value");
 
         int x = 21;
         Expression defaultExpr = ff.add(ff.literal(x), ff.literal(x));

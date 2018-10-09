@@ -218,7 +218,7 @@ public abstract class Tile implements ImageLoader {
      * if (swtImage != null && !swtImage.isDisposed()) { return; } // otherwise try creating the
      * SWTImage now try { BufferedImage buffImage = getBufferedImage(); swtImage =
      * AWTSWTImageUtils.createSWTImage(buffImage, false); } catch (Exception ex) {
-     * ex.printStackTrace(); } } }
+     * java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex); } } }
      */
 
     /** @return The size of the tile in pixels. */

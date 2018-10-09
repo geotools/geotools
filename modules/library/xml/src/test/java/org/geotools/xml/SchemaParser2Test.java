@@ -57,12 +57,12 @@ public class SchemaParser2Test extends TestCase {
             File f = TestData.copy(this, path);
             s = SchemaFactory.getInstance(targetNS, f.toURI(), Level.INFO);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
 
         assertNotNull("Schema missing", s);
-        System.out.println(s);
+        // System.out.println(s);
 
         Schema s2 = null;
         s2 = SchemaFactory.getInstance(targetNS);

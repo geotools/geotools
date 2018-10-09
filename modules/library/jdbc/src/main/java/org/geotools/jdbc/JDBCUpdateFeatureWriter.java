@@ -67,7 +67,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader
         try {
             last.init();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // reset next flag

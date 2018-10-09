@@ -113,7 +113,7 @@ public class EPSGTest extends TestCase {
             try {
                 crs = (CoordinateReferenceSystem) factory.createObject(code);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 fail("Failed to decode " + code + " with error: " + e.getMessage());
             }
         }

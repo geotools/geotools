@@ -64,6 +64,6 @@ public class MultiRepTestRunner extends JUnit4ClassRunner {
             super.run(notifier);
         }
 
-        System.out.printf("%d failures in %d runs\n", numFailures, N);
+        // System.out.printf("%d failures in %d runs\n", numFailures, N);
     }
 }

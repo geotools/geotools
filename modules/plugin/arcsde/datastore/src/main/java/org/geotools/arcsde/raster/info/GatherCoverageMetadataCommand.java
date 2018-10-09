@@ -185,7 +185,7 @@ public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
                                         + rasterInfo.toString());
                     }
 
-                    System.out.println(rasterInfo);
+                    // System.out.println(rasterInfo);
                 }
             } catch (SeException e) {
                 throw new ArcSdeException("Gathering raster dataset information", e);

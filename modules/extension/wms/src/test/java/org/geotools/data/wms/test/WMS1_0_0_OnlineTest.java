@@ -79,7 +79,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
             assertNotNull(capabilities);
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + ce);
+                // System.err.println("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }
@@ -145,7 +145,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
             assertNotNull(bbox);
         } catch (Exception e) {
             if (e.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + e);
+                // System.err.println("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -158,12 +158,12 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
             WMSCapabilities caps = wms.getCapabilities();
             GetMapRequest request = wms.createGetMapRequest();
             request.setFormat("image/jpeg");
-            System.out.println(request.getFinalURL().toExternalForm());
+            // System.out.println(request.getFinalURL().toExternalForm());
 
             assertTrue(request.getFinalURL().toExternalForm().indexOf("jpeg") >= 0);
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + ce);
+                // System.err.println("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }
@@ -211,17 +211,17 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
             request.setQueryPoint(200, 200);
             request.setInfoFormat(caps.getRequest().getGetFeatureInfo().getFormatStrings()[0]);
 
-            System.out.println(request.getFinalURL());
+            // System.out.println(request.getFinalURL());
 
             GetFeatureInfoResponse response = (GetFeatureInfoResponse) wms.issueRequest(request);
-            System.out.println(response.getContentType());
+            // System.out.println(response.getContentType());
             assertTrue( response.getContentType().indexOf("text/plain") != -1 );
             BufferedReader in = new BufferedReader(new InputStreamReader(response.getInputStream()));
             String line;
 
             boolean textFound = false;
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
+                // System.out.println(line);
                 if (line.indexOf("Wood Buffalo National Park") != -1) {
                     textFound = true;
                 }
@@ -229,7 +229,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
             assertTrue(textFound);
         } catch(java.net.ConnectException ce){
             if(ce.getMessage().indexOf("timed out")>0){
-                System.err.println("Unable to test - timed out: "+ce);
+                // System.err.println("Unable to test - timed out: "+ce);
             } else{
                 throw(ce);
             }
@@ -266,7 +266,7 @@ public class WMS1_0_0_OnlineTest extends ServerTestCase {
             return capabilities;
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + ce);
+                // System.err.println("Unable to test - timed out: " + ce);
                 return null;
             } else {
                 throw (ce);

@@ -85,11 +85,11 @@ public class PropertyExamples {
                 removeAllExample();
                 appendContent();
             } catch (Throwable t) {
-                t.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
                 System.exit(1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             File list[] = tmp.listFiles();
             for (int i = 0; i < list.length; i++) {

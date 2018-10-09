@@ -232,7 +232,7 @@ public class ArcSDEPlanarImage extends PlanarImage {
                             "Unrecognized DataBuffer type: " + tileSampleModel.getDataType());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw new RuntimeException(e);
         }
 

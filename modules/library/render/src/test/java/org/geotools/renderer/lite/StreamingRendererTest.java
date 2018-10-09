@@ -502,7 +502,7 @@ public class StreamingRendererTest {
         graphics.dispose();
         mc.dispose();
 
-        System.out.println(filters);
+        // System.out.println(filters);
         assertEquals(2, filters.size());
         Filter f1 = filters.get(0);
         assertTrue(f1 instanceof BBOX);

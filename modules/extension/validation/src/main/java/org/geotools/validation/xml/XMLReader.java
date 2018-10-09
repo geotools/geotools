@@ -113,7 +113,8 @@ public class XMLReader {
                     try {
                         adto = loadArg(elem, dto);
                     } catch (ValidationException e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
 
                         // error
                     }
@@ -252,7 +253,7 @@ public class XMLReader {
                 try {
                     adto = loadArg(elem, dto.getPlugIn());
                 } catch (ValidationException e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
 
                     // error
                 }

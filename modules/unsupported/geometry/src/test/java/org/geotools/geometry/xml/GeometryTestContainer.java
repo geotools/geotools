@@ -68,8 +68,8 @@ public class GeometryTestContainer {
             if (!GeometryConformanceTestSuite.isExcluded(excludes, testCase.getDescription())) {
                 testCase.setName(name);
                 // check for overrides on operations
-                System.out.println(
-                        testCase.toString() + " - test count: " + testCase.getOperationCount());
+                // System.out.println(
+                //        testCase.toString() + " - test count: " + testCase.getOperationCount());
                 testCase = GeometryConformanceTestSuite.overrideOps(testCase, excludes);
                 suite.addTest(testCase);
             }

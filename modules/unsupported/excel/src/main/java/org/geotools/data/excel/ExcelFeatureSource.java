@@ -152,7 +152,7 @@ public class ExcelFeatureSource extends ContentFeatureSource implements SimpleFe
                             break;
 
                         default:
-                            System.out.println(
+                            // System.out.println(
                                     "We don't handle "
                                             + cell.getCellType()
                                             + " type cells "
@@ -282,7 +282,7 @@ public class ExcelFeatureSource extends ContentFeatureSource implements SimpleFe
                         clazz = Boolean.class;
                         break;
                 }
-                System.out.println(name + ":" + clazz);
+                // System.out.println(name + ":" + clazz);
                 tb.add(name, clazz);
             }
         }

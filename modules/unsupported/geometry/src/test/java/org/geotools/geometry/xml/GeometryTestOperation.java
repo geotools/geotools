@@ -392,7 +392,7 @@ public class GeometryTestOperation extends Assert {
                 result = geom1.relate(geom2, arg3);
             } catch (UnsupportedDimensionException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
             actualResult = result;
             return (actualResult == expectedResult);

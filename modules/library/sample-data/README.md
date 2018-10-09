@@ -27,7 +27,7 @@ File access:
 ```java
 TestData.copy( this, "my.shp" );
 File file = TestData.file( this, "my.shp" );
-System.out.println( file.getAbsolutePath() );
+// System.out.println( file.getAbsolutePath() );
 // Something like: C:\....\test-data\my.shp"
 ```
 

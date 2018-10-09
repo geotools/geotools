@@ -95,7 +95,7 @@ public class GrassCoverageWriter extends AbstractGridCoverageWriter implements G
             writer.write(renderedImage);
             writer.dispose();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

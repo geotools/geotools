@@ -98,7 +98,7 @@ public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAutho
         try {
             loadDefault();
         } catch (IOException oops) {
-            System.err.println("Could not load epsg.properties" + oops);
+            LOGGER.log(Level.SEVERE, "Could not load epsg.properties", oops);
         }
     }
 

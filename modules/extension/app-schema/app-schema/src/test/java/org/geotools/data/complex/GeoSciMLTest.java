@@ -112,7 +112,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
             // use the absolute URL and let the Oasis Catalog resolve it to the local FS
             schemaIndex = loadSchema("http://schemas.opengis.net/GeoSciML/Gsml.xsd");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
 
@@ -218,7 +218,7 @@ public class GeoSciMLTest extends AppSchemaTestSupport {
 
             assertEquals(EXPECTED_RESULT_COUNT, count);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }

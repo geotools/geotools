@@ -106,7 +106,7 @@ public final class ScriptRunner extends Console {
                 in.close();
             }
         } catch (IOException exception) {
-            exception.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
         }
     }
 }

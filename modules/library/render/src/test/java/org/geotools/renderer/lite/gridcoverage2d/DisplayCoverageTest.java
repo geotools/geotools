@@ -137,7 +137,8 @@ public class DisplayCoverageTest {
                     public void featureRenderer(SimpleFeature feature) {}
 
                     public void errorOccurred(Exception e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                         fail("Failed to render coverage");
                     }
                 };

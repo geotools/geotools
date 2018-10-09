@@ -526,7 +526,7 @@ public class StyledShapePainter {
             if (type == PathIterator.SEG_LINETO) event = "SEG_LINETO";
             if (type == PathIterator.SEG_MOVETO) event = "SEG_MOVETO";
             if (type == PathIterator.SEG_QUADTO) event = "SEG_QUADTO";
-            System.out.println(event + " " + pt[0] + "," + pt[1]);
+            LOGGER.fine(event + " " + pt[0] + "," + pt[1]);
             iter.next();
         }
     }

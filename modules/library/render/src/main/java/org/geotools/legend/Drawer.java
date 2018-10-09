@@ -527,7 +527,7 @@ public class Drawer {
                             "generated:multipolygon",
                             "*multipolygon:MultiPolygon"); // $NON-NLS-1$ //$NON-NLS-2$
         } catch (SchemaException unExpected) {
-            System.err.println(unExpected);
+            // System.err.println(unExpected);
         }
     }
 

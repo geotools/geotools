@@ -193,7 +193,7 @@ public class JenksNaturalBreaksFunction extends ClassificationFunction {
         }
         localMin[0] = data.get(0);
         /*
-         * for(int k1=0;k1<k;k1++) { System.out.println(k1+" "+localMin[k1]+" - "+localMax[k1]); }
+         * for(int k1=0;k1<k;k1++) { // System.out.println(k1+" "+localMin[k1]+" - "+localMax[k1]); }
          */
         features.close();
         return new RangedClassifier(localMin, localMax);

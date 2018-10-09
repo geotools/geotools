@@ -103,7 +103,7 @@ class ShapeFileIndexer implements FileWriter {
             System.out.println("in " + (System.currentTimeMillis() - start) + "ms.");
             System.out.println();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             usage();
             System.exit(1);
         }

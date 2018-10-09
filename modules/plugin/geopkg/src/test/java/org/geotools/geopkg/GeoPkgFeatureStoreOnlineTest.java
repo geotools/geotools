@@ -83,7 +83,7 @@ public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
 
         try (SimpleFeatureIterator it = fs.getFeatures(q).features()) {
             while (it.hasNext()) {
-                System.out.println(it.next());
+                // System.out.println(it.next());
                 it.next();
             }
         }

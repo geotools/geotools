@@ -259,9 +259,10 @@ public class CRSOnlineTest extends OracleOnlineTestCase {
                 assertNotNull(crs);
                 count++;
             } catch (FactoryException e) {
-                System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
+                // System.err.println("WARNING (CRS: " + code + " ):" + e.getMessage());
             }
         }
-        System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total + "%)");
+        // System.out.println("Success: " + count + "/" + total + " (" + (count * 100) / total +
+        // "%)");
     }
 }

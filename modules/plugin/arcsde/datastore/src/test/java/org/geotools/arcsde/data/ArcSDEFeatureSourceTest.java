@@ -333,7 +333,7 @@ public class ArcSDEFeatureSourceTest {
         try {
             testFilter(mixedFilter, fs, EXPECTED_RESULT_COUNT);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
         // check that getBounds and size do function
@@ -784,7 +784,7 @@ public class ArcSDEFeatureSourceTest {
         try {
             assertNotNull(reader.next());
         } catch (NoSuchElementException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             fail(ex.getMessage());
         }
 

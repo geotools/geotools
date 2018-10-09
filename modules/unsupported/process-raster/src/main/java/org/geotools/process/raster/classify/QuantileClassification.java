@@ -19,10 +19,14 @@ package org.geotools.process.raster.classify;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 import org.geotools.process.classify.ClassificationMethod;
+import org.geotools.util.logging.Logging;
 
 /** Helper class used for raster quantile classification. */
 public class QuantileClassification extends Classification {
+
+    static final Logger LOGGER = Logging.getLogger(Classification.class);
 
     int[] counts;
     SortedMap<Double, Integer>[] tables;
@@ -59,7 +63,7 @@ public class QuantileClassification extends Classification {
         for (int i = 0; i < tables.length; i++) {
             SortedMap<Double, Integer> table = getTable(i);
             for (Entry<Double, Integer> e : table.entrySet()) {
-                System.out.println(String.format("%f: %d", e.getKey(), e.getValue()));
+                LOGGER.info(String.format("%f: %d", e.getKey(), e.getValue()));
             }
         }
     }

@@ -448,7 +448,7 @@ public class BarnesSurfaceInterpolator {
         double cutoffFactor = Math.sqrt(-Math.log(cutoffWeight));
         double effRadius = radius * cutoffFactor;
         double w = weight(effRadius, radius, 1.0);
-        System.out.println(cutoffWeight + "   " + w);
+        // System.out.println(cutoffWeight + "   " + w);
         return effRadius;
     }
 }

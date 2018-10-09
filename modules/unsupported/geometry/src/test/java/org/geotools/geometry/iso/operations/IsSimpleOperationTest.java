@@ -149,7 +149,7 @@ public class IsSimpleOperationTest extends TestCase {
         try {
             rSurface = (SurfaceImpl) wktReader.read(aWKTsurface);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rSurface;
     }
@@ -160,7 +160,7 @@ public class IsSimpleOperationTest extends TestCase {
         try {
             rCurve = (CurveImpl) wktReader.read(aWKTcurve);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         return rCurve;
     }

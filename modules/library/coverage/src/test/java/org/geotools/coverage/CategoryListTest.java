@@ -105,7 +105,7 @@ public final class CategoryListTest {
             fail("Argument check");
         } catch (IllegalArgumentException exception) {
             if (VERBOSE) {
-                System.out.println(exception.getLocalizedMessage());
+                // System.out.println(exception.getLocalizedMessage());
                 // This is the expected exception.
             }
         }
@@ -114,7 +114,7 @@ public final class CategoryListTest {
             fail("Argument check");
         } catch (IllegalArgumentException exception) {
             if (VERBOSE) {
-                System.out.println(exception.getLocalizedMessage());
+                // System.out.println(exception.getLocalizedMessage());
                 // This is the expected exception.
             }
         }

@@ -270,15 +270,15 @@ public class ECQL {
 
                 List<Filter> filters = ECQL.toFilterList(line);
                 for (Filter filter : filters) {
-                    System.out.println();
+                    // System.out.println();
                     filterTransformer.transform(filter, System.out);
                 }
             } catch (IOException e1) {
-                e1.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
             } catch (CQLException cqlex) {
                 System.out.println(cqlex.getSyntaxError());
             } catch (TransformerException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
     }

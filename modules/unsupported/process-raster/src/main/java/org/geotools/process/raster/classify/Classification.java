@@ -16,10 +16,14 @@
  */
 package org.geotools.process.raster.classify;
 
+import java.util.logging.Logger;
 import org.geotools.process.classify.ClassificationMethod;
+import org.geotools.util.logging.Logging;
 
 /** Helper class used for raster classification. */
 public class Classification {
+
+    static final Logger LOGGER = Logging.getLogger(Classification.class);
 
     /** classification method */
     ClassificationMethod method;
@@ -68,7 +72,7 @@ public class Classification {
     public void print() {
         for (int i = 0; i < breaks.length; i++) {
             for (Double d : breaks[i]) {
-                System.out.println(d);
+                LOGGER.info(String.valueOf(d));
             }
         }
     }

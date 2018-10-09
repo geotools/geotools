@@ -1199,7 +1199,7 @@ public class Parser extends MathTransformParser {
             }
             parser.reformat(in, arguments.out, arguments.err);
         } catch (Exception exception) {
-            exception.printStackTrace(arguments.err);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exception);
         }
         // Do not close 'in', since it is the standard input stream.
     }

@@ -85,8 +85,6 @@ import org.geotools.arcsde.gce.producer.ArcSDERasterFloatProducerImpl;
 import org.geotools.arcsde.gce.producer.ArcSDERasterOneBitPerBandProducerImpl;
 import org.geotools.arcsde.gce.producer.ArcSDERasterOneBytePerBandProducerImpl;
 import org.geotools.arcsde.gce.producer.ArcSDERasterProducer;
-import org.geotools.arcsde.raster.info.CompressionType;
-import org.geotools.arcsde.raster.info.InterpolationType;
 import org.geotools.arcsde.raster.info.RasterCellType;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.arcsde.session.Command;
@@ -455,7 +453,8 @@ public class RasterTestData {
                             insert.execute();
                             insert.close();
                         } catch (SeException se) {
-                            se.printStackTrace();
+                            java.util.logging.Logger.getGlobal()
+                                    .log(java.util.logging.Level.INFO, "", se);
                             throw se;
                         }
 
@@ -978,7 +977,8 @@ public class RasterTestData {
                                             consumer.rasterComplete(
                                                     SeRasterConsumer.STATICIMAGEDONE);
                                         } catch (Exception se) {
-                                            se.printStackTrace();
+                                            java.util.logging.Logger.getGlobal()
+                                                    .log(java.util.logging.Level.INFO, "", se);
                                             consumer.rasterComplete(SeRasterConsumer.IMAGEERROR);
                                         }
                                     }
@@ -1074,7 +1074,8 @@ public class RasterTestData {
                                 band1.setColorMap(colorMapType, dataBuffer);
                                 band1.alter();
                             } catch (SeException e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                                 throw new ArcSdeException(e);
                             }
                         }
@@ -1168,7 +1169,7 @@ public class RasterTestData {
                     if (img1data[i] != img2data[i]) {
                         final int x = i % image1.getWidth();
                         final int y = i / image1.getHeight();
-                        System.out.println(
+                        LOGGER.warning(
                                 "pixel "
                                         + i
                                         + " (possibly "
@@ -1185,12 +1186,12 @@ public class RasterTestData {
             }
 
             /*
-             * for (int xpos = 0; xpos < image1.getWidth(); xpos++) { System.out.println("checking
+             * for (int xpos = 0; xpos < image1.getWidth(); xpos++) { // System.out.println("checking
              * column " + xpos); int[] img1data = image1.getData().getSamples(xpos, 0, 1,
              * image1.getHeight(), b, new int[image1.getHeight()]); int[] img2data =
              * image2.getData().getSamples(xpos, 0, 1, image1.getHeight(), b, new
              * int[image1.getHeight()]); if (!Arrays.equals(img1data, img2data)) {
-             * System.out.println("pixels in column " + xpos + " are different"); return false; } }
+             * // System.out.println("pixels in column " + xpos + " are different"); return false; } }
              */
 
         }
@@ -1677,33 +1678,42 @@ public class RasterTestData {
                                 final int tileWidth = attr.getTileWidth();
                                 final int interpolation = attr.getInterpolation();
 
-                                System.out.println(
-                                        tableName
-                                                + ":\n\t pixelType: "
-                                                + cellType
-                                                + "\n\tnumBands: "
-                                                + numBands
-                                                + "\n\twidth: "
-                                                + imageWidth
-                                                + ", height: "
-                                                + imageHeight
-                                                + ", tile width: "
-                                                + tileWidth
-                                                + ", tile height: "
-                                                + tileHeight
-                                                + "\n\t compression type: "
-                                                + CompressionType.valueOf(compressionType)
-                                                + ", interpolation: "
-                                                + InterpolationType.valueOf(interpolation));
+                                // System.out.println(
+                                //                                        tableName
+                                //                                                + ":\n\t
+                                // pixelType: "
+                                //                                                + cellType
+                                //                                                + "\n\tnumBands: "
+                                //                                                + numBands
+                                //                                                + "\n\twidth: "
+                                //                                                + imageWidth
+                                //                                                + ", height: "
+                                //                                                + imageHeight
+                                //                                                + ", tile width: "
+                                //                                                + tileWidth
+                                //                                                + ", tile height:
+                                // "
+                                //                                                + tileHeight
+                                //                                                + "\n\t
+                                // compression type: "
+                                //                                                +
+                                // CompressionType.valueOf(compressionType)
+                                //                                                + ",
+                                // interpolation: "
+                                //                                                +
+                                // InterpolationType.valueOf(interpolation));
                                 SeRasterBand[] bands = attr.getBands();
                                 for (SeRasterBand band : bands) {
                                     int bandNumber = band.getBandNumber();
                                     boolean hasColorMap = band.hasColorMap();
-                                    System.out.println(
-                                            "\t Band nº "
-                                                    + bandNumber
-                                                    + ": has color map: "
-                                                    + hasColorMap);
+                                    //                                    // System.out.println(
+                                    //                                            "\t Band nº "
+                                    //                                                    +
+                                    // bandNumber
+                                    //                                                    + ": has
+                                    // color map: "
+                                    //                                                    +
+                                    // hasColorMap);
                                     // if (hasColorMap) {
                                     // SeRasterBandColorMap colorMap = band.getColorMap();
                                     // System.out.println("\tColor map: " + colorMap);
@@ -1753,7 +1763,7 @@ public class RasterTestData {
             testData.describeRasters();
             testData.tearDown();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 }

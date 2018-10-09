@@ -427,7 +427,7 @@ public class Base64 {
             oos.writeObject(serializableObject);
         } // end try
         catch (java.io.IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             return null;
         } // end catch
         finally {
@@ -549,7 +549,7 @@ public class Base64 {
                 gzos.close();
             } // end try
             catch (java.io.IOException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 return null;
             } // end catch
             finally {
@@ -686,15 +686,16 @@ public class Base64 {
 
                 return 3;
             } catch (Exception e) {
-                System.out.println("" + source[srcOffset] + ": " + (DECODABET[source[srcOffset]]));
-                System.out.println(
-                        "" + source[srcOffset + 1] + ": " + (DECODABET[source[srcOffset + 1]]));
-                System.out.println(
-                        "" + source[srcOffset + 2] + ": " + (DECODABET[source[srcOffset + 2]]));
-                System.out.println(
-                        "" + source[srcOffset + 3] + ": " + (DECODABET[source[srcOffset + 3]]));
+                // System.out.println("" + source[srcOffset] + ": " +
+                // (DECODABET[source[srcOffset]]));
+                // System.out.println(
+                //       "" + source[srcOffset + 1] + ": " + (DECODABET[source[srcOffset + 1]]));
+                // System.out.println(
+                //      "" + source[srcOffset + 2] + ": " + (DECODABET[source[srcOffset + 2]]));
+                // System.out.println(
+                //       "" + source[srcOffset + 3] + ": " + (DECODABET[source[srcOffset + 3]]));
                 return -1;
-            } // e nd catch
+            } // end catch
         }
     } // end decodeToBytes
 
@@ -824,8 +825,8 @@ public class Base64 {
 
             } // end if: white space, equals sign or better
             else {
-                System.err.println(
-                        "Bad Base64 input character at " + i + ": " + source[i] + "(decimal)");
+                // System.err.println(
+                //      "Bad Base64 input character at " + i + ": " + source[i] + "(decimal)");
                 return null;
             } // end else:
         } // each input character
@@ -927,11 +928,11 @@ public class Base64 {
             obj = ois.readObject();
         } // end try
         catch (java.io.IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             obj = null;
         } // end catch
         catch (java.lang.ClassNotFoundException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             obj = null;
         } // end catch
         finally {
@@ -1026,10 +1027,10 @@ public class Base64 {
 
             // Check for size of file
             if (file.length() > Integer.MAX_VALUE) {
-                System.err.println(
-                        "File is too big for this convenience method ("
-                                + file.length()
-                                + " bytes).");
+                // System.err.println(
+                //                        "File is too big for this convenience method ("
+                //                                + file.length()
+                //                                + " bytes).");
                 return null;
             } // end if: file too big for int index
             buffer = new byte[(int) file.length()];
@@ -1049,7 +1050,7 @@ public class Base64 {
 
         } // end try
         catch (java.io.IOException e) {
-            System.err.println("Error decoding from file " + filename);
+            // System.err.println("Error decoding from file " + filename);
         } // end catch: IOException
         finally {
             try {
@@ -1092,7 +1093,7 @@ public class Base64 {
 
         } // end try
         catch (java.io.IOException e) {
-            System.err.println("Error encoding from file " + filename);
+            // System.err.println("Error encoding from file " + filename);
         } // end catch: IOException
         finally {
             try {

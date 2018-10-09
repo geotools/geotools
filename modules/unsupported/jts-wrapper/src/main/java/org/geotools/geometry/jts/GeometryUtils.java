@@ -843,13 +843,13 @@ public final class GeometryUtils {
                 new LatLonAlt(-Math.PI/4, -Math.PI/4, .5, SI.RADIAN, NonSI.MILE, crs),
                 new LatLonAlt(Math.PI/3, Math.PI/3, 0, SI.RADIAN, NonSI.MILE, crs)
         };
-        System.out.println("converting "+positions[0]+", "+positions[1]+", "+positions[2]);
+        // System.out.println("converting "+positions[0]+", "+positions[1]+", "+positions[2]);
         AxisDirection[] targetDirections = new AxisDirection[] {
                 AxisDirection.EAST,
                 AxisDirection.NORTH,
                 AxisDirection.UP
         };
-        System.out.println("directions "+targetDirections[0]+", "+targetDirections[1]+", "+targetDirections[2]);
+        // System.out.println("directions "+targetDirections[0]+", "+targetDirections[1]+", "+targetDirections[2]);
         Unit[] targetUnits = new Unit[] {
                 //SI.RADIAN,
                 //SI.RADIAN,
@@ -858,12 +858,12 @@ public final class GeometryUtils {
                 NonSI.DEGREE_ANGLE,
                 SI.METRE
         };
-        System.out.println("units      "+targetUnits[0]+", "+targetUnits[1]+", "+targetUnits[2]);
+        // System.out.println("units      "+targetUnits[0]+", "+targetUnits[1]+", "+targetUnits[2]);
 
         double[] points = getPoints(positions, targetDirections, targetUnits);
-        System.out.println("response a "+points[0]+", "+points[1]+", "+points[2]);
-        System.out.println("response b "+points[3]+", "+points[4]+", "+points[5]);
-        System.out.println("response c "+points[6]+", "+points[7]+", "+points[8]);
+        // System.out.println("response a "+points[0]+", "+points[1]+", "+points[2]);
+        // System.out.println("response b "+points[3]+", "+points[4]+", "+points[5]);
+        // System.out.println("response c "+points[6]+", "+points[7]+", "+points[8]);
 
     }*/
 

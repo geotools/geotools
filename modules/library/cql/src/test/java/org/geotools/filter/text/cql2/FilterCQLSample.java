@@ -362,7 +362,7 @@ public class FilterCQLSample {
                 tEqualsFilter =
                         FACTORY.tequals(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
 
             // ATTR1 BEFORE 2006-12-31T01:30:00Z
@@ -379,7 +379,7 @@ public class FilterCQLSample {
                 Date dateTime = dateFormatter.parse(FIRST_DATE);
                 beforeFilter = FACTORY.before(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
 
             // ATTR1 BEFORE 2006-12-31T01:30:00Z
@@ -408,7 +408,7 @@ public class FilterCQLSample {
 
                     SAMPLES.put(FILTER_BEFORE_PERIOD_YMD_HMS_DATE, before);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 }
             }
         }
@@ -425,7 +425,7 @@ public class FilterCQLSample {
                 Date dateTime = dateFormatterWithMillis.parse(FIRST_DATE_MILLIS);
                 beforeFilter = FACTORY.before(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
 
             // ATTR1 BEFORE 2006-12-31T01:30:00.123Z
@@ -446,7 +446,7 @@ public class FilterCQLSample {
                 Date dateTime = dateFormatter.parse(LAST_DATE);
                 afterFilter = FACTORY.after(FACTORY.property("ATTR1"), FACTORY.literal(dateTime));
             } catch (ParseException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
 
             SAMPLES.put(FILTER_AFTER_DATE, afterFilter);
@@ -541,7 +541,7 @@ public class FilterCQLSample {
 
                 SAMPLES.put(FILTER_AFTER_PERIOD_DATE_YMD_HMS, afterFilter);
             } catch (ParseException e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
 
@@ -555,7 +555,7 @@ public class FilterCQLSample {
 
             SAMPLES.put(FILTER_DURING_PERIOD_BETWEEN_DATES, duringFilter);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         try {
@@ -589,7 +589,7 @@ public class FilterCQLSample {
                 SAMPLES.put(FILTER_DURING_PERIOD_YMD_HMS_DATE, duringFilter);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // ------------------------------------------------
@@ -605,7 +605,7 @@ public class FilterCQLSample {
 
             SAMPLES.put(FILTER_BEFORE_OR_DURING_PERIOD_BETWEEN_DATES, filter);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         try {
@@ -620,7 +620,7 @@ public class FilterCQLSample {
 
             SAMPLES.put(FILTER_BEFORE_OR_DURING_PERIOD_YMD_HMS_DATE, filter);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         try {
@@ -635,7 +635,7 @@ public class FilterCQLSample {
 
             SAMPLES.put(FILTER_BEFORE_OR_DURING_PERIOD_DATE_YMD_HMS, filter);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // ---------------------------------------
@@ -650,7 +650,7 @@ public class FilterCQLSample {
 
             SAMPLES.put(FILTER_DURING_OR_AFTER_PERIOD_BETWEEN_DATES, filter);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         try {
@@ -666,7 +666,7 @@ public class FilterCQLSample {
 
             SAMPLES.put(FILTER_DURING_OR_AFTER_PERIOD_YMD_HMS_DATE, filter);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         try {
@@ -680,7 +680,7 @@ public class FilterCQLSample {
             SAMPLES.put(FILTER_DURING_OR_AFTER_PERIOD_DATE_YMD_HMS, filter);
 
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // ---------------------------------------
@@ -701,7 +701,7 @@ public class FilterCQLSample {
             Not notEq = FACTORY.not(propExists);
             SAMPLES.put(ATTRIBUTE_NAME_DOES_NOT_EXIST, notEq);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // ---------------------------------------
@@ -758,7 +758,7 @@ public class FilterCQLSample {
 
             SAMPLES.put(FILTER_AND_NOT_COMPARASION, andNotComparasion);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // Unary Expression sampel
@@ -783,7 +783,7 @@ public class FilterCQLSample {
             SAMPLES.put(FILTER__WITH_FUNCTION_STR_CONCAT, eqFilter);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // Like filter
@@ -802,7 +802,7 @@ public class FilterCQLSample {
             Not notLikeFileter = FACTORY.not(likeFilter);
             SAMPLES.put(NOT_LIKE_FILTER, notLikeFileter);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // bettween filter
@@ -818,7 +818,7 @@ public class FilterCQLSample {
             Not notBetweenFileter = FACTORY.not(betweenFilter);
             SAMPLES.put(NOT_BETWEEN_FILTER, notBetweenFileter);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     } // end static initialization
 
@@ -934,7 +934,7 @@ public class FilterCQLSample {
         try {
             date = dateFormatter.parse(strDate);
         } catch (ParseException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
 

@@ -153,7 +153,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         for (int i = 0; i < count; i++) {
             time += _testIMG_USGSQUAD_SGBASE(reader);
         }
-        System.err.println(count + " reads in " + time + "ms");
+        // System.err.println(count + " reads in " + time + "ms");
     }
 
     private long _testIMG_USGSQUAD_SGBASE(AbstractGridCoverage2DReader reader) throws Exception {
@@ -210,7 +210,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         final AbstractGridCoverage2DReader reader = getReader();
         assertNotNull("Couldn't obtain a reader for " + tableName, reader);
 
-        System.out.println(reader.getInfo().getDescription());
+        // System.out.println(reader.getInfo().getDescription());
 
         final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope();
 
@@ -251,9 +251,9 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         final GridCoverage2D coverage = readCoverage(reader, reqWidth, reqHeight, requestEnvelope);
         assertNotNull("read coverage returned null", coverage);
 
-        System.err.println("Requested envelope " + requestEnvelope);
-        System.err.println("Result envelope    " + coverage.getGridGeometry().getEnvelope());
-        System.err.println("Result grid range  " + coverage.getGridGeometry().getGridRange());
+        // System.err.println("Requested envelope " + requestEnvelope);
+        // System.err.println("Result envelope    " + coverage.getGridGeometry().getEnvelope());
+        // System.err.println("Result grid range  " + coverage.getGridGeometry().getGridRange());
 
         initJAI();
         // RenderedImage image = coverage.getRenderedImage();
@@ -310,7 +310,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
             test.testReadIMG_USGSQUADM();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             System.exit(-1);
         }
     }
@@ -380,17 +380,23 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
                                                             - Runtime.getRuntime().freeMemory())
                                                     / 1024
                                                     / 1024;
-                                    System.err.println(
-                                            "wrote #"
-                                                    + writeCount.incrementAndGet()
-                                                    + " in "
-                                                    + sw.getTimeString()
-                                                    + ": Mem: "
-                                                    + memMB
-                                                    + "M. Thread: "
-                                                    + Thread.currentThread().getName()
-                                                    + ", iteration #"
-                                                    + i);
+                                    // System.err.println(
+                                    //                                            "wrote #"
+                                    //                                                    +
+                                    // writeCount.incrementAndGet()
+                                    //                                                    + " in "
+                                    //                                                    +
+                                    // sw.getTimeString()
+                                    //                                                    + ": Mem:
+                                    // "
+                                    //                                                    + memMB
+                                    //                                                    + "M.
+                                    // Thread: "
+                                    //                                                    +
+                                    // Thread.currentThread().getName()
+                                    //                                                    + ",
+                                    // iteration #"
+                                    //                                                    + i);
 
                                     synchronized (stats) {
                                         stats[0] = Math.min(stats[0], sw.getTime());
@@ -400,7 +406,8 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
                                     }
                                 }
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                                 throw e;
                             }
                             return null;
@@ -416,21 +423,21 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
             Thread.sleep(100);
         }
         sw.stop();
-        System.err.println(
-                "____ Finished in "
-                        + sw.getTimeString()
-                        + ". Min: "
-                        + stats[0]
-                        + ", Max: "
-                        + stats[1]
-                        + ", total execution time: "
-                        + stats[2]
-                        + ", Avg: "
-                        + (stats[2] / (threads * count))
-                        + ". Max mem: "
-                        + stats[3]
-                        + "MB");
-        System.err.println("__________________\n  SNAPSHOT!!!!!!!!");
+        // System.err.println(
+        //                "____ Finished in "
+        //                        + sw.getTimeString()
+        //                        + ". Min: "
+        //                        + stats[0]
+        //                        + ", Max: "
+        //                        + stats[1]
+        //                        + ", total execution time: "
+        //                        + stats[2]
+        //                        + ", Avg: "
+        //                        + (stats[2] / (threads * count))
+        //                        + ". Max mem: "
+        //                        + stats[3]
+        //                        + "MB");
+        // System.err.println("__________________\n  SNAPSHOT!!!!!!!!");
         // Thread.sleep(5000);
     }
 
@@ -456,12 +463,13 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         Envelope2D envelope2D = gg.getEnvelope2D();
         GridEnvelope gridRange = gg.getGridRange();
 
-        System.out.println("requested size: " + reqWidth + "x" + reqHeight);
-        System.out.println("result size   : " + gridRange.getSpan(0) + "x" + gridRange.getSpan(1));
+        // System.out.println("requested size: " + reqWidth + "x" + reqHeight);
+        // System.out.println("result size   : " + gridRange.getSpan(0) + "x" +
+        // gridRange.getSpan(1));
 
-        System.out.println("requested envelope: " + reqEnvelope);
+        // System.out.println("requested envelope: " + reqEnvelope);
 
-        System.out.println("result envelope   : " + envelope2D);
+        // System.out.println("result envelope   : " + envelope2D);
 
         // RenderedImage image = coverage.getRenderedImage();
         // writeToDisk(coverage, "testRead_" + tableName);
@@ -500,12 +508,13 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         Envelope2D envelope2D = gg.getEnvelope2D();
         GridEnvelope gridRange = gg.getGridRange();
 
-        System.out.println("requested size: " + reqWidth + "x" + reqHeight);
-        System.out.println("result size   : " + gridRange.getSpan(0) + "x" + gridRange.getSpan(1));
+        // System.out.println("requested size: " + reqWidth + "x" + reqHeight);
+        // System.out.println("result size   : " + gridRange.getSpan(0) + "x" +
+        // gridRange.getSpan(1));
 
-        System.out.println("requested envelope: " + reqEnvelope);
+        // System.out.println("requested envelope: " + reqEnvelope);
 
-        System.out.println("result envelope   : " + envelope2D);
+        // System.out.println("result envelope   : " + envelope2D);
 
         // writeToDisk(coverage, "testRead_" + tableName);
     }
@@ -533,12 +542,13 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         Envelope2D envelope2D = gg.getEnvelope2D();
         GridEnvelope gridRange = gg.getGridRange();
 
-        System.out.println("requested size: " + reqWidth + "x" + reqHeight);
-        System.out.println("result size   : " + gridRange.getSpan(0) + "x" + gridRange.getSpan(1));
+        // System.out.println("requested size: " + reqWidth + "x" + reqHeight);
+        // System.out.println("result size   : " + gridRange.getSpan(0) + "x" +
+        // gridRange.getSpan(1));
 
-        System.out.println("requested envelope: " + reqEnvelope);
+        // System.out.println("requested envelope: " + reqEnvelope);
 
-        System.out.println("result envelope   : " + envelope2D);
+        // System.out.println("result envelope   : " + envelope2D);
 
         writeToDisk(coverage, "testRead_" + tableName);
 
@@ -546,28 +556,28 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         ColorModel colorModel = image.getColorModel();
 
         assertTrue(colorModel instanceof IndexColorModel);
-        IndexColorModel cm = ((IndexColorModel) colorModel);
+        //        IndexColorModel cm = ((IndexColorModel) colorModel);
 
-        int numComponents = cm.getMapSize();
-        byte[] r = new byte[numComponents];
-        byte[] g = new byte[numComponents];
-        byte[] b = new byte[numComponents];
-        byte[] a = new byte[numComponents];
-        cm.getReds(r);
-        cm.getGreens(g);
-        cm.getBlues(b);
-        cm.getAlphas(a);
-        for (int i = 0; i < numComponents; i++) {
-            System.out.print(i + " = ");
-            System.out.print((int) r[i] & 0xFF);
-            System.out.print(',');
-            System.out.print((int) g[i] & 0xFF);
-            System.out.print(',');
-            System.out.print((int) b[i] & 0xFF);
-            System.out.print(',');
-            System.out.print((int) a[i] & 0xFF);
-            System.out.print('\n');
-        }
+        //        int numComponents = cm.getMapSize();
+        //        byte[] r = new byte[numComponents];
+        //        byte[] g = new byte[numComponents];
+        //        byte[] b = new byte[numComponents];
+        //        byte[] a = new byte[numComponents];
+        //        cm.getReds(r);
+        //        cm.getGreens(g);
+        //        cm.getBlues(b);
+        //        cm.getAlphas(a);
+        //        for (int i = 0; i < numComponents; i++) {
+        // System.out.print(i + " = ");
+        // System.out.print((int) r[i] & 0xFF);
+        // System.out.print(',');
+        // System.out.print((int) g[i] & 0xFF);
+        // System.out.print(',');
+        // System.out.print((int) b[i] & 0xFF);
+        // System.out.print(',');
+        // System.out.print((int) a[i] & 0xFF);
+        // System.out.print('\n');
+        //        }
     }
 
     private void writeBand(RenderedImage image, int[] bands, String channel) throws Exception {
@@ -610,12 +620,13 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         Envelope2D envelope2D = gg.getEnvelope2D();
         GridEnvelope gridRange = gg.getGridRange();
 
-        System.out.println("requested size: " + reqWidth + "x" + reqHeight);
-        System.out.println("result size   : " + gridRange.getSpan(0) + "x" + gridRange.getSpan(1));
+        // System.out.println("requested size: " + reqWidth + "x" + reqHeight);
+        // System.out.println("result size   : " + gridRange.getSpan(0) + "x" +
+        // gridRange.getSpan(1));
 
-        System.out.println("requested envelope: " + reqEnvelope);
+        // System.out.println("requested envelope: " + reqEnvelope);
 
-        System.out.println("result envelope   : " + envelope2D);
+        // System.out.println("result envelope   : " + envelope2D);
 
         // RenderedImage image = coverage.getRenderedImage();
         // writeToDisk(coverage, "testRead_" + tableName);
@@ -700,7 +711,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
             t = System.currentTimeMillis() - t;
             // System.out.println(" - wrote in " + t + "ms" + file);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }
@@ -776,12 +787,13 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         Envelope2D envelope2D = gg.getEnvelope2D();
         GridEnvelope gridRange = gg.getGridRange();
 
-        System.out.println("requested size: " + reqWidth + "x" + reqHeight);
-        System.out.println("result size   : " + gridRange.getSpan(0) + "x" + gridRange.getSpan(1));
+        // System.out.println("requested size: " + reqWidth + "x" + reqHeight);
+        // System.out.println("result size   : " + gridRange.getSpan(0) + "x" +
+        // gridRange.getSpan(1));
 
-        System.out.println("requested envelope: " + reqEnvelope);
+        // System.out.println("requested envelope: " + reqEnvelope);
 
-        System.out.println("result envelope   : " + envelope2D);
+        // System.out.println("result envelope   : " + envelope2D);
 
         // RenderedImage image = coverage.getRenderedImage();
         // writeToDisk(coverage, "testRead_" + tableName);
@@ -819,11 +831,12 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         GridEnvelope gridRange = gridGeometry.getGridRange();
         Envelope2D envelope2d = gridGeometry.getEnvelope2D();
 
-        System.out.println("requested size: " + reqWidth + "x" + reqHeight);
-        System.out.println("result size   : " + gridRange.getSpan(0) + "x" + gridRange.getSpan(1));
+        // System.out.println("requested size: " + reqWidth + "x" + reqHeight);
+        // System.out.println("result size   : " + gridRange.getSpan(0) + "x" +
+        // gridRange.getSpan(1));
 
-        System.out.println("requested envelope: " + reqEnv);
-        System.out.println("result envelope   : " + envelope2d);
+        // System.out.println("requested envelope: " + reqEnv);
+        // System.out.println("result envelope   : " + envelope2d);
 
         writeToDisk(coverage.getRenderedImage(), tableName);
     }

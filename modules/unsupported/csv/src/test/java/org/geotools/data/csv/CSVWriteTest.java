@@ -74,12 +74,12 @@ public class CSVWriteTest {
         tmp = File.createTempFile("example", "");
         boolean exists = tmp.exists();
         if (exists) {
-            System.err.println("Removing tempfile " + tmp);
+            // System.err.println("Removing tempfile " + tmp);
             tmp.delete();
         }
         boolean created = tmp.mkdirs();
         if (!created) {
-            System.err.println("Could not create " + tmp);
+            // System.err.println("Could not create " + tmp);
             System.exit(1);
         }
         statesfile = new File(tmp, "locations.csv");

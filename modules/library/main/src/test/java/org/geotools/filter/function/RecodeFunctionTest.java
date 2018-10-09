@@ -46,7 +46,7 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testFindFunction() throws Exception {
-        System.out.println("   testFindFunction");
+        // System.out.println("   testFindFunction");
 
         Literal fallback = ff2.literal("NOT_FOUND");
         setupParameters(ints, colors);
@@ -58,7 +58,7 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testIntToColorLookup() throws Exception {
-        System.out.println("   testIntToColorLookup");
+        // System.out.println("   testIntToColorLookup");
 
         setupParameters(ints, colors);
         Function fn = finder.findFunction("recode", parameters);
@@ -85,7 +85,7 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
 
     @Test
     public void testRecodeUndefinedValueReturnsNull() throws Exception {
-        System.out.println("   testRecodeUndefinedValueReturnsNull");
+        // System.out.println("   testRecodeUndefinedValueReturnsNull");
 
         setupParameters(words, ints);
         Function fn = finder.findFunction("recode", parameters);

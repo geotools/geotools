@@ -350,7 +350,7 @@ public class DirectedEdgeStar extends EdgeEndStar {
     }
 
     public void print(PrintStream out) {
-        System.out.println("DirectedEdgeStar: " + getCoordinate());
+        // System.out.println("DirectedEdgeStar: " + getCoordinate());
         for (Iterator it = iterator(); it.hasNext(); ) {
             DirectedEdge de = (DirectedEdge) it.next();
             out.print("out ");

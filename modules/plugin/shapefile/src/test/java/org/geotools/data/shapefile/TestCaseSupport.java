@@ -116,7 +116,7 @@ public class TestCaseSupport {
             if (file.delete()) {
                 // dead
             } else {
-                System.out.println("Couldn't delete " + file);
+                // System.out.println("Couldn't delete " + file);
                 file.deleteOnExit(); // dead later
             }
         }

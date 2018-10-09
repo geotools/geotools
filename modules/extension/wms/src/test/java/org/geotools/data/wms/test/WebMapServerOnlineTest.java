@@ -224,17 +224,17 @@ public class WebMapServerOnlineTest extends ServerTestCase {
                 request.setQueryPoint(200, 200);
                 request.setInfoFormat("text/html");
 
-                System.out.println(request.getFinalURL());
+                // System.out.println(request.getFinalURL());
 
                 GetFeatureInfoResponse response = (GetFeatureInfoResponse) wms.issueRequest(request);
-                System.out.println(response.getContentType());
+                // System.out.println(response.getContentType());
                 assertTrue( response.getContentType().indexOf("text/html") != -1 );
                 BufferedReader in = new BufferedReader(new InputStreamReader(response.getInputStream()));
                 String line;
 
                 boolean textFound = false;
                 while ((line = in.readLine()) != null) {
-                    System.out.println(line);
+                    // System.out.println(line);
                     if (line.indexOf("Wood Buffalo National Park") != -1) {
                         textFound = true;
                     }

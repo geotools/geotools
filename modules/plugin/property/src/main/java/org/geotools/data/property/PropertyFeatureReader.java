@@ -189,7 +189,7 @@ public class PropertyFeatureReader implements FeatureReader<SimpleFeatureType, S
             // read the value
             stringValue = text[index];
         } catch (RuntimeException e1) {
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
             stringValue = null;
         }
         // check for special <null> flag

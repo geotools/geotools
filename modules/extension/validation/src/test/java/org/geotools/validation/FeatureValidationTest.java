@@ -177,13 +177,13 @@ public class FeatureValidationTest extends DataTestCase {
             roadsPassed = false;
 
             for (int i = 0; i < roadFailures.length; i++) {
-                System.out.println(roadFailures[i]);
+                // System.out.println(roadFailures[i]);
             }
         }
 
         if (roadWarnings.length != 0) {
             for (int i = 0; i < roadWarnings.length; i++) {
-                System.out.println(roadWarnings[i]);
+                // System.out.println(roadWarnings[i]);
             }
         }
 

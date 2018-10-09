@@ -137,7 +137,7 @@ public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
             transaction.commit();
         } catch (Exception problem) {
-            problem.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", problem);
             transaction.rollback();
         } finally {
             transaction.close();

@@ -74,7 +74,7 @@ public class PointLineAbstractValidationBeanInfo extends DefaultIntegrityValidat
             pd = pd2;
 
             // TODO error, log here
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         return pd;

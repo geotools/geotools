@@ -135,9 +135,9 @@ public class DOMParserTestSuite extends TestSuite {
             }
             // .. etc..
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
-        System.out.println(suite.countTestCases() + " xml filter tests found");
+        // System.out.println(suite.countTestCases() + " xml filter tests found");
         return suite;
     }
 
@@ -158,7 +158,7 @@ public class DOMParserTestSuite extends TestSuite {
         }
 
         public void run(TestResult result) {
-            System.out.println(document);
+            // System.out.println(document);
             result.startTest(this);
             Protectable p =
                     new Protectable() {

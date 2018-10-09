@@ -198,7 +198,7 @@ public class StyleFactoryImplTest extends TestCase {
                 ite.getTargetException().printStackTrace();
                 fail("InvocationTargetException " + ite.getTargetException());
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 fail("Exception " + e.toString());
             }
         }

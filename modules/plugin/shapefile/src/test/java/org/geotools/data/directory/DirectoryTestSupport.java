@@ -44,7 +44,7 @@ public class DirectoryTestSupport {
                 deleteDirectory(f);
             } else {
                 if (!f.delete()) {
-                    System.out.println("Couldn't delete " + f.getAbsolutePath());
+                    // System.out.println("Couldn't delete " + f.getAbsolutePath());
                 }
             }
         }

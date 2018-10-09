@@ -221,7 +221,7 @@ public class Validator {
             LOGGER.finer("Runing integrity tests using validation validationProcessor ");
             validationProcessor.runIntegrityTests(featureStores.keySet(), sources, bBox, results);
         } catch (Exception badIdea) {
-            badIdea.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", badIdea);
             // ValidationResults should of handled stuff will redesign :-)
             throw new DataSourceException("Validation Failed", badIdea);
         }

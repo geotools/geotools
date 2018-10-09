@@ -574,14 +574,14 @@ public class TestData implements Runnable {
                         }
                     } catch (SecurityException e) {
                         if (iteration == 0) {
-                            System.err.print(e.getClass().getName());
-                            System.err.print(": ");
+                            // System.err.print(e.getClass().getName());
+                            // System.err.print(": ");
                         }
                     }
                     // Can't use logging, since logger are not available anymore at shutdown time.
                     if (iteration == 0 && !f.canIgnore()) {
-                        System.err.print("Can't delete ");
-                        System.err.println(f);
+                        // System.err.print("Can't delete ");
+                        // System.err.println(f);
                     }
                 }
             }

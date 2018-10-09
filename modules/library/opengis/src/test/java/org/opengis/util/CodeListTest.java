@@ -248,7 +248,7 @@ public final class CodeListTest {
             fail(e.toString());
             return;
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.getTargetException().toString());
             return;
         }

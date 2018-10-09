@@ -139,7 +139,7 @@ public class GeoRestFeatureReader implements SimpleFeatureReader {
         }
 
         URL targetUrl = new URL(builder.toString());
-        System.out.println(targetUrl);
+        // System.out.println(targetUrl);
         return targetUrl.openStream();
     }
 

@@ -72,7 +72,8 @@ public class TeradataDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
                                             w.write();
                                             w.close();
                                         } catch (Exception ex) {
-                                            ex.printStackTrace();
+                                            java.util.logging.Logger.getGlobal()
+                                                    .log(java.util.logging.Level.INFO, "", ex);
                                             errors[0] = true;
                                         }
                                     }

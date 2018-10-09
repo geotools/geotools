@@ -65,7 +65,7 @@ public abstract class JDBCDateOnlineTest extends JDBCTestSupport {
                 // less than
                 Filter f =
                         ff.lessOrEqual(ff.property(aname("d")), ff.literal(df.parse("2009-28-06")));
-                System.out.println(f);
+                // System.out.println(f);
                 assertEquals(
                         "wrong number of records for " + zone.getDisplayName(),
                         2,

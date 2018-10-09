@@ -161,7 +161,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(-2.5, 51.37),
@@ -192,7 +192,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(900000.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(120.0, -3.0),
@@ -208,7 +208,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(-75.0, 35.0),
@@ -224,7 +224,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(-123.1, 49.2166666666),
@@ -241,7 +241,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(4.999999999999999, 26.996561536844165),
@@ -264,7 +264,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(53.0, 53.0),
@@ -281,7 +281,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(-1000000.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(-123.1, 49.2166666666),
@@ -356,7 +356,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(150000.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(-76.943683333, 17.932166666),
@@ -373,7 +373,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(1000000.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform.toString());
+            // System.out.println(transform.toString());
         }
         doTransform(
                 new DirectPosition2D(151.283333333, -33.916666666),
@@ -398,7 +398,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(-96.0, 28.5),
@@ -416,7 +416,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(139.733333333, 35.6833333333),
@@ -434,7 +434,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0.0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(18.45, -33.9166666666),
@@ -459,7 +459,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(5400088.44);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(5.807370277, 50.6795725),
@@ -490,7 +490,7 @@ public final class DirectCreationTest {
         params.parameter("scale_factor").setValue(0.9999);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(14.370530947, 50.071153856),
@@ -524,7 +524,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         doTransform(
                 new DirectPosition2D(-121.33955, 39.1012523), // 121°20'22.38"W 39°6'4.508"N
@@ -544,7 +544,7 @@ public final class DirectCreationTest {
         params.parameter("false_northing").setValue(0);
         transform = mtFactory.createParameterizedTransform(params);
         if (VERBOSE) {
-            System.out.println(transform);
+            // System.out.println(transform);
         }
         final double[] tolerance = new double[] {0.1, 0.1};
         doTransform(

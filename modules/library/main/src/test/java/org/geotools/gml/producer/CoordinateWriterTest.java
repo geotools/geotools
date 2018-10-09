@@ -72,7 +72,7 @@ public class CoordinateWriterTest extends TestCase {
         output.endDocument();
 
         assertEquals("<coordinates>1,1 4,4 0,4 1,1</coordinates>", output.received);
-        System.out.println(output.received);
+        // System.out.println(output.received);
     }
 
     public void test2DWithDummyZ() throws Exception {
@@ -89,7 +89,7 @@ public class CoordinateWriterTest extends TestCase {
         writer.writeCoordinates(coords, output);
         output.endDocument();
 
-        System.out.println(output.received);
+        // System.out.println(output.received);
         assertEquals("<coordinates>1,1,0 4,4,0 0,4,0 1,1,0</coordinates>", output.received);
     }
 
@@ -122,7 +122,7 @@ public class CoordinateWriterTest extends TestCase {
         output.endDocument();
 
         assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);
-        System.out.println(output.received);
+        // System.out.println(output.received);
     }
 
     public void test3DCoordSeq() throws Exception {
@@ -137,7 +137,7 @@ public class CoordinateWriterTest extends TestCase {
         writer.writeCoordinates(coords, output);
         output.endDocument();
 
-        System.out.println(output.received);
+        // System.out.println(output.received);
         assertEquals("<coordinates>1,1,3 4,4,2 0,4,2 1,1,3</coordinates>", output.received);
     }
 

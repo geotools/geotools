@@ -908,8 +908,8 @@ public class ArcSDEFeatureStoreTest {
             // you're getting back
             Geometry actual1 = (Geometry) feature1.getAttribute(defaultGeometry.getLocalName());
             Geometry actual2 = (Geometry) feature2.getAttribute(defaultGeometry.getLocalName());
-            System.out.println(actual1);
-            System.out.println(modif1);
+            // System.out.println(actual1);
+            // System.out.println(modif1);
 
             // there's some rounding that goes on inside SDE. Need to do some simple buffering to
             // make sure
@@ -921,7 +921,7 @@ public class ArcSDEFeatureStoreTest {
                 store.removeFeatures(fid1Filter);
                 store.removeFeatures(fid2Filter);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 throw e;
             }
         }
@@ -1398,9 +1398,9 @@ public class ArcSDEFeatureStoreTest {
                 new Runnable() {
                     public void run() {
                         try {
-                            System.err.println("adding..");
+                            // System.err.println("adding..");
                             List<FeatureId> addedFids = fStore.addFeatures(testFeatures);
-                            System.err.println("got " + addedFids);
+                            // System.err.println("got " + addedFids);
                             final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
                             final Set<FeatureId> fids = new HashSet<FeatureId>();
@@ -1409,28 +1409,29 @@ public class ArcSDEFeatureStoreTest {
                             }
                             final Id newFidsFilter = ff.id(fids);
 
-                            System.err.println("querying..");
+                            // System.err.println("querying..");
                             SimpleFeatureCollection features = fStore.getFeatures(newFidsFilter);
-                            System.err.println("querying returned...");
+                            // System.err.println("querying returned...");
 
                             int size = features.size();
-                            System.err.println("Collection Size: " + size);
+                            // System.err.println("Collection Size: " + size);
                             assertEquals(2, size);
 
-                            System.err.println("commiting...");
+                            // System.err.println("commiting...");
                             transaction.commit();
-                            System.err.println("commited.");
+                            // System.err.println("commited.");
 
                             size = fStore.getCount(new Query(typeName, newFidsFilter));
-                            System.err.println("Size: " + size);
+                            // System.err.println("Size: " + size);
                             assertEquals(2, size);
                         } catch (Throwable e) {
                             errors[0] = e;
                             try {
-                                System.err.println("rolling back!.");
+                                // System.err.println("rolling back!.");
                                 transaction.rollback();
                             } catch (IOException e1) {
-                                e1.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e1);
                             }
                         } finally {
                             done[0] = true;
@@ -1442,21 +1443,21 @@ public class ArcSDEFeatureStoreTest {
                 new Runnable() {
                     public void run() {
                         try {
-                            System.err.println("worker2 calling getFeartures()");
+                            // System.err.println("worker2 calling getFeartures()");
                             SimpleFeatureCollection collection = fStore.getFeatures();
-                            System.err.println("worker2 opening iterator...");
+                            // System.err.println("worker2 opening iterator...");
                             SimpleFeatureIterator features = collection.features();
                             try {
-                                System.err.println("worker2 iterating...");
+                                // System.err.println("worker2 iterating...");
                                 while (features.hasNext()) {
                                     SimpleFeature next = features.next();
-                                    System.out.println("**Got feature " + next.getID());
+                                    // System.out.println("**Got feature " + next.getID());
                                 }
-                                System.err.println("worker2 closing FeatureCollection");
+                                // System.err.println("worker2 closing FeatureCollection");
                             } finally {
                                 features.close();
                             }
-                            System.err.println("worker2 done.");
+                            // System.err.println("worker2 done.");
                         } catch (Throwable e) {
                             errors[1] = e;
                         } finally {
@@ -1473,10 +1474,10 @@ public class ArcSDEFeatureStoreTest {
             Thread.sleep(100);
         }
         try {
-            System.err.println("closing transaction.");
+            // System.err.println("closing transaction.");
             transaction.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
         Throwable worker1Error = errors[0];
         Throwable worker2Error = errors[1];
@@ -1487,10 +1488,12 @@ public class ArcSDEFeatureStoreTest {
                     " -- worker2: " + (worker2Error == null ? "ok." : worker2Error.getMessage());
 
             if (worker1Error != null) {
-                worker1Error.printStackTrace();
+                java.util.logging.Logger.getGlobal()
+                        .log(java.util.logging.Level.INFO, "", worker1Error);
             }
             if (worker2Error != null) {
-                worker2Error.printStackTrace();
+                java.util.logging.Logger.getGlobal()
+                        .log(java.util.logging.Level.INFO, "", worker2Error);
             }
             fail(errMessg);
         }

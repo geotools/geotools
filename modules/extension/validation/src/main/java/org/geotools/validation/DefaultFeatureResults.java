@@ -33,12 +33,10 @@ public final class DefaultFeatureResults implements ValidationResults {
     public void error(SimpleFeature feature, String message) {
         String where = feature != null ? feature.getID() : "all";
         error.add(where + ":" + message);
-        System.err.println(where + ":" + message);
     }
 
     public void warning(SimpleFeature feature, String message) {
         String where = feature != null ? feature.getID() : "all";
         warning.add(where + ":" + message);
-        System.out.println(where + ":" + message);
     }
 }

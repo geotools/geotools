@@ -97,7 +97,7 @@ public class ReprojectionTest extends TestCase {
                 new ReferencedEnvelope(
                         new Envelope(-180, -170, 20, 40), DefaultGeographicCRS.WGS84);
         CoordinateReferenceSystem utm1N = CRS.decode("EPSG:32601");
-        System.out.println(CRS.getGeographicBoundingBox(utm1N));
+        // System.out.println(CRS.getGeographicBoundingBox(utm1N));
         ReferencedEnvelope reUtm = reWgs.transform(utm1N, true);
 
         BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_4BYTE_ABGR);
@@ -110,7 +110,8 @@ public class ReprojectionTest extends TestCase {
                     public void featureRenderer(SimpleFeature feature) {}
 
                     public void errorOccurred(Exception e) {
-                        e.printStackTrace();
+                        java.util.logging.Logger.getGlobal()
+                                .log(java.util.logging.Level.INFO, "", e);
                         errors++;
                     }
                 });

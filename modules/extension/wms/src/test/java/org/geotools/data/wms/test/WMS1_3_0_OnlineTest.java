@@ -186,7 +186,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(bbox.getMaxY(), 68.6906585693359, 0.0);
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + ce);
+                // System.err.println("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }
@@ -210,7 +210,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(topLayer.getSrs().size(), 1);
             assertTrue(topLayer.getSrs().contains("EPSG:27700"));
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 
@@ -218,7 +218,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
         WebMapServer wms = new WebMapServer(server2);
         GetMapRequest request = wms.createGetMapRequest();
         request.setFormat("image/jpeg");
-        System.out.println(request.getFinalURL().toExternalForm());
+        // System.out.println(request.getFinalURL().toExternalForm());
 
         assertTrue(request.getFinalURL().toExternalForm().indexOf("image%2Fjpeg") >= 0);
     }
@@ -286,7 +286,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertTrue(textFound);
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + ce);
+                // System.err.println("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }
@@ -302,7 +302,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                     assertNotNull(request);
         //        http://demo.cubewerx.com/demo/cubeserv/cubeserv.cgi?CONFIG=main&REQUEST=DescribeLayer&SERVICE=wms&VERSION=1.3.0&LAYERS=BARRIERL_1M:Foundation,POLBNDP_1M:Foundation,DQLINE_UTIL_1M:Foundation
                     request.setLayers("BARRIERL_1M:Foundation,POLBNDP_1M:Foundation,DQLINE_UTIL_1M:Foundation");
-                    System.out.println(request.getFinalURL());
+                    // System.out.println(request.getFinalURL());
                     DescribeLayerResponse response = (DescribeLayerResponse) wms.issueRequest(request);
                     assertNotNull(response);
 
@@ -326,7 +326,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
                     assertEquals(layerDescs[2].getQueries()[0], "DQLINE_UTIL_1M");
                 } catch(java.net.ConnectException ce){
                     if(ce.getMessage().indexOf("timed out")>0){
-                        System.err.println("Unable to test - timed out: "+ce);
+                        // System.err.println("Unable to test - timed out: "+ce);
                     } else{
                         throw(ce);
                     }
@@ -359,7 +359,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             request.setWidth("50");
             request.setHeight("50");
 
-            System.out.println(request.getFinalURL());
+            // System.out.println(request.getFinalURL());
 
             GetLegendGraphicResponse response = (GetLegendGraphicResponse) wms.issueRequest(request);
             assertNotNull(response);
@@ -370,7 +370,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(image.getHeight(), 50);
         } catch(java.net.ConnectException ce){
             if(ce.getMessage().indexOf("timed out")>0){
-                System.err.println("Unable to test - timed out: "+ce);
+                // System.err.println("Unable to test - timed out: "+ce);
             } else{
                 throw(ce);
             }
@@ -405,7 +405,7 @@ public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
             assertEquals(image.getHeight(), 296);
         } catch(java.net.ConnectException ce){
             if(ce.getMessage().indexOf("timed out")>0){
-                System.err.println("Unable to test - timed out: "+ce);
+                // System.err.println("Unable to test - timed out: "+ce);
             } else{
                 throw(ce);
             }

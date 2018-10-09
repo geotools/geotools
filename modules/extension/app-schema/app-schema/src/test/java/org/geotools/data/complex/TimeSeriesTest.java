@@ -143,7 +143,7 @@ public class TimeSeriesTest extends AppSchemaTestSupport {
             assertNotNull(location);
             schemaIndex = loadSchema(location);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
 

@@ -5617,7 +5617,7 @@ public class ImageWorker {
             } catch (NoSuchMethodException e) {
                 arguments.printSummary(e);
             } catch (Exception e) {
-                e.printStackTrace(arguments.err);
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
     }
 }

@@ -125,13 +125,13 @@ public class EnvelopeTest extends TestCase {
         try {
             assertTrue(impl.getSECorner().equals(dp4));
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail();
         }
         try {
             assertTrue(impl.getNWCornerOld().equals(dp0));
         } catch (UnsupportedDimensionException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail();
         }
     }

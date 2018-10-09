@@ -53,7 +53,7 @@ public class QueryTest extends TestCase {
 
     /** Test of getPropertyNames method, of class org.geotools.data.Query. */
     public void testPropertyNames() {
-        System.out.println("testPropertyNames");
+        // System.out.println("testPropertyNames");
         Query query = new Query();
         assertNull(query.getPropertyNames());
         query.setPropertyNames(new String[] {"foo", "bar"});
@@ -83,7 +83,7 @@ public class QueryTest extends TestCase {
     public void testProperties() {
         final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
-        System.out.println("testProperties");
+        // System.out.println("testProperties");
         Query query = new Query();
         assertNull(query.getProperties());
         List<PropertyName> properties = new ArrayList<PropertyName>();
@@ -118,7 +118,7 @@ public class QueryTest extends TestCase {
 
     /** Test of retrieveAllProperties method, of class org.geotools.data.Query. */
     public void testRetrieveAllProperties() {
-        System.out.println("testRetrieveAllProperties");
+        // System.out.println("testRetrieveAllProperties");
 
         Query query = new Query();
         assertTrue(query.retrieveAllProperties());
@@ -139,7 +139,7 @@ public class QueryTest extends TestCase {
 
     /** Test of getMaxFeatures method, of class org.geotools.data.Query. */
     public void testMaxFeatures() {
-        System.out.println("testMaxFeatures");
+        // System.out.println("testMaxFeatures");
         Query query = new Query();
         assertEquals(Query.DEFAULT_MAX, query.getMaxFeatures());
 
@@ -149,7 +149,7 @@ public class QueryTest extends TestCase {
 
     /** Test of getFilter method, of class org.geotools.data.Query. */
     public void testFilter() {
-        System.out.println("testGetFilter");
+        // System.out.println("testGetFilter");
         Query query = new Query();
         query.setFilter(Filter.EXCLUDE);
         assertEquals(Filter.EXCLUDE, query.getFilter());
@@ -172,7 +172,7 @@ public class QueryTest extends TestCase {
 
     /** Test of getHandle method, of class org.geotools.data.Query. */
     public void testHandle() {
-        System.out.println("testGetHandle");
+        // System.out.println("testGetHandle");
         Query query = new Query();
         assertNull(query.getHandle());
         query.setHandle("myquery");
@@ -181,14 +181,14 @@ public class QueryTest extends TestCase {
 
     /** Test of getVersion method, of class org.geotools.data.Query. */
     public void testVersion() {
-        System.out.println("testGetVersion");
+        // System.out.println("testGetVersion");
         Query query = new Query();
         assertNull(query.getVersion());
     }
 
     /** Test of toString method, of class org.geotools.data.Query. */
     public void testToString() {
-        System.out.println("testToString");
+        // System.out.println("testToString");
         Query query = new Query();
         assertNotNull(query.toString());
 

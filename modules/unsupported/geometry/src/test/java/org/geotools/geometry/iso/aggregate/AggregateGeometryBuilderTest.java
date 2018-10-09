@@ -55,7 +55,7 @@ public class AggregateGeometryBuilderTest extends TestCase {
 
         // test primitivefactory
         PrimitiveFactory primitiveFactory = builder.getPrimitiveFactory();
-        System.out.println(primitiveFactory.getCoordinateReferenceSystem());
+        // System.out.println(primitiveFactory.getCoordinateReferenceSystem());
         Point point = primitiveFactory.createPoint(new double[] {48.44, -123.37});
 
         assertTrue(position.equals(point.getCentroid()));

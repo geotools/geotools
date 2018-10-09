@@ -226,7 +226,7 @@ public class GeometryConformanceTestCases extends TestCase {
         assertTrue("failures: " + tempResult.failureCount(), tempResult.wasSuccessful());
         Enumeration enums = tempResult.failures();
         while (enums.hasMoreElements()) {
-            System.out.println("what");
+            // System.out.println("what");
             AssertionFailedError failure = (AssertionFailedError) enums.nextElement();
             assertTrue("--" + failure.toString(), tempResult.wasSuccessful());
         }
@@ -323,7 +323,8 @@ public class GeometryConformanceTestCases extends TestCase {
                                 op.setExpectedResult(expectedResult);
                                 testCase.addTestOperation(op);
                             } catch (ParseException e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                             }
                         }
                     }

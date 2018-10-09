@@ -5337,7 +5337,7 @@ public class ImageMosaicReaderTest extends Assert {
             UniqueVisitor visitor = new UniqueVisitor("location");
             passA.getGranules(Query.ALL).accepts(visitor, null);
             Set<String> locations = visitor.getUnique();
-            System.out.println(locations);
+            // System.out.println(locations);
             assertThat(locations, hasItem(equalTo("passA2006128211927.tiff")));
             assertThat(locations, hasItem(equalTo("passA2006128194218.tiff")));
         } finally {

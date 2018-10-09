@@ -370,7 +370,7 @@ public class GazetteerNameValidationOnlineTest extends TestCase {
         } catch (ConnectException timedOut) {
             return; // ignore server must be down
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail(e.toString());
         }
     }

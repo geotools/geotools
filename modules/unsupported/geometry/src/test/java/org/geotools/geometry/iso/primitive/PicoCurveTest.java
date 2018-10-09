@@ -353,7 +353,7 @@ public class PicoCurveTest extends TestCase {
         try {
             curve2 = curve.clone();
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             fail();
         }
 

@@ -58,7 +58,7 @@ public class AsyncTileLayer extends TileLayer {
         try {
             this.countDownLatch.await();
         } catch (InterruptedException ie) {
-            ie.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ie);
         }
         this.countDownLatch = null;
     }

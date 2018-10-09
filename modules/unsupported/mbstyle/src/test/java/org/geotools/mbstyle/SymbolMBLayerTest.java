@@ -250,11 +250,12 @@ public class SymbolMBLayerTest {
                         .getParameters()
                         .get(1)
                         .toString());
-        System.out.println(
-                ((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0])
-                        .fonts()
-                        .get(0)
-                        .getFamily());
+        // System.out.println(
+        //                ((TextSymbolizer)
+        // featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0])
+        //                        .fonts()
+        //                        .get(0)
+        //                        .getFamily());
         assertEquals(
                 "Open Sans Regular",
                 ((TextSymbolizer) featureTypeDefaults.get(0).rules().get(0).getSymbolizers()[0])

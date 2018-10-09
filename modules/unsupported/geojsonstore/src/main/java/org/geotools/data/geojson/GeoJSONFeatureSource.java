@@ -50,7 +50,7 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
                 schema = buildFeatureType();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
     }

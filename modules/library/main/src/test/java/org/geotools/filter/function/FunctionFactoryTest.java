@@ -155,7 +155,7 @@ public class FunctionFactoryTest {
         for (Future<Exception> future : tests) {
             Exception e = future.get();
             if (e != null) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
             assertNull("No exception was expected", e);
         }

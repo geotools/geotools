@@ -77,7 +77,7 @@ public class SchemaParserTest extends TestCase {
             try {
                 parser.parse(f, contentHandler);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 fail(e.toString());
             }
 
@@ -85,11 +85,11 @@ public class SchemaParserTest extends TestCase {
                 assertNotNull("Schema missing", contentHandler.getSchema());
                 // System.out.println(contentHandler.getSchema());
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 fail(e.toString());
             }
         } catch (IOException e1) {
-            e1.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
             fail(e1.toString());
         }
     }

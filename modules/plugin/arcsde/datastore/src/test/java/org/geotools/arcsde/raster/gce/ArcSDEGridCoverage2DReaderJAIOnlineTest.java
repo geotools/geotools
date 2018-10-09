@@ -244,12 +244,12 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         ColorModel gpCm = geophysics.getColorModel();
         SampleModel gpSm = geophysics.getSampleModel();
 
-        System.out.println("Geophysics: \t" + gpCm + "\n\t" + gpSm);
+        // System.out.println("Geophysics: \t" + gpCm + "\n\t" + gpSm);
 
-        System.out.println(Float.NaN);
+        // System.out.println(Float.NaN);
         Float valueOf = Float.valueOf("NaN");
-        System.out.println(valueOf);
-        System.out.println(valueOf.floatValue());
+        // System.out.println(valueOf);
+        // System.out.println(valueOf.floatValue());
     }
 
     @Test
@@ -674,13 +674,13 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
                             + " because it fails with IndexColorModel. Don't know why");
         } else {
             GeoTiffWriter writer = new GeoTiffWriter(destination);
-            System.out.println("\n --- Writing to " + destination);
+            // System.out.println("\n --- Writing to " + destination);
             try {
                 long t = System.currentTimeMillis();
                 writer.write(coverage, null);
-                System.out.println(" - wrote in " + t + "ms" + destination);
+                // System.out.println(" - wrote in " + t + "ms" + destination);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 throw e;
             }
         }
@@ -697,12 +697,12 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         file += File.separator + "arcsde_test" + File.separator + fileName;
         File targetFile = new File(file + ".tiff");
         targetFile.getParentFile().mkdirs();
-        System.out.println("\n --- Writing to " + file);
+        // System.out.println("\n --- Writing to " + file);
 
         try {
             ImageIO.write(image, "TIFF", targetFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
     }

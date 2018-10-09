@@ -897,7 +897,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                             "TIFF",
                             new File(debugDir, rasterId.longValue() + fileName + ".tiff"));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 }
             }
         }

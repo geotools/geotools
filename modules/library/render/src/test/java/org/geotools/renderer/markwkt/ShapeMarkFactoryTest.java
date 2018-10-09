@@ -50,7 +50,7 @@ public class ShapeMarkFactoryTest extends TestCase {
             SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
             this.feature = featureBuilder.buildFeature(null);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
     }
 

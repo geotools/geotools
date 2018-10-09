@@ -237,9 +237,9 @@ public class FeatureClassStats implements VectorProcess {
 
         public void print() {
             for (int i = 0; i < size(); i++) {
-                System.out.println(range(i));
+                LOG.info(String.valueOf(range(i)));
                 for (Statistic stat : sampleStats[0].getStatistics()) {
-                    System.out.println(stat + " = " + value(i, stat));
+                    LOG.info(stat + " = " + value(i, stat));
                 }
             }
         }

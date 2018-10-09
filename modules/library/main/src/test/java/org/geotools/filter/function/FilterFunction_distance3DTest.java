@@ -28,7 +28,7 @@ public class FilterFunction_distance3DTest extends TestCase {
         try {
             type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");
         } catch (SchemaException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         Feature f =

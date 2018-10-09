@@ -22,6 +22,7 @@
  */
 package org.geotools.gml.producer;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
@@ -283,9 +284,7 @@ public class GeometryTransformer extends TransformerBase {
                 contentHandler.characters(text.toCharArray(), 0, text.length());
             } catch (Exception e) // this shouldnt happen!!
             {
-                System.out.println(
-                        "got exception while writing null boundedby:" + e.getLocalizedMessage());
-                e.printStackTrace();
+                LOGGER.log(Level.WARNING, "got exception while writing null boundedby", e);
             }
             end("null");
         }

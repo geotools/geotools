@@ -104,7 +104,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     @BeforeClass
     public static void oneTimeSetUp() throws IOException {
-        System.out.println("beforeclass");
+        // System.out.println("beforeclass");
         final Map dsParams = new HashMap();
         final URL url = BoreholeTest.class.getResource(schemaBase + "BoreholeTest_properties.xml");
         dsParams.put("dbtype", "app-schema");
@@ -141,7 +141,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
         try {
             schemaIndex = loadSchema(schemaBase + "commonSchemas/XMML/1/borehole.xsd");
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             throw e;
         }
 

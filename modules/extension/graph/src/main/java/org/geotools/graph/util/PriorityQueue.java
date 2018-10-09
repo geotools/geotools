@@ -160,10 +160,6 @@ public class PriorityQueue implements Collection, Queue {
 
     /** TODO: DOCUMENT ME! Note that this method should be used cautiously * */
     public void swap(int i, int j) {
-        // first swap the reference to the indicies
-        if (m_obj2index.get(m_values[i]) == null || m_obj2index.get(m_values[j]) == null)
-            System.out.println();
-
         Object tmp = m_obj2index.get(m_values[i]);
         m_obj2index.put(m_values[i], m_obj2index.get(m_values[j]));
         m_obj2index.put(m_values[j], tmp);

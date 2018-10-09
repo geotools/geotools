@@ -412,7 +412,7 @@ public class ValidationProcessor {
                 }
 
                 LOGGER.log(Level.WARNING, validator.getName() + " failed with " + error, e);
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 results.error(null, error);
             }
         }

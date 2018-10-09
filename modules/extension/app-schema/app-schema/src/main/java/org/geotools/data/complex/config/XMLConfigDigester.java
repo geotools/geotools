@@ -165,7 +165,7 @@ public class XMLConfigDigester {
             setTypeMappingsRules(digester);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             XMLConfigDigester.LOGGER.log(Level.SEVERE, "setting digester properties: ", e);
             throw new IOException("Error setting digester properties: " + e.getMessage());
         }
@@ -173,7 +173,7 @@ public class XMLConfigDigester {
         try {
             digester.parse(new StringReader(configString));
         } catch (SAXException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             XMLConfigDigester.LOGGER.log(Level.SEVERE, "parsing " + dataStoreConfigUrl, e);
 
             IOException ioe = new IOException("Can't parse complex datastore config. ");

@@ -68,7 +68,7 @@ public class Toolbox {
         try {
             retval = toolBox.parse(args);
         } catch (IOException e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             retval = false;
         }
 

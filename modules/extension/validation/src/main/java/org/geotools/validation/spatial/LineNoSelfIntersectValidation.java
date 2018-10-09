@@ -93,9 +93,9 @@ public class LineNoSelfIntersectValidation extends DefaultFeatureValidation {
             line = getDefaultLineString(feature);
         } catch (ClassCastException unLine) {
             results.error(feature, "Geometry is required to be a LineString");
-            System.out.println(feature.getID() + "  name: " + getName());
-            System.out.println(feature.getID() + "   ref: " + getTypeRef());
-            System.out.println(feature.getID() + "   ref: " + getTypeRefs());
+            // System.out.println(feature.getID() + "  name: " + getName());
+            // System.out.println(feature.getID() + "   ref: " + getTypeRef());
+            // System.out.println(feature.getID() + "   ref: " + getTypeRefs());
         }
         if (line == null) {
             // Ignore null geometry (user can check with nullZero )

@@ -54,9 +54,10 @@ import org.opengis.geometry.BoundingBox;
  *     <p>CrossesIntegrity cross = new CrossesIntegrity(); cross.setExpected(false);
  *     cross.setGeomTypeRefA("my:line");
  *     <p>Map map = new HashMap(); try { map.put("my:line", mds.getFeatureSource("line")); } catch
- *     (IOException e1) { e1.printStackTrace(); }
+ *     (IOException e1) {java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "",
+ *     e1); }
  *     <p>try { assertFalse(cross.validate(map, lineBounds, vr)); } catch (Exception e) {
- *     e.printStackTrace(); }
+ *     java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e); }
  */
 public class CrossesIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
@@ -269,19 +270,23 @@ public class CrossesIntegrity extends RelationIntegrity {
                                                 + "("
                                                 + f2.getID()
                                                 + ")");
-                                System.out.println(
-                                        ((Geometry) f1.getDefaultGeometry()).getGeometryType()
-                                                + " "
-                                                + getGeomTypeRefA()
-                                                + "("
-                                                + f1.getID()
-                                                + ")"
-                                                + " crossed "
-                                                + getGeomTypeRefA()
-                                                + "("
-                                                + f2.getID()
-                                                + "), Result was not "
-                                                + expected);
+                                // System.out.println(
+                                //                                        ((Geometry)
+                                // f1.getDefaultGeometry()).getGeometryType()
+                                //                                                + " "
+                                //                                                +
+                                // getGeomTypeRefA()
+                                //                                                + "("
+                                //                                                + f1.getID()
+                                //                                                + ")"
+                                //                                                + " crossed "
+                                //                                                +
+                                // getGeomTypeRefA()
+                                //                                                + "("
+                                //                                                + f2.getID()
+                                //                                                + "), Result was
+                                // not "
+                                //                                                + expected);
                                 success = false;
                             }
                         }

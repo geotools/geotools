@@ -41,7 +41,7 @@ public class PoissonClusterer {
         Iterator nodeIt = nodes.iterator();
         Vector clusterNodes = new Vector();
         Vector clusterEdges = new Vector();
-        System.out.println("x, y, actual, expected, probability");
+        // System.out.println("x, y, actual, expected, probability");
         while (nodeIt.hasNext()) {
             DelaunayNode next = (DelaunayNode) nodeIt.next();
             SimpleFeature nextFeature = next.getFeature();
@@ -181,16 +181,16 @@ public class PoissonClusterer {
             double poissonProb = top / bottom;
             //            System.out.println("testing " + newNodes);
             //            System.out.println("testing " + newEdges);
-            System.out.println(
-                    next.getCoordinate().x
-                            + ", "
-                            + next.getCoordinate().y
-                            + ", "
-                            + totalTarget
-                            + ", "
-                            + expectedTarget
-                            + ", "
-                            + poissonProb);
+            // System.out.println(
+            //                    next.getCoordinate().x
+            //                            + ", "
+            //                            + next.getCoordinate().y
+            //                            + ", "
+            //                            + totalTarget
+            //                            + ", "
+            //                            + expectedTarget
+            //                            + ", "
+            //                            + poissonProb);
 
             if (poissonProb < threshold) {
                 clusterNodes.addAll(newNodes);

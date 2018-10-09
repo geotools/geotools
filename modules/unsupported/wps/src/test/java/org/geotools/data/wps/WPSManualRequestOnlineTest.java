@@ -488,7 +488,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         exeRequest.performPostOutput(bos);
-        System.out.println(bos.toString());
+        // System.out.println(bos.toString());
 
         // send the request
         ExecuteProcessResponse response = wps.issueRequest(exeRequest);
@@ -684,7 +684,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (!found) {
-            System.out.println("Skipping, gs:AreaGrid not found!");
+            // System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
 
@@ -785,7 +785,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (!found) {
-            System.out.println("Skipping, gs:AreaGrid not found!");
+            // System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
 
@@ -858,7 +858,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (!found) {
-            System.out.println("Skipping, gs:AreaGrid not found!");
+            // System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
 
@@ -931,7 +931,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
                         + "YLLCORNER -90.0\n"
                         + "CELLSIZE 3.6\n"
                         + "NODATA_VALUE -9999";
-        System.out.println(arcgrid);
+        // System.out.println(arcgrid);
         assertTrue(arcgrid.startsWith(expectedHeader));
     }
 
@@ -972,7 +972,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (found) {
-            System.out.println("Skipping, gs:InvalidProcessName has been found!");
+            // System.out.println("Skipping, gs:InvalidProcessName has been found!");
             return;
         }
 
@@ -1037,7 +1037,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // exit test if my process doesn't exist on server
         if (!found) {
-            System.out.println("Skipping, gs:AreaGrid not found!");
+            // System.out.println("Skipping, gs:AreaGrid not found!");
             return;
         }
 
@@ -1151,7 +1151,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         // send the request
         ExecuteProcessResponse response = wps.issueRequest(exeRequest);
         Object result = response.getExecuteResponse().getProcessOutputs().getOutput().get(0);
-        System.out.println(result);
+        // System.out.println(result);
     }
 }
 

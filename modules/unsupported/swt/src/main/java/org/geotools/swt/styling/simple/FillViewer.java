@@ -104,7 +104,7 @@ public class FillViewer {
                 }
                 fire(selectionEvent); // everything worked
             } catch (Throwable t) {
-                t.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", t);
             } finally {
                 FillViewer.this.chooser.setEnabled(FillViewer.this.enabled);
                 FillViewer.this.percent.setEnabled(FillViewer.this.enabled);

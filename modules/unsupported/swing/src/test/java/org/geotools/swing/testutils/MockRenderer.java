@@ -170,7 +170,7 @@ public class MockRenderer implements GTRenderer {
         lock.lock();
         try {
             if (verbose) {
-                System.out.println("mock paint started");
+                // System.out.println("mock paint started");
                 System.out.flush();
             }
 
@@ -190,9 +190,9 @@ public class MockRenderer implements GTRenderer {
 
         if (verbose) {
             if (wasCancelled) {
-                System.out.println("mock paint cancelled");
+                // System.out.println("mock paint cancelled");
             } else {
-                System.out.println("mock paint finished");
+                // System.out.println("mock paint finished");
             }
             System.out.flush();
         }

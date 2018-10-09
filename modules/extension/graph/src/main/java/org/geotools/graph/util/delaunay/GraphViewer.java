@@ -116,8 +116,8 @@ public class GraphViewer extends JPanel {
         int i = 0;
         xOffset = (int) Math.round(xScaling - minX * xScaling);
         yOffset = (int) Math.round(yScaling - minY * yScaling);
-        System.out.println("xOffset is " + xOffset);
-        System.out.println("yOffset is " + yOffset);
+        // System.out.println("xOffset is " + xOffset);
+        // System.out.println("yOffset is " + yOffset);
         Iterator it = nodes.iterator();
         while (it.hasNext()) {
             Object next = it.next();

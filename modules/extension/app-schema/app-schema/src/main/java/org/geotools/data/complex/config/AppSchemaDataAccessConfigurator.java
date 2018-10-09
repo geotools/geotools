@@ -690,7 +690,7 @@ public class AppSchemaDataAccessConfigurator {
                                 + ":\n"
                                 + formattedErrorMessage);
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
                 String msg = "parsing expression " + sourceExpr;
                 AppSchemaDataAccessConfigurator.LOGGER.log(Level.SEVERE, msg, e);
                 throw new DataSourceException(msg + ": " + e.getMessage(), e);

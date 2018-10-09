@@ -181,7 +181,7 @@ public class RasterInfoTest {
     @Ignore
     public void testArcSDEPyramidHypothetical() throws Exception {
         RasterInfo pyramid = createPyramid();
-        System.out.println(pyramid);
+        // System.out.println(pyramid);
 
         RasterTestData testData = new RasterTestData();
         testData.setUp();
@@ -234,7 +234,7 @@ public class RasterInfoTest {
             conn.dispose();
         }
 
-        System.out.println(pyramid);
+        // System.out.println(pyramid);
 
         /*
          * ArcSDEPyramid pyramid = new ArcSDEPyramid(10, 10); pyramid.addPyramidLevel(0, new

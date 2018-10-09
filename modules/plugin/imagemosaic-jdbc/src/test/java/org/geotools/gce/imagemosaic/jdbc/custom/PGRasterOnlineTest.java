@@ -255,7 +255,7 @@ public class PGRasterOnlineTest extends AbstractTest {
             con.commit();
             // con.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         }
     }
@@ -272,7 +272,7 @@ public class PGRasterOnlineTest extends AbstractTest {
             con.prepareStatement("DROP TABLE IF EXISTS \"public\".\"rtable3\"").execute();
             con.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             Assert.fail(e.getMessage());
         } finally {
             try {

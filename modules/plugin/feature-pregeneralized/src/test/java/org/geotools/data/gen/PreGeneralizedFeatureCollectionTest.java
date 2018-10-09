@@ -47,7 +47,7 @@ public class PreGeneralizedFeatureCollectionTest extends TestCase {
             typeName = ds.getTypeNames()[0];
             fCollection = ds.getFeatureSource(typeName).getFeatures();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", ex);
             Assert.fail();
         }
 

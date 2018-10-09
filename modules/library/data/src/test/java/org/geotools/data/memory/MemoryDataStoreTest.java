@@ -628,7 +628,7 @@ public class MemoryDataStoreTest extends DataTestCase {
         try {
             while (reader.hasNext()) {
                 feature = reader.next();
-                System.out.println(count + " feature:" + feature);
+                // System.out.println(count + " feature:" + feature);
                 count++;
             }
         } finally {
@@ -638,7 +638,7 @@ public class MemoryDataStoreTest extends DataTestCase {
 
     void dump(Object[] array) {
         for (int i = 0; i < array.length; i++) {
-            System.out.println(i + " feature:" + array[i]);
+            // System.out.println(i + " feature:" + array[i]);
         }
     }
 

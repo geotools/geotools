@@ -75,7 +75,7 @@ public class GeometryConformanceTestSuite extends TestSuite {
             for (int i = 0; i < tests.length; i++) {
                 File testFile = tests[i];
                 Properties excludes = findExclusions(testFile);
-                System.out.println("file: " + testFile.getName());
+                // System.out.println("file: " + testFile.getName());
                 if (!isAllExcluded(excludes)) {
                     InputStream inputStream = testFile.toURI().toURL().openStream();
                     try {
@@ -188,7 +188,8 @@ public class GeometryConformanceTestSuite extends TestSuite {
                                 op.setExpectedResult(expectedResult);
                                 testCase.addTestOperation(op);
                             } catch (ParseException e) {
-                                e.printStackTrace();
+                                java.util.logging.Logger.getGlobal()
+                                        .log(java.util.logging.Level.INFO, "", e);
                             }
                         }
                     }

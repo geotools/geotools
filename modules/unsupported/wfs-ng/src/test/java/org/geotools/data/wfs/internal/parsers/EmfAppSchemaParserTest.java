@@ -93,20 +93,22 @@ public class EmfAppSchemaParserTest {
         SimpleFeatureType ftype =
                 testParseDescribeSimpleFeatureType(
                         featureTypeName, schemaLocation, expectedAttributeCount);
+        /*
         for (AttributeDescriptor descriptor : ftype.getAttributeDescriptors()) {
-            System.out.print(descriptor.getName().getNamespaceURI());
-            System.out.print("#");
-            System.out.print(descriptor.getName().getLocalPart());
-            System.out.print(
+             System.out.print(descriptor.getName().getNamespaceURI());
+             System.out.print("#");
+             System.out.print(descriptor.getName().getLocalPart());
+             System.out.print(
                     "[" + descriptor.getMinOccurs() + ":" + descriptor.getMaxOccurs() + "]");
-            System.out.print(
+             System.out.print(
                     " ("
                             + descriptor.getType().getName()
                             + ": "
                             + descriptor.getType().getBinding()
                             + ")");
-            System.out.println("");
+             System.out.println("");
         }
+        */
     }
 
     /**

@@ -65,7 +65,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
                     DescribeLayerRequest request = wms.createDescribeLayerRequest();
                     assertNotNull(request);
                     request.setLayers("land_fn,park,drain_fn,road,popplace");
-                    System.out.println(request.getFinalURL());
+                    // System.out.println(request.getFinalURL());
                     DescribeLayerResponse response = (DescribeLayerResponse) wms.issueRequest(request);
                     assertNotNull(response);
 
@@ -88,7 +88,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
                     assertEquals(layerDescs[4].getQueries()[0], "popplace");
                 } catch(java.net.ConnectException ce){
                     if(ce.getMessage().indexOf("timed out")>0){
-                        System.err.println("Unable to test - timed out: "+ce);
+                        // System.err.println("Unable to test - timed out: "+ce);
                     } else{
                         throw(ce);
                     }
@@ -122,7 +122,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
                     request.setWidth("50");
                     request.setHeight("50");
 
-                    System.out.println(request.getFinalURL());
+                    // System.out.println(request.getFinalURL());
 
                     GetLegendGraphicResponse response = (GetLegendGraphicResponse) wms.issueRequest(request);
                     assertNotNull(response);
@@ -133,7 +133,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
                     assertEquals(image.getHeight(), 50);
                 } catch(java.net.ConnectException ce){
                     if(ce.getMessage().indexOf("timed out")>0){
-                        System.err.println("Unable to test - timed out: "+ce);
+                        // System.err.println("Unable to test - timed out: "+ce);
                     } else{
                         throw(ce);
                     }
@@ -261,7 +261,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
             assertNotNull(layer2.getBoundingBoxes().get("EPSG:42304"));
         } catch (Exception e) {
             if (e.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + e);
+                // System.err.println("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -280,7 +280,7 @@ public class WMS1_1_0_OnlineTest extends WMS1_0_0_OnlineTest {
             assertTrue(externalForm.indexOf("image%2Fjpeg") >= 0);
         } catch (java.net.ConnectException ce) {
             if (ce.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + ce);
+                // System.err.println("Unable to test - timed out: " + ce);
             } else {
                 throw (ce);
             }

@@ -152,7 +152,7 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
                 isMySQLVersion56OrAbove = false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         } finally {
             try {
                 if (con != null && !con.isClosed()) {

@@ -256,7 +256,7 @@ public class ScaleZoomLevelMatcher {
 
             return _scale;
         } catch (Exception exc) {
-            exc.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", exc);
         }
 
         // in case of error, return fallback zoom-level

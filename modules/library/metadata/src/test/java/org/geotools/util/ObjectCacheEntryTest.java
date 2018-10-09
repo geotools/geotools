@@ -40,7 +40,7 @@ public final class ObjectCacheEntryTest {
             try {
                 values = new Object[] {entry.getValue()};
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
 
@@ -62,7 +62,7 @@ public final class ObjectCacheEntryTest {
                 entry.writeUnLock();
                 values = new Object[] {entry.getValue()};
             } catch (Exception e) {
-                e.printStackTrace();
+                java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             }
         }
 

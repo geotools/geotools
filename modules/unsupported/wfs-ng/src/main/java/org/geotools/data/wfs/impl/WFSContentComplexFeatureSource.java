@@ -98,7 +98,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         String srsName = null;
         CoordinateReferenceSystem crs = query.getCoordinateSystem();
         if (null != crs) {
-            System.err.println("Warning: don't forget to set the query CRS");
+            // System.err.println("Warning: don't forget to set the query CRS");
         }
 
         request.setSrsName(srsName);

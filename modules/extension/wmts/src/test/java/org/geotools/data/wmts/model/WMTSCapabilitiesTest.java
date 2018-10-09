@@ -97,9 +97,9 @@ public class WMTSCapabilitiesTest extends TestCase {
             CRSEnvelope bbox = (CRSEnvelope) layers.get(1).getBoundingBoxes().get("EPSG:4326");
             assertNotNull(bbox);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + e);
+                // System.err.println("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -163,9 +163,9 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertNotNull(bbox);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + e);
+                // System.err.println("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -213,9 +213,9 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertNotNull(bbox);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + e);
+                // System.err.println("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }
@@ -241,7 +241,7 @@ public class WMTSCapabilitiesTest extends TestCase {
         } catch (Exception e) {
             // a standard catch block shared with the other tests
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
-                System.err.println("Unable to test - timed out: " + e);
+                // System.err.println("Unable to test - timed out: " + e);
             } else {
                 throw (e);
             }

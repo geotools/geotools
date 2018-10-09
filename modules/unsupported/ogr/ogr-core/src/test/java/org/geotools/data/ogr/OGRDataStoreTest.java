@@ -401,7 +401,8 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingGeoJSON() throws Exception {
         if (!ogrSupports("GeoJSON")) {
-            System.out.println("Skipping GeoJSON writing test as OGR was not built to support it");
+            // System.out.println("Skipping GeoJSON writing test as OGR was not built to support
+            // it");
         }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-geojson", ".json");
@@ -431,7 +432,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingCsv() throws Exception {
         if (!ogrSupports("CSV")) {
-            System.out.println("Skipping CSV writing test as OGR was not built to support it");
+            // System.out.println("Skipping CSV writing test as OGR was not built to support it");
         }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-csv", ".csv");
@@ -460,7 +461,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingGmt() throws Exception {
         if (!ogrSupports("GMT")) {
-            System.out.println("Skipping GMT writing test as OGR was not built to support it");
+            // System.out.println("Skipping GMT writing test as OGR was not built to support it");
         }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-gmt", ".gmt");
@@ -489,7 +490,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingGpx() throws Exception {
         if (!ogrSupports("GPX")) {
-            System.out.println("Skipping GPX writing test as OGR was not built to support it");
+            // System.out.println("Skipping GPX writing test as OGR was not built to support it");
         }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-gpx", ".gpx");
@@ -518,7 +519,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingGML() throws Exception {
         if (!ogrSupports("GML")) {
-            System.out.println("Skipping GML writing test as OGR was not built to support it");
+            // System.out.println("Skipping GML writing test as OGR was not built to support it");
         }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-gml", ".gml");
@@ -546,7 +547,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingKML() throws Exception {
         if (!ogrSupports("KML")) {
-            System.out.println("Skipping KML writing test as OGR was not built to support it");
+            // System.out.println("Skipping KML writing test as OGR was not built to support it");
         }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-kml", ".kml");
@@ -574,7 +575,8 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingGeoRSS() throws Exception {
         if (!ogrSupports("GeoRSS")) {
-            System.out.println("Skipping GeoRSS writing test as OGR was not built to support it");
+            // System.out.println("Skipping GeoRSS writing test as OGR was not built to support
+            // it");
         }
         // Write
         SimpleFeatureCollection features = createFeatureCollection();
@@ -630,7 +632,8 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingSqlite() throws Exception {
         if (!ogrSupports("SQLite")) {
-            System.out.println("Skipping SQLite writing test as OGR was not built to support it");
+            // System.out.println("Skipping SQLite writing test as OGR was not built to support
+            // it");
         }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-sql", ".sqlite");
@@ -658,7 +661,8 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingSqliteWithSorting() throws Exception {
         if (!ogrSupports("SQLite")) {
-            System.out.println("Skipping SQLite writing test as OGR was not built to support it");
+            // System.out.println("Skipping SQLite writing test as OGR was not built to support
+            // it");
         }
         SimpleFeatureCollection features = createFeatureCollection();
         File tmpFile = getTempFile("test-sql", ".sqlite");
@@ -692,7 +696,8 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
 
     public void testAttributesWritingSqliteFromUpperCaseAttributes() throws Exception {
         if (!ogrSupports("SQLite")) {
-            System.out.println("Skipping SQLite writing test as OGR was not built to support it");
+            // System.out.println("Skipping SQLite writing test as OGR was not built to support
+            // it");
         }
         SimpleFeatureCollection features = createFeatureCollectionWithUpperCaseAttributes();
         File tmpFile = getTempFile("test-sqlite", ".db");

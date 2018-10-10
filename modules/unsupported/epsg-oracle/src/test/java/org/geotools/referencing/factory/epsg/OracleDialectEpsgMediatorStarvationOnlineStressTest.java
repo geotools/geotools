@@ -126,21 +126,21 @@ public class OracleDialectEpsgMediatorStarvationOnlineStressTest extends OracleO
             maxTime = Math.max(maxTime, thread.maxTime);
         }
         if (SHOW_OUTPUT) {
-            // System.out.println("Threads: " + RUNNER_COUNT);
-            // System.out.println("Maximum Workers: " + MAX_WORKERS);
-            // System.out.println("Iterations per Thread: " + ITERATIONS);
-            // System.out.println("Average Time: " + (totalTime / totalRuns) + " ms");
-            // System.out.println("Cumulative Time: " + totalTime + " ms");
-            // System.out.println("Cumulative Iterations: " + totalRuns);
-            // System.out.println("Overall Time: " + timeElapsed);
-            // System.out.println(
+            System.out.println("Threads: " + RUNNER_COUNT);
+            System.out.println("Maximum Workers: " + MAX_WORKERS);
+            System.out.println("Iterations per Thread: " + ITERATIONS);
+            System.out.println("Average Time: " + (totalTime / totalRuns) + " ms");
+            System.out.println("Cumulative Time: " + totalTime + " ms");
+            System.out.println("Cumulative Iterations: " + totalRuns);
+            System.out.println("Overall Time: " + timeElapsed);
+            System.out.println(
                     "Throughput: "
                             + (1000 * totalRuns / new Long(totalTime).doubleValue())
                             + " Hz");
-            // System.out.println("Min: " + minTime);
-            // System.out.println("Max: " + maxTime);
-            // System.out.println("BUFFER_POLICY: " + hints.get(Hints.CACHE_POLICY).toString());
-            // System.out.println("# CRS codes: " + codes.length);
+            System.out.println("Min: " + minTime);
+            System.out.println("Max: " + maxTime);
+            System.out.println("BUFFER_POLICY: " + hints.get(Hints.CACHE_POLICY).toString());
+            System.out.println("# CRS codes: " + codes.length);
             // append results to file
             StringBuffer sb = new StringBuffer();
             sb.append(RUNNER_COUNT);

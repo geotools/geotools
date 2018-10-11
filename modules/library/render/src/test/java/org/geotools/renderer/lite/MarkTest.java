@@ -207,7 +207,7 @@ public class MarkTest {
 
         BufferedImage image =
                 RendererBaseTest.showRender("Rotate north arrow", renderer, TIME, bounds);
-        ImageAssert.assertEquals(file("rotateArrow"), image, 50);
+        ImageAssert.assertEquals(file("rotateArrow"), image, 240);
     }
 
     @Test

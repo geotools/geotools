@@ -1529,7 +1529,7 @@
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
           </excludes>
-          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions --add-modules=java.xml.bind --add-modules=java.activation -Djava.util.logging.config.file=${geotoolsBaseDir}/${logging-profile}.properties</argLine>
+	  <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file=${geotoolsBaseDir}/${logging-profile}.properties</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the begining of this pom.xml file. -->
@@ -1669,7 +1669,7 @@
             org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions
           </excludePackageNames>
 
-          <!-- Custom taglets implemented in Java. -->
+          <!-- Custom taglets implemented in Java. 
           <taglets>
             <taglet>
               <tagletClass>org.geotools.maven.taglet.Tutorial</tagletClass>
@@ -1687,7 +1687,8 @@
                 <version>${project.version}</version>
               </tagletArtifact>
             </taglet>
-          </taglets>
+	  </taglets>
+          -->
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->

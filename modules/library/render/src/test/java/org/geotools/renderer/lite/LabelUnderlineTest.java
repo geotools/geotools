@@ -51,7 +51,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
         File reference =
                 new File(
                         "./src/test/resources/org/geotools/renderer/lite/test-data/underlineStyle.sld.png");
-        ImageAssert.assertEquals(reference, image, 3500);
+        ImageAssert.assertEquals(reference, image, 3700);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
         File reference =
                 new File(
                         "./src/test/resources/org/geotools/renderer/lite/test-data/underlineStyle-legacyAnchorPoint.sld.png");
-        ImageAssert.assertEquals(reference, image, 3500);
+        ImageAssert.assertEquals(reference, image, 3700);
         System.clearProperty(SLDStyleFactory.USE_LEGACY_ANCHOR_POINT_KEY);
     }
 
@@ -112,7 +112,7 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
         File reference =
                 new File(
                         "./src/test/resources/org/geotools/renderer/lite/test-data/underlineOffsetStyle.sld.png");
-        ImageAssert.assertEquals(reference, image, 3400);
+        ImageAssert.assertEquals(reference, image, 3600);
     }
 
     @Test

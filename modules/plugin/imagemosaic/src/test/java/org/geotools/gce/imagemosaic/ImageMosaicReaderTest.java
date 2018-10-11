@@ -5412,13 +5412,13 @@ public class ImageMosaicReaderTest extends Assert {
         // order them one way and check
         ParameterValue<String> ascending = ImageMosaicFormat.SORT_BY.createValue();
         ascending.setValue("location A");
-        GridCoverage2D coverageA = reader.read(new GeneralParameterValue[] {});
+        GridCoverage2D coverageA = reader.read(new GeneralParameterValue[] {ascending});
         verifier.accept(coverageA);
 
         // other them the opposite way and check
         ParameterValue<String> descending = ImageMosaicFormat.SORT_BY.createValue();
         descending.setValue("location D");
-        GridCoverage2D coverageD = reader.read(new GeneralParameterValue[] {});
+        GridCoverage2D coverageD = reader.read(new GeneralParameterValue[] {descending});
         verifier.accept(coverageD);
 
         reader.dispose();

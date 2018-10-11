@@ -5387,4 +5387,40 @@ public class ImageMosaicReaderTest extends Assert {
         coverage.dispose(true);
         reader.dispose();
     }
+
+    @Test
+    public void testGrayRGBAlpha() throws Exception {
+        // instantiate image mosaic reader
+        URL mosaicURL = TestData.url(this, "tiff_gray_rbg_alpha");
+        AbstractGridFormat format = TestUtils.getFormat(mosaicURL);
+        ImageMosaicReader reader = TestUtils.getReader(mosaicURL, format);
+        // checking that we have the required bands in the right order
+        Consumer<GridCoverage2D> verifier =
+                c -> {
+                    RenderedImage renderedImage = c.getRenderedImage();
+                    SampleModel sampleModel = renderedImage.getSampleModel();
+                    ColorModel colorModel = renderedImage.getColorModel();
+                    assertThat(sampleModel.getNumBands(), is(4));
+                    assertThat(colorModel.getNumComponents(), is(4));
+                    assertThat(colorModel.getTransparency(), is(ColorModel.TRANSLUCENT));
+                    c.dispose(true);
+                };
+
+        // the code was throwing exceptions while trying to mosaic them if the gray
+        // was collected before the rgb... try both orders to ensure it works both ways
+
+        // order them one way and check
+        ParameterValue<String> ascending = ImageMosaicFormat.SORT_BY.createValue();
+        ascending.setValue("location A");
+        GridCoverage2D coverageA = reader.read(new GeneralParameterValue[] {});
+        verifier.accept(coverageA);
+
+        // other them the opposite way and check
+        ParameterValue<String> descending = ImageMosaicFormat.SORT_BY.createValue();
+        descending.setValue("location D");
+        GridCoverage2D coverageD = reader.read(new GeneralParameterValue[] {});
+        verifier.accept(coverageD);
+
+        reader.dispose();
+    }
 }

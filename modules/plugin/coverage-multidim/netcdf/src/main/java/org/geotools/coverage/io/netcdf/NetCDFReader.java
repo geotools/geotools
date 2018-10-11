@@ -71,6 +71,7 @@ import org.geotools.coverage.io.catalog.CoverageSlicesCatalogSource;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.coverage.io.util.DoubleRangeTreeSet;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
@@ -1020,6 +1021,12 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     @Override
     public void delete(boolean deleteData) throws IOException {
         ((NetCDFAccess) access).purge();
+        if (deleteData) {
+            File file = URLs.urlToFile(sourceURL);
+            if (file != null && file.exists()) {
+                file.delete();
+            }
+        }
     }
 
     @Override

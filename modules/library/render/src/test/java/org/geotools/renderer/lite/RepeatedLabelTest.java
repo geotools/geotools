@@ -90,7 +90,7 @@ public class RepeatedLabelTest {
                         "src/test/resources/org/geotools/renderer/lite/test-data/"
                                 + styleName
                                 + ".png");
-        int tolerance = 1400;
+        int tolerance = 1600;
         ImageAssert.assertEquals(expected, image, tolerance);
     }
 

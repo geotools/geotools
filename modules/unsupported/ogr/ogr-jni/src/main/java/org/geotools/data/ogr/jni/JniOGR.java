@@ -1,6 +1,46 @@
 package org.geotools.data.ogr.jni;
 
-import static org.gdal.ogr.ogrConstants.*;
+import static org.gdal.ogr.ogrConstants.OFTBinary;
+import static org.gdal.ogr.ogrConstants.OFTDate;
+import static org.gdal.ogr.ogrConstants.OFTDateTime;
+import static org.gdal.ogr.ogrConstants.OFTInteger;
+import static org.gdal.ogr.ogrConstants.OFTIntegerList;
+import static org.gdal.ogr.ogrConstants.OFTReal;
+import static org.gdal.ogr.ogrConstants.OFTRealList;
+import static org.gdal.ogr.ogrConstants.OFTString;
+import static org.gdal.ogr.ogrConstants.OFTTime;
+import static org.gdal.ogr.ogrConstants.OGRERR_CORRUPT_DATA;
+import static org.gdal.ogr.ogrConstants.OGRERR_FAILURE;
+import static org.gdal.ogr.ogrConstants.OGRERR_NONE;
+import static org.gdal.ogr.ogrConstants.OGRERR_NOT_ENOUGH_DATA;
+import static org.gdal.ogr.ogrConstants.OGRERR_NOT_ENOUGH_MEMORY;
+import static org.gdal.ogr.ogrConstants.OGRERR_UNSUPPORTED_GEOMETRY_TYPE;
+import static org.gdal.ogr.ogrConstants.OGRERR_UNSUPPORTED_OPERATION;
+import static org.gdal.ogr.ogrConstants.OGRERR_UNSUPPORTED_SRS;
+import static org.gdal.ogr.ogrConstants.OJRight;
+import static org.gdal.ogr.ogrConstants.OLCCreateField;
+import static org.gdal.ogr.ogrConstants.OLCDeleteFeature;
+import static org.gdal.ogr.ogrConstants.OLCIgnoreFields;
+import static org.gdal.ogr.ogrConstants.OLCRandomWrite;
+import static org.gdal.ogr.ogrConstants.OLCSequentialWrite;
+import static org.gdal.ogr.ogrConstants.wkbGeometryCollection;
+import static org.gdal.ogr.ogrConstants.wkbGeometryCollection25D;
+import static org.gdal.ogr.ogrConstants.wkbLineString;
+import static org.gdal.ogr.ogrConstants.wkbLineString25D;
+import static org.gdal.ogr.ogrConstants.wkbLinearRing;
+import static org.gdal.ogr.ogrConstants.wkbMultiLineString;
+import static org.gdal.ogr.ogrConstants.wkbMultiLineString25D;
+import static org.gdal.ogr.ogrConstants.wkbMultiPoint;
+import static org.gdal.ogr.ogrConstants.wkbMultiPoint25D;
+import static org.gdal.ogr.ogrConstants.wkbMultiPolygon;
+import static org.gdal.ogr.ogrConstants.wkbMultiPolygon25D;
+import static org.gdal.ogr.ogrConstants.wkbNone;
+import static org.gdal.ogr.ogrConstants.wkbPoint;
+import static org.gdal.ogr.ogrConstants.wkbPoint25D;
+import static org.gdal.ogr.ogrConstants.wkbPolygon;
+import static org.gdal.ogr.ogrConstants.wkbPolygon25D;
+import static org.gdal.ogr.ogrConstants.wkbUnknown;
+import static org.gdal.ogr.ogrConstants.wkbXDR;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -30,6 +70,24 @@ public class JniOGR implements OGR {
 
     Vector<String> vector(String[] opts) {
         return opts != null && opts.length > 0 ? new Vector<String>(Arrays.asList(opts)) : null;
+    }
+
+    @Override
+    public boolean IsGEOSEnabled() {
+        boolean isGEOSEnabled = false;
+        Geometry g1 = Geometry.CreateFromWkt("POINT (1 1)");
+        Geometry g2 = Geometry.CreateFromWkt("POINT (2 2)");
+        try {
+            g1.Touches(g2);
+            if (!GetLastErrorMsg()
+                    .toLowerCase()
+                    .contains("GEOS support not enabled".toLowerCase())) {
+                isGEOSEnabled = true;
+            }
+        } catch (Exception ex) {
+            // Do nothing
+        }
+        return isGEOSEnabled;
     }
 
     @Override
@@ -485,7 +543,12 @@ public class JniOGR implements OGR {
             int[] minute,
             int[] second,
             int[] tzFlag) {
-        ((Feature) feature).GetFieldAsDateTime(i, year, month, day, hour, minute, second, tzFlag);
+        float[] secondFloat = new float[second.length];
+        ((Feature) feature)
+                .GetFieldAsDateTime(i, year, month, day, hour, minute, secondFloat, tzFlag);
+        for (int j = 0; j < second.length; j++) {
+            second[j] = (int) secondFloat[j];
+        }
     }
 
     @Override
@@ -535,7 +598,7 @@ public class JniOGR implements OGR {
 
     @Override
     public long GetMultiLineStringType() {
-        return wkbMultiPoint25D;
+        return wkbMultiLineString;
     }
 
     @Override

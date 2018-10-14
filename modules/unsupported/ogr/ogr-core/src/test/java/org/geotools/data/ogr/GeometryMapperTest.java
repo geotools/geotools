@@ -4,7 +4,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.WKTReader;
 
-
 public abstract class GeometryMapperTest extends TestCaseSupport {
 
     GeometryFactory gf = new GeometryFactory();

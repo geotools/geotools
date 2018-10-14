@@ -30,10 +30,10 @@ import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentFeatureStore;
-import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -51,7 +51,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * FeatureSource for the OGR store, based on the {@link ContentFeatureStore} framework
  *
  * @author Andrea Aime - GeoSolutions
-
  */
 @SuppressWarnings("rawtypes")
 class OGRFeatureSource extends ContentFeatureSource {

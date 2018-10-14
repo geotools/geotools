@@ -82,7 +82,7 @@
   </dependencies>
   
   <properties>
-    <gdal.version>1.8.1</gdal.version>
+    <gdal.version>2.2.0</gdal.version>
   </properties>
   
     <build>

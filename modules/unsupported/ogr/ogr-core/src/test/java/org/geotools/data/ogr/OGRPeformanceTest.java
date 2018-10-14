@@ -24,7 +24,6 @@ import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.referencing.CRS;
 
-
 public abstract class OGRPeformanceTest extends TestCaseSupport {
 
     static final String STATE_POP = "shapes/statepop.shp";

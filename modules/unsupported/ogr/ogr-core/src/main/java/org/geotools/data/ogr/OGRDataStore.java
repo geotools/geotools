@@ -264,6 +264,7 @@ public class OGRDataStore extends ContentDataStore {
             if (!driverName.equalsIgnoreCase("georss")
                     && !driverName.equalsIgnoreCase("gpx")
                     && !driverName.equalsIgnoreCase("sosi")
+                    && !driverName.equalsIgnoreCase("geojson")
                     && !ogr.LayerCanCreateField(layer)) {
                 throw new DataSourceException(
                         "OGR reports it's not possible to create fields on this layer");

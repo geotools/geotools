@@ -51,11 +51,23 @@ class PolygonEncoder extends GeometryEncoder<Polygon> {
 
     protected PolygonEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
+        init(encoder, gmlPrefix, gmlUri);
+        lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
+        re = new RingEncoder(encoder, gmlPrefix, gmlUri);
+    }
+
+    protected PolygonEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        init(encoder, gmlPrefix, gmlUri);
+        lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+        re = new RingEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+    }
+
+    private void init(Encoder encoder, String gmlPrefix, String gmlUri) {
         polygon = POLYGON.derive(gmlPrefix, gmlUri);
         exterior = EXTERIOR.derive(gmlPrefix, gmlUri);
         interior = INTERIOR.derive(gmlPrefix, gmlUri);
-        lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
-        re = new RingEncoder(encoder, gmlPrefix, gmlUri);
     }
 
     @Override

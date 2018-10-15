@@ -46,6 +46,17 @@ class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollection> {
     protected GeometryCollectionEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
         gge = new GenericGeometryEncoder(encoder, gmlPrefix, gmlUri);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected GeometryCollectionEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        gge = new GenericGeometryEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         multiGeometry = MULTI_GEOMETRY.derive(gmlPrefix, gmlUri);
         geometryMember = GEOMETRY_MEMBER.derive(gmlPrefix, gmlUri);
     }

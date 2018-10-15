@@ -46,4 +46,20 @@ public class MultiPolygonTest extends GeometryEncoderTestSupport {
                 "mpoly.2",
                 xpath.evaluate("/gml:MultiSurface/gml:surfaceMember[2]/gml:Polygon/@gml:id", doc));
     }
+
+    /** No encode gml:id test */
+    public void testEncodeMultiPolygonNoGmlId() throws Exception {
+        MultiPolygonEncoder encoder =
+                new MultiPolygonEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
+        Geometry geometry =
+                new WKTReader2()
+                        .read(
+                                "MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))");
+        Document doc = encode(encoder, geometry, "mpoly");
+
+        assertEquals(
+                "0",
+                xpath.evaluate(
+                        "count(/gml:MultiSurface/gml:surfaceMember/gml:Polygon/@gml:id)", doc));
+    }
 }

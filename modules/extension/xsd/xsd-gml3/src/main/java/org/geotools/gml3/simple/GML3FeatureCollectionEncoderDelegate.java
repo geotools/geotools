@@ -240,24 +240,29 @@ public class GML3FeatureCollectionEncoderDelegate
         @Override
         public void registerGeometryEncoders(
                 Map<Class, GeometryEncoder> encoders, Encoder encoder) {
-            encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix, gmlUri, false));
+            encoders.put(
+                    MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix, gmlUri, false));
+            encoders.put(
+                    LineString.class, new LineStringEncoder(encoder, gmlPrefix, gmlUri, false));
+            encoders.put(
+                    LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix, gmlUri, false));
             encoders.put(
                     MultiLineString.class,
-                    new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, false));
+                    new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, false, false));
             encoders.put(
-                    MultiCurve.class, new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true));
-            encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(CompoundCurve.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(CircularRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(CompoundRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
+                    MultiCurve.class,
+                    new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true, false));
+            encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix, gmlUri, false));
+            encoders.put(
+                    MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix, gmlUri, false));
+            encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix, gmlUri, false));
+            encoders.put(CompoundCurve.class, new CurveEncoder(encoder, gmlPrefix, gmlUri, false));
+            encoders.put(CircularRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri, false));
+            encoders.put(CompoundRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri, false));
             encoders.put(
                     GeometryCollection.class,
-                    new GeometryCollectionEncoder(encoder, gmlPrefix, gmlUri));
+                    new GeometryCollectionEncoder(encoder, gmlPrefix, gmlUri, false));
         }
 
         @Override

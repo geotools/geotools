@@ -16,20 +16,22 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import static org.geotools.gce.imagemosaic.Utils.FF;
+import static org.hamcrest.Matchers.arrayWithSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import it.geosolutions.rendered.viewer.RenderedImageBrowser;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Transparency;
+import java.awt.*;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -46,6 +48,8 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GranuleRemovalPolicy;
+import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.footprint.FootprintInsetPolicy;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
@@ -54,6 +58,7 @@ import org.geotools.coverage.grid.io.footprint.WKTLoaderSPI;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.catalog.MultiLevelROIGeometryOverviewsProvider;
@@ -68,6 +73,7 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
+import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -86,6 +92,7 @@ import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.filter.PropertyIsLike;
 import org.opengis.geometry.Envelope;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.parameter.GeneralParameterValue;
@@ -230,33 +237,9 @@ public class ImageMosaicFootprintsTest {
             String overviewsSuffixFormat)
             throws Exception {
 
-        TemporaryFolder folder = new TemporaryFolder();
-        folder.create();
-        File multiWkbs = folder.getRoot();
-        FileUtils.copyDirectory(TestData.file(this, testFolder), multiWkbs);
-        Properties p = new Properties();
-        p.put(
-                MultiLevelROIProviderFactory.SOURCE_PROPERTY,
-                MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
-        p.put(
-                MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_SUFFIX_FORMAT_KEY,
-                overviewsSuffixFormat);
-        p.put(
-                MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_ROI_IN_RASTER_SPACE_KEY,
-                Boolean.toString(overviewsInRasterSpace));
-        if (loaderClassName != null) {
-            p.put(MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI, loaderClassName);
-        }
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(multiWkbs, "footprints.properties"));
-            p.store(fos, null);
-        } finally {
-            IOUtils.closeQuietly(fos);
-        }
-
-        ImageMosaicFormat format = new ImageMosaicFormat();
-        ImageMosaicReader reader = format.getReader(multiWkbs);
+        ImageMosaicReader reader =
+                getMultipleSidecarReader(
+                        testFolder, loaderClassName, overviewsInRasterSpace, overviewsSuffixFormat);
 
         // limit yourself to reading just a bit of it
         final ParameterValue<GridGeometry2D> gg =
@@ -305,6 +288,41 @@ public class ImageMosaicFootprintsTest {
 
         coverage.evaluate(new DirectPosition2D(145, 0), pixel);
         assertEquals(0, pixel[3]);
+    }
+
+    private ImageMosaicReader getMultipleSidecarReader(
+            String testFolder,
+            String loaderClassName,
+            boolean overviewsInRasterSpace,
+            String overviewsSuffixFormat)
+            throws IOException {
+        TemporaryFolder folder = new TemporaryFolder();
+        folder.create();
+        File multiWkbs = folder.getRoot();
+        FileUtils.copyDirectory(TestData.file(this, testFolder), multiWkbs);
+        Properties p = new Properties();
+        p.put(
+                MultiLevelROIProviderFactory.SOURCE_PROPERTY,
+                MultiLevelROIProviderFactory.TYPE_MULTIPLE_SIDECAR);
+        p.put(
+                MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_SUFFIX_FORMAT_KEY,
+                overviewsSuffixFormat);
+        p.put(
+                MultiLevelROIGeometryOverviewsProvider.OVERVIEWS_ROI_IN_RASTER_SPACE_KEY,
+                Boolean.toString(overviewsInRasterSpace));
+        if (loaderClassName != null) {
+            p.put(MultiLevelROIGeometryOverviewsProvider.FOOTPRINT_LOADER_SPI, loaderClassName);
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(new File(multiWkbs, "footprints.properties"));
+            p.store(fos, null);
+        } finally {
+            IOUtils.closeQuietly(fos);
+        }
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        return format.getReader(multiWkbs);
     }
 
     @Test
@@ -1516,5 +1534,69 @@ public class ImageMosaicFootprintsTest {
         assertEquals(numComponents, 4);
 
         reader.dispose();
+    }
+
+    @Test
+    public void testCleanUpWkbFootprints() throws Exception {
+        assertFootprintsCleanup(
+                "footprint_wkbs",
+                WKBLoaderSPI.class.getName(),
+                true,
+                "_%d",
+                f -> f.getName().startsWith("r1c1"),
+                FF.like(FF.property("location"), "r1c1*"));
+    }
+
+    @Test
+    public void testCleanUpWktFootprints() throws Exception {
+        assertFootprintsCleanup(
+                "footprint_wkts",
+                WKTLoaderSPI.class.getName(),
+                true,
+                "-%d",
+                f -> f.getName().startsWith("r1c1"),
+                FF.like(FF.property("location"), "r1c1*"));
+    }
+
+    @Test
+    public void testCleanUpWktFootprintsAutoDetect() throws Exception {
+        assertFootprintsCleanup(
+                "footprint_wkts",
+                null,
+                false,
+                "-%d",
+                f -> f.getName().startsWith("r1c1"),
+                FF.like(FF.property("location"), "r1c1*"));
+    }
+
+    private void assertFootprintsCleanup(
+            String footprint_wkbs,
+            String name,
+            boolean overviewsInRasterSpace,
+            String overviewsSuffixFormat,
+            FileFilter fileFilter,
+            PropertyIsLike granuleFilter)
+            throws IOException {
+        ImageMosaicReader reader =
+                getMultipleSidecarReader(
+                        footprint_wkbs, name, overviewsInRasterSpace, overviewsSuffixFormat);
+        File directory = (File) reader.getSource();
+
+        // collect the existing files matching the removal criteria
+        FileFilter notFileFilter = f -> !fileFilter.accept(f);
+        File[] existingFiles = directory.listFiles(fileFilter);
+        assertThat(existingFiles, arrayWithSize(6));
+        int otherFilesCount = directory.listFiles(notFileFilter).length;
+
+        GranuleStore store =
+                (GranuleStore) reader.getGranules(reader.getGridCoverageNames()[0], false);
+        Hints hints = new Hints(Hints.GRANULE_REMOVAL_POLICY, GranuleRemovalPolicy.ALL);
+        int removed = store.removeGranules(granuleFilter, hints);
+        assertEquals(1, removed);
+
+        // collect again, files should have been removed
+        File[] existingFilesPastCleanup = directory.listFiles(fileFilter);
+        assertThat(existingFilesPastCleanup, Matchers.emptyArray());
+        assertEquals(otherFilesCount, directory.listFiles(notFileFilter).length);
     }
 }

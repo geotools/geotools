@@ -18,6 +18,9 @@ package org.geotools.coverage.grid.io.footprint;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
@@ -48,6 +51,15 @@ public class WKTLoaderSPI implements FootprintLoaderSpi {
             }
 
             return null;
+        }
+
+        @Override
+        public List<File> getFootprintFiles(String pathNoExtension) {
+            File sidecar = new File(pathNoExtension + ".wkt");
+            if (sidecar.exists()) {
+                return Arrays.asList(sidecar);
+            }
+            return Collections.emptyList();
         }
     }
 }

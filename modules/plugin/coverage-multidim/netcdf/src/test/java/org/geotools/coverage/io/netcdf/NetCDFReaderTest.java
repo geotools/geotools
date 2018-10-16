@@ -16,6 +16,27 @@
  */
 package org.geotools.coverage.io.netcdf;
 
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.NoDataContainer;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TimeZone;
+import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.GridSampleDimension;
@@ -67,30 +88,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TimeZone;
-
-import javax.media.jai.PlanarImage;
-
-import it.geosolutions.jaiext.JAIExt;
-import it.geosolutions.jaiext.range.NoDataContainer;
 import si.uom.SI;
 import ucar.nc2.dataset.NetcdfDataset;
 
@@ -1465,7 +1462,9 @@ public class NetCDFReaderTest extends Assert {
         reader.dispose();
 
         // check we indeed removed the metadata only
-        assertFalse("Metadata dir should have been removed", purgeSetupHelper.metadataDirectory.get().exists());
+        assertFalse(
+                "Metadata dir should have been removed",
+                purgeSetupHelper.metadataDirectory.get().exists());
         assertTrue("Data file should still be there", purgeSetupHelper.dataFile.get().exists());
     }
 
@@ -1479,11 +1478,13 @@ public class NetCDFReaderTest extends Assert {
         reader.delete(true);
         reader.dispose();
 
-        // check we indeed removed the metadata only
-        assertFalse("Metadata dir should have been removed", purgeSetupHelper.metadataDirectory.get().exists());
-        assertFalse("Data file should also have been removed", purgeSetupHelper.dataFile.get().exists());
+        assertFalse(
+                "Metadata dir should have been removed",
+                purgeSetupHelper.metadataDirectory.get().exists());
+        assertFalse(
+                "Data file should also have been removed",
+                purgeSetupHelper.dataFile.get().exists());
     }
-
 
     private class PurgeSetupHelper {
         private String directoryName;
@@ -1502,7 +1503,8 @@ public class NetCDFReaderTest extends Assert {
             }
             assertTrue(directory.mkdirs());
 
-            FileUtils.copyFileToDirectory(TestData.file(NetCDFReaderTest.this, "O3-NO2.nc"), directory);
+            FileUtils.copyFileToDirectory(
+                    TestData.file(NetCDFReaderTest.this, "O3-NO2.nc"), directory);
             File file = new File(directory, "O3-NO2.nc");
 
             // create a reader and read coverage, should create everything
@@ -1513,12 +1515,13 @@ public class NetCDFReaderTest extends Assert {
             // check we have file and the metadata directory
             File[] files = directory.listFiles();
             assertEquals(2, files.length);
-            metadataDirectory = Arrays.stream(files)
-                    .filter(f -> f.getName().startsWith(".O3-NO2") && f.isDirectory())
-                    .findFirst();
+            metadataDirectory =
+                    Arrays.stream(files)
+                            .filter(f -> f.getName().startsWith(".O3-NO2") && f.isDirectory())
+                            .findFirst();
             assertTrue(metadataDirectory.isPresent());
-            dataFile = Arrays.stream(files).filter(
-                    f -> f.getName().equals("O3-NO2.nc")).findFirst();
+            dataFile =
+                    Arrays.stream(files).filter(f -> f.getName().equals("O3-NO2.nc")).findFirst();
             assertTrue(dataFile.isPresent());
             return this;
         }

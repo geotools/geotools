@@ -404,7 +404,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             try {
                 // create a writer that appends this features
                 fs = (SimpleFeatureStore) getTileIndexStore().getFeatureSource(typeName);
-                final int retVal = fs.getCount(query);
+                final int retVal = fs.getFeatures(query).size(); // ensures we get a value
                 fs.removeFeatures(query.getFilter());
 
                 return retVal;

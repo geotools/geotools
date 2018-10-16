@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteOrder;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
 
 /**
  * A bean that represents a row in the index used for mapping 2d grids to 2d slices in NetCDF files.
@@ -128,6 +131,15 @@ public class Slice2DIndex {
      */
     public static class Slice2DIndexManager {
 
+        static final Logger LOGGER = Logging.getLogger(Slice2DIndexManager.class);
+
+        /**
+         * When true, the stack trace that created a reader that wasn't closed is recorded and then
+         * printed out when warning the user about this.
+         */
+        protected static final Boolean TRACE_ENABLED =
+                "true".equalsIgnoreCase(System.getProperty("gt2.netcdf.trace"));
+
         private static final long ADDRESS_SIZE = 8l;
 
         private static long ADDRESS_POSITION = 4l;
@@ -138,6 +150,8 @@ public class Slice2DIndex {
 
         private int numberOfRecords;
 
+        private Throwable tracer;
+
         public Slice2DIndexManager(File file) {
             this.file = file;
         }
@@ -146,6 +160,10 @@ public class Slice2DIndex {
             raf = new EnhancedRandomAccessFile(file, "r");
             raf.setByteOrder(ByteOrder.BIG_ENDIAN);
             numberOfRecords = raf.readInt();
+            if (TRACE_ENABLED) {
+                tracer = new Exception();
+                tracer.fillInStackTrace();
+            }
         }
 
         /**
@@ -192,6 +210,7 @@ public class Slice2DIndex {
         public void dispose() throws IOException {
             if (raf != null) {
                 raf.close();
+                raf = null;
             }
         }
 
@@ -247,6 +266,22 @@ public class Slice2DIndex {
 
         public int getNumberOfRecords() throws IOException {
             return numberOfRecords;
+        }
+
+        @Override
+        protected void finalize() throws Throwable {
+            if (raf != null) {
+                LOGGER.warning(
+                        "There is code leaving slice index managers open, this might cause "
+                                + "issues with file deletion on Windows!");
+                if (TRACE_ENABLED) {
+                    LOGGER.log(
+                            Level.WARNING,
+                            "The unclosed slice index managers originated on this stack trace",
+                            tracer);
+                }
+                dispose();
+            }
         }
     }
 }

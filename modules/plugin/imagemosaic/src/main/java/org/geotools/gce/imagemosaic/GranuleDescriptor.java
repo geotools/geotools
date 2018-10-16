@@ -145,6 +145,8 @@ public class GranuleDescriptor {
     OverviewsController overviewsController;
 
     private GeneralEnvelope granuleEnvelope;
+    private AbstractGridFormat format;
+    private Hints hints;
 
     public GeneralEnvelope getGranuleEnvelope() {
         return granuleEnvelope;
@@ -366,11 +368,12 @@ public class GranuleDescriptor {
         this.granuleUrl = granuleUrl;
         this.roiProvider = roiProvider;
         this.handleArtifactsFiltering = handleArtifactsFiltering;
+        this.hints = new Hints(hints);
         filterMe = handleArtifactsFiltering && roiProvider != null;
 
         // When looking for formats which may parse this file, make sure to exclude the
         // ImageMosaicFormat as return
-        AbstractGridFormat format =
+        this.format =
                 suggestedFormat == null
                         ? GridFormatFinder.findFormat(granuleUrl, EXCLUDE_MOSAIC)
                         : suggestedFormat;
@@ -1772,5 +1775,18 @@ public class GranuleDescriptor {
         } else {
             return roiProvider.getFootprint();
         }
+    }
+
+    /**
+     * Returns a new instance of the AbstractGridCoverage2DReader associated with this descriptor.
+     * It's the responsibility of the caller to dispose of it.
+     */
+    public AbstractGridCoverage2DReader getReader() {
+        return this.format.getReader(granuleUrl, hints);
+    }
+
+    /** @return */
+    public MultiLevelROI getRoiProvider() {
+        return this.roiProvider;
     }
 }

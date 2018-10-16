@@ -18,8 +18,10 @@ package org.geotools.coverage.grid.io.footprint;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,15 +111,24 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
 
     @Override
     public Geometry getFootprint(SimpleFeature feature) throws IOException {
+        String path = getPath(feature);
+
+        if (path != null) {
+            return getFootprint(path);
+        }
+        return null;
+    }
+
+    private String getPath(SimpleFeature feature) throws IOException {
+        String path = null;
         if (feature == null) {
             // The reference represents the data file itself
-            return getFootprint(reference.getAbsolutePath());
+            path = reference.getAbsolutePath();
         } else {
             Object value = feature.getAttribute(FOOTPRINT_LOCATION_ATTRIBUTE);
             if (value instanceof String && !((String) value).matches("^(?i)https?://.*$")) {
                 String strValue = (String) value;
-                String path = getFullPath(strValue);
-                return getFootprint(path);
+                path = getFullPath(strValue);
             } else {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine(
@@ -125,9 +136,9 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
                                     + "a sidecar file, the value was: "
                                     + value);
                 }
-                return null;
             }
         }
+        return path;
     }
 
     /**
@@ -209,6 +220,25 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
         return result;
     }
 
+    private FootprintLoader getLoader(String noExtension) {
+        for (FootprintLoader test : LOADERS) {
+            try {
+                Geometry result = test.loadFootprint(noExtension);
+                if (result != null) {
+                    return test;
+                }
+            } catch (Exception e) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(
+                            Level.FINE,
+                            test.getClass().getName() + " threw exception loading footprint",
+                            e);
+                }
+            }
+        }
+        return null;
+    }
+
     private String getNoExtensionPath(String path) {
         int idx = path.lastIndexOf(".");
         return idx > 0 ? path.substring(0, idx) : path;
@@ -229,5 +259,23 @@ public class SidecarFootprintProvider implements FootprintGeometryProvider {
 
     public static String getFootprintsDataDir() {
         return FOOTPRINTS_DATA_DIR;
+    }
+
+    @Override
+    public List<File> getSidecars(SimpleFeature feature) throws IOException {
+        String path = getPath(feature);
+        if (path != null) {
+            return getSidecars(path);
+        }
+        return Collections.emptyList();
+    }
+
+    public List<File> getSidecars(String path) throws IOException {
+        String noExtensionPath = getNoExtensionPath(path);
+        FootprintLoader loader = getLoader(noExtensionPath);
+        if (loader != null) {
+            return loader.getFootprintFiles(noExtensionPath);
+        }
+        return Collections.emptyList();
     }
 }

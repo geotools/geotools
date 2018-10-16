@@ -16,7 +16,10 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import org.opengis.feature.simple.SimpleFeature;
 
 /** Provider used for generating a {@link MultiLevelROI} object from a granule */
@@ -31,6 +34,16 @@ public interface MultiLevelROIProvider {
      * @throws IOException
      */
     public MultiLevelROI getMultiScaleROI(SimpleFeature sf) throws IOException;
+
+    /**
+     * Returns the footprint file used to load the footprint, or none if there was no file involved
+     *
+     * @param pathNoExtension The base path plus the file name, but no extension
+     * @return The files used to load the footprints, or an empty list otherwise
+     */
+    default List<File> getFootprintFiles(SimpleFeature sf) throws IOException {
+        return Collections.emptyList();
+    }
 
     /** Optional method to call for disposing the Provider */
     public void dispose();

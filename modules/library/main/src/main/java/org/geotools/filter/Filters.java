@@ -16,7 +16,7 @@
  */
 package org.geotools.filter;
 
-import java.awt.Color;
+import java.awt.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -152,6 +152,25 @@ public class Filters {
     }
 
     /**
+     * Safe and combiner for filters, will build an and filter around them only if there is at least
+     * two filters
+     *
+     * @param ff The filter factory used to combine filters
+     * @param filters The list of filters to be combined
+     * @return The combination in AND of the filters, or Filter.EXCLUDE if filters is null or empty,
+     *     or the one filter found in the list, in case it has only one element
+     */
+    public static Filter and(org.opengis.filter.FilterFactory ff, List<Filter> filters) {
+        if (filters == null || filters.isEmpty()) {
+            return Filter.EXCLUDE;
+        } else if (filters.size() == 1) {
+            return filters.get(0);
+        } else {
+            return ff.and(filters);
+        }
+    }
+
+    /**
      * Safe version of FilterFactory *and* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an And filter.
      *
@@ -188,6 +207,26 @@ public class Filters {
             return ff.and(list);
         }
     }
+
+    /**
+     * Safe or combiner for filters, will build an and filter around them only if there is at least
+     * two filters
+     *
+     * @param ff The filter factory used to combine filters
+     * @param filters The list of filters to be combined
+     * @return The combination in OR of the filters, or Filter.EXCLUDE if filters is null or empty,
+     *     or the one filter found in the list, in case it has only one element
+     */
+    public static Filter or(org.opengis.filter.FilterFactory ff, List<Filter> filters) {
+        if (filters == null || filters.isEmpty()) {
+            return Filter.EXCLUDE;
+        } else if (filters.size() == 1) {
+            return filters.get(0);
+        } else {
+            return ff.or(filters);
+        }
+    }
+
     /**
      * Safe version of FilterFactory *or* that is willing to combine filter1 and filter2 correctly
      * in the even either of them is already an Or filter.

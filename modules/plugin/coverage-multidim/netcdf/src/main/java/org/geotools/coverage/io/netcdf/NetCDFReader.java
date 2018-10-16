@@ -17,7 +17,7 @@
 package org.geotools.coverage.io.netcdf;
 
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BandedSampleModel;
 import java.awt.image.ColorModel;
@@ -71,7 +71,6 @@ import org.geotools.coverage.io.catalog.CoverageSlicesCatalogSource;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.coverage.io.util.DoubleRangeTreeSet;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.ResourceInfo;
 import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
@@ -1022,6 +1021,9 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     public void delete(boolean deleteData) throws IOException {
         ((NetCDFAccess) access).purge();
         if (deleteData) {
+            // hold hands off the files first
+            dispose();
+            // now it's possible to delete them
             File file = URLs.urlToFile(sourceURL);
             if (file != null && file.exists()) {
                 file.delete();

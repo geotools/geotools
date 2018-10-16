@@ -812,6 +812,15 @@ public class Hints extends RenderingHints {
      */
     public static final ClassKey REPOSITORY = new ClassKey("org.geotools.data.Repository");
 
+    /**
+     * Granule removachoosing policy. The value must be one of {link
+     * #org.geotools.coverage.grid.io.GranuleRemovalPolicy} enumeration.
+     *
+     * @since 2.5
+     */
+    public static final Key GRANULE_REMOVAL_POLICY =
+            new Key("org.geotools.coverage.grid.io.GranuleRemovalPolicy");
+
     ////////////////////////////////////////////////////////////////////////
     ////////                                                        ////////
     ////////                      Data stores                       ////////

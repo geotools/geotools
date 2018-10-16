@@ -33,8 +33,16 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<T> {
 
+    /** Flag for to encode gml:id as attribute if is true. */
+    private boolean encodeGmlId = true;
+
     protected GeometryEncoder(Encoder encoder) {
         super(encoder);
+    }
+
+    protected GeometryEncoder(Encoder encoder, boolean encodeGmlId) {
+        super(encoder);
+        this.encodeGmlId = encodeGmlId;
     }
 
     /**
@@ -73,7 +81,7 @@ public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<
         } else {
             result = new AttributesImpl(atts);
         }
-        addGmlId(result, gmlId);
+        if (encodeGmlId) addGmlId(result, gmlId);
 
         return result;
     }

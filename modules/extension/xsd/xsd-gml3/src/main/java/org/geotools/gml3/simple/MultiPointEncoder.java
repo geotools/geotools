@@ -46,6 +46,17 @@ class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
     protected MultiPointEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
         pe = new PointEncoder(encoder, gmlPrefix, gmlUri);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected MultiPointEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        pe = new PointEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         multiPoint = MULTI_POINT.derive(gmlPrefix, gmlUri);
         pointMember = POINT_MEMBER.derive(gmlPrefix, gmlUri);
     }

@@ -53,6 +53,15 @@ class CurveEncoder extends GeometryEncoder<LineString> {
 
     protected CurveEncoder(Encoder e, String gmlPrefix, String gmlUri) {
         super(e);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected CurveEncoder(Encoder e, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(e, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         this.curve = CURVE.derive(gmlPrefix, gmlUri);
         this.segments = SEGMENTS.derive(gmlPrefix, gmlUri);
         this.lineStringSegment = LINE_STRING_SEGMENT.derive(gmlPrefix, gmlUri);

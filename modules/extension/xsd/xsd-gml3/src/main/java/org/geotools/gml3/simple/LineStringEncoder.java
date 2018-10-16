@@ -40,8 +40,18 @@ class LineStringEncoder extends GeometryEncoder<LineString> {
         this(encoder, LINE_STRING.derive(gmlPrefix, gmlUri));
     }
 
+    protected LineStringEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        this(encoder, LINE_STRING.derive(gmlPrefix, gmlUri), encodeGmlId);
+    }
+
     protected LineStringEncoder(Encoder encoder, QualifiedName element) {
         super(encoder);
+        this.element = element;
+    }
+
+    protected LineStringEncoder(Encoder encoder, QualifiedName element, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
         this.element = element;
     }
 

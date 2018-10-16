@@ -37,6 +37,11 @@ class LinearRingEncoder extends LineStringEncoder {
         super(encoder, LINEAR_RING.derive(gmlPrefix, gmlUri));
     }
 
+    protected LinearRingEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, LINEAR_RING.derive(gmlPrefix, gmlUri), encodeGmlId);
+    }
+
     @Override
     public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {

@@ -36,6 +36,15 @@ public class RingEncoder extends MultiLineStringEncoder {
 
     protected RingEncoder(Encoder e, String gmlPrefix, String gmlUri) {
         super(e, gmlPrefix, gmlUri, true);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected RingEncoder(Encoder e, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(e, gmlPrefix, gmlUri, true, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         this.ring = RING.derive(gmlPrefix, gmlUri);
     }
 

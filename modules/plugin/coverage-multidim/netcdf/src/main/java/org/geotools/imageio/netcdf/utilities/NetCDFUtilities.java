@@ -114,6 +114,12 @@ public class NetCDFUtilities {
     public static final String UNKNOWN = "unknown";
 
     public static final double DEFAULT_EARTH_RADIUS = 6371229.0d;
+    /**
+     * When true, the stack trace that created a reader that wasn't closed is recorded and then
+     * printed out when warning the user about this.
+     */
+    public static final Boolean TRACE_ENABLED =
+            "true".equalsIgnoreCase(System.getProperty("gt2.netcdf.trace"));
 
     private NetCDFUtilities() {}
 

@@ -1147,12 +1147,12 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertEquals(180, envelope.getMaximum(1), 0d);
 
             // check we can read a coverage out of it
-            coverage = reader.read(null);
+            coverage = reader.read(NO_DEFERRED_LOADING_PARAMS);
             reader.dispose();
 
             // Checking we can read again from the coverage once it has been configured.
             reader = format.getReader(mosaic);
-            coverage = reader.read(null);
+            coverage = reader.read(NO_DEFERRED_LOADING_PARAMS);
             assertNotNull(coverage);
 
         } finally {

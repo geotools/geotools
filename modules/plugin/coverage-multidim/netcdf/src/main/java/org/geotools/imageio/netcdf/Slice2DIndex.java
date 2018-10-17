@@ -24,6 +24,7 @@ import java.nio.ByteOrder;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -133,13 +134,6 @@ public class Slice2DIndex {
 
         static final Logger LOGGER = Logging.getLogger(Slice2DIndexManager.class);
 
-        /**
-         * When true, the stack trace that created a reader that wasn't closed is recorded and then
-         * printed out when warning the user about this.
-         */
-        protected static final Boolean TRACE_ENABLED =
-                "true".equalsIgnoreCase(System.getProperty("gt2.netcdf.trace"));
-
         private static final long ADDRESS_SIZE = 8l;
 
         private static long ADDRESS_POSITION = 4l;
@@ -160,7 +154,7 @@ public class Slice2DIndex {
             raf = new EnhancedRandomAccessFile(file, "r");
             raf.setByteOrder(ByteOrder.BIG_ENDIAN);
             numberOfRecords = raf.readInt();
-            if (TRACE_ENABLED) {
+            if (NetCDFUtilities.TRACE_ENABLED) {
                 tracer = new Exception();
                 tracer.fillInStackTrace();
             }
@@ -274,7 +268,7 @@ public class Slice2DIndex {
                 LOGGER.warning(
                         "There is code leaving slice index managers open, this might cause "
                                 + "issues with file deletion on Windows!");
-                if (TRACE_ENABLED) {
+                if (NetCDFUtilities.TRACE_ENABLED) {
                     LOGGER.log(
                             Level.WARNING,
                             "The unclosed slice index managers originated on this stack trace",

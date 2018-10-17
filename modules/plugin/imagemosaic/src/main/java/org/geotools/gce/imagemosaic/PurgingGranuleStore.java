@@ -20,6 +20,7 @@ import static org.geotools.gce.imagemosaic.Utils.FF;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -232,16 +233,14 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
                     ((StructuredGridCoverage2DReader) reader).delete(mDeleteData);
                 }
                 if (mDeleteData) {
+                    List<File> filesToRemove = new ArrayList<>();
                     // if we are removing data, get to the list of files and remove
                     ServiceInfo info = reader.getInfo();
                     // see if the reader can provide a full list of us
                     if (info instanceof FileServiceInfo) {
                         try (CloseableIterator<FileGroupProvider.FileGroup> it =
                                 ((FileServiceInfo) info).getFiles(Query.ALL)) {
-                            List<File> filesToRemove = getFilesToRemove(it);
-                            for (File file : filesToRemove) {
-                                removeFile(file);
-                            }
+                            filesToRemove.addAll(getFilesToRemove(it));
                         }
                     }
                     // last chance, check if the granule URL is a file and remove it
@@ -249,7 +248,12 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
                     // logic to actually do the removal yet)
                     if (granuleFile != null) {
                         // main file
-                        removeFile(granuleFile);
+                        filesToRemove.add(granuleFile);
+                    }
+                    // now close the reader or deletion won't work on Windows
+                    reader.dispose();
+                    for (File file : filesToRemove) {
+                        removeFile(file);
                     }
                 }
             } catch (IOException e) {
@@ -265,8 +269,12 @@ class PurgingGranuleStore extends GranuleStoreDecorator {
         }
 
         private void removeFile(File file) {
-            if (file.exists() && !file.delete()) {
-                LOGGER.warning("Could not remove source file " + file);
+            if (file.exists()) {
+                try {
+                    Files.delete(file.toPath());
+                } catch (IOException e) {
+                    LOGGER.warning("Could not remove source file " + file + ": " + e.getMessage());
+                }
             }
         }
 

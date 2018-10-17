@@ -1677,10 +1677,10 @@ public class NetCDFMosaicReaderTest extends Assert {
         try {
             reader = new ImageMosaicReader(testUrl);
             assertNotNull(reader);
+
             // read and dispose the coverages to make sure sidecars are created
             reader.read("NO2", NO_DEFERRED_LOADING_PARAMS).dispose(true);
             reader.read("O3", NO_DEFERRED_LOADING_PARAMS).dispose(true);
-
             FileFilter no2_20130101_filter = f -> f.getName().contains("Poli1");
             File[] fileBefore = testDir.listFiles(no2_20130101_filter);
             assertEquals(2, fileBefore.length);
@@ -1693,7 +1693,6 @@ public class NetCDFMosaicReaderTest extends Assert {
             // the poli1 file has not been removed, the other variable is still referencing it
             File[] filePartialRemoval = testDir.listFiles(no2_20130101_filter);
             assertThat(filePartialRemoval, arrayWithSize(2));
-
             // now to the same from 03
             GranuleStore o3store = (GranuleStore) reader.getGranules("O3", false);
             int o3removed = o3store.removeGranules(locationFilter, hints);

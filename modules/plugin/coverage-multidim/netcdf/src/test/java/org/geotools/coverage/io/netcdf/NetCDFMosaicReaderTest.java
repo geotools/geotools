@@ -1625,7 +1625,7 @@ public class NetCDFMosaicReaderTest extends Assert {
         Hints hints = new Hints(Hints.GRANULE_REMOVAL_POLICY, GranuleRemovalPolicy.ALL);
 
         File[] filesAfter = runNO2Removal(folder, hints);
-        assertThat(filesAfter, emptyArray());
+        assertThat(Arrays.toString(filesAfter), filesAfter, emptyArray());
     }
 
     private File[] runNO2Removal(String folder, Hints hints) throws IOException {
@@ -1701,7 +1701,7 @@ public class NetCDFMosaicReaderTest extends Assert {
 
             // the poli1 file has now been removed, nothing left to reference it
             File[] fileFullRemoval = testDir.listFiles(no2_20130101_filter);
-            assertThat(fileFullRemoval, emptyArray());
+            assertThat(Arrays.toString(fileFullRemoval), fileFullRemoval, emptyArray());
         } finally {
             if (reader != null) {
                 reader.dispose();

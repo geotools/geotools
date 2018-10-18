@@ -1021,6 +1021,9 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
     public void delete(boolean deleteData) throws IOException {
         ((NetCDFAccess) access).purge();
         if (deleteData) {
+            // hold hands off the files first
+            dispose();
+            // now it's possible to delete them
             File file = URLs.urlToFile(sourceURL);
             if (file != null && file.exists()) {
                 file.delete();

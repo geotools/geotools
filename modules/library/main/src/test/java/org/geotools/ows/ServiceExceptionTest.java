@@ -27,12 +27,6 @@ public class ServiceExceptionTest {
     public void testCause() {
         Exception throwable = new Exception("Placeholder");
 
-        // Problem with SAX - cause and exception can only be provided via constructor
-        // commented out this test because on JDK 11 it has actually been solved
-        // SAXException sax1 = (SAXException) new SAXException().initCause(throwable);
-        // assertNull(sax1.getCause());
-        // assertNull(sax1.getException());*/
-
         SAXException sax2 = new SAXException(throwable);
         assertSame(throwable, sax2.getCause());
         assertSame(throwable, sax2.getException());

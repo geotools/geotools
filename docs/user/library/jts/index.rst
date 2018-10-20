@@ -20,7 +20,7 @@ The GeoTools provides some help for working with JTS:
 **References**
 
 * http://sourceforge.net/projects/jts-topo-suite/
-* http://tsusiatsoftware.net/jts/main.html
+* https://locationtech.github.io/jts/
 * http://www.vividsolutions.com/jts/bin/JTS%20Developer%20Guide.pdf
 * http://www.vividsolutions.com/jts/bin/JTS%20Technical%20Specs.pdf
 

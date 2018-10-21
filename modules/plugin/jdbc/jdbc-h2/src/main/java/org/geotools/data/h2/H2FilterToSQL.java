@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.jdbc.SQLDialect;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -51,6 +52,8 @@ public class H2FilterToSQL extends FilterToSQL {
     @Override
     protected FilterCapabilities createFilterCapabilities() {
         FilterCapabilities caps = super.createFilterCapabilities();
+        caps.addAll(SQLDialect.BASE_DBMS_CAPABILITIES);
+
         caps.addType(BBOX.class);
         caps.addType(Contains.class);
         caps.addType(Crosses.class);

@@ -292,7 +292,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 throw new FilterToSQLException("Problem writing filter: ", ioe);
             }
         } else {
-            throw new FilterToSQLException("Filter type not supported");
+            throw new FilterToSQLException("Filter type not supported: " + filter);
         }
     }
 

@@ -55,6 +55,16 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
      */
     public GenericGeometryEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
+        init(encoder, gmlPrefix, gmlUri);
+    }
+
+    public GenericGeometryEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        init(encoder, gmlPrefix, gmlUri);
+    }
+
+    private void init(Encoder encoder, String gmlPrefix, String gmlUri) {
         this.encoder = encoder;
         this.gmlPrefix = gmlPrefix;
         this.gmlUri = gmlUri;

@@ -35,7 +35,7 @@ import org.opengis.filter.sort.SortOrder;
  * <p>
  * The implementation makes use of {@link MergeSortDumper).
  *
- * @source $URL$
+ *
  */
 public class SortedFeatureReader implements SimpleFeatureReader {
 

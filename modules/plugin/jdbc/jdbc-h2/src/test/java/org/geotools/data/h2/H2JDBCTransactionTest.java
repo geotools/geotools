@@ -24,7 +24,6 @@ import org.geotools.jdbc.JDBCTransactionOnlineTest;
  * Transaction test for H2.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class H2JDBCTransactionTest extends JDBCTransactionOnlineTest {
     protected JDBCTestSetup createTestSetup() {

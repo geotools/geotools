@@ -56,7 +56,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class TransactionResultTypeBinding extends AbstractComplexEMFBinding {
     public TransactionResultTypeBinding(WfsFactory factory) {

@@ -55,11 +55,6 @@ import org.locationtech.jts.geom.LineString;
  *
  *          </code>
  * </pre>
- *
- * @generated
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *     /geotools/gml3/bindings/CurvePropertyTypeBinding.java $
  */
 public class CurvePropertyTypeBinding extends org.geotools.gml3.bindings.CurvePropertyTypeBinding
         implements Comparable {

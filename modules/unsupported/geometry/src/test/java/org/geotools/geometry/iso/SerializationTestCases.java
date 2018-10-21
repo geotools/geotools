@@ -28,7 +28,6 @@ import org.geotools.geometry.iso.primitive.PointImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
 
-/** @source $URL$ */
 public class SerializationTestCases extends TestCase {
 
     // Serialize the given object and return the deserialized copy

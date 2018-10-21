@@ -43,7 +43,6 @@ import org.w3c.dom.NodeList;
  *
  * @author Ian Turton, CCG
  * @author Niels Charlier
- * @source $URL$
  * @version $Id$
  * @task TODO: split this class up into multiple methods.
  */

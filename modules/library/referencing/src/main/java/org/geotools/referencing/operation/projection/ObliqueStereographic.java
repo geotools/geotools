@@ -61,7 +61,6 @@ import org.opengis.referencing.operation.MathTransform;
  * </ul>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Gerald I. Evenden (for original code in Proj4)
  * @author Rueben Schulz
@@ -231,7 +230,6 @@ public class ObliqueStereographic extends StereographicUSGS {
      * EPSG.
      *
      * @since 2.4
-     * @source $URL$
      * @version $Id$
      * @author Rueben Schulz
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory

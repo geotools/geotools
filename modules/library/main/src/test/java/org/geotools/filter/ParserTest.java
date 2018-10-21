@@ -36,7 +36,6 @@ import org.xml.sax.helpers.ParserAdapter;
  * Unit test for sax parser.
  *
  * @author James MacGill, CCG
- * @source $URL$
  */
 public class ParserTest extends FilterTestSupport {
     /** Standard logging instance */

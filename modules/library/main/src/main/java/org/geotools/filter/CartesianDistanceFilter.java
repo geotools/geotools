@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.DistanceBufferOperator;
  * <p>
  *
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  * @task REVISIT: add units for distance.
  */

@@ -62,7 +62,6 @@ import org.hsqldb.jdbc.JDBCDataSource;
  * nammed {@value #DIRECTORY_KEY}.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Didier Richard

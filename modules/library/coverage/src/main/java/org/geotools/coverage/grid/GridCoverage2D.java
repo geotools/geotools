@@ -86,7 +86,6 @@ import org.opengis.referencing.datum.PixelInCell;
  * (usually on client side) of {@code GridCoverage2D} instances requires J2SE 1.5.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

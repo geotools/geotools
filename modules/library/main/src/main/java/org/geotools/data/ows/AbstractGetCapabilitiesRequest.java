@@ -27,7 +27,6 @@ import java.net.URL;
  * GetCapabilitiesRequest. It automatically sets the REQUEST parameter to "GetCapabilities".
  *
  * @author rgould
- * @source $URL$
  */
 public abstract class AbstractGetCapabilitiesRequest extends AbstractRequest
         implements GetCapabilitiesRequest {

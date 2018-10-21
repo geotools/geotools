@@ -33,7 +33,6 @@ import org.opengis.filter.expression.Expression;
  * A simple function that creates a list of values of any number of arguments
  *
  * @author Niels Charlier
- * @source $URL$
  */
 public class FilterFunction_list extends FunctionExpressionImpl {
 

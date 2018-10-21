@@ -21,7 +21,6 @@ import org.opengis.geometry.primitive.Point;
  * #getElements element} shall be the set of {@linkplain Point points} contained in this {@code
  * MultiPoint}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @since GeoAPI 1.0
  */

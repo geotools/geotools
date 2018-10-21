@@ -31,7 +31,6 @@ import org.opengis.filter.FilterFactory2;
  * This class shows how to "join" two feature sources.
  *
  * @author Jody
- * @source $URL$
  */
 public class JoinExample {
 

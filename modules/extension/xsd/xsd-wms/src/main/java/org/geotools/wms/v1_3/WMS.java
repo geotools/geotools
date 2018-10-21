@@ -25,7 +25,6 @@ import org.geotools.xml.XSD;
  * http://www.opengis.net/wms schema.
  *
  * @generated
- * @source $URL$
  */
 public final class WMS extends XSD {
 

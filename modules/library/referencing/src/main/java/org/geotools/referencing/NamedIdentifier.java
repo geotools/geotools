@@ -66,7 +66,6 @@ import org.opengis.util.ScopedName;
  * example "DCW" as an alternative title for "<cite>Digital Chart of the World</cite>").
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

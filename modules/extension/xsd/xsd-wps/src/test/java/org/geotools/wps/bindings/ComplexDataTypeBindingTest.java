@@ -35,7 +35,6 @@ import org.w3c.dom.Text;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-/** @source $URL$ */
 public class ComplexDataTypeBindingTest extends WPSTestSupport {
 
     public void testParsePolygon() throws Exception {

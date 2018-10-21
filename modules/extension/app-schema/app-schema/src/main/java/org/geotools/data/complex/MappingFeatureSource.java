@@ -59,7 +59,6 @@ import org.opengis.filter.Filter;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class MappingFeatureSource implements FeatureSource<FeatureType, Feature> {

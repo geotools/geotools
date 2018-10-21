@@ -25,10 +25,7 @@ import org.junit.Test;
 import org.opengis.temporal.PeriodDuration;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultPeriodDurationTest {
 
     private PeriodDuration periodDuration1;

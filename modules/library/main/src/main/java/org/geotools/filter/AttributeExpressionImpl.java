@@ -37,7 +37,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * filters together and relates them logically in an internally defined manner.
  *
  * @author Rob Hranac, TOPP
- * @source $URL$
  * @version $Id$
  */
 public class AttributeExpressionImpl extends DefaultExpression implements PropertyName {

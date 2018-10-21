@@ -35,7 +35,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-/** @source $URL$ */
 public class OracleDialectEpsgMediatorStarvationOnlineStressTest extends OracleOnlineTestCase {
 
     static final int RUNNER_COUNT = 2;

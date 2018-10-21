@@ -37,7 +37,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/ows/1.1 schema.
  *
  * @generated
- * @source $URL$
  */
 public class OWSConfiguration extends Configuration {
 

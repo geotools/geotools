@@ -46,7 +46,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </ol>
  *
  * @author Florence Tan (Curtin University of Technology)
- * @source $URL$
  */
 public class ToEnvelopeFunction implements Function {
 

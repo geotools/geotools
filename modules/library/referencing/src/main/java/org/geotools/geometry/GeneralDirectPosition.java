@@ -44,7 +44,6 @@ import org.opengis.util.Cloneable;
  * <p>Most methods in this implementation are final for performance reason.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DirectPosition1D

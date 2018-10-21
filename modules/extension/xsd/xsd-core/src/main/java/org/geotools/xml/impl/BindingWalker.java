@@ -34,7 +34,6 @@ import org.geotools.xml.Schemas;
 import org.geotools.xs.XS;
 import org.picocontainer.MutablePicoContainer;
 
-/** @source $URL$ */
 public class BindingWalker implements TypeWalker.Visitor {
     BindingLoader loader;
 

@@ -100,7 +100,6 @@ import org.geotools.util.logging.Logging;
  * their own distribution if they want to connect their users to an other database.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Didier Richard
  * @author Martin Desruisseaux

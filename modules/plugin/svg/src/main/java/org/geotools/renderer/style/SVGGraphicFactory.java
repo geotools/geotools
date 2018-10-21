@@ -53,9 +53,6 @@ import org.xml.sax.SAXException;
  * compatibility <code>image/svg-xml</code> and <code>image/svg</code> are accepted as well.
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
- *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/plugin/svg/src/main/java/org/geotools
- *     /renderer/style/SVGGraphicFactory.java $
  */
 public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, GraphicCache {
 

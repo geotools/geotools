@@ -22,7 +22,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 
-/** @source $URL$ */
 public class GeometryConverterFactoryTest extends TestCase {
 
     GeometryConverterFactory factory;

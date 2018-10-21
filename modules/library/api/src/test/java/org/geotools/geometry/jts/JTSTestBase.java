@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.Coordinate;
  * Base class for unit tests of the JTS utility class.
  *
  * @author Michael Bedward
- * @source $URL$
  * @version $Id$
  * @since 2.8
  */

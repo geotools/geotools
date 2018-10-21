@@ -37,7 +37,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-/** @source $URL$ */
 public class PostGISPSDialect extends PreparedStatementSQLDialect {
 
     private PostGISDialect delegate;

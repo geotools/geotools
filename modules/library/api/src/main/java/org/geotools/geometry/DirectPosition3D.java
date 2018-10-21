@@ -29,7 +29,6 @@ import org.opengis.util.Cloneable;
 /**
  * Holds the coordinates for a three-dimensional position within some coordinate reference system.
  *
- * @source $URL$
  * @version $Id$
  * @author Niels Charlier
  */

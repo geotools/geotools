@@ -51,7 +51,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * Nested attribute mapping used for joining system
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public class JoiningNestedAttributeMapping extends NestedAttributeMapping {
 

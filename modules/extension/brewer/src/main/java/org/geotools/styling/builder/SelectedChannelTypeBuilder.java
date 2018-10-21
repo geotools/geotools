@@ -19,7 +19,6 @@ package org.geotools.styling.builder;
 import org.geotools.styling.SelectedChannelType;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedChannelType> {
 
     private Expression channelName;

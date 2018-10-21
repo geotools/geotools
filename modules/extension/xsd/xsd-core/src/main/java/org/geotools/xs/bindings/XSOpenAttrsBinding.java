@@ -47,7 +47,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSOpenAttrsBinding extends AbstractComplexBinding {
     /** @generated modifiable */

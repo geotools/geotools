@@ -17,7 +17,7 @@ import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
 import org.geotools.data.dxf.parser.DXFUnivers;
 
-/** @source $URL$ */
+
 public class DXFBlock extends DXFEntity implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFBlock.class);

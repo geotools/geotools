@@ -20,10 +20,7 @@ import java.net.URL;
 import java.util.List;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Richard Gould
- * @source $URL$
- */
+/** @author Richard Gould */
 public class StyleImpl {
 
     private String name;

@@ -40,7 +40,6 @@ import org.opengis.feature.type.Name;
  * <p>It case it is not obvious this is a value object and equality is based on namespace and name.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class NameImpl implements org.opengis.feature.type.Name, Serializable, Comparable<NameImpl> {
     private static final long serialVersionUID = 4564070184645559899L;

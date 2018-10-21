@@ -40,7 +40,6 @@ import org.opengis.referencing.operation.TransformException;
  * <p>The spherical tests here tests real spheres (tests in {@code "Simple"} test scripts are not
  * exactly spherical).
  *
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  */

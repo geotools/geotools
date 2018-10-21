@@ -47,7 +47,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * <p>Please note that this GeometryTransformer issues GML2 events, the Coordinate
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class GeometryTransformer extends TransformerBase {
 

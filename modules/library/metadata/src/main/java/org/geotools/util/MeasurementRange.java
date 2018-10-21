@@ -28,7 +28,6 @@ import org.geotools.resources.ClassChanger;
  *
  * @param <T> The type of range elements as a subclass of {@link Number}.
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

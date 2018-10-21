@@ -24,6 +24,5 @@ import org.opengis.feature.Feature;
 /**
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  */
 public interface IMappingFeatureIterator extends Iterator<Feature>, FeatureIterator<Feature> {}

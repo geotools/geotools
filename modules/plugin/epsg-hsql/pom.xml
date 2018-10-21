@@ -39,12 +39,12 @@
     <license>
       <name>Lesser General Public License (LGPL)</name>
       <!-- url>http://www.gnu.org/copyleft/lesser.txt</url -->
-      <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-hsql/LICENSE.html</url>
+      <url>https://github.com/geotools/geotools/blob/master/modules/plugin/epsg-hsql/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
     <license>
       <name>EPSG database distribution license</name>
-      <url>http://svn.osgeo.org/geotools/trunk/licenses/EPSG.html</url>
+      <url>https://github.com/geotools/geotools/blob/master/licenses/EPSG.md</url>
       <distribution>repo</distribution>
       <comments>
         This Geotools module is bundled with a copy of the EPSG database. The
@@ -53,7 +53,7 @@
     </license>
     <license>
       <name>BSD License for HSQL</name>
-      <url>http://svn.osgeo.org/geotools/trunk/licenses/HSQL.html</url>
+      <url>https://github.com/geotools/geotools/blob/master/licenses/HSQL.md</url>
       <distribution>repo</distribution>
       <comments>
         This Geotools module requires the HSQL database engine, which is bundled

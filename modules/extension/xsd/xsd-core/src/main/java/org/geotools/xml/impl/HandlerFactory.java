@@ -23,7 +23,6 @@ import org.eclipse.xsd.XSDElementDeclaration;
  * Factory used to create element handler objects during the processing of an instance document.
  *
  * @author Justin Deoliveira,Refractions Reserach Inc.,jdeolive@refractions.net
- * @source $URL$
  */
 public interface HandlerFactory {
     /** Creates a handler for the root element of a document. */

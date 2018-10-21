@@ -53,7 +53,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * common part of the api.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class MySQLDialect extends SQLDialect {
     /** mysql spatial types */

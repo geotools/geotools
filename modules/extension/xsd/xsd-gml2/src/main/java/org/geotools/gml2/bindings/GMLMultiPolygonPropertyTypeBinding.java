@@ -53,7 +53,6 @@ import org.locationtech.jts.geom.MultiPolygon;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLMultiPolygonPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */

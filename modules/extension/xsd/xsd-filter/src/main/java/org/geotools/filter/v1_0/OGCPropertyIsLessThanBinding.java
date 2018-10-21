@@ -38,7 +38,6 @@ import org.opengis.filter.expression.Expression;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCPropertyIsLessThanBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

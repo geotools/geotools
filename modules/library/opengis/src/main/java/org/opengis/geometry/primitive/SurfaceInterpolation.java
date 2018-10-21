@@ -20,7 +20,6 @@ import org.opengis.util.CodeList;
 /**
  * List of codes that may be used to identify the interpolation mechanisms.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

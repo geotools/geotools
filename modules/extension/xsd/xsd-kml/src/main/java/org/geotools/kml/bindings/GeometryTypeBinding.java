@@ -39,7 +39,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GeometryTypeBinding extends AbstractComplexBinding {
     /** @generated */

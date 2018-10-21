@@ -21,7 +21,6 @@ package org.geotools.geometry.iso.util.algorithmND;
  * majority, these algorithms are non-robust in sense that floating-point rounding errors may occur.
  *
  * @author Jackson Roehrig and Sanjay Jena
- * @source $URL$
  */
 public class AlgoPointND {
 

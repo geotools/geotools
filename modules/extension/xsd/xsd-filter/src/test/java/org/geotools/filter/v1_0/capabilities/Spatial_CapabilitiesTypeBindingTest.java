@@ -21,7 +21,6 @@ import org.geotools.xml.Binding;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class Spatial_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(SpatialCapabilities.class, binding(OGC.Spatial_CapabilitiesType).getType());

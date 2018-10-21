@@ -18,7 +18,6 @@ package org.geotools.xml.impl;
 
 import org.geotools.xml.Configuration;
 
-/** @source $URL$ */
 public class TypeStreamingParserHandler extends StreamingParserHandler {
     Class type;
 

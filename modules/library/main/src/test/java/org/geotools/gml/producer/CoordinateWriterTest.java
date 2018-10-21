@@ -31,7 +31,6 @@ import org.xml.sax.SAXException;
  * <p>This test case added as part of fixing
  *
  * @author Jody
- * @source $URL$
  */
 public class CoordinateWriterTest extends TestCase {
 

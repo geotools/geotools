@@ -22,7 +22,6 @@ import org.geotools.xml.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 
-/** @source $URL$ */
 public class GMLBoxTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance box;
     ElementInstance coord1;

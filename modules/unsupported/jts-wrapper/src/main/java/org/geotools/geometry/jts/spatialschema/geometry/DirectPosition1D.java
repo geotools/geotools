@@ -30,7 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * Holds the coordinates for a one-dimensional position within some coordinate reference system.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

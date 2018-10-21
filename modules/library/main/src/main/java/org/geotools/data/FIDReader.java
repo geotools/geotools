@@ -31,7 +31,6 @@ import java.io.IOException;
  * having a special FID attribute in our hierarchy.
  *
  * @author Chris Holmes
- * @source $URL$
  * @version $Id$
  */
 public interface FIDReader {

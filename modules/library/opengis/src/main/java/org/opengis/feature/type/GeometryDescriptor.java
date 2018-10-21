@@ -18,7 +18,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * {@link #getType()} to {@link GeometryType}.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface GeometryDescriptor extends AttributeDescriptor {
     /**

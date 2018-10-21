@@ -155,7 +155,6 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 @SuppressWarnings({"nls", "unchecked"})
 public class QueryTypeBinding extends AbstractComplexEMFBinding {

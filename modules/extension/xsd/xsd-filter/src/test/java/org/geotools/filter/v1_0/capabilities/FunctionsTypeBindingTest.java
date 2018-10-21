@@ -22,7 +22,6 @@ import org.opengis.filter.capability.Functions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class FunctionsTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(Functions.class, binding(OGC.FunctionsType).getType());

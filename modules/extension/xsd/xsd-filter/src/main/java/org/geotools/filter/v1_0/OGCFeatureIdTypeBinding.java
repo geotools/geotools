@@ -39,7 +39,6 @@ import org.opengis.filter.identity.FeatureId;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCFeatureIdTypeBinding extends AbstractComplexBinding {
     private FilterFactory factory;

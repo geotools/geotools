@@ -109,7 +109,6 @@ import org.opengis.filter.identity.FeatureId;
  * @author Justin Deoliveira, The Open Planning Project
  * @version 8.0
  * @since 2.6
- * @source $URL$
  */
 public class ContentState {
 

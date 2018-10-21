@@ -32,7 +32,6 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.Halo;
 
-/** @source $URL$ */
 public class StyleBuilderTest {
 
     FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();

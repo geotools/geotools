@@ -41,7 +41,6 @@ import org.geotools.factory.Hints;
  * </ul>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class CollectionConverterFactory implements ConverterFactory {
 

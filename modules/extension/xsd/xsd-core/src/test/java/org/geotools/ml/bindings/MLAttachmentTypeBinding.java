@@ -42,7 +42,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MLAttachmentTypeBinding extends AbstractComplexBinding {
     /** @generated */

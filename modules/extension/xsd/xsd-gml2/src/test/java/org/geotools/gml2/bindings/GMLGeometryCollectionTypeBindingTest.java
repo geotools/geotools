@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLGeometryCollectionTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance gcol;
     ElementInstance point1;

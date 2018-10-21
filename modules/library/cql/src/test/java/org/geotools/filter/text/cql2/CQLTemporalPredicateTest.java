@@ -50,7 +50,6 @@ import org.opengis.filter.temporal.Before;
  *
  * @since 2.5
  * @author Mauricio Pazos (Axios Engineering)
- * @source $URL$
  */
 public class CQLTemporalPredicateTest {
 

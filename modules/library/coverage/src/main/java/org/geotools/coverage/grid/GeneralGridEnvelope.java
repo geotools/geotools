@@ -40,7 +40,6 @@ import org.opengis.referencing.datum.PixelInCell;
  * required.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see GridEnvelope2D

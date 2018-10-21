@@ -63,17 +63,12 @@ import org.xml.sax.helpers.NamespaceSupport;
  * <b>Element</b> whose type is the one needed.
  *
  * <p>Currently only <b>simple</b> FeatureTypes are supported. In the feature, complex schemas may
- * be supported by porting the <a href=
- * "http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas/community-schema-ds/src/main/java/org/geotools/data/complex/config/EmfAppSchemaReader.java"
- * >EmfAppSchemaParser</a> class in the community schema datastore module, depending on the
- * availability of complex {@link Feature} support on the mainstream GeoTools distribution.
+ * be supported by porting the EmfAppSchemaParser class in the community schema datastore module,
+ * depending on the availability of complex {@link Feature} support on the mainstream GeoTools
+ * distribution.
  *
  * @author Gabriel Roldan
- * @version $Id$
  * @since 2.5.x
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs/src/main/java/org/geotools
- *     /wfs/v_1_1_0/data/EmfAppSchemaParser.java $
  */
 public class EmfAppSchemaParser {
 

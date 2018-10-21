@@ -42,7 +42,6 @@ import org.opengis.filter.expression.Expression;
  * @author Cory Horner
  * @since 2.2M2
  * @version 8.0
- * @source $URL$
  */
 public class Collection_AverageFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */

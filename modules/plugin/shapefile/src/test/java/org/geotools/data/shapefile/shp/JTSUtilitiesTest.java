@@ -10,7 +10,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 
-/** @source $URL$ */
 public class JTSUtilitiesTest {
     GeometryFactory geomFactory;
 

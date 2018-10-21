@@ -45,7 +45,6 @@ import org.opengis.filter.identity.FeatureId;
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Niels Charlier
- * @source $URL$
  */
 public class ComplexAttributeConverterFactoryTest extends TestCase {
 

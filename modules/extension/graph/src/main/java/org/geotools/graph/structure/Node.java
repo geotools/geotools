@@ -26,7 +26,6 @@ import java.util.List;
  * @see Graph
  * @see Edge
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface Node extends Graphable {
 

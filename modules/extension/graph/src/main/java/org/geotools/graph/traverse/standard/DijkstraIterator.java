@@ -72,7 +72,6 @@ import org.geotools.graph.util.PriorityQueue;
  * <br>
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class DijkstraIterator extends SourceGraphIterator {
 

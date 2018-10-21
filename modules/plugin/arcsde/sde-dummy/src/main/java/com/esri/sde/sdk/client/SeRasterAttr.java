@@ -2,7 +2,6 @@ package com.esri.sde.sdk.client;
 
 import java.awt.image.DataBufferByte;
 
-/** @source $URL$ */
 public class SeRasterAttr {
 
     public SeRasterAttr(boolean b) {}

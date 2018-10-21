@@ -72,7 +72,6 @@ import org.w3c.dom.Text;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class _XlinkPropertyNameBinding extends AbstractComplexEMFBinding {
     public _XlinkPropertyNameBinding(WfsFactory factory) {

@@ -56,7 +56,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link ECWReader}
- * @source $URL$
  */
 @Ignore
 public final class ECWTest extends GDALTestCase {

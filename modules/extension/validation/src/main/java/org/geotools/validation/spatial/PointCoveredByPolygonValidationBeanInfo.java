@@ -25,7 +25,6 @@ import java.beans.PropertyDescriptor;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class PointCoveredByPolygonValidationBeanInfo

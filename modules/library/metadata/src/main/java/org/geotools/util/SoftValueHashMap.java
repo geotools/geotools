@@ -50,7 +50,6 @@ import org.geotools.util.logging.Logging;
  * @param <K> The type of keys in the map.
  * @param <V> The type of values in the map.
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  * @author Martin Desruisseaux

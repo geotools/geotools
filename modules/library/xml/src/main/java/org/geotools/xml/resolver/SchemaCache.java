@@ -44,7 +44,6 @@ import org.geotools.util.URLs;
  * SchemaResolver#getSimpleHttpResourcePath(URI))}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class SchemaCache {
 

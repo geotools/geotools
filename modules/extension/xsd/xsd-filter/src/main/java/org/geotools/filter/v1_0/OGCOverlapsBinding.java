@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.Overlaps;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCOverlapsBinding extends AbstractComplexBinding {
     FilterFactory2 filterFactory;

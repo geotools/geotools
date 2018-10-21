@@ -21,7 +21,6 @@ import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.xml.AttributeInstance;
 
-/** @source $URL$ */
 public class AttributeImpl extends InstanceComponentImpl implements AttributeInstance {
     XSDAttributeDeclaration decl;
 

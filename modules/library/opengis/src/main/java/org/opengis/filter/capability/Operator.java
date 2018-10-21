@@ -42,7 +42,6 @@ import org.opengis.annotation.UML;
  * @author <a href="mailto:tfr@users.sourceforge.net">Torsten Friebe</A>
  * @author Jody Garnett (Refractions Research)
  * @todo Which relationship with Filter and expressions?
- * @source $URL$
  */
 public interface Operator {
     /**

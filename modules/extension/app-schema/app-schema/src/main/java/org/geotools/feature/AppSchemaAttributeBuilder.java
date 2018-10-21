@@ -33,7 +33,6 @@ import org.opengis.feature.type.Name;
  * Builder for attributes.
  *
  * @author Justin Deoliveira (The Open Planning Project)
- * @source $URL$
  */
 public class AppSchemaAttributeBuilder extends AttributeBuilder {
 

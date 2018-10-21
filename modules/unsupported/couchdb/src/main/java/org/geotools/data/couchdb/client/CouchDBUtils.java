@@ -40,7 +40,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Everyone loves some utilities.
  *
  * @author Ian Schneider (OpenGeo)
- * @source $URL$
+
  */
 public final class CouchDBUtils {
 

@@ -18,11 +18,7 @@ package org.geotools.styling;
 
 import org.opengis.filter.expression.Expression;
 
-/**
- * Contains label shield hack.
- *
- * @source $URL$
- */
+/** Contains label shield hack. */
 public interface TextSymbolizer2 extends TextSymbolizer {
     /**
      * The nonstandard-SLD graphic element supports putting little graphical-bits onto labels.

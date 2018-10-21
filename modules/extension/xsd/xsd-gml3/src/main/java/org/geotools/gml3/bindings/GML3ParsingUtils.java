@@ -45,7 +45,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Utility class for gml3 parsing.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class GML3ParsingUtils {
     /**

@@ -22,6 +22,5 @@ import org.opengis.feature.simple.SimpleFeature;
  * </pre>
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public interface SimpleFeatureIterator extends FeatureIterator<SimpleFeature> {}

@@ -33,10 +33,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class DelaunayTriangulator {
 
     public DelaunayNode temp1, temp2, temp3;

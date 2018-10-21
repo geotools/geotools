@@ -40,7 +40,6 @@ import org.geotools.util.logging.Logging;
  * A set of static methods for managing JAI's {@linkplain OperationRegistry operation registry}.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Andrea Aime - GeoSolutions

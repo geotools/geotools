@@ -51,7 +51,6 @@ import org.opengis.referencing.operation.TransformException;
  * {@linkplain CoverageProcessor processor} directly.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see org.geotools.coverage.processing.operation

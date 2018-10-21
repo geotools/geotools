@@ -33,8 +33,6 @@ import org.opengis.filter.FilterFactory;
  * Tests to see if a Geometry intersects with another Geometry.
  *
  * <p>If only one Geometry is given, then this test checks to see if it intersects part of itself.
- *
- * @source $URL$
  */
 public class IntersectsIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =

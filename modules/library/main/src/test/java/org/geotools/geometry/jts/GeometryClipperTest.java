@@ -44,7 +44,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 
-/** @source $URL$ */
 public class GeometryClipperTest {
 
     static final double EPS = 1e-3;

@@ -23,7 +23,6 @@ import org.geotools.styling.Extent;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.opengis.filter.Filter;
 
-/** @source $URL$ */
 public class FeatureTypeConstraintBuilder extends AbstractSLDBuilder<FeatureTypeConstraint> {
     private List<Extent> extents = new ArrayList<Extent>();
 

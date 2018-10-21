@@ -12,11 +12,7 @@ import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 
-/**
- * ExpressionBuilder acting as a simple wrapper around an Expression.
- *
- * @source $URL$
- */
+/** ExpressionBuilder acting as a simple wrapper around an Expression. */
 public class ExpressionBuilder implements Builder<Expression> {
     protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
     protected boolean unset = false;

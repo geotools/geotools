@@ -49,7 +49,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public abstract class SLDInternationalStringBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

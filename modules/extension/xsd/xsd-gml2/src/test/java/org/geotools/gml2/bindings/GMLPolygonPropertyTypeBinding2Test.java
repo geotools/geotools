@@ -21,7 +21,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLPolygonPropertyTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Polygon.class, binding(GML.PolygonPropertyType).getType());

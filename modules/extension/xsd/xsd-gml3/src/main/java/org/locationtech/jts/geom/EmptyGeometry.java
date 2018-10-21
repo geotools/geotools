@@ -1,6 +1,5 @@
 package org.locationtech.jts.geom;
 
-/** @source $URL$ */
 public class EmptyGeometry extends Geometry {
 
     public EmptyGeometry() {

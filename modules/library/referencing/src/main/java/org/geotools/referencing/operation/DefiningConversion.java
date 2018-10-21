@@ -34,7 +34,6 @@ import org.opengis.referencing.operation.OperationMethod;
  * derived CRS itself.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Matthias Basler

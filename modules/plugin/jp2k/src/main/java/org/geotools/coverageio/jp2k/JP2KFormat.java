@@ -45,7 +45,6 @@ import org.opengis.parameter.GeneralParameterValue;
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
- * @source $URL$
  */
 public final class JP2KFormat extends AbstractGridFormat implements Format {
 

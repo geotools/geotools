@@ -37,7 +37,6 @@ import org.opengis.filter.capability.FunctionName;
  * Clone of EqualIntervalFunction for unique values
  *
  * @author Cory Horner
- * @source $URL$
  */
 public class UniqueIntervalFunction extends ClassificationFunction {
 

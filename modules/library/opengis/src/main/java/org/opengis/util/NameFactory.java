@@ -29,7 +29,6 @@ import org.opengis.annotation.Extension;
  * @author Jesse Crossley (SYS Technologies)
  * @author Martin Desruisseaux (Geomatys)
  * @since GeoAPI 2.0
- * @source $URL$
  */
 @Extension
 public interface NameFactory {

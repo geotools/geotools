@@ -25,11 +25,7 @@ import java.io.IOException;
  * that otherwise get hidden in a normal stack trace.
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/ArcSdeException.java $
  */
 public class ArcSdeException extends IOException {
 

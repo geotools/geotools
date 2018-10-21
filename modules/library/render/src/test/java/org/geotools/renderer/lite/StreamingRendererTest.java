@@ -103,7 +103,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody
  * @author PHustad
- * @source $URL$
  */
 public class StreamingRendererTest {
 

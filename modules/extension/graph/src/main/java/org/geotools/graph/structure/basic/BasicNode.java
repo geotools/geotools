@@ -28,7 +28,6 @@ import org.geotools.graph.structure.Node;
  * Basic implementation of Node.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BasicNode extends BasicGraphable implements Node {
 

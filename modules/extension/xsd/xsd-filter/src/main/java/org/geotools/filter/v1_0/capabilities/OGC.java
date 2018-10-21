@@ -25,7 +25,6 @@ import org.geotools.xml.XSD;
  * http://www.opengis.net/ogc schema.
  *
  * @generated
- * @source $URL$
  */
 public final class OGC extends XSD {
     /** singleton instance */

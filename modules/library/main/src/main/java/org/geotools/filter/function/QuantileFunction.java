@@ -36,7 +36,6 @@ import org.opengis.filter.capability.FunctionName;
  * Breaks a SimpleFeatureCollection into classes with an equal number of items in each.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class QuantileFunction extends ClassificationFunction {
 

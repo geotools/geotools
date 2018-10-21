@@ -43,7 +43,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
 
-/** @source $URL$ */
 public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFeatureStore {
 
     private static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureStore.class.getName());

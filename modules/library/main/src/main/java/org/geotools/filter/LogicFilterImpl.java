@@ -30,7 +30,6 @@ import org.opengis.filter.FilterVisitor;
  * NOT).
  *
  * @author Rob Hranac, TOPP
- * @source $URL$
  * @version $Id$
  */
 public abstract class LogicFilterImpl extends BinaryLogicAbstract {

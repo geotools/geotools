@@ -20,7 +20,6 @@ package org.geotools.data.shapefile.index;
  * DOCUMENT ME!
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class LockManager {
     private static final int EXCLUSIVE_LOCK_TIMEOUT = 20;

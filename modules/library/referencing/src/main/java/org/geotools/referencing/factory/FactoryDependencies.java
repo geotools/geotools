@@ -48,7 +48,6 @@ import org.opengis.referencing.operation.CoordinateOperationFactory;
  * Build a tree of factory dependencies.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

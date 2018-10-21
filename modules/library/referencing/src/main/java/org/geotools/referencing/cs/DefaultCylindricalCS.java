@@ -36,7 +36,6 @@ import org.opengis.referencing.cs.CylindricalCS;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DefaultPolarCS

@@ -50,7 +50,6 @@ import org.locationtech.jts.geom.MultiLineString;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MultiLineStringTypeBinding extends AbstractComplexBinding {
     GeometryFactory gFactory;

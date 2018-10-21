@@ -43,7 +43,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Daniele Romagnoli, GeoSolutions SAS
- * @source $URL$
  */
 public class ZonalStats extends BaseStatisticsOperationJAI {
 

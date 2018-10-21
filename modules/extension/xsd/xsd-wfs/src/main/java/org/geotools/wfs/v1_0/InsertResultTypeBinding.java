@@ -57,7 +57,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class InsertResultTypeBinding extends AbstractComplexEMFBinding {
     WfsFactory wfsfactory;

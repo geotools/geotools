@@ -34,7 +34,6 @@ import org.geotools.util.Utilities;
  * granules
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public class CatalogBuilderConfiguration {
 

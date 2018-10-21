@@ -77,7 +77,6 @@ import org.opengis.referencing.operation.MathTransform2D;
  * </ul>
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(
     title = "Raster As Point Collection",

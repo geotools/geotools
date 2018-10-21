@@ -42,7 +42,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSIntBinding implements SimpleBinding {
     /** @generated */

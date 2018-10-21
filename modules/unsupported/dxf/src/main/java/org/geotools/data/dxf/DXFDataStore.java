@@ -22,7 +22,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Integer parseError: Boolean error: String *
  *
  * @author Chris van Lith B3Partners
- * @source $URL$
+
  */
 public class DXFDataStore extends AbstractFileDataStore {
 

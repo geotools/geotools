@@ -31,7 +31,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-/** @source $URL$ */
 public class FeatureFlatTest extends TestCase {
 
     /** The logger for the default core module. */

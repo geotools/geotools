@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @see org.geotools.graph.structure.opt.OptNode
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class OptXYNode extends OptNode implements XYNode {
 

@@ -40,7 +40,6 @@ import org.w3c.dom.Document;
  *   </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Id_CapabilitiesTypeBindingTest extends OGCTestSupport {
     public void testType() {

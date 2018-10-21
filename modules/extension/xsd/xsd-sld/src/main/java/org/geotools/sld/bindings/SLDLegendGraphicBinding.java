@@ -40,7 +40,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDLegendGraphicBinding extends AbstractComplexBinding {
     /** @generated */

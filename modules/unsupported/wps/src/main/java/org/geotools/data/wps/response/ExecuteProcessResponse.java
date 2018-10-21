@@ -37,7 +37,6 @@ import org.xmlpull.v1.XmlPullParserException;
  * Represents the response from a server after an ExecuteProcess request has been issued.
  *
  * @author gdavis
- * @source $URL$
  */
 public class ExecuteProcessResponse extends Response {
 

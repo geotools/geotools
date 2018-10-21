@@ -61,7 +61,6 @@ import org.opengis.util.RecordType;
  * metadata are encouraged to implement the {@link javax.media.jai.PropertySource} or {@link
  * javax.media.jai.WritablePropertySource} interface.
  *
- * @source $URL$
  * @version ISO 19123:2004
  * @author Stephane Fellah
  * @author Martin Desruisseaux (IRD)

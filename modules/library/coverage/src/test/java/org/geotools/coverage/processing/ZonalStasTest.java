@@ -79,7 +79,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions
  * @author Andrea Antonello, Hydrologis
  * @author Daniele Romagnoli, GeoSolutions
- * @source $URL$
  */
 public class ZonalStasTest extends TestCase {
 

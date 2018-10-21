@@ -42,7 +42,6 @@ import org.opengis.parameter.Parameter;
  * <p>
  *
  * @author Cory Horner, Refractions Research
- * @source $URL$
  */
 public class FunctionImpl extends ExpressionAbstract implements Function {
 

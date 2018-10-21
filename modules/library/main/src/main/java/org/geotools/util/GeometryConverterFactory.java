@@ -38,7 +38,6 @@ import org.locationtech.jts.geom.GeometryFactory;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.4
- * @source $URL$
  */
 public class GeometryConverterFactory implements ConverterFactory {
 

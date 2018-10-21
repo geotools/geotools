@@ -128,7 +128,6 @@ import org.opengis.referencing.operation.TransformException;
  * way math transforms are setup. Use with care.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux

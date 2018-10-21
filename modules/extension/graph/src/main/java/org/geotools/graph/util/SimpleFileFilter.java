@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.Serializable;
 import javax.swing.filechooser.FileFilter;
 
-/** @source $URL$ */
 public class SimpleFileFilter extends FileFilter implements Serializable {
 
     private String m_ext = null;

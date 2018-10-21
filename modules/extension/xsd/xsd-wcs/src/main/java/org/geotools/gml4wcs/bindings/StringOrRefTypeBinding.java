@@ -27,7 +27,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class StringOrRefTypeBinding extends AbstractComplexBinding {
 

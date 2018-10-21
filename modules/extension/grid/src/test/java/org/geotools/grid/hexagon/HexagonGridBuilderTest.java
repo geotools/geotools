@@ -34,7 +34,6 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class HexagonGridBuilderTest extends HexagonTestBase {

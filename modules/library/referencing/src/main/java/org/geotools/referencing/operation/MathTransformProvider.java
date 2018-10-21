@@ -61,7 +61,6 @@ import org.opengis.util.GenericName;
  * {@linkplain DefaultCoordinateOperationFactory math transform factory} will read all of them.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

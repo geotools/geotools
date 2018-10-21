@@ -25,10 +25,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author Gabriel Roldan
- * @version $Id$
- * @since 2.4.x @URL $URL:
- *     http://svn.geotools.org/trunk/modules/unsupported/community-schemas/community-schema-ds/src/main/java/org/geotools/data/complex/config/
- *     FeatureTypeProxy.java $
+ * @since 2.4.x
  */
 class FeatureTypeProxy extends ComplexTypeProxy implements FeatureType {
 

@@ -18,7 +18,6 @@ import org.opengis.util.InternationalString;
  * A Description is used to store various informations who describe an element. Description values
  * are mostly used in User Interfaces (Lists, trees, ...).
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

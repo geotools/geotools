@@ -21,7 +21,6 @@ import junit.framework.TestCase;
 import org.geotools.xml.impl.NamespaceSupportWrapper;
 import org.xml.sax.helpers.NamespaceSupport;
 
-/** @source $URL$ */
 public class XSQNameBindingTest extends TestCase {
     XSQNameBinding binding;
 

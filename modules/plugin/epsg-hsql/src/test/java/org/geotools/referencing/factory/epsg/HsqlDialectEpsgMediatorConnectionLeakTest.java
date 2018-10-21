@@ -28,7 +28,6 @@ import org.geotools.referencing.factory.epsg.HsqlDialectEpsgMediatorStressTest.C
  * Multi-threaded test to check that no connections are leaked by the EPSG mediator/factory code.
  *
  * @author Cory Horner (Refractions Research)
- * @source $URL$
  */
 public class HsqlDialectEpsgMediatorConnectionLeakTest extends TestCase {
 

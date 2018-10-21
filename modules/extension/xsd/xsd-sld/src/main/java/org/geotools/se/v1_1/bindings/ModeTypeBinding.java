@@ -39,7 +39,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class ModeTypeBinding extends AbstractSimpleBinding {
 

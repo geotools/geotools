@@ -3,7 +3,6 @@ package org.geotools.data.db2;
 import java.sql.Connection;
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
-/** @source $URL$ */
 public class DB2SkipColumnTestSetup extends JDBCSkipColumnTestSetup {
 
     protected DB2SkipColumnTestSetup() {

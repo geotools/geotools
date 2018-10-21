@@ -24,7 +24,6 @@ import org.geotools.util.Converters;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class GeoJSONTestSupport extends TestCase {
 
     protected StringReader reader(String json) throws IOException {

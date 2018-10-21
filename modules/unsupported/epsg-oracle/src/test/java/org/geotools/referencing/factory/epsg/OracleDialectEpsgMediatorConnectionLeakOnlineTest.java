@@ -27,7 +27,6 @@ import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
  * Multi-threaded test to check that no connections are leaked by the EPSG mediator/factory code.
  *
  * @author Cory Horner (Refractions Research)
- * @source $URL$
  */
 public class OracleDialectEpsgMediatorConnectionLeakOnlineTest extends OracleOnlineTestCase {
 

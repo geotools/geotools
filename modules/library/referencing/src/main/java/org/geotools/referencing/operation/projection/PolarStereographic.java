@@ -41,7 +41,6 @@ import si.uom.NonSI;
  * #inverseTransformNormalized inverse transform}.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author André Gosselin
  * @author Martin Desruisseaux (PMO, IRD)

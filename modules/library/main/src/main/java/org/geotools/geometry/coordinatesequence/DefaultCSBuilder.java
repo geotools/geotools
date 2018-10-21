@@ -24,7 +24,6 @@ package org.geotools.geometry.coordinatesequence;
  *
  * @author wolf
  * @deprecated Moved to {@link org.geotools.geometry.jts.coordinatesequence.DefaultCSBuilder}
- * @source $URL$
  */
 public class DefaultCSBuilder
         extends org.geotools.geometry.jts.coordinatesequence.DefaultCSBuilder {}

@@ -35,7 +35,6 @@ import org.opengis.util.InternationalString;
  * to execute the process and return the results.
  *
  * @author GDavis
- * @source $URL$
  */
 public class WPSFactory extends SingleProcessFactory {
 

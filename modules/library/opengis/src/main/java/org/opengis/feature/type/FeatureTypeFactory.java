@@ -24,7 +24,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Justin Deoliveira (The Open Planning Project)
- * @source $URL$
  */
 public interface FeatureTypeFactory {
     /**

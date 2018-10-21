@@ -30,11 +30,7 @@ import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
-/**
- * Base Implementation for the {@link Driver} interface.
- *
- * @source $URL$
- */
+/** Base Implementation for the {@link Driver} interface. */
 public class DefaultDriver implements Driver {
 
     private final EnumSet<DriverCapabilities> driverCapabilities;

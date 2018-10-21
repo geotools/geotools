@@ -37,7 +37,6 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequence;
  *
  * @author Andrea Aime - OpenGeo
  * @author Martin Davis - OpenGeo
- * @source $URL$
  */
 public class CoordinateSequences extends org.locationtech.jts.geom.CoordinateSequences {
 

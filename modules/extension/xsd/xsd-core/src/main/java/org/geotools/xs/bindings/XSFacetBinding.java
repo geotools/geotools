@@ -43,7 +43,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSFacetBinding extends AbstractComplexBinding {
     /** @generated */

@@ -27,7 +27,6 @@ import java.util.Map;
  * registered or not. We just need a {@code InternalFactory.class} value different than {@code
  * DummyFactory.class}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -36,7 +35,6 @@ interface InternalFactory extends Factory {}
 /**
  * Dummy factory interface for {@link FactoryRegistryTest}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

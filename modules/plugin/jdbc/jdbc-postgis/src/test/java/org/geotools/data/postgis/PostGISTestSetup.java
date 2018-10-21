@@ -24,7 +24,6 @@ import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.util.Version;
 
-/** @source $URL$ */
 public class PostGISTestSetup extends JDBCTestSetup {
 
     protected Version postgisVersion, pgsqlVersion;

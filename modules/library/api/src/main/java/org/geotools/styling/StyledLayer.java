@@ -21,8 +21,6 @@ package org.geotools.styling;
  * NamedLayer and UserLayer.
  *
  * <p>TODO: investigate why this is here.
- *
- * @source $URL$
  */
 public interface StyledLayer {
     public String getName();

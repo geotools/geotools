@@ -44,7 +44,6 @@ import org.opengis.util.InternationalString;
  * This operation is simply a wrapper for the JAI scale operation which allows me to arbitrarily
  * scale and translate a rendered image.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  * @since 2.3

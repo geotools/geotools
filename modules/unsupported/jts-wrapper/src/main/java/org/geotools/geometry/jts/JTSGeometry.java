@@ -22,8 +22,6 @@ import org.locationtech.jts.geom.Geometry;
  * Interface implemented by the various geometry classes of LiteGO1 that allows a user to retrieve
  * the equivalent JTS geometry. The coordinate reference system of the geometry is attached as the
  * "userData" property of the returned JTS object.
- *
- * @source $URL$
  */
 public interface JTSGeometry {
     /**

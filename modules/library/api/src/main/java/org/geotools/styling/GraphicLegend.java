@@ -8,7 +8,6 @@ import org.opengis.style.GraphicalSymbol;
  * Used to represent a Rule (or other construct) in a user interface or legend.
  *
  * @author Jody
- * @source $URL$
  */
 public interface GraphicLegend extends org.opengis.style.GraphicLegend {
 

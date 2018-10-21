@@ -4,10 +4,7 @@ package org.geotools.util;
 import junit.framework.Assert;
 import org.junit.Test;
 
-/**
- * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
- */
+/** @author Simone Giannecchini, GeoSolutions SAS */
 public class TestDefaultProgressListener extends Assert {
 
     @Test

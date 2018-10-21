@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class PointTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Point.class, binding(KML.PointType).getType());

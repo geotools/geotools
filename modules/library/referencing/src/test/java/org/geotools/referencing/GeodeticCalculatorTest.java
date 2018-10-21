@@ -49,7 +49,6 @@ import tec.uom.se.unit.MetricPrefix;
 /**
  * Tests the geodetic calculator.
  *
- * @source $URL$
  * @version $Id$
  */
 public final class GeodeticCalculatorTest {

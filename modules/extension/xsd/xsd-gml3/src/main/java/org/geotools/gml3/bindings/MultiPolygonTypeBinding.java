@@ -50,7 +50,6 @@ import org.locationtech.jts.geom.Polygon;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MultiPolygonTypeBinding extends AbstractComplexBinding implements Comparable {
     GeometryFactory gFactory;

@@ -33,7 +33,6 @@ import java.util.TreeSet;
  * include all non geometry properties from the baseFeatureSource
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class GeneralizationInfo {
 

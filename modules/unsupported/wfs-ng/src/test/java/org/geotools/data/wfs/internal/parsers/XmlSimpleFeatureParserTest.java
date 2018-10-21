@@ -24,7 +24,6 @@ import javax.xml.namespace.QName;
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class XmlSimpleFeatureParserTest extends AbstractGetFeatureParserTest {
 
     @Override

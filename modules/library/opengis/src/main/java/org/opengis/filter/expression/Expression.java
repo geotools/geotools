@@ -20,7 +20,6 @@ import org.opengis.feature.Feature;
  * ability to access "attributes" based on the provided content is defined based on XPath queries
  * currently.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @author Justin Deoliveira (The Open Planning Project)

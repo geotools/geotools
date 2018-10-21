@@ -47,7 +47,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 
-/** @source $URL$ */
 public class ArcSdeFeatureSource implements SimpleFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");

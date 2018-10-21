@@ -4,7 +4,6 @@ package org.geotools;
  * Builder interface used to impose consistency on Builder implementations.
  *
  * @param <T> class of object under construction
- * @source $URL$
  */
 public interface Builder<T> {
     /**

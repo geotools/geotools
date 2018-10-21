@@ -46,9 +46,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </ul>
  *
  * @author Andrea Aime
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
- *     /map/DefaultMapContext.java $
  * @deprecated Use {@link MapContent} instead
  */
 public class DefaultMapContext extends MapContext {

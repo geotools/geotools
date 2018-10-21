@@ -108,7 +108,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Justin Deoliveira
  * @author Jody Garnett
- * @source $URL$
  */
 public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     /** logger */

@@ -55,7 +55,6 @@ import org.opengis.util.InternationalString;
  * methods may be overridden as well for better performances.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

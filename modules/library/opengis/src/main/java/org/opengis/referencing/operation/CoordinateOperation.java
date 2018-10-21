@@ -33,7 +33,6 @@ import org.opengis.util.InternationalString;
  * operation parameter values are used. If (some) entirely different parameter values are needed, a
  * different coordinate operation shall be defined.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

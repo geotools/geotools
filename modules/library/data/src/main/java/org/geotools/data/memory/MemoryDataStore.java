@@ -52,7 +52,6 @@ import org.opengis.feature.type.Name;
  * <p>This class will also illustrate the use of In-Process locking when the time comes.
  *
  * @author jgarnett
- * @source $URL$
  */
 public class MemoryDataStore extends ContentDataStore {
 

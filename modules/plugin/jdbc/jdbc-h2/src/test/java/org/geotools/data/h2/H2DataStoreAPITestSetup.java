@@ -18,7 +18,6 @@ package org.geotools.data.h2;
 
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-/** @source $URL$ */
 public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     public H2DataStoreAPITestSetup() {
         super(new H2TestSetup());

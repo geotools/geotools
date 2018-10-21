@@ -49,7 +49,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDImageOutlineBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

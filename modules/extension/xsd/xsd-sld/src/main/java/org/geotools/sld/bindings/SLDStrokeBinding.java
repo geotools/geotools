@@ -63,7 +63,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDStrokeBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

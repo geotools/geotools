@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.Test;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 
-/** @source $URL$ */
 public class CrsCreationDeadlockTest {
 
     private static final int NUMBER_OF_THREADS = 32;

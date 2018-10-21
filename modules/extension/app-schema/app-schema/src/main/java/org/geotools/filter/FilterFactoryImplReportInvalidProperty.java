@@ -19,10 +19,7 @@ package org.geotools.filter;
 
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
- */
+/** @author Niels Charlier (Curtin University of Technology) */
 public class FilterFactoryImplReportInvalidProperty extends FilterFactoryImpl {
 
     // @Override

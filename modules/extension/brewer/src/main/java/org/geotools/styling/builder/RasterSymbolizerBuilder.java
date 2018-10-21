@@ -26,7 +26,6 @@ import org.opengis.style.OverlapBehavior;
 import org.opengis.style.PolygonSymbolizer;
 import org.opengis.style.Symbolizer;
 
-/** @source $URL$ */
 public class RasterSymbolizerBuilder extends SymbolizerBuilder<RasterSymbolizer> {
     private String name;
 

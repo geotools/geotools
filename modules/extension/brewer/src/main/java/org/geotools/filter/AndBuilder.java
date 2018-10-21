@@ -9,11 +9,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.Identifier;
 
-/**
- * FitlerBuilder acting as a simple wrapper around an Expression.
- *
- * @source $URL$
- */
+/** FitlerBuilder acting as a simple wrapper around an Expression. */
 public class AndBuilder<P> implements Builder<And> {
     protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
     protected P parent;

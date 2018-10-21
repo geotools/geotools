@@ -24,7 +24,6 @@ import org.junit.Test;
  * Tests for {@link SchemaResolver}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class SchemaResolverTest {
 

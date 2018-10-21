@@ -62,7 +62,6 @@ import org.geotools.util.logging.Logging;
  * #acquireRead(ShpFileType, FileReader)} and {@link #acquireWrite(ShpFileType, FileWriter)} svn
  *
  * @author jesse
- * @source $URL$
  */
 public class ShpFiles {
 

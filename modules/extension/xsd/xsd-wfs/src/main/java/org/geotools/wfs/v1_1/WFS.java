@@ -25,7 +25,6 @@ import org.geotools.ows.OWS;
  * XSD for wfs 1.1.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public final class WFS extends org.geotools.wfs.WFS {
 

@@ -37,8 +37,6 @@ package org.geotools.styling;
  * interpolated between two colors). Labels may be used for legends or may be used in the future to
  * match character values. Not all systems can support opacity in colormaps. The default opacity is
  * 1.0 (fully opaque). Defaults for quantity and label are system-dependent.
- *
- * @source $URL$
  */
 public interface ColorMap extends org.opengis.style.ColorMap {
 

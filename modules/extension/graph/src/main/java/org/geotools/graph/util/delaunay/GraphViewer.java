@@ -27,10 +27,7 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.structure.line.XYNode;
 import org.locationtech.jts.geom.Coordinate;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class GraphViewer extends JPanel {
 
     Graph graph;

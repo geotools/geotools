@@ -42,7 +42,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Function_NameTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

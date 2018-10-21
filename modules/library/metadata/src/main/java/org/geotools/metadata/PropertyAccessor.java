@@ -46,7 +46,6 @@ import org.opengis.util.InternationalString;
  * The getters declared in a GeoAPI interface, together with setters (if any) declared in the
  * Geotools implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

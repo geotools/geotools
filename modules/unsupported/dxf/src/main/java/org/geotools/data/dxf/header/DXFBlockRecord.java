@@ -19,7 +19,7 @@ import org.geotools.data.dxf.parser.DXFUnivers;
 
 /**
  * @author Gertjan
- * @source $URL$
+
  */
 public class DXFBlockRecord extends DXFBlock {
 

@@ -61,7 +61,6 @@ import java.util.TimeZone;
  * range, results will be given, but the potential for error is higher.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)

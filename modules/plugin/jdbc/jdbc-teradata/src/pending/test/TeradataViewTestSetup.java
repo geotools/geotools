@@ -5,7 +5,7 @@ import org.geotools.jdbc.JDBCViewTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class TeradataViewTestSetup extends JDBCViewTestSetup {
 

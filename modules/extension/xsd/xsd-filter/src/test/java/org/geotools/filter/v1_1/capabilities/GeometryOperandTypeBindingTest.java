@@ -57,7 +57,6 @@ import org.w3c.dom.Document;
  *   </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GeometryOperandTypeBindingTest extends OGCTestSupport {
     public void testType() {

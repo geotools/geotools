@@ -29,7 +29,6 @@ import org.geotools.util.Utilities;
  * provide some language construct functionally equivalent to C/C++'s {@code realloc}.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @todo Replace all {@code resize} methods by {@code Arrays.copyOf} when we will be allowed to

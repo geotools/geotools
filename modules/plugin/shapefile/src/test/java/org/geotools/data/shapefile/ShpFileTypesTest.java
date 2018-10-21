@@ -24,7 +24,6 @@ import java.net.URL;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class ShpFileTypesTest {
 
     @Test

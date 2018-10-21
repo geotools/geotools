@@ -25,10 +25,7 @@ import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.ProgressListener;
 
-/**
- * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
- */
+/** @author Simone Giannecchini, GeoSolutions */
 public class CoverageResponse {
 
     /** @author Simone Giannecchini, GeoSolutions */

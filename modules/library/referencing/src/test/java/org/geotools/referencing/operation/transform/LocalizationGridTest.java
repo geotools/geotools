@@ -25,7 +25,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Test the {@link LocalizationGrid} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)

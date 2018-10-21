@@ -39,7 +39,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  *
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public class JTSUtilities {
 

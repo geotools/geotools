@@ -25,7 +25,6 @@ import org.opengis.filter.FilterVisitor;
  * Direct implementation of And filter.
  *
  * @author jdeolive
- * @source $URL$
  */
 public class AndImpl extends LogicFilterImpl implements And {
 

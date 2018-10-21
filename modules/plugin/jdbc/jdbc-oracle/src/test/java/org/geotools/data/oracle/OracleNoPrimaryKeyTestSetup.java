@@ -2,7 +2,6 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class OracleNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected OracleNoPrimaryKeyTestSetup() {

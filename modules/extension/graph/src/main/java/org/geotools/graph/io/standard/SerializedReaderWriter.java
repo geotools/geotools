@@ -42,7 +42,6 @@ import org.geotools.graph.structure.Node;
  * in order to preserve the original graph structure.<br>
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class SerializedReaderWriter extends AbstractReaderWriter implements FileReaderWriter {
 

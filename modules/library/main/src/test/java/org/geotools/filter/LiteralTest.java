@@ -32,7 +32,6 @@ import org.opengis.filter.expression.Literal;
  * Tests the literal expressions.
  *
  * @author James Macgill
- * @source $URL$
  */
 public class LiteralTest extends TestCase {
 

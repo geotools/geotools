@@ -28,7 +28,6 @@ import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.schema.Schema;
 
-/** @source $URL$ */
 public class WMSSchema_StyleAbstractTest extends TestCase {
 
     public void testGetCapabilities() throws Exception {

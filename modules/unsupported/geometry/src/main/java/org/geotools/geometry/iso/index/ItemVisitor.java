@@ -17,11 +17,7 @@
  */
 package org.geotools.geometry.iso.index;
 
-/**
- * A visitor for items in an index.
- *
- * @source $URL$
- */
+/** A visitor for items in an index. */
 public interface ItemVisitor {
     void visitItem(Object item);
 }

@@ -47,7 +47,6 @@ import org.opengis.filter.spatial.Disjoint;
  * @author Chris Holmes, TOPP
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
- * @source $URL$
  */
 public class FilterEqualsTest extends TestCase {
 

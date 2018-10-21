@@ -10,11 +10,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.Identifier;
 
-/**
- * FitlerBuilder acting as a simple wrapper around an Expression.
- *
- * @source $URL$
- */
+/** FitlerBuilder acting as a simple wrapper around an Expression. */
 public class IdBuilder<P> implements Builder<Id> {
     protected Filter filter; // placeholder just to keep us going right now
     protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);

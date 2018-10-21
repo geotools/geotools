@@ -47,7 +47,6 @@ import org.w3c.dom.Element;
  * @author Justin Deoliveira
  * @version $Id: WFS_CapabilitiesTypeBindingTest.java 27749 2007-11-05 09:51:33Z groldan $
  * @since 2.5.x
- * @source $URL$
  */
 public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
     public WFS_CapabilitiesTypeBindingTest() {

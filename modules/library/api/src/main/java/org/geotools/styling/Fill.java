@@ -61,7 +61,6 @@ import org.opengis.style.StyleVisitor;
  * </ul>
  *
  * @author James Macgill, CCG
- * @source $URL$
  * @version $Id$
  */
 public interface Fill extends org.opengis.style.Fill {

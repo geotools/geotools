@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLLineStringTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance line;
     ElementInstance coord1;

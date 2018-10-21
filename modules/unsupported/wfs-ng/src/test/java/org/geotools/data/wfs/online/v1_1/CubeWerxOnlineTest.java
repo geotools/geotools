@@ -24,7 +24,6 @@ import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.junit.Ignore;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 @Ignore
 public class CubeWerxOnlineTest extends AbstractWfsDataStoreOnlineTest {
 

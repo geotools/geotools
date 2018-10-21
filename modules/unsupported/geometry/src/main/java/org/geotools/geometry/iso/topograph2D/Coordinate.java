@@ -32,8 +32,6 @@ import org.geotools.geometry.iso.util.Assert;
  * not support any operations on the z-ordinate except the basic accessor functions. Constructed
  * coordinates will have a z-ordinate of <code>NaN</code>. The standard comparison functions will
  * ignore the z-ordinate.
- *
- * @source $URL$
  */
 public class Coordinate implements Comparable, Cloneable, Serializable {
 

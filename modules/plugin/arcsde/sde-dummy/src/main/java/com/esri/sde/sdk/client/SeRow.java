@@ -4,7 +4,6 @@ import com.esri.sde.sdk.geom.GeometryFactory;
 import java.io.ByteArrayInputStream;
 import java.util.Calendar;
 
-/** @source $URL$ */
 public class SeRow {
 
     public static /* GEOT-947 final*/ int SE_IS_NULL_VALUE = 0;

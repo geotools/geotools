@@ -29,7 +29,6 @@ import org.opengis.metadata.quality.Scope;
 /**
  * Description of the data specified by the scope.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

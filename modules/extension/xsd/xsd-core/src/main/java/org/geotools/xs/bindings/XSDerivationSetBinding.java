@@ -50,7 +50,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSDerivationSetBinding implements SimpleBinding {
     /** @generated */

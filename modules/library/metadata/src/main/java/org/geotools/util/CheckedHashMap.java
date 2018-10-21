@@ -36,7 +36,6 @@ import org.opengis.util.Cloneable;
  * @param <K> The type of keys in the map.
  * @param <V> The type of values in the map.
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (IRD)

@@ -27,7 +27,6 @@ import org.opengis.filter.expression.PropertyName;
  * Do aggregate functions actually work?
  *
  * @author Cory Horner, Refractions Research
- * @source $URL$
  */
 public class Collection_FunctionsTest extends FunctionTestSupport {
 

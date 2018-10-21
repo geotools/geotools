@@ -29,7 +29,6 @@ import org.geotools.test.TestData;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.handlers.DocumentHandler;
 
-/** @source $URL$ */
 public class WMSInvalidSchemaLocationTest extends TestCase {
 
     public void testGetCapabilities() throws Exception {

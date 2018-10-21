@@ -57,7 +57,6 @@ import org.opengis.util.ProgressListener;
  *
  * @author jeichar
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public abstract class AbstractGridFormat implements Format {
 

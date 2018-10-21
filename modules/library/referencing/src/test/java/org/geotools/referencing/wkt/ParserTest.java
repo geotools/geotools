@@ -43,7 +43,6 @@ import org.opengis.referencing.operation.MathTransform;
 /**
  * Tests the WKT {@link Parser} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Yann Cézard
  * @author Remi Eve

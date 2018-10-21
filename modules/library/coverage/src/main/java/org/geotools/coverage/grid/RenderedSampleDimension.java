@@ -42,7 +42,6 @@ import org.opengis.util.InternationalString;
  * Describes the band values for a grid coverage.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

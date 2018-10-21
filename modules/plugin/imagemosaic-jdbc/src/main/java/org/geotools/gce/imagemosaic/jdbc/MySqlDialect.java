@@ -20,7 +20,6 @@ package org.geotools.gce.imagemosaic.jdbc;
  * This class implements the db dialect for mysql
  *
  * @author mcr
- * @source $URL$
  */
 public class MySqlDialect extends DBDialect {
     public MySqlDialect(Config config) {

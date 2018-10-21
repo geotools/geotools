@@ -39,7 +39,6 @@ import org.geotools.xs.XS;
  * &lt;/complexType>
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class ComplexDataTypeBinding extends AbstractComplexBinding {
     private Wps10Factory factory;

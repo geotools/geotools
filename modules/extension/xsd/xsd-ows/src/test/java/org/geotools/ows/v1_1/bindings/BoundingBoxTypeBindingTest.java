@@ -26,7 +26,6 @@ import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-/** @source $URL$ */
 public class BoundingBoxTypeBindingTest extends OWSTestSupport {
     public void testType() throws Exception {
         assertEquals(BoundingBoxType.class, binding(OWS.BoundingBoxType).getType());

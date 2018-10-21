@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiLineString;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLMultiLineStringTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance ml;
     ElementInstance line1;

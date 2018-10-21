@@ -19,7 +19,6 @@ package org.geotools.kml;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 
-/** @source $URL$ */
 public abstract class KMLTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {
         return new KMLConfiguration();

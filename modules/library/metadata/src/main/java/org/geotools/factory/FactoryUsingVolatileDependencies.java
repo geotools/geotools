@@ -38,7 +38,6 @@ package org.geotools.factory;
  *       <p>
  * </ul>
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @deprecated This class should be a marker interface instead of an {@code AbstractFactory}

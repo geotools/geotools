@@ -18,7 +18,6 @@ package org.geotools.styling;
 
 import org.geotools.util.Utilities;
 
-/** @source $URL$ */
 public class ImageOutlineImpl implements ImageOutline {
 
     Symbolizer symbolizer;

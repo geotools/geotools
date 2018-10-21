@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.PrecisionModel;
  * CoordinateSequenceFactory coordinate sequence} or {@linkplain PrecisionModel precision model}
  * factories.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @deprecated Please use JTSFactoryFinder

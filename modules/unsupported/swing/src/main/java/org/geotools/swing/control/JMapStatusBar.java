@@ -49,7 +49,6 @@ import org.geotools.util.logging.Logging;
  * @see StatusBarItem
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class JMapStatusBar extends JPanel {

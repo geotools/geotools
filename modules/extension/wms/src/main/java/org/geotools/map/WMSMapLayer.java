@@ -32,7 +32,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * choosing which style to use
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  * @deprecated Please use {@linkplain WMSLayer} instead
  */
 public class WMSMapLayer extends MapLayer {

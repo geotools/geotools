@@ -29,7 +29,6 @@ import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class SLDMarkBindingTest extends SLDTestSupport {
 
     public void testType() throws Exception {

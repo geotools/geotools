@@ -34,7 +34,6 @@ import org.junit.Test;
 /**
  * Tests {@link FactoryRegistry} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

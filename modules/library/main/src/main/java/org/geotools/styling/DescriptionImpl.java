@@ -3,7 +3,6 @@ package org.geotools.styling;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 
-/** @source $URL$ */
 public class DescriptionImpl implements Description {
     private InternationalString title;
 

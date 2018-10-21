@@ -50,7 +50,6 @@ import org.opengis.feature.type.PropertyDescriptor;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class EmfAppSchemaReaderTest extends AppSchemaTestSupport {

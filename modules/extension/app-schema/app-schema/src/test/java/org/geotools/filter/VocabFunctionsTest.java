@@ -57,7 +57,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Jody Garnett (GeoServer)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class VocabFunctionsTest extends AppSchemaTestSupport {
     private DataAccess<FeatureType, Feature> dataAccess;

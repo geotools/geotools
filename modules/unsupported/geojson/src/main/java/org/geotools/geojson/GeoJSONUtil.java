@@ -42,7 +42,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.locationtech.jts.geom.Coordinate;
 
-/** @source $URL$ */
 public class GeoJSONUtil {
 
     /** Date format (ISO 8601) */

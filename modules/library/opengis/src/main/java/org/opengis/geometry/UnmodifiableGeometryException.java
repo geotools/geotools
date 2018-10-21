@@ -17,7 +17,6 @@ package org.opengis.geometry;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
- * @source $URL$
  */
 public class UnmodifiableGeometryException extends UnsupportedOperationException {
     /** Serial number for interoperability with different versions. */

@@ -84,7 +84,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class WFS_LockFeatureResponseTypeBinding extends AbstractComplexEMFBinding {
     public WFS_LockFeatureResponseTypeBinding(WfsFactory factory) {

@@ -75,7 +75,6 @@ import org.opengis.temporal.Period;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public abstract class AbstractFilterBuilder {
 

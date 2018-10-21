@@ -34,7 +34,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * @todo this code is identical to the oblique except for 6 lines. It could be moved to the oblique
  *     with an isEquatorial flag.
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  */

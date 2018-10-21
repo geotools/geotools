@@ -28,7 +28,6 @@ import org.geotools.data.Parameter;
  *
  * @author Andrea Antonello (www.hydrologis.com)
  * @author gdavis
- * @source $URL$
  */
 public class JDoubleField extends ParamField {
 

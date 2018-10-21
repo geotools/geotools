@@ -49,7 +49,6 @@ import org.geotools.util.logging.Logging;
  *
  * @see #DEFAULT_TABLE
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class MetadataTablePrimaryKeyFinder extends PrimaryKeyFinder {
     protected static final Logger LOGGER = Logging.getLogger(MetadataTablePrimaryKeyFinder.class);

@@ -40,7 +40,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.helpers.ParserAdapter;
 import org.xml.sax.helpers.XMLFilterImpl;
 
-/** @source $URL$ */
 public class FilterFilterTest extends TestCase {
 
     public static void testWithoutFunction() throws Exception {

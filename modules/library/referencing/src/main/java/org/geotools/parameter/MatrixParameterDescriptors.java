@@ -59,7 +59,6 @@ import tec.uom.se.AbstractUnit;
  * </blockquote>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see MatrixParameters

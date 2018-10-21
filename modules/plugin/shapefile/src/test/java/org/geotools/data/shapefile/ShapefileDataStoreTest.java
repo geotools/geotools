@@ -108,7 +108,6 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

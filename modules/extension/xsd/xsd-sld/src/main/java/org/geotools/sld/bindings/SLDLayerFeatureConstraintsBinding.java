@@ -48,7 +48,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDLayerFeatureConstraintsBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

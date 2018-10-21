@@ -64,7 +64,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Jody Garnett, Refractions Research
  * @since 2.1.M3
- * @source $URL$
  */
 public class FeatureTypes {
 

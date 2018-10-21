@@ -24,7 +24,6 @@ import org.geotools.geometry.iso.topograph2D.Envelope;
  * A Key is a unique identifier for a node in a quadtree. It contains a lower-left point and a level
  * number. The level number is the power of two for the size of the node envelope
  *
- * @source $URL$
  * @version 1.7.2
  */
 public class Key {

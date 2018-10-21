@@ -41,7 +41,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class SVGGraphicFactoryTest extends TestCase {
 
     private FilterFactory ff;

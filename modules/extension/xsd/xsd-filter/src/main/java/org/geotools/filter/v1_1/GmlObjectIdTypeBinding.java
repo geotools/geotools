@@ -42,7 +42,6 @@ import org.opengis.filter.identity.GmlObjectId;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GmlObjectIdTypeBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

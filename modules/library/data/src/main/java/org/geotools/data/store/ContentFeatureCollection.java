@@ -48,7 +48,6 @@ import org.opengis.filter.Filter;
  * A FeatureCollection that completely delegates to a backing FetaureSource#getReader
  *
  * @author Jody Garnett (Refractions Research, Inc.)
- * @source $URL$
  */
 public class ContentFeatureCollection implements SimpleFeatureCollection {
 

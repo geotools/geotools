@@ -49,7 +49,6 @@ import si.uom.NonSI;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/polyconic.html">"Polyconic" on
  *     RemoteSensing.org</A>
  * @since 2.6.3
- * @source $URL$
  * @author Andrea Aime
  */
 public class WinkelTripel extends MapProjection {

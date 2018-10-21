@@ -23,7 +23,6 @@ import org.eclipse.xsd.XSDElementDeclaration;
  * Factory used by the encoder to obtain child values from objects being encoded.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface PropertyExtractor {
     /**

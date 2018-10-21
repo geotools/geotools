@@ -26,8 +26,6 @@ import org.geotools.geometry.iso.util.Assert;
  * compute the intersection point if they do. The intersection point may be computed in a precise or
  * non-precise manner. Computing it precisely involves rounding it to an integer. (This assumes that
  * the input coordinates have been made precise by scaling them to an integer grid.)
- *
- * @source $URL$
  */
 public abstract class LineIntersector {
 

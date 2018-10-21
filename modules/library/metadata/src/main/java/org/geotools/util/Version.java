@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
  * and for performing comparaisons.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @see org.geotools.factory.GeoTools#getVersion

@@ -1,6 +1,5 @@
 package org.geotools.arcsde.raster.io;
 
-/** @source $URL$ */
 public class BitmaskToNoDataConverterTest {
 
     // @Test

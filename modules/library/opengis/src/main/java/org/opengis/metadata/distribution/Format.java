@@ -22,7 +22,6 @@ import org.opengis.util.InternationalString;
  * Description of the computer language construct that specifies the representation of data objects
  * in a record, file, message, storage device or transmission channel.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

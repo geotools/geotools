@@ -68,10 +68,6 @@ import org.geotools.util.logging.Logging;
  * for each pair of <code>sqlView.N.typeName, sqlView.N.sqlQuery</code>
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ViewRegisteringFactoryHelper.java $
  */
 public class ViewRegisteringFactoryHelper {
     private static final Logger LOGGER =

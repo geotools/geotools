@@ -42,11 +42,7 @@ import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.geotools.xml.impl.HTTPURIHandler;
 import org.geotools.xs.XS;
 
-/**
- * Tests for {@link Schemas}.
- *
- * @source $URL$
- */
+/** Tests for {@link Schemas}. */
 public class SchemasTest extends TestCase {
 
     File tmp, sub;

@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.DistanceBufferOperator;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public class ECQLRelGeoOpTest extends CQLRelGeoOpTest {
     protected static final FilterFactory FILTER_FACTORY =

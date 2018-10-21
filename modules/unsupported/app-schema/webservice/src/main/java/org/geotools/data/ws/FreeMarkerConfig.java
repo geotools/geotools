@@ -26,7 +26,7 @@ import freemarker.template.DefaultObjectWrapper;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class FreeMarkerConfig {
 

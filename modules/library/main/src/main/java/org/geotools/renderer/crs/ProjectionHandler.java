@@ -63,7 +63,6 @@ import org.opengis.referencing.operation.TransformException;
  * <p>WARNING: this API is not finalized and is meant to be used by StreamingRenderer only
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class ProjectionHandler {
 

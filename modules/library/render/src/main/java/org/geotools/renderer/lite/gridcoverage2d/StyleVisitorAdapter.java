@@ -58,7 +58,6 @@ import org.geotools.styling.UserLayer;
  * StyleVisitor} interface that can visit only a subclass of the {@link StyleVisitor} nodes.
  *
  * @author Simone Giannecchini. GeoSolutions
- * @source $URL$
  */
 public class StyleVisitorAdapter implements StyleVisitor {
 

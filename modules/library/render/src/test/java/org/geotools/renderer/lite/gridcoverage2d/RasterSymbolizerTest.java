@@ -87,10 +87,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.style.ContrastMethod;
 
-/**
- * @author Simone Giannecchini, GeoSolutions.
- * @source $URL$
- */
+/** @author Simone Giannecchini, GeoSolutions. */
 public class RasterSymbolizerTest extends org.junit.Assert {
 
     private static final StyleFactory sf =

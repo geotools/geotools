@@ -62,7 +62,6 @@ import org.picocontainer.MutablePicoContainer;
  * Configuration used by gml2 parsers.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GMLConfiguration extends Configuration {
     /** Property which controls whether encoded features should include bounds. */

@@ -44,7 +44,6 @@ import org.opengis.style.Description;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class RuleBinding extends SLDRuleBinding {
 

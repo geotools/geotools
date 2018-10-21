@@ -48,7 +48,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link MrSIDReader}
- * @source $URL$
  */
 public final class MrSIDTest extends GDALTestCase {
     /**

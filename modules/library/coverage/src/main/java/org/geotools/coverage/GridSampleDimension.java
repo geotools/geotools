@@ -73,7 +73,6 @@ import org.opengis.util.InternationalString;
  * This explain the "{@code Grid}" prefix in the class name.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

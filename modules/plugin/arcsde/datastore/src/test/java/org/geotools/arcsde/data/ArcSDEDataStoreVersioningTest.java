@@ -42,7 +42,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
-/** @source $URL$ */
 public class ArcSDEDataStoreVersioningTest {
 
     private static String defaultVersion;

@@ -64,7 +64,6 @@ import org.locationtech.jts.geom.Polygon;
  *     href="http://otn.oracle.com/pls/db10g/db10g.to_toc?pathname=appdev.101%2Fb10826%2Ftoc.htm&remark=portal+%28Unstructured+data%29">Spatial
  *     User's Guide (10.1)</a>
  * @author Jody Garnett, Refractions Reasearch Inc.
- * @source $URL$
  * @version CVS Version
  * @see net.refractions.jspatial.jts
  */

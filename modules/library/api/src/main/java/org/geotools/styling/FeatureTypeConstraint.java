@@ -46,7 +46,6 @@ import org.opengis.filter.Filter;
  * <p>
  *
  * @author James Macgill
- * @source $URL$
  */
 public interface FeatureTypeConstraint {
     public String getFeatureTypeName();

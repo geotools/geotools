@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class PolygonTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Polygon.class, binding(KML.PolygonType).getType());

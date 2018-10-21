@@ -57,7 +57,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDMarkBinding extends AbstractComplexBinding {
     static final Logger LOGGER = Logging.getLogger(SLDMarkBinding.class);

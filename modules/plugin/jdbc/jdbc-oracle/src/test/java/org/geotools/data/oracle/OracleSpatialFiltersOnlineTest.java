@@ -34,7 +34,6 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public class OracleSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
     @Override

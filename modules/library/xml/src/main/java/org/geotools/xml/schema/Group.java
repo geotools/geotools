@@ -26,7 +26,6 @@ import java.net.URI;
  * to complete this all the time, as xml schemas may include publicly viewable Group definitions.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface Group extends ElementGrouping {
     /**

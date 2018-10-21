@@ -55,7 +55,6 @@ import org.locationtech.jts.geom.Envelope;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLBoxTypeBinding extends AbstractComplexBinding {
     /** @generated */

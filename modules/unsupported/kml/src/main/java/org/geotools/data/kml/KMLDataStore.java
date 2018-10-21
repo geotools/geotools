@@ -39,7 +39,7 @@ import org.opengis.feature.type.Name;
  * KMLDataStore implementation
  *
  * @author Niels Charlier, Scitus Development
- * @source $URL$
+
  */
 public class KMLDataStore extends ContentDataStore {
     protected File file;

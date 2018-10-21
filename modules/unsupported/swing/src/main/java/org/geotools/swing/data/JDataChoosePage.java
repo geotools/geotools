@@ -35,11 +35,7 @@ import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.swing.wizard.JPage;
 
-/**
- * A wizard page that will allow the user to choose a format (ie DataAccess factory).
- *
- * @source $URL$
- */
+/** A wizard page that will allow the user to choose a format (ie DataAccess factory). */
 public class JDataChoosePage extends JPage {
     /** Factory for which we are collection connection parameters */
     protected DataStoreFactorySpi format;

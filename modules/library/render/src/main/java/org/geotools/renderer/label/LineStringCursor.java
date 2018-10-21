@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.LineString;
  * orientation of the current segment.
  *
  * @author Andrea Aime
- * @source $URL$
  */
 public class LineStringCursor {
 

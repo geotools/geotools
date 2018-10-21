@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public class SeState {
 
     public static int SE_STATE_DIFF_NOCHECK = 0;

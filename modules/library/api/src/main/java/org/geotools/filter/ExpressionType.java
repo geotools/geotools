@@ -21,7 +21,6 @@ package org.geotools.filter;
  * safe enum when we move to Java 1.5
  *
  * @author wolf
- * @source $URL$
  */
 public interface ExpressionType {
     /* This is a listing of all possible expression types, grouped by

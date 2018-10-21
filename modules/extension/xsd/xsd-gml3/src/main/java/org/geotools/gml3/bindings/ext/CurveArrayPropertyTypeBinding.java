@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
-/** @source $URL$ */
 public class CurveArrayPropertyTypeBinding
         extends org.geotools.gml3.bindings.CurveArrayPropertyTypeBinding implements Comparable {
 

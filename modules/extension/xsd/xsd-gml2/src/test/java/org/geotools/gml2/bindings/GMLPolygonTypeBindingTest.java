@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLPolygonTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance poly;
     ElementInstance oring;

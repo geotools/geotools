@@ -51,7 +51,6 @@ import org.geotools.xml.*;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class NamedLayerBinding extends SLDNamedLayerBinding {
 

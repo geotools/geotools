@@ -49,7 +49,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Dialect for SpatiaLite embedded database.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class SpatiaLiteDialect extends BasicSQLDialect {
 

@@ -42,8 +42,6 @@ import org.geotools.factory.FactoryRegistry;
  *
  * <p>Example:<br>
  * <code>org.geotools.data.jdbc.DBCPDataSourceFactory</code>
- *
- * @source $URL$
  */
 public final class DataSourceFinder {
     /** The logger for the filter module. */

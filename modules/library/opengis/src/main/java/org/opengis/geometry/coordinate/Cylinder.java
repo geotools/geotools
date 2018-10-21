@@ -21,7 +21,6 @@ import org.opengis.annotation.UML;
  *
  * <p>&lt;&lt;P1, P2, P3&gt;, &lt;P4, P5, P6&gt;&gt;.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

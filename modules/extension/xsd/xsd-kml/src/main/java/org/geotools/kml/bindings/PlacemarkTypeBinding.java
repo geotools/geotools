@@ -51,7 +51,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class PlacemarkTypeBinding extends AbstractComplexBinding {
 

@@ -57,12 +57,9 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
 /**
- * Basic test for OGR data store capabilites against file data sources
+ * Basic test for OGR data store capabilities against file data sources
  *
  * @author aaime
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/test/java/org/geotools
- *     /data/ogr/OGRDataStoreTest.java $
  */
 public abstract class OGRDataStoreTest extends TestCaseSupport {
 

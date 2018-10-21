@@ -82,7 +82,7 @@ import org.opengis.referencing.operation.TransformException;
  * @author Martin Desruisseaux
  *
  *
- * @source $URL$
+ *
  * @version $Id$
  */
 public class GridCoverageBuilder {
@@ -403,7 +403,6 @@ public class GridCoverageBuilder {
      *
      * @since 2.5
      * @author Martin Desruisseaux
-     * @source $URL$
      * @version $Id$
      */
     public class Variable {

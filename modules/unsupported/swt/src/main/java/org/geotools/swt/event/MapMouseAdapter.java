@@ -24,7 +24,6 @@ package org.geotools.swt.event;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  */
 public class MapMouseAdapter implements MapMouseListener {
 

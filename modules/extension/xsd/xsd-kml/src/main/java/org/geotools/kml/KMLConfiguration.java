@@ -56,7 +56,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://earth.google.com/kml/2.1 schema.
  *
  * @generated
- * @source $URL$
  */
 public class KMLConfiguration extends Configuration {
     /**

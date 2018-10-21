@@ -31,7 +31,6 @@ import java.util.TimeZone;
  * </code> values.
  *
  * @author <a href="mailto:joe@ispsoft.de">Jochen Wiedmann</a>
- * @source $URL$
  */
 public class XsDateTimeFormat extends Format {
     final boolean parseDate;

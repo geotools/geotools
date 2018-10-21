@@ -30,7 +30,6 @@ import org.opengis.geometry.MismatchedDimensionException;
  *
  * @author Andrea Aime, GeoSolutions
  * @since 19.x
- * @source $URL$
  */
 public final class SRPFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */

@@ -28,7 +28,6 @@ import tec.uom.se.AbstractUnit;
 import tec.uom.se.unit.AlternateUnit;
 import tec.uom.se.unit.BaseUnit;
 
-/** @source $URL$ */
 public class UnitBinding extends AbstractSimpleBinding {
 
     public QName getTarget() {

@@ -20,7 +20,6 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 import org.geotools.graph.structure.Edge;
 
-/** @source $URL$ */
 public class OptEdgeTest extends TestCase {
 
     private OptNode m_nodeA;

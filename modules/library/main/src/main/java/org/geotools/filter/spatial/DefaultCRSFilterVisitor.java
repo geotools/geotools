@@ -31,7 +31,6 @@ import org.opengis.referencing.crs.SingleCRS;
  * gets the specified default one.
  *
  * @author Andrea Aime - The Open Planning Project
- * @source $URL$
  */
 public class DefaultCRSFilterVisitor extends DuplicatingFilterVisitor {
     private CoordinateReferenceSystem defaultCrs;

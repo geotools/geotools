@@ -55,8 +55,6 @@ import org.opengis.filter.spatial.Within;
  *
  * <p>Please note that this FeatureSource is strictly "read-only" and thus does not support feature
  * events.
- *
- * @source $URL$
  */
 public class SpatialIndexFeatureSource implements SimpleFeatureSource {
     SpatialIndexFeatureCollection contents;

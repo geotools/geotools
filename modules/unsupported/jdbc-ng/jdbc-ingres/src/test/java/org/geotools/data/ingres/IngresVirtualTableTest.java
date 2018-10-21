@@ -6,7 +6,7 @@ import org.geotools.jdbc.JDBCVirtualTableTest;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresVirtualTableTest extends JDBCVirtualTableTest {
 

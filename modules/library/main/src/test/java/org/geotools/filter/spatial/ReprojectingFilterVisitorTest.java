@@ -27,7 +27,6 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class ReprojectingFilterVisitorTest extends TestCase {
 
     SimpleFeatureType ft;

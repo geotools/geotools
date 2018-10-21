@@ -36,7 +36,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class SLDInlineFeatureParser {
 
     /** hash table that takes a epsg# to its definition* */

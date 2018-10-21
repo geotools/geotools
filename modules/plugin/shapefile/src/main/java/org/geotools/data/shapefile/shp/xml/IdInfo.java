@@ -18,11 +18,7 @@ package org.geotools.data.shapefile.shp.xml;
 
 import org.locationtech.jts.geom.Envelope;
 
-/**
- * Bean of idinfo element of shp.xml.
- *
- * @source $URL$
- */
+/** Bean of idinfo element of shp.xml. */
 public class IdInfo {
 
     /** spdom/bounding represents */

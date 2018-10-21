@@ -40,7 +40,6 @@ import org.opengis.util.ProgressListener;
  * Default implementation of {@link CoverageAccess}.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public class DefaultCoverageAccess implements CoverageAccess {
 

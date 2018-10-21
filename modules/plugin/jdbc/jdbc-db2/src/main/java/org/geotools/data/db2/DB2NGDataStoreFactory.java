@@ -39,7 +39,6 @@ import org.locationtech.jts.io.WKBConstants;
  * DataStoreFactory for DB2 database.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class DB2NGDataStoreFactory extends JDBCDataStoreFactory {
 

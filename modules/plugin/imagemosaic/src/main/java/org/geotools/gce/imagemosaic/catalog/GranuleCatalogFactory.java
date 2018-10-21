@@ -37,7 +37,6 @@ import org.geotools.util.logging.Logging;
  * granules for this mosaic.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public abstract class GranuleCatalogFactory {
 

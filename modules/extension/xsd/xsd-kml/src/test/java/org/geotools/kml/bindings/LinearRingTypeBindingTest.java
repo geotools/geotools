@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class LinearRingTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(LinearRing.class, binding(KML.LinearRingType).getType());

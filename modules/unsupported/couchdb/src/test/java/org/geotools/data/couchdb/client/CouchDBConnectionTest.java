@@ -23,7 +23,7 @@ import org.junit.Test;
 
 /**
  * @author Ian Schneider (OpenGeo)
- * @source $URL$
+
  */
 public class CouchDBConnectionTest extends CouchDBTestSupport {
 

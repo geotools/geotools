@@ -33,11 +33,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * A new function to check if a property exists.
- *
- * @source $URL$
- */
+/** A new function to check if a property exists. */
 public class PropertyExistsFunction extends FunctionExpressionImpl {
 
     // public static FunctionName NAME = new FunctionNameImpl("PropertyExists","propertyName");

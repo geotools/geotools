@@ -30,10 +30,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class AutoClustUtils {
 
     private static final Logger LOGGER =

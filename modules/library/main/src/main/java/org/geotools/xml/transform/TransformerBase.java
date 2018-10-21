@@ -48,7 +48,6 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * so it can be used by others as well.
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public abstract class TransformerBase {
     private int indentation = -1;

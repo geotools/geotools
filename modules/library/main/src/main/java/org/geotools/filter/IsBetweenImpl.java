@@ -27,7 +27,6 @@ import org.opengis.filter.expression.Expression;
  * Straight implementation of GeoAPI interface.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class IsBetweenImpl extends CompareFilterImpl implements PropertyIsBetween {
 

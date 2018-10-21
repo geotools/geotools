@@ -47,7 +47,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
-/** @source $URL$ */
 public class DirectoryDataStore implements DataStore {
 
     DirectoryTypeCache cache;

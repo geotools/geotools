@@ -43,7 +43,6 @@ import org.opengis.util.ProgressListener;
  * process' describeprocess.
  *
  * @author GDavis
- * @source $URL$
  */
 public class WPSProcess extends AbstractProcess {
 

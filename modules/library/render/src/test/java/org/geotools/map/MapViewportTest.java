@@ -33,7 +33,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Unit tests for the viewport class.
  *
  * @author Michael Bedward
- * @source $URL$
  */
 public class MapViewportTest extends LoggerTest {
 

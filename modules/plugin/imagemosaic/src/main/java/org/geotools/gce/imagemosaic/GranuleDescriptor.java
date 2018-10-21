@@ -115,7 +115,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5.5
- * @source $URL$
  */
 public class GranuleDescriptor {
 

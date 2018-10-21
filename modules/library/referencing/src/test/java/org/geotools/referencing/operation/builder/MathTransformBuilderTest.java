@@ -36,7 +36,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * A test for the MathTransformBuilders.
  *
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  * @author Adrian Custer

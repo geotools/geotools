@@ -24,7 +24,6 @@ import java.util.NoSuchElementException;
 import org.geotools.data.Query;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class JDBCUpdateInsertFeatureWriter extends JDBCUpdateFeatureWriter {
 
     JDBCInsertFeatureWriter inserter;

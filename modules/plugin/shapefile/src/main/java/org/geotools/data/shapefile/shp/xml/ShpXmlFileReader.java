@@ -27,7 +27,6 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.locationtech.jts.geom.Envelope;
 
-/** @source $URL$ */
 public class ShpXmlFileReader implements FileReader {
 
     Document dom;

@@ -62,7 +62,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Andrea Aime - OpenGeo
  * @author Martin Davis - OpenGeo
- * @source $URL$
  */
 public class BeanProcessFactoryTest {
 

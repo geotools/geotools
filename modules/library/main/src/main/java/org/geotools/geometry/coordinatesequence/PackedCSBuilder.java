@@ -23,7 +23,6 @@ package org.geotools.geometry.coordinatesequence;
  *
  * @author wolf
  * @deprecated Moved to {@link org.geotools.geometry.jts.coordinatesequence.PackedCSBuilder}.
- * @source $URL$
  */
 public abstract class PackedCSBuilder
         extends org.geotools.geometry.jts.coordinatesequence.PackedCSBuilder {}

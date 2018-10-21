@@ -56,7 +56,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * parts of the dialect api.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class H2Dialect extends SQLDialect {
 

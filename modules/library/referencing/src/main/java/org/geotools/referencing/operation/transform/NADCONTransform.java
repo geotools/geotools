@@ -108,7 +108,6 @@ import org.opengis.referencing.operation.Transformation;
  * @see <a href="http://www.ngs.noaa.gov/TOOLS/Nadcon/Nadcon.html">NADCON - North American Datum
  *     Conversion Utility</a>
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  * @todo the transform code does not deal with the case where grids cross +- 180 degrees.

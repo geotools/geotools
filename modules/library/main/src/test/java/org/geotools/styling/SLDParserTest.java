@@ -46,7 +46,6 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class SLDParserTest {
 
     public static String SLD =

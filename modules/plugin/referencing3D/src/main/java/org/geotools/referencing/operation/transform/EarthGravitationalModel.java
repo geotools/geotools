@@ -61,7 +61,6 @@ import org.opengis.referencing.operation.Transformation;
  * </code> file, with some spaces trimmed.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Pierre Cardinal
  * @author Martin Desruisseaux
@@ -369,7 +368,6 @@ public final class EarthGravitationalModel extends VerticalTransform {
     /**
      * The provider for {@link EarthGravitationalModel}.
      *
-     * @source $URL$
      * @version $Id$
      * @author Martin Desruisseaux
      */

@@ -61,8 +61,8 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * ArcSDEDAtaStore test case for a master-child joining
- * <p>
- * This test will create an sde layer (table + spatial table) as master and a business table as
+ *
+ * <p>This test will create an sde layer (table + spatial table) as master and a business table as
  * child:
  *
  * <pre>
@@ -128,19 +128,9 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * </code>
  * </ul>
  * </p>
+ * </pre>
  *
- * &#064;author Gabriel Roldan, Axios Engineering &#064;source $URL:
- * http://gtsvn.refractions.net/branches
- * /2.5.x/modules/plugin/arcsde/datastore/src/test/java/org/geotools
- * /arcsde/data/SDEJavaApiJoinTest.java $ &#064;version $Id: SDEJavaApiJoinTest.java 31903
- * 2008-11-22 20:44:25Z groldan $ &#064;since 2.3.x
- *
- *
- *
- *
- * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
- *         /geotools/arcsde/data/SDEJavaApiJoinTest.java $
+ * @author Gabriel Roldan, Axios Engineering
  */
 @Ignore
 public class SDEJavaApiJoinTest {

@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public class SeRasterColumn {
 
     public SeRasterColumn(SeConnection conn, SeObjectId id) throws SeException {}

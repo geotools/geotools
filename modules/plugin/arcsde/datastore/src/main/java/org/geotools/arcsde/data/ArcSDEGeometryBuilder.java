@@ -47,37 +47,33 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
 /**
- * Creates propper JTS Geometry objects from <code>SeShape</code> objects and viceversa.
+ * Creates proper JTS Geometry objects from <code>SeShape</code> objects and vice versa.
  *
  * <p><code>SeShape</code>'s are gathered from an <code>SeRow</code> ArcSDE API's result object and
  * holds it's geometry attributes as a three dimensional array of <code>double</code> primitives as
  * explained bellow.
  *
  * <p>By this way, we avoid the creation of ArcSDE's java implementation of OGC geometries for later
- * translation to JTS, avoiding too the dependency on the ArcSDE native library wich the geometry
+ * translation to JTS, avoiding too the dependency on the ArcSDE native library which the geometry
  * package of the ArcSDE Java API depends on.
  *
  * <p>Given <code>double [][][]coords</code> the meaning of this array is as follow:
  *
  * <ul>
- *   <li>coords.length reprsents the number of geometries this geometry is composed of. In deed,
+ *   <li>coords.length represents the number of geometries this geometry is composed of. In deed,
  *       this only applies for multipolygon geometries, for all other geometry types, this will be
  *       allways <code>1</code>
  *   <li>coords[n] holds the coordinate arrays of the n'th geometry this geometry is composed of.
- *       Except for multipolygons, this will allways be <code>coords[0]</code>.
+ *       Except for multipolygons, this will always be <code>coords[0]</code>.
  *   <li>coords[n][m] holds the coordinates array for a given geometry. (i.e. [0][m] for a
  *       multilinestring or [2][m] for a multipolygon composed of 3 polygons)
  *   <li>coords[n][m][l] holds the {x1, y1, x2, y2, ...,Xn, Yn} coordinates for a given geometry
  *       part
  * </ul>
  *
- * <p>This abstract class will use specialized subclass for constructing the propper geometry type
+ * <p>This abstract class will use specialized subclass for constructing the proper geometry type
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcSDEGeometryBuilder.java $
- * @version $Id$
  */
 public abstract class ArcSDEGeometryBuilder {
 

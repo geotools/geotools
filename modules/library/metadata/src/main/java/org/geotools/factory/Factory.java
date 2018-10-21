@@ -76,7 +76,6 @@ import java.util.Map;
  * @author Ian Schneider
  * @author Martin Desruisseaux
  * @author Jody Garnett
- * @source $URL$
  * @version $Id$
  * @see Hints
  * @see FactoryRegistry

@@ -35,7 +35,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Function;
 
-/** @source $URL$ */
 public class ProcessFunctionTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory();

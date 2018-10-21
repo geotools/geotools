@@ -67,7 +67,6 @@ import org.opengis.filter.spatial.Within;
  *
  * @author Andrea Aime - GeoSolutions
  * @since 2.6
- * @source $URL$
  * @version $Id$
  * @deprecated This class is not tested enough to be considered production ready
  */

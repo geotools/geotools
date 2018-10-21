@@ -45,7 +45,6 @@ import tec.uom.se.AbstractUnit;
  * ExponentialTransform1D}.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see ExponentialTransform1D

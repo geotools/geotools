@@ -37,7 +37,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
 
     public FeatureCollectionTypeBindingTest() {

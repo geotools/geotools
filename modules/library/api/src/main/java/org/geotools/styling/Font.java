@@ -24,7 +24,6 @@ import org.opengis.filter.expression.Expression;
  * font to use in text processing. Font-family, font-style, font-weight and font-size.
  *
  * @author Ian Turton, CCG
- * @source $URL$
  * @version $Id$
  */
 public interface Font extends org.opengis.style.Font {

@@ -28,7 +28,6 @@ import org.geotools.wfs.bindings.TransactionResultsTypeBinding;
  * Parser configuration for the wfs 1.1 schema.
  *
  * @generated
- * @source $URL$
  */
 public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
     /**

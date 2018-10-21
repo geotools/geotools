@@ -11,7 +11,6 @@ import org.geotools.xml.XSD;
  * http://www.opengis.net/fes/2.0 schema.
  *
  * @generated
- * @source $URL$
  */
 public final class FES extends XSD {
 

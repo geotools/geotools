@@ -39,7 +39,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Jody Garnett (Refractions Research)
  * @see DiffContentState
- * @source $URL$
  */
 public class DiffContentFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> reader;

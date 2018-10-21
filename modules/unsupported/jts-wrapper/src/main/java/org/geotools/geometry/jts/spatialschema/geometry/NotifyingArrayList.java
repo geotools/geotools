@@ -23,8 +23,6 @@ import org.geotools.geometry.jts.JTSGeometry;
 /**
  * Helper class that notifies the containing geometry when the list has changed so that it can
  * invalidate any cached JTS objects it had.
- *
- * @source $URL$
  */
 public class NotifyingArrayList<T> extends ArrayList<T> {
     private JTSGeometry parent;

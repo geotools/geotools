@@ -39,7 +39,6 @@ import org.opengis.util.ProgressListener;
  * Default implementation of {@link CoverageSource}.
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
- * @source $URL$
  */
 public abstract class DefaultCoverageSource implements CoverageSource {
 

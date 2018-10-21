@@ -27,7 +27,6 @@ import org.opengis.coverage.SampleDimensionType;
  * Testing {@link TypeMap} class.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public class TestTypeMap {
 

@@ -32,7 +32,6 @@ import org.opengis.geometry.complex.Complex;
  * to form a single solid.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class CompositeSolidImpl extends CompositeImpl<SolidImpl> {
     private static final long serialVersionUID = -1998244006251493858L;

@@ -22,7 +22,6 @@ import org.geotools.xml.Parser;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class _Filter_CapabilitiesTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(FilterCapabilities.class, binding(OGC._Filter_Capabilities).getType());

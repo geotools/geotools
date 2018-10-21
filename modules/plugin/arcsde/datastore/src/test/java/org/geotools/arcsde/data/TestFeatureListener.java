@@ -26,9 +26,6 @@ import org.geotools.data.FeatureListener;
  * This class copies out some of the details about each event received.
  *
  * @author Jody Garnett
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
- *     /geotools/arcsde/data/TestFeatureListener.java $
  */
 public class TestFeatureListener implements FeatureListener {
     List<FeatureEvent> list = new LinkedList<FeatureEvent>();

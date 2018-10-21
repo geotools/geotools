@@ -53,7 +53,6 @@ import org.locationtech.jts.geom.MultiLineString;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLMultiLineStringPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */

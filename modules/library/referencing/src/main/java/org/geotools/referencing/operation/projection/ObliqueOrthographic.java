@@ -31,7 +31,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * The oblique case of the {@link Orthographic} projection. Only the spherical form is given here.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  */

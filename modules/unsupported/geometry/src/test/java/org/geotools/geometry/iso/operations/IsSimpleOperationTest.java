@@ -31,7 +31,6 @@ import org.opengis.geometry.coordinate.Position;
 import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class IsSimpleOperationTest extends TestCase {
 
     private GeometryBuilder builder = null;

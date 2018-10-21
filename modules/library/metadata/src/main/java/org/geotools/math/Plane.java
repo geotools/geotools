@@ -34,7 +34,6 @@ import org.opengis.util.Cloneable;
  * a set of three-dimensional points.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
  * @author Howard Freeland, for algorithmic inspiration

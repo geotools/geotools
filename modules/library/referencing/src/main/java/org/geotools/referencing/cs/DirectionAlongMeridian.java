@@ -26,7 +26,6 @@ import org.opengis.referencing.cs.AxisDirection;
  * East</cite>". Those directions are used in the EPSG database for polar stereographic projections.
  *
  * @version $Id$
- * @source $URL$
  * @author Martin Desruisseaux
  * @since 2.7.2
  */

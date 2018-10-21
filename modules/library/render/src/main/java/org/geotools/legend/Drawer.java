@@ -72,8 +72,6 @@ import org.opengis.referencing.operation.MathTransform;
 /**
  * This class is used to isolate GeoTools from the specific graphic library being used for
  * rendering.
- *
- * @source $URL$
  */
 public class Drawer {
 

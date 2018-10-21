@@ -24,7 +24,6 @@ import org.opengis.filter.expression.Expression;
  * Support for Multi-valued properties when comparing
  *
  * @author Niels Charlier, Curtin University of Technology
- * @source $URL$
  */
 public abstract class MultiCompareFilterImpl extends CompareFilterImpl {
 

@@ -96,7 +96,6 @@ import java.util.Set;
  *
  * @author Jody Garnett
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  */
 public interface Transaction extends Closeable {

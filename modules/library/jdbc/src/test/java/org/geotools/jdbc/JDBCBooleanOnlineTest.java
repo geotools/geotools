@@ -22,7 +22,6 @@ import org.geotools.data.Transaction;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public abstract class JDBCBooleanOnlineTest extends JDBCTestSupport {
 
     @Override

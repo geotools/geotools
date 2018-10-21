@@ -31,7 +31,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Justin Deoliveira, The Open Planning Project TODO: rename this class, it is not just for
  *     element.s
- * @source $URL$
  */
 public class ElementEncoder {
     /** The walker used to traverse bindings */

@@ -37,7 +37,6 @@ import org.geotools.feature.SchemaException;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.test.OnlineTestCase;
 
-/** @source $URL$ */
 public class PostgisNGCreateDatabaseOnlineTest extends OnlineTestCase {
 
     private static final String CREATE_DROP_TESTDB = "gt2_create_drop_testdb";

@@ -27,8 +27,6 @@ import org.opengis.filter.Filter;
  *
  * <p>Allows developer to skip refering to the typeName when a file contains only a single set of
  * content.
- *
- * @source $URL$
  */
 public interface FileDataStore extends DataStore {
 

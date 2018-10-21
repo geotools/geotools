@@ -55,7 +55,6 @@ import org.opengis.filter.identity.FeatureId;
  *
  * @author Chris Holmes, TOPP
  * @author Saul Farber, MassGIS
- * @source $URL$
  */
 public class FilterToSQLTest extends TestCase {
     private FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(null);

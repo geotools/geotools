@@ -23,7 +23,6 @@ import org.opengis.util.ProgressListener;
  * A dummy progress listener.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class DummyProgressListener implements ProgressListener {
 

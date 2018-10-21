@@ -27,7 +27,6 @@ import org.geotools.resources.ClassChanger;
  * coincidence with another, generally measured in degrees, sexagesimal degrees or grads.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
  * @see Latitude

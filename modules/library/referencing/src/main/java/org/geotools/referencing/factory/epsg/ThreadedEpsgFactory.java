@@ -74,7 +74,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * {@linkplain ReferencingFactoryFinder}.getFooAuthorityFactory("EPSG")</code> methods instead.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

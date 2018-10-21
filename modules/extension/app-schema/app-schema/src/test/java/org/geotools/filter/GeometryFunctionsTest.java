@@ -60,7 +60,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * the data store doesn't have geometry columns, but geometry types are needed.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class GeometryFunctionsTest extends AppSchemaTestSupport {
 

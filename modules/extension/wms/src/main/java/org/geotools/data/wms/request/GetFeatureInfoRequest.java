@@ -28,7 +28,6 @@ import org.geotools.data.ows.Request;
  * to understand?
  *
  * @author Richard Gould, Refractions Research
- * @source $URL$
  */
 public interface GetFeatureInfoRequest extends Request {
     /** Represents the INFO_FORMAT parameter */

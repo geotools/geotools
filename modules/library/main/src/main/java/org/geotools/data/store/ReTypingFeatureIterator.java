@@ -27,7 +27,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  * FeatureIterator wrapper which re-types features on the fly based on a target feature type.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class ReTypingFeatureIterator implements SimpleFeatureIterator {
 

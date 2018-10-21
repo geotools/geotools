@@ -9,7 +9,7 @@ import org.geotools.data.dxf.header.DXFLineType;
 import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFUnivers;
 
-/** @source $URL$ */
+
 public class DXFTrace extends DXFSolid {
 
     private static final Log log = LogFactory.getLog(DXFTrace.class);

@@ -26,7 +26,6 @@ import org.geotools.util.UnsupportedImplementationException;
  * {@code toWKT()} method using reflection.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

@@ -35,7 +35,6 @@ import java.util.*;
  * to them.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -431,7 +430,6 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
                         + " *\n"
                         + " * @see org.geotools.resources.IndexedResourceBundle\n"
                         + " * @see org.geotools.resources.IndexedResourceCompiler\n"
-                        + " * @source \u0024URL\u0024\n"
                         + " */\n");
         out.write("public final class ");
         out.write(classname);

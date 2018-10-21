@@ -92,7 +92,6 @@ import org.opengis.style.ExternalMark;
  * example).
  *
  * @author Jesse Eichar
- * @source $URL$
  */
 public class DuplicatingStyleVisitor implements StyleVisitor {
 

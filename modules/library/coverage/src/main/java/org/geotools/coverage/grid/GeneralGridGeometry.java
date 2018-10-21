@@ -70,7 +70,6 @@ import org.opengis.util.Cloneable;
  * #isDefined}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini, GeoSolutions SAS

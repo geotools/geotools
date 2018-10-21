@@ -54,7 +54,6 @@ import org.opengis.filter.Filter;
  *     pregeneralized geometries and returns these geometries instead of the original ones.
  *     <p>This process results in a lower memory usage, lower cpu usage for further processing and
  *     will decrease response time for the user.
- * @source $URL$
  */
 public class PreGeneralizedDataStore implements DataStore {
 

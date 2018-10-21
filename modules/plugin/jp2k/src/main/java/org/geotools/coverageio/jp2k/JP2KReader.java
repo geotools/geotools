@@ -91,7 +91,6 @@ import org.xml.sax.SAXException;
  *
  * @author Daniele Romagnoli, GeoSolutions.
  * @author Simone Giannecchini (simboss), GeoSolutions
- * @source $URL$
  */
 public final class JP2KReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
 

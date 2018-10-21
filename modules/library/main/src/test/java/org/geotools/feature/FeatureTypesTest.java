@@ -17,11 +17,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
-/**
- * Test FeatureTypes utility class abilities to inspect FeatureType data structure.
- *
- * @source $URL$
- */
+/** Test FeatureTypes utility class abilities to inspect FeatureType data structure. */
 public class FeatureTypesTest {
 
     @Test

@@ -24,7 +24,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.util.InternationalString;
 
-/** @source $URL$ */
 public class AssociationTypeImpl extends PropertyTypeImpl implements AssociationType {
 
     protected final AttributeType relatedType;

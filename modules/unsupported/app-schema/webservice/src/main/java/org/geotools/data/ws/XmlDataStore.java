@@ -28,14 +28,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * {@link DataStore} extension interface to provide WFS specific extra information.
  * 
  * @author rpetty
- * @version $Id$
  * @since 2.5.x
- *
- *
- *
- * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/app-schema/webservice/
- *         src/main/java/org/geotools /data/wfs/WFSDataStore.java $
  */
 public interface XmlDataStore extends DataStore {
 

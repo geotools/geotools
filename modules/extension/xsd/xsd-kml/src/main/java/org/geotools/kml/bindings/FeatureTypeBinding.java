@@ -75,7 +75,6 @@ import org.opengis.feature.type.Name;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FeatureTypeBinding extends AbstractComplexBinding {
     /** base feature type for kml features, used when no Schema element is specified */

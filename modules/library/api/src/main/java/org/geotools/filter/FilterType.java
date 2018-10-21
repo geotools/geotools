@@ -28,7 +28,6 @@ package org.geotools.filter;
  * </code></pre>
  *
  * @author aaime
- * @source $URL$
  */
 public interface FilterType {
     /* ***********************************************************************

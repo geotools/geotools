@@ -19,7 +19,6 @@ package org.geotools.data.shapefile.files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/** @source $URL$ */
 public class StreamLogging {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");

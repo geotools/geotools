@@ -36,7 +36,6 @@ import org.locationtech.jts.geom.Envelope;
  * <p>TODO: example of typical use...
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class QuadTree {
 

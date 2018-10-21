@@ -62,7 +62,6 @@ import org.w3c.dom.Node;
  * @since 3.0
  * @see {@link JGrassRegion}
  * @see {@link JGrassMapEnvironment}
- * @source $URL$
  */
 public final class GrassBinaryImageMetadata extends IIOMetadata {
 

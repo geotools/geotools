@@ -24,7 +24,6 @@ import java.util.EventListener;
  * The listener that's notified when a bounding box changes its area of interest.
  *
  * @author Andrea Aime
- * @source $URL$
  * @version $Id$
  * @see AreaOfInterestEvent
  */

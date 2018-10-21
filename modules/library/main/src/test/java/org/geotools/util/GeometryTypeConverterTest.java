@@ -22,7 +22,6 @@ import org.locationtech.jts.io.WKTReader;
  * Test suite for the GeometryTypeConverterFactory Converters.
  *
  * @author Mauro Bartolomeoli
- * @source $URL$
  */
 public class GeometryTypeConverterTest extends TestCase {
     Set<ConverterFactory> factories = null;

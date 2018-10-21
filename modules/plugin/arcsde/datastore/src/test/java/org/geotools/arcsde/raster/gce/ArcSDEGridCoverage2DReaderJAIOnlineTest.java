@@ -58,10 +58,7 @@ import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author groldan
- * @source $URL$
- */
+/** @author groldan */
 @SuppressWarnings({"deprecation", "nls"})
 @Ignore
 public class ArcSDEGridCoverage2DReaderJAIOnlineTest {

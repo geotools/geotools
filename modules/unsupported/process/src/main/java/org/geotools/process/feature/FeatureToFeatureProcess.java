@@ -36,7 +36,6 @@ import org.opengis.util.ProgressListener;
  * @see FeatureToFeatureProcessFactory
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6
- * @source $URL$
  */
 public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionProcess {
 

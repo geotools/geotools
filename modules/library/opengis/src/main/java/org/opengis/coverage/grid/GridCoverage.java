@@ -22,7 +22,6 @@ import org.opengis.coverage.Coverage;
  * Represent the basic implementation which provides access to grid coverage data. A {@code
  * GridCoverage} implementation may provide the ability to update grid values.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

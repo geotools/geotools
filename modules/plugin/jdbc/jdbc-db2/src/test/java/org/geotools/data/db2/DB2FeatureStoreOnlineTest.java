@@ -25,7 +25,6 @@ import org.geotools.jdbc.JDBCTestSetup;
  * FeatureStore test for MySQL.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class DB2FeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
     protected JDBCTestSetup createTestSetup() {

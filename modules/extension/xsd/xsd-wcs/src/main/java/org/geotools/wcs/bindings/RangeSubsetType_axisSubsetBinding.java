@@ -34,7 +34,6 @@ import org.geotools.xml.Node;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class RangeSubsetType_axisSubsetBinding extends AbstractComplexBinding {
 

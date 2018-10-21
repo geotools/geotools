@@ -44,7 +44,6 @@ import org.locationtech.jts.geom.GeometryFactory;
  * <p>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
 

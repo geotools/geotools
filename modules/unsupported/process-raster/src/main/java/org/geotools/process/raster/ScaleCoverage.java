@@ -31,7 +31,6 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @author Andrea Aime - GeoSolutions
  * @author ETj <etj at geo-solutions.it>
- * @source $URL$
  */
 @DescribeProcess(
     title = "Scale Coverage",

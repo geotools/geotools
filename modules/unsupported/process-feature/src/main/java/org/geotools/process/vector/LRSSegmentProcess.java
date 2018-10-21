@@ -42,11 +42,6 @@ import org.opengis.feature.type.AttributeDescriptor;
     title = "Extract Segment in LRS",
     description = "Extracts segment between a given start and end measure from LRS features"
 )
-/**
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java
- *     $
- */
 public class LRSSegmentProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSSegmentProcess.class);
 

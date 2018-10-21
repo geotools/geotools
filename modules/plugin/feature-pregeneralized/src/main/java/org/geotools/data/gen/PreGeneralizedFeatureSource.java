@@ -63,7 +63,6 @@ import org.opengis.filter.sort.SortBy;
  *     <p>Feature source for a feature type with pregeneralized geometries
  *     <p>This featue store does business as usual with the exception described here {@link
  *     PreGeneralizedDataStore}
- * @source $URL$
  */
 public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
 

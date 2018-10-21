@@ -118,7 +118,6 @@ import org.geotools.util.logging.Logging;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $URL$
  */
 public class JTextReporter {

@@ -49,10 +49,6 @@ import org.xml.sax.Attributes;
  *
  * @author Russell Petty (GeoScience Victoria)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/AppSchemaDataAccess.java $
  */
 public class XmlMappingFeatureIterator extends DataAccessMappingFeatureIterator {
 

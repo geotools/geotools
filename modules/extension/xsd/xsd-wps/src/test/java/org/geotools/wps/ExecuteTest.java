@@ -46,7 +46,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class ExecuteTest extends XMLTestSupport {
 
     public void testExecuteEncode() throws Exception {

@@ -43,8 +43,6 @@ import org.opengis.filter.sort.SortOrder;
  *
  * <p>This implementation is not suitable for working with large content as it makes use of memory
  * both when eastablishing an initial sort order, and subsequently to hold a list of FeatureId.
- *
- * @source $URL$
  */
 public class SubFeatureList extends SubFeatureCollection implements RandomFeatureAccess {
     /** Order by which content should be sorted */

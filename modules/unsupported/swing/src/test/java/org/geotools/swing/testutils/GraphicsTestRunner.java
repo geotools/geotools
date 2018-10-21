@@ -34,7 +34,6 @@ import org.junit.runner.notification.RunNotifier;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class GraphicsTestRunner extends JUnit4ClassRunner {

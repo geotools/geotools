@@ -42,7 +42,6 @@ import org.geotools.geometry.iso.topograph2D.NodeMap;
  * Geometries. Proper intersections (e.g. ones which occur between the interior of line segments)
  * have their topology determined implicitly, without creating a Node object to represent them.
  *
- * @source $URL$
  * @version 1.7.2
  */
 public class RelateNodeGraph {

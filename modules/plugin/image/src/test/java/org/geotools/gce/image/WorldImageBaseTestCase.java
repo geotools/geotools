@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public abstract class WorldImageBaseTestCase extends TestCase {
     public WorldImageBaseTestCase(String name) {
         super(name);

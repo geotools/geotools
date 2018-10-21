@@ -36,7 +36,6 @@ import org.opengis.referencing.operation.MathTransform;
  * The set of allowed instructions depends on the subclass used.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

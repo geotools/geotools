@@ -21,11 +21,7 @@ import java.util.Iterator;
 import javax.xml.namespace.NamespaceContext;
 import org.xml.sax.helpers.NamespaceSupport;
 
-/**
- * NamespaceContext wrapper around namespace support.
- *
- * @source $URL$
- */
+/** NamespaceContext wrapper around namespace support. */
 public class NamespaceSupportWrapper implements NamespaceContext {
     NamespaceSupport namespaceSupport;
 

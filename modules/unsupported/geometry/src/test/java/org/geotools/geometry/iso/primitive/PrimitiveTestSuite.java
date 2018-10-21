@@ -19,7 +19,6 @@ package org.geotools.geometry.iso.primitive;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/** @source $URL$ */
 public class PrimitiveTestSuite {
 
     public static Test suite() {

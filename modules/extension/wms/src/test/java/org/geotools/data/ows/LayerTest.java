@@ -5,11 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import org.junit.Test;
 
-/**
- * Simple API designed to keep the API stable.
- *
- * @source $URL$
- */
+/** Simple API designed to keep the API stable. */
 public class LayerTest {
     public static final HashMap<String, CRSEnvelope> BBOXES;
 

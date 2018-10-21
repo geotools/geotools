@@ -22,7 +22,6 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 
-/** @source $URL$ */
 public abstract class SLDTestSupport extends XMLTestSupport {
     StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 

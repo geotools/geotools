@@ -49,7 +49,6 @@ import org.opengis.geometry.Envelope;
  * here?
  *
  * @author Richard Gould, Refractions Research
- * @source $URL$
  */
 public interface GetMapRequest extends Request {
     /** Represents the ELEVATION parameter */

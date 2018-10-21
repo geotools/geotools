@@ -33,9 +33,6 @@ import org.opengis.feature.type.PropertyDescriptor;
  * Pointer to a single attribute of a feature type.
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/feature/xpath/FeatureTypeAttributePointer.java $
  */
 public class FeatureTypeAttributePointer extends NodePointer {
 

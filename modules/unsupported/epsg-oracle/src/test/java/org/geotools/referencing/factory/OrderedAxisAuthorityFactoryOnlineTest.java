@@ -40,7 +40,6 @@ import org.opengis.referencing.operation.Matrix;
 /**
  * Tests the usage of {@link OrderedAxisAuthorityFactory} with the help of the EPSG database.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett

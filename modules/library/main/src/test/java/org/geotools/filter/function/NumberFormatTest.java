@@ -9,7 +9,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-/** @source $URL$ */
 public class NumberFormatTest extends TestCase {
 
     public void testFormatDouble() {

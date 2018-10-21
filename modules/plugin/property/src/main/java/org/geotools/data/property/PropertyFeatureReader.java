@@ -73,7 +73,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody Garnett (LISAsoft)
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  * @version $Id
  * @since 8.0
  */

@@ -43,7 +43,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  * @author Andrea Di Nora - Sinergis
  * @author Pietro Arena - Sinergis
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(
     title = "Buffer",

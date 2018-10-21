@@ -42,7 +42,6 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public class PostgisGeographyOnlineTest extends JDBCGeographyOnlineTest {
 
     @Override

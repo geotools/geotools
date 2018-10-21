@@ -56,7 +56,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  * @author James Macgill

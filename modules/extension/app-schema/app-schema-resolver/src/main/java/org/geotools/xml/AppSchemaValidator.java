@@ -41,7 +41,6 @@ import org.xml.sax.ext.EntityResolver2;
  * A class to perform XML schema validation against schemas found using an {@link SchemaResolver} .
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class AppSchemaValidator {
 

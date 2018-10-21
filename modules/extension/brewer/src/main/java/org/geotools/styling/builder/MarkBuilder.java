@@ -19,7 +19,6 @@ package org.geotools.styling.builder;
 import org.geotools.styling.Mark;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class MarkBuilder extends AbstractStyleBuilder<Mark> {
     StrokeBuilder strokeBuilder = new StrokeBuilder(this).unset();
 

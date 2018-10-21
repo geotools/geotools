@@ -38,7 +38,6 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  * @version $Id$
  */
 public class PolygonHandler implements ShapeHandler {

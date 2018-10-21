@@ -21,7 +21,6 @@ import org.opengis.annotation.UML;
  * @author Bryce Nordgren (USDA)
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
- * @source $URL$
  */
 @UML(identifier = "NameSpace", specification = ISO_19103)
 public interface NameSpace {

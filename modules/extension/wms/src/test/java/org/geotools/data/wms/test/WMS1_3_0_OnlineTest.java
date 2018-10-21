@@ -33,10 +33,7 @@ import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.data.wms.response.GetFeatureInfoResponse;
 import org.xml.sax.SAXException;
 
-/**
- * @author rgould
- * @source $URL$
- */
+/** @author rgould */
 public class WMS1_3_0_OnlineTest extends WMS1_1_1_OnlineTest {
 
     private URL server2;

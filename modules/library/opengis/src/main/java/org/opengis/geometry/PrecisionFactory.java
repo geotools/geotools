@@ -42,7 +42,7 @@ package org.opengis.geometry;
  * @since GeoAPI 2.1
  *
  *
- * @source $URL$
+ *
  */
 public interface PrecisionFactory {
 

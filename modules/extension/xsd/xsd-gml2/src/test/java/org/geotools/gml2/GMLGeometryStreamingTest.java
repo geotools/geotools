@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class GMLGeometryStreamingTest extends TestCase {
     public void testStreamByXpath() throws Exception {
         Configuration configuration = new GMLConfiguration();

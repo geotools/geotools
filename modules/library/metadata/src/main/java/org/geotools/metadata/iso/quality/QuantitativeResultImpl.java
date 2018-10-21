@@ -30,7 +30,6 @@ import org.opengis.util.RecordType;
 /**
  * Information about the value (or set of values) obtained from applying a data quality measure.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

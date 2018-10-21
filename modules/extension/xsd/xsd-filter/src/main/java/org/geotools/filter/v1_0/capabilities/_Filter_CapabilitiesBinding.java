@@ -41,7 +41,6 @@ import org.opengis.filter.capability.SpatialCapabilities;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class _Filter_CapabilitiesBinding extends AbstractComplexBinding {
     FilterFactory factory;

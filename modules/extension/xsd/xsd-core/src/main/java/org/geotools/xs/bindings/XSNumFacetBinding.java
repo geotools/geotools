@@ -46,7 +46,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSNumFacetBinding extends AbstractComplexBinding {
     /** @generated modifiable */

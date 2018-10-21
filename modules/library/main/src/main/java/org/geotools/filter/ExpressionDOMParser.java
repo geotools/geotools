@@ -48,7 +48,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author iant
  * @author Niels Charlier
- * @source $URL$
  */
 public final class ExpressionDOMParser {
     /** The logger for the filter module. */

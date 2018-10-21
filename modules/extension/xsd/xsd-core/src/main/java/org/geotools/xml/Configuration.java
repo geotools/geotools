@@ -192,7 +192,6 @@ import org.picocontainer.defaults.DuplicateComponentKeyRegistrationException;
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
  * @see org.geotools.xml.BindingConfiguration
- * @source $URL$
  */
 public abstract class Configuration {
     /** XSD instance */

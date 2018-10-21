@@ -28,7 +28,6 @@ import org.opengis.referencing.datum.GeodeticDatum;
  * <p>No cache or buffer was harmed in the making of these tests.
  *
  * @author Jody
- * @source $URL$
  */
 public class FactoryUsingOracleSQLOnlineTest extends OracleOnlineTestCase {
 

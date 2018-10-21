@@ -78,9 +78,6 @@ import org.xml.sax.ext.LexicalHandler;
  * Test making requests by manually building up requests using the utility methods.
  *
  * @author GDavis
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools
- *     /data/wps/OnlineWPSManualRequestTest.java $
  */
 public class WPSManualRequestOnlineTest extends OnlineTestCase {
 

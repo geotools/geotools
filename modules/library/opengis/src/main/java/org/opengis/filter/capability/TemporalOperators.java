@@ -17,7 +17,6 @@ import java.util.Collection;
  * &lt;/xsd:simpleType>
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public interface TemporalOperators {
 

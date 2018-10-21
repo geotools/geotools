@@ -27,7 +27,6 @@ import org.xml.sax.SAXException;
  * element notifications and coordinates.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public interface GMLHandlerGeometry extends ContentHandler {

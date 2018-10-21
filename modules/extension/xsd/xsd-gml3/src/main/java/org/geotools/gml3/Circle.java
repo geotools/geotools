@@ -36,7 +36,6 @@ import org.locationtech.jts.geom.PrecisionModel;
  * <p>Date: Oct 15, 2007
  *
  * @author Tom Acree
- * @source $URL$
  */
 public class Circle {
 

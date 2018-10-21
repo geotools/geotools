@@ -13,7 +13,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class FeatureJSONExtendedTest extends GeoJSONTestSupport {
 
     FeatureJSON fjson = new FeatureJSON();

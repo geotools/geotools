@@ -76,10 +76,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-/**
- * @author jamesm
- * @source $URL$
- */
+/** @author jamesm */
 public class Rendering2DTest extends TestCase {
 
     /** The logger for the rendering module. */

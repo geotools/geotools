@@ -118,7 +118,6 @@ import org.xml.sax.SAXException;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @deprecated {@link PullParser} is meant as a better replacement.
- * @source $URL$
  */
 public class StreamingParser {
     /** The sax driver / handler. */

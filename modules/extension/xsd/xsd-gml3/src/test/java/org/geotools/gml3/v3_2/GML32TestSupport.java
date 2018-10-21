@@ -9,7 +9,6 @@ import org.geotools.xml.test.XMLTestSupport;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-/** @source $URL$ */
 public abstract class GML32TestSupport extends XMLTestSupport {
 
     static {

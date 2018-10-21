@@ -47,7 +47,6 @@ import org.opengis.referencing.operation.*;
  * Tests transformations from CRS and/or operations created from the EPSG factory, using the default
  * plugin.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Vadim Semenov

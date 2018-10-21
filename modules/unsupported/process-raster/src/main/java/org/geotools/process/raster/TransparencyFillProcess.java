@@ -36,7 +36,6 @@ import org.opengis.util.ProgressListener;
  * A transparency holes-dashes filling process
  *
  * @author Daniele Romagnoli - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(title = "TransparencyFill", description = "Fill transparent pixels")
 public class TransparencyFillProcess implements RasterProcess {

@@ -25,7 +25,6 @@ import org.geotools.xml.resolver.SchemaResolver;
  * catalog, on the classpath, or in a cache..
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class AppSchemaLocationResolver extends SchemaLocationResolver {
 

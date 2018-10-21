@@ -45,7 +45,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
  *     <p>Testing {@link RPFTOCReader}
- * @source $URL$
  */
 public final class RPFTOCTest extends GDALTestCase {
     /** file name of a valid RPFTOC sample data to be used for tests. */

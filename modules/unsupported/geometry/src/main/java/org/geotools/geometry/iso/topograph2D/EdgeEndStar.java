@@ -29,8 +29,6 @@ import org.geotools.geometry.iso.util.algorithm2D.SimplePointInAreaLocator;
 /**
  * A EdgeEndStar is an ordered list of EdgeEnds around a node. They are maintained in CCW order
  * (starting with the positive x-axis) around the node for efficient lookup and topology building.
- *
- * @source $URL$
  */
 public abstract class EdgeEndStar {
 

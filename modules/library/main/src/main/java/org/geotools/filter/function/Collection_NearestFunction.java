@@ -38,7 +38,6 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Jody Garnett
  * @since 12.0
- * @source $URL$
  */
 public class Collection_NearestFunction extends FunctionImpl {
 

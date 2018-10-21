@@ -57,7 +57,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.operation.MathTransform;
 
-/** @source $URL$ */
 public class ProjectionHandlerTest {
 
     static final double EPS = 1e-5;

@@ -58,7 +58,6 @@ import org.opengis.filter.capability.GeometryOperand;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GeometryOperandTypeBinding extends AbstractSimpleBinding {
     NamespaceContext namespaceContext;

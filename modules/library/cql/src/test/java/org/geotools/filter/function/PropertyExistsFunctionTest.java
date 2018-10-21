@@ -38,7 +38,6 @@ import org.opengis.metadata.citation.Citation;
  * @since 2.4
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id: PropertyExistsFunctionTest.java 24966 2007-03-30 11:33:47Z vmpazos $
- * @source $URL$
  */
 public class PropertyExistsFunctionTest {
     private static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

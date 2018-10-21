@@ -59,10 +59,6 @@ import org.opengis.util.Cloneable;
  * a coordinate reference system fixed to WGS 84 (EPSG:4326).
  *
  * @since 2.0
- * @source $URL$
- *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java
- *     /org/geotools/geometry/GeneralEnvelope.java $
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini
  * @see Envelope2D

@@ -37,7 +37,6 @@ import org.opengis.filter.identity.FeatureId;
  * from different schemas.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class CompositeFeatureCollection extends DataFeatureCollection {
     /** wrapped collecitons */

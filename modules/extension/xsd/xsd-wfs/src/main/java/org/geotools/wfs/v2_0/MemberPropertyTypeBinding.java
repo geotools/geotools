@@ -54,7 +54,6 @@ import org.opengis.feature.type.AttributeType;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MemberPropertyTypeBinding
         extends org.geotools.gml3.bindings.FeaturePropertyTypeBinding {

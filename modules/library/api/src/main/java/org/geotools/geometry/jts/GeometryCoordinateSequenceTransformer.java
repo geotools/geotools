@@ -46,7 +46,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Andrea Aime
  * @author Martin Davis
- * @source $URL$
  */
 public class GeometryCoordinateSequenceTransformer {
     private MathTransform transform = null;

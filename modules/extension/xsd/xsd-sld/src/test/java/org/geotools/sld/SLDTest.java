@@ -30,7 +30,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class SLDTest {
 
     @Test

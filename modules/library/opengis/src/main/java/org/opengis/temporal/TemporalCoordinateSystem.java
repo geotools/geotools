@@ -23,7 +23,6 @@ import org.opengis.util.InternationalString;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  * @todo Retrofit in {@link org.opengis.referencing.cs.TimeCS}.
- * @source $URL$
  */
 @UML(identifier = "TM_CoordinateSystem", specification = ISO_19108)
 public interface TemporalCoordinateSystem extends TemporalReferenceSystem {

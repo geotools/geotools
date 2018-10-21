@@ -23,7 +23,6 @@ import org.opengis.geometry.Geometry;
  * This class manages the toString() outputs for geometry objects
  *
  * @author sanjay
- * @source $URL$
  */
 public class GeometryToString {
 

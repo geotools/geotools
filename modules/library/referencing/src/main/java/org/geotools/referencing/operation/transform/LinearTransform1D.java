@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.TransformException;
  * used by {@link org.geotools.coverage.grid.GridCoverage2D}.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see LogarithmicTransform1D

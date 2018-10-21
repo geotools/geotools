@@ -33,7 +33,6 @@ import org.geotools.util.URLs;
  * @author aaime
  * @author simone giannecchini
  * @author mkraemer
- * @source $URL$
  */
 final class GT30Stats {
     /** Minimum value in the data file */

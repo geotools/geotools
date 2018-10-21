@@ -21,7 +21,6 @@ import org.opengis.filter.PropertyIsNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class OGCPropertyIsNullTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(PropertyIsNull.class, binding(OGC.PropertyIsNullType).getType());

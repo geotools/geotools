@@ -85,7 +85,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Michael Bedward
  * @author Ian Turton
- * @source $URL$
  */
 public class SwtMapPane extends Canvas
         implements Listener, MapLayerListListener, MapBoundsListener {

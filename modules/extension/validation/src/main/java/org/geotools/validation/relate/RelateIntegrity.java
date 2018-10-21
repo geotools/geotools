@@ -32,7 +32,6 @@ import org.opengis.filter.Filter;
  *
  * @author bowens<br>
  *     Created Apr 27, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p>Tests to see if a Geometry intersects with another Geometry. <b>Description:</b><br>

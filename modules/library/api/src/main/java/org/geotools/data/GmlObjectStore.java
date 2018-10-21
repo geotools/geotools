@@ -28,7 +28,6 @@ import org.opengis.filter.identity.GmlObjectId;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @since 2.5
- * @source $URL$
  */
 public interface GmlObjectStore {
 

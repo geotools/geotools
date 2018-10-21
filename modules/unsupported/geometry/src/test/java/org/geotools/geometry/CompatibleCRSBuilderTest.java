@@ -31,7 +31,6 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class CompatibleCRSBuilderTest extends TestCase {
 
     public void testCRSEquals() throws Exception {

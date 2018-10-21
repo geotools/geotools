@@ -45,7 +45,6 @@ import org.opengis.filter.expression.Expression;
  * <p>$Id$
  *
  * @author Ian Turton, CCG
- * @source $URL$
  */
 public interface LinePlacement extends org.opengis.style.LinePlacement, LabelPlacement {
     /** @deprecated */

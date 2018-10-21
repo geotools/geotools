@@ -56,7 +56,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * <p>This will create valid XML documents, given an object and a schema.
  *
  * @author dzwiers
- * @source $URL$
  */
 public class DocumentWriter {
     /** DOCUMENT ME! */

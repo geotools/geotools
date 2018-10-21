@@ -39,7 +39,6 @@ import org.opengis.feature.type.ComplexType;
  *
  * @author Justin Deoliveira (The Open Planning Project)
  * @author Gabriel Roldan (Axios Engineering)
- * @source $URL$
  */
 public class AttributeNodePointerFactory implements NodePointerFactory {
 

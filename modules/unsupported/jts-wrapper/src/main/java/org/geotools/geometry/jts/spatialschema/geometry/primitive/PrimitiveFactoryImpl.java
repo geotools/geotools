@@ -35,11 +35,7 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.geometry.primitive.SurfacePatch;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Factory that knows how to create instances of the 19107 primitives as implemented in LiteGO1.
- *
- * @source $URL$
- */
+/** Factory that knows how to create instances of the 19107 primitives as implemented in LiteGO1. */
 public class PrimitiveFactoryImpl implements PrimitiveFactory {
 
     // *************************************************************************

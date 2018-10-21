@@ -86,7 +86,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini
  * @author jeichar
  * @author mkraemer
- * @source $URL$
  */
 public final class GTopo30Writer extends AbstractGridCoverageWriter implements GridCoverageWriter {
 

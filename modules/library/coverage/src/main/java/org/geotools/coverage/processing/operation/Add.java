@@ -69,7 +69,6 @@ import org.opengis.util.InternationalString;
  * </table>
  *
  * @since 8.x
- * @source $URL$
  * @see org.geotools.coverage.processing.Operations#add(org.opengis.coverage.Coverage,
  *     org.opengis.coverage.Coverage)
  * @see Add

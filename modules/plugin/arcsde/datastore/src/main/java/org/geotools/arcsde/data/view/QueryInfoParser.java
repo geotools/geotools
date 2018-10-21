@@ -43,10 +43,6 @@ import org.geotools.arcsde.session.ISession;
  * process view definition of ArcSDE Java API.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/view/QueryInfoParser.java $
  * @since 2.3.x
  */
 @SuppressWarnings("unchecked")

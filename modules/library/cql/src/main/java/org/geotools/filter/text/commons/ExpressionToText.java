@@ -57,7 +57,6 @@ import org.opengis.temporal.Period;
  * should not use this feature.
  *
  * @author Mauricio Pazos
- * @source $URL$
  */
 public class ExpressionToText implements ExpressionVisitor {
 

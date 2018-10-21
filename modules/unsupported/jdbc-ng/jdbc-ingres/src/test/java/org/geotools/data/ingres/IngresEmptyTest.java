@@ -11,7 +11,7 @@ import org.geotools.jdbc.JDBCEmptyTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresEmptyTest extends JDBCEmptyTest {
 

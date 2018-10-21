@@ -25,7 +25,6 @@ import java.util.Arrays;
  * {@code ConstantTransform1D} class is faster.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

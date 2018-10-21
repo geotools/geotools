@@ -28,7 +28,6 @@ import org.opengis.filter.Filter;
  * Run through the provided collection only returning features that pass the provided filter.
  *
  * @author Ian Schneider
- * @source $URL$
  * @deprecated Please use {@link FilteringFeatureCollection}
  */
 public class FilteringIteration extends FeatureCollectionIteration {

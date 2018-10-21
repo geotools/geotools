@@ -23,7 +23,6 @@ import java.awt.image.renderable.ParameterBlock;
 import javax.media.jai.OperationDescriptorImpl;
 import javax.media.jai.registry.RenderedRegistryMode;
 
-/** @source $URL$ */
 public class ColorReductionDescriptor extends OperationDescriptorImpl {
 
     /** */

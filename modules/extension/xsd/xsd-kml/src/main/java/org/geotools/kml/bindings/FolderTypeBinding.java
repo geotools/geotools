@@ -49,7 +49,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FolderTypeBinding extends AbstractComplexBinding {
     public static final SimpleFeatureType FeatureType;

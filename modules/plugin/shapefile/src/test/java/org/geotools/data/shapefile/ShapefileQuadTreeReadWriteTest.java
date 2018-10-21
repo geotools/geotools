@@ -46,7 +46,6 @@ import org.opengis.filter.Id;
 import org.opengis.filter.identity.FeatureId;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

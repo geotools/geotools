@@ -50,7 +50,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSLocalComplexTypeBinding extends AbstractComplexBinding {
     /** @generated */

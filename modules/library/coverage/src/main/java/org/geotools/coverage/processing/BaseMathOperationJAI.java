@@ -44,7 +44,6 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @author Nicola Lagomarsini, GeoSolutions SAS
  * @since 14.x
- * @source $URL$
  */
 public abstract class BaseMathOperationJAI extends OperationJAI {
 

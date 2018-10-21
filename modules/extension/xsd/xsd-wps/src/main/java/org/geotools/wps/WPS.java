@@ -27,7 +27,6 @@ import org.geotools.xml.XSD;
  * http://www.opengis.net/wps/1.0.0 schema.
  *
  * @generated
- * @source $URL$
  */
 public final class WPS extends XSD {
 

@@ -87,7 +87,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * </ul>
  *
  * @author Jesse
- * @source $URL$
  */
 public class DuplicatingFilterVisitor implements FilterVisitor, ExpressionVisitor {
 

@@ -43,7 +43,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class GML3EncodingTest extends TestCase {
 
     @Override

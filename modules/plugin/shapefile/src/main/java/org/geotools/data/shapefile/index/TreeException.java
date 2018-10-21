@@ -22,7 +22,6 @@ import java.io.IOException;
  * DOCUMENT ME!
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class TreeException extends IOException {
 

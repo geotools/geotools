@@ -83,7 +83,6 @@ import org.opengis.filter.Filter;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DeleteElementTypeBinding extends AbstractComplexEMFBinding {
     WfsFactory wfsfactory;

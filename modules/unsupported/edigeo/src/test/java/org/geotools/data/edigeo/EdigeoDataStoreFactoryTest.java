@@ -29,7 +29,7 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-/** @source $URL$ */
+
 public class EdigeoDataStoreFactoryTest extends TestCase {
     private EdigeoDataStoreFactory dsFactory;
     private Map<String, Serializable> params;

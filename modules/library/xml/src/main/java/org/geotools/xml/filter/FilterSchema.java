@@ -73,7 +73,6 @@ import org.opengis.filter.FilterFactory2;
  * Schema for parsing filter content.
  *
  * @author dzwiers
- * @source $URL$
  */
 public class FilterSchema implements Schema {
     // hint key for FilterCapabilities

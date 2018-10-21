@@ -52,7 +52,6 @@ import org.locationtech.jts.geom.Polygon;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLPolygonPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */

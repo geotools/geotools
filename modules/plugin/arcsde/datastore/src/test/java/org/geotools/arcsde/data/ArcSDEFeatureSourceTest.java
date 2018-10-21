@@ -76,10 +76,6 @@ import org.opengis.filter.spatial.BBOX;
  * {@link ArcSdeFeatureSource} test cases
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/ArcSDEDataStoreTest.java $
- * @version $Id$
  */
 public class ArcSDEFeatureSourceTest {
     /** package logger */

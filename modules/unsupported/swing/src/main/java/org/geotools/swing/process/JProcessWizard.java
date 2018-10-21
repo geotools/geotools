@@ -39,7 +39,6 @@ import org.geotools.swing.wizard.*;
  *
  * @author Jody Garnett (LISAsoft)
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class JProcessWizard extends JWizard {

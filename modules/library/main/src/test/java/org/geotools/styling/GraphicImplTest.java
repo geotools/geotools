@@ -19,11 +19,7 @@ package org.geotools.styling;
 import java.net.URL;
 import junit.framework.TestCase;
 
-/**
- * This test case captures specific problems encountered with the GraphicImpl code.
- *
- * @source $URL$
- */
+/** This test case captures specific problems encountered with the GraphicImpl code. */
 public class GraphicImplTest extends TestCase {
 
     /** Checks if creating a Graphic with an ExternalGraphics works. */

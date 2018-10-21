@@ -48,7 +48,6 @@ import org.opengis.filter.expression.Expression;
  * RasterSymbolizer options.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public class RasterSymbolizerHelper extends SubchainStyleVisitorCoverageProcessingAdapter
         implements StyleVisitor {

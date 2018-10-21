@@ -28,7 +28,6 @@ import org.opengis.geometry.complex.CompositeCurve;
  * this is where one of the interior rings of a surface is tangent to its exterior ring.
  * Implementations may enforce stronger restrictions on the interaction of boundary elements.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

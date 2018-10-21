@@ -22,7 +22,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 
-/** @source $URL$ */
 public class PropertyNameBuilder implements Builder<PropertyName> {
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     String xpath = null; // will result in Expression.NIL

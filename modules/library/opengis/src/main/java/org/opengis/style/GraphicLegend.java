@@ -16,7 +16,6 @@ import org.opengis.annotation.XmlElement;
  * The LegendGraphic element allow an optional explicit graphic symbolizer to do displayed in a
  * legend for the rule.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

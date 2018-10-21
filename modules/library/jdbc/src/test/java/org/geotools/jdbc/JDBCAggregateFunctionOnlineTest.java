@@ -44,7 +44,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 
-/** @source $URL$ */
 public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
     boolean visited = false;

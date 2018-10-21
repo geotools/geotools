@@ -29,7 +29,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class CodeListTypeBinding extends AbstractComplexBinding {
 

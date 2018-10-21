@@ -52,7 +52,6 @@ import org.geotools.util.logging.Logging;
  *
  * @author Michael Bedward
  * @since 2.6.1
- * @source $URL$
  * @version $Id$
  */
 public class JFileImageChooser extends JFileChooser {

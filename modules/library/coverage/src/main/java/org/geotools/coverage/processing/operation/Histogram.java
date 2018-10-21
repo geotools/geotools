@@ -66,7 +66,6 @@ import org.opengis.util.InternationalString;
  * @author Simone Giannecchini
  * @since 2.4
  * @see javax.media.jai.Histogram
- * @source $URL$
  */
 public class Histogram extends BaseStatisticsOperationJAI {
 

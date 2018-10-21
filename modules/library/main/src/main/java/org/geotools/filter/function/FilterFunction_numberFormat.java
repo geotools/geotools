@@ -34,7 +34,6 @@ import org.opengis.filter.expression.Expression;
  * {@link DecimalFormat}}
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class FilterFunction_numberFormat extends FunctionExpressionImpl {
     static final Logger LOGGER = Logging.getLogger(FilterFunction_numberFormat.class);

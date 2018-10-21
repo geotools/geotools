@@ -34,7 +34,6 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
  * {@link RenderedMarks}. It is designed for reuse with many different affine transforms and shapes.
  * This class is <strong>not</strong> thread-safe.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

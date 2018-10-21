@@ -22,7 +22,6 @@ import org.geotools.graph.structure.Graphable;
  * Iterated over the components of a graph using a standard visitor pattern.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface GraphWalker {
 

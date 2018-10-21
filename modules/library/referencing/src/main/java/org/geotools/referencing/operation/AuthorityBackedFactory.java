@@ -70,7 +70,6 @@ import org.opengis.referencing.operation.SingleOperation;
  * super-class is used as a fallback.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

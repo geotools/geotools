@@ -49,7 +49,6 @@ import si.uom.SI;
  * Unit test for RescaleStyleVisitor.
  *
  * @author Jody Garnett (Refractions Research Inc)
- * @source $URL$
  */
 public class RescaleStyleVisitorTest {
     StyleBuilder sb;

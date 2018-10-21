@@ -36,7 +36,6 @@ import org.opengis.feature.type.Name;
  * @author Jody Garnett
  * @author Justin Deoliveira
  * @since 2.5
- * @source $URL$
  */
 public class Descriptors {
     private static final Logger LOGGER =

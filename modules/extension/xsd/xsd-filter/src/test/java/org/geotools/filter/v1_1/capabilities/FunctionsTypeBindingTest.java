@@ -40,7 +40,6 @@ import org.w3c.dom.Element;
  *   </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FunctionsTypeBindingTest extends OGCTestSupport {
     public void testType() {

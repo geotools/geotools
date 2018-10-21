@@ -28,7 +28,6 @@ import org.opengis.feature.type.PropertyDescriptor;
  *
  * @author Justin Deoliveira (The Open Planning Project)
  * @author Gabriel Roldan (Axios Engineering)
- * @source $URL$
  */
 public class DescriptorXmlAttributeNodeIterator implements NodeIterator {
 

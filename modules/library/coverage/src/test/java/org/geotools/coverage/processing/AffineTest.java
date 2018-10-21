@@ -37,7 +37,6 @@ import org.opengis.parameter.ParameterValueGroup;
 /**
  * Tests the scale operation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @since 12.0

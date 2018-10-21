@@ -35,10 +35,6 @@ import org.geotools.arcsde.logging.Loggers;
  * Wrapper for an SeRow so it allows asking multiple times for the same property.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/SdeRow.java $
  * @since 2.4.0
  */
 public class SdeRow {

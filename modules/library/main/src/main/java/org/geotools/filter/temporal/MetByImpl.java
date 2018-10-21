@@ -22,7 +22,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.MetBy;
 import org.opengis.temporal.RelativePosition;
 
-/** @source $URL$ */
 public class MetByImpl extends BinaryTemporalOperatorImpl implements MetBy {
 
     public MetByImpl(Expression e1, Expression e2) {

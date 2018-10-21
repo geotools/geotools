@@ -36,7 +36,6 @@ import org.xml.sax.SAXException;
  * {@link Document}. If not use one of {@link Parser} or {@link Parser}.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class DOMParser {
     Configuration configuration;

@@ -38,7 +38,6 @@ import org.opengis.filter.capability.FunctionName;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Function_NamesTypeBinding extends AbstractComplexBinding {
     /** @generated */

@@ -40,7 +40,6 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
- * @source $URL$
  */
 public class AreaFunctionTest extends TestCase {
 

@@ -28,7 +28,6 @@ import org.xml.sax.SAXException;
  * filter.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public class GMLFilterGeometry extends org.xml.sax.helpers.XMLFilterImpl

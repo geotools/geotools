@@ -36,7 +36,6 @@ import org.opengis.util.ProgressListener;
  * Implementation of a coverage source for netcdf data
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 @SuppressWarnings("rawtypes")
 public class NetCDFSource extends DefaultCoverageSource {

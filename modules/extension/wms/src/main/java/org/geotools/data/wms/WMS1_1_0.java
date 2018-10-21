@@ -30,10 +30,7 @@ import org.geotools.data.wms.response.DescribeLayerResponse;
 import org.geotools.data.wms.response.GetLegendGraphicResponse;
 import org.geotools.ows.ServiceException;
 
-/**
- * @author Richard Gould
- * @source $URL$
- */
+/** @author Richard Gould */
 public class WMS1_1_0 extends WMS1_0_0 {
 
     public WMS1_1_0() {}

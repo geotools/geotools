@@ -74,8 +74,6 @@ import org.opengis.style.GraphicalSymbol;
  * symbolizer whose width is specified with a literal expression.<br>
  * Also provides an indication whether the stroke width is accurate, or if a non literal width has
  * been found.
- *
- * @source $URL$
  */
 public class MetaBufferEstimator extends FilterAttributeExtractor implements StyleVisitor {
     /** The logger for the rendering module. */

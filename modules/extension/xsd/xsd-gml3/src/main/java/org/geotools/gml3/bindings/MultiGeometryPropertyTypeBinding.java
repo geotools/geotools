@@ -46,7 +46,6 @@ import org.locationtech.jts.geom.GeometryCollection;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MultiGeometryPropertyTypeBinding extends AbstractComplexBinding {
 

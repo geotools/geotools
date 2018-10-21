@@ -36,7 +36,6 @@ import org.geotools.util.Converters;
  * </ul>
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public abstract class AbstractComplexEMFBinding extends AbstractComplexBinding {
     /** Factory used to create model objects */

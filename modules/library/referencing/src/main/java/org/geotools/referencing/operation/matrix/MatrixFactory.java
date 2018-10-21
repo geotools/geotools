@@ -25,7 +25,6 @@ import org.opengis.referencing.operation.Matrix;
  * be more efficient to invoke directly the constructor of the appropriate class instead.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

@@ -64,7 +64,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * invalid uri's in schema imports and includes.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class Parser {
     private static final String LEXICAL_HANDLER_PROPERTY = "lexical-handler";

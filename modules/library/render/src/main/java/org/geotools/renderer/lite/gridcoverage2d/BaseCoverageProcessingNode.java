@@ -47,7 +47,6 @@ import org.opengis.util.InternationalString;
  * not be touched.
  *
  * @author Simone Giannecchini, GeoSolutions.
- * @source $URL$
  */
 public abstract class BaseCoverageProcessingNode implements CoverageProcessingNode {
 

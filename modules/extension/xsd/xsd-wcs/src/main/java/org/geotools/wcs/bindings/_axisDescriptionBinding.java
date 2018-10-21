@@ -21,7 +21,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class _axisDescriptionBinding extends AbstractComplexBinding {
 

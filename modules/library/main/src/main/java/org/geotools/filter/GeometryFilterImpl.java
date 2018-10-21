@@ -42,7 +42,6 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
  * approach is very similar to that taken in the FilterCompare class.
  *
  * @author Rob Hranac, TOPP
- * @source $URL$
  * @version $Id$
  * @task REVISIT: make this class (and all filters) immutable, implement cloneable and return new
  *     filters when calling addLeftGeometry and addRightG Issues to think through: would be cleaner

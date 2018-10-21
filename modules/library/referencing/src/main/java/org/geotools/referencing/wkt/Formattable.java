@@ -33,7 +33,6 @@ import org.opengis.parameter.GeneralParameterValue;
  * Known Text</cite> (WKT)</A>.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see <A

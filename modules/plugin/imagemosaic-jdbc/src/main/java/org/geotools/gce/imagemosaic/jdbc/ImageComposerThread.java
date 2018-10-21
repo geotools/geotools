@@ -37,7 +37,6 @@ import org.geotools.util.logging.Logging;
  * This class reads decoded tiles from the queue and performs the mosaicing and scaling
  *
  * @author mcr
- * @source $URL$
  */
 public class ImageComposerThread extends AbstractThread {
     /** Logger. */

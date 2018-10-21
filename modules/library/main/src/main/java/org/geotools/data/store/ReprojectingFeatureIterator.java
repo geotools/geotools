@@ -34,7 +34,6 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
-/** @source $URL$ */
 public class ReprojectingFeatureIterator implements SimpleFeatureIterator {
 
     /** decorated iterator */

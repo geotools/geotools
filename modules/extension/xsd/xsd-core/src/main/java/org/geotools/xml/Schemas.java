@@ -94,7 +94,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * Utility class for performing various operations.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class Schemas {
     private static final Logger LOGGER =

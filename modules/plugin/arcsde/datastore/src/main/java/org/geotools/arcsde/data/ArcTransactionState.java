@@ -40,10 +40,6 @@ import org.geotools.util.logging.Logging;
  *
  * @author Jake Fear
  * @author Gabriel Roldan
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcTransactionState.java $
- * @version $Id$
  */
 final class ArcTransactionState implements Transaction.State {
     private static final Logger LOGGER = Logging.getLogger(ArcTransactionState.class.getName());

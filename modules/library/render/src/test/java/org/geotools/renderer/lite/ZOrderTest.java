@@ -43,8 +43,6 @@ import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Z-order rendering test making use of FeatureTypeStyle sortBy to refine query used for styling.
- *
- * @source $URL$
  */
 public class ZOrderTest {
     private static final long TIME = 40000;

@@ -40,7 +40,6 @@ package org.geotools.styling;
  * </code></pre>
  *
  * @author James Macgill
- * @source $URL$
  */
 public interface NamedStyle extends Style {
 

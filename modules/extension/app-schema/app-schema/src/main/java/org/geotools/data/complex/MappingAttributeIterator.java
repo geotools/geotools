@@ -34,11 +34,6 @@ import org.opengis.feature.type.Name;
  * directly in another feature type.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/MappingAttributeIterator.java $
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/MappingAttributeIterator.java $
  * @since 2.7
  */
 public class MappingAttributeIterator extends DataAccessMappingFeatureIterator {

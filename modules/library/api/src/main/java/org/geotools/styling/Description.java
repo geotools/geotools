@@ -2,7 +2,6 @@ package org.geotools.styling;
 
 import org.opengis.util.InternationalString;
 
-/** @source $URL$ */
 public interface Description extends org.opengis.style.Description {
 
     /**

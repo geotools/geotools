@@ -41,7 +41,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class WCSCapabilityType_RequestBinding extends AbstractComplexBinding {
 

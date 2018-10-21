@@ -20,10 +20,7 @@ import java.util.logging.Logger;
 import org.geotools.graph.structure.basic.BasicEdge;
 import org.geotools.graph.structure.line.XYNode;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class DelaunayEdge extends BasicEdge {
 
     private static final Logger LOGGER =

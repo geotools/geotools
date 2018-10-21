@@ -26,8 +26,6 @@ import org.geotools.geometry.iso.topograph2D.Envelope;
  * <p>A spatial index typically provides a primary filter for range rectangle queries. A secondary
  * filter is required to test for exact intersection. The secondary filter may consist of other
  * kinds of tests, such as testing other spatial relationships.
- *
- * @source $URL$
  */
 public interface SpatialIndex {
     /** Adds a spatial item with an extent specified by the given {@link Envelope} to the index */

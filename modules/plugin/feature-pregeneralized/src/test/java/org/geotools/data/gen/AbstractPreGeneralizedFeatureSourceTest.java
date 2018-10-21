@@ -53,7 +53,6 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 import org.xml.sax.helpers.NamespaceSupport;
 
-/** @source $URL$ */
 public abstract class AbstractPreGeneralizedFeatureSourceTest extends TestCase {
 
     static Map<String, PreGeneralizedDataStore> DSMap =

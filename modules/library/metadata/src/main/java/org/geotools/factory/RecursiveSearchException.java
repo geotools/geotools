@@ -32,7 +32,6 @@ import org.geotools.resources.i18n.Errors;
  * constuctor, when a method first need it.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

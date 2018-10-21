@@ -26,7 +26,6 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * every JTS geometry that it gets to the standard output.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public class TestHandler extends XMLFilterImpl implements GMLHandlerJTS {

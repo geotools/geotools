@@ -25,7 +25,6 @@ import org.opengis.metadata.extent.GeographicExtent;
 /**
  * Base class for geographic area of the dataset.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

@@ -38,7 +38,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class KMLParsingTest extends TestCase {
 
     public void testParse() throws Exception {

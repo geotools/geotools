@@ -20,7 +20,6 @@ package org.geotools.data.shapefile.index;
  * DOCUMENT ME!
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class LockTimeoutException extends Exception {
     /** */

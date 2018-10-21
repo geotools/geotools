@@ -29,10 +29,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.filter.FilterFactory2;
 
-/**
- * @author David Blasby (The Open Planning Project)
- * @source $URL$
- */
+/** @author David Blasby (The Open Planning Project) */
 public class StaticGeometry {
 
     // Lazily created filter factory for updated numerical operations

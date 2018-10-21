@@ -58,7 +58,6 @@ import tec.uom.se.AbstractUnit;
  * system}. Conversely, these names shall not be used in any other context.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see AbstractCS

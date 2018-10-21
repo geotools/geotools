@@ -72,7 +72,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * @see <A
  *     HREF="http://www.remotesensing.org/geotiff/proj_list/lambert_conic_conformal_2sp_belgium.html">lambert_conic_conformal_2sp_belgium</A>
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author André Gosselin
  * @author Martin Desruisseaux (PMO, IRD)

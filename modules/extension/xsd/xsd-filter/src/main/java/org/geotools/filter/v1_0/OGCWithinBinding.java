@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.Within;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCWithinBinding extends AbstractComplexBinding {
     FilterFactory2 filterFactory;

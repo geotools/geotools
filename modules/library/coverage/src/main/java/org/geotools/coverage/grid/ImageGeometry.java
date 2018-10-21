@@ -33,7 +33,6 @@ import org.opengis.util.Cloneable;
  * sometime used with plain {@linkplain java.awt.image.RenderedImage rendered image} instances.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @see GridGeometry2D

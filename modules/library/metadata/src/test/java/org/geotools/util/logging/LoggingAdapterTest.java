@@ -25,7 +25,6 @@ import org.junit.*;
  * Tests the {@link LoggingAdapter} class.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

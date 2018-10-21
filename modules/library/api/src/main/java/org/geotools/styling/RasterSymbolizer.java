@@ -119,7 +119,6 @@ import org.opengis.style.OverlapBehavior;
  * $Id$
  *
  * @author Ian Turton, CCG
- * @source $URL$
  */
 public interface RasterSymbolizer extends org.opengis.style.RasterSymbolizer, Symbolizer {
     /**

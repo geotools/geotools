@@ -48,7 +48,6 @@ import org.opengis.referencing.operation.Matrix;
  * EPSG plugin should fit. However, this test live in the {@code plugin/epsg-hsql} module since the
  * HSQL plugin is the only one which is garantee to work on any machine running Maven.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett

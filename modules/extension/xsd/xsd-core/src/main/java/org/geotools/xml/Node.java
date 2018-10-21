@@ -24,7 +24,6 @@ import java.util.List;
  * to the instance.
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
- * @source $URL$
  */
 public interface Node {
     /** @return The component instance. */

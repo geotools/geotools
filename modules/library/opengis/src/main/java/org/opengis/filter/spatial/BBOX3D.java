@@ -23,7 +23,6 @@ import org.opengis.geometry.BoundingBox3D;
  * implementation may choose to throw an exception if one attempts to test features that are in a
  * different SRS than the SRS contained here.
  *
- * @source $URL$
  * @author Niels Charlier
  * @since GeoAPI 2.0
  */

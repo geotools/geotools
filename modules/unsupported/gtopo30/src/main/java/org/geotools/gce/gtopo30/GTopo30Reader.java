@@ -93,7 +93,6 @@ import si.uom.SI;
  * @author Simone Giannecchini
  * @author jeichar
  * @author mkraemer
- * @source $URL$
  */
 public final class GTopo30Reader extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {

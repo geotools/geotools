@@ -24,7 +24,6 @@ import org.geotools.xml.XSD;
  * schema.
  *
  * @generated
- * @source $URL$
  */
 public class ML extends XSD {
     /** singleton instance */

@@ -27,10 +27,7 @@ import org.junit.Test;
 import org.opengis.temporal.ClockTime;
 import org.opengis.temporal.TemporalReferenceSystem;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultClockTimeTest {
 
     private ClockTime clockTime1;

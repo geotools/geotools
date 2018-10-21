@@ -96,7 +96,6 @@ import org.opengis.filter.expression.Literal;
  * @author jeichar
  * @author dblasby
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class LabelCacheImpl implements LabelCache {
 

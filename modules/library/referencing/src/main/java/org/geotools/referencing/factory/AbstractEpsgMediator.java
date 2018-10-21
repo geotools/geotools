@@ -41,7 +41,6 @@ import org.opengis.util.InternationalString;
  * <p>DataSource docs needed:
  *
  * @author Cory Horner (Refractions Research)
- * @source $URL$
  */
 public abstract class AbstractEpsgMediator extends AbstractAuthorityMediator {
 

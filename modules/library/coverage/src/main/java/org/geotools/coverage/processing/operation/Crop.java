@@ -123,7 +123,6 @@ import org.opengis.referencing.operation.TransformException;
  * will be added as a synthetic property to the resulting coverage. The key for this property will
  * be GC_ROI and the type of the object {@link Polygon}.
  *
- * @source $URL$
  * @todo make this operation more t,z friendly
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)

@@ -17,7 +17,6 @@ import org.opengis.annotation.UML;
 /**
  * Axis properties.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @author Cory Horner (Refractions Research)

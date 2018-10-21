@@ -29,7 +29,6 @@ import org.opengis.filter.expression.Expression;
  * is enforced by the FilterAbstract class, which considers a BETWEEN operator to be a math filter.
  *
  * @author Rob Hranac, TOPP
- * @source $URL$
  * @version $Id$
  * @task REVISIT: I think AbstractFilter right now does not consider between a math filter. ch
  * @deprecated use {@link org.geotools.filter.IsBetweenImpl}

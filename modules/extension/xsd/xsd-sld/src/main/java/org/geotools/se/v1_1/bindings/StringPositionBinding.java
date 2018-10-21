@@ -60,7 +60,6 @@ import org.opengis.filter.expression.Literal;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class StringPositionBinding extends AbstractComplexBinding {
     FilterFactory filterFactory;

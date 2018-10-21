@@ -27,7 +27,6 @@ import org.opengis.feature.type.Schema;
  * http://www.w3.org/2001/XMLSchema schema.
  *
  * @generated
- * @source $URL$
  */
 public final class XS extends XSD {
 

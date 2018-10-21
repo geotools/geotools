@@ -11,7 +11,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBinding {
 
     private XSDIdRegistry idSet;

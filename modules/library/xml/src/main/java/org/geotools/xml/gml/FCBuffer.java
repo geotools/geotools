@@ -35,7 +35,6 @@ import org.xml.sax.SAXException;
  * a seperate thread prior starting execution with the SAX Parser.
  *
  * @author dzwiers
- * @source $URL$
  */
 public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     /** Last feature is in the buffer */

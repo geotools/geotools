@@ -70,9 +70,6 @@ import org.opengis.filter.spatial.Within;
  * provided here; mirroring the java SDE api approach
  *
  * @author Gabriel Rold?n
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/filter/GeometryEncoderSDE.java $
  */
 @SuppressWarnings("deprecation")
 public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVisitor {

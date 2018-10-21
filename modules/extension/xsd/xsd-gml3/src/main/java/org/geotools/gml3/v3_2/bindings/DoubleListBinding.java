@@ -37,7 +37,6 @@ import org.geotools.gml3.v3_2.GML;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DoubleListBinding extends org.geotools.gml3.bindings.DoubleListBinding {
     public QName getTarget() {

@@ -31,7 +31,6 @@ import org.opengis.filter.Filter;
  * <p>This FeatureWriter does not support the addition of new content.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class FilteringFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
     FeatureWriter<SimpleFeatureType, SimpleFeature> writer;

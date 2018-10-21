@@ -60,7 +60,6 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
- * @source $URL$
  */
 public class GranuleTest extends Assert {
 

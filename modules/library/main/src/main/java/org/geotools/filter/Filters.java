@@ -117,7 +117,6 @@ import org.opengis.filter.spatial.Within;
  * @author Jody Garnett (LISAsoft)
  * @since GeoTools 2.2
  * @version 8.0
- * @source $URL$
  */
 public class Filters {
     /** <code>NOTFOUND</code> indicates int value was unavailable */

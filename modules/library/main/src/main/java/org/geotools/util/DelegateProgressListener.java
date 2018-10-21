@@ -18,11 +18,7 @@ package org.geotools.util;
 
 import org.opengis.util.InternationalString;
 
-/**
- * Base class for progress listeners that delegate to other progress listeners
- *
- * @source $URL$
- */
+/** Base class for progress listeners that delegate to other progress listeners */
 public class DelegateProgressListener implements org.opengis.util.ProgressListener {
     protected org.opengis.util.ProgressListener delegate;
     private InternationalString task;

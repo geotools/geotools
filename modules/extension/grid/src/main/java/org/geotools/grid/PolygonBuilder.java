@@ -32,7 +32,6 @@ import org.locationtech.jts.geom.Envelope;
  * @see org.geotools.grid.oblong.OblongGridBuilder
  * @author mbedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public abstract class PolygonBuilder {

@@ -40,7 +40,6 @@ import org.locationtech.jts.geom.LinearRing;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class BoundaryTypeBinding extends AbstractComplexBinding {
     /** @generated */

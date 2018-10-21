@@ -27,11 +27,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Test streaming renderer handling of 3D data (that must be transformed via WGS84).
- *
- * @source $URL$
- */
+/** Test streaming renderer handling of 3D data (that must be transformed via WGS84). */
 public class GeographicTransformPointTest extends TestCase {
 
     private static final long TIME = 4000;

@@ -34,7 +34,6 @@ import org.opengis.filter.expression.ExpressionVisitor;
  * @author Ian Turton
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
- * @source $URL$
  */
 public interface StyleVisitor {
     /**

@@ -66,8 +66,7 @@ import org.opengis.filter.identity.Identifier;
  * @author Saul Farber
  * @author Gabriel Roldan
  * @see org.geotools.data.sde.GeometryEncoderSDE
- * @source $URL$
- *     http://gtsvn.refractions.net/geotools/branches/2.4.x/modules/unsupported/arcsde/datastore
+ *     <p>http://gtsvn.refractions.net/geotools/branches/2.4.x/modules/unsupported/arcsde/datastore
  *     /src/main/java/org/geotools/arcsde/filter/FilterToSQLSDE.java $
  */
 @SuppressWarnings("deprecation")

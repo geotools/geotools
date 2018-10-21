@@ -22,10 +22,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.junit.Test;
 
-/**
- * @author Simone Giannecchini,GeoSolutions
- * @source $URL$
- */
+/** @author Simone Giannecchini,GeoSolutions */
 public class ImageMosaicServiceTest {
     @Test
     public void isAvailable() {

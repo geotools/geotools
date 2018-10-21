@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.TransformException;
  *   <li>{@link DefaultEllipsoid}
  * </ul>
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

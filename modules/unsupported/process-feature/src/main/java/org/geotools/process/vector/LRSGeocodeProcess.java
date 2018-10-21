@@ -44,11 +44,6 @@ import org.opengis.feature.type.PropertyDescriptor;
     title = "Geocode point in LRS",
     description = "Extracts points at a given measure from LRS features"
 )
-/**
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java
- *     $
- */
 public class LRSGeocodeProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSGeocodeProcess.class);
 

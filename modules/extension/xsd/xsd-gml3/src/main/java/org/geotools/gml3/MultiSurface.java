@@ -20,7 +20,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class MultiSurface extends MultiPolygon {
     public MultiSurface(Polygon[] polygons, GeometryFactory factory) {
         super(polygons, factory);

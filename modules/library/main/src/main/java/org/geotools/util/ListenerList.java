@@ -34,8 +34,6 @@ package org.geotools.util;
  *    ((FooListener) listeners[i]).eventHappened(event);
  * }
  * </pre>
- *
- * @source $URL$
  */
 public class ListenerList {
     /** The initial capacity of the list. Always >= 1. */

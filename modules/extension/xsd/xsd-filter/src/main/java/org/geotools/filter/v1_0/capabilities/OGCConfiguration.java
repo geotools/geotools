@@ -25,7 +25,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/ogc schema.
  *
  * @generated
- * @source $URL$
  */
 public class OGCConfiguration extends Configuration {
     /**

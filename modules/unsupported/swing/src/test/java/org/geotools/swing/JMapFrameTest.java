@@ -51,7 +51,6 @@ import org.junit.runner.RunWith;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $URL$
  */
 @RunWith(GraphicsTestRunner.class)

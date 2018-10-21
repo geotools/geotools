@@ -45,7 +45,6 @@ import org.opengis.geometry.BoundingBox;
  * <p>This is used to simulate the functionality of a database including transaction independence.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class Diff {
     /** Map of modified features; by feature id */

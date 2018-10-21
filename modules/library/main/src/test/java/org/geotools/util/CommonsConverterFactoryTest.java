@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.TimeZone;
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class CommonsConverterFactoryTest extends TestCase {
 
     CommonsConverterFactory factory;

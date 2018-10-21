@@ -43,7 +43,6 @@ import tec.uom.se.unit.MetricPrefix;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

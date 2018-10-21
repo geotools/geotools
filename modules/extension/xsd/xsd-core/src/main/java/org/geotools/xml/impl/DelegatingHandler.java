@@ -28,7 +28,6 @@ import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class DelegatingHandler implements DocumentHandler, ElementHandler {
 
     ParserDelegate delegate;

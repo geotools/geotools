@@ -29,7 +29,6 @@ package org.geotools.nature;
  *   <li>Pressure: decibars (1 dbar = 10 kPa).
  * </ul>
  *
- * @source $URL$
  * @version $Id$
  * @author Bernard Pelchat
  * @author Martin Desruisseaux (PMO, IRD)

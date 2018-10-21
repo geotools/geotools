@@ -18,7 +18,6 @@ package org.geotools.data.h2;
 
 import org.geotools.jdbc.JDBCDistanceFiltersTest;
 
-/** @source $URL$ */
 public class H2DistanceFiltersTest extends JDBCDistanceFiltersTest {
 
     @Override

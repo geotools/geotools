@@ -38,7 +38,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * MySQL database dialect based on prepared statements.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
 

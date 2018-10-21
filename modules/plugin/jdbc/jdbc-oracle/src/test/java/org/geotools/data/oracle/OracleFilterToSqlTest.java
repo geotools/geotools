@@ -28,7 +28,6 @@ import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 
-/** @source $URL$ */
 public class OracleFilterToSqlTest extends TestCase {
 
     OracleFilterToSQL encoder;

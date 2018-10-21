@@ -33,7 +33,7 @@ import org.junit.Before;
 
 /**
  * @author Ian Schneider
- * @source $URL$
+
  */
 public class CouchDBTestSupport {
     protected CouchDBClient client;

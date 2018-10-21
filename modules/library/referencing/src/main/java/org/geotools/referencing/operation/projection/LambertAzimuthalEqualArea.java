@@ -52,7 +52,6 @@ import org.opengis.referencing.operation.MathTransform;
  *     on RemoteSensing.org</A>
  * @since 2.4
  * @version $Id$
- * @source $URL$
  * @author Gerald Evenden (for original code in Proj4)
  * @author Beate Stollberg
  * @author Martin Desruisseaux

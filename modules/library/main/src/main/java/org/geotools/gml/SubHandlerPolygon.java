@@ -33,7 +33,6 @@ import org.locationtech.jts.geom.TopologyException;
  *
  * @author Ian Turton, CCG
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public class SubHandlerPolygon extends SubHandler {

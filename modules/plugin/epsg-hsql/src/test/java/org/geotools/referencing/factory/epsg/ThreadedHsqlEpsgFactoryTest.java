@@ -47,7 +47,6 @@ import org.opengis.referencing.operation.MathTransform;
  * This class makes sure we can find the ThreadedHsqlEpsgFactory using ReferencingFactoryFinder.
  *
  * @author Jody
- * @source $URL$
  */
 public class ThreadedHsqlEpsgFactoryTest {
 

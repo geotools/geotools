@@ -31,7 +31,6 @@ import org.geotools.xml.impl.InstanceBinding;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @see Configuration#registerBindings(java.util.Map)
- * @source $URL$
  */
 public class ComplexEMFBinding extends AbstractComplexEMFBinding implements InstanceBinding {
 

@@ -45,7 +45,6 @@ import org.opengis.filter.expression.Literal;
  * This is done as a proper utility class that accepts Hints.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class FunctionFinder {
     private static final Logger LOGGER =

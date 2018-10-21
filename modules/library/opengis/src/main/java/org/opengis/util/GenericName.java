@@ -124,7 +124,6 @@ import org.opengis.annotation.UML;
  * @author Bryce Nordgren (USDA)
  * @since GeoAPI 1.0
  * @see javax.naming.Name
- * @source $URL$
  */
 @UML(identifier = "GenericName", specification = ISO_19103)
 public interface GenericName extends Comparable<GenericName> {

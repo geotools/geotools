@@ -45,7 +45,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link org.geotools.coverageio.jp2k.JP2KReader}
- * @source $URL$
  */
 public final class JP2KTest extends BaseJP2K {
 

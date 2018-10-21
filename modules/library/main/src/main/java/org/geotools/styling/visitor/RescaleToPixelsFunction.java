@@ -28,8 +28,6 @@ import org.opengis.filter.capability.FunctionName;
 /**
  * Applies unit to pixel rescaling around expressions whose native unit cannot be determined in a
  * static fashion
- *
- * @source $URL$
  */
 public class RescaleToPixelsFunction extends FunctionExpressionImpl {
 

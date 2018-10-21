@@ -22,7 +22,6 @@ import org.geotools.styling.SelectedChannelType;
 import org.junit.Test;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class SLDSelectedChannelTypeBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(SelectedChannelType.class, new SLDSelectedChannelTypeBinding(null).getType());

@@ -36,7 +36,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * feature property type is returned.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 

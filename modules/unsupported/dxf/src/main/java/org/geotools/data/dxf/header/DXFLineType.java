@@ -10,7 +10,7 @@ import org.geotools.data.dxf.parser.DXFGroupCode;
 import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
 
-/** @source $URL$ */
+
 public class DXFLineType {
 
     private static final Log log = LogFactory.getLog(DXFLineType.class);

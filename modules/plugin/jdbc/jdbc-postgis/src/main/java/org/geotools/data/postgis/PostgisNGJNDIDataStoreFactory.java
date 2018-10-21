@@ -25,7 +25,6 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  * JNDI DataStoreFactory for Postgis database.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class PostgisNGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

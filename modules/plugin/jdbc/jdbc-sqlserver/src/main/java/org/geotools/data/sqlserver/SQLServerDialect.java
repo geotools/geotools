@@ -69,7 +69,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
  * Dialect implementation for Microsoft SQL Server.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class SQLServerDialect extends BasicSQLDialect {
 

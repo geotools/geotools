@@ -51,7 +51,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * </blockquote>
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @see OrderedAxisAuthorityFactory

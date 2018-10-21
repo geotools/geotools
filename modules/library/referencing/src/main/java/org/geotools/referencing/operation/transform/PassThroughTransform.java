@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.TransformException;
  * values.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DimensionFilter

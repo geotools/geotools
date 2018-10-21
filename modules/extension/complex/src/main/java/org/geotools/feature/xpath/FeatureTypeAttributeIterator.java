@@ -27,9 +27,6 @@ import org.opengis.feature.type.PropertyDescriptor;
  * A special iterator for iterating over the attributes of a feature type.
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/feature/xpath/FeatureTypeAttributeIterator.java $
  */
 public class FeatureTypeAttributeIterator implements NodeIterator {
     /** The feature type node pointer */

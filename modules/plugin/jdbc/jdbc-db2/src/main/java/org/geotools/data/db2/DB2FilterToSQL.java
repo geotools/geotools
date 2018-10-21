@@ -101,9 +101,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * </ul>
  *
  * @author Mueller Christian
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-db2/src/main/java/org/geotools
- *     /data/db2/DB2FilterToSQL.java $
  */
 public class DB2FilterToSQL extends PreparedFilterToSQL {
     private static Logger LOGGER =

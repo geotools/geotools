@@ -68,7 +68,6 @@ import org.opengis.referencing.crs.GeographicCRS;
  * Modified version that can preserve Z values after the clip
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(title = "Clip", description = "Clips (crops) features to a given geometry")
 public class ClipProcess implements VectorProcess {

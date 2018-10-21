@@ -62,7 +62,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * Produces SLD to an output stream.
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class SLDTransformer extends TransformerBase {
     /** The logger for this package. */

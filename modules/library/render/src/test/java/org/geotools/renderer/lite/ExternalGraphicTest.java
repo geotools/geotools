@@ -36,7 +36,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class ExternalGraphicTest {
     private static final long TIME = 3000;
     SimpleFeatureSource pointFS;

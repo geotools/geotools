@@ -30,7 +30,6 @@ import org.xml.sax.SAXException;
  * generate valid queries, but with no filtering whatsoever.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version 0.9 beta, 11/01/01
  */
 public class TestFilterHandler implements ContentHandler, FilterHandler {

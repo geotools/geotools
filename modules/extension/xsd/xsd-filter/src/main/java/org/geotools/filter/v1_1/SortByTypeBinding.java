@@ -41,7 +41,6 @@ import org.opengis.filter.sort.SortBy;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SortByTypeBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

@@ -37,7 +37,6 @@ import org.opengis.filter.Filter;
  * CHANGE event; with a bit more detail being available in the subclass BatchFeatureEvent.
  *
  * @since GeoTools 2.0
- * @source $URL$
  */
 public class FeatureEvent extends EventObject {
     private static final long serialVersionUID = 3154238322369916485L;

@@ -73,7 +73,6 @@ import org.locationtech.jts.geom.MultiPolygon;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SurfaceTypeBinding extends AbstractComplexBinding implements Comparable {
 

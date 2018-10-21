@@ -26,7 +26,6 @@ package org.geotools.filter.text.commons;
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering
  * @version $Id$
- * @source $URL$
  */
 public final class Result {
     private int nodeType = 0;

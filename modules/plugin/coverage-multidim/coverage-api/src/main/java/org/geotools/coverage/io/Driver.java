@@ -47,7 +47,6 @@ import org.opengis.util.ProgressListener;
  * @author Simone Giannecchini, GeoSolutions.
  * @author Jody Garnett
  * @since 2.5
- * @source $URL$
  */
 public interface Driver extends OptionalFactory, Factory {
 

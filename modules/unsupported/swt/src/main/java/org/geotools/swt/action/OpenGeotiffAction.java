@@ -38,7 +38,6 @@ import org.geotools.swt.utils.ImageCache;
  * Action to open geotiff files.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class OpenGeotiffAction extends MapAction implements ISelectionChangedListener {
 

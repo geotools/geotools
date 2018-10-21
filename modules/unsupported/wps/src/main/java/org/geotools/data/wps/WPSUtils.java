@@ -53,7 +53,6 @@ import org.opengis.util.InternationalString;
  *
  * @author gdavis
  * @author etj
- * @source $URL$
  */
 public class WPSUtils {
     private static final Logger LOGGER =

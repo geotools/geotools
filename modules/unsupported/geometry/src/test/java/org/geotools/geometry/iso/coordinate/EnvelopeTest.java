@@ -22,10 +22,7 @@ import org.geotools.geometry.iso.UnsupportedDimensionException;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class EnvelopeTest extends TestCase {
 
     public void testMain() {

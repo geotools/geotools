@@ -27,7 +27,6 @@ import org.opengis.util.MemberName;
 /**
  * Information on the range of each dimension of a cell measurement value.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

@@ -39,7 +39,6 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @author Daniele Romagnoli
  * @author Simone Giannecchini (simboss)
- * @source $URL$
  */
 public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     private final Random generator = new Random();

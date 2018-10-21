@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLAbstractGeometryTypeBindingTest extends GMLTestSupport {
     public void testType() {
         assertEquals(Geometry.class, binding(GML.AbstractGeometryType).getType());

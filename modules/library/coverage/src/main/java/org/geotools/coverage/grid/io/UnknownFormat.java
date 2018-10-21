@@ -31,7 +31,6 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @author Jesse Eichar
  * @author Simone Giannecchini (simboss)
- * @source $URL$
  * @version $Revision: 1.9 $
  */
 public class UnknownFormat extends AbstractGridFormat implements Format {

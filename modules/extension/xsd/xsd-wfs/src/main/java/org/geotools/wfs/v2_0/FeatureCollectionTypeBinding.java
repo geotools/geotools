@@ -51,7 +51,6 @@ import org.geotools.xml.Node;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
     private static final String UNKNOWN = "unknown";

@@ -73,7 +73,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * types as parameters
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class GeometryFactoryImpl implements Factory, GeometryFactory {
 

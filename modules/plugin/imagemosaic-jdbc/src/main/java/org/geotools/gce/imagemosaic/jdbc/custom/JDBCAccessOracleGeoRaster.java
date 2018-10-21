@@ -54,7 +54,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * This class is used for JDBC Access to the Oracle GeoRaster feature
  *
  * @author Christian Mueller based on the code of Steve Way and Pablo Najarro
- * @source $URL$
  */
 public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
 

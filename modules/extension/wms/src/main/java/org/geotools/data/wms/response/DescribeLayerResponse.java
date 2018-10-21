@@ -35,7 +35,6 @@ import org.xml.sax.SAXException;
  * Represents the response from a server after a DescribeLayer request has been issued.
  *
  * @author Richard Gould
- * @source $URL$
  */
 public class DescribeLayerResponse extends Response {
 

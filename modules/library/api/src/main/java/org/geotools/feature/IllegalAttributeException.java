@@ -24,7 +24,6 @@ import org.opengis.feature.type.Name;
 /**
  * Indicates client class has attempted to create an invalid feature.
  *
- * @source $URL$
  * @deprecated Please use org.opengis.feature.IllegalAttributeException
  */
 public class IllegalAttributeException extends org.opengis.feature.IllegalAttributeException {

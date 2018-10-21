@@ -31,7 +31,7 @@ import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
+
 public class EdigeoDataStore extends AbstractDataStore {
 
     // File System constant

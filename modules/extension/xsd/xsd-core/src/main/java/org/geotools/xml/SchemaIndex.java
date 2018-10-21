@@ -26,7 +26,6 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
 
-/** @source $URL$ */
 public interface SchemaIndex {
     /** @return The schema itself. */
     XSDSchema[] getSchemas();

@@ -51,7 +51,6 @@ import org.opengis.filter.Filter;
  * <p>All read only methods are delegated to {@link JDBCFeatureSource}.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public final class JDBCFeatureStore extends ContentFeatureStore {
 

@@ -61,8 +61,8 @@ import org.geotools.util.logging.Logging;
 /**
  * Factory to create DataStores over a live ArcSDE instance.
  *
- * @author Gabriel Roldan, Axios Engineering
- * @source $URL$ datastore/src/main/java /org/geotools/arcsde/ArcSDEDataStoreFactory.java $
+ * @author Gabriel Roldan, Axios Engineering datastore/src/main/java
+ *     /org/geotools/arcsde/ArcSDEDataStoreFactory.java $
  * @version $Id$
  */
 @SuppressWarnings("unchecked")

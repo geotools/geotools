@@ -114,7 +114,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for xml schema schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class XSConfiguration extends Configuration {
     public XSConfiguration() {

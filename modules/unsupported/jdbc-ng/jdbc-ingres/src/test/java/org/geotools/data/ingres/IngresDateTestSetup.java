@@ -10,7 +10,7 @@ import org.geotools.jdbc.JDBCTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresDateTestSetup extends JDBCDateTestSetup {
 

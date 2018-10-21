@@ -52,7 +52,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDUserLayerBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

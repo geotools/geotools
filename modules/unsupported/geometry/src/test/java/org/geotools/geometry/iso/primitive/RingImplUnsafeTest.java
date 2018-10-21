@@ -33,7 +33,6 @@ import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.Surface;
 import org.opengis.referencing.operation.TransformException;
 
-/** @source $URL$ */
 public class RingImplUnsafeTest extends TestCase {
 
     public void testRingImpls() {

@@ -39,9 +39,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * A process that returns the centroids for the geometries in the input feature collection.
  *
  * @author Rohan Singh
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/CentroidProcess.java
- *     $
  */
 @DescribeProcess(title = "Centroid", description = "Computes the geometric centroids of features")
 public class CentroidProcess implements VectorProcess {

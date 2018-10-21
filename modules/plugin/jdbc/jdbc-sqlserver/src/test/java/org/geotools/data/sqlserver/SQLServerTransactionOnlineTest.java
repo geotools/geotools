@@ -19,7 +19,6 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTransactionOnlineTest;
 
-/** @source $URL$ */
 public class SQLServerTransactionOnlineTest extends JDBCTransactionOnlineTest {
 
     @Override

@@ -34,7 +34,6 @@ import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class ArcSDEUtilsTest {
     @Test
     public void testFindCompatibleCRS_Projected() throws Exception {

@@ -12,7 +12,7 @@ import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
 import org.geotools.data.dxf.parser.DXFUnivers;
 
-/** @source $URL$ */
+
 public class DXFVertex extends DXFPoint {
 
     private static final Log log = LogFactory.getLog(DXFVertex.class);

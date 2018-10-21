@@ -78,7 +78,6 @@ import org.opengis.util.Cloneable;
  * Unit test for DuplicatorStyleVisitor.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class DuplicatingStyleVisitorTest extends TestCase {
     StyleBuilder sb;

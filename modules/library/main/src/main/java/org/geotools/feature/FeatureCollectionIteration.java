@@ -36,7 +36,6 @@ import org.opengis.feature.type.PropertyDescriptor;
  *
  * @author Ian Schneider, USDA-ARS
  * @author Chris Holmes, TOPP
- * @source $URL$
  */
 public class FeatureCollectionIteration {
     /** A callback handler for the iteration of the contents of a FeatureCollection. */

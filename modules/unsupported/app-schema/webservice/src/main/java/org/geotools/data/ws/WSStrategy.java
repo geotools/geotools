@@ -40,7 +40,7 @@ import freemarker.template.Template;
  *
  *
  *
- * @source $URL$
+
  *         http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/data
  *         /wfs/v1_1_0/WSStrategy.java $
  * @see WSDataStoreFactory

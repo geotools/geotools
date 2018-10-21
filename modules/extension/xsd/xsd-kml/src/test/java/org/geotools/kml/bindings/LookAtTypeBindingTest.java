@@ -22,7 +22,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Point;
 
-/** @source $URL$ */
 public class LookAtTypeBindingTest extends KMLTestSupport {
 
     public void testType() {

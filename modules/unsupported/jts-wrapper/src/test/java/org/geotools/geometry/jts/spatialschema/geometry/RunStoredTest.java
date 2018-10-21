@@ -28,7 +28,6 @@ import org.xml.sax.InputSource;
 /**
  * @author Jody Garnett
  * @author Joel Skelton
- * @source $URL$
  */
 public class RunStoredTest extends TestCase {
     private static final Log LOG = LogFactory.getLog(RunStoredTest.class);

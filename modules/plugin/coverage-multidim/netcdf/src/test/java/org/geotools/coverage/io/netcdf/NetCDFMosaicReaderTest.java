@@ -118,7 +118,6 @@ import ucar.nc2.Variable;
  * @author Simone Giannecchini, GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de
  * @since 2.3
- * @source $URL$
  */
 public class NetCDFMosaicReaderTest extends Assert {
 

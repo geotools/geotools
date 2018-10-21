@@ -34,10 +34,7 @@ import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.DBDialect;
 import org.geotools.gce.imagemosaic.jdbc.UniversalDialect;
 
-/**
- * @author mcr
- * @source $URL$
- */
+/** @author mcr */
 public class H2CustomTest extends AbstractTest {
 
     static DBDialect dialect = null;

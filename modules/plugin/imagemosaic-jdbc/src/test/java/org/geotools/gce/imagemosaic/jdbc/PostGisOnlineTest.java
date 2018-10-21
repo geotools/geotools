@@ -21,10 +21,7 @@ import java.sql.SQLException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/**
- * @author mcr
- * @source $URL$
- */
+/** @author mcr */
 public class PostGisOnlineTest extends AbstractTest {
     static DBDialect dialect = null;
 

@@ -27,7 +27,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
  * temporal directions like {@linkplain AxisDirection#UP Up} are last.
  *
  * @version $Id$
- * @source $URL$
  * @author Martin Desruisseaux
  */
 final class ComparableAxisWrapper implements Comparable {

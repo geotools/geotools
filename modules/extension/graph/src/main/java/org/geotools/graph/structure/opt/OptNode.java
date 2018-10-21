@@ -40,7 +40,6 @@ import org.geotools.graph.structure.Node;
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * @see Node
- * @source $URL$
  */
 public class OptNode extends OptGraphable implements Node {
 

@@ -60,7 +60,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Simone Giannecchini
  * @since 2.4.x
- * @source $URL$
  */
 public abstract class BaseStatisticsOperationJAI extends OperationJAI {
 

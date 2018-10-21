@@ -66,7 +66,6 @@ import ucar.nc2.dataset.NetcdfDataset;
  * Testing Low level reader infrastructure.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public final class NetCDFBasicTest extends Assert {
 

@@ -31,7 +31,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  *
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6
- * @source $URL$
  */
 public class BufferFeatureCollectionProcess extends FeatureToFeatureProcess {
 

@@ -41,7 +41,6 @@ import org.opengis.annotation.UML;
  *
  * </blockquote>
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

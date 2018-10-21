@@ -41,8 +41,6 @@ import org.geotools.swing.wizard.ParamField;
  * <p>This page will allow the user to edit and modify the provided connectionParameters map - but
  * will only show parameters that match the indicated "level". If level is null it assumed to be
  * "user".
- *
- * @source $URL$
  */
 public class JDataStorePage extends JPage {
     /** Factory for which we are collection connection parameters */

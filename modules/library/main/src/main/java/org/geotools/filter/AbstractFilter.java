@@ -23,7 +23,6 @@ import org.opengis.filter.Filter;
  * Implements Filter interface, with constants and default behaviors for methods.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public abstract class AbstractFilter extends FilterAbstract implements FilterType, Filter {

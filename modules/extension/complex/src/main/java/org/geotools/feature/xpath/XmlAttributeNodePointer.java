@@ -31,7 +31,6 @@ import org.xml.sax.Attributes;
  * Special node pointer for an XML-attribute inside an attribute.
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public class XmlAttributeNodePointer extends NodePointer {
 

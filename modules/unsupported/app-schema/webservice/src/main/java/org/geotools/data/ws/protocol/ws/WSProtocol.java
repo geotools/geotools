@@ -34,7 +34,7 @@ import org.opengis.filter.capability.FilterCapabilities;
  *
  *
  *
- * @source $URL$
+
  *         http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/data
  *         /wfs/protocol/wfs/WFSProtocol.java $
  */

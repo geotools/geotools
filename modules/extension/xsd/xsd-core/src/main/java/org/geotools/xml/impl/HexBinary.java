@@ -16,11 +16,7 @@
  */
 package org.geotools.xml.impl;
 
-/**
- * Utility class for xs:hexbinary.
- *
- * @source $URL$
- */
+/** Utility class for xs:hexbinary. */
 public class HexBinary {
     /** Creates a clone of the given byte array. */
     public static byte[] getClone(byte[] pHexBinary) {

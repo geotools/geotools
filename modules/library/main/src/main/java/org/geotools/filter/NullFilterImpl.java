@@ -25,7 +25,6 @@ import org.opengis.filter.expression.PropertyName;
  * Defines a null filter, which checks to see if an attribute is null.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public class NullFilterImpl extends AbstractFilter implements PropertyIsNull {

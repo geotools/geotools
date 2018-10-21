@@ -100,7 +100,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the {@link ImageWorker} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)

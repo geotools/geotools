@@ -24,7 +24,6 @@ import org.geotools.xml.InstanceComponent;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DoubleListBinding extends AbstractSimpleBinding {
 

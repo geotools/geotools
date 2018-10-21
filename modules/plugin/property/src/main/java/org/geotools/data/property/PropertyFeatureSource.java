@@ -42,7 +42,6 @@ import org.opengis.filter.Filter;
 /**
  * @author Jody Garnett
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  */
 public class PropertyFeatureSource extends ContentFeatureSource {
     String typeName;

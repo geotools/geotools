@@ -27,7 +27,6 @@ import org.geotools.xml.ComplexBinding;
  * are stored as name, object tuples.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GetPropertiesExecutor implements BindingWalker.Visitor {
     /** the parent object */

@@ -37,7 +37,6 @@ import org.opengis.filter.PropertyIsBetween;
  * tests for between filters.
  *
  * @author James Macgill
- * @source $URL$
  */
 public class BetweenTest extends TestCase {
     /** Standard logging instance */

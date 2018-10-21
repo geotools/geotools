@@ -175,7 +175,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de
  * @since 2.3
- * @source $URL$
  */
 public class ImageMosaicReaderTest extends Assert {
 

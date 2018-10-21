@@ -26,10 +26,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * @author Cory Horner, Refractions Research
- * @source $URL$
- */
+/** @author Cory Horner, Refractions Research */
 public class StandardDeviationFunctionTest extends FunctionTestSupport {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger("org.geotools.filter");

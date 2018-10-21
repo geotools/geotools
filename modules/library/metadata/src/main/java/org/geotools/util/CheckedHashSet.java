@@ -35,7 +35,6 @@ import org.opengis.util.Cloneable;
  *
  * @param <E> The type of elements in the set.
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (IRD)

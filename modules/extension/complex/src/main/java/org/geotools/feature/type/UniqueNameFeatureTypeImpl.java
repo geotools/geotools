@@ -46,7 +46,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see GEOT-3354
- * @source $URL$
  */
 public class UniqueNameFeatureTypeImpl extends FeatureTypeImpl {
 

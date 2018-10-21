@@ -26,10 +26,7 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.TransfiniteSet;
 
-/**
- * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
- * @source $URL$
- */
+/** @author <a href="mailto:joel@lggi.com">Joel Skelton</a> */
 public class GeometryTestOperation extends Assert {
     private String operation;
     private String arg1;

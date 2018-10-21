@@ -7,7 +7,6 @@ import org.xml.sax.ContentHandler;
  * to encode, rather than work the object through the typical encoding routine.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public interface EncoderDelegate {
 

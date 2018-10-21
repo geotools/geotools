@@ -23,7 +23,6 @@ import org.geotools.filter.v1_0.OGCConfiguration;
  * WFSCapabilitiesConfiguration} instead.
  *
  * @generated
- * @source $URL$
  */
 public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
     /**

@@ -18,7 +18,6 @@ package org.geotools.data.h2;
 
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-/** @source $URL$ */
 public class H2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     protected H2PrimaryKeyFinderTestSetup() {

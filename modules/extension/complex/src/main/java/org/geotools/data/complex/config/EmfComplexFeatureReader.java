@@ -44,11 +44,6 @@ import org.xmlpull.v1.XmlPullParserException;
  * allows to provide the location of the root xsd schema for a given application schema.
  *
  * @author Gabriel Roldan
- * @version $Id$
- * @source $URL$
- *     http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas
- *     /community -schema-ds/src/main/java/org/geotools/data/complex/config/EmfAppSchemaReader.java
- *     $
  * @since 2.4
  */
 public class EmfComplexFeatureReader {

@@ -45,7 +45,6 @@ import org.opengis.util.InternationalString;
  * {@linkplain ParameterDescriptorGroup operation parameter group}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see MatrixParameterDescriptors

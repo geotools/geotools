@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.TransformException;
  * disagrees with the orientation of the referenced object.
  *
  * @author roehrig
- * @source $URL$
  */
 public class OrientablePrimitiveProxy implements OrientablePrimitive, Serializable {
     /**

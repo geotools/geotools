@@ -83,7 +83,6 @@ import org.opengis.referencing.operation.MathTransform;
  *     HREF="http://www.remotesensing.org/geotiff/proj_list/transverse_mercator.html">"Transverse_Mercator"
  *     on RemoteSensing.org</A>
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author André Gosselin
  * @author Martin Desruisseaux (PMO, IRD)

@@ -32,7 +32,6 @@ import org.xml.sax.ext.EntityResolver2;
  * <p>This class is used by the parser to validate while parsing.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class ValidatorHandler extends DefaultHandler2 {
 

@@ -38,7 +38,6 @@ import org.opengis.filter.sort.SortBy;
  * Decorates a feature collection with one that filters content.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class FilteringFeatureCollection<T extends FeatureType, F extends Feature>
         extends DecoratingFeatureCollection<T, F> {

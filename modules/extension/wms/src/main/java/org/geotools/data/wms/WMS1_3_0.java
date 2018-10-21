@@ -19,10 +19,7 @@ package org.geotools.data.wms;
 import java.net.URL;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 
-/**
- * @author rgould
- * @source $URL$
- */
+/** @author rgould */
 public class WMS1_3_0 extends WMS1_1_1 {
 
     public WMS1_3_0() {}

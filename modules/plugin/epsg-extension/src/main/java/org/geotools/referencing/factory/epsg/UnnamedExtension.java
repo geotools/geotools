@@ -25,7 +25,6 @@ import org.opengis.referencing.FactoryException;
  * the standard EPSG database. Those CRS will be registered in {@code "EPSG"} name space.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Andrea Aime
  */

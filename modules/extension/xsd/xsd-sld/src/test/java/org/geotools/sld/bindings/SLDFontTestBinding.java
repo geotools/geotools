@@ -19,7 +19,6 @@ package org.geotools.sld.bindings;
 import org.geotools.filter.Filters;
 import org.geotools.styling.Font;
 
-/** @source $URL$ */
 public class SLDFontTestBinding extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Font.class, new SLDFontBinding(null, null).getType());

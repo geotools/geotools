@@ -55,7 +55,6 @@ import org.eclipse.swt.widgets.Shell;
  * @see ImageIO
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Michael Bedward
- * @source $URL$
  */
 public class JFileImageChooser {
 

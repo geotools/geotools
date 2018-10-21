@@ -64,7 +64,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-/** @source $URL$ */
 public class TeradataDialect extends PreparedStatementSQLDialect {
 
     /** sysspatial schema */

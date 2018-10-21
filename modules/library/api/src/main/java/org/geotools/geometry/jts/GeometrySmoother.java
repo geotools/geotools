@@ -56,7 +56,6 @@ import org.locationtech.jts.geom.Polygon;
  * Provides package-private helper methods for the {@link JTS} utility class.
  *
  * @author Michael Bedward
- * @source $URL$
  * @version $Id$
  * @since 2.8
  */

@@ -64,7 +64,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Utility methods used by gml2 bindings when parsing.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class GML2ParsingUtils {
     /** logging instance */

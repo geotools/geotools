@@ -95,7 +95,6 @@ import org.opengis.util.InternationalString;
  * #computeMathTransform()} methods.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  * @author Martin Desruisseaux

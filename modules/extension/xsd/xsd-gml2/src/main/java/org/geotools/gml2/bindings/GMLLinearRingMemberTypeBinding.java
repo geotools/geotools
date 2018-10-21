@@ -49,7 +49,6 @@ import org.locationtech.jts.geom.LinearRing;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLLinearRingMemberTypeBinding extends AbstractComplexBinding {
     /** @generated */

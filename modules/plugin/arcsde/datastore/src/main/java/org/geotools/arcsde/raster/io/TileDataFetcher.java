@@ -25,7 +25,6 @@ import org.geotools.arcsde.raster.info.RasterCellType;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.5.9
- * @source $URL$
  * @see NativeTileReader
  */
 abstract class TileDataFetcher {

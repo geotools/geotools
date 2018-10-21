@@ -74,7 +74,6 @@ import org.geotools.factory.GeoTools;
  *
  * @author Michael Bedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class JAboutDialog extends AbstractSimpleDialog {

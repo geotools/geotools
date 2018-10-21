@@ -24,7 +24,6 @@ import java.util.Map;
  *
  * @author Andrea Antonello - www.hydrologis.com
  * @since 1.1.0
- * @source $URL$
  */
 @SuppressWarnings("nls")
 public class JGrassConstants {

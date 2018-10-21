@@ -46,7 +46,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class AbstractGMLBindingTest extends TestCase {
     XSDSchema schema;
     MutablePicoContainer container;

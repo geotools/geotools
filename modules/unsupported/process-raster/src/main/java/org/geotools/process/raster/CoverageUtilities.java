@@ -53,7 +53,6 @@ import org.opengis.referencing.operation.TransformException;
  * must of them should be seen as temporary implementations.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public class CoverageUtilities {
 

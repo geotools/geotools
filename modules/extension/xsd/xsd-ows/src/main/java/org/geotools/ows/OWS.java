@@ -27,7 +27,6 @@ import org.geotools.xml.XSD;
  * http://www.opengis.net/ows schema.
  *
  * @generated
- * @source $URL$
  */
 public final class OWS extends XSD {
     /** singleton instance */

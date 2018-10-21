@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xml.SchemaIndex;
 
-/** @source $URL$ */
 public class HandlerFactoryImpl implements HandlerFactory {
     public DocumentHandler createDocumentHandler(ParserHandler parser) {
         return new DocumentHandlerImpl(this, parser);

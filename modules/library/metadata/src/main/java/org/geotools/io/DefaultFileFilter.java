@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 /**
  * A {@link FileFilter} implementation using Unix-style wildcards.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.0

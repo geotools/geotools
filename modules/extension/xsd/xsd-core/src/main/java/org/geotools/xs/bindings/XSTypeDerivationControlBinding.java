@@ -44,7 +44,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSTypeDerivationControlBinding implements SimpleBinding {
     /** @generated */

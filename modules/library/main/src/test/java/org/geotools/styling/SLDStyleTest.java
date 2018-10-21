@@ -60,7 +60,6 @@ import org.opengis.style.GraphicalSymbol;
  * Try out our SLD parser and see how well it does.
  *
  * @author jamesm
- * @source $URL$
  */
 public class SLDStyleTest extends TestCase {
     StyleFactory sf = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());

@@ -65,7 +65,6 @@ import org.opengis.style.GraphicalSymbol;
  * painting logic.
  *
  * @author Andrea Aime
- * @source $URL$
  */
 public class StyledShapePainter {
     public static final Key TEXTURE_ANCHOR_HINT_KEY = new TextureAnchorKey();

@@ -18,7 +18,6 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class PostgisNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 
     protected PostgisNoPrimaryKeyTestSetup() {

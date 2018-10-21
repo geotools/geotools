@@ -45,7 +45,7 @@ import org.opengis.filter.expression.Literal;
  * @author James Macgill, PSU
  * @author Jody Garnett (Boundless)
  * @see FunctionFactory
- * @source $URL$
+ *
  */
 public interface FunctionExpression extends Factory, Function {
 

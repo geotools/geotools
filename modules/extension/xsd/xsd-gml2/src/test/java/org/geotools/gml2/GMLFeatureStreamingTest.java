@@ -23,7 +23,6 @@ import org.geotools.xml.StreamingParser;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class GMLFeatureStreamingTest extends TestCase {
     public void testStreamByXpath() throws Exception {
         InputStream in = getClass().getResourceAsStream("feature.xml");

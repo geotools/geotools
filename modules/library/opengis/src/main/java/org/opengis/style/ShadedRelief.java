@@ -26,7 +26,6 @@ import org.opengis.filter.expression.Expression;
  * around 55 (times) gives reasonable results for Earth-based DEMs. The default value is
  * system-dependent.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

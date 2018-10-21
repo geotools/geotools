@@ -27,10 +27,6 @@ import java.util.Date;
  * @since 2.5
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering
- * @version $Id$
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/library/cql/src/main/java/org/geotools/text/filter/cql2/DurationUtil.java
- *     $
  */
 final class DurationUtil {
     private static final Calendar CALENDAR = Calendar.getInstance();

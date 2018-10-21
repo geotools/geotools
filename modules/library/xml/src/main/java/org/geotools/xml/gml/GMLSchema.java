@@ -48,7 +48,6 @@ import org.xml.sax.SAXException;
  * instances for elements who's types correspond to types defined in this schema.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class GMLSchema implements Schema {
     /** GML target namespace */

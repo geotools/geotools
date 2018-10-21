@@ -62,7 +62,6 @@ import org.opengis.referencing.operation.TransformException;
  * for referencing a pixel without ambiguity.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see ImageGeometry

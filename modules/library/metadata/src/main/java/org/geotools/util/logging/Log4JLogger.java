@@ -23,7 +23,6 @@ import java.util.logging.Level;
  * HREF="http://logging.apache.org/log4j">Log4J</A> framework.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Saul Farber (MassGIS)

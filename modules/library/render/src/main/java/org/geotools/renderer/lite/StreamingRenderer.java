@@ -179,7 +179,6 @@ import org.opengis.style.PolygonSymbolizer;
  * @author Simone Giannecchini
  * @author Andrea Aime
  * @author Alessio Fabiani
- * @source $URL$
  * @version $Id$
  */
 public class StreamingRenderer implements GTRenderer {

@@ -30,7 +30,6 @@ import org.opengis.metadata.distribution.StandardOrderProcess;
 /**
  * Information about the distributor.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

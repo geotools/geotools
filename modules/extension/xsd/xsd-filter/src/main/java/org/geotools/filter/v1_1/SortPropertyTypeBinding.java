@@ -43,7 +43,6 @@ import org.opengis.filter.sort.SortOrder;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SortPropertyTypeBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

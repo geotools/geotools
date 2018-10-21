@@ -37,7 +37,6 @@ import org.opengis.filter.expression.Expression;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCDivBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

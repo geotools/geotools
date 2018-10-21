@@ -27,7 +27,7 @@ import java.sql.Statement;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class TeradataGeographyTestSetup extends JDBCGeographyTestSetup {
 

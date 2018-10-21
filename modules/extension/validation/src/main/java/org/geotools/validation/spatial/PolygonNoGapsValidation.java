@@ -30,7 +30,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class PolygonNoGapsValidation extends DefaultFeatureValidation {

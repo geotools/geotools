@@ -32,7 +32,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLApplicationSchemaParsingTest extends TestCase {
     public void testStreamFeatureWithIncorrectSchemaLocation() throws Exception {
         InputStream in = getClass().getResourceAsStream("feature.xml");

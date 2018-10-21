@@ -27,14 +27,13 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * A registry of GeoTools {@link AttributeType} and {@link AttributeDescriptor} lazily parsed from
- * the EMF {@link XSDTypeDefinition} and {@link XSDElementDeclaration} added through
- * {@link #addSchemas(SchemaIndex)}.
- * <p>
- * This class is meant to be used in conjunction with {@link EmfComplexFeatureReader}. See
- * {@link AppSchemaDataAccessConfigurator}
- * </p>
- * <p>
- * Usage:
+ * the EMF {@link XSDTypeDefinition} and {@link XSDElementDeclaration} added through {@link
+ * #addSchemas(SchemaIndex)}.
+ *
+ * <p>This class is meant to be used in conjunction with {@link EmfComplexFeatureReader}. See {@link
+ * AppSchemaDataAccessConfigurator}
+ *
+ * <p>Usage:
  *
  * <pre>
  * <code>
@@ -49,18 +48,10 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * Name typeName = ...
  * FeatureType ft = (FeatureType)registry.getAttributeType(typeName);
- * </p>
+ * </code>
+ * </pre>
  *
  * @author Gabriel Roldan
- *
- *
- *
- *
- * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *         /java/org/geotools/data/complex/config/FeatureTypeRegistry.java $
- * @version $Id$
- *
  */
 public class AppSchemaFeatureTypeRegistry extends FeatureTypeRegistry {
 

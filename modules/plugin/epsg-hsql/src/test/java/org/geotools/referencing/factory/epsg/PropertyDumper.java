@@ -18,8 +18,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Dumps the contents of the EPSG database out to a java property file for use by the wkt plugin.
- *
- * @source $URL$
  */
 public class PropertyDumper {
     public static void main(String[] args) throws Exception {

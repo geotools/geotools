@@ -34,7 +34,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * finalized and is meant to be used by StreamingRenderer only
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class ProjectionHandlerFinder {
 

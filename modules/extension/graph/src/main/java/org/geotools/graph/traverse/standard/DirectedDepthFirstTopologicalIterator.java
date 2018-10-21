@@ -20,7 +20,6 @@ import org.geotools.graph.structure.Graph;
 import org.geotools.graph.util.Queue;
 import org.geotools.graph.util.Stack;
 
-/** @source $URL$ */
 public class DirectedDepthFirstTopologicalIterator extends DirectedBreadthFirstTopologicalIterator {
 
     protected Queue buildQueue(Graph graph) {

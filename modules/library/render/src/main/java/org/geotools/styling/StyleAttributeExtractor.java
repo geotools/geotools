@@ -31,7 +31,6 @@ import org.opengis.filter.expression.PropertyName;
  * those that the Style expects to find in order to work properly
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class StyleAttributeExtractor extends FilterAttributeExtractor implements StyleVisitor {
 

@@ -34,7 +34,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see <A HREF="https://portal.opengeospatial.org/files/?artifact_id=8814">URNs of definitions in
  *     OGC namespace</A>
- * @source $URL$
  */
 public class URN_AuthorityFactory extends Abstract_URI_AuthorityFactory {
 

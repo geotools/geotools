@@ -31,7 +31,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Test the {@link JGrassMapEnvironment} class and the created paths.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 @SuppressWarnings("nls")
 public class JGrassUtilsTest extends TestCase {

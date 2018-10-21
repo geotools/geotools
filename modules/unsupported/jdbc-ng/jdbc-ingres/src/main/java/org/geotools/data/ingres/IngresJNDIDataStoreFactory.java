@@ -5,9 +5,7 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 import static org.geotools.data.ingres.IngresDataStoreFactory.LOOSEBBOX;
 
 /**
- * Ingres DataStoreFactory for connections obtained from JNDI
- * 
- *  @source $URL$
+ * Ingres DataStoreFactory for connections obtained from JNDI.
  */
 public class IngresJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

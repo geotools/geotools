@@ -87,7 +87,6 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class BaseRequestTypeBinding extends AbstractComplexEMFBinding {
     public BaseRequestTypeBinding(WfsFactory factory) {

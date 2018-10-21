@@ -37,7 +37,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author jgarnett
  * @since 2.1.RC0
- * @source $URL$
  */
 final class FeatureWriterIterator implements Iterator<SimpleFeature> {
     FeatureWriter<SimpleFeatureType, SimpleFeature> writer;

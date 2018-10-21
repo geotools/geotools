@@ -26,7 +26,6 @@ import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.geometry.primitive.SurfaceInterpolation;
 
-/** @source $URL$ */
 public class PolygonImpl extends SurfacePatchImpl implements Polygon {
 
     // *************************************************************************

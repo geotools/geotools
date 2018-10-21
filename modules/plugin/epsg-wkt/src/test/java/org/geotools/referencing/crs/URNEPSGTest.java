@@ -20,7 +20,6 @@ import junit.framework.TestCase;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class URNEPSGTest extends TestCase {
 
     public void test() throws Exception {

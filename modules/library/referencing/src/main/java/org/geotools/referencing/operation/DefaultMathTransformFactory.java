@@ -93,7 +93,6 @@ import org.opengis.referencing.operation.Projection;
  * information on its source and target coordinate systems.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @tutorial http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Parameters

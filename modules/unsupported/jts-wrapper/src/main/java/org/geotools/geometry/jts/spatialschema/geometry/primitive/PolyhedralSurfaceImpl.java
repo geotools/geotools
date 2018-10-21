@@ -36,7 +36,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author SYS Technologies
  * @author dillard
- * @source $URL$
  * @version $Revision $
  */
 public class PolyhedralSurfaceImpl extends GeometryImpl implements PolyhedralSurface {

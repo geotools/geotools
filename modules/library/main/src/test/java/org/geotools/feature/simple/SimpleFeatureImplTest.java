@@ -27,7 +27,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 
-/** @source $URL$ */
 public class SimpleFeatureImplTest extends TestCase {
 
     SimpleFeatureType schema;

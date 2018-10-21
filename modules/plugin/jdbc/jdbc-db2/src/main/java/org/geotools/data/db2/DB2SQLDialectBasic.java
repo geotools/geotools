@@ -37,7 +37,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class DB2SQLDialectBasic extends BasicSQLDialect {
 
     private DB2SQLDialect delegate = null;

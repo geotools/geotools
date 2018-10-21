@@ -30,8 +30,6 @@ import org.opengis.geometry.Geometry;
  *
  * <p>When Envelope objects are created or initialized, the supplies extent values are automatically
  * sorted into the correct order.
- *
- * @source $URL$
  */
 public class Envelope implements Serializable {
 

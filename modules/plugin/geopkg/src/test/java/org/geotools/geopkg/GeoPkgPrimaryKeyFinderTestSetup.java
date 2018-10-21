@@ -19,7 +19,6 @@ package org.geotools.geopkg;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-/** @source $URL$ */
 public class GeoPkgPrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     public GeoPkgPrimaryKeyFinderTestSetup() {

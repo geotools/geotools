@@ -32,11 +32,7 @@ import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.ContrastMethod;
 import org.opengis.util.InternationalString;
 
-/**
- * Abstract base class for implementing style factories.
- *
- * @source $URL$
- */
+/** Abstract base class for implementing style factories. */
 public interface StyleFactory extends Factory, org.opengis.style.StyleFactory {
 
     public TextSymbolizer createTextSymbolizer(

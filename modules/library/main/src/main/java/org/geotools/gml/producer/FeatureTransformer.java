@@ -97,7 +97,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Ian Schneider
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  * @todo Add support for schemaLocation
  */

@@ -14,7 +14,6 @@ import org.geotools.styling.TextSymbolizer2;
 import org.junit.Test;
 import si.uom.SI;
 
-/** @source $URL$ */
 public class CookbookPolygonTest extends AbstractStyleTest {
 
     @Test

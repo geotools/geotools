@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.Equals;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCEqualsBinding extends AbstractComplexBinding {
     FilterFactory2 filterFactory;

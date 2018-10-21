@@ -76,7 +76,6 @@ import si.uom.SI;
  *
  * @author dblasby
  * @author Simone Giannecchini
- * @source $URL$
  */
 public final class RendererUtilities {
 

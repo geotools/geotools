@@ -25,10 +25,7 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import org.xml.sax.InputSource;
 
-/**
- * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
- * @source $URL$
- */
+/** @author <a href="mailto:joel@lggi.com">Joel Skelton</a> */
 public class RunStoredTest extends TestCase {
     private static final Logger LOG =
             org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");

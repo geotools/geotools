@@ -24,7 +24,6 @@ import java.util.Iterator;
 /**
  * An implementation of {@link FactoryIteratorProvider} over the {@link DummyFactory}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

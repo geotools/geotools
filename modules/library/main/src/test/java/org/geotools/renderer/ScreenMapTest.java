@@ -18,7 +18,6 @@ package org.geotools.renderer;
 
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class ScreenMapTest extends TestCase {
     private int xmin;
 

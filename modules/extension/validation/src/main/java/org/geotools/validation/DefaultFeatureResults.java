@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public final class DefaultFeatureResults implements ValidationResults {
     Validation trial;
     public List error = new ArrayList();

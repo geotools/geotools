@@ -34,11 +34,7 @@ import org.opengis.filter.Filter;
  * A FeatureWriter aware of transactions.
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/TransactionFeatureWriter.java $
  */
 class TransactionFeatureWriter extends ArcSdeFeatureWriter {
     private ArcTransactionState state;

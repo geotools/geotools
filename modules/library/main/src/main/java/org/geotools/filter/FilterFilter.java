@@ -33,7 +33,6 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * object from an XML stream and passes it to its parent as a fully instantiated OGC filter object.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {

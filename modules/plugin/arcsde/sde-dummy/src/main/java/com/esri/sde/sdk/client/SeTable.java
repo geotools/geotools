@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public class SeTable {
 
     public SeTable(SeConnection s, String y) throws SeException {}

@@ -62,7 +62,6 @@ import org.opengis.style.ContrastMethod;
  * Utilities class.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class Utils {
     /** The default {@link StyleFactory} to use. */

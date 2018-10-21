@@ -17,10 +17,6 @@ import org.locationtech.jts.geom.Polygon;
  * creates JTS geometries directly by calling {@link SeRow#getGeometry(GeometryFactory, int)},
  * instead of fetching an {@link SeShape} through {@link SeRow#getShape(int)} and then converting it
  * to a JTS geometry. This is work in progress and _experimental_, though.
- *
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/data/SeToJTSGeometryFactory.java $
  */
 public class SeToJTSGeometryFactory implements GeometryFactory {
 

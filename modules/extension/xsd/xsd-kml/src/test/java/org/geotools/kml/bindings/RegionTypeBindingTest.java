@@ -22,7 +22,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LinearRing;
 
-/** @source $URL$ */
 public class RegionTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(LinearRing.class, binding(KML.RegionType).getType());

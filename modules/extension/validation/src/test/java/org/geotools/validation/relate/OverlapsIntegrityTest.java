@@ -30,7 +30,6 @@ import org.opengis.filter.Filter;
  *
  * @author bowens<br>
  *     Created Apr 29, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p>DOCUMENT ME!! <b>Description:</b><br>

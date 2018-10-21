@@ -31,7 +31,6 @@ import org.opengis.geometry.Geometry;
  * contains two geometry objects and then one or more tests to apply to those geometries
  *
  * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
- * @source $URL$
  */
 public class GeometryTestCase implements Test {
     private String name;

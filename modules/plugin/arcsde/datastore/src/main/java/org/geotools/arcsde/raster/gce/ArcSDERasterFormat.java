@@ -58,9 +58,6 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * @author jeichar
  * @author Simone Giannecchini (simboss)
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/gce/ArcSDERasterFormat.java $
  */
 @SuppressWarnings({"nls", "deprecation"})
 public final class ArcSDERasterFormat extends AbstractGridFormat implements Format {

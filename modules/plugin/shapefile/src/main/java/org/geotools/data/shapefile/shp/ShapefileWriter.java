@@ -44,7 +44,6 @@ import org.locationtech.jts.geom.GeometryFactory;
  * @author jamesm
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public class ShapefileWriter {
     FileChannel shpChannel;

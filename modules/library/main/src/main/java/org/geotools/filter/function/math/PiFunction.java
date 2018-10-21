@@ -26,7 +26,6 @@ import org.opengis.filter.capability.FunctionName;
  *
  * @author Jody Garnett
  * @since 2.2, 2.5
- * @source $URL$
  */
 public class PiFunction extends FunctionExpressionImpl {
     public static FunctionName NAME = new FunctionNameImpl("pi", Double.class);

@@ -19,7 +19,6 @@ package org.geotools.data.spatialite;
 import java.sql.SQLException;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-/** @source $URL$ */
 public class SpatiaLiteDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     protected SpatiaLiteDataStoreAPITestSetup() {

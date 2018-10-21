@@ -35,7 +35,6 @@ import org.opengis.util.InternationalString;
  * schema.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class ComplexFeatureTypeImpl extends UniqueNameFeatureTypeImpl {
     /** Type specific descriptors, excluding FEATURE_LINK */

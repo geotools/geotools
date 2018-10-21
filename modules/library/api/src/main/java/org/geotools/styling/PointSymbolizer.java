@@ -62,7 +62,6 @@ package org.geotools.styling;
  * </ul>
  *
  * @author James Macgill
- * @source $URL$
  * @version $Id$
  */
 public interface PointSymbolizer extends org.opengis.style.PointSymbolizer, Symbolizer {

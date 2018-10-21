@@ -23,7 +23,6 @@ package org.geotools.xml.schema;
  * equivalent choice in it's place.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface Choice extends ElementGrouping {
     /** The Schema ID for this choice definition. */

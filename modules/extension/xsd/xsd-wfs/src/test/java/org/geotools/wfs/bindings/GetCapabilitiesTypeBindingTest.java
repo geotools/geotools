@@ -28,7 +28,6 @@ import org.w3c.dom.Document;
  * @author Gabriel Roldan
  * @version $Id: GetCapabilitiesTypeBindingTest.java 27749 2007-11-05 09:51:33Z groldan $
  * @since 2.5.x
- * @source $URL$
  */
 public class GetCapabilitiesTypeBindingTest extends WFSTestSupport {
     public GetCapabilitiesTypeBindingTest() {

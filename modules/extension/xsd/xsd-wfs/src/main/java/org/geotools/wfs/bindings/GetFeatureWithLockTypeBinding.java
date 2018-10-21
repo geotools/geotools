@@ -110,7 +110,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GetFeatureWithLockTypeBinding extends AbstractComplexEMFBinding {
     WfsFactory wfsfactory;

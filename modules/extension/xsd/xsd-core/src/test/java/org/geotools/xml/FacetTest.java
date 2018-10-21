@@ -23,7 +23,6 @@ import junit.framework.TestCase;
 import org.geotools.xs.XSConfiguration;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class FacetTest extends TestCase {
     public void testList() throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

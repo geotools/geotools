@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class GMLGeometryTest extends TestCase {
     Parser parser;
 

@@ -53,7 +53,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Polygon).
  *
  * @author m.bartolomeoli
- * @source $URL$
  */
 public class GeometryTypeConverterFactory implements ConverterFactory {
 

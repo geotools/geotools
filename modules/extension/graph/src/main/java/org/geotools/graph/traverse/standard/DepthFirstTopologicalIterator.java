@@ -36,7 +36,6 @@ import org.geotools.graph.util.Stack;
  * affected in undefined ways.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class DepthFirstTopologicalIterator extends BreadthFirstTopologicalIterator {
 

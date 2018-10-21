@@ -52,7 +52,6 @@ import org.locationtech.jts.geom.Envelope;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class NullTypeBinding extends AbstractSimpleBinding {
 

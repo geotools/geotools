@@ -28,7 +28,6 @@ package org.geotools.styling;
  * &lt;/xsd:choice&gt; &lt;/xsd:complexType&gt; &lt;/xsd:element&gt;
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface ImageOutline {
     /**

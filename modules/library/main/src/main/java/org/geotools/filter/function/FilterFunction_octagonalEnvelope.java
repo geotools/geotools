@@ -28,9 +28,6 @@ import org.opengis.filter.capability.FunctionName;
  * A FilterFunction that expects a Geometry and returns it's octagonal envelope.
  *
  * @author Jared Erickson
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_octagonalEnvelope.java
- *     $
  */
 public class FilterFunction_octagonalEnvelope extends FunctionExpressionImpl {
 

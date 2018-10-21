@@ -52,11 +52,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-/**
- * Check GML abilities
- *
- * @source $URL$
- */
+/** Check GML abilities */
 public class GMLTest {
     /** Check if we can encode a SimpleFeatureType using GML2 */
     @Test

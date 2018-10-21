@@ -57,7 +57,6 @@ import org.opengis.filter.expression.Function;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class StringLengthBinding extends AbstractComplexBinding {
 

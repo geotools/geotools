@@ -108,7 +108,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * Right now the class gives no indication as to what part of the provided filter was in error.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class Capabilities {
     private static Map<Class<?>, String> scalarNames;

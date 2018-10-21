@@ -22,7 +22,6 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.GenericCurve;
 import org.opengis.geometry.coordinate.ParamForPoint;
 
-/** @source $URL$ */
 public class ParamForPointImpl extends ArrayList<Double> implements ParamForPoint {
 
     /** */

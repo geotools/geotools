@@ -49,7 +49,6 @@ import org.opengis.feature.type.Name;
  * </pre>
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public interface TemporalOperator extends Operator {
 

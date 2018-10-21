@@ -21,7 +21,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLLineStringTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(LineString.class, binding(GML.LineStringType).getType());

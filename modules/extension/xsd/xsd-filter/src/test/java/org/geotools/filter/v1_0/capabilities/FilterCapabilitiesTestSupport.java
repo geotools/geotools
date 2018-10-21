@@ -19,7 +19,6 @@ package org.geotools.filter.v1_0.capabilities;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 
-/** @source $URL$ */
 public abstract class FilterCapabilitiesTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {
         return new OGCConfiguration();

@@ -88,7 +88,6 @@ import org.opengis.filter.expression.Expression;
  * @see SLD SLD style helper class
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class JSimpleStyleDialog extends JDialog {

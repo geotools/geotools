@@ -27,7 +27,6 @@ import org.geotools.graph.structure.Graphable;
  * will fail if a Graphable object contains a reference to a non serializable object.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public abstract class BasicGraphable implements Graphable, Serializable {
 

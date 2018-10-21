@@ -54,9 +54,6 @@ import org.opengis.feature.type.Name;
  * source (simple or mapped) would be accessible globally.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/test
- *     /java/org/geotools/data/complex/AppSchemaDataAccessRegistryTest.java $
  */
 public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
 

@@ -36,7 +36,6 @@ import si.uom.NonSI;
  * The gnomonic projection using a spheroid algorithm.
  *
  * @since 12.3
- * @source $URL$
  * @version $Id$
  * @author Simon Schafer
  */

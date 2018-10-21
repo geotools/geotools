@@ -34,7 +34,6 @@ import org.opengis.util.ProgressListener;
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.6
  */
 @SuppressWarnings("serial")

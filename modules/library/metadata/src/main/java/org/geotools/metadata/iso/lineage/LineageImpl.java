@@ -33,7 +33,6 @@ import org.opengis.util.InternationalString;
  * <p>Only one of {@linkplain #getStatement statement}, {@linkplain #getProcessSteps process steps}
  * and {@link #getSources sources} should be provided.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

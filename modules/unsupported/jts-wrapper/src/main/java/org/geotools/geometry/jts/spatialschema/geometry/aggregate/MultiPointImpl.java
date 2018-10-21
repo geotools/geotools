@@ -12,7 +12,6 @@ package org.geotools.geometry.jts.spatialschema.geometry.aggregate;
 import org.opengis.geometry.aggregate.MultiPoint;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class MultiPointImpl extends AggregateImpl implements MultiPoint {
 
     public MultiPointImpl() {

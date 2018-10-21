@@ -26,7 +26,6 @@ import org.geotools.ows.ServiceException;
  * Capabilities document in inputStream in the constructor.
  *
  * @author gdavis
- * @source $URL$
  */
 public abstract class AbstractWPSGetCapabilitiesResponse extends Response {
 

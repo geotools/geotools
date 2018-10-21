@@ -25,7 +25,6 @@ import org.geotools.coverageio.BaseGridFormatFactorySPI;
 /**
  * @author Mathew Wyatt, CSIRO Australia
  * @author Daniele Romagnoli, GeoSolutions SAS
- * @source $URL$
  */
 public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
 

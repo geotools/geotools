@@ -36,7 +36,6 @@ import org.geotools.xml.InstanceComponent;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DateTimeTypeBinding extends AbstractSimpleBinding {
     /** @generated */

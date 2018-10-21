@@ -71,7 +71,6 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @author Bryce Nordgren, USDA Forest Service
  * @author Simone Giannecchini
- * @source $URL$
  */
 public class GeoTiffFormat extends AbstractGridFormat implements Format {
 

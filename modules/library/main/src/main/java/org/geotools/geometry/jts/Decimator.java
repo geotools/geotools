@@ -37,7 +37,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author jeichar
  * @since 2.1.x
- * @source $URL$
  */
 public final class Decimator {
 

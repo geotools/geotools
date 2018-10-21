@@ -45,7 +45,6 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Luca Morandini lmorandini@ieee.org
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  * @version $Id$
  */
 public class WKTMarkFactory implements MarkFactory {

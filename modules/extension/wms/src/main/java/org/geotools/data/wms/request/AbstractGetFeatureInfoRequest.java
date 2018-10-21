@@ -25,11 +25,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import org.geotools.data.ows.Layer;
 
-/**
- * A base class for GetFeatureInfoRequests that provides some functionality.
- *
- * @source $URL$
- */
+/** A base class for GetFeatureInfoRequests that provides some functionality. */
 public abstract class AbstractGetFeatureInfoRequest extends AbstractWMSRequest
         implements GetFeatureInfoRequest {
     /** A set of type Layer, each of which is to be queried in the request */

@@ -73,7 +73,6 @@ import tec.uom.se.AbstractUnit;
  * situation, a plain {@link org.geotools.referencing.cs.AbstractCS} object may be instantiated.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

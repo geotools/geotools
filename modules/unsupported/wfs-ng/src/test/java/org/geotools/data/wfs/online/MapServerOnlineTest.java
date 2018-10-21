@@ -45,7 +45,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class MapServerOnlineTest {
 
     public static final String SERVER_URL_100 =

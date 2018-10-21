@@ -50,7 +50,6 @@ import org.opengis.filter.Filter;
  * setEscapeSql() method.
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class VirtualTable implements Serializable {
 

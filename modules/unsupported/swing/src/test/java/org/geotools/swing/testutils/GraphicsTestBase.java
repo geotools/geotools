@@ -38,7 +38,6 @@ import org.junit.BeforeClass;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public abstract class GraphicsTestBase<T extends Window> {

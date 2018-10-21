@@ -54,7 +54,6 @@ import org.locationtech.jts.geom.Geometry;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLGeometryAssociationTypeBinding extends AbstractComplexBinding {
     /** @generated */

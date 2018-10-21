@@ -38,7 +38,6 @@ import org.eclipse.xsd.util.XSDSchemaLocator;
  * </code>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class SchemaLocator implements XSDSchemaLocator {
     /** logging instance */

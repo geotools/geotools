@@ -24,7 +24,6 @@ import org.geotools.geometry.iso.root.GeometryImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class UnionPolygonTest extends TestCase {
 
     private SurfaceImpl createPolygonFromWKT(CoordinateReferenceSystem crs, String aWKTpolygon) {

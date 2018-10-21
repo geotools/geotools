@@ -25,7 +25,6 @@ import java.util.logging.Logger;
  * safe.
  *
  * @author Andrea Aime
- * @source $URL$
  */
 public abstract class AbstractLiteIterator implements PathIterator {
 

@@ -60,7 +60,6 @@ import org.opengis.referencing.operation.TransformException;
  * Testing {@link OverviewsController}.
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
- * @source $URL$
  */
 public class OverviewsControllerTest extends Assert {
 

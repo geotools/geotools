@@ -36,7 +36,6 @@ import org.opengis.referencing.operation.MathTransform;
  * of the aposphere.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Gerald I. Evenden (for original code in Proj4)
  * @author Rueben Schulz

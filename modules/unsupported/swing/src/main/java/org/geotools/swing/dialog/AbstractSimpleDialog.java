@@ -33,7 +33,6 @@ import net.miginfocom.swing.MigLayout;
  *
  * @author Michael Bedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public abstract class AbstractSimpleDialog extends JDialog {

@@ -23,7 +23,6 @@ import org.geotools.factory.Hints.Key;
  * Factory used to create instances of {@link PropertyAccessor}
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface PropertyAccessorFactory {
 

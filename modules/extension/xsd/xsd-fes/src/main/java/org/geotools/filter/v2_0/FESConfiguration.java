@@ -96,7 +96,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/fes/2.0 schema.
  *
  * @generated
- * @source $URL$
  */
 public class FESConfiguration extends Configuration {
 

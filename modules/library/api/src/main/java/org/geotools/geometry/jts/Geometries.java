@@ -79,7 +79,6 @@ import org.locationtech.jts.geom.Polygon;
  * @author Justin Deoliveira, The Open Planning Project
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public enum Geometries {

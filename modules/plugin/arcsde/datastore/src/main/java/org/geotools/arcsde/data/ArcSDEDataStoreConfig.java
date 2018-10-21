@@ -37,8 +37,8 @@ import org.geotools.arcsde.session.ArcSDEConnectionConfig;
  * and serves as keys for maintaining single <code>SdeConnectionPool</code>'s by each set of
  * connection properties
  *
- * @author Gabriel Roldan
- * @source $URL$ datastore/src/main/java /org/geotools/arcsde/pool/ArcSDEConnectionConfig.java $
+ * @author Gabriel Roldan datastore/src/main/java
+ *     /org/geotools/arcsde/pool/ArcSDEConnectionConfig.java $
  * @version $Id$
  */
 public class ArcSDEDataStoreConfig {

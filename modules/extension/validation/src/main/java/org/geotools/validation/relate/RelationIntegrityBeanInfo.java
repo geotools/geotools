@@ -21,10 +21,7 @@ import java.beans.PropertyDescriptor;
 import java.util.ResourceBundle;
 import org.geotools.validation.DefaultIntegrityValidationBeanInfo;
 
-/**
- * @author bowens
- * @source $URL$
- */
+/** @author bowens */
 public abstract class RelationIntegrityBeanInfo extends DefaultIntegrityValidationBeanInfo {
 
     /** */

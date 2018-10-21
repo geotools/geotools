@@ -38,10 +38,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-/**
- * @author <a href="mailto:joel@lggi.com">Joel Skelton</a>
- * @source $URL$
- */
+/** @author <a href="mailto:joel@lggi.com">Joel Skelton</a> */
 public class GeometryTestParser {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");

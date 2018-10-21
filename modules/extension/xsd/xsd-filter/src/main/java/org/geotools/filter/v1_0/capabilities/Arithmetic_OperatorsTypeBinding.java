@@ -40,7 +40,6 @@ import org.opengis.filter.capability.Functions;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Arithmetic_OperatorsTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

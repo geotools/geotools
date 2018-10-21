@@ -7,7 +7,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-/** @source $URL$ */
 public interface SimpleFeatureStore
         extends FeatureStore<SimpleFeatureType, SimpleFeature>, SimpleFeatureSource {
 

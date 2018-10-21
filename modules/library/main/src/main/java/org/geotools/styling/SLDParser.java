@@ -62,9 +62,6 @@ import org.xml.sax.InputSource;
  * TODO: This really needs to be container ready
  *
  * @author jgarnett
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/library/main/src/main/java/org/geotools
- *     /styling/SLDParser.java $
  */
 public class SLDParser {
 

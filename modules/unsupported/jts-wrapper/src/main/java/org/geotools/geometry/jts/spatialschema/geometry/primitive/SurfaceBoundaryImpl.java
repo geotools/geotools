@@ -16,11 +16,7 @@ import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * LiteGO1 implementation of the SurfaceBoundary interface.
- *
- * @source $URL$
- */
+/** LiteGO1 implementation of the SurfaceBoundary interface. */
 public class SurfaceBoundaryImpl extends PrimitiveBoundaryImpl implements SurfaceBoundary {
     private static final long serialVersionUID = 8658623156496260842L;
 

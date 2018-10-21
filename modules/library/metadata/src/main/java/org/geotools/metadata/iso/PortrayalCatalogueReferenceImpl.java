@@ -26,7 +26,6 @@ import org.opengis.metadata.citation.Citation;
 /**
  * Information identifying the portrayal catalogue used.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

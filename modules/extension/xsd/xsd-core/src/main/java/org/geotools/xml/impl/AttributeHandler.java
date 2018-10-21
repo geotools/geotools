@@ -25,7 +25,6 @@ import org.eclipse.xsd.XSDAttributeDeclaration;
  * <p>An attribute handler corresponds to a specific attribute in a schema.
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
- * @source $URL$
  */
 public interface AttributeHandler extends Handler {
     /** @return The schema declaration of the attribute being handled. */

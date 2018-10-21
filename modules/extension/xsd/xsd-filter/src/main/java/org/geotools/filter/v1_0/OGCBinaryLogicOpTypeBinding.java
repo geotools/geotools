@@ -61,7 +61,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCBinaryLogicOpTypeBinding extends AbstractComplexBinding {
     private FilterFactory factory;

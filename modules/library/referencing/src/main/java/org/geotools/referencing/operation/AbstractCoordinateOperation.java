@@ -72,7 +72,6 @@ import si.uom.SI;
  * identify the exact type.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

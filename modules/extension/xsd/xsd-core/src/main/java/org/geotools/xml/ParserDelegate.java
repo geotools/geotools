@@ -36,7 +36,6 @@ import org.xml.sax.ContentHandler;
  *
  * @author Justin Deoliveira, OpenGEO
  * @see ParserDelegate2
- * @source $URL$
  */
 public interface ParserDelegate extends ContentHandler {
 

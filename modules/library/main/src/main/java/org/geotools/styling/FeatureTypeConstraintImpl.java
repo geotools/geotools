@@ -20,7 +20,6 @@ import java.util.Arrays;
 import org.geotools.util.Utilities;
 import org.opengis.filter.Filter;
 
-/** @source $URL$ */
 public class FeatureTypeConstraintImpl implements FeatureTypeConstraint, Cloneable {
     /** the feature type name */
     String featureTypeName;

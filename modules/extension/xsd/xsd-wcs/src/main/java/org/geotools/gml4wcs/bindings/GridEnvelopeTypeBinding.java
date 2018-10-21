@@ -32,7 +32,6 @@ import org.w3c.dom.Element;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GridEnvelopeTypeBinding extends AbstractComplexBinding {
 

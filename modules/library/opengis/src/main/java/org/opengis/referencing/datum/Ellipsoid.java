@@ -49,7 +49,6 @@ import org.opengis.referencing.IdentifiedObject;
  *     providing different {@code Ellipsoid} subclasses computing one parameter on-the-fly from the
  *     other one. The {@link #isIvfDefinitive isIvfDefinitive} attribute imported from OGC 01-004
  *     can be used for distinguishing between the two cases.
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

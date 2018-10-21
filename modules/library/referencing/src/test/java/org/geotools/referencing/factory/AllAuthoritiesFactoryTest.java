@@ -33,7 +33,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Tests the {@link AllAuthoritiesFactory} implementation.
  *
  * @author Martin Desruisseaux (IRD)
- * @source $URL$
  * @version $Id$
  */
 public final class AllAuthoritiesFactoryTest {

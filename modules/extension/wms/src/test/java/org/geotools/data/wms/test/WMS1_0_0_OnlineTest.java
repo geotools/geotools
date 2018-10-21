@@ -42,7 +42,6 @@ import org.geotools.xml.handlers.DocumentHandler;
 import org.geotools.xml.schema.Schema;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class WMS1_0_0_OnlineTest extends ServerTestCase {
     protected URL server;
     protected WMSSpecification spec;

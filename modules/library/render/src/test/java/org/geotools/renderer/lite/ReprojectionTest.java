@@ -45,7 +45,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Tests for rendering and reprojection
  *
  * @author wolf
- * @source $URL$
  */
 public class ReprojectionTest extends TestCase {
 

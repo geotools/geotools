@@ -62,7 +62,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Andrea Antonello - www.hydrologis.com
  * @since 1.1.0
- * @source $URL$
  */
 public class JGrassUtilities {
     public static final String NORTH = "NORTH"; // $NON-NLS-1$

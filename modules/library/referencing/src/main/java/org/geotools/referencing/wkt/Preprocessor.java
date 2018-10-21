@@ -58,7 +58,6 @@ import org.opengis.referencing.operation.MathTransform;
  * </blockquote>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

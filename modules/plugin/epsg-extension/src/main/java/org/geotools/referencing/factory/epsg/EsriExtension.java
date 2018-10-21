@@ -28,7 +28,6 @@ import org.opengis.referencing.FactoryException;
  * name space.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

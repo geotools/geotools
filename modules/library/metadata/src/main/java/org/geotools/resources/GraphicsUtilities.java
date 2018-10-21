@@ -33,7 +33,6 @@ import java.util.List;
  * since the extracted methods are not Swing specific.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

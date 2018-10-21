@@ -50,9 +50,6 @@ import org.geotools.xml.Parser;
  * <p>Mostly tests that the renderer produces an image at all.
  *
  * @author Simone Giannecchini
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/test/java/org/geotools
- *     /renderer/lite/RendererBaseTest.java $
  */
 public abstract class RendererBaseTest {
 

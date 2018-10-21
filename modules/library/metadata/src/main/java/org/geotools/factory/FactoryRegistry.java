@@ -79,7 +79,6 @@ import org.geotools.util.logging.Logging;
  *
  * @since 2.1
  * @version 19.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Richard Gould

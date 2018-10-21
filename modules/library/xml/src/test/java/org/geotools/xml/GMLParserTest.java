@@ -36,7 +36,6 @@ import org.xml.sax.SAXException;
  * DOCUMENT ME! @
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class GMLParserTest extends TestCase {
     public void testSchema() {

@@ -29,7 +29,6 @@ import org.opengis.util.Cloneable;
  *
  * @author ISO/DIS 19107
  * @author <A HREF="http://www.opengis.org">OpenGIS&reg; consortium</A>
- * @source $URL$
  * @version $Revision: 1.9 $, $Date: 2005/11/02 05:39:33 $
  * @revisit Version number: I suggest to use <strong>specification</strong> version number (here
  *     2.0).

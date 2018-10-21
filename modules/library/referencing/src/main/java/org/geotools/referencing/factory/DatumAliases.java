@@ -64,7 +64,6 @@ import org.opengis.util.ScopedName;
  * will takes advantage of the aliases table.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  * @author Martin Desruisseaux

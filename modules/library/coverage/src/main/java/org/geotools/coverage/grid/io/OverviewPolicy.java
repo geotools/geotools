@@ -20,7 +20,6 @@ package org.geotools.coverage.grid.io;
  * Overview policies.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Andrea Aime
  * @author Simone Giannecchini

@@ -81,7 +81,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the Styled Layer Descriptor schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class SLDConfiguration extends Configuration {
     /** Adds a dependency on {@link OGCConfiguration} */

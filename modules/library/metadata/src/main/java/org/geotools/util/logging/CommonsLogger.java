@@ -24,7 +24,6 @@ import org.apache.commons.logging.Log;
  * HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Saul Farber (MassGIS)

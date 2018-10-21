@@ -108,7 +108,6 @@ import si.uom.SI;
  * @author Bryce Nordgren / USDA Forest Service
  * @author Simone Giannecchini
  * @author Daniele Romagnoli
- * @source $URL$
  */
 public final class GeoTiffMetadata2CRSAdapter {
 

@@ -51,7 +51,6 @@ import org.w3c.dom.Node;
  * Utility class for creating test xml data for gml3 bindings.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GML3MockData {
     static CurvedGeometryFactory gf = new CurvedGeometryFactory(0.1);

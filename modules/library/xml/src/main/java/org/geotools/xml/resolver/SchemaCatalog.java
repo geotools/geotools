@@ -31,7 +31,6 @@ import org.apache.xml.resolver.CatalogManager;
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see
- * @source $URL$
  */
 public class SchemaCatalog {
 

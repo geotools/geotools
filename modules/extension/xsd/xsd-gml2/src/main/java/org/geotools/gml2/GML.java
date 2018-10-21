@@ -30,7 +30,6 @@ import org.opengis.feature.type.Schema;
  * schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GML extends XSD {
 

@@ -25,7 +25,6 @@ import org.opengis.geometry.primitive.Point;
 import org.opengis.geometry.primitive.PrimitiveFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class PrimitiveGeometryBuilderTest extends TestCase {
 
     CoordinateReferenceSystem crs_WGS84;

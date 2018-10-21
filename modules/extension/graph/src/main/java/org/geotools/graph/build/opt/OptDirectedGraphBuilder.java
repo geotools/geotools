@@ -29,7 +29,6 @@ import org.geotools.graph.structure.opt.OptDirectedNode;
  * @see org.geotools.graph.structure.opt.OptDirectedNode
  * @see org.geotools.graph.structure.opt.OptDirectedEdge
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class OptDirectedGraphBuilder extends BasicDirectedGraphBuilder {
 

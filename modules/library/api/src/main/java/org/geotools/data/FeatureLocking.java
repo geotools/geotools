@@ -44,7 +44,7 @@ import org.opengis.filter.Filter;
  * @author Chris Holmes, TOPP
  *
  *
- * @source $URL$
+ *
  * @version $Id$
  */
 public interface FeatureLocking<T extends FeatureType, F extends Feature>

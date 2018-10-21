@@ -29,7 +29,6 @@ import org.opengis.metadata.citation.Telephone;
  * @author Jody Garnett
  * @author Martin Desruisseaux
  * @since 2.1
- * @source $URL$
  */
 public class TelephoneImpl extends MetadataEntity implements Telephone {
     /** Serial number for interoperability with different versions. */

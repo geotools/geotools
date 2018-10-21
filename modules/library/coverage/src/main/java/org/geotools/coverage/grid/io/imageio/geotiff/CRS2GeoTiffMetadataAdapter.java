@@ -84,7 +84,6 @@ import tec.uom.se.AbstractUnit;
  *
  * @author Simone Giannecchini
  * @since 2.2
- * @source $URL$
  */
 public final class CRS2GeoTiffMetadataAdapter {
 

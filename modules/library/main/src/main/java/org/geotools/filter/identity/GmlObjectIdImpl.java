@@ -22,7 +22,6 @@ import org.opengis.filter.identity.GmlObjectId;
  * Implementation of {@link org.opengis.filter.identity.GmlObjectId}.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GmlObjectIdImpl implements GmlObjectId {
 

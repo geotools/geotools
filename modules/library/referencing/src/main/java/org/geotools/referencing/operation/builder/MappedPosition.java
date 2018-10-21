@@ -35,7 +35,6 @@ import org.opengis.referencing.operation.TransformException;
  * positions. Accuracy information and comments can optionnaly be attached.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  * @author Martin Desruisseaux

@@ -54,7 +54,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class BBOXTypeBinding extends OGCBBOXTypeBinding {
 

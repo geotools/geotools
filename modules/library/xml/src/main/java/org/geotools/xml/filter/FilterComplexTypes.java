@@ -64,7 +64,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * <p>Subclass must override encode and getValue as usual.
  *
  * @author dzwiers
- * @source $URL$
  */
 public class FilterComplexTypes {
     public static final String CACHE_SERVICE_EXCEPTIONS =

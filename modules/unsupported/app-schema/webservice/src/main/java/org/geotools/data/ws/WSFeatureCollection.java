@@ -33,14 +33,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * {@link XmlDataStore}.
  * 
  * @author rpetty
- * @version $Id$
  * @since 2.5.x
- *
- *
- *
- * @source $URL$
- *         http://svn.geotools.org/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/wfs/v_1_1_0
- *         /data/XmlSimpleFeatureParser.java $
  */
 
 public class WSFeatureCollection extends DataFeatureCollection implements XmlFeatureCollection {

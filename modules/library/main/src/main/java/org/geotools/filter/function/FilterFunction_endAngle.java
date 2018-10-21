@@ -27,7 +27,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.filter.capability.FunctionName;
 
-/** @source $URL$ */
 public class FilterFunction_endAngle extends FunctionExpressionImpl {
 
     public static FunctionName NAME =

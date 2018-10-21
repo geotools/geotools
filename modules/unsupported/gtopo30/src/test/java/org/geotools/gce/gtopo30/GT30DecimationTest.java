@@ -34,7 +34,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * gtopo30 format.
  *
  * @author Simone Giannecchini
- * @source $URL$
  */
 public class GT30DecimationTest extends GT30TestBase {
     /**

@@ -36,7 +36,6 @@ import org.opengis.filter.expression.PropertyName;
  * Filter parsing / encoding utility class.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class OGCUtils {
     /**

@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.TransformException;
  * </ol>
  *
  * @author Simone Giannecchini, GeoSolutions.
- * @source $URL$
  */
 public class MathTransformationAdapter implements MathTransformation {
 

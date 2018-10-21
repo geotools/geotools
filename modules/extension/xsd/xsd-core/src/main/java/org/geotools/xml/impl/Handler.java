@@ -34,7 +34,6 @@ import org.xml.sax.SAXException;
  * handler when an instance of the component is encountered in an instance document.
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
- * @source $URL$
  */
 public interface Handler {
     /** @return The entity of the schema that corresponds to the handler. */

@@ -67,7 +67,6 @@ import si.uom.SI;
  * themself if they know to maps two-dimensional coordinate systems.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @tutorial http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Parameters

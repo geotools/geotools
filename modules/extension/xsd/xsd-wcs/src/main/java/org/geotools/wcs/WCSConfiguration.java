@@ -44,7 +44,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/wcs schema.
  *
  * @generated
- * @source $URL$
  */
 public class WCSConfiguration extends Configuration {
 

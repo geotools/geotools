@@ -39,7 +39,6 @@ import org.opengis.util.ProgressListener;
  *     <p>Implementation of {@link FeatureCollection} for {@link PreGeneralizedSimpleFeature}
  *     <p>This collection is read only, modifying methods result in {@link
  *     UnsupportedOperationException}
- * @source $URL$
  */
 public class PreGeneralizedFeatureCollection implements SimpleFeatureCollection {
 

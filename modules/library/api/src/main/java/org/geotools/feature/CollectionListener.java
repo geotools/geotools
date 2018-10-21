@@ -22,7 +22,6 @@ import org.geotools.data.FeatureListener;
  * Interface to be implemented by all listeners of CollectionEvents.
  *
  * @author Ray Gallagher
- * @source $URL$
  * @version $Id$
  * @deprecated Use {@link FeatureListener}
  */

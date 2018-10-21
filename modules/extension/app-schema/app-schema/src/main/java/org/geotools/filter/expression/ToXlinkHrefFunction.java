@@ -38,7 +38,6 @@ import org.opengis.filter.expression.Literal;
  * </ol>
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class ToXlinkHrefFunction implements Function {
 

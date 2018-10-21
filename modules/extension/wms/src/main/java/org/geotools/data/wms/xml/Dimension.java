@@ -18,7 +18,6 @@ package org.geotools.data.wms.xml;
  * name="multipleValues" type="boolean"/> <attribute name="nearestValue" type="boolean"/> <attribute
  * name="current" type="boolean"/> </extension> </simpleContent> </complexType> </element>
  *
- * @source $URL$
  * @version SVN $Id$
  * @author Per Engstrom, Curalia AB, pereng@gmail.com
  */

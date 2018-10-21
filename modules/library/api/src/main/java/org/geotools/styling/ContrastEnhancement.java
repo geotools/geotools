@@ -56,7 +56,6 @@ import org.opengis.style.ContrastMethod;
  * are selected in a ContrastEnhancement, then no enhancement is performed.
  *
  * @author iant
- * @source $URL$
  */
 public interface ContrastEnhancement extends org.opengis.style.ContrastEnhancement {
     /**

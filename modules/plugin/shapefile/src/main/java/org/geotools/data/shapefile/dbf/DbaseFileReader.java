@@ -63,7 +63,6 @@ import org.geotools.resources.NIOUtilities;
  * </PRE></CODE>
  *
  * @author Ian Schneider, Andrea Aaime
- * @source $URL$
  */
 public class DbaseFileReader implements FileReader {
 

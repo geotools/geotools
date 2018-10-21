@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
-/** @source $URL$ */
 public class MultiLineHandler extends GeometryHandlerBase<MultiLineString> {
 
     List<Coordinate> coordinates;

@@ -25,7 +25,6 @@ import org.geotools.geometry.iso.util.Assert;
  * QuadRoot is the root of a single Quadtree. It is centred at the origin, and does not have a
  * defined extent.
  *
- * @source $URL$
  * @version 1.7.2
  */
 public class Root extends NodeBase {

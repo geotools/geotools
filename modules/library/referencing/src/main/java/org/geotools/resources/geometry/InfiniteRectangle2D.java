@@ -30,7 +30,6 @@ import java.io.Serializable;
  * in the {@link XRectangle2D} constructor for initializing a new {@code XRectangle2D} to infinite
  * bounds.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

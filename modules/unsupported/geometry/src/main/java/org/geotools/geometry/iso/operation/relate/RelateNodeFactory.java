@@ -22,11 +22,7 @@ import org.geotools.geometry.iso.topograph2D.Node;
 import org.geotools.geometry.iso.topograph2D.NodeFactory;
 import org.geotools.geometry.iso.topograph2D.NodeMap;
 
-/**
- * Used by the {@link NodeMap} in a {@link RelateNodeGraph} to create {@link RelateNode}s.
- *
- * @source $URL$
- */
+/** Used by the {@link NodeMap} in a {@link RelateNodeGraph} to create {@link RelateNode}s. */
 public class RelateNodeFactory extends NodeFactory {
     public Node createNode(Coordinate coord) {
         return new RelateNode(coord, new EdgeEndBundleStar());

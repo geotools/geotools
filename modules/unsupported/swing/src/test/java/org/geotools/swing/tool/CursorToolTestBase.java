@@ -40,7 +40,6 @@ import org.junit.Before;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public abstract class CursorToolTestBase extends GraphicsTestBase {

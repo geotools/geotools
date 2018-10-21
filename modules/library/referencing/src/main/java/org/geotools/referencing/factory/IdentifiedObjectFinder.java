@@ -45,7 +45,6 @@ import org.opengis.util.GenericName;
  * or "{@code AUTHORITY[...]}" element in <cite>Well Known Text</cite> terminology.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

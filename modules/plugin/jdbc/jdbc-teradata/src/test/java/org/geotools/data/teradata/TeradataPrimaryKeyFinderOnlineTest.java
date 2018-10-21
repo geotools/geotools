@@ -20,7 +20,6 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.jdbc.*;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class TeradataPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineTest {
 
     protected JDBCPrimaryKeyFinderTestSetup createTestSetup() {

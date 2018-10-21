@@ -22,7 +22,6 @@ import org.xml.sax.SAXException;
  * DOCUMENT ME!
  *
  * @author dzwiers
- * @source $URL$
  */
 public class ServiceException extends SAXException {
     /*

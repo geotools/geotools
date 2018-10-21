@@ -25,10 +25,7 @@ import org.opengis.temporal.TemporalReferenceSystem;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
 
     /** This is a name that uniquely identifies the temporal reference system. */

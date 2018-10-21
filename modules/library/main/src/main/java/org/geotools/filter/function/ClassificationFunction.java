@@ -37,7 +37,6 @@ import org.opengis.util.ProgressListener;
  *
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public abstract class ClassificationFunction extends DefaultExpression
         implements FunctionExpression {

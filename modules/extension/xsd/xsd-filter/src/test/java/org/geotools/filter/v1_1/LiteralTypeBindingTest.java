@@ -19,7 +19,6 @@ package org.geotools.filter.v1_1;
 import org.opengis.filter.expression.Literal;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class LiteralTypeBindingTest extends FilterTestSupport {
     public void testParse() throws Exception {
         FilterMockData.literal(document, document);

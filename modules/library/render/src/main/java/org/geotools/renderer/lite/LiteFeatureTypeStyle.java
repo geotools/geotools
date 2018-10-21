@@ -48,7 +48,6 @@ import org.opengis.filter.sort.SortBy;
  * <p>NOTE: a) this also sets up the image -- clears it et al.
  *
  * @author dblasby
- * @source $URL$
  */
 final class LiteFeatureTypeStyle {
 

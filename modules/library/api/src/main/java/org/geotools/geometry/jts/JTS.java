@@ -83,7 +83,6 @@ import org.opengis.referencing.operation.TransformException;
  * </ul>
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

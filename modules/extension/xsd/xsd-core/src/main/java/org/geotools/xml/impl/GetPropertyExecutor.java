@@ -28,7 +28,6 @@ import org.geotools.xml.ComplexBinding;
  * Gets children from a parent object, visiting bindings in teh hierachy until one is found.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GetPropertyExecutor implements BindingWalker.Visitor {
     /** logger */

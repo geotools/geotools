@@ -70,14 +70,10 @@ import org.xml.sax.Attributes;
  * <p>At the difference of the Filter subsystem, which works against Attribute contents (for example
  * to evaluate a comparison filter), the XPath subsystem, for which this class is the single entry
  * point, works against Attribute instances. That is, the result of an XPath expression, if a single
- * value, is an Attribtue, not the attribute content, or a List of Attributes, for instance.
+ * value, is an Attribute, not the attribute content, or a List of Attributes, for instance.
  *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/filter/XPath.java $
  * @since 2.4
  */
 public class XPath extends XPathUtil {

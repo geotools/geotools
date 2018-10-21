@@ -26,7 +26,7 @@ import org.geotools.data.dxf.header.DXFLayer;
 import org.geotools.data.dxf.header.DXFLineType;
 import org.geotools.data.dxf.header.DXFTables;
 
-/** @source $URL$ */
+
 public class DXFUnivers implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFUnivers.class);

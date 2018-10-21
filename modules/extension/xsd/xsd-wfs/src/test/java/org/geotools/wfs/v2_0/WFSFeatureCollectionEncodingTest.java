@@ -45,7 +45,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-/** @source $URL$ */
 public class WFSFeatureCollectionEncodingTest extends TestCase {
 
     MemoryDataStore store;

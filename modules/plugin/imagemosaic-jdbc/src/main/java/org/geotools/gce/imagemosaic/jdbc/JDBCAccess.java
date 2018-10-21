@@ -28,7 +28,6 @@ import org.geotools.geometry.GeneralEnvelope;
  * with the database system.
  *
  * @author mcr
- * @source $URL$
  */
 public interface JDBCAccess {
     /**

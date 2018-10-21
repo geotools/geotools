@@ -65,7 +65,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSNamedGroupBinding extends AbstractComplexBinding {
     /** @generated */

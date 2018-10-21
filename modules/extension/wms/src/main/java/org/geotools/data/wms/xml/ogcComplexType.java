@@ -22,7 +22,6 @@ import org.geotools.xml.schema.ElementGrouping;
 import org.geotools.xml.schema.Type;
 import org.geotools.xml.schema.impl.ComplexTypeGT;
 
-/** @source $URL$ */
 public class ogcComplexType extends ComplexTypeGT {
     public ogcComplexType(
             String name,

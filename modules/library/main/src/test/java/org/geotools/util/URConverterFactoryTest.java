@@ -21,7 +21,6 @@ import java.net.URI;
 import java.net.URL;
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class URConverterFactoryTest extends TestCase {
 
     URConverterFactory f;

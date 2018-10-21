@@ -41,7 +41,6 @@ import org.opengis.referencing.operation.OperationNotFoundException;
  *
  * @since 2.3
  * @version $Id$
- * @source $URL$
  * @author Simone Giannecchini
  * @author Martin Desruisseaux
  */

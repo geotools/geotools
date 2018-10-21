@@ -16,7 +16,6 @@ import org.opengis.filter.expression.Expression;
 /**
  * The "LinePlacement" specifies where and how a text label should be rendered relative to a line.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

@@ -22,7 +22,6 @@ import org.opengis.util.InternationalString;
  * Information about on-line sources from which the dataset, specification, or community profile
  * name and extended metadata elements can be obtained.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @author Cory Horner (Refractions Research)

@@ -24,7 +24,6 @@ import org.geotools.xml.SimpleBinding;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class AttributeEncodeExecutor implements BindingWalker.Visitor {
     /** the object being encoded * */
     Object object;

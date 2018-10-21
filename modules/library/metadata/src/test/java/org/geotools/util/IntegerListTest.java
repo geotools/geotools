@@ -25,7 +25,6 @@ import org.junit.*;
  * Tests {@link IntegerList} implementations.
  *
  * @author Martin Desruisseaux
- * @source $URL$
  * @version $Id$
  */
 public final class IntegerListTest {

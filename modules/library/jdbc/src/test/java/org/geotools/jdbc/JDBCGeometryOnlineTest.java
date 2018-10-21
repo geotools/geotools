@@ -34,8 +34,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Tests that geometry types can be properly created and retrieved back from the database. You might
  * need to override some of the tests method to fix the expectations for specific geometry class
  * types.
- *
- * @source $URL$
  */
 public abstract class JDBCGeometryOnlineTest extends JDBCTestSupport {
 

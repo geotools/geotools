@@ -26,7 +26,6 @@ import java.util.EventListener;
  * @author Andrea Aime
  * @see org.geotools.map.MapLayer
  * @see MapLayerEvent
- * @source $URL$
  */
 public interface MapLayerListener extends EventListener {
     /**

@@ -44,7 +44,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-/** @source $URL$ */
 public class PropertyExamples {
 
     static File directory;

@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * org.geotools.util.GenericName#DEFAULT_SEPARATOR} character.
  *
  * @author Martin Desruisseaux
- * @source $URL$
  */
 public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
         implements CRSAuthorityFactory,

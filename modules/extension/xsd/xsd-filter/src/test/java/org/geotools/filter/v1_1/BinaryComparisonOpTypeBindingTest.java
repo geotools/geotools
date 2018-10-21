@@ -26,7 +26,6 @@ import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class BinaryComparisonOpTypeBindingTest
         extends org.geotools.filter.v1_0.BinaryComparisonOpTypeBindingTest {
     public void testBinaryComparisonOpType() {

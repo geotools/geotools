@@ -27,10 +27,7 @@ import org.opengis.geometry.coordinate.Position;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.Cloneable;
 
-/**
- * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
- */
+/** @author Jackson Roehrig & Sanjay Jena */
 public class DirectPositionImpl implements DirectPosition, Cloneable, Serializable {
     private static final long serialVersionUID = 2327211794986364062L;
 

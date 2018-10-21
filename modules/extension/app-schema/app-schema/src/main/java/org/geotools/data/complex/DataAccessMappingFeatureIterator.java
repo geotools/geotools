@@ -92,10 +92,6 @@ import org.xml.sax.Attributes;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Russell Petty (GeoScience Victoria)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/DataAccessMappingFeatureIterator.java $
  * @since 2.4
  */
 public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIterator {

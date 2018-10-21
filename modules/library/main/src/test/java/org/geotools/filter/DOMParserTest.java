@@ -52,7 +52,6 @@ import org.w3c.dom.NodeList;
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
  * @author Chris Holmes, TOPP
- * @source $URL$
  */
 public class DOMParserTest extends FilterTestSupport {
     /** Feature on which to preform tests */

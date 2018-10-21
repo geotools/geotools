@@ -27,7 +27,6 @@ import org.geotools.resources.i18n.Errors;
  * axis), or because only some specific implementations can be formatted as WKT.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see Formatter#setInvalidWKT

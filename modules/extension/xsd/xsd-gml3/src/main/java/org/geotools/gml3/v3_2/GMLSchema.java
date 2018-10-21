@@ -19,7 +19,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.feature.type.Schema;
 
-/** @source $URL$ */
 public class GMLSchema extends SchemaImpl {
 
     /**

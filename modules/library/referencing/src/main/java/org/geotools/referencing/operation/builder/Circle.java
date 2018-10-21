@@ -23,7 +23,6 @@ import org.opengis.geometry.DirectPosition;
  * Simple Circle focused on Delaunays triangulation.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */

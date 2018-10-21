@@ -82,7 +82,6 @@ import org.opengis.referencing.operation.TransformException;
  * <p>NOTE As a type, GeometryImpl does not have a well-defined default state or value
  * representation as a data type. Instantiated subclasses of GeometryImpl will.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-101.pdf">Abstract Specification V5</A>
  * @author Jackson Roehrig & Sanjay Jena
  */

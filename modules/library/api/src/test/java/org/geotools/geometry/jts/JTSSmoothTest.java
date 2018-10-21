@@ -37,7 +37,6 @@ import org.locationtech.jts.geom.Polygon;
  * Unit tests for the JTS utility class smooth method.
  *
  * @author Michael Bedward
- * @source $URL$
  * @version $Id$
  * @since 2.8
  */

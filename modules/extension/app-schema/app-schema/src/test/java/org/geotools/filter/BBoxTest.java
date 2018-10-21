@@ -44,7 +44,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * This is to test bounding box query that previously didn't work for app-schema.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class BBoxTest extends AppSchemaTestSupport {
     private static FilterFactoryImpl ff;

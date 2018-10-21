@@ -52,7 +52,6 @@ import org.opengis.util.ProgressListener;
  * @author Simone Giannecchini (GeoSolutions)
  * @author Andrea Aime - GeoSolutions
  * @author Daniele Romagnoli - GeoSolutions
- * @source $URL$
  */
 @DescribeProcess(
     title = "Reclassify",

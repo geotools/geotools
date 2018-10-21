@@ -20,7 +20,6 @@ import java.io.Serializable;
  *
  * @author Jody Garnett (Refractions Research, Inc.)
  * @author Martin Desruisseaux (Geomatys)
- * @source $URL$
  */
 public final class NilExpression implements Expression, Serializable {
     /** For cross-version compatibility. */

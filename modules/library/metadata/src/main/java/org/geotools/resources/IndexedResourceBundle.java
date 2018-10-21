@@ -45,7 +45,6 @@ import org.opengis.util.InternationalString;
  * class also provides facilities for string formatting using {@link MessageFormat}.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

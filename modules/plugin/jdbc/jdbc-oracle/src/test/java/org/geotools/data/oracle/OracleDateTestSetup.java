@@ -3,7 +3,6 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class OracleDateTestSetup extends JDBCDateTestSetup {
 
     protected OracleDateTestSetup(JDBCTestSetup delegate) {

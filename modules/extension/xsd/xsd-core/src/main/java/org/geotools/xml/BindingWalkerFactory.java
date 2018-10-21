@@ -24,7 +24,6 @@ import org.geotools.xml.impl.BindingWalker;
  *
  * @author Justin Deoliveira, The Open Planning Project
  *     <p>TODO: rename, this isnt really a factory!!
- * @source $URL$
  */
 public interface BindingWalkerFactory {
     /** Walks over the bindings for a particular xml component. */

@@ -30,7 +30,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/sld schema.
  *
  * @generated
- * @source $URL$
  */
 public class SLDConfiguration extends Configuration {
 

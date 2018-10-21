@@ -26,7 +26,6 @@ import org.geotools.xml.XSD;
  * http://www.w3.org/2001/SMIL20/Language schema.
  *
  * @generated
- * @source $URL$
  */
 public final class SMIL20LANG extends XSD {
     /** singleton instance */

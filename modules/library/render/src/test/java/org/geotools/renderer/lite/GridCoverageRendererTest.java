@@ -129,10 +129,7 @@ import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-/**
- * @author Simone Giannecchini
- * @source $URL$
- */
+/** @author Simone Giannecchini */
 public class GridCoverageRendererTest {
 
     private static final String AFRICA_EQUIDISTANT_CONIC_WKT =

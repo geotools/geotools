@@ -72,14 +72,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * mapping SDE types to Java ones and JTS Geometries, etc.
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
- *     /java/org/geotools/arcsde/data/ArcSDEAdapter.java $
- * @version $Id$
  */
 @SuppressWarnings("deprecation")
 public class ArcSDEAdapter {
-    /** Logger for ths class' package */
+    /** Logger for this class' package */
     private static final Logger LOGGER = Logging.getLogger(ArcSDEAdapter.class.getName());
 
     /** mappings of SDE attribute's types to Java ones */

@@ -76,7 +76,6 @@ import org.geotools.util.logging.Logging;
  * </blockquote>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

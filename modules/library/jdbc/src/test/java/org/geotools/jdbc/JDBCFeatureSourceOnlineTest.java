@@ -50,7 +50,6 @@ import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
     protected ContentFeatureSource featureSource;
 

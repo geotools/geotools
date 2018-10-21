@@ -43,8 +43,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * fids.setPropertyNames( new String[0] );
  * featureSource.getFeatures( fids );
  * </code></pre>
- *
- * @source $URL$
  */
 class FIDSQuery extends Query {
     /** Empty String array */

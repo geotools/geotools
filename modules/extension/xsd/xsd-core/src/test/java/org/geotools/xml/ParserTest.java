@@ -33,7 +33,6 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
 
-/** @source $URL$ */
 public class ParserTest extends TestCase {
     public void testParse() throws Exception {
         Parser parser = new Parser(new MLConfiguration());

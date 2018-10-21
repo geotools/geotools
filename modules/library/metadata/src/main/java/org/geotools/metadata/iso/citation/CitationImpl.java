@@ -36,7 +36,6 @@ import org.opengis.util.InternationalString;
  * Standardized resource reference.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett

@@ -45,7 +45,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)
- * @source $URL$
  */
 public final class StatisticsOperationsTest extends GridProcessingTestBase {
     /**

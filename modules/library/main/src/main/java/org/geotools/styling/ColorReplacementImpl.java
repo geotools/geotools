@@ -24,7 +24,6 @@ import org.opengis.style.StyleVisitor;
  * function as defined by SymbologyEncoding 1.1.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class ColorReplacementImpl implements org.geotools.styling.ColorReplacement {
 

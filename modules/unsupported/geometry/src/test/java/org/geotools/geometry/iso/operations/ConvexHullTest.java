@@ -42,7 +42,6 @@ import org.opengis.geometry.primitive.Surface;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class ConvexHullTest extends TestCase {
 
     private GeometryBuilder builder = null;

@@ -44,7 +44,6 @@ import org.opengis.util.InternationalString;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DescriptionBinding extends AbstractComplexBinding {
 

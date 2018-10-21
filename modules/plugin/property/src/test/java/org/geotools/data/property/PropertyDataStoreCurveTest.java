@@ -45,7 +45,6 @@ import org.opengis.filter.FilterFactory2;
  * Test functioning of PropertyDataStore (used as conformance testing).
  *
  * @author Jody Garnett (LISAsoft)
- * @source $URL$
  */
 public class PropertyDataStoreCurveTest extends TestCase {
     PropertyDataStore store;

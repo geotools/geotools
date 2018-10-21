@@ -35,7 +35,6 @@ import org.opengis.referencing.operation.TransformException;
  * OverviewsController}
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public class ReadParamsController {
 

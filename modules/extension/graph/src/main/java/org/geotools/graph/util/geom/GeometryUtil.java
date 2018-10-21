@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 
-/** @source $URL$ */
 public class GeometryUtil {
 
     private static GeometryFactory geomFactory;

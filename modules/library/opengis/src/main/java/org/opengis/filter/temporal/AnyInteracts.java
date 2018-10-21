@@ -32,7 +32,6 @@ import org.opengis.annotation.XmlElement;
  * @author Justin Deoliveira, OpenGeo
  * @see http://portal.opengeospatial.org/files/?artifact_id=39968
  * @since 8.0
- * @source $URL$
  */
 @XmlElement("AnyInteracts")
 public interface AnyInteracts extends BinaryTemporalOperator {

@@ -40,7 +40,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  *
  * @author Justin Deoliveira, OpenGEO
  * @author Nikolaos Pringouris <nprigour@gmail.com> added support for MySQL versions 5.6 (and above)
- * @source $URL$
  */
 public class MySQLDialectBasic extends BasicSQLDialect {
 

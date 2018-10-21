@@ -53,7 +53,6 @@ import org.opengis.referencing.operation.Matrix;
  * {@link #getTargetDimensions}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini

@@ -24,7 +24,6 @@ import org.geotools.filter.expression.ExpressionAbstract;
  * Implements a default expression, with helpful variables and static methods.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public abstract class DefaultExpression extends ExpressionAbstract {

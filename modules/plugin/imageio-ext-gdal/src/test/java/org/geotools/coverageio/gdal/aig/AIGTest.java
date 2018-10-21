@@ -42,7 +42,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link IDRISIReader}
- * @source $URL$
  */
 public final class AIGTest extends GDALTestCase {
     /** file name of a valid AIG sample data to be used for tests. */

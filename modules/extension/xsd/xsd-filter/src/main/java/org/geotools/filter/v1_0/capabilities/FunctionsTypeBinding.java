@@ -39,7 +39,6 @@ import org.opengis.filter.capability.Functions;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FunctionsTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

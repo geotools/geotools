@@ -30,7 +30,6 @@ import org.opengis.util.Cloneable;
  * DOCUMENT ME!
  *
  * @author Ian Turton, CCG
- * @source $URL$
  * @version $Id$
  */
 public class DisplacementImpl implements Displacement, Cloneable {

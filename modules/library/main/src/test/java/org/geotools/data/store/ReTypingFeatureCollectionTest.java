@@ -27,7 +27,6 @@ import org.geotools.feature.visitor.UniqueVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
-/** @source $URL$ */
 public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
     public void testSchema() throws Exception {

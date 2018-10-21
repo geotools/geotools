@@ -29,7 +29,6 @@ import org.geotools.factory.GeoTools;
  * A datasource factory SPI doing JDNI lookups
  *
  * @author Administrator
- * @source $URL$
  */
 public class JNDIDataSourceFactory extends AbstractDataSourceFactorySpi {
 

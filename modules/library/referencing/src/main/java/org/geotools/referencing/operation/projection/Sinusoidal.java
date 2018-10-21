@@ -42,7 +42,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/sinusoidal.html">"Sinusoidal" on
  *     RemoteSensing.org</A>
  * @since 14.0
- * @source $URL$
  * @author Mihail Andreev
  */
 public class Sinusoidal extends MapProjection {

@@ -38,7 +38,6 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  *
  * @author Simone Giannecchini, GeoSolutions S.A.S.
  * @since 2.3
- * @source $URL$
  */
 public final class ImageMosaicFormatFactory implements GridFormatFactorySpi {
 

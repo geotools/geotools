@@ -23,7 +23,6 @@ import org.geotools.factory.Hints;
  * ConverterFactory for handling qname conversions.
  *
  * @author Niels Charlier
- * @source $URL$
  */
 public class QNameConverterFactory implements ConverterFactory {
 

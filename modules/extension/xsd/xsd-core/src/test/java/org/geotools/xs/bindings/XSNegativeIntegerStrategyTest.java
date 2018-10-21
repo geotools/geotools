@@ -21,7 +21,6 @@ import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
-/** @source $URL$ */
 public class XSNegativeIntegerStrategyTest extends TestSchema {
     /**
      * negativeInteger has a lexical representation consisting of a negative sign ("-") followed by

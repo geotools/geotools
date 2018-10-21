@@ -24,8 +24,6 @@ import java.util.Set;
  *
  * <p>This class serves as the implementation of the constant Transaction.NONE. It is a NullObject
  * and we feel no need to make this class public.
- *
- * @source $URL$
  */
 class AutoCommitTransaction implements Transaction {
     /**

@@ -52,7 +52,6 @@ import org.opengis.filter.expression.Literal;
  * </ol>
  *
  * @author Jody Garnett (GeoServer)
- * @source $URL$
  */
 public class VocabFunction implements Function {
 

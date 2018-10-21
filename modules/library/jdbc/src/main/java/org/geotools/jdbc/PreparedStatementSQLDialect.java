@@ -41,7 +41,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  * SQL dialect which uses prepared statements for database interaction.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public abstract class PreparedStatementSQLDialect extends SQLDialect {
 

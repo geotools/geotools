@@ -29,10 +29,6 @@ import org.opengis.feature.type.Name;
  * SampleDataAccessFactory}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/sample-data-access
- *     /src/main/java/org/geotools/data/SampleDataAccess.java $
  * @since 2.6
  */
 @SuppressWarnings("serial")

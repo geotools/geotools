@@ -49,7 +49,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @since 2.7
  * @version 8.0
- * @source $URL$
  */
 public class FeatureLayer extends StyleLayer {
 

@@ -40,7 +40,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MLMailsTypeBinding extends AbstractComplexBinding {
     /** @generated */

@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLMultiPolygonTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance mp;
     ElementInstance poly1;

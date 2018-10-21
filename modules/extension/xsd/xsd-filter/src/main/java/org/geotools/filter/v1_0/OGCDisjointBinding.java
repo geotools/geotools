@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.Disjoint;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCDisjointBinding extends AbstractComplexBinding {
     FilterFactory2 filterFactory;

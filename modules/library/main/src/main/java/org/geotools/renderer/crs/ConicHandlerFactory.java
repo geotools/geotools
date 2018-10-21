@@ -36,7 +36,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * geometries too close to pole on the open ended side of the cone.
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class ConicHandlerFactory implements ProjectionHandlerFactory {
 

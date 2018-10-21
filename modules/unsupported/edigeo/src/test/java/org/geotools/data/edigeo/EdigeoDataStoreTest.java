@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-/** @source $URL$ */
+
 public class EdigeoDataStoreTest extends TestCase {
     private EdigeoDataStore eds;
 

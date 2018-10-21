@@ -66,7 +66,6 @@ import org.opengis.util.InternationalString;
  * must of them should be seen as temporary implementations.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini, GeoSolutions

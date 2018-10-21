@@ -32,7 +32,6 @@ import org.opengis.filter.identity.Version;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 8.0
- * @source $URL$
  */
 public class ResourceIdImpl extends FeatureIdVersionedImpl implements ResourceId {
 

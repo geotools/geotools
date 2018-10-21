@@ -161,7 +161,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * Implementation of the FilterFactory, generates the filter implementations in defaultcore.
  *
  * @author Ian Turton, CCG
- * @source $URL$
  * @version $Id$
  */
 public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFactory2 {

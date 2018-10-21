@@ -68,8 +68,6 @@ import org.opengis.style.GraphicLegend;
  *   &lt;/xsd:complexType&gt;
  * &lt;/xsd:element&gt;
  * </code></pre>
- *
- * @source $URL$
  */
 public interface Rule extends org.opengis.style.Rule {
 

@@ -45,7 +45,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDGraphicStrokeBinding extends AbstractComplexBinding {
     /** @generated */

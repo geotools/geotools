@@ -26,7 +26,6 @@ import org.geotools.resources.Classes;
  * A style that contains the specification to renderer both the contour and the interior of a shape
  *
  * @author Andrea Aime
- * @source $URL$
  * @version $Id$
  */
 public class PolygonStyle2D extends LineStyle2D {

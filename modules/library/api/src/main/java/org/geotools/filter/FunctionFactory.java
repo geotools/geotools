@@ -38,7 +38,6 @@ import org.opengis.filter.expression.Literal;
  * @author Justin Deoliveira (Boundless)
  * @since 2.7
  * @see Function
- * @source $URL$
  */
 public interface FunctionFactory {
 

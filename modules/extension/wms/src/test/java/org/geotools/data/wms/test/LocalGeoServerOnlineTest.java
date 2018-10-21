@@ -108,7 +108,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </pre>
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class LocalGeoServerOnlineTest extends TestCase {
 

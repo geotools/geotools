@@ -26,7 +26,6 @@ import org.picocontainer.defaults.BasicComponentParameter;
  * <p>This class is a hack of pico container... it should be used with care.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class OptionalComponentParameter extends BasicComponentParameter {
     public OptionalComponentParameter() {

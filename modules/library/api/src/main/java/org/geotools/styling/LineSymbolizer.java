@@ -63,7 +63,6 @@ import org.opengis.filter.expression.Expression;
  * </ul>
  *
  * @author James Macgill, CCG
- * @source $URL$
  * @version $Id$
  */
 public interface LineSymbolizer extends org.opengis.style.LineSymbolizer, Symbolizer {

@@ -30,7 +30,6 @@ import org.opengis.util.Cloneable;
  * Tests style cloning
  *
  * @author Sean Geoghegan
- * @source $URL$
  */
 public class StyleObjectTest extends TestCase {
     private StyleFactory styleFactory;

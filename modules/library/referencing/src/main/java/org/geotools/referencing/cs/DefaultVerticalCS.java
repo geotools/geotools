@@ -41,7 +41,6 @@ import org.opengis.referencing.cs.VerticalCS;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

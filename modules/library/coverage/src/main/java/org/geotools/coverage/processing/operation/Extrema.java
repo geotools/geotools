@@ -69,7 +69,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Simone Giannecchini
  * @since 2.4
- * @source $URL$
  */
 public class Extrema extends BaseStatisticsOperationJAI {
 

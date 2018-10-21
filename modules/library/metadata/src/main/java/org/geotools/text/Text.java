@@ -28,7 +28,6 @@ import org.opengis.util.InternationalString;
  * Helper class for working with InternaionalString and other forms of Text.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class Text {
     // additional methods needed to register additional

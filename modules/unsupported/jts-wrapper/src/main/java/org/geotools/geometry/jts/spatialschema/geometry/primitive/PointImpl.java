@@ -41,7 +41,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author SYS Technologies
  * @author crossley
  * @author cdillard
- * @source $URL$
  * @version $Revision $
  */
 public class PointImpl extends GeometryImpl implements Point {

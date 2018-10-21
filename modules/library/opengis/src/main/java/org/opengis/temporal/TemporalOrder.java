@@ -22,7 +22,6 @@ import org.opengis.annotation.UML;
  * @author Alexander Petkov
  * @todo The javadoc suggests that this interface should extends some kind of {@link
  *     TemporalPrimitive}.
- * @source $URL$
  */
 @UML(identifier = "TM_Order", specification = ISO_19108)
 public interface TemporalOrder {

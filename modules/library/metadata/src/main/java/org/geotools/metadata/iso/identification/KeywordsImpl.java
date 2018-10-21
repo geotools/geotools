@@ -29,7 +29,6 @@ import org.opengis.util.InternationalString;
 /**
  * Keywords, their type and reference source.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

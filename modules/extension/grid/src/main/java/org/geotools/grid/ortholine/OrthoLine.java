@@ -31,7 +31,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author mbedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class OrthoLine implements LineElement {

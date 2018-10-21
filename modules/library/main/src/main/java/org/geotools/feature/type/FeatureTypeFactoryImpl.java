@@ -45,7 +45,6 @@ import org.opengis.util.InternationalString;
  * messages. The code serves as a good example, but is not optimized for any particular use.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class FeatureTypeFactoryImpl implements FeatureTypeFactory {
     /** Used for spatial content */

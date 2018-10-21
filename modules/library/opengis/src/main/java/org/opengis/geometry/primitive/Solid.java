@@ -18,7 +18,6 @@ import org.opengis.annotation.UML;
 /**
  * Basis for 3-dimensional geometry. The extent of a solid is defined by the boundary surfaces.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

@@ -22,7 +22,6 @@ import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class SurfacePatchArrayPropertyTypeBinding
         extends org.geotools.gml3.bindings.SurfacePatchArrayPropertyTypeBinding {
 

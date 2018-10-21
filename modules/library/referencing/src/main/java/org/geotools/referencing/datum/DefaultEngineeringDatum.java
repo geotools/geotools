@@ -33,7 +33,6 @@ import org.opengis.referencing.datum.EngineeringDatum;
  * ship or satellite).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

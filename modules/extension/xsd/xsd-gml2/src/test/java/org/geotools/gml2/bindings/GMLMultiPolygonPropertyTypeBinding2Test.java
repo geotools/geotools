@@ -21,7 +21,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLMultiPolygonPropertyTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(MultiPolygon.class, binding(GML.MultiPolygonPropertyType).getType());

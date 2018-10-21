@@ -53,7 +53,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSSimpleRestrictionTypeBinding extends AbstractComplexBinding {
     /** @generated */

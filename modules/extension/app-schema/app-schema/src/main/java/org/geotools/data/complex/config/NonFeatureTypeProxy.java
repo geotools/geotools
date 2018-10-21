@@ -38,9 +38,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * as a feature since it would have a feature source.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/config/NonFeatureTypeProxy.java $
  */
 public class NonFeatureTypeProxy extends ComplexTypeProxy implements FeatureType {
 

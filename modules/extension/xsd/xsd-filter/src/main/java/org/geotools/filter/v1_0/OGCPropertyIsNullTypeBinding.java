@@ -48,7 +48,6 @@ import org.opengis.filter.expression.PropertyName;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCPropertyIsNullTypeBinding extends AbstractComplexBinding {
     private FilterFactory factory;

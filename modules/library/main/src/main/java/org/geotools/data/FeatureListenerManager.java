@@ -37,7 +37,6 @@ import org.opengis.feature.type.FeatureType;
  * order to cut down on memory leaks.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class FeatureListenerManager {
     private static final Logger LOGGER =

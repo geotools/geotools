@@ -71,7 +71,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  *
  *
- * @source $URL$
+
  *         DataAccessFinderTest.java $
  */
 public class XmlDataStoreTest extends TestCase {

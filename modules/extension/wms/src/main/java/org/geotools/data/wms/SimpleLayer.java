@@ -22,7 +22,6 @@ import java.util.Set;
  * A simple bean that represents a layer name paired with a style name for use in requests.
  *
  * @author Richard Gould, Refractions Research Inc.
- * @source $URL$
  */
 public class SimpleLayer {
     /** Name of layer */

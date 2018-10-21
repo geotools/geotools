@@ -80,7 +80,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the filter 1.1 schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class OGCConfiguration extends Configuration {
     /** Adds a dependency on {@link GMLConfiguration} */

@@ -54,7 +54,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Justin
  * @author Andrea Aime
- * @source $URL$
  */
 public class SimpleFeatureImpl implements SimpleFeature {
 

@@ -53,7 +53,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * dtd references. If an {@link EntityResolver} is provided it will be used.
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
- * @source $URL$
  * @version $Id$
  * @see XMLElementHandler
  */

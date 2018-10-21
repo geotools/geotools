@@ -51,7 +51,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-/** @source $URL$ */
 public class LabelObstacleTest {
 
     static MemoryDataStore mem;

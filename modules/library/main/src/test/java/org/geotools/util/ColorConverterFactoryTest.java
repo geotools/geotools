@@ -21,7 +21,6 @@ import junit.framework.TestCase;
 import org.geotools.factory.Hints;
 import org.geotools.filter.ConstantExpression;
 
-/** @source $URL$ */
 public class ColorConverterFactoryTest extends TestCase {
 
     private static final Color THISTLE = new Color(216, 191, 216);

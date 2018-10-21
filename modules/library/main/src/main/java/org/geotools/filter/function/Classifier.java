@@ -21,7 +21,6 @@ package org.geotools.filter.function;
  * then pass it to a ClassifyFunction.
  *
  * @author Cory Horner, Refractions Research
- * @source $URL$
  */
 public abstract class Classifier {
 

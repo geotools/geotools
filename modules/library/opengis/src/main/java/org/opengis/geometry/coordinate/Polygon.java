@@ -25,7 +25,6 @@ import org.opengis.geometry.primitive.SurfacePatch;
  * these curves adhere. The default is that the curves are coplanar and the polygon uses planar
  * interpolation in its interior.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

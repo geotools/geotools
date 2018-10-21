@@ -41,7 +41,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class UserLayerTest extends TestCase {
 
     private static final String CRS_WKT =

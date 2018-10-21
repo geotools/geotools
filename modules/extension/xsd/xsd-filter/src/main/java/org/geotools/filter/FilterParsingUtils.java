@@ -46,7 +46,6 @@ import org.opengis.filter.temporal.BinaryTemporalOperator;
  * parsing.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class FilterParsingUtils {
 

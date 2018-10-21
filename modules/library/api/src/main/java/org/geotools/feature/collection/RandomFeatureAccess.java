@@ -31,7 +31,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * reprsentation where only (beginId,endId] ranges are kept in memory.
  *
  * @author Jody Garnett, Refractions Research Inc.
- * @source $URL$
  */
 public interface RandomFeatureAccess extends SimpleFeatureCollection {
     /**

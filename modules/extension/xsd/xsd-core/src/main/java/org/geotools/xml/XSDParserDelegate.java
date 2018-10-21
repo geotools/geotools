@@ -30,7 +30,6 @@ import org.xml.sax.SAXException;
  *
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6
- * @source $URL$
  */
 public class XSDParserDelegate implements ParserDelegate {
 

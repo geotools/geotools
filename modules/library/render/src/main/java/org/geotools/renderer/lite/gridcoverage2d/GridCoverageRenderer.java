@@ -110,7 +110,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Andrea Aime, GeoSolutions SAS
  * @author Alessio Fabiani, GeoSolutions SAS
- * @source $URL$
  * @version $Id$
  */
 @SuppressWarnings("deprecation")

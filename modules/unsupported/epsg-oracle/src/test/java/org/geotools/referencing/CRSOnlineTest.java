@@ -35,7 +35,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
 /**
  * Tests if the CRS utility class is functioning correctly when using EPSG-Oracle datastore.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

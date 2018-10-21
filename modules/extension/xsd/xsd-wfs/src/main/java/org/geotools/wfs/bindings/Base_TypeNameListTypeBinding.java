@@ -37,7 +37,6 @@ import org.geotools.xml.InstanceComponent;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Base_TypeNameListTypeBinding extends AbstractSimpleBinding {
     public Base_TypeNameListTypeBinding(WfsFactory factory) {}

@@ -25,7 +25,7 @@ import org.geotools.jdbc.JDBCJNDITestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public  class IngresJNDIDataSourceTest extends JDBCJNDIDataSourceTest {
 

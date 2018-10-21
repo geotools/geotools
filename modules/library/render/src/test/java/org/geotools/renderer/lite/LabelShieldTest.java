@@ -24,7 +24,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class LabelShieldTest {
 
     private static final long TIME = 1000;

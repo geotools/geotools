@@ -26,7 +26,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class DefaultFeatureResultsTest extends TestCase {
 
     public void testMaxFeatureOptimized() throws Exception {

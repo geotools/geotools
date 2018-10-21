@@ -26,7 +26,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(PropertyIsLike.class, binding(OGC.PropertyIsLikeType).getType());

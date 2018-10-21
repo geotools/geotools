@@ -38,7 +38,6 @@ import org.opengis.coverage.grid.Format;
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
- * @source $URL$
  */
 public final class JP2KFormatFactory implements GridFormatFactorySpi {
     /** Logger. */

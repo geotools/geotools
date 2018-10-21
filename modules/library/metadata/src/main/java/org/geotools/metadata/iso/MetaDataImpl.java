@@ -42,7 +42,6 @@ import org.opengis.referencing.ReferenceSystem;
 /**
  * Root entity which defines metadata about a resource or resources.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

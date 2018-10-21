@@ -28,7 +28,6 @@ import org.opengis.metadata.quality.ConformanceResult;
 /**
  * Tests {@link Citations} and related constants.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

@@ -26,11 +26,7 @@ import org.geotools.geometry.iso.topograph2D.EdgeEndStar;
 import org.geotools.geometry.iso.topograph2D.IntersectionMatrix;
 import org.geotools.geometry.iso.topograph2D.Node;
 
-/**
- * Represents a node in the topological graph used to compute spatial relationships.
- *
- * @source $URL$
- */
+/** Represents a node in the topological graph used to compute spatial relationships. */
 public class RelateNode extends Node {
 
     public RelateNode(Coordinate coord, EdgeEndStar edges) {

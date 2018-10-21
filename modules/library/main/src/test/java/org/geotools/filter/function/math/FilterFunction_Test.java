@@ -24,7 +24,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-/** @source $URL$ */
 public class FilterFunction_Test extends TestCase {
 
     private Literal literal_1 = null;

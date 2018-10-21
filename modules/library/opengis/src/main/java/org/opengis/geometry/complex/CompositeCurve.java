@@ -24,7 +24,6 @@ import org.opengis.geometry.primitive.OrientableCurve;
  * orientation in a manner such that each curve (except the first) begins where the previous one
  * ends.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

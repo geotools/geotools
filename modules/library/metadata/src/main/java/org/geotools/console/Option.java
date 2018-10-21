@@ -26,7 +26,6 @@ import java.lang.annotation.Target;
  * A command-line option.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

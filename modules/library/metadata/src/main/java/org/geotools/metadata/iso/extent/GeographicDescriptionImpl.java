@@ -25,7 +25,6 @@ import org.opengis.metadata.extent.GeographicDescription;
 /**
  * Description of the geographic area using identifiers.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

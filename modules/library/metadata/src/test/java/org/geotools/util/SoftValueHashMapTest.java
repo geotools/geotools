@@ -30,7 +30,6 @@ import org.junit.*;
 /**
  * Tests {@link SoftValueHashMap}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Ugo Moschini

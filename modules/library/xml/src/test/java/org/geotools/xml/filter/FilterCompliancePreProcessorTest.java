@@ -27,7 +27,6 @@ import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
-/** @source $URL$ */
 public class FilterCompliancePreProcessorTest extends TestCase {
 
     @Override

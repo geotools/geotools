@@ -46,7 +46,6 @@ import org.opengis.filter.sort.SortBy;
  *       presenting {@link Collection} classes as a FeatureCollection.
  *
  * @author Jody Garnett (LISAsoft)
- * @source $URL$
  */
 public abstract class AbstractFeatureCollection implements SimpleFeatureCollection {
     /** id used when serialized to gml */

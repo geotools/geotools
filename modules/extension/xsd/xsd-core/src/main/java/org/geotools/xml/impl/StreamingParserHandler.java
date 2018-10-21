@@ -19,7 +19,6 @@ package org.geotools.xml.impl;
 import org.geotools.xml.Configuration;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class StreamingParserHandler extends ParserHandler {
     /** stream buffer * */
     Buffer buffer;

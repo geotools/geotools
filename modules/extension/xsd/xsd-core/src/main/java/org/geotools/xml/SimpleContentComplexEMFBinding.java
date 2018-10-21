@@ -30,7 +30,6 @@ import org.w3c.dom.Element;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @see ComplexEMFBinding
- * @source $URL$
  */
 public class SimpleContentComplexEMFBinding extends ComplexEMFBinding {
 

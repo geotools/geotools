@@ -30,7 +30,6 @@ import org.geotools.factory.GeoTools;
  *
  * @author Ian Schneider
  * @deprecated Use DefaultFeatureCollection
- * @source $URL$
  */
 public abstract class FeatureCollections implements Factory {
 

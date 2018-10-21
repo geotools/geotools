@@ -28,7 +28,6 @@ import java.util.List;
  * @see ParameterValueGroup#values
  * @see ParameterDescriptor#getMinimumOccurs
  * @see ParameterDescriptor#getMaximumOccurs
- * @source $URL$
  */
 public class InvalidParameterCardinalityException extends IllegalStateException {
     /** Serial number for interoperability with different versions. */

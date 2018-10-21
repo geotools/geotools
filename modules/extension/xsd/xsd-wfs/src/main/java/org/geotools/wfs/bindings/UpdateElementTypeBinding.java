@@ -120,7 +120,6 @@ import org.opengis.filter.Filter;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class UpdateElementTypeBinding extends AbstractComplexEMFBinding {
     WfsFactory wfsfactory;

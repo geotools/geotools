@@ -42,7 +42,6 @@ import org.opengis.referencing.crs.GeographicCRS;
  *
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class HTTP_URI_AuthorityFactoryTest {
 

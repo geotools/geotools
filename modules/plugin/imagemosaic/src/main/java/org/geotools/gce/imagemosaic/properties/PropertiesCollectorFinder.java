@@ -25,10 +25,7 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
 
-/**
- * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
- */
+/** @author Simone Giannecchini, GeoSolutions SAS */
 public final class PropertiesCollectorFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static FactoryRegistry registry;

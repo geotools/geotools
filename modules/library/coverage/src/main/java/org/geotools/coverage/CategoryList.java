@@ -295,10 +295,10 @@ class CategoryList extends AbstractList<Category> implements Comparator<Category
 
     /**
      * Effectue une recherche bi-linéaire de la valeur spécifiée. Cette méthode est semblable à
-     * {@link Arrays#binarySearch(double[],double)}, excepté qu'elle peut distinguer différentes
+     * {@code Arrays#binarySearch(double[],double)}, excepté qu'elle peut distinguer différentes
      * valeurs de NaN.
      *
-     * <p>Note: This method is not private in order to allows testing by {@link CategoryTest}.
+     * <p>Note: This method is not private in order to allow testing by {@link CategoryTest}.
      */
     static int binarySearch(final double[] array, final double key) {
         int low = 0;

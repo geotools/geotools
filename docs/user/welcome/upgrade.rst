@@ -1581,7 +1581,7 @@ h4. After (GeoTools 2.4 Code)::
             PropertyIsGreaterThan filter = ff.greater( left, right );
 
             assertTrue( filter.evaluate( null ) );
-            assertTrue( Fitler.INCLUDE != filter );
+            assertTrue( Filter.INCLUDE != filter );
         }
 
 1. Substitute

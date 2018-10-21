@@ -5,7 +5,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-/** FitlerBuilder acting as a simple wrapper around an Expression. */
+/** FilterBuilder acting as a simple wrapper around an Expression. */
 public class FilterBuilder implements Builder<Filter> {
     protected Filter filter; // placeholder just to keep us going right now
     protected FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);

@@ -37,7 +37,7 @@ import org.picocontainer.MutablePicoContainer;
  *  &lt;xsd:element name="FeatureTypeConstraint"&gt;
  *      &lt;xsd:annotation&gt;
  *          &lt;xsd:documentation&gt;         A FeatureTypeConstraint identifies a
- *              specific feature type and         supplies fitlering.       &lt;/xsd:documentation&gt;
+ *              specific feature type and         supplies filtering.       &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
  *      &lt;xsd:complexType&gt;
  *          &lt;xsd:sequence&gt;

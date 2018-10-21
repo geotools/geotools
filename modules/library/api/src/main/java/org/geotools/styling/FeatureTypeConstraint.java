@@ -19,7 +19,7 @@ package org.geotools.styling;
 import org.opengis.filter.Filter;
 
 /**
- * A FeatureTypeConstraint identifies a specific feature type and supplies fitlering.
+ * A FeatureTypeConstraint identifies a specific feature type and supplies filtering.
  *
  * <p>The details of this object are taken from the <a
  * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
@@ -30,7 +30,7 @@ import org.opengis.filter.Filter;
  *   &lt;xsd:annotation&gt;
  *     &lt;xsd:documentation&gt;
  *       A FeatureTypeConstraint identifies a specific feature type and
- *       supplies fitlering.
+ *       supplies filtering.
  *     &lt;/xsd:documentation&gt;
  *   &lt;/xsd:annotation&gt;
  *   &lt;xsd:complexType&gt;

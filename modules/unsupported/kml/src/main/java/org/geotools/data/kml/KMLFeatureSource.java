@@ -30,7 +30,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * @author Niels Charlier, Scitus Development
- * @source $URL$
+
  */
 public class KMLFeatureSource extends ContentFeatureSource {
 

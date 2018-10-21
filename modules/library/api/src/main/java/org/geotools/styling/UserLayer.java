@@ -45,8 +45,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *   &lt;/xsd:complexType&gt;
  * &lt;/xsd:element&gt;
  * </code></pre>
- *
- * @source $URL$
  */
 public interface UserLayer extends StyledLayer {
     public RemoteOWS getRemoteOWS();

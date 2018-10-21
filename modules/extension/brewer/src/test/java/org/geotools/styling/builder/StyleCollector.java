@@ -37,7 +37,6 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UserLayer;
 
-/** @source $URL$ */
 public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor {
 
     List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();

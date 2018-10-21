@@ -45,7 +45,6 @@ import org.opengis.util.InternationalString;
  * an other one if the primary factory failed.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @todo Needs a mechanism for avoiding to query the same factory twice when the fallback is the

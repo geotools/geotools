@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.opengis.filter.capability.FunctionName;
 
-/** @source $URL$ */
 public class FilterFunction_endPoint extends FunctionExpressionImpl {
 
     public static FunctionName NAME =

@@ -19,10 +19,7 @@ package org.geotools.gml3.bindings;
 import org.geotools.gml3.GML3TestSupport;
 import org.locationtech.jts.geom.LineString;
 
-/**
- * @author Erik van de Pol
- * @source $URL$
- */
+/** @author Erik van de Pol */
 public class CircleTypeBindingTest extends GML3TestSupport {
 
     @Override

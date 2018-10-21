@@ -26,7 +26,6 @@ import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
     public void testBinaryComparisonOpType() {
         assertEquals(BinaryComparisonOperator.class, binding(OGC.BinaryComparisonOpType).getType());

@@ -21,7 +21,6 @@ import org.geotools.xml.Binding;
 import org.opengis.filter.capability.FunctionName;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class Function_NamesTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(FunctionName[].class, binding(OGC.Function_NamesType).getType());

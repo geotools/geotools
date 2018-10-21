@@ -27,7 +27,6 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @author Andrea Aime
  * @author simone giannecchini
- * @source $URL$
  * @version $Id$
  */
 public final class PolygonIterator extends AbstractLiteIterator {

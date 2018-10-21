@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.Crosses;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCCrossesBinding extends AbstractComplexBinding {
     FilterFactory2 filterFactory;

@@ -34,7 +34,6 @@ import org.opengis.filter.Filter;
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.6
  */
 public class SampleDataAccessFeatureSource implements FeatureSource<FeatureType, Feature> {

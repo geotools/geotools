@@ -51,7 +51,6 @@ import org.opengis.util.ProgressListener;
  * Utility class for Shapefile spatial indexing
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 class ShapeFileIndexer implements FileWriter {
     private static final Logger LOGGER = Logging.getLogger(ShapeFileIndexer.class);

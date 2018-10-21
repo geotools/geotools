@@ -26,7 +26,6 @@ import java.io.IOException;
  * <p>This class is also used as a public api to manage locks.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public interface LockingManager {
     /**

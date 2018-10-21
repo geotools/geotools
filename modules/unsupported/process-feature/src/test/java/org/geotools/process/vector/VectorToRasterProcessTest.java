@@ -66,7 +66,6 @@ import org.opengis.util.ProgressListener;
  * Unit tests for rasterizing vector features.
  *
  * @author Michael Bedward
- * @source $URL$
  */
 public class VectorToRasterProcessTest {
 

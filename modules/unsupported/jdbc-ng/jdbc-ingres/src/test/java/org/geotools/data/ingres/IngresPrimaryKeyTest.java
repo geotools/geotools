@@ -17,7 +17,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresPrimaryKeyTest extends JDBCPrimaryKeyTest {
 

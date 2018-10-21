@@ -33,7 +33,6 @@ import org.opengis.filter.Filter;
  * However <code>FeatureCollectoin.close( iterator )</code> will be called on the internal delgate.
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  */
 public class FilteredIterator<F extends Feature> implements Iterator<F>, FeatureIterator<F> {
     private Iterator<F> delegate;

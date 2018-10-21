@@ -24,9 +24,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * features.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *     data/store/MaxFeaturesIterator.java $
  */
 public class MaxFeaturesSimpleFeatureIterator implements SimpleFeatureIterator {
 

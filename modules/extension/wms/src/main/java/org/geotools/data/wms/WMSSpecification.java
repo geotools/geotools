@@ -25,7 +25,6 @@ import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.data.wms.request.GetStylesRequest;
 import org.geotools.data.wms.request.PutStylesRequest;
 
-/** @source $URL$ */
 public abstract class WMSSpecification extends Specification {
 
     /**

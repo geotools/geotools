@@ -71,9 +71,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Tests cases for DataUtilities.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
- *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/main/src/test/java/org/
- *     geotools/data/DataUtilitiesTest.java $
  */
 public class DataUtilitiesTest extends DataTestCase {
     /**

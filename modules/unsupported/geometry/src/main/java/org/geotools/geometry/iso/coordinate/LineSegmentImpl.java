@@ -33,7 +33,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * + c(1)t
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class LineSegmentImpl extends LineStringImpl implements LineSegment {
 

@@ -21,7 +21,6 @@ import org.geotools.xml.BindingWalkerFactory;
 import org.geotools.xml.impl.BindingWalker.Visitor;
 import org.picocontainer.MutablePicoContainer;
 
-/** @source $URL$ */
 public class BindingWalkerFactoryImpl implements BindingWalkerFactory {
     BindingLoader bindingLoader;
     MutablePicoContainer context;

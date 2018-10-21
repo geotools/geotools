@@ -52,7 +52,6 @@ import org.opengis.geometry.BoundingBox;
  * <p>This should be considered a MemoryFeatureCollection.
  *
  * @author Ian Schneider
- * @source $URL$
  * @version $Id$
  */
 public class DefaultFeatureCollection

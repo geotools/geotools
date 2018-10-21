@@ -125,7 +125,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * </ul>
  *
  * @author Jesse Eichar
- * @source $URL$
  */
 public class FilterEncodingPreProcessor implements FilterVisitor {
     private static final int LOW = 0;

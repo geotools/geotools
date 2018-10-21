@@ -22,7 +22,6 @@ import org.geotools.data.ows.OperationType;
  * A subclass of OperationType that allows format getters and setters without having to cast them.
  *
  * @author Richard Gould
- * @source $URL$
  * @deprecated Use of OperationType should be sufficient
  */
 public class WMSOperationType extends OperationType {

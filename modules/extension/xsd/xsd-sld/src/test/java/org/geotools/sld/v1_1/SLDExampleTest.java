@@ -42,7 +42,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
 
-/** @source $URL$ */
 public class SLDExampleTest extends TestCase {
 
     public void testParseSLD() throws Exception {

@@ -27,7 +27,6 @@ import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 
 @SuppressWarnings("unchecked")
-/** @source $URL$ */
 public class ArcSDEPlanarImage extends PlanarImage {
 
     private static final Logger LOGGER = Logging.getLogger(ArcSDEPlanarImage.class);

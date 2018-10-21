@@ -38,7 +38,6 @@ import org.opengis.feature.type.Name;
  *
  * @author bowens<br>
  *     Created Jun 25, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p>Provides access to feature validation and integrity validation.<br>

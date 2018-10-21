@@ -49,7 +49,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author jeichar
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class ScreenMap {
     double[] point = new double[2];

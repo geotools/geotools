@@ -18,8 +18,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * and cache them for a {@code JTable}
  *
  * <p>
- *
- * @source $URL$
  */
 public class FeatureCollectionTableModel extends AbstractTableModel {
     private static final long serialVersionUID = -7119885084300393935L;

@@ -20,7 +20,6 @@ import org.opengis.style.LinePlacement;
 import org.opengis.style.Mark;
 import si.uom.SI;
 
-/** @source $URL$ */
 public class CookbookLineTest extends AbstractStyleTest {
 
     @Test

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCViewTestSetup;
 
-/** @source $URL$ */
 public class DB2ViewTestSetup extends JDBCViewTestSetup {
 
     protected DB2ViewTestSetup() {

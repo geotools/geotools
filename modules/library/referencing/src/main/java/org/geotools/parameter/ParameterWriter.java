@@ -56,7 +56,6 @@ import org.opengis.util.InternationalString;
  * and an encoding capable to provide drawing box characters (e.g. unicode).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

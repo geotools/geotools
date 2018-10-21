@@ -21,10 +21,7 @@ import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.locationtech.jts.geom.LineString;
 
-/**
- * @author Erik van de Pol
- * @source $URL$
- */
+/** @author Erik van de Pol */
 public class ArcTypeBindingTest extends GML32TestSupport {
 
     public void testParse() throws Exception {

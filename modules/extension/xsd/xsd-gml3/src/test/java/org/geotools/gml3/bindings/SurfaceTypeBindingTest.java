@@ -20,7 +20,6 @@ import org.geotools.gml3.GML3TestSupport;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class SurfaceTypeBindingTest extends GML3TestSupport {
 
     public void testParse() throws Exception {

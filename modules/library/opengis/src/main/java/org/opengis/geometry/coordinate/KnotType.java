@@ -25,7 +25,6 @@ import org.opengis.util.CodeList;
  * knot. This code list is used to describe the distribution of knots in the parameter space of
  * various splines.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

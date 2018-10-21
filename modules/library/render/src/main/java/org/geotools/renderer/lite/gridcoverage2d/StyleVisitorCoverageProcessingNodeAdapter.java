@@ -33,7 +33,6 @@ import org.opengis.util.InternationalString;
  * specified by the {@link RasterSymbolizer} SLd element.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public abstract class StyleVisitorCoverageProcessingNodeAdapter extends StyleVisitorAdapter
         implements StyleVisitor, CoverageProcessingNode {

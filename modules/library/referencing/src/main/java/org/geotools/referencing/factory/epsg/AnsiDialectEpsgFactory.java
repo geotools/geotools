@@ -39,7 +39,6 @@ import org.opengis.referencing.FactoryException;
  * </ul>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  * @author Martin Desruisseaux

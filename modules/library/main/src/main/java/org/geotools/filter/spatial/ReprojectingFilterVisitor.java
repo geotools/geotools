@@ -59,7 +59,6 @@ import org.opengis.referencing.operation.TransformException;
  * second always a {@link Literal}
  *
  * @author Andrea Aime - The Open Planning Project
- * @source $URL$
  */
 public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     FeatureType featureType;

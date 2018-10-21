@@ -32,7 +32,6 @@ import java.awt.geom.Rectangle2D;
  * java.awt.geom} package.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

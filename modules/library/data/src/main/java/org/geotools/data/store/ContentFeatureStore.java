@@ -73,7 +73,6 @@ import org.opengis.filter.identity.FeatureId;
  * </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public abstract class ContentFeatureStore extends ContentFeatureSource
         implements SimpleFeatureStore, SimpleFeatureLocking {

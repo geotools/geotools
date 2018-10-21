@@ -35,10 +35,7 @@ import org.opengis.geometry.coordinate.TriangulatedSurface;
  *
  * @author Jackson Roehrig & Sanjay Jena
  */
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class TriangleImpl extends PolygonImpl implements Triangle {
 
     TriangulatedSurface triangulatedSurface;

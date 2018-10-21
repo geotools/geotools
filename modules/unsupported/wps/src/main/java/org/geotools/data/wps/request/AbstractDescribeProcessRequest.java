@@ -24,7 +24,6 @@ import java.util.Properties;
  * which subclasses must implement.
  *
  * @author gdavis
- * @source $URL$
  */
 public abstract class AbstractDescribeProcessRequest extends AbstractWPSRequest
         implements DescribeProcessRequest {

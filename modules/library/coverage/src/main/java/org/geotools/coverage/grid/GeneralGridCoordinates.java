@@ -26,7 +26,6 @@ import org.opengis.coverage.grid.GridCoordinates;
  * point} within the {@linkplain Grid grid}.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @see GridCoordinates2D
@@ -198,7 +197,6 @@ public class GeneralGridCoordinates implements GridCoordinates, Serializable {
      * prevent subclasses from making it mutable again.
      *
      * @since 2.5
-     * @source $URL$
      * @version $Id$
      * @author Martin Desruisseaux
      */

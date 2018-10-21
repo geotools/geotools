@@ -30,7 +30,6 @@ import org.opengis.util.InternationalString;
  * Information required to enable contact with the responsible person and/or organization.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

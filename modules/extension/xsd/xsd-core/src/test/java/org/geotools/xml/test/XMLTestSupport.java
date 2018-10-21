@@ -139,7 +139,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public abstract class XMLTestSupport extends TestCase {
     /** Logging instance */

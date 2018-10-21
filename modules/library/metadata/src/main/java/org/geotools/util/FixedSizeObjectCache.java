@@ -32,7 +32,6 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @since 2.5
  * @version $Id$
- * @source $URL$
  * @author Jody Garnett (Refractions Research)
  */
 final class FixedSizeObjectCache implements ObjectCache {

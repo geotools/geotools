@@ -38,7 +38,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * not really accurate for a class to be extended by {@link ObliqueStereographic}.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Gerald I. Evenden (for original code in Proj4)
  * @author André Gosselin

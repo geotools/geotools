@@ -40,7 +40,6 @@ import org.geotools.ows.ServiceException;
  * request/response infrastructure. Implementing subclasses need to provide their own Specifications
  *
  * @author gdavis
- * @source $URL$
  */
 public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Object> {
 

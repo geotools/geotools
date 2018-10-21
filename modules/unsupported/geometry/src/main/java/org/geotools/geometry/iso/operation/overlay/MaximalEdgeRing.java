@@ -40,8 +40,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>These are the form of rings used to define polygons under some spatial data models. However,
  * under the OGC SFS model, {@link MinimalEdgeRing} are required. A MaximalEdgeRing can be converted
  * to a list of MinimalEdgeRings using the {@link #buildMinimalRings() } method.
- *
- * @source $URL$
  */
 public class MaximalEdgeRing extends EdgeRing {
 

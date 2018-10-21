@@ -88,7 +88,6 @@ import org.opengis.style.GraphicalSymbol;
  *
  * @author aaime
  * @author dblasby
- * @source $URL$
  */
 public class SLDStyleFactory {
     /** The logger for the rendering module. */

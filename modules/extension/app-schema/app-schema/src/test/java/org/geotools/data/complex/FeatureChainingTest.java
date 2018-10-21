@@ -59,7 +59,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * inside another complex attribute.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class FeatureChainingTest extends AppSchemaTestSupport {
     public static final String GSMLNS = "urn:cgi:xmlns:CGI:GeoSciML:2.0";

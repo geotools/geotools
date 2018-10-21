@@ -77,7 +77,6 @@ import org.opengis.util.GenericName;
  *
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
- * @source $URL$
  */
 public class OracleDialect extends PreparedStatementSQLDialect {
 

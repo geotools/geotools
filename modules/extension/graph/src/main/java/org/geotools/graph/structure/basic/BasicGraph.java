@@ -32,7 +32,6 @@ import org.geotools.graph.structure.Node;
  *
  * @see Graph
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BasicGraph implements Graph, Serializable {
 

@@ -24,7 +24,6 @@ import org.geotools.ows.ServiceException;
  * document in inputStream in the constructor.
  *
  * @author Richard Gould
- * @source $URL$
  */
 public abstract class GetCapabilitiesResponse extends Response {
 

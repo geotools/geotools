@@ -83,7 +83,6 @@ import org.xml.sax.helpers.AttributesImpl;
 /**
  * An XMLEncoder for Filters and Expressions.
  *
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

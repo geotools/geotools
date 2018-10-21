@@ -29,7 +29,6 @@ import org.opengis.referencing.datum.TemporalDatum;
 /**
  * Tests the {@link DefaultTemporalDatum} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

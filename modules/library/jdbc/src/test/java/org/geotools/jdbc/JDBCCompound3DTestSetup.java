@@ -18,11 +18,7 @@ package org.geotools.jdbc;
 
 import java.sql.SQLException;
 
-/**
- * Same as JDBCCompound3DTestSetup, but using the compound CRS https://epsg.io/7415 as the CRS
- *
- * @source $URL$
- */
+/** Same as JDBCCompound3DTestSetup, but using the compound CRS https://epsg.io/7415 as the CRS */
 public abstract class JDBCCompound3DTestSetup extends JDBCDelegatingTestSetup {
 
     protected JDBCCompound3DTestSetup(JDBCTestSetup delegate) {

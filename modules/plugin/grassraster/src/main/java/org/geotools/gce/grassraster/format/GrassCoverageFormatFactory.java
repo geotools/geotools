@@ -28,7 +28,6 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
  * Geotools method of discovering a factory in order to create a format.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
 

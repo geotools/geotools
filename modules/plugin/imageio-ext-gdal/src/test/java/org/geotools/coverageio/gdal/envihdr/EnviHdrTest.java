@@ -49,7 +49,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 /**
  * @author Mathew Wyatt, CSIRO Australia
  * @author Daniele Romagnoli, GeoSolutions SAS
- * @source $URL$
  */
 public class EnviHdrTest extends GDALTestCase {
 

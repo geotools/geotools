@@ -32,7 +32,6 @@ import org.w3c.dom.Element;
  * <p>
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
- * @source $URL$
  */
 public interface ComplexBinding extends Binding {
     /**

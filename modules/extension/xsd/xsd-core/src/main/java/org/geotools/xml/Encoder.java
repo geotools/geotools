@@ -130,7 +130,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class Encoder {
     /**

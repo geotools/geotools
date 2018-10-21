@@ -33,7 +33,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.MultiLineString;
 import org.opengis.feature.Feature;
 
-/** @source $URL$ */
 public class LRSSegmentProcessTest {
     private DataStore featureSource;
 

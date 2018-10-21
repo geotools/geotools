@@ -24,7 +24,6 @@ import org.geotools.factory.Hints.Key;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.4
- * @source $URL$
  */
 public interface ConverterFactory {
 

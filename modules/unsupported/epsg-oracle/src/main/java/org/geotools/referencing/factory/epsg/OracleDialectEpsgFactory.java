@@ -27,7 +27,6 @@ import org.geotools.factory.Hints;
  * An EPSG factory suitable for Oracle SQL syntax.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author John Grange
  * @todo Since this class is constructed through the service provider API rather than directly

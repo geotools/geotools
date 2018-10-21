@@ -26,7 +26,6 @@ import org.geotools.feature.collection.FilteredIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class MemoryFeatureCollectionTest extends DataTestCase {
     private MemoryFeatureCollection roads;
 

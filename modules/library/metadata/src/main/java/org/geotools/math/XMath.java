@@ -25,7 +25,6 @@ import org.geotools.resources.XArray;
  * Simple mathematical functions in addition to the ones provided in {@link Math}.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

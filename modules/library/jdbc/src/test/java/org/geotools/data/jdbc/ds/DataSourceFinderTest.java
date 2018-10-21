@@ -25,7 +25,6 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.jdbc.datasource.DBCPDataSourceFactory;
 import org.geotools.data.jdbc.datasource.DataSourceFinder;
 
-/** @source $URL$ */
 public class DataSourceFinderTest extends TestCase {
     public void testDbcpFactory() throws IOException {
         assertTrue(new DBCPDataSourceFactory().isAvailable());

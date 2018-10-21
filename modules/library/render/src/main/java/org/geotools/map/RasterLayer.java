@@ -28,7 +28,6 @@ import org.geotools.styling.Style;
  * @since 8.0
  * @version 8.0
  * @author Jody Garnett
- * @source $URL$
  */
 public abstract class RasterLayer extends StyleLayer {
 

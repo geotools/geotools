@@ -18,11 +18,7 @@ package org.geotools.styling;
 
 import org.opengis.filter.expression.Expression;
 
-/**
- * Abstract base class for implementing style factories.
- *
- * @source $URL$
- */
+/** Abstract base class for implementing style factories. */
 public interface StyleFactory2 extends StyleFactory {
     /**
      * Label Shield hack, non SLD 1.1

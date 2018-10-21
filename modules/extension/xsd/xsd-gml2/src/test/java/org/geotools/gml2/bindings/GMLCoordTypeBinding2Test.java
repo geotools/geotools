@@ -21,7 +21,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.Coordinate;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLCoordTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Coordinate.class, binding(GML.CoordType).getType());

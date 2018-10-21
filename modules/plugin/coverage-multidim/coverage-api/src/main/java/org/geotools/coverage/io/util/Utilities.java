@@ -95,10 +95,7 @@ import sun.awt.OSInfo.OSType;
 import tec.uom.se.AbstractUnit;
 import tec.uom.se.format.SimpleUnitFormat;
 
-/**
- * @author Daniele Romagnoli, GeoSolutions
- * @source $URL$
- */
+/** @author Daniele Romagnoli, GeoSolutions */
 public class Utilities {
 
     private static final Logger LOGGER =

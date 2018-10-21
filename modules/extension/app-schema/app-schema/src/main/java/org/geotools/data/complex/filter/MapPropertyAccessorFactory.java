@@ -29,7 +29,6 @@ import org.geotools.filter.expression.PropertyAccessorFactory;
  * single attribute names from a {@link Map}.
  *
  * @author Gabriel Roldan
- * @source $URL$
  */
 public class MapPropertyAccessorFactory implements PropertyAccessorFactory {
 

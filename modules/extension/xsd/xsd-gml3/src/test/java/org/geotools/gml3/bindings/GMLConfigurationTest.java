@@ -24,11 +24,7 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Binding;
 
-/**
- * Test {@link GMLConfiguration}.
- *
- * @source $URL$
- */
+/** Test {@link GMLConfiguration}. */
 public class GMLConfigurationTest extends TestCase {
 
     /**

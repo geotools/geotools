@@ -29,7 +29,6 @@ import org.geotools.util.Utilities;
  * by the {@code getFoo()} method using reflection.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  * @see MetadataStandard#asMap

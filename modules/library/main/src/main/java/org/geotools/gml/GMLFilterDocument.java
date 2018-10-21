@@ -34,7 +34,6 @@ import org.xml.sax.SAXException;
  * <p>
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {

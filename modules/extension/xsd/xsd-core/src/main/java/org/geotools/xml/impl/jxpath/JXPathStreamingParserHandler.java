@@ -27,7 +27,6 @@ import org.geotools.xml.impl.ElementHandler;
 import org.geotools.xml.impl.NodeImpl;
 import org.geotools.xml.impl.StreamingParserHandler;
 
-/** @source $URL$ */
 public class JXPathStreamingParserHandler extends StreamingParserHandler {
     /** xpath to stream * */
     String xpath;

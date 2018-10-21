@@ -54,7 +54,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class StyleTypeBinding extends AbstractComplexBinding {
     StyleBuilder sb;

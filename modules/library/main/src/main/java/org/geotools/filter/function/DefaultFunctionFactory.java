@@ -49,7 +49,6 @@ import org.opengis.filter.expression.Literal;
  * implementations into a FunctionFactory.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class DefaultFunctionFactory implements FunctionFactory {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.filter");

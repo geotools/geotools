@@ -51,7 +51,6 @@ import org.opengis.util.InternationalString;
  * <p>All {@code Category} objects are immutable and thread-safe.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see GridSampleDimension

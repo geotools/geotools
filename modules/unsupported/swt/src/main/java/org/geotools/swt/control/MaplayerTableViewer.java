@@ -47,7 +47,6 @@ import org.geotools.swt.utils.Utils;
  * A {@link TableViewer table viewer} for {@link Layer map layers}.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class MaplayerTableViewer extends TableViewer implements ISelectionChangedListener {
     private List<Layer> layersList = new ArrayList<Layer>();

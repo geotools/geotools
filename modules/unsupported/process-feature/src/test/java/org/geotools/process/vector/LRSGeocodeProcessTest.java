@@ -33,7 +33,6 @@ import org.junit.Test;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.Feature;
 
-/** @source $URL$ */
 public class LRSGeocodeProcessTest {
     private DataStore featureSource;
 

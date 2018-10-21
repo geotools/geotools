@@ -50,7 +50,6 @@ import org.opengis.util.ProgressListener;
  * @see ImageReader
  * @see GrassBinaryRasterReadHandler
  * @see GrassBinaryImageMetadata
- * @source $URL$
  */
 public class GrassBinaryImageReader extends ImageReader {
 

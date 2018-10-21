@@ -35,11 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.resources.NIOUtilities;
 
-/**
- * Class to represent the header of a Dbase III file. Creation date: (5/15/2001 5:15:30 PM)
- *
- * @source $URL$
- */
+/** Class to represent the header of a Dbase III file. Creation date: (5/15/2001 5:15:30 PM) */
 public class DbaseFileHeader {
     // Constant for the size of a record
     private static final int FILE_DESCRIPTOR_SIZE = 32;

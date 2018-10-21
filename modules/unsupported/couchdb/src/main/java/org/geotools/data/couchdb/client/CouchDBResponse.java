@@ -30,7 +30,7 @@ import org.json.simple.JSONValue;
 
 /**
  * @author Ian Schneider (OpenGeo)
- * @source $URL$
+
  */
 public final class CouchDBResponse {
     private final HttpMethod request;

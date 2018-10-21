@@ -50,7 +50,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * This tests property selection using nested x-paths, combined with feature selection
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public class PropSelectionTest extends AppSchemaTestSupport {
 

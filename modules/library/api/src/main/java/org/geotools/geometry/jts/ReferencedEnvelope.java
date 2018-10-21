@@ -42,7 +42,6 @@ import org.opengis.referencing.operation.TransformException;
  * org.opengis.geometry.coordinate.Envelope envelope} interface for interoperability with GeoAPI.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

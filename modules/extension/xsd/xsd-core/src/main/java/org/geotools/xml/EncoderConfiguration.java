@@ -39,7 +39,6 @@ import org.picocontainer.MutablePicoContainer;
  * </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface EncoderConfiguration {
     /**

@@ -34,7 +34,6 @@ import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class GeometryFunctionTest {
     private static final long TIME = 40000;
 

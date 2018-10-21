@@ -71,7 +71,6 @@ import org.opengis.referencing.operation.TransformException;
  * used in the resulting RenderedImage,
  *
  * @author ETj <etj at geo-solutions.it>
- * @source $URL$
  */
 public class GridCoverage2DRIA extends GeometricOpImage {
 

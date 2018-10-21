@@ -7,7 +7,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class DefaultMapContextTest {
     @Test
     public void testDispose() {

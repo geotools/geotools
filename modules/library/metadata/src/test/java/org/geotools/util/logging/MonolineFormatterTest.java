@@ -25,7 +25,6 @@ import org.junit.*;
 /**
  * Test the {@link MonolineFormatter} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

@@ -33,8 +33,6 @@ import org.opengis.filter.FilterFactory;
  * Tests to see if a Geometry is contained within another Geometry.
  *
  * <p>If only one Geometry is given, then this test checks to see if it contains part of itself.
- *
- * @source $URL$
  */
 public class ContainsIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =

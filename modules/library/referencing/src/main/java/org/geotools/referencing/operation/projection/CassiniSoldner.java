@@ -40,8 +40,6 @@ import org.opengis.referencing.operation.MathTransform;
  * Transverse Mercator which it resembles. Like this, it has a straight central meridian along which
  * the scale is true, all other meridians and parallels are curved, and the scale distortion
  * increases rapidly with increasing distance from the central meridian.
- *
- * @source $URL$
  */
 public class CassiniSoldner extends MapProjection {
 

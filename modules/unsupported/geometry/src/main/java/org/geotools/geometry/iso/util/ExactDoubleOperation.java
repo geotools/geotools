@@ -26,7 +26,6 @@ import java.math.BigDecimal;
  * <p>The implementations in this class are robust using the Java type BigDecimal.
  *
  * @author Sanjay Jena
- * @source $URL$
  */
 public class ExactDoubleOperation {
 

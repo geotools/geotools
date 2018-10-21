@@ -36,7 +36,6 @@ import org.opengis.util.ProgressListener;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @author Jody Garnett
- * @source $URL$
  */
 public interface CoverageAccess {
 

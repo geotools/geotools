@@ -26,7 +26,6 @@ import org.geotools.validation.DefaultIntegrityValidationBeanInfo;
  *
  * @author bowens<br>
  *     Created Apr 27, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p>DOCUMENT ME!! <b>Description:</b><br>

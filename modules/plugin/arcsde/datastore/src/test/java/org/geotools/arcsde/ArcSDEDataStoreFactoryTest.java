@@ -53,10 +53,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Test suite for {@link ArcSDEDataStoreFactory}
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/ArcSDEDataStoreFactoryTest.java $
- * @version $Id$
  * @since 2.4.x
  */
 public class ArcSDEDataStoreFactoryTest {

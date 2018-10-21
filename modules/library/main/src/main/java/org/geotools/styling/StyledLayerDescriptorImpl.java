@@ -45,8 +45,6 @@ import org.geotools.util.Utilities;
  *       individual service. We hope that specifications are always adaptive, and will be forced to
  *       throw unsupported exceptions when functionality is removed from a specification.
  * </ul>
- *
- * @source $URL$
  */
 public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     /** The logger for the default core module. */

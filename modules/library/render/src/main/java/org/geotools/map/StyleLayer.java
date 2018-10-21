@@ -34,7 +34,6 @@ import org.geotools.styling.Style;
  *
  * @since 8.0
  * @version 8.0
- * @source $URL$
  */
 public abstract class StyleLayer extends Layer {
     /** Style used for rendering */

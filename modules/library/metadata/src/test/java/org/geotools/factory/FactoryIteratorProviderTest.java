@@ -24,7 +24,6 @@ import org.junit.*;
 /**
  * Tests {@link FactoryIteratorProvider} addition in {@link FactoryIteratorProviders}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

@@ -9,8 +9,6 @@ import org.geotools.swing.dialog.JExceptionReporter;
  *
  * <p>This is not generally a good practice - we are just using it as an excuse to not mess up code
  * examples with exception handling code (gasp!). TODO: provide a background Runnable...
- *
- * @source $URL$
  */
 public abstract class SafeAction extends AbstractAction {
     private static final long serialVersionUID = 1118122797759176800L;

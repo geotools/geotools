@@ -35,7 +35,6 @@ import java.util.Map;
 import org.locationtech.jts.geom.*;
 import org.locationtech.jts.io.WKTWriter;
 
-/** @source $URL$ */
 public class DB2Util {
 
     private static Map<Class, String> PARAMETER_LITERALS = null;

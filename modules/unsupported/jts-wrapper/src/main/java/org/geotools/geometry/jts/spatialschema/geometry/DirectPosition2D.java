@@ -40,7 +40,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * anyway such a restriction is hard to generalize (what to do with {@linkplain
  * AxisDirection#NORTH_EAST North-East} direction?).
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

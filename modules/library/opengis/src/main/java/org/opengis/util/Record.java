@@ -27,7 +27,6 @@ import org.opengis.annotation.UML;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1
  * @see RecordType
- * @source $URL$
  */
 @UML(identifier = "Record", specification = ISO_19103)
 public interface Record {

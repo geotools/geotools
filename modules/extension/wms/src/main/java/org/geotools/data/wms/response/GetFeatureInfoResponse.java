@@ -35,7 +35,6 @@ import org.geotools.ows.ServiceException;
  * </ul>
  *
  * @author Richard Gould
- * @source $URL$
  */
 public class GetFeatureInfoResponse extends Response {
 

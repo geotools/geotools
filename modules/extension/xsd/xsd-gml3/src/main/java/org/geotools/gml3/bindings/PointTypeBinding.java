@@ -72,7 +72,6 @@ import org.opengis.geometry.DirectPosition;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class PointTypeBinding extends AbstractComplexBinding {
     GeometryFactory gFactory;

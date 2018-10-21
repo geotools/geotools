@@ -22,7 +22,6 @@ package org.geotools.data;
  * @deprecated Please use {@link FeatureLock} directly
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Chris Holmes, TOPP.
- * @source $URL$
  * @version $Id$
  * @task REVISIT: Should more of this code move to the parent? I guess if other implementations came
  *     along they may want to implement differently.

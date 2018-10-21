@@ -42,7 +42,6 @@ import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
     /** parent handler * */
     Handler parent;

@@ -31,7 +31,6 @@ import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 
-/** @source $URL$ */
 public class DirectedGraphSerializerTest extends BasicGraphSerializerTest {
 
     public DirectedGraphSerializerTest(String name) {

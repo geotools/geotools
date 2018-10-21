@@ -34,7 +34,6 @@ import org.opengis.geometry.primitive.Point;
 import org.opengis.geometry.primitive.Primitive;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class AggregateFactoryImpl implements Factory, AggregateFactory {
 
     // private FeatGeomFactoryImpl geometryFactory;

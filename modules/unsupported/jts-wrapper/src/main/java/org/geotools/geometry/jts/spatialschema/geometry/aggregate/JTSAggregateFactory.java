@@ -33,7 +33,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Implementation of AggregateFactory able to make MultiPointImpl but little else.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class JTSAggregateFactory implements Factory, AggregateFactory {
     private CoordinateReferenceSystem crs;

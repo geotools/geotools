@@ -30,7 +30,6 @@ import org.opengis.metadata.quality.Scope;
  * Quality information for the data specified by a data quality scope.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

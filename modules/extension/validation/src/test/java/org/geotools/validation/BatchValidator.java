@@ -48,12 +48,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * <p>Description of Validator ...
  *
  * @author dzwiers, Refractions Research, Inc.
- * @author $Author: dmzwiers $ (last modification)
  * @author bowens
- * @source $URL$
- *     http://svn.geotools.org/trunk/modules/extension/validation/src/test/java/org/geotools
- *     /validation/BatchValidator.java $
- * @version $Id$
  */
 public class BatchValidator {
     private static Properties dataStoreProp;

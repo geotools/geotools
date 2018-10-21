@@ -37,7 +37,6 @@ import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
  * @see org.locationtech.jts.geom.LineSegment
  * @see org.locationtech.jts.geom.Coordinate
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BasicDirectedLineGraphGenerator extends BasicLineGraphGenerator {
 

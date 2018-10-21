@@ -27,7 +27,6 @@ import org.opengis.referencing.FactoryException;
  * Mediator which delegates the creation of referencing objects to the HsqlDialectEpsgFactory.
  *
  * @author Cory Horner (Refractions Research)
- * @source $URL$
  */
 public class HsqlDialectEpsgMediator extends AbstractEpsgMediator {
 

@@ -38,7 +38,6 @@ import si.uom.SI;
  * one test, and using a 2D + vertical CRS compound for the second test. This test constructs most
  * objects using GeoAPI only (except for a few helper classes).
  *
- * @source $URL$
  * @version $Id$
  * @author Justin Couch
  * @author Martin Desruisseaux

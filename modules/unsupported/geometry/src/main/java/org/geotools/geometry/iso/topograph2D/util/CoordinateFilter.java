@@ -27,7 +27,6 @@ import org.geotools.geometry.iso.topograph2D.Coordinate;
  * Visitor pattern). Coordinate filters can be used to implement such things as coordinate
  * transformations, centroid and envelope computation, and many other functions.
  *
- * @source $URL$
  * @version 1.7.2
  */
 public interface CoordinateFilter {

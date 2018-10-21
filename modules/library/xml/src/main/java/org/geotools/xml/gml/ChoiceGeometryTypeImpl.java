@@ -37,7 +37,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>This is temporary and only for use by the parser. It should never be public or in common use.
  *
  * @author Jesse
- * @source $URL$
  */
 public class ChoiceGeometryTypeImpl extends ChoiceAttributeTypeImpl
         implements ChoiceGeometryType, GeometryType {

@@ -25,7 +25,6 @@ import java.util.List;
  * @author Andrea Antonello - www.hydrologis.com
  * @author John Preston
  * @since 1.1.0
- * @source $URL$
  */
 public class ColorRule {
     // public static final byte[] blank = {0, 0, 0, 0};

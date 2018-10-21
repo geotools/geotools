@@ -98,7 +98,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Justin Deolivera
  * @author Jody Garnett
- * @source $URL$
  */
 public class SimpleFeatureTypeBuilder {
     /** logger */

@@ -40,7 +40,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * H2 database dialect based on basic (non-prepared) statements.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class H2DialectBasic extends BasicSQLDialect {
 

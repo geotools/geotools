@@ -43,7 +43,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Ian Schneider
  * @author Gabriel Roldan
  * @author Justin Deoliveira
- * @source $URL$
  * @version $Id$
  */
 public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {

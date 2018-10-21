@@ -41,8 +41,6 @@ import org.geotools.factory.Hints;
  *
  * <p>Example:<br>
  * <code>org.geotools.data.jdbc.DBCPDataSourceFactory</code>
- *
- * @source $URL$
  */
 public final class DynamicSymbolFactoryFinder {
     /** The logger for the filter module. */

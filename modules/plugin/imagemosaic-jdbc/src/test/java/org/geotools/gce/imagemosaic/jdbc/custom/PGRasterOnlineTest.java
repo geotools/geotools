@@ -31,7 +31,6 @@ import org.geotools.gce.imagemosaic.jdbc.AbstractTest;
 import org.geotools.gce.imagemosaic.jdbc.Config;
 import org.geotools.gce.imagemosaic.jdbc.DBDialect;
 
-/** @source $URL$ */
 public class PGRasterOnlineTest extends AbstractTest {
     protected static DBDialect dialect = null;
 

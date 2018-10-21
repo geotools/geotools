@@ -44,7 +44,6 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.7
- * @source $URL$
  */
 public class CQLAttributeNameTest {
 

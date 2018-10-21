@@ -46,7 +46,6 @@ import org.opengis.filter.expression.Expression;
  * org.locationtech.jts.geom.Geometry}.
  *
  * @author Justin Deoliveira (The Open Planning Project)
- * @source $URL$
  */
 public class AsMultiGeometryFunctionExpression extends FunctionExpressionImpl {
 

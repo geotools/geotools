@@ -2,7 +2,6 @@ package org.geotools.xml.impl;
 
 import org.geotools.xml.Binding;
 
-/** @source $URL$ */
 public class MismatchedBindingFinder implements BindingWalker.Visitor {
 
     private Object object;

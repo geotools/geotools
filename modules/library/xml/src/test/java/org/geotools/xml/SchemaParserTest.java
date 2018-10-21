@@ -29,7 +29,6 @@ import org.geotools.TestData;
  * DOCUMENT ME! @
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class SchemaParserTest extends TestCase {
     protected SAXParser parser;

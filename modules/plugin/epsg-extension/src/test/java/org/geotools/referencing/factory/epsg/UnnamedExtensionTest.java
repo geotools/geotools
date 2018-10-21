@@ -43,7 +43,6 @@ import org.opengis.referencing.operation.MathTransform;
 /**
  * Tests {@link UnnamedExtension}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Jody Garnett

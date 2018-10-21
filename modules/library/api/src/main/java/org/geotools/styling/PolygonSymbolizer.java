@@ -65,7 +65,6 @@ import org.opengis.filter.expression.Expression;
  * </ul>
  *
  * @author James Macgill
- * @source $URL$
  * @version $Id$
  */
 public interface PolygonSymbolizer extends org.opengis.style.PolygonSymbolizer, Symbolizer {

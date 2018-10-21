@@ -51,7 +51,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </ol>
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class ToPointFunction implements Function {
 

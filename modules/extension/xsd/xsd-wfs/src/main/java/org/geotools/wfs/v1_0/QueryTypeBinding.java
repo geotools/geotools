@@ -11,7 +11,6 @@ import org.geotools.xs.bindings.XSQNameBinding;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.PropertyName;
 
-/** @source $URL$ */
 public class QueryTypeBinding extends org.geotools.wfs.bindings.QueryTypeBinding {
 
     FilterFactory filterFactory;

@@ -34,7 +34,6 @@ import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class FilterTransformerTest extends TestCase {
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 

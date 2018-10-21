@@ -65,7 +65,6 @@ import org.opengis.filter.capability.FilterCapabilities;
 import org.opengis.filter.capability.Operator;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class WFS_2_0_0_ParsingTest extends TestCase {
 
     Configuration configuration;

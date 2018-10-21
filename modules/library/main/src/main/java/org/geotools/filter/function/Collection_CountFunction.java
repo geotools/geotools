@@ -36,7 +36,6 @@ import org.opengis.filter.capability.FunctionName;
  *
  * @author Cory Horner
  * @since 2.2M2
- * @source $URL$
  */
 public class Collection_CountFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */

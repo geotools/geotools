@@ -42,7 +42,6 @@ import org.w3c.dom.NodeList;
  * @author Gabriel Roldan
  * @version $Id: FeatureTypeListTypeBindingTest.java 27749 2007-11-05 09:51:33Z groldan $
  * @since 2.5.x
- * @source $URL$
  */
 public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
     public FeatureTypeListTypeBindingTest() {

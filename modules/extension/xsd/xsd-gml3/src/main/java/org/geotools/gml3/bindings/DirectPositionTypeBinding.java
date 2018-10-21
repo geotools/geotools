@@ -57,7 +57,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DirectPositionTypeBinding extends AbstractComplexBinding {
     GeometryFactory factory;

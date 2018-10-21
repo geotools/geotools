@@ -22,7 +22,6 @@ import org.geotools.gml3.v3_2.GML32TestSupport;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class PointTypeBindingTest extends GML32TestSupport {
     //    public void testPos() throws Exception {
     //        GML3MockData.point(document, document);

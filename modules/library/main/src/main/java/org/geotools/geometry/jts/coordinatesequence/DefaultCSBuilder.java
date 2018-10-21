@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.DefaultCoordinateSequenceFactory;
  * backed by a Coordinate[] array.
  *
  * @author wolf
- * @source $URL$
  */
 public class DefaultCSBuilder implements CSBuilder {
 

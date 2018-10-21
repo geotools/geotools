@@ -41,7 +41,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MimeTypeBinding extends AbstractSimpleBinding {
     public MimeTypeBinding(Ows10Factory factory) {}

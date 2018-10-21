@@ -57,7 +57,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDContrastEnhancementBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

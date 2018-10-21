@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class FeatureCollectionWrapperTestSupport extends TestCase {
 
     protected CoordinateReferenceSystem crs;

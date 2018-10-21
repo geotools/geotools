@@ -35,7 +35,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * for the GTOPO30 format in a single zip package.
  *
  * @author Simone Giannecchini
- * @source $URL$
  */
 public class GT30ZipWriterTest extends GT30TestBase {
     /**

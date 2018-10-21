@@ -27,7 +27,6 @@ import org.geotools.ows.ServiceException;
  * <p>TODO Provide access to Style objects
  *
  * @author Richard Gould
- * @source $URL$
  */
 public class GetStylesResponse extends Response {
 

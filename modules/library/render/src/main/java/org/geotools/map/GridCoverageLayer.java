@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Jody Garnett
  * @version 8.0
  * @since 2.7
- * @source $URL$
  */
 public class GridCoverageLayer extends RasterLayer {
     /** Grid Coverage to be drawn. */

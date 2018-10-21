@@ -45,7 +45,6 @@ import org.geotools.xml.InstanceComponent;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OperationTypeBinding extends AbstractSimpleBinding {
     public OperationTypeBinding(WfsFactory factory) {}

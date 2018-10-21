@@ -30,7 +30,6 @@ import org.opengis.util.InternationalString;
 /**
  * Description of the event, including related parameters or tolerances.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

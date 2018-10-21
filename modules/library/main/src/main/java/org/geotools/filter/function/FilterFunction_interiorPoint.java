@@ -27,7 +27,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.opengis.filter.capability.FunctionName;
 
-/** @source $URL$ */
 public class FilterFunction_interiorPoint extends FunctionExpressionImpl {
 
     public static FunctionName NAME =

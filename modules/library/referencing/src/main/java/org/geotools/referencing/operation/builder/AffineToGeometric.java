@@ -25,7 +25,6 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
  *
  * @see http://groups.csail.mit.edu/graphics/classes/6.837/F98/Notes/lecture10.ps
  * @author jezekjan
- * @source $URL$
  * @version $Id$
  */
 public class AffineToGeometric {

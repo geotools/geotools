@@ -26,7 +26,6 @@ import org.opengis.util.InternationalString;
 /**
  * Basic information required to uniquely identify a resource or resources.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @author Cory Horner (Refractions Research)

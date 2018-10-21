@@ -28,7 +28,6 @@ import org.junit.*;
 /**
  * Tests {@link KeySortedList}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

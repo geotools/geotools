@@ -52,7 +52,6 @@ import org.locationtech.jts.geom.GeometryFactory;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLGeometryCollectionTypeBinding extends AbstractComplexBinding {
     GeometryFactory gFactory;

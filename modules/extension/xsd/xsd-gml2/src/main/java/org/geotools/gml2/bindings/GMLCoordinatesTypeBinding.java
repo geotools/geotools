@@ -59,7 +59,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
     CoordinateSequenceFactory csFactory;

@@ -54,7 +54,6 @@ import org.locationtech.jts.geom.LineString;
  * &lt;/complexType>
  *
  * @author Erik van de Pol. B3Partners BV.
- * @source $URL$
  */
 public class ArcTypeBinding extends AbstractComplexBinding {
     GeometryFactory gFactory;

@@ -24,7 +24,6 @@ import org.geotools.xml.schema.SimpleType;
  * DOCUMENT ME!
  *
  * @author dzwiers
- * @source $URL$
  */
 public class AttributeGT implements Attribute {
     private String defualT;

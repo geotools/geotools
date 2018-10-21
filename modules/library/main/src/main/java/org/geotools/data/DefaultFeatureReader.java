@@ -29,7 +29,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Basic support for reading Features from an AttributeReader.
  *
  * @author Ian Schneider
- * @source $URL$
  * @version $Id$
  */
 public class DefaultFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {

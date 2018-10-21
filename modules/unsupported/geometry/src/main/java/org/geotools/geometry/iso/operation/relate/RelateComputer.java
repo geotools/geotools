@@ -49,8 +49,6 @@ import org.geotools.geometry.iso.util.algorithm2D.RobustLineIntersector;
  * GeometryCollections can contain overlapping Polygons. In order to correct compute relate on
  * overlapping Polygons, they would first need to be noded and merged (if not explicitly, at least
  * implicitly).
- *
- * @source $URL$
  */
 public class RelateComputer {
 

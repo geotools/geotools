@@ -53,7 +53,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCBBOXTypeBinding extends AbstractComplexBinding {
     private FilterFactory2 factory;

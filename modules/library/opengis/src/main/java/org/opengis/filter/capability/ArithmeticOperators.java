@@ -24,7 +24,6 @@ package org.opengis.filter.capability;
  * </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface ArithmeticOperators {
 

@@ -32,7 +32,6 @@ import org.opengis.feature.Feature;
  *
  * @author jeichar
  * @since 2.2
- * @source $URL$
  */
 public interface LabelCache {
     /** Called by renderer to indicate that the rendering process is starting. */

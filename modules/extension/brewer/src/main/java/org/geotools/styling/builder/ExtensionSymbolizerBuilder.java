@@ -22,7 +22,6 @@ import javax.measure.Unit;
 import org.geotools.styling.ExtensionSymbolizer;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class ExtensionSymbolizerBuilder extends AbstractStyleBuilder<ExtensionSymbolizer> {
     private String name;
 

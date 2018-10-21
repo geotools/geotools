@@ -26,7 +26,6 @@ import org.junit.*;
 /**
  * Tests the {@link XMath} static methods.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

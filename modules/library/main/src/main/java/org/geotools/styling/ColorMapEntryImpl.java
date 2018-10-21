@@ -22,7 +22,6 @@ import org.opengis.filter.expression.Expression;
  * Default color map entry implementation
  *
  * @author aaime
- * @source $URL$
  */
 public class ColorMapEntryImpl implements ColorMapEntry {
     // private static final java.util.logging.Logger LOGGER =

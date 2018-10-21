@@ -26,7 +26,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class AbstractRingPropertyTypeBinding extends AbstractComplexBinding {
 

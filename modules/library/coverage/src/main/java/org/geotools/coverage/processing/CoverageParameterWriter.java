@@ -33,7 +33,6 @@ import org.opengis.util.InternationalString;
  * Format grid coverage operation parameters in a tabular format.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

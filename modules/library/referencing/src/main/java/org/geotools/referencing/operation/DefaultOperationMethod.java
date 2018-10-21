@@ -48,7 +48,6 @@ import org.opengis.util.InternationalString;
  * operation using the method assigns values to these parameters.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DefaultOperation

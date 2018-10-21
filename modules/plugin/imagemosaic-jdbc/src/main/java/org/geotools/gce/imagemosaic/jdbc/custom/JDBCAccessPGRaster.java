@@ -55,9 +55,6 @@ import org.locationtech.jts.io.WKBWriter;
  * This class is used for JDBC Access to the Postgis raster feature
  *
  * @author Christian Mueller
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/imagemosaic-jdbc/src/main/java/org
- *     /geotools/gce/imagemosaic/jdbc/custom/JDBCAccessPGRaster.java $
  */
 public class JDBCAccessPGRaster extends JDBCAccessCustom {
 

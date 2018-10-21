@@ -164,7 +164,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * </table>
  *
  * @author Simon Raess
- * @source $URL$
  * @version $Id$
  * @task TODO: Support GeometryCollection.
  * @task REVISIT: Should support a bit more for the header, like being able to set the

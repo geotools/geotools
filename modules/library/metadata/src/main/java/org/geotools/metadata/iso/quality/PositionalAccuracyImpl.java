@@ -29,7 +29,6 @@ import org.opengis.util.InternationalString;
 /**
  * Accuracy of the position of features.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

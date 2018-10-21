@@ -39,7 +39,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * H2 database dialect based on prepared statements.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class H2DialectPrepared extends PreparedStatementSQLDialect {
 

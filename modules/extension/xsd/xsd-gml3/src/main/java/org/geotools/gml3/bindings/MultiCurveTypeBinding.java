@@ -55,7 +55,6 @@ import org.locationtech.jts.geom.MultiLineString;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MultiCurveTypeBinding extends AbstractComplexBinding {
     protected GeometryFactory gf;

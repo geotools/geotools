@@ -19,7 +19,6 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCFeatureLockingOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class TeradataFeatureLockingOnlineTest extends JDBCFeatureLockingOnlineTest {
 
     protected JDBCTestSetup createTestSetup() {

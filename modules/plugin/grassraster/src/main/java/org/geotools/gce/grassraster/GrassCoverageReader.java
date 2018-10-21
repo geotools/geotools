@@ -76,7 +76,6 @@ import org.opengis.util.ProgressListener;
  * @since 3.0
  * @see GrassBinaryImageReader
  * @see GrassBinaryRasterReadHandler
- * @source $URL$
  */
 public class GrassCoverageReader extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {

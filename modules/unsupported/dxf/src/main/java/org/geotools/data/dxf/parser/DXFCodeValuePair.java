@@ -6,7 +6,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Chris
- * @source $URL$
+
  */
 public class DXFCodeValuePair {
     private static final Log log = LogFactory.getLog(DXFCodeValuePair.class);

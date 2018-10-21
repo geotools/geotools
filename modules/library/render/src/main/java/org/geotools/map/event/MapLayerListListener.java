@@ -22,7 +22,6 @@ import java.util.EventListener;
  * Listens for {@linkplain MapLayerListEvent} events.
  *
  * @author wolf
- * @source $URL$
  */
 public interface MapLayerListListener extends EventListener {
     /**

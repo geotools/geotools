@@ -56,7 +56,6 @@ import org.geotools.factory.Factory;
  * </code></pre>
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public interface DataSourceFactorySpi extends Factory {
     /**

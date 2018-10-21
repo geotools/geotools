@@ -69,10 +69,6 @@ import org.junit.Test;
  * obvious things.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/ArcSDEJavaApiTest.java $
- * @version $Id$
  */
 public class ArcSDEJavaApiTest {
     /** package logger */

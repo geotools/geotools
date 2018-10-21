@@ -28,7 +28,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Simone Giannecchini, GeoSolutions
  * @since 12.0
  * @version 11.0
- * @source $URL$
  */
 public class CRSConverterFactory implements ConverterFactory {
 

@@ -104,7 +104,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>This is a replacement for FilterConsumer.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     public static NullFilterVisitor BOUNDS_VISITOR = new ExtractBoundsFilterVisitor();

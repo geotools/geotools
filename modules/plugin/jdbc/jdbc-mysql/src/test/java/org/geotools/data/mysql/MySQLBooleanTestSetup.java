@@ -19,7 +19,6 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 import org.geotools.jdbc.JDBCDataStore;
 
-/** @source $URL$ */
 public class MySQLBooleanTestSetup extends JDBCBooleanTestSetup {
 
     protected MySQLBooleanTestSetup() {

@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Point;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLMultiPointTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance mp;
     ElementInstance point1;

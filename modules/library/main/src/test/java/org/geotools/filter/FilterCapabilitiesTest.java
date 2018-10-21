@@ -27,7 +27,6 @@ import org.opengis.filter.FilterFactory2;
  * Unit test for FilterCapabilities.
  *
  * @author Chris Holmes, TOPP
- * @source $URL$
  */
 public class FilterCapabilitiesTest extends TestCase {
     /** Standard logging instance */

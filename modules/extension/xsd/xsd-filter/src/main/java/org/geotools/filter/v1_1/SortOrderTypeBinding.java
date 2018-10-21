@@ -41,7 +41,6 @@ import org.opengis.filter.sort.SortOrder;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SortOrderTypeBinding extends AbstractSimpleBinding {
     FilterFactory filterfactory;

@@ -43,7 +43,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * from the features.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class AppSchemaFeaturePropertyAccessorTest extends AppSchemaTestSupport {
 

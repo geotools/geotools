@@ -30,7 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * geometries 45° away from the projection central meridian
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class TransverseMercatorHandlerFactory implements ProjectionHandlerFactory {
 

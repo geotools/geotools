@@ -47,7 +47,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 /**
  * @author Andrea Aime, GeoSolutions
  *     <p>Testing {@link SRPReader}
- * @source $URL$
  */
 public final class SRPTest extends GDALTestCase {
 

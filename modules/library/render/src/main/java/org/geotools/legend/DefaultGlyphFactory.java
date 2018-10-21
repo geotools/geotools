@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
-/** @source $URL$ */
 public class DefaultGlyphFactory implements GlyphFactory {
 
     /**

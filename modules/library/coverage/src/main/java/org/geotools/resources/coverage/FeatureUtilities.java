@@ -64,7 +64,6 @@ import org.opengis.referencing.operation.TransformException;
  * Those methods are not really rigorous; must of them should be seen as temporary implementations.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  */

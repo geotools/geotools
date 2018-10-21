@@ -30,7 +30,6 @@ import org.xml.sax.SAXException;
  * Big dataset tests ... more than you want for regular testing @
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class GMLParser2Test extends TestCase {
     public void testBlank() {

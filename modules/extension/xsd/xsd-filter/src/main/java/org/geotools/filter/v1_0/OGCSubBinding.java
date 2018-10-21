@@ -37,7 +37,6 @@ import org.opengis.filter.expression.Subtract;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCSubBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

@@ -24,7 +24,6 @@ import org.opengis.coverage.grid.GridEnvelope;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GridLimitsTypeBinding extends AbstractComplexBinding {
 

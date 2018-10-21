@@ -35,10 +35,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-/**
- * @author jamesm,iant
- * @source $URL$
- */
+/** @author jamesm,iant */
 public class LiteShapeTest extends TestCase {
     private java.net.URL base = getClass().getResource("testData/");
 

@@ -113,7 +113,6 @@ import org.opengis.util.InternationalString;
  * </blockquote>
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini

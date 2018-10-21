@@ -37,7 +37,6 @@ import org.opengis.filter.expression.VolatileFunction;
  * this (StyleAttributeExtractorTruncated).
  *
  * @author dblasby
- * @source $URL$
  */
 public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
         implements StyleVisitor {

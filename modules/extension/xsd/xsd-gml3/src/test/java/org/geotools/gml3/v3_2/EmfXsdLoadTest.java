@@ -40,7 +40,6 @@ import org.junit.Test;
  * include/import support.
  *
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
- * @source $URL$
  */
 public class EmfXsdLoadTest {
 

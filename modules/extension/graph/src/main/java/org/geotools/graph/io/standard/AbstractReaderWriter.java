@@ -23,7 +23,6 @@ import org.geotools.graph.io.GraphReaderWriter;
  * An abstract implementation of the GraphReaderWriter interface.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public abstract class AbstractReaderWriter implements GraphReaderWriter {
     private HashMap m_properties;

@@ -29,7 +29,6 @@ import java.awt.geom.Rectangle2D;
  * actual shape's bounds).
  *
  * @author fmoura
- * @source $URL$
  */
 public class ExplicitBoundsShape implements Shape {
 

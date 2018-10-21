@@ -26,7 +26,6 @@ import org.geotools.xml.XSD;
  * http://www.opengis.net/se schema.
  *
  * @generated
- * @source $URL$
  */
 public final class SE extends XSD {
 

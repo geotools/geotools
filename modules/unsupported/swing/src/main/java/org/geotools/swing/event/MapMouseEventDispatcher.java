@@ -30,7 +30,6 @@ import java.awt.event.MouseWheelListener;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public interface MapMouseEventDispatcher

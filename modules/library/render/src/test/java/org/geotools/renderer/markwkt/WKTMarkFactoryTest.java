@@ -37,7 +37,6 @@ import org.opengis.filter.expression.Literal;
  * provided
  *
  * @author Luca Morandini lmorandini@ieee.org
- * @source $URL$
  */
 public class WKTMarkFactoryTest extends TestCase {
 

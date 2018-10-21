@@ -19,7 +19,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.opengis.geometry.MismatchedReferenceSystemException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class ReferencedEnvelopeTest {
 
     @Test

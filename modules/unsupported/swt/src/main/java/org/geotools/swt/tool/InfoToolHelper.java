@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see InfoTool
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  */
 public abstract class InfoToolHelper<T> {
     private static final Logger LOGGER = Logger.getLogger(VectorLayerHelper.class.getName());

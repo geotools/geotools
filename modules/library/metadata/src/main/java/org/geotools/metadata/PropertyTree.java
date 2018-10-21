@@ -40,7 +40,6 @@ import org.opengis.util.InternationalString;
  * <p>Note: this method is called {@code PropertyTree} because it may implements {@link
  * javax.swing.tree.TreeModel} in some future Geotools implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  */

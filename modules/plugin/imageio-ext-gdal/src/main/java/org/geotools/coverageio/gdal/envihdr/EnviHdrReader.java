@@ -27,7 +27,6 @@ import org.opengis.coverage.grid.GridCoverageReader;
 /**
  * @author Mathew Wyatt, CSIRO Australia
  * @author Daniele Romagnoli, GeoSolutions.
- * @source $URL$
  */
 public final class EnviHdrReader extends BaseGDALGridCoverage2DReader
         implements GridCoverageReader {

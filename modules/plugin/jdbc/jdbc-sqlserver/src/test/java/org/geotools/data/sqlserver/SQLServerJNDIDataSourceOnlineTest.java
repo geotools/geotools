@@ -24,7 +24,6 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 import org.geotools.util.logging.Logging;
 
-/** @source $URL$ */
 public class SQLServerJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest {
 
     static final Logger LOGGER = Logging.getLogger(SQLServerJNDIDataSourceOnlineTest.class);

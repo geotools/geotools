@@ -51,7 +51,6 @@ import org.w3c.dom.Element;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
- * @source $URL$
  */
 public class GML2EncodingUtils {
 

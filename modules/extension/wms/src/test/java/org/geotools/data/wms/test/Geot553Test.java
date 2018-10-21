@@ -31,7 +31,6 @@ import org.geotools.test.TestData;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class Geot553Test extends TestCase {
 
     public void testGeot553() throws Exception {

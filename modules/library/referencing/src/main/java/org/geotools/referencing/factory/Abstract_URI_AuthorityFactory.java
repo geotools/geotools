@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * @author Justin Deoliveira
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdapter
         implements CRSAuthorityFactory,

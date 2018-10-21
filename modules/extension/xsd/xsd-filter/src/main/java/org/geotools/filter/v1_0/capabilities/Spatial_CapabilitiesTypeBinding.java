@@ -38,7 +38,6 @@ import org.opengis.filter.capability.SpatialOperators;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Spatial_CapabilitiesTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

@@ -96,7 +96,6 @@ import org.opengis.feature.type.Name;
  * @see DataStore Subclass restricted to working with simple content
  * @param <T> Type of Feature Content, may be SimpleFeatureType
  * @param <F> Feature Content, may be SimpleFetaure
- * @source $URL$
  */
 public interface DataAccess<T extends FeatureType, F extends Feature> {
 

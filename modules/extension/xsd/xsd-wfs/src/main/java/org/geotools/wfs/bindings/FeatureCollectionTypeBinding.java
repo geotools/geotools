@@ -83,7 +83,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public abstract class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
 

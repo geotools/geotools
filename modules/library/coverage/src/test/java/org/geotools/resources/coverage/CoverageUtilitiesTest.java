@@ -37,11 +37,7 @@ import org.geotools.util.NumberRange;
 import org.junit.Test;
 import tec.uom.se.AbstractUnit;
 
-/**
- * Tests {@link CoverageUtilities}.
- *
- * @source $URL$
- */
+/** Tests {@link CoverageUtilities}. */
 public final class CoverageUtilitiesTest {
 
     private static final double NO_DATA = -9999.0;

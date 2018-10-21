@@ -76,10 +76,7 @@ import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author jamesm
- * @source $URL$
- */
+/** @author jamesm */
 public class SLDStyleFactoryTest extends TestCase {
 
     StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);

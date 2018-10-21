@@ -31,11 +31,7 @@ import org.opengis.filter.FilterFactory2;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 
-/**
- * Unit test for DpiRescaleStyleVisitor.
- *
- * @source $URL$
- */
+/** Unit test for DpiRescaleStyleVisitor. */
 public class DpiRescaleStyleVisitorTest {
     StyleBuilder sb;
 

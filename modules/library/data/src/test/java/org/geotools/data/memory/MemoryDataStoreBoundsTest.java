@@ -32,7 +32,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * @author Frank Gasdorf, fgdrf@users.sourceforge.net
  * @author Sebastian Graca, ISPiK S.A.
- * @source $URL$
  */
 public class MemoryDataStoreBoundsTest extends DataTestCase {
     MemoryDataStore data;

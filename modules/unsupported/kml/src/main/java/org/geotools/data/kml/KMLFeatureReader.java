@@ -34,7 +34,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Read a KML file directly.
  *
  * @author Niels Charlier, Scitus Development
- * @source $URL$
+
  */
 public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.property");

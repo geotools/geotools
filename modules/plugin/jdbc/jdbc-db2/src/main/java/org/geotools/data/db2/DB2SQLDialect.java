@@ -53,7 +53,6 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class DB2SQLDialect extends SQLDialect {
 
     private static Integer GEOMETRY = 9001;

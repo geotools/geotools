@@ -89,7 +89,6 @@ import org.w3c.dom.Node;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3.x
- * @source $URL$
  */
 public final class ArcGridReader extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {

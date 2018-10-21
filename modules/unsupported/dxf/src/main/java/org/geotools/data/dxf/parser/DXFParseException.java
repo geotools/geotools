@@ -12,7 +12,7 @@ import org.geotools.data.dxf.entities.DXFEntity;
  * Exception thrown while parsing a SDL file, adds line number in front of specified message.
  *
  * @author Matthijs Laan, B3Partners
- * @source $URL$
+
  */
 public class DXFParseException extends Exception {
     private static final Log log = LogFactory.getLog(DXFParseException.class);

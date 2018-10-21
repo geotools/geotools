@@ -145,7 +145,6 @@ import org.opengis.referencing.operation.TransformException;
  * #setFilterCapabilities(FilterCapabilities)}.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public final class JDBCDataStore extends ContentDataStore implements GmlObjectStore {
 

@@ -28,7 +28,6 @@ import javax.sql.DataSource;
  * subclass and create a close method
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public abstract class AbstractManageableDataSource implements ManageableDataSource {
 

@@ -25,7 +25,6 @@ import org.geotools.util.Utilities;
  * Compares two factories for equality. Used internally for {@link AbstractFactory#equals}
  * implementation only.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

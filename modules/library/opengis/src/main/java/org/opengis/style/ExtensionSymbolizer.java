@@ -19,7 +19,6 @@ import org.opengis.filter.expression.Expression;
  * @author Open Geospatial Consortium
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.3
- * @source $URL$
  */
 public interface ExtensionSymbolizer extends Symbolizer {
 

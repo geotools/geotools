@@ -18,7 +18,6 @@ package org.geotools.graph.build.line;
 
 import org.geotools.graph.build.basic.BasicDirectedGraphBuilder;
 
-/** @source $URL$ */
 public class DirectedLineStringGraphGenerator extends LineStringGraphGenerator {
 
     public DirectedLineStringGraphGenerator() {

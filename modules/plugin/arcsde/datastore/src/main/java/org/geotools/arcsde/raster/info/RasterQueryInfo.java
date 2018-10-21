@@ -26,7 +26,6 @@ import org.opengis.coverage.grid.GridEnvelope;
  * Captures information about a query for a single raster in a raster dataset.
  *
  * @author Gabriel Roldan
- * @source $URL$
  * @version $Id$
  * @since 2.5.6
  * @see RasterUtils#findMatchingRasters

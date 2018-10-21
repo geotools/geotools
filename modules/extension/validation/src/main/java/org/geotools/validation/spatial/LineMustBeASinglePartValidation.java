@@ -42,7 +42,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class LineMustBeASinglePartValidation extends DefaultFeatureValidation {

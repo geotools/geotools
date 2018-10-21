@@ -30,7 +30,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * resources. As an alterantive please see ResourceFetaureIterator.
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  */
 public class DelegateSimpleFeatureIterator extends DelegateFeatureIterator<SimpleFeature>
         implements SimpleFeatureIterator {

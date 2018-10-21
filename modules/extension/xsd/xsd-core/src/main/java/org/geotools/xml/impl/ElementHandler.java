@@ -34,7 +34,6 @@ import org.xml.sax.SAXException;
  *
  * @see org.xml.sax.ContentHandler
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
- * @source $URL$
  */
 public interface ElementHandler extends Handler {
     /**

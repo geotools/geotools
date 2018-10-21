@@ -54,7 +54,6 @@ import org.locationtech.jts.geom.MultiPoint;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLMultiPointPropertyTypeBinding extends AbstractComplexBinding {
     /** @generated */

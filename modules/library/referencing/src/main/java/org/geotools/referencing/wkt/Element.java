@@ -45,7 +45,6 @@ import org.geotools.util.logging.LoggedFormat;
  * out</cite> order.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)

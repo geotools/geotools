@@ -69,7 +69,7 @@ import org.w3c.dom.NodeList;
  *        assertEquals("something", dom.getElementsByTagNameNS(GML.NAMESPACE, "lowerCorner").getLength());
  *
  */
-/** @source $URL$ */
+
 public abstract class GML3TestSupport extends XMLTestSupport {
 
     @Override

@@ -23,7 +23,6 @@ import java.util.Properties;
  * Presents basic functionality for a PutStyles request
  *
  * @author Richard Gould
- * @source $URL$
  */
 public abstract class AbstractPutStylesRequest extends AbstractWMSRequest
         implements PutStylesRequest {

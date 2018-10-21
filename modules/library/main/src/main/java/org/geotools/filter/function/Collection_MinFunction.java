@@ -38,7 +38,6 @@ import org.opengis.filter.expression.Expression;
  * Calculates the minimum value of an attribute for a given FeatureCollection and Expression.
  *
  * @author James
- * @source $URL$
  */
 public class Collection_MinFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */

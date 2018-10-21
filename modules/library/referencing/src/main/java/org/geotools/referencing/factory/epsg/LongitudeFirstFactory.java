@@ -50,7 +50,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * </blockquote>
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @see OrderedAxisAuthorityFactory

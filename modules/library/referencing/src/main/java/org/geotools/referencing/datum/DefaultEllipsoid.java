@@ -44,7 +44,6 @@ import si.uom.SI;
  * </ul>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

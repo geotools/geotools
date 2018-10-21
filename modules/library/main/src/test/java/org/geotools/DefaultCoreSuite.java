@@ -27,10 +27,7 @@ import org.geotools.filter.FilterTest;
 import org.geotools.styling.StyleFactoryImplTest;
 import org.geotools.styling.TextSymbolTest;
 
-/**
- * @author jamesm
- * @source $URL$
- */
+/** @author jamesm */
 public class DefaultCoreSuite extends TestCase {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger("org.geotools.core");

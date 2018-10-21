@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
-/** @source $URL$ */
 public class ClobTestData {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(TestData.class.getPackage().getName());

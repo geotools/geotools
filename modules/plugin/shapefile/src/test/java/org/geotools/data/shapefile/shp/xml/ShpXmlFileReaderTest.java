@@ -26,7 +26,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 
-/** @source $URL$ */
 public class ShpXmlFileReaderTest {
     ShpXmlFileReader reader;
 

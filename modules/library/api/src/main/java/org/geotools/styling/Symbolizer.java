@@ -46,7 +46,6 @@ import org.opengis.filter.expression.PropertyName;
  * <p>
  *
  * @author James Macgill, CCG
- * @source $URL$
  * @version $Id$
  */
 public interface Symbolizer extends org.opengis.style.Symbolizer {

@@ -55,7 +55,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author SYS Technologies
  * @author crossley
- * @source $URL$
  * @version $Revision $
  */
 public class JTSGeometryFactory implements GeometryFactory {

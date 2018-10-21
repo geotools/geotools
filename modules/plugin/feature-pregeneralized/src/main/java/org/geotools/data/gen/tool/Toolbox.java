@@ -44,7 +44,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * <p>1) Validate xml config 2) generalize shape files
  *
  * @author Chrisitan Mueller
- * @source $URL$
  */
 public class Toolbox {
     /**

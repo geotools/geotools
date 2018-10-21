@@ -67,7 +67,6 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
  * @author Jody Garnett
  * @author Joel Skelton
  * @since 2.5
- * @source $URL$
  * @version $Id$
  */
 public class WKTParser {

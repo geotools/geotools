@@ -44,7 +44,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class CodeTypeBinding extends AbstractComplexEMFBinding {
     public CodeTypeBinding(Ows10Factory factory) {

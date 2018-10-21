@@ -47,7 +47,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link DTEDReader}
- * @source $URL$
  */
 public final class DTEDTest extends GDALTestCase {
 

@@ -28,7 +28,6 @@ import org.opengis.util.InternationalString;
  * day.
  *
  * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
  */
 public class DefaultDateAndTime extends DefaultTemporalPosition implements DateAndTime {
 

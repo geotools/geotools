@@ -43,7 +43,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class PicoMultiPrimitiveTest extends TestCase {
 
     /**

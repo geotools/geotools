@@ -19,7 +19,6 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 
-/** @source $URL$ */
 public class MySQLSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
     @Override

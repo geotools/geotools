@@ -20,7 +20,6 @@ import java.util.List;
 import org.apache.commons.jxpath.DynamicPropertyHandler;
 import org.geotools.xml.Node;
 
-/** @source $URL$ */
 public class NodePropertyHandler implements DynamicPropertyHandler {
     public Object getProperty(Object object, String property) {
         Node node = (Node) object;

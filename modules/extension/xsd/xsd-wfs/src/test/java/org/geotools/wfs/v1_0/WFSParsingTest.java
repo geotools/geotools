@@ -78,7 +78,6 @@ import org.opengis.filter.capability.Operator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class WFSParsingTest {
 
     Configuration configuration;

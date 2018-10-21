@@ -50,7 +50,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * with.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public abstract class JDBCTestSupport extends OnlineTestCase {
 

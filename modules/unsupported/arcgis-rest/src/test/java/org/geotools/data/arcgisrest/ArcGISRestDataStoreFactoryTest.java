@@ -37,7 +37,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
+
 public class ArcGISRestDataStoreFactoryTest {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");

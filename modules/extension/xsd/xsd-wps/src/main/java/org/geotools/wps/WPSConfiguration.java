@@ -39,7 +39,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/wps/1.0.0 schema.
  *
  * @generated
- * @source $URL$
  */
 public class WPSConfiguration extends Configuration {
 

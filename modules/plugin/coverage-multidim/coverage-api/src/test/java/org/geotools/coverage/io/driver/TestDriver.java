@@ -45,7 +45,6 @@ import org.opengis.util.ProgressListener;
 
 /**
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  *     <p>A simple TestDriver supporting only connections to a single TEST_URL resource. No support
  *     on delete and create,
  */

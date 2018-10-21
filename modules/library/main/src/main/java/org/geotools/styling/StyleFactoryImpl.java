@@ -56,7 +56,6 @@ import org.opengis.util.InternationalString;
  * </ul>
  *
  * @author iant
- * @source $URL$
  * @version $Id$
  */
 public class StyleFactoryImpl extends AbstractStyleFactory

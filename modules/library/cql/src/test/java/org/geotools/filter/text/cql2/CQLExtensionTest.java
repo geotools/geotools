@@ -43,7 +43,6 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.5
- * @source $URL$
  * @version Revision: 1.9
  */
 public class CQLExtensionTest {

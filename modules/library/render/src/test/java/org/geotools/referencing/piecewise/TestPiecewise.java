@@ -48,10 +48,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.referencing.operation.TransformException;
 
-/**
- * @author Simone Giannecchini, GeoSolutions.
- * @source $URL$
- */
+/** @author Simone Giannecchini, GeoSolutions. */
 public class TestPiecewise {
 
     private static final String LOGGER = null;

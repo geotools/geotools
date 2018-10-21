@@ -50,7 +50,6 @@ import org.geotools.graph.traverse.standard.NoBifurcationIterator;
  * underlying object of the merged edge.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class GraphFuser {
 

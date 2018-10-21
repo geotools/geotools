@@ -23,7 +23,6 @@ import org.opengis.style.StyleVisitor;
  * ChannelSelectionImpl
  *
  * @author iant
- * @source $URL$
  */
 public class ChannelSelectionImpl implements ChannelSelection {
     private SelectedChannelType gray;

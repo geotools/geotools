@@ -31,7 +31,6 @@ import org.geotools.resources.LazySet;
  * factory} implementation.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

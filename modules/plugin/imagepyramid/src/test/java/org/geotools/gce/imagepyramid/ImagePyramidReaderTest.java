@@ -66,7 +66,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Test coverage for pyramids stored in JARs
  *     and referenced by URLs
  * @since 2.3
- * @source $URL$
  */
 public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
 

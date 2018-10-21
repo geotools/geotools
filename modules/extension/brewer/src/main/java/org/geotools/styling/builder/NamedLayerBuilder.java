@@ -22,7 +22,6 @@ import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.Style;
 
-/** @source $URL$ */
 public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
 
     List<FeatureTypeConstraintBuilder> featureTypeConstraint =

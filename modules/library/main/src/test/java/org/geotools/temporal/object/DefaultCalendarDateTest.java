@@ -29,10 +29,7 @@ import org.opengis.temporal.CalendarDate;
 import org.opengis.temporal.TemporalReferenceSystem;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendarDateTest {
 
     private CalendarDate calendarDate1;

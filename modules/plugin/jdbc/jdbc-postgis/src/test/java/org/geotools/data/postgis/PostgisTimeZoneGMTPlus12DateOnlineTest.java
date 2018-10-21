@@ -4,7 +4,6 @@ import java.util.TimeZone;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTimeZoneDateOnlineTest;
 
-/** @source $URL$ */
 public class PostgisTimeZoneGMTPlus12DateOnlineTest extends JDBCTimeZoneDateOnlineTest {
 
     @Override

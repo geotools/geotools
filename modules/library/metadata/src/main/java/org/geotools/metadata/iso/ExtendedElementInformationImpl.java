@@ -29,7 +29,6 @@ import org.opengis.util.InternationalString;
 /**
  * New metadata element, not found in ISO 19115, which is required to describe geographic data.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

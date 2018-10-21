@@ -42,7 +42,6 @@ import org.opengis.filter.expression.Literal;
  * <p>This class is not intended to be thread safe.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public class SLDColorMapBuilder {
 

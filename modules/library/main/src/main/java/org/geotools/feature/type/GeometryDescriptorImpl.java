@@ -21,7 +21,6 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class GeometryDescriptorImpl extends AttributeDescriptorImpl implements GeometryDescriptor {
 
     public GeometryDescriptorImpl(

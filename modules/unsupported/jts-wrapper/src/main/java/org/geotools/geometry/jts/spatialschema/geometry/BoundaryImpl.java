@@ -23,7 +23,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author ISO/DIS 19107
  * @author <A HREF="http://www.opengis.org">OpenGIS&reg; consortium</A>
- * @source $URL$
  * @version 2.0
  */
 public class BoundaryImpl extends ComplexImpl implements Boundary {

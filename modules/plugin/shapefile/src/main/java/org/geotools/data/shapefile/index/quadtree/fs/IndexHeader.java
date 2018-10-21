@@ -27,7 +27,6 @@ import org.geotools.data.shapefile.index.quadtree.StoreException;
  * DOCUMENT ME!
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class IndexHeader {
     public static final byte LSB_ORDER = -1;

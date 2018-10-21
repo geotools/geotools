@@ -23,11 +23,7 @@ import java.util.logging.Logger;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
 
-/**
- * Responsible for flow control; issues commit and rollback on the managed connection.
- *
- * @source $URL$
- */
+/** Responsible for flow control; issues commit and rollback on the managed connection. */
 final class JDBCTransactionState implements State {
     /** The datastore */
     JDBCDataStore dataStore;

@@ -48,7 +48,6 @@ import org.opengis.filter.Id;
  * <p>This code has been made part of the public {@code geotools.jar} to provide a starting point
  * for test cases involving Data constructs.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett, Refractions Research
  * @todo It should be possible to move this class in the {@code sample-data} module.

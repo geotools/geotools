@@ -29,7 +29,6 @@ import org.opengis.style.StyleVisitor;
  * Default implementation of ShadedRelief.
  *
  * @author iant
- * @source $URL$
  */
 public class ShadedReliefImpl implements ShadedRelief {
     private FilterFactory filterFactory;

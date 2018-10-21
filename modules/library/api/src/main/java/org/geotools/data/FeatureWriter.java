@@ -43,7 +43,6 @@ import org.opengis.feature.type.FeatureType;
  *
  * @author Ian Schneider
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  * @version $Id$
  */
 public interface FeatureWriter<T extends FeatureType, F extends Feature> extends Closeable {

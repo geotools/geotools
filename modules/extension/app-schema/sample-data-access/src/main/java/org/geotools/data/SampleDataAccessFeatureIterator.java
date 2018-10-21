@@ -29,7 +29,6 @@ import org.opengis.feature.Feature;
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.6
  */
 public class SampleDataAccessFeatureIterator implements FeatureIterator<Feature> {

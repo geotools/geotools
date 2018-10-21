@@ -27,7 +27,6 @@ import org.geotools.util.logging.Logging;
  * Test harness for db2.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class DB2TestSetup extends JDBCTestSetup {
 

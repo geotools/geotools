@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class FeatureGraphGeneratorTest extends TestCase {
 
     public void test() throws Exception {

@@ -89,7 +89,6 @@ import org.opengis.util.InternationalString;
  * </ul>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Cory Horner (Refractions Research)

@@ -32,7 +32,6 @@ import org.opengis.filter.expression.Expression;
  * Unit tests for shape mark factory
  *
  * @author Luca Morandini lmorandini@ieee.org
- * @source $URL$
  */
 public class ShapeMarkFactoryTest extends TestCase {
 

@@ -43,7 +43,6 @@ import org.opengis.referencing.operation.TransformException;
  * transforms are serializables.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

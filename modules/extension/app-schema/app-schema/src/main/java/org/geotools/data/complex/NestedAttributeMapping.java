@@ -54,9 +54,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * features are also stored for caching if a filter involving these nested features is run.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/NestedAttributeMapping.java $
  */
 public class NestedAttributeMapping extends AttributeMapping {
     private static final Logger LOGGER =

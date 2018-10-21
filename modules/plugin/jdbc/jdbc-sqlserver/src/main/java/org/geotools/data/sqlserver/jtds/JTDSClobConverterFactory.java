@@ -24,7 +24,6 @@ import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.logging.Logging;
 
-/** @source $URL$ */
 public class JTDSClobConverterFactory implements ConverterFactory {
     private static final Logger LOGGER = Logging.getLogger(JTDSClobConverterFactory.class);
     JTDSDateConverter converter = new JTDSDateConverter();

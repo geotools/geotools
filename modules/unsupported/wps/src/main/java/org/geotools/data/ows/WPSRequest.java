@@ -20,7 +20,6 @@ package org.geotools.data.ows;
  * Available WPS Operations are listed in a Request element.
  *
  * @author gdavis
- * @source $URL$
  */
 public class WPSRequest {
     private OperationType getCapabilities;

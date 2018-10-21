@@ -32,7 +32,6 @@ import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.SemanticType;
 
-/** @source $URL$ */
 public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeStyle> {
     String name;
 

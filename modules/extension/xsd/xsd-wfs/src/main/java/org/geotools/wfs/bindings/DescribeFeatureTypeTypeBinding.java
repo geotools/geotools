@@ -94,7 +94,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DescribeFeatureTypeTypeBinding extends AbstractComplexEMFBinding {
     private WfsFactory wfsFactory;

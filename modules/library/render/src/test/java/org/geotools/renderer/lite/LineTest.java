@@ -45,7 +45,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 @Ignore
 public class LineTest {
 

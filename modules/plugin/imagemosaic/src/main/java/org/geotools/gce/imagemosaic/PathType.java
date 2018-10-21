@@ -32,7 +32,6 @@ import org.geotools.util.Utilities;
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
- * @source $URL$
  */
 public enum PathType {
     RELATIVE {

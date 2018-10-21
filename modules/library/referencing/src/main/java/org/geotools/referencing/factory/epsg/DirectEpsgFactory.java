@@ -171,7 +171,6 @@ import tec.uom.se.unit.MetricPrefix;
  * legal EPSG code, subclasses can override the {@link #isPrimaryKey} method.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Yann Cézard
  * @author Martin Desruisseaux (IRD)

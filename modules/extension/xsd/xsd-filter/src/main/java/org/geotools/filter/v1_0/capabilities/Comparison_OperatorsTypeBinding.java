@@ -44,7 +44,6 @@ import org.opengis.filter.capability.Operator;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

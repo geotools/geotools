@@ -7,7 +7,6 @@ import com.esri.sde.sdk.client.SeRasterScanLineGenerator;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferFloat;
 
-/** @source $URL$ */
 public class ArcSDERasterFloatProducerImpl extends ArcSDERasterProducer {
 
     public ArcSDERasterFloatProducerImpl() {

@@ -66,7 +66,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class JDBCFeatureSource extends ContentFeatureSource {
 
     private static final Logger LOGGER = Logging.getLogger(JDBCFeatureSource.class);

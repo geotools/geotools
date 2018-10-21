@@ -22,7 +22,6 @@ import org.geotools.util.Utilities;
 /**
  * @author Martin Desruisseaux
  * @author Daniele Romagnoli, GeoSolutions
- * @source $URL$
  */
 public class Identification implements CharSequence, Serializable {
     /** For cross-version compatibility. */

@@ -15,7 +15,6 @@ import org.locationtech.jts.io.InStream;
  * Decode Sql Server binary format to JTS
  *
  * @author Anders Bakkevold, Bouvet
- * @source $URL$
  */
 public class SqlServerBinaryReader {
 

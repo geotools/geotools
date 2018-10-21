@@ -38,7 +38,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class ContactTypeBinding extends AbstractComplexBinding {
 

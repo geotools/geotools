@@ -48,7 +48,6 @@ import org.opengis.coverage.grid.GridCoverage;
  * <code>org.geotools.data.mytype.MyTypeDataStoreFacotry</code>
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public final class GridFormatFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */

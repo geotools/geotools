@@ -63,7 +63,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
     FeatureTypeCache ftCache;

@@ -74,7 +74,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
  * <p>
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class GeometryBuilder {
     /** Hints used for the duration of this GeometryBuilder. */

@@ -43,7 +43,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Ian Schneider
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  */
 public class FIDFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {

@@ -11,7 +11,6 @@ import org.geotools.wps.WPSTestSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class LanguagesBindingTest extends WPSTestSupport {
 
     public void testEncode() throws Exception {

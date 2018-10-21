@@ -19,11 +19,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.util.KVP;
 
-/**
- * Provide access to CSV Files.
- *
- * @source $URL$
- */
+/** Provide access to CSV Files. */
 public class CSVDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Public "no argument" constructor called by Factory Service Provider (SPI) entry listed in

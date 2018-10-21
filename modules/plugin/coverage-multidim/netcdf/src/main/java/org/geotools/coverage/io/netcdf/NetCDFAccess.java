@@ -58,7 +58,6 @@ import org.opengis.util.ProgressListener;
  * {@link CoverageAccess} implementation for NetCDF Data format.
  *
  * @author Romagnoli Daniele, GeoSolutions SAS
- * @source $URL$
  */
 public class NetCDFAccess extends DefaultFileCoverageAccess
         implements CoverageAccess, FileSetManager {

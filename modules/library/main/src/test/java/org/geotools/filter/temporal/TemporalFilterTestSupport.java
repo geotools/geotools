@@ -22,7 +22,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-/** @source $URL$ */
 public class TemporalFilterTestSupport extends TestCase {
 
     protected static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

@@ -34,7 +34,6 @@ import org.opengis.parameter.ParameterValueGroup;
 /**
  * Tests the "filtered subsample" operation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)

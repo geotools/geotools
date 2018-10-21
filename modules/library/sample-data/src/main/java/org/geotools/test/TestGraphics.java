@@ -34,7 +34,6 @@ import java.util.Map;
  * utility. Please be advised it is very hard to write cross platform tests for things
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class TestGraphics extends Graphics2D {
     public Map<Key, ?> hints;

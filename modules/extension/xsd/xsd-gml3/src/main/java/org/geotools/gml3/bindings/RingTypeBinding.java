@@ -35,7 +35,6 @@ import org.locationtech.jts.geom.LineString;
 /**
  * @author Erik van de Pol. B3Partners BV.
  * @author Andrea Aime
- * @source $URL$
  */
 public class RingTypeBinding extends AbstractComplexBinding implements Comparable {
     protected GeometryFactory gf;

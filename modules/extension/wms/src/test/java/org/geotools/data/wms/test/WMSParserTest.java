@@ -34,11 +34,7 @@ import org.geotools.xml.XMLHandlerHints;
 import org.junit.Test;
 import org.xml.sax.EntityResolver;
 
-/**
- * Test validation and use of an {@link EntityResolver} during GetCapabilities parsing.
- *
- * @source $URL$
- */
+/** Test validation and use of an {@link EntityResolver} during GetCapabilities parsing. */
 public class WMSParserTest {
 
     // prepare the responses

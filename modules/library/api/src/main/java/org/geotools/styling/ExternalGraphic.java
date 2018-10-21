@@ -61,7 +61,6 @@ import java.util.Map;
  * </ul>
  *
  * @author James Macgill, CCG
- * @source $URL$
  * @version $Id$
  */
 public interface ExternalGraphic extends org.opengis.style.ExternalGraphic, Symbol {

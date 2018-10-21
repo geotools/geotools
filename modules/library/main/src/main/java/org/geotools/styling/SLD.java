@@ -48,7 +48,6 @@ import org.opengis.style.SemanticType;
  * objects (e.g. StyledLayerDescriptor, Style, FeatureTypeStyle, Rule, Symbolizer, Stroke and Fill).
  *
  * @author Jody Garnett
- * @source $URL$
  * @version $Id$
  */
 public class SLD {

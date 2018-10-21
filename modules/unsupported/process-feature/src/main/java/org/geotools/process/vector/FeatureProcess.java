@@ -17,7 +17,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
     title = "Feature from Geometry",
     description = "Converts a geometry into a feature collection."
 )
-/** @source $URL$ */
 public class FeatureProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Output feature collection")

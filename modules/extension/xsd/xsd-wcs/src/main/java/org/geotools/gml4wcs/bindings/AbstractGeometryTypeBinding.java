@@ -35,7 +35,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class AbstractGeometryTypeBinding extends AbstractComplexBinding {
 

@@ -19,7 +19,6 @@ package org.geotools.sld.bindings;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.ChannelSelection;
 
-/** @source $URL$ */
 public class SLDChannelSectionBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(

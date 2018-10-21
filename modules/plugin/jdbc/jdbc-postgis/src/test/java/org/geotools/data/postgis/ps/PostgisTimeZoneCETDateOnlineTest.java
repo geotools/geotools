@@ -5,7 +5,6 @@ import org.geotools.data.postgis.PostgisDateTestSetup;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTimeZoneDateOnlineTest;
 
-/** @source $URL$ */
 public class PostgisTimeZoneCETDateOnlineTest extends JDBCTimeZoneDateOnlineTest {
 
     @Override

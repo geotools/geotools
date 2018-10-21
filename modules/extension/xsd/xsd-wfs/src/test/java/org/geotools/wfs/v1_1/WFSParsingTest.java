@@ -75,7 +75,6 @@ import org.opengis.filter.capability.SpatialOperators;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class WFSParsingTest {
     WFSConfiguration configuration;
 

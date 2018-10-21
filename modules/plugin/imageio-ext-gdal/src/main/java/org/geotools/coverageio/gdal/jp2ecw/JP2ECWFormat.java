@@ -31,7 +31,6 @@ import org.opengis.geometry.MismatchedDimensionException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- * @source $URL$
  */
 // See https://github.com/geosolutions-it/imageio-ext/issues/148
 public final class JP2ECWFormat extends BaseGDALGridFormat implements Format {

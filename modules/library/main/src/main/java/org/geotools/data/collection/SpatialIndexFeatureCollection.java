@@ -53,7 +53,6 @@ import org.opengis.util.ProgressListener;
  * created.
  *
  * @author Jody
- * @source $URL$
  */
 public class SpatialIndexFeatureCollection implements SimpleFeatureCollection {
 

@@ -23,7 +23,6 @@ import org.geotools.jdbc.VirtualTableParameter.Validator;
  * A regular expression based validator
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class RegexpValidator implements Validator {
     Pattern pattern;

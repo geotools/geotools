@@ -74,7 +74,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * information in a shape file
  *
  * @author mcr
- * @source $URL$
  */
 public class Import extends AbstractCmd {
     class ImageFilter extends Object implements FileFilter {

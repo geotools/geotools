@@ -24,7 +24,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * authority. A commonly used authority is <A HREF="http://www.epsg.org">EPSG</A>, which is also
  * used in the GeoTIFF standard.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

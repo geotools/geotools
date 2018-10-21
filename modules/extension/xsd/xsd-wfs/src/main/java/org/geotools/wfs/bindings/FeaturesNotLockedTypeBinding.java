@@ -40,7 +40,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FeaturesNotLockedTypeBinding extends AbstractComplexEMFBinding {
     public FeaturesNotLockedTypeBinding(WfsFactory factory) {

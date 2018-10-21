@@ -24,7 +24,6 @@ import org.geotools.data.ows.Request;
  * <p>The only parameter it takes is a process which it uses to return the information about.
  *
  * @author gdavis
- * @source $URL$
  */
 public interface DescribeProcessRequest extends Request {
     /** Represents the PROCESS parameter */

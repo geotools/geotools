@@ -39,7 +39,6 @@ import org.opengis.util.CodeList;
 /**
  * Tests every implementation in the {@link org.geotools.metadata.iso} package.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  * @todo Current implementation relies on {@link MetaData} dependencies. This is probably not

@@ -33,8 +33,6 @@ import org.opengis.filter.FilterFactory;
  * Tests to see if a Geometry is disjoint with another Geometry.
  *
  * <p>If only one Geometry is given, then this test checks to see if it is disjoint with itself.
- *
- * @source $URL$
  */
 public class DisjointIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =

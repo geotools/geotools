@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class BufferTest extends TestCase {
     Buffer buffer;
 

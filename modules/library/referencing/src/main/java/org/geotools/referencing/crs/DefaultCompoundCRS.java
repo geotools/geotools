@@ -47,7 +47,6 @@ import org.opengis.referencing.datum.Datum;
  * of two or more instances of {@link CoordinateReferenceSystem}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

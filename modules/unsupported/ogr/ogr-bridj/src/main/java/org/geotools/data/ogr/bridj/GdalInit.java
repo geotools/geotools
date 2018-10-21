@@ -23,7 +23,7 @@ import org.geotools.util.logging.Logging;
 /**
  * Helper class allowing to locate the GDAL library and attach to it
  *
- * @source $URL$
+
  */
 class GdalInit {
 

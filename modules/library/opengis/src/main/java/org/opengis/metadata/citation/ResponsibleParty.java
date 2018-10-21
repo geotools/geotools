@@ -21,7 +21,6 @@ import org.opengis.util.InternationalString;
  * Identification of, and means of communication with, person(s) and organizations associated with
  * the dataset.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

@@ -33,7 +33,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * @author Simone Giannecchini
  * @since 2.3
- * @source $URL$
  */
 public class PrjFileReader {
 

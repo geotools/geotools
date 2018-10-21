@@ -46,7 +46,6 @@ import org.opengis.util.InternationalString;
  * CRS} space.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @deprecated This class will move in a <code>org.geotools.referencing.factory.<strong>web</strong>

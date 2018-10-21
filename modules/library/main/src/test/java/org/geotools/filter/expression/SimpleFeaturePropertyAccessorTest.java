@@ -27,7 +27,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class SimpleFeaturePropertyAccessorTest extends TestCase {
 
     private static final String COMPLEX_PROPERTY = "pro.per.ty-G\\u00e9n\\\\u00e9rique";

@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class SurfaceTypeBinding extends AbstractComplexBinding {
 
     GeometryFactory gf;

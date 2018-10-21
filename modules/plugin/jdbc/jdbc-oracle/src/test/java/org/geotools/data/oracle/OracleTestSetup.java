@@ -21,7 +21,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class OracleTestSetup extends JDBCTestSetup {
 
     @Override

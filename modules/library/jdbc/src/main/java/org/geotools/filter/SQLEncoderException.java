@@ -22,7 +22,6 @@ package org.geotools.filter;
  *
  * @deprecated Since you're using OpenGISSFilterToSQLEncoder, use FilterToSQLException as well
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @deprecated scheduled for removal in 2.7, use classes in org.geotools.jdbc
  */
 public class SQLEncoderException extends Exception {

@@ -73,7 +73,6 @@ package org.geotools.xml;
  * type. In this case an object of type BigInteger.
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
- * @source $URL$
  */
 public interface SimpleBinding extends Binding {
     /**

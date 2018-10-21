@@ -17,7 +17,6 @@ import org.opengis.annotation.UML;
  * Degree to which data is stored in accordance with the physical structure of the dataset, as
  * described by the scope.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @author Cory Horner (Refractions Research)

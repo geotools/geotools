@@ -22,7 +22,6 @@ package org.geotools.grid;
  *
  * @author mbedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public interface LineElement extends GridElement {

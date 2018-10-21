@@ -33,7 +33,6 @@ import org.opengis.filter.expression.Literal;
  * any other standards based on Expression.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 @SuppressWarnings("deprecation")
 public class ConstantExpression implements Literal, Cloneable {

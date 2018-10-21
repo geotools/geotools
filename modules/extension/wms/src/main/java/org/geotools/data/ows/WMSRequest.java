@@ -20,7 +20,6 @@ package org.geotools.data.ows;
  * Available WMS Operations are listed in a Request element.
  *
  * @author rgould
- * @source $URL$
  */
 public class WMSRequest {
     private OperationType getCapabilities;

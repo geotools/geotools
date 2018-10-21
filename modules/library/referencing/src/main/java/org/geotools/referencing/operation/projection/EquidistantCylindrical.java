@@ -55,7 +55,6 @@ import org.opengis.referencing.operation.MathTransform;
  *     HREF="http://www.remotesensing.org/geotiff/proj_list/equirectangular.html">"Equirectangular"
  *     on RemoteSensing.org</A>
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author John Grange
  * @author Martin Desruisseaux

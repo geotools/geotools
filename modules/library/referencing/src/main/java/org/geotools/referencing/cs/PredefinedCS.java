@@ -45,7 +45,6 @@ import tec.uom.se.AbstractUnit;
  * <var>latitude</var>). What "standard" order means is sometime an arbitrary choice, which explain
  * why this class is not public at this time.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

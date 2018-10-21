@@ -20,7 +20,6 @@ package org.geotools.xml.impl;
  * values and format <code>xs:dateTime</code> as local date.
  *
  * @author awaterme
- * @source $URL$
  */
 public class XsLocalDateFormat extends XsDateTimeFormat {
     /** Creates a new instance. */

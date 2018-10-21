@@ -13,7 +13,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @since 2.8
- * @source $URL$
  */
 @SuppressWarnings("deprecation")
 public class DefaultProgressListener extends NullProgressListener

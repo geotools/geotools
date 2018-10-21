@@ -31,10 +31,7 @@ import org.opengis.geometry.Envelope;
 import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 
-/**
- * @author Sanjay Jena
- * @source $URL$
- */
+/** @author Sanjay Jena */
 public class PaintGMObject {
 
     public static final int TYPE_POINT = 1;

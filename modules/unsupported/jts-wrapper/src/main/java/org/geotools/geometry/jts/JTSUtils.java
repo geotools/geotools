@@ -43,8 +43,6 @@ import org.opengis.referencing.cs.CoordinateSystem;
 /**
  * Class with static methods to help the conversion process between JTS geometries and GO-1
  * geometries.
- *
- * @source $URL$
  */
 public final class JTSUtils {
     /**

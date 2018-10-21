@@ -42,7 +42,6 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class CoordinatesTypeBinding extends AbstractSimpleBinding {
     CoordinateSequenceFactory csFactory;

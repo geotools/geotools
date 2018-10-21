@@ -30,7 +30,6 @@ import org.opengis.temporal.TemporalGeometricPrimitive;
  * An abstract class with two subclasses for representing a temporal instant and a temporal period.
  *
  * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
  */
 public abstract class DefaultTemporalGeometricPrimitive extends DefaultTemporalPrimitive
         implements TemporalGeometricPrimitive, Separation {

@@ -52,7 +52,6 @@ import org.opengis.referencing.operation.MathTransform;
  * <p>Note that a world file usually takes as reference the centre of the pixel.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public class WorldFileWriter {
     /** Default buffer size we wil luse to write out. */

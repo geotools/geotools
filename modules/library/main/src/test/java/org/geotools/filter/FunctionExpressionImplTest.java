@@ -41,7 +41,6 @@ import org.opengis.filter.expression.Subtract;
 
 /**
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
  * @version $Id$
  */
 public class FunctionExpressionImplTest extends TestCase {

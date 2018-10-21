@@ -38,7 +38,6 @@ import org.opengis.feature.Feature;
  * </pre>
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public interface FeatureIterator<F extends Feature> extends Closeable {
     /**

@@ -134,7 +134,6 @@ import org.opengis.referencing.operation.TransformException;
  * places.
  *
  * @author Simone Giannecchini, GeoSolutions S.A.S.
- * @source $URL$
  */
 public class Utils {
 

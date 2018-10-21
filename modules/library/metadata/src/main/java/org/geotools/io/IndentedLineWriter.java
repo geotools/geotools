@@ -25,7 +25,6 @@ import org.geotools.util.Utilities;
  * A writer that put some spaces in front of every lines. The indentation is initially set to 0
  * spaces. Users must invoke {@link #setIndentation} in order to set a different value.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @since 2.4

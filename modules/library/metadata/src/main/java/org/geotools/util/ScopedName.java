@@ -33,7 +33,6 @@ import org.opengis.util.NameSpace;
  * or an other {@link org.opengis.util.ScopedName}, as {@linkplain #getScope tail}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see NameFactory

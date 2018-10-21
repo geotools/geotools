@@ -34,7 +34,7 @@ import org.opengis.filter.expression.Expression;
  *
  *
  *
- * @source $URL$
+ *
  */
 public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
     double defaultX;

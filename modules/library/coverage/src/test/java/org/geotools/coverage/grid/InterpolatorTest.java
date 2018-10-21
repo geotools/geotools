@@ -46,7 +46,6 @@ import org.opengis.geometry.Envelope;
 /**
  * Tests the {@link Interpolator2D} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

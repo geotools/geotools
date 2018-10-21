@@ -32,7 +32,6 @@ import org.opengis.util.ScopedName;
  * to the target of the identifier.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see NameFactory

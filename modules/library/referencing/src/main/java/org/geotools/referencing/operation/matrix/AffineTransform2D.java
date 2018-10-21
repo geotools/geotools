@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.Matrix;
  * transpose()} would fails in most cases, and {@code isAffine()} would be useless.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

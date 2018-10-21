@@ -28,7 +28,6 @@ import org.xml.sax.EntityResolver;
  * Hint object with known parameters for XML parsing.
  *
  * @author Jesse
- * @source $URL$
  */
 public class XMLHandlerHints implements Map<String, Object> {
 

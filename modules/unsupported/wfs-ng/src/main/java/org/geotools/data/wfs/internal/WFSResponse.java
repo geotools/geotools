@@ -34,7 +34,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
- * @source $URL$
  */
 @SuppressWarnings("nls")
 public class WFSResponse extends Response {

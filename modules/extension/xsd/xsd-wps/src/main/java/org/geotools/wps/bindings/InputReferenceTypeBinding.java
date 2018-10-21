@@ -30,7 +30,6 @@ import org.geotools.xml.Node;
  * Binding for inputReference attribute of Method element
  *
  * @author Lucas Reed, Refractions Research Inc
- * @source $URL$
  */
 public class InputReferenceTypeBinding extends ComplexEMFBinding {
     public InputReferenceTypeBinding(Wps10Factory factory) {

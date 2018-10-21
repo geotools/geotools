@@ -29,7 +29,6 @@ import org.opengis.geometry.DirectPosition;
  * triangulation.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */

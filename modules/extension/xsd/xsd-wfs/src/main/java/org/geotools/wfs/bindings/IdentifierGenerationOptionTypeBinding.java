@@ -72,7 +72,6 @@ import org.geotools.xml.InstanceComponent;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class IdentifierGenerationOptionTypeBinding extends AbstractSimpleBinding {
     public IdentifierGenerationOptionTypeBinding(WfsFactory factory) {}

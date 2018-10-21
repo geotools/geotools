@@ -18,7 +18,6 @@ package org.geotools.geojson;
 
 import org.json.simple.parser.ContentHandler;
 
-/** @source $URL$ */
 public interface IContentHandler<T> extends ContentHandler {
 
     T getValue();

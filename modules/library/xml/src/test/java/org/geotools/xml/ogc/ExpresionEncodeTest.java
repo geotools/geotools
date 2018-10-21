@@ -35,7 +35,6 @@ import org.opengis.filter.expression.Expression;
  * For now just writes the expression built.
  *
  * @author David Zwiers, Refractions Research
- * @source $URL$
  */
 public class ExpresionEncodeTest extends TestCase {
     /** Standard logging instance */

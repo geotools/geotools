@@ -38,7 +38,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author Matthijs Laan, B3Partners
- * @source $URL$
+
  */
 public class DXFFeatureReader implements FeatureReader {
 

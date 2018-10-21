@@ -37,7 +37,6 @@ import org.opengis.filter.expression.Multiply;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCMulBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

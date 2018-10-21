@@ -20,11 +20,7 @@ import java.net.URL;
 
 /**
  * Provides a hook to locate online resources in {@link ExternalGraphic} instances. To be used by
- * parser implementors.
- *
- * @source $URL:
- *     http://svn.osgeo.org/geotools/tags/2.7.4/modules/library/api/src/main/java/org/geotools/styling/ResourceLocator.java
- *     $
+ * parser implementers.
  */
 public interface ResourceLocator {
 

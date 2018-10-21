@@ -30,7 +30,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/se schema.
  *
  * @generated
- * @source $URL$
  */
 public class SEConfiguration extends Configuration {
 

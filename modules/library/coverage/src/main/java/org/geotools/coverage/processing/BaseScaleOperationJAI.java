@@ -52,7 +52,6 @@ import org.opengis.util.InternationalString;
  * coverage.
  *
  * @author Simone Giannecchini, GeoSolutions.
- * @source $URL$
  * @since 2.5
  */
 public abstract class BaseScaleOperationJAI extends OperationJAI {

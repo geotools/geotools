@@ -31,7 +31,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class LinearRingTypeBinding extends AbstractComplexBinding {
 

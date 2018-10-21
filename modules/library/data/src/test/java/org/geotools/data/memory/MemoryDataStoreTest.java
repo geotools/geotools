@@ -71,7 +71,6 @@ import org.opengis.referencing.operation.TransformException;
  * API Test for FeatureSource using MemoryDataStore as a reference implementation.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class MemoryDataStoreTest extends DataTestCase {
     MemoryDataStore data;

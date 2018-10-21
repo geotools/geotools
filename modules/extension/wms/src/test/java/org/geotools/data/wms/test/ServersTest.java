@@ -36,7 +36,6 @@ import org.geotools.data.wms.response.GetMapResponse;
 import org.geotools.ows.ServiceException;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class ServersTest extends TestCase {
     public void testServers() throws Exception {
 

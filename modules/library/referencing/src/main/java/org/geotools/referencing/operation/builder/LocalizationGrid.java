@@ -124,7 +124,6 @@ import org.opengis.referencing.operation.MathTransform2D;
  * </blockquote>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)

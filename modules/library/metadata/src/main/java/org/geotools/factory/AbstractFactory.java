@@ -115,7 +115,6 @@ import org.opengis.referencing.AuthorityFactory;
  * </td></tr></table>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

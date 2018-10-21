@@ -20,10 +20,7 @@ package org.geotools.feature;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 
-/**
- * @author jamesm
- * @source $URL$
- */
+/** @author jamesm */
 public class MockFeatureCollections extends org.geotools.feature.FeatureCollections {
 
     /** Creates a new instance of MockFeatureCollections */

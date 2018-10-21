@@ -21,7 +21,7 @@ import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresNoPrimaryKeyTestSetup extends JDBCNoPrimaryKeyTestSetup {
 

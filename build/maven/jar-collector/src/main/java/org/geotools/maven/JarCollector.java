@@ -32,7 +32,6 @@ import org.codehaus.plexus.util.FileUtils;
  *
  * @goal collect
  * @phase package
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

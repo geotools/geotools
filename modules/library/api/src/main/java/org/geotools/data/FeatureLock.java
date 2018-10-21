@@ -30,7 +30,6 @@ import java.util.concurrent.TimeUnit;
  * measures lick expiry time in seconds..
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  * @version $Id$
  * @see <a href="http://vwfs.refractions.net/docs/Database_Research.pdf">Database Reseach</a>
  * @see <a href="http://vwfs.refractions.net/docs/Transactional_WFS_Design.pdf">Transactional WFS

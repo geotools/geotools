@@ -50,8 +50,6 @@ import org.geotools.util.URLs;
  * File imageFile = (File) wizard.getConnectionParameters().get("image");
  * File shapeFile = (File) wizard.getConnectionParameters().get("shape");
  * </pre></code>
- *
- * @source $URL$
  */
 public class JParameterListWizard extends JWizard {
     private static final long serialVersionUID = -3961250234483352643L;

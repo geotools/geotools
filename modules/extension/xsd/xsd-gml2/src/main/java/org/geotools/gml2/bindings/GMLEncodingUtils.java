@@ -73,7 +73,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.xml.sax.Attributes;
 
-/** @source $URL$ */
 public class GMLEncodingUtils {
 
     /** logging instance */

@@ -28,7 +28,6 @@ import org.locationtech.jts.geom.Point;
  *
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public class PointHandler implements ShapeHandler {
 

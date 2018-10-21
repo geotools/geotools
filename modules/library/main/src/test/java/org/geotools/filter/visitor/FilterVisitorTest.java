@@ -41,7 +41,6 @@ import org.opengis.filter.expression.PropertyName;
  * </ul>
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class FilterVisitorTest extends TestCase {
 

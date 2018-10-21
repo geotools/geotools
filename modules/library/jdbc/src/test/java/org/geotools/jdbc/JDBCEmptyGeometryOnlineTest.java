@@ -26,11 +26,6 @@ import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/library/jdbc/src/test/java/org/geotools/
- *     jdbc/JDBCEmptyGeometryTest.java $
- */
 public abstract class JDBCEmptyGeometryOnlineTest extends JDBCTestSupport {
 
     @Override

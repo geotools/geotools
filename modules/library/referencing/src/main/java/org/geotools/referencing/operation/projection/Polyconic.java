@@ -58,7 +58,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/polyconic.html">"Polyconic" on
  *     RemoteSensing.org</A>
  * @since 2.6.1
- * @source $URL$
  * @version $Id$
  * @author Andrea Aime
  */

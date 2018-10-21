@@ -24,7 +24,6 @@ import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.ConstructorInjectionComponentAdapter;
 import org.picocontainer.defaults.InstanceComponentAdapter;
 
-/** @source $URL$ */
 public class BindingLoader {
 
     Map bindings;

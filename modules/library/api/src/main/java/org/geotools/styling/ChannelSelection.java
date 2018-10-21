@@ -46,7 +46,6 @@ package org.geotools.styling;
  * identifier. Commonly, channels will be labelled as ?1?, ?2?, etc.
  *
  * @author iant
- * @source $URL$
  */
 public interface ChannelSelection extends org.opengis.style.ChannelSelection {
     /**

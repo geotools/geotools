@@ -28,7 +28,6 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.factory.GeoTools;
 import org.mockito.Mockito;
 
-/** @source $URL$ */
 public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
 
     private BasicDataSource dataSource;

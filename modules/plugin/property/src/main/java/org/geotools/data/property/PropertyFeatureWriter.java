@@ -45,7 +45,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Jody Garnett
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  */
 public class PropertyFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 

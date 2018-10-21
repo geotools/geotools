@@ -31,7 +31,6 @@ import org.opengis.filter.expression.Literal;
  * Test the Recode function against the Symbology Encoding 1.1 specs.
  *
  * @author mbedward
- * @source $URL$
  */
 public class RecodeFunctionTest extends SEFunctionTestBase {
 

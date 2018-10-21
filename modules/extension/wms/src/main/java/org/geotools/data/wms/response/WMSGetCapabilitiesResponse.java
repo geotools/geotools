@@ -35,7 +35,6 @@ import org.xml.sax.SAXException;
  * Provides a hook up to parse the capabilties document from inputstream.
  *
  * @author Richard Gould
- * @source $URL$
  */
 public class WMSGetCapabilitiesResponse extends GetCapabilitiesResponse {
 

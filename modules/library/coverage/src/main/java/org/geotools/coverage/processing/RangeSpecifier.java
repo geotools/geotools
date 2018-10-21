@@ -37,7 +37,6 @@ import org.opengis.util.Cloneable;
  * OperationJAI operation} to replace {@code null} values by a default one.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @todo Move into the {@code org.geotools.coverage.grid} package as a {@code ImageLayout} subclass.

@@ -32,7 +32,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
     private int fid = 0;

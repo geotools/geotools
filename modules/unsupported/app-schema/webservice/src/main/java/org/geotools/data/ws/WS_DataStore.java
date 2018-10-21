@@ -58,7 +58,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  *
  *
- * @source $URL$
+
  * @version $Id$ 
  */
 public class WS_DataStore implements XmlDataStore {

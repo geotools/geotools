@@ -19,7 +19,6 @@ package org.geotools.sld.bindings;
 import java.util.Locale;
 import org.geotools.styling.Rule;
 
-/** @source $URL$ */
 public class SLDRuleBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Rule.class, new SLDRuleBinding(null).getType());

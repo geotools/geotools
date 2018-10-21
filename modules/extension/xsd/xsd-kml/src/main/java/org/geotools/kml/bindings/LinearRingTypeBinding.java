@@ -48,7 +48,6 @@ import org.locationtech.jts.geom.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class LinearRingTypeBinding extends AbstractComplexBinding {
     CoordinateSequenceFactory csFactory;

@@ -32,7 +32,6 @@ import org.opengis.feature.type.PropertyType;
  * Special node pointer for an XML-attribute inside an attribute.
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public class DescriptorXmlAttributeNodePointer extends NodePointer {
 

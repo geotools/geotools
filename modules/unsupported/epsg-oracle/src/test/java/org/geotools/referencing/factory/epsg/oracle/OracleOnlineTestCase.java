@@ -52,7 +52,6 @@ import org.geotools.test.OnlineTestCase;
  * <p>
  *
  * @author Jody Garnett (Refractions Research)
- * @source $URL$
  */
 public class OracleOnlineTestCase extends OnlineTestCase {
     protected DataSource datasource;

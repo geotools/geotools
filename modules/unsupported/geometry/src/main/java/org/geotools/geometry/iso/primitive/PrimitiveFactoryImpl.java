@@ -55,10 +55,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
-/**
- * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
- */
+/** @author Jackson Roehrig & Sanjay Jena */
 public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFactory {
 
     /** */

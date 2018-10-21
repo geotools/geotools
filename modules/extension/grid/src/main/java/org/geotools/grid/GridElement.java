@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.Geometry;
  *
  * @author mbedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public interface GridElement {

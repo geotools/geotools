@@ -30,7 +30,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class GeometryJSONTest extends GeoJSONTestSupport {
 
     GeometryFactory gf = new GeometryFactory();

@@ -94,7 +94,6 @@ import org.opengis.referencing.operation.TransformException;
  * grid coverages is a result of a resample operation.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini, GeoSolutions SAS

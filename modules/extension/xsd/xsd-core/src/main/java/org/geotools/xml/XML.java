@@ -23,7 +23,6 @@ import javax.xml.namespace.QName;
  * http://www.w3.org/XML/1998/namespace schema.
  *
  * @generated
- * @source $URL$
  */
 public final class XML extends XSD {
 

@@ -30,7 +30,6 @@ import org.opengis.referencing.operation.TransformException;
  * sequence.
  *
  * @todo Not yet implemented.
- * @source $URL$
  */
 public class PreciseCoordinateSequenceTransformer implements CoordinateSequenceTransformer {
     CoordinateSequenceFactory csFactory;

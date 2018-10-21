@@ -34,7 +34,6 @@ import org.opengis.referencing.crs.ProjectedCRS;
 /**
  * Tests {@link FactoryUsingWKT}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  * @author Jody Garnett

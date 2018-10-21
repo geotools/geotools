@@ -50,7 +50,6 @@ import org.opengis.filter.temporal.During;
  * http://docs.codehaus.org/display/GEOTOOLS/GeomeryFactoryFinder+Proposal
  *
  * @author Mauricio Pazos (Axios Engineering)
- * @source $URL$
  * @version $Id$
  * @since 2.5
  */

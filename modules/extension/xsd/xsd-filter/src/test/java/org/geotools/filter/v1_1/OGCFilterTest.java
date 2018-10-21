@@ -39,7 +39,6 @@ import org.opengis.filter.spatial.DWithin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class OGCFilterTest extends TestCase {
     public void testEncode() throws Exception {
         FilterFactory f = CommonFactoryFinder.getFilterFactory(null);

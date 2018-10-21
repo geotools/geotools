@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-/** @source $URL$ */
 public class MultiMap implements Map, Serializable {
 
     private Map m_map = null;

@@ -34,7 +34,6 @@ import org.locationtech.jts.geom.Envelope;
  * other.
  *
  * @author Jesse
- * @source $URL$
  */
 public class LazySearchIterator implements CloseableIterator<Data> {
 

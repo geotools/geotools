@@ -35,7 +35,6 @@ import org.opengis.util.InternationalString;
 /**
  * This operation is simply a wrapper for the JAI Warp operation
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  * @since 9.0

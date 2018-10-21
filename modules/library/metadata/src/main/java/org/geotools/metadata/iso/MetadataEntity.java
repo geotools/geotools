@@ -28,7 +28,6 @@ import org.geotools.resources.i18n.Errors;
  * one of the ISO MetaData interface provided by <A HREF="http://geoapi.sourceforge.net">GeoAPI</A>.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

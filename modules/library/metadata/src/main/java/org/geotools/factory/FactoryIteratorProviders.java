@@ -24,7 +24,6 @@ import org.geotools.resources.XArray;
 /**
  * The list of registered {@linkplain FactoryIteratorProvider factory iterator providers}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @todo Consider removing {@link FactoryRegistry#globalConfiguration} and use listeners instead.

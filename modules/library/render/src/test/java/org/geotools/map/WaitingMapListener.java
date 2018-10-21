@@ -29,7 +29,6 @@ import org.geotools.map.event.MapLayerListEvent;
  *
  * @author Michael Bedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 class WaitingMapListener extends MapAdapter {

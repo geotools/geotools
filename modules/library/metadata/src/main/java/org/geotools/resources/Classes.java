@@ -34,7 +34,6 @@ import org.geotools.resources.i18n.Errors;
  * A set of miscellaneous methods working on {@link Class} objects.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

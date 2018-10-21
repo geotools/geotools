@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.TransformException;
  * system}. In addition, this JTS envelope also implements the GeoAPI {@linkplain
  * org.opengis.geometry.Envelope envelope} interface for interoperability with GeoAPI.
  *
- * @source $URL$
  * @version $Id$
  * @author Niels Charlier
  */

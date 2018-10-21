@@ -11,7 +11,6 @@ import org.geotools.text.Text;
  * annotations to produce the correct process description.
  *
  * @author Jody Garnett (LISAsoft)
- * @source $URL$
  */
 public class VectorProcessFactory extends AnnotatedBeanProcessFactory {
 

@@ -24,7 +24,6 @@ import org.junit.*;
  * Simple deadlock tests for {@link ObjectCacheEntry}.
  *
  * @author Cory Horner (Refractions Research)
- * @source $URL$
  */
 public final class ObjectCacheEntryTest {
 

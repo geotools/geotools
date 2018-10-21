@@ -96,7 +96,6 @@ import tec.uom.se.unit.MetricPrefix;
  * those methods in order to extend the factory capability to some more CRS.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @tutorial

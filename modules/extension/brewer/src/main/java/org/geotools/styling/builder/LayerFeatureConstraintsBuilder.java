@@ -23,7 +23,6 @@ import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.LayerFeatureConstraints;
 import org.geotools.styling.StyleFactory;
 
-/** @source $URL$ */
 public class LayerFeatureConstraintsBuilder<P> implements Builder<LayerFeatureConstraints> {
     private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 

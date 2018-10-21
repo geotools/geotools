@@ -40,11 +40,7 @@ import org.geotools.util.KVP;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
-/**
- * Builds instances of the shapefile data store
- *
- * @source $URL$
- */
+/** Builds instances of the shapefile data store */
 public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
     static final Logger LOGGER = Logging.getLogger("org.geotools.data.shapefile");

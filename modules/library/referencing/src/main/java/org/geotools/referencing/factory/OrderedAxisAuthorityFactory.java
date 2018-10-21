@@ -92,7 +92,6 @@ import systems.uom.common.USCustomary;
  * (<var>longitude</var>, <var>latitude</var>) order just appears to be the default one.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER

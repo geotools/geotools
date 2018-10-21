@@ -39,7 +39,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * Abstract parameter value or group of parameter values.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see AbstractParameterDescriptor

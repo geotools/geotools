@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.Point;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLPointTypeBindingTest extends AbstractGMLBindingTest {
     MutablePicoContainer container;
     ElementInstance point;

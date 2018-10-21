@@ -23,7 +23,6 @@ package org.geotools.filter;
  * @see <a href="http://schemas.opengis.net/filter/1.1.0/sort.xsd">GeoAPI Filter sort.xsd</a>
  * @author Jody Garnett, Refractions Research.
  * @since GeoTools 2.2, Filter 1.1
- * @source $URL$
  */
 public final class SortOrder extends Object {
     /** Can now use the geoapi SortOrder directly */

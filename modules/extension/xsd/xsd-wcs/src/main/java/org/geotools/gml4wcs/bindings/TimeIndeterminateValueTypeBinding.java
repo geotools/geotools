@@ -31,7 +31,6 @@ import org.opengis.temporal.IndeterminateValue;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class TimeIndeterminateValueTypeBinding extends AbstractSimpleBinding {
 

@@ -41,7 +41,6 @@ import org.opengis.util.InternationalString;
  * space.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Rueben Schulz

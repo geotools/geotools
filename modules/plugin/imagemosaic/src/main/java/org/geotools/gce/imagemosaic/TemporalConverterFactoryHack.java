@@ -44,7 +44,6 @@ import org.geotools.util.ConverterFactory;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 9.0
- * @source $URL$
  */
 class TemporalConverterFactoryHack implements ConverterFactory {
 

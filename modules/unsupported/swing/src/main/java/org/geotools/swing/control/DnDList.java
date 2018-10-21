@@ -42,7 +42,6 @@ import javax.swing.JList;
  * @see DnDListModel
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class DnDList<T> extends JList

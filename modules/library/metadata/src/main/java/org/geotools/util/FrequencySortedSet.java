@@ -46,7 +46,6 @@ import org.geotools.resources.i18n.Errors;
  *
  * @param <E> The type of elements in the set.
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

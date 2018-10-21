@@ -67,7 +67,6 @@ import org.opengis.geometry.BoundingBox;
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5
  * @version 10.0
- * @source $URL$
  */
 @SuppressWarnings("unused")
 class STRTreeGranuleCatalog extends GranuleCatalog {

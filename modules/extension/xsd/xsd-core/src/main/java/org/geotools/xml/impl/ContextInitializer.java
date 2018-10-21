@@ -24,8 +24,6 @@ import org.picocontainer.MutablePicoContainer;
 /**
  * Invokes the {@link ComplexBinding#initializeChildContext(ElementInstance, Node,
  * MutablePicoContainer)} event/callback.
- *
- * @source $URL$
  */
 public class ContextInitializer extends ComplexBindingCallback {
 

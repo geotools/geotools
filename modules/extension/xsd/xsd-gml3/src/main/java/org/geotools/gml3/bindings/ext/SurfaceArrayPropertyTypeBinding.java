@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 
-/** @source $URL$ */
 public class SurfaceArrayPropertyTypeBinding
         extends org.geotools.gml3.bindings.SurfaceArrayPropertyTypeBinding implements Comparable {
 

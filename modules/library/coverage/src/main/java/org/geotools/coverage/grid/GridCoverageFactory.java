@@ -83,7 +83,6 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @since 2.1
  * @author Martin Desruisseaux
- * @source $URL$
  * @version $Id$
  */
 public class GridCoverageFactory extends AbstractFactory {

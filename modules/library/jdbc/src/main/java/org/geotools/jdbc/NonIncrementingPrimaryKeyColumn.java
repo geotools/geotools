@@ -23,7 +23,6 @@ package org.geotools.jdbc;
  * the key and adding 1 to it. If the column is character based a random string is generated.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class NonIncrementingPrimaryKeyColumn extends PrimaryKeyColumn {
 

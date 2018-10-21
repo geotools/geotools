@@ -5,7 +5,6 @@ package com.esri.sde.sdk;
  * down the ArcSDE module.
  *
  * @author sfarber
- * @source $URL$
  */
 public class GeoToolsDummyAPI {
 

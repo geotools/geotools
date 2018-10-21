@@ -36,7 +36,6 @@ import org.opengis.parameter.ParameterValueGroup;
 /**
  * Tests the {@link Warp} operation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @since 9.0

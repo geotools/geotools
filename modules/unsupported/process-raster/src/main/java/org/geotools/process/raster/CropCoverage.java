@@ -36,7 +36,6 @@ import org.opengis.util.ProgressListener;
  *
  * @author Andrea Aime - GeoSolutions
  * @author ETj <etj at geo-solutions.it>
- * @source $URL$
  */
 @DescribeProcess(
     title = "Crop Coverage",

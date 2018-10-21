@@ -32,7 +32,6 @@ import org.geotools.util.logging.Logging;
  * different to a human being.
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class ImageAssert {
 

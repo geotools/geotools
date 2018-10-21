@@ -59,7 +59,6 @@ import org.opengis.referencing.operation.*;
  * CRSAuthorityFactory} interfaces to implement.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @todo Use generic types for all {@code replace(...)} methods when we will be allowed to compile

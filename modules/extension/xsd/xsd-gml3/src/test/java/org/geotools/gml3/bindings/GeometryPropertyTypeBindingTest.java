@@ -29,7 +29,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.io.WKTReader;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
 
     @Override

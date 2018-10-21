@@ -9,7 +9,7 @@ import java.awt.geom.Point2D;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/** @source $URL$ */
+
 public class DXFLwVertex extends DXFPoint {
 
     private static final Log log = LogFactory.getLog(DXFLwVertex.class);

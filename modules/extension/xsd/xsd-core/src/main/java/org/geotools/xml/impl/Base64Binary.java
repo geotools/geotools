@@ -23,7 +23,6 @@ import java.util.Base64;
  * A utility class for working with base64 encoding.
  *
  * @see java.util.Base64
- * @source $URL$
  */
 public class Base64Binary {
     /** Thread safe Base64 Decoder */

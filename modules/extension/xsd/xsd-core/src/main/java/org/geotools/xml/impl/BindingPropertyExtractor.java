@@ -39,7 +39,6 @@ import org.w3c.dom.Element;
  * the objecet being encoded.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class BindingPropertyExtractor implements PropertyExtractor {
     Encoder encoder;

@@ -49,7 +49,6 @@ import org.geotools.resources.i18n.Errors;
  * @param <T> The type of range elements, typically {@link java.util.Date} or some subclass of
  *     {@link Number}.
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

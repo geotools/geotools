@@ -23,7 +23,6 @@ import org.opengis.filter.expression.Expression;
  * neither a {@link #getGraphicFill GraphicFill} nor {@link #getGraphicStroke GraphicStroke} element
  * is given, then the line symbolizer will render a solid color.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

@@ -23,7 +23,6 @@ package org.geotools.gml;
  * handle the JTS objects passed to it from the child.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public interface GMLHandlerJTS extends org.xml.sax.ContentHandler {

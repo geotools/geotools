@@ -26,7 +26,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * A code parsed by the {@link AutoCRSFactory} methods. The expected format is {@code
  * AUTO:code,unit,lon0,lat0} where {@code AUTO} is optional.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

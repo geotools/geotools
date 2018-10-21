@@ -40,7 +40,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Jody Garnett
  * @author Torben Barsballe (Boundless)
- * @source $URL$
  */
 public class PropertyFeatureStore extends ContentFeatureStore {
 

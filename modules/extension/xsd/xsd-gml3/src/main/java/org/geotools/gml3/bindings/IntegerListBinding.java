@@ -39,7 +39,6 @@ import org.geotools.xml.InstanceComponent;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class IntegerListBinding extends AbstractSimpleBinding {
     /** @generated */

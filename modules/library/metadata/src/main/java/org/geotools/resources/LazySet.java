@@ -27,7 +27,6 @@ import java.util.stream.Stream;
  * constructed by {@link org.geotools.referencing.FactoryFinder}.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

@@ -42,7 +42,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class KmlTypeBinding extends AbstractComplexBinding {
     /** @generated */

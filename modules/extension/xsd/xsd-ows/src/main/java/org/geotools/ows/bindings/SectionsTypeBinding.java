@@ -41,7 +41,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SectionsTypeBinding extends AbstractComplexEMFBinding {
     public SectionsTypeBinding(Ows10Factory factory) {

@@ -23,7 +23,6 @@ import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.SLD;
 import org.geotools.xml.Binding;
 
-/** @source $URL$ */
 public class LineStyleTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(LineSymbolizer.class, binding(KML.LineStyleType).getType());

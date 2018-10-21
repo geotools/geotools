@@ -42,8 +42,6 @@ import org.geotools.util.logging.Logging;
  *   <LI>Computing the intersections between all the edges and nodes of a single graph
  *   <LI>Computing the intersections between the edges and nodes of two different graphs
  * </UL>
- *
- * @source $URL$
  */
 public class PlanarGraph {
 

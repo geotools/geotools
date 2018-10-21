@@ -26,10 +26,7 @@ import junit.framework.TestCase;
 import org.geotools.test.TestData;
 import org.geotools.xml.schema.Schema;
 
-/**
- * @author dzwiers
- * @source $URL$
- */
+/** @author dzwiers */
 public class SchemaMergeTest extends TestCase {
 
     protected SAXParser parser;

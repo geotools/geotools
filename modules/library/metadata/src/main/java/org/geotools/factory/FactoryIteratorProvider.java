@@ -27,7 +27,6 @@ import java.util.Iterator;
  * directories as {@code META-INF}. This constraint occurs on the Eclipse platform for instance.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @see FactoryRegistry#addFactoryIteratorProvider

@@ -37,7 +37,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCExpressionTypeBinding extends AbstractComplexBinding {
     FilterFactory filterFactory;

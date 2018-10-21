@@ -25,7 +25,6 @@ import org.geotools.graph.traverse.GraphWalker;
  * A simple implementation of GraphWalker that decorates a GraphVisitor.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class SimpleGraphWalker implements GraphWalker {
 

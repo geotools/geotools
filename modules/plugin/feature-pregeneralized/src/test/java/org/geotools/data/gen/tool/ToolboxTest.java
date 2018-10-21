@@ -21,7 +21,6 @@ import java.io.IOException;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
-/** @source $URL$ */
 public class ToolboxTest extends TestCase {
 
     public void testValidate() {

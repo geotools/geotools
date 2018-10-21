@@ -43,7 +43,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * The definition of a group of related parameters used by an operation method.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see ParameterGroup

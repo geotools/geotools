@@ -46,7 +46,6 @@ import org.opengis.util.InternationalString;
  * property file. This gives most of the benifits of using the EPSG database backed authority
  * factory, in a nice, portable property file.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Rueben Schulz

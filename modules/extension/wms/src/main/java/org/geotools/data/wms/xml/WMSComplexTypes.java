@@ -62,7 +62,6 @@ import org.geotools.xml.xsi.XSISimpleTypes;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class WMSComplexTypes {
     static class OperationType extends WMSComplexType {
         private static final WMSComplexType instance = new OperationType();

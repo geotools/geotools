@@ -65,7 +65,6 @@ import tec.uom.se.AbstractUnit;
  * org.opengis.metadata.citation.Citation#getTitle authority titles}.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see <A

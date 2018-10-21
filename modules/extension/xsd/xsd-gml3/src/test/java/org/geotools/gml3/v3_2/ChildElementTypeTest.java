@@ -31,7 +31,6 @@ import org.junit.Test;
  * Test that complex type child elements have types.
  *
  * @author Ben Caradoc-Davies, CSIRO Earth Science and Resource Engineering
- * @source $URL$
  */
 public class ChildElementTypeTest {
 

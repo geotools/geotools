@@ -124,7 +124,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * </ul>
  *
  * @author Jody
- * @source $URL$
  */
 public class FilterCompliancePreProcessor implements FilterVisitor {
 

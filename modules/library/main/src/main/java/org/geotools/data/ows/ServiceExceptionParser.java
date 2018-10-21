@@ -30,7 +30,6 @@ import org.jdom2.input.SAXBuilder;
  * Utility class that will parse ServiceExceptions out of an inputStream.
  *
  * @author rgould
- * @source $URL$
  */
 public class ServiceExceptionParser {
 

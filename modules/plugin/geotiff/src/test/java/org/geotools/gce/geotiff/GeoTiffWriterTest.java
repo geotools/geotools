@@ -67,10 +67,7 @@ import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
-/**
- * @author Simone Giannecchini
- * @source $URL$
- */
+/** @author Simone Giannecchini */
 public class GeoTiffWriterTest extends Assert {
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(GeoTiffWriterTest.class.toString());

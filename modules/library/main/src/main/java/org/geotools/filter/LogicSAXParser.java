@@ -88,7 +88,6 @@ import org.opengis.filter.FilterFactory2;
  *
  * @author Rob Hranac, Vision for New York
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  */
 public class LogicSAXParser {

@@ -105,7 +105,6 @@ import tec.uom.se.AbstractUnit;
  *     on POSC</A>
  * @since 2.4
  * @version $Id$
- * @source $URL$
  * @author Jan Jezek
  * @author Martin Desruisseaux
  */

@@ -27,7 +27,6 @@ import org.opengis.filter.expression.Expression;
  * builder at any time by calling end().
  *
  * @param <P> parent builder
- * @source $URL$
  */
 public class ChildExpressionBuilder<P extends Builder<?>> extends ExpressionBuilder {
 

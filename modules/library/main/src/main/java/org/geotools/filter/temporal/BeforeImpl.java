@@ -22,7 +22,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.Before;
 import org.opengis.temporal.RelativePosition;
 
-/** @source $URL$ */
 public class BeforeImpl extends BinaryTemporalOperatorImpl implements Before {
 
     public BeforeImpl(Expression e1, Expression e2) {

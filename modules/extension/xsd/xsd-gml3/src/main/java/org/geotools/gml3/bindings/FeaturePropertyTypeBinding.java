@@ -59,8 +59,6 @@ import org.xml.sax.Attributes;
  *
  *          </code>
  *         </pre>
- *
- * @source $URL$
  */
 public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
     /**

@@ -55,7 +55,6 @@ import org.geotools.xml.*;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class RecodeBinding extends AbstractComplexBinding {
 

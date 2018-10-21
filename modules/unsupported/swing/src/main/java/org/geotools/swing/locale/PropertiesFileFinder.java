@@ -45,7 +45,6 @@ import org.geotools.util.URLs;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class PropertiesFileFinder {

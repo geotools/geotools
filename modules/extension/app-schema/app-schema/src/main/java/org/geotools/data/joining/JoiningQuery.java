@@ -28,7 +28,6 @@ import org.opengis.filter.sort.SortBy;
  * Special Query that includes joining information
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public class JoiningQuery extends Query {
 

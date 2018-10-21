@@ -44,7 +44,6 @@ import org.opengis.geometry.BoundingBox;
  *     <p>This feature object is read only, modifying calls result in a {@link
  *     UnsupportedOperationException}
  *     <p>The special thing is that a generalized geometry is returned.
- * @source $URL$
  */
 public class PreGeneralizedSimpleFeature implements SimpleFeature {
 

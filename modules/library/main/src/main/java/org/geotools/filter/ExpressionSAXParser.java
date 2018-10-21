@@ -40,7 +40,6 @@ import org.xml.sax.Attributes;
  *
  * @author Rob Hranac, TOPP<br>
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  */
 public class ExpressionSAXParser {

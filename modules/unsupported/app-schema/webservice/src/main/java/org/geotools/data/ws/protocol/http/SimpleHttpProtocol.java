@@ -37,7 +37,7 @@ import org.geotools.util.logging.Logging;
  *
  *
  *
- * @source $URL$
+
  */
 @SuppressWarnings("nls")
 public class SimpleHttpProtocol implements HTTPProtocol {

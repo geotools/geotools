@@ -41,7 +41,6 @@ import org.opengis.filter.expression.Expression;
  * Test whether filters are compatible with multi-valued properties.
  *
  * @author Niels Charlier, Curtin University of Technology
- * @source $URL$
  */
 public class MultiFilterTest {
 

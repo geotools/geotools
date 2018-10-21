@@ -53,7 +53,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDFontBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

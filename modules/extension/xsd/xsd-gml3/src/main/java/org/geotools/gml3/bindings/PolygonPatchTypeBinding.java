@@ -69,7 +69,6 @@ import org.locationtech.jts.geom.Polygon;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class PolygonPatchTypeBinding extends AbstractComplexBinding {
 

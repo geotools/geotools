@@ -32,7 +32,7 @@ import org.geotools.filter.FilterCapabilities;
  *
  *
  *
- * @source $URL$
+
  */
 public class WSCapabilities extends Capabilities {
     private List<FeatureSetDescription> featureTypes; // FeatureSetDescriptions

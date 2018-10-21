@@ -25,7 +25,6 @@ import org.xml.sax.SAXNotRecognizedException;
  * represtents a simpleContent element
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class SimpleContentHandler extends XSIElementHandler {
     /** 'simpleContent' */

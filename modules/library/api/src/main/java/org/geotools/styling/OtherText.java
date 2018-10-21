@@ -24,7 +24,6 @@ import org.opengis.filter.expression.Expression;
  * or with "kml:time" one could specify the time or timespan associated to the
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public interface OtherText {
     /**

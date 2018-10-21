@@ -22,7 +22,6 @@ import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 
-/** @source $URL$ */
 public class OracleBlobConverterFactory implements ConverterFactory {
 
     OracleDateConverter converter = new OracleDateConverter();

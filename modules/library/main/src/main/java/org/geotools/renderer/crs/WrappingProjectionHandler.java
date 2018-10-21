@@ -37,7 +37,6 @@ import org.opengis.referencing.operation.MathTransform;
  * replicate the geometries generating a Google Maps like effect
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class WrappingProjectionHandler extends ProjectionHandler {
 

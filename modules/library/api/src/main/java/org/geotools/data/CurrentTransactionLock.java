@@ -20,8 +20,6 @@ package org.geotools.data;
  * A request for a Lock that last the duration of a transaction.
  *
  * <p>The single instance of this class is available as <code>FeatureLock.TRANSACTION</code>.
- *
- * @source $URL$
  */
 class CurrentTransactionLock extends FeatureLock {
 

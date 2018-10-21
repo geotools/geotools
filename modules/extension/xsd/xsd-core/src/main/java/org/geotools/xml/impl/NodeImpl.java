@@ -24,7 +24,6 @@ import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.Node;
 import org.geotools.xml.Text;
 
-/** @source $URL$ */
 public class NodeImpl implements Node {
     private InstanceComponent component;
     private Object value;

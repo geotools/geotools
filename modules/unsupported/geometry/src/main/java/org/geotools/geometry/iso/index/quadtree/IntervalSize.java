@@ -23,7 +23,6 @@ package org.geotools.geometry.iso.index.quadtree;
  * error can cause the algorithm used to subdivide an interval to fail, by computing a midpoint
  * value which does not lie strictly between the endpoints.
  *
- * @source $URL$
  * @version 1.7.2
  */
 public class IntervalSize {

@@ -26,7 +26,6 @@ import javax.media.jai.PointOpImage;
  * {@link PointOpImage} to perform an efficient color inversion given a certain palette.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class ColorInversion extends PointOpImage {

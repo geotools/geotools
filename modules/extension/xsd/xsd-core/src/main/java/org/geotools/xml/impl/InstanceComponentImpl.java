@@ -19,7 +19,6 @@ package org.geotools.xml.impl;
 import org.eclipse.xsd.XSDNamedComponent;
 import org.geotools.xml.InstanceComponent;
 
-/** @source $URL$ */
 public abstract class InstanceComponentImpl implements InstanceComponent {
     /** namespace * */
     String namespace;

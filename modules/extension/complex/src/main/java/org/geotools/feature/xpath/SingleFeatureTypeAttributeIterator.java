@@ -25,9 +25,6 @@ import org.opengis.feature.type.Name;
  * Iterates over a single attribute of a feature type.
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/feature/xpath/SingleFeatureTypeAttributeIterator.java $
  */
 public class SingleFeatureTypeAttributeIterator implements NodeIterator {
 

@@ -108,7 +108,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.3
- * @source $URL$
  */
 @SuppressWarnings("rawtypes")
 public class ImageMosaicReader extends AbstractGridCoverage2DReader

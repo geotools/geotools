@@ -45,7 +45,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * multi-layer map
  *
  * @author nprigour
- * @source $URL$
  */
 public class LabelDisplacementModeTest extends TestCase {
 

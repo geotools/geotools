@@ -50,7 +50,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCLiteralTypeBinding extends AbstractComplexBinding {
     private FilterFactory factory;

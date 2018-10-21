@@ -32,10 +32,7 @@ import org.geotools.util.logging.Logging;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class CustomGlyphRenderer implements GlyphRenderer {
 
     static final Logger LOGGER = Logging.getLogger(CustomGlyphRenderer.class);

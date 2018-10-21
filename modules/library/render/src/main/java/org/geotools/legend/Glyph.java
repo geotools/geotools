@@ -39,7 +39,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * BufferedImage.
  *
  * @author Johann Sorel (AlterSIG)
- * @source $URL$
  */
 public class Glyph {
 

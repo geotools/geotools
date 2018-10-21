@@ -27,7 +27,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * Abstract implementation for Filter.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public abstract class FilterAbstract implements org.opengis.filter.Filter {
 

@@ -60,7 +60,6 @@ import java.io.StringWriter;
  *
  * @author Bryce Nordgren / USDA Forest Service
  * @author Simone Giannecchini
- * @source $URL$
  */
 public final class GeoTiffException extends IOException {
 

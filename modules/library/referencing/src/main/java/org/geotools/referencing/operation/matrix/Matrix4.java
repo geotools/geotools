@@ -26,7 +26,6 @@ import org.opengis.referencing.operation.Matrix;
  *
  * @since 2.2
  * @version 13.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

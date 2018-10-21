@@ -60,7 +60,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class NativeTypeBinding extends AbstractComplexEMFBinding {
     public NativeTypeBinding(WfsFactory factory) {

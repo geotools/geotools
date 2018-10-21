@@ -93,7 +93,6 @@ import org.opengis.util.TypeName;
  * @author Jody Garnett, Refractions Research Inc.
  * @author Justin Deoliveira, The Open Planning Project
  * @author Niels Charlier
- * @source $URL$
  */
 public abstract class ContentDataStore implements DataStore {
 

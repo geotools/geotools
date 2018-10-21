@@ -30,7 +30,6 @@ import org.opengis.util.InternationalString;
  * Helper class that implements a subchain.
  *
  * @author Simone Giannecchini, GeoSolutions.
- * @source $URL$
  */
 public abstract class SubchainStyleVisitorCoverageProcessingAdapter
         extends StyleVisitorCoverageProcessingNodeAdapter {

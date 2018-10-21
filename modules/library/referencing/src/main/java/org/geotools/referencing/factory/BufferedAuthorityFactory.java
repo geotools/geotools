@@ -65,7 +65,6 @@ import org.opengis.util.InternationalString;
  * virtual machine, but will be discarted (and recreated on the fly if needed) otherwise.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

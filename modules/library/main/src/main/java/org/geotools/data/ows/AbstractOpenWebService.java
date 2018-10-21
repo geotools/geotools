@@ -42,7 +42,6 @@ import org.geotools.ows.ServiceException;
  * (representing versions of the OWS to be implemented) and their own request/response instances.
  *
  * @author Richard Gould
- * @source $URL$
  */
 public abstract class AbstractOpenWebService<C extends Capabilities, R extends Object> {
 

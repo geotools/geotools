@@ -26,7 +26,6 @@ import org.geotools.xml.XSD;
  * http://www.w3.org/2001/SMIL20/ schema.
  *
  * @generated
- * @source $URL$
  */
 public final class SMIL20 extends XSD {
     /** singleton instance */

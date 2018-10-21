@@ -80,7 +80,6 @@ import org.opengis.util.InternationalString;
  * implementations to choose from on construction.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  */

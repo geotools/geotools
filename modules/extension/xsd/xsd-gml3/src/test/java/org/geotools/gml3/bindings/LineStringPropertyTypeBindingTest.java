@@ -22,7 +22,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class LineStringPropertyTypeBindingTest extends GML3TestSupport {
 
     public void testType() {

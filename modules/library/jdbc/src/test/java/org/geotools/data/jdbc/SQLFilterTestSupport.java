@@ -32,7 +32,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Common filter testing code factored up here.
  *
  * @author Chris Holmes
- * @source $URL$
  */
 public abstract class SQLFilterTestSupport extends TestCase {
     /** Standard logging instance */

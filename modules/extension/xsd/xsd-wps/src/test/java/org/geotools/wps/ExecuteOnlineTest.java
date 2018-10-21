@@ -25,7 +25,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import junit.framework.TestCase;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class ExecuteOnlineTest extends TestCase {
 
     /*

@@ -62,7 +62,6 @@ import org.xml.sax.ext.EntityResolver2;
  * processed, and popped off the stack when the corresponding endElement event is processed.
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
- * @source $URL$
  */
 public class ParserHandler extends DefaultHandler2 {
 

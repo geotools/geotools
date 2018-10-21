@@ -31,7 +31,6 @@ import org.geotools.xml.XSD;
  * <p>Copied from org.geotools.gml3 making use of addDependencies with our gml2.GML instance.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class ApplicationSchemaXSD extends XSD {
     /** application schema namespace */

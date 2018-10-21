@@ -33,7 +33,6 @@ import org.xml.sax.SAXException;
  * DOCUMENT ME! @
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class XMLParserTest extends TestCase {
 

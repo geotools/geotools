@@ -62,7 +62,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLAbstractFeatureTypeBinding extends AbstractComplexBinding {
     /** Cache of feature types */

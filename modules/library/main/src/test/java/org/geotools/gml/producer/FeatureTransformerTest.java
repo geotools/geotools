@@ -18,7 +18,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class FeatureTransformerTest {
 
     @Before

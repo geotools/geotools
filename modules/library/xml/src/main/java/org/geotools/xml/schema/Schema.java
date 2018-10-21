@@ -37,7 +37,6 @@ import org.geotools.factory.Factory;
  * will be used by the Schema factory to load the required extensions into memory.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface Schema extends Factory {
     /**

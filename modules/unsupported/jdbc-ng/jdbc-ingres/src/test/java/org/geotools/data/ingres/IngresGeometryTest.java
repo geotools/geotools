@@ -22,7 +22,7 @@ import org.geotools.jdbc.JDBCGeometryTestSetup;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresGeometryTest extends JDBCGeometryTest {
 

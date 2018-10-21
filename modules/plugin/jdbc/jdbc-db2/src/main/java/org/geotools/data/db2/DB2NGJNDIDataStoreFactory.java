@@ -23,7 +23,6 @@ import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
  * DataStoreFactory for DB2 database.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class DB2NGJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
 

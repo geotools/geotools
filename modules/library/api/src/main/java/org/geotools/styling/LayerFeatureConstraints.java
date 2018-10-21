@@ -40,7 +40,6 @@ package org.geotools.styling;
  *         </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface LayerFeatureConstraints {
     /** @return The feature type constraints. */

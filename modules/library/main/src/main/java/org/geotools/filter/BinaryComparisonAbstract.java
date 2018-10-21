@@ -33,7 +33,6 @@ import org.opengis.filter.expression.Expression;
  * FilterFactory2 creation method.
  *
  * @author Justin Deoliveira (Boundless)
- * @source $URL$
  */
 public abstract class BinaryComparisonAbstract extends AbstractFilter implements MultiValuedFilter {
 

@@ -37,7 +37,6 @@ import org.opengis.geometry.primitive.OrientableCurve;
 import org.opengis.geometry.primitive.Ring;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class EdgeRing {
 
     protected DirectedEdge startDe; // the directed edge which starts the list

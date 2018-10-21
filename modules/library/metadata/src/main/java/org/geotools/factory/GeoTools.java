@@ -78,7 +78,6 @@ import org.xml.sax.EntityResolver;
  * </ul>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

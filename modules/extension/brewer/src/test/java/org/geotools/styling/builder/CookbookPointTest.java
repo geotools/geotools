@@ -27,7 +27,6 @@ import org.opengis.style.Mark;
 import org.opengis.style.Stroke;
 import si.uom.SI;
 
-/** @source $URL$ */
 public class CookbookPointTest extends AbstractStyleTest {
 
     @Test

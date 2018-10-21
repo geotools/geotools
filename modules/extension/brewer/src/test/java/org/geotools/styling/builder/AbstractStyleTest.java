@@ -8,7 +8,6 @@ import org.geotools.styling.SLDTransformer;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.FilterFactory2;
 
-/** @source $URL$ */
 public abstract class AbstractStyleTest {
 
     static final Logger LOGGER = Logging.getLogger(AbstractStyleTest.class);

@@ -24,8 +24,6 @@ import java.io.PrintStream;
  * reference to a parent {@link Edge} (some applications of planar graphs may not require explicit
  * Edge objects to be created). Usually a client using a <code>PlanarGraph</code> will subclass
  * <code>DirectedEdge</code> to add its own application-specific data and methods.
- *
- * @source $URL$
  */
 public class DirectedEdge extends EdgeEnd {
 

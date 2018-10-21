@@ -33,7 +33,6 @@ import org.geotools.factory.Hints;
  * @author Simone Giannecchini, GeoSolutions
  * @since 12.0
  * @version 11.0
- * @source $URL$
  */
 public class InterpolationConverterFactory implements ConverterFactory {
 

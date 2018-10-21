@@ -51,11 +51,9 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * </blockquote>
  *
  * @since 2.5
- * @version $Id$
  * @author Jody Garnett
  * @see OrderedAxisAuthorityFactory
  * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
- * @tutorial http://docs.codehaus.org/display/GEOTOOLS/The+axis+order+issue
  */
 public class LongitudeFirstEpsgDecorator extends DeferredAuthorityFactory
         implements CRSAuthorityFactory,

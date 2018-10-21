@@ -64,12 +64,10 @@ import si.uom.SI;
  * transform classes can be easily derived. In addition, {@code AbstractMathTransform} implements
  * methods required by the {@link MathTransform2D} interface, but <strong>does not</strong>
  * implements {@code MathTransform2D}. Subclasses must declare {@code implements MathTransform2D}
- * themself if they know to maps two-dimensional coordinate systems.
+ * themselves if they know to map two-dimensional coordinate systems.
  *
  * @since 2.0
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @tutorial http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Parameters
  */
 public abstract class AbstractMathTransform extends Formattable implements MathTransform {
     /** Constructs a math transform. */

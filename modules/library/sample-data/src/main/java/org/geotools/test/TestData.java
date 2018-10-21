@@ -74,11 +74,9 @@ import java.util.zip.ZipFile;
  * from the {@code sample-module} instead of this one.
  *
  * @since 2.4
- * @version $Id$
  * @author James McGill
  * @author Simone Giannecchiin
  * @author Martin Desruisseaux
- * @tutorial http://www.geotools.org/display/GEOT/5.8+Test+Data
  */
 @SuppressWarnings("unchecked")
 public class TestData implements Runnable {

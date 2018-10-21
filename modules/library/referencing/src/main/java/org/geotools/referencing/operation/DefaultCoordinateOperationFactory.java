@@ -96,10 +96,7 @@ import tec.uom.se.unit.MetricPrefix;
  * those methods in order to extend the factory capability to some more CRS.
  *
  * @since 2.1
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @tutorial
- *     http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Services+for+Geotools+2.1
  */
 public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperationFactory {
     /** The priority level for this factory. */

@@ -271,8 +271,8 @@ public class GridCoverageFactory extends AbstractFactory {
      * Constructs a grid coverage from the specified {@linkplain WritableRaster raster} and
      * {@linkplain Envelope envelope}.
      *
-     * <p>See the {@linkplain #create(CharSequence, RenderedImage, Envelope, GridSampleDimension[],
-     * GridCoverage[], Map) rendered image variant} for a note on heuristic rules applied by this
+     * <p>See the {@code #create(CharSequence, RenderedImage, Envelope, GridSampleDimension[],
+     * GridCoverage[], Map)} rendered image variant for a note on heuristic rules applied by this
      * method.
      *
      * @param name The grid coverage name.

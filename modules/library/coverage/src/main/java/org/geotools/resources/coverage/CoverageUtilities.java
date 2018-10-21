@@ -234,7 +234,8 @@ public final class CoverageUtilities {
      * Utility method for setting NoData to the input {@link Map}
      *
      * @param properties {@link Map} where the nodata will be set
-     * @param noData May be a {@link Range}, double[], double or {@link NoDataContainer}
+     * @param noData May be a {@link Range}, {@code double[]}, {@code double} or {@link
+     *     NoDataContainer}
      */
     public static void setNoDataProperty(Map<String, Object> properties, Object noData) {
         // If no nodata or no properties are defined, nothing is done

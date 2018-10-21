@@ -39,12 +39,9 @@ import org.opengis.util.InternationalString;
  * Abstract coordinate reference system, usually defined by a coordinate system and a datum.
  *
  * @since 2.1
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see AbstractCS
  * @see org.geotools.referencing.datum.AbstractDatum
- * @tutorial
- *     http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Services+for+Geotools+2.1
  */
 public abstract class AbstractCRS extends AbstractReferenceSystem
         implements CoordinateReferenceSystem {

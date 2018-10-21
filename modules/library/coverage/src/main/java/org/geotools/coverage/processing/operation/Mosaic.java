@@ -99,7 +99,7 @@ import org.opengis.util.InternationalString;
  *   <li>a Collection of the {@link GridCoverage2D} to mosaic
  *   <li>an optional {@link GridGeometry} object for setting the final resolution and BoundingBox
  *   <li>an optional {@link String} indicating the policy to use for choosing the resolution
- *   <li>an optional {@link double[]} indicating the nodata values to set for the background. Note
+ *   <li>an optional {@code double[]} indicating the nodata values to set for the background. Note
  *       that the only the first value will be used
  * </ul>
  *

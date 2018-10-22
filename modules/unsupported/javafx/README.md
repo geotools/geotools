@@ -5,6 +5,8 @@ A JavaFX parent subclass containing a Canvas. A map from a WMS-Server is drawn t
 
 In development.
 
+Note: You need to [download OpenJDK](https://wiki.openjdk.java.net/display/OpenJFX/Download) to use this module.
+
 ## IP Review
 
 

@@ -114,18 +114,18 @@
     <dependency>
         <groupId>org.testfx</groupId>
         <artifactId>openjfx-monocle</artifactId>
-        <version>8u76-b04</version>
+        <version>jdk-11+26</version>
     </dependency>
     <dependency>
         <groupId>org.testfx</groupId>
         <artifactId>testfx-core</artifactId>
-        <version>4.0.6-alpha</version>
+        <version>4.0.15-alpha</version>
         <scope>test</scope>
     </dependency>
     <dependency>
         <groupId>org.testfx</groupId>
         <artifactId>testfx-junit</artifactId>
-        <version>4.0.6-alpha</version>
+        <version>4.0.15-alpha</version>
         <scope>test</scope>
     </dependency>
 

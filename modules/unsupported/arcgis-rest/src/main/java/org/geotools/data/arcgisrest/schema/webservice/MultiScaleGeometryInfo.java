@@ -1,33 +1,42 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class MultiScaleGeometryInfo {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("levels")
     @Expose
     private List<Integer> levels = new ArrayList<Integer>();
 
     /**
+     * 
      * (Required)
-     *
-     * @return The levels
+     * 
+     * @return
+     *     The levels
      */
     public List<Integer> getLevels() {
         return levels;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param levels The levels
+     * 
+     * @param levels
+     *     The levels
      */
     public void setLevels(List<Integer> levels) {
         this.levels = levels;
@@ -54,4 +63,5 @@ public class MultiScaleGeometryInfo {
         MultiScaleGeometryInfo rhs = ((MultiScaleGeometryInfo) other);
         return new EqualsBuilder().append(levels, rhs.levels).isEquals();
     }
+
 }

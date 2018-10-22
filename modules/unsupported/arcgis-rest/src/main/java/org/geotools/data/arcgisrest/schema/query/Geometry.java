@@ -1,10 +1,12 @@
+
 package org.geotools.data.arcgisrest.schema.query;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Geometry {
+
 
     @Override
     public String toString() {
@@ -27,4 +29,5 @@ public class Geometry {
         Geometry rhs = ((Geometry) other);
         return new EqualsBuilder().isEquals();
     }
+
 }

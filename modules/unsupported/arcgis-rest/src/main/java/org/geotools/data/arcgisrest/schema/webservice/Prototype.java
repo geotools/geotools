@@ -1,31 +1,40 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Prototype {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("attributes")
     @Expose
     private Attributes attributes;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The attributes
+     * 
+     * @return
+     *     The attributes
      */
     public Attributes getAttributes() {
         return attributes;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param attributes The attributes
+     * 
+     * @param attributes
+     *     The attributes
      */
     public void setAttributes(Attributes attributes) {
         this.attributes = attributes;
@@ -52,4 +61,5 @@ public class Prototype {
         Prototype rhs = ((Prototype) other);
         return new EqualsBuilder().append(attributes, rhs.attributes).isEquals();
     }
+
 }

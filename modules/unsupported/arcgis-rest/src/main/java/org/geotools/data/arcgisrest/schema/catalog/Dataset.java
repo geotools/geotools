@@ -1,286 +1,303 @@
+
 package org.geotools.data.arcgisrest.schema.catalog;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 /**
  * Project Open Data Dataset
- *
- * <p>The metadata format for all federal open data. Validates a single JSON object entry (as
- * opposed to entire Data.json catalog).
+ * <p>
+ * The metadata format for all federal open data. Validates a single JSON object entry (as opposed to entire Data.json catalog).
+ * 
  */
 public class Dataset {
 
     /**
      * Metadata Context
-     *
-     * <p>IRI for the JSON-LD data type. This should be dcat:Dataset for each Dataset
+     * <p>
+     * IRI for the JSON-LD data type. This should be dcat:Dataset for each Dataset
+     * 
      */
     @SerializedName("@type")
     @Expose
     private Dataset.Type type;
     /**
      * Public Access Level
-     *
-     * <p>The degree to which this dataset could be made publicly-available, regardless of whether
-     * it has been made available. Choices: public (Data asset is or could be made publicly
-     * available to all without restrictions), restricted public (Data asset is available under
-     * certain use restrictions), or non-public (Data asset is not available to members of the
-     * public) (Required)
+     * <p>
+     * The degree to which this dataset could be made publicly-available, regardless of whether it has been made available. Choices: public (Data asset is or could be made publicly available to all without restrictions), restricted public (Data asset is available under certain use restrictions), or non-public (Data asset is not available to members of the public)
+     * (Required)
+     * 
      */
     @SerializedName("accessLevel")
     @Expose
     private Dataset.AccessLevel accessLevel;
     /**
      * Rights
-     *
-     * <p>This may include information regarding access or restrictions based on privacy, security,
-     * or other policies. This should also provide an explanation for the selected "accessLevel"
-     * including instructions for how to access a restricted file, if applicable, or explanation for
-     * why a "non-public" or "restricted public" data assetis not "public," if applicable. Text, 255
-     * characters.
+     * <p>
+     * This may include information regarding access or restrictions based on privacy, security, or other policies. This should also provide an explanation for the selected "accessLevel" including instructions for how to access a restricted file, if applicable, or explanation for why a "non-public" or "restricted public" data assetis not "public," if applicable. Text, 255 characters.
+     * 
      */
     @SerializedName("rights")
     @Expose
     private Object rights;
     /**
      * Frequency
-     *
-     * <p>Frequency with which dataset is published.
+     * <p>
+     * Frequency with which dataset is published.
+     * 
      */
     @SerializedName("accrualPeriodicity")
     @Expose
     private Object accrualPeriodicity;
     /**
      * Bureau Code
-     *
-     * <p>Federal agencies, combined agency and bureau code from <a
-     * href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB
-     * Circular A-11, Appendix C</a> in the format of <code>015:010</code>. (Required)
+     * <p>
+     * Federal agencies, combined agency and bureau code from <a href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB Circular A-11, Appendix C</a> in the format of <code>015:010</code>.
+     * (Required)
+     * 
      */
     @SerializedName("bureauCode")
     @Expose
     private Set<String> bureauCode = new LinkedHashSet<String>();
     /**
      * Project Open Data ContactPoint vCard
-     *
-     * <p>A Dataset ContactPoint as a vCard object (Required)
+     * <p>
+     * A Dataset ContactPoint as a vCard object
+     * (Required)
+     * 
      */
     @SerializedName("contactPoint")
     @Expose
     private ContactPoint contactPoint;
     /**
      * Data Dictionary
-     *
-     * <p>URL to the data dictionary for the dataset or API. Note that documentation other than a
-     * data dictionary can be referenced using Related Documents as shown in the expanded fields.
+     * <p>
+     * URL to the data dictionary for the dataset or API. Note that documentation other than a data dictionary can be referenced using Related Documents as shown in the expanded fields.
+     * 
      */
     @SerializedName("describedBy")
     @Expose
     private Object describedBy;
     /**
      * Data Dictionary Type
-     *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
+     * <p>
+     * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
+     * 
      */
     @SerializedName("describedByType")
     @Expose
     private Object describedByType;
     /**
      * Data Standard
-     *
-     * <p>URI used to identify a standardized specification the dataset conforms to
+     * <p>
+     * URI used to identify a standardized specification the dataset conforms to
+     * 
      */
     @SerializedName("conformsTo")
     @Expose
     private Object conformsTo;
     /**
      * Data Quality
-     *
-     * <p>Whether the dataset meets the agency’s Information Quality Guidelines (true/false).
+     * <p>
+     * Whether the dataset meets the agency’s Information Quality Guidelines (true/false).
+     * 
      */
     @SerializedName("dataQuality")
     @Expose
     private Object dataQuality;
     /**
      * Description
-     *
-     * <p>Human-readable description (e.g., an abstract) with sufficient detail to enable a user to
-     * quickly understand whether the asset is of interest. (Required)
+     * <p>
+     * Human-readable description (e.g., an abstract) with sufficient detail to enable a user to quickly understand whether the asset is of interest.
+     * (Required)
+     * 
      */
     @SerializedName("description")
     @Expose
     private String description;
     /**
      * Distribution
-     *
-     * <p>A container for the array of Distribution objects
+     * <p>
+     * A container for the array of Distribution objects
+     * 
      */
     @SerializedName("distribution")
     @Expose
     private List<Distribution> distribution = new ArrayList<Distribution>();
     /**
      * Unique Identifier
-     *
-     * <p>A unique identifier for the dataset or API as maintained within an Agency catalog or
-     * database. (Required)
+     * <p>
+     * A unique identifier for the dataset or API as maintained within an Agency catalog or database.
+     * (Required)
+     * 
      */
     @SerializedName("identifier")
     @Expose
     private String identifier;
     /**
      * Release Date
-     *
-     * <p>Date of formal issuance.
+     * <p>
+     * Date of formal issuance.
+     * 
      */
     @SerializedName("issued")
     @Expose
     private Object issued;
     /**
      * Tags
-     *
-     * <p>Tags (or keywords) help users discover your dataset; please include terms that would be
-     * used by technical and non-technical users. (Required)
+     * <p>
+     * Tags (or keywords) help users discover your dataset; please include terms that would be used by technical and non-technical users.
+     * (Required)
+     * 
      */
     @SerializedName("keyword")
     @Expose
     private List<String> keyword = new ArrayList<String>();
     /**
      * Homepage URL
-     *
-     * <p>Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage”
-     * for the Dataset or API when selecting this resource from the Data.gov user interface.
+     * <p>
+     * Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage” for the Dataset or API when selecting this resource from the Data.gov user interface.
+     * 
      */
     @SerializedName("landingPage")
     @Expose
     private Object landingPage;
     /**
      * WebService URL (ESRI extension of the standard schema)
-     *
-     * <p>ESRI ArcGIS ReST API pf the datatse
+     * <p>
+     * ESRI ArcGIS ReST API pf the datatse
+     * 
      */
     @SerializedName("webService")
     @Expose
     private Object webService;
     /**
      * Language
-     *
-     * <p>The language of the dataset.
+     * <p>
+     * The language of the dataset.
+     * 
      */
     @SerializedName("language")
     @Expose
     private Object language;
     /**
      * License
-     *
-     * <p>The license dataset or API is published with. See <a
-     * href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more
-     * information.
+     * <p>
+     * The license dataset or API is published with. See <a href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more information.
+     * 
      */
     @SerializedName("license")
     @Expose
     private Object license;
     /**
      * Last Update
-     *
-     * <p>Most recent date on which the dataset was changed, updated or modified. (Required)
+     * <p>
+     * Most recent date on which the dataset was changed, updated or modified.
+     * (Required)
+     * 
      */
     @SerializedName("modified")
     @Expose
     private Object modified;
     /**
      * Primary IT Investment UII
-     *
-     * <p>For linking a dataset with an IT Unique Investment Identifier (UII)
+     * <p>
+     * For linking a dataset with an IT Unique Investment Identifier (UII)
+     * 
      */
     @SerializedName("primaryITInvestmentUII")
     @Expose
     private Object primaryITInvestmentUII;
     /**
      * Program Code
-     *
-     * <p>Federal agencies, list the primary program related to this data asset, from the <a
-     * href="http://goals.performance.gov/sites/default/files/images/FederalProgramInventory_FY13_MachineReadable_091613.xls">Federal
-     * Program Inventory</a>. Use the format of <code>015:001</code> (Required)
+     * <p>
+     * Federal agencies, list the primary program related to this data asset, from the <a href="http://goals.performance.gov/sites/default/files/images/FederalProgramInventory_FY13_MachineReadable_091613.xls">Federal Program Inventory</a>. Use the format of <code>015:001</code>
+     * (Required)
+     * 
      */
     @SerializedName("programCode")
     @Expose
     private Set<String> programCode = new LinkedHashSet<String>();
     /**
      * Project Open Data Organization
-     *
-     * <p>A Dataset Publisher Organization as a foaf:Agent object (Required)
+     * <p>
+     * A Dataset Publisher Organization as a foaf:Agent object
+     * (Required)
+     * 
      */
     @SerializedName("publisher")
     @Expose
     private Publisher publisher;
     /**
      * Related Documents
-     *
-     * <p>Related documents such as technical information about a dataset, developer documentation,
-     * etc.
+     * <p>
+     * Related documents such as technical information about a dataset, developer documentation, etc.
+     * 
      */
     @SerializedName("references")
     @Expose
     private Object references;
     /**
      * Spatial
-     *
-     * <p>The range of spatial applicability of a dataset. Could include a spatial region like a
-     * bounding box or a named place.
+     * <p>
+     * The range of spatial applicability of a dataset. Could include a spatial region like a bounding box or a named place.
+     * 
      */
     @SerializedName("spatial")
     @Expose
     private Object spatial;
     /**
      * System of Records
-     *
-     * <p>If the systems is designated as a system of records under the Privacy Act of 1974, provide
-     * the URL to the System of Records Notice related to this dataset.
+     * <p>
+     * If the systems is designated as a system of records under the Privacy Act of 1974, provide the URL to the System of Records Notice related to this dataset.
+     * 
      */
     @SerializedName("systemOfRecords")
     @Expose
     private Object systemOfRecords;
     /**
      * Temporal
-     *
-     * <p>The range of temporal applicability of a dataset (i.e., a start and end date of
-     * applicability for the data).
+     * <p>
+     * The range of temporal applicability of a dataset (i.e., a start and end date of applicability for the data).
+     * 
      */
     @SerializedName("temporal")
     @Expose
     private Object temporal;
     /**
      * Collection
-     *
-     * <p>The collection of which the dataset is a subset
+     * <p>
+     * The collection of which the dataset is a subset
+     * 
      */
     @SerializedName("isPartOf")
     @Expose
     private Object isPartOf;
     /**
      * Category
-     *
-     * <p>Main thematic category of the dataset.
+     * <p>
+     * Main thematic category of the dataset.
+     * 
      */
     @SerializedName("theme")
     @Expose
     private Object theme;
     /**
      * Title
-     *
-     * <p>Human-readable name of the asset. Should be in plain English and include sufficient detail
-     * to facilitate search and discovery. (Required)
+     * <p>
+     * Human-readable name of the asset. Should be in plain English and include sufficient detail to facilitate search and discovery.
+     * (Required)
+     * 
      */
     @SerializedName("title")
     @Expose
@@ -288,10 +305,11 @@ public class Dataset {
 
     /**
      * Metadata Context
-     *
-     * <p>IRI for the JSON-LD data type. This should be dcat:Dataset for each Dataset
-     *
-     * @return The type
+     * <p>
+     * IRI for the JSON-LD data type. This should be dcat:Dataset for each Dataset
+     * 
+     * @return
+     *     The type
      */
     public Dataset.Type getType() {
         return type;
@@ -299,10 +317,11 @@ public class Dataset {
 
     /**
      * Metadata Context
-     *
-     * <p>IRI for the JSON-LD data type. This should be dcat:Dataset for each Dataset
-     *
-     * @param type The @type
+     * <p>
+     * IRI for the JSON-LD data type. This should be dcat:Dataset for each Dataset
+     * 
+     * @param type
+     *     The @type
      */
     public void setType(Dataset.Type type) {
         this.type = type;
@@ -310,14 +329,12 @@ public class Dataset {
 
     /**
      * Public Access Level
-     *
-     * <p>The degree to which this dataset could be made publicly-available, regardless of whether
-     * it has been made available. Choices: public (Data asset is or could be made publicly
-     * available to all without restrictions), restricted public (Data asset is available under
-     * certain use restrictions), or non-public (Data asset is not available to members of the
-     * public) (Required)
-     *
-     * @return The accessLevel
+     * <p>
+     * The degree to which this dataset could be made publicly-available, regardless of whether it has been made available. Choices: public (Data asset is or could be made publicly available to all without restrictions), restricted public (Data asset is available under certain use restrictions), or non-public (Data asset is not available to members of the public)
+     * (Required)
+     * 
+     * @return
+     *     The accessLevel
      */
     public Dataset.AccessLevel getAccessLevel() {
         return accessLevel;
@@ -325,14 +342,12 @@ public class Dataset {
 
     /**
      * Public Access Level
-     *
-     * <p>The degree to which this dataset could be made publicly-available, regardless of whether
-     * it has been made available. Choices: public (Data asset is or could be made publicly
-     * available to all without restrictions), restricted public (Data asset is available under
-     * certain use restrictions), or non-public (Data asset is not available to members of the
-     * public) (Required)
-     *
-     * @param accessLevel The accessLevel
+     * <p>
+     * The degree to which this dataset could be made publicly-available, regardless of whether it has been made available. Choices: public (Data asset is or could be made publicly available to all without restrictions), restricted public (Data asset is available under certain use restrictions), or non-public (Data asset is not available to members of the public)
+     * (Required)
+     * 
+     * @param accessLevel
+     *     The accessLevel
      */
     public void setAccessLevel(Dataset.AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
@@ -340,14 +355,11 @@ public class Dataset {
 
     /**
      * Rights
-     *
-     * <p>This may include information regarding access or restrictions based on privacy, security,
-     * or other policies. This should also provide an explanation for the selected "accessLevel"
-     * including instructions for how to access a restricted file, if applicable, or explanation for
-     * why a "non-public" or "restricted public" data assetis not "public," if applicable. Text, 255
-     * characters.
-     *
-     * @return The rights
+     * <p>
+     * This may include information regarding access or restrictions based on privacy, security, or other policies. This should also provide an explanation for the selected "accessLevel" including instructions for how to access a restricted file, if applicable, or explanation for why a "non-public" or "restricted public" data assetis not "public," if applicable. Text, 255 characters.
+     * 
+     * @return
+     *     The rights
      */
     public Object getRights() {
         return rights;
@@ -355,14 +367,11 @@ public class Dataset {
 
     /**
      * Rights
-     *
-     * <p>This may include information regarding access or restrictions based on privacy, security,
-     * or other policies. This should also provide an explanation for the selected "accessLevel"
-     * including instructions for how to access a restricted file, if applicable, or explanation for
-     * why a "non-public" or "restricted public" data assetis not "public," if applicable. Text, 255
-     * characters.
-     *
-     * @param rights The rights
+     * <p>
+     * This may include information regarding access or restrictions based on privacy, security, or other policies. This should also provide an explanation for the selected "accessLevel" including instructions for how to access a restricted file, if applicable, or explanation for why a "non-public" or "restricted public" data assetis not "public," if applicable. Text, 255 characters.
+     * 
+     * @param rights
+     *     The rights
      */
     public void setRights(Object rights) {
         this.rights = rights;
@@ -370,10 +379,11 @@ public class Dataset {
 
     /**
      * Frequency
-     *
-     * <p>Frequency with which dataset is published.
-     *
-     * @return The accrualPeriodicity
+     * <p>
+     * Frequency with which dataset is published.
+     * 
+     * @return
+     *     The accrualPeriodicity
      */
     public Object getAccrualPeriodicity() {
         return accrualPeriodicity;
@@ -381,10 +391,11 @@ public class Dataset {
 
     /**
      * Frequency
-     *
-     * <p>Frequency with which dataset is published.
-     *
-     * @param accrualPeriodicity The accrualPeriodicity
+     * <p>
+     * Frequency with which dataset is published.
+     * 
+     * @param accrualPeriodicity
+     *     The accrualPeriodicity
      */
     public void setAccrualPeriodicity(Object accrualPeriodicity) {
         this.accrualPeriodicity = accrualPeriodicity;
@@ -392,12 +403,12 @@ public class Dataset {
 
     /**
      * Bureau Code
-     *
-     * <p>Federal agencies, combined agency and bureau code from <a
-     * href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB
-     * Circular A-11, Appendix C</a> in the format of <code>015:010</code>. (Required)
-     *
-     * @return The bureauCode
+     * <p>
+     * Federal agencies, combined agency and bureau code from <a href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB Circular A-11, Appendix C</a> in the format of <code>015:010</code>.
+     * (Required)
+     * 
+     * @return
+     *     The bureauCode
      */
     public Set<String> getBureauCode() {
         return bureauCode;
@@ -405,12 +416,12 @@ public class Dataset {
 
     /**
      * Bureau Code
-     *
-     * <p>Federal agencies, combined agency and bureau code from <a
-     * href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB
-     * Circular A-11, Appendix C</a> in the format of <code>015:010</code>. (Required)
-     *
-     * @param bureauCode The bureauCode
+     * <p>
+     * Federal agencies, combined agency and bureau code from <a href="http://www.whitehouse.gov/sites/default/files/omb/assets/a11_current_year/app_c.pdf">OMB Circular A-11, Appendix C</a> in the format of <code>015:010</code>.
+     * (Required)
+     * 
+     * @param bureauCode
+     *     The bureauCode
      */
     public void setBureauCode(Set<String> bureauCode) {
         this.bureauCode = bureauCode;
@@ -418,10 +429,12 @@ public class Dataset {
 
     /**
      * Project Open Data ContactPoint vCard
-     *
-     * <p>A Dataset ContactPoint as a vCard object (Required)
-     *
-     * @return The contactPoint
+     * <p>
+     * A Dataset ContactPoint as a vCard object
+     * (Required)
+     * 
+     * @return
+     *     The contactPoint
      */
     public ContactPoint getContactPoint() {
         return contactPoint;
@@ -429,10 +442,12 @@ public class Dataset {
 
     /**
      * Project Open Data ContactPoint vCard
-     *
-     * <p>A Dataset ContactPoint as a vCard object (Required)
-     *
-     * @param contactPoint The contactPoint
+     * <p>
+     * A Dataset ContactPoint as a vCard object
+     * (Required)
+     * 
+     * @param contactPoint
+     *     The contactPoint
      */
     public void setContactPoint(ContactPoint contactPoint) {
         this.contactPoint = contactPoint;
@@ -440,11 +455,11 @@ public class Dataset {
 
     /**
      * Data Dictionary
-     *
-     * <p>URL to the data dictionary for the dataset or API. Note that documentation other than a
-     * data dictionary can be referenced using Related Documents as shown in the expanded fields.
-     *
-     * @return The describedBy
+     * <p>
+     * URL to the data dictionary for the dataset or API. Note that documentation other than a data dictionary can be referenced using Related Documents as shown in the expanded fields.
+     * 
+     * @return
+     *     The describedBy
      */
     public Object getDescribedBy() {
         return describedBy;
@@ -452,11 +467,11 @@ public class Dataset {
 
     /**
      * Data Dictionary
-     *
-     * <p>URL to the data dictionary for the dataset or API. Note that documentation other than a
-     * data dictionary can be referenced using Related Documents as shown in the expanded fields.
-     *
-     * @param describedBy The describedBy
+     * <p>
+     * URL to the data dictionary for the dataset or API. Note that documentation other than a data dictionary can be referenced using Related Documents as shown in the expanded fields.
+     * 
+     * @param describedBy
+     *     The describedBy
      */
     public void setDescribedBy(Object describedBy) {
         this.describedBy = describedBy;
@@ -464,11 +479,11 @@ public class Dataset {
 
     /**
      * Data Dictionary Type
-     *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
-     *
-     * @return The describedByType
+     * <p>
+     * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
+     * 
+     * @return
+     *     The describedByType
      */
     public Object getDescribedByType() {
         return describedByType;
@@ -476,11 +491,11 @@ public class Dataset {
 
     /**
      * Data Dictionary Type
-     *
-     * <p>The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s
-     * describedBy URL
-     *
-     * @param describedByType The describedByType
+     * <p>
+     * The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL
+     * 
+     * @param describedByType
+     *     The describedByType
      */
     public void setDescribedByType(Object describedByType) {
         this.describedByType = describedByType;
@@ -488,10 +503,11 @@ public class Dataset {
 
     /**
      * Data Standard
-     *
-     * <p>URI used to identify a standardized specification the dataset conforms to
-     *
-     * @return The conformsTo
+     * <p>
+     * URI used to identify a standardized specification the dataset conforms to
+     * 
+     * @return
+     *     The conformsTo
      */
     public Object getConformsTo() {
         return conformsTo;
@@ -499,10 +515,11 @@ public class Dataset {
 
     /**
      * Data Standard
-     *
-     * <p>URI used to identify a standardized specification the dataset conforms to
-     *
-     * @param conformsTo The conformsTo
+     * <p>
+     * URI used to identify a standardized specification the dataset conforms to
+     * 
+     * @param conformsTo
+     *     The conformsTo
      */
     public void setConformsTo(Object conformsTo) {
         this.conformsTo = conformsTo;
@@ -510,10 +527,11 @@ public class Dataset {
 
     /**
      * Data Quality
-     *
-     * <p>Whether the dataset meets the agency’s Information Quality Guidelines (true/false).
-     *
-     * @return The dataQuality
+     * <p>
+     * Whether the dataset meets the agency’s Information Quality Guidelines (true/false).
+     * 
+     * @return
+     *     The dataQuality
      */
     public Object getDataQuality() {
         return dataQuality;
@@ -521,10 +539,11 @@ public class Dataset {
 
     /**
      * Data Quality
-     *
-     * <p>Whether the dataset meets the agency’s Information Quality Guidelines (true/false).
-     *
-     * @param dataQuality The dataQuality
+     * <p>
+     * Whether the dataset meets the agency’s Information Quality Guidelines (true/false).
+     * 
+     * @param dataQuality
+     *     The dataQuality
      */
     public void setDataQuality(Object dataQuality) {
         this.dataQuality = dataQuality;
@@ -532,11 +551,12 @@ public class Dataset {
 
     /**
      * Description
-     *
-     * <p>Human-readable description (e.g., an abstract) with sufficient detail to enable a user to
-     * quickly understand whether the asset is of interest. (Required)
-     *
-     * @return The description
+     * <p>
+     * Human-readable description (e.g., an abstract) with sufficient detail to enable a user to quickly understand whether the asset is of interest.
+     * (Required)
+     * 
+     * @return
+     *     The description
      */
     public String getDescription() {
         return description;
@@ -544,11 +564,12 @@ public class Dataset {
 
     /**
      * Description
-     *
-     * <p>Human-readable description (e.g., an abstract) with sufficient detail to enable a user to
-     * quickly understand whether the asset is of interest. (Required)
-     *
-     * @param description The description
+     * <p>
+     * Human-readable description (e.g., an abstract) with sufficient detail to enable a user to quickly understand whether the asset is of interest.
+     * (Required)
+     * 
+     * @param description
+     *     The description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -556,10 +577,11 @@ public class Dataset {
 
     /**
      * Distribution
-     *
-     * <p>A container for the array of Distribution objects
-     *
-     * @return The distribution
+     * <p>
+     * A container for the array of Distribution objects
+     * 
+     * @return
+     *     The distribution
      */
     public List<Distribution> getDistribution() {
         return distribution;
@@ -567,10 +589,11 @@ public class Dataset {
 
     /**
      * Distribution
-     *
-     * <p>A container for the array of Distribution objects
-     *
-     * @param distribution The distribution
+     * <p>
+     * A container for the array of Distribution objects
+     * 
+     * @param distribution
+     *     The distribution
      */
     public void setDistribution(List<Distribution> distribution) {
         this.distribution = distribution;
@@ -578,11 +601,12 @@ public class Dataset {
 
     /**
      * Unique Identifier
-     *
-     * <p>A unique identifier for the dataset or API as maintained within an Agency catalog or
-     * database. (Required)
-     *
-     * @return The identifier
+     * <p>
+     * A unique identifier for the dataset or API as maintained within an Agency catalog or database.
+     * (Required)
+     * 
+     * @return
+     *     The identifier
      */
     public String getIdentifier() {
         return identifier;
@@ -590,11 +614,12 @@ public class Dataset {
 
     /**
      * Unique Identifier
-     *
-     * <p>A unique identifier for the dataset or API as maintained within an Agency catalog or
-     * database. (Required)
-     *
-     * @param identifier The identifier
+     * <p>
+     * A unique identifier for the dataset or API as maintained within an Agency catalog or database.
+     * (Required)
+     * 
+     * @param identifier
+     *     The identifier
      */
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
@@ -602,10 +627,11 @@ public class Dataset {
 
     /**
      * Release Date
-     *
-     * <p>Date of formal issuance.
-     *
-     * @return The issued
+     * <p>
+     * Date of formal issuance.
+     * 
+     * @return
+     *     The issued
      */
     public Object getIssued() {
         return issued;
@@ -613,10 +639,11 @@ public class Dataset {
 
     /**
      * Release Date
-     *
-     * <p>Date of formal issuance.
-     *
-     * @param issued The issued
+     * <p>
+     * Date of formal issuance.
+     * 
+     * @param issued
+     *     The issued
      */
     public void setIssued(Object issued) {
         this.issued = issued;
@@ -624,11 +651,12 @@ public class Dataset {
 
     /**
      * Tags
-     *
-     * <p>Tags (or keywords) help users discover your dataset; please include terms that would be
-     * used by technical and non-technical users. (Required)
-     *
-     * @return The keyword
+     * <p>
+     * Tags (or keywords) help users discover your dataset; please include terms that would be used by technical and non-technical users.
+     * (Required)
+     * 
+     * @return
+     *     The keyword
      */
     public List<String> getKeyword() {
         return keyword;
@@ -636,11 +664,12 @@ public class Dataset {
 
     /**
      * Tags
-     *
-     * <p>Tags (or keywords) help users discover your dataset; please include terms that would be
-     * used by technical and non-technical users. (Required)
-     *
-     * @param keyword The keyword
+     * <p>
+     * Tags (or keywords) help users discover your dataset; please include terms that would be used by technical and non-technical users.
+     * (Required)
+     * 
+     * @param keyword
+     *     The keyword
      */
     public void setKeyword(List<String> keyword) {
         this.keyword = keyword;
@@ -648,11 +677,11 @@ public class Dataset {
 
     /**
      * Homepage URL
-     *
-     * <p>Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage”
-     * for the Dataset or API when selecting this resource from the Data.gov user interface.
-     *
-     * @return The landingPage
+     * <p>
+     * Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage” for the Dataset or API when selecting this resource from the Data.gov user interface.
+     * 
+     * @return
+     *     The landingPage
      */
     public Object getLandingPage() {
         return landingPage;
@@ -660,11 +689,11 @@ public class Dataset {
 
     /**
      * Homepage URL
-     *
-     * <p>Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage”
-     * for the Dataset or API when selecting this resource from the Data.gov user interface.
-     *
-     * @param landingPage The landingPage
+     * <p>
+     * Alternative landing page used to redirect user to a contextual, Agency-hosted “homepage” for the Dataset or API when selecting this resource from the Data.gov user interface.
+     * 
+     * @param landingPage
+     *     The landingPage
      */
     public void setLandingPage(Object landingPage) {
         this.landingPage = landingPage;
@@ -672,10 +701,11 @@ public class Dataset {
 
     /**
      * WebService URL (ESRI extension of the standard schema)
-     *
-     * <p>ESRI ArcGIS ReST API pf the datatse
-     *
-     * @return The webService
+     * <p>
+     * ESRI ArcGIS ReST API pf the datatse
+     * 
+     * @return
+     *     The webService
      */
     public Object getWebService() {
         return webService;
@@ -683,10 +713,11 @@ public class Dataset {
 
     /**
      * WebService URL (ESRI extension of the standard schema)
-     *
-     * <p>ESRI ArcGIS ReST API pf the datatse
-     *
-     * @param webService The webService
+     * <p>
+     * ESRI ArcGIS ReST API pf the datatse
+     * 
+     * @param webService
+     *     The webService
      */
     public void setWebService(Object webService) {
         this.webService = webService;
@@ -694,10 +725,11 @@ public class Dataset {
 
     /**
      * Language
-     *
-     * <p>The language of the dataset.
-     *
-     * @return The language
+     * <p>
+     * The language of the dataset.
+     * 
+     * @return
+     *     The language
      */
     public Object getLanguage() {
         return language;
@@ -705,10 +737,11 @@ public class Dataset {
 
     /**
      * Language
-     *
-     * <p>The language of the dataset.
-     *
-     * @param language The language
+     * <p>
+     * The language of the dataset.
+     * 
+     * @param language
+     *     The language
      */
     public void setLanguage(Object language) {
         this.language = language;
@@ -716,12 +749,11 @@ public class Dataset {
 
     /**
      * License
-     *
-     * <p>The license dataset or API is published with. See <a
-     * href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more
-     * information.
-     *
-     * @return The license
+     * <p>
+     * The license dataset or API is published with. See <a href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more information.
+     * 
+     * @return
+     *     The license
      */
     public Object getLicense() {
         return license;
@@ -729,12 +761,11 @@ public class Dataset {
 
     /**
      * License
-     *
-     * <p>The license dataset or API is published with. See <a
-     * href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more
-     * information.
-     *
-     * @param license The license
+     * <p>
+     * The license dataset or API is published with. See <a href="https://project-open-data.cio.gov/open-licenses/">Open Licenses</a> for more information.
+     * 
+     * @param license
+     *     The license
      */
     public void setLicense(Object license) {
         this.license = license;
@@ -742,10 +773,12 @@ public class Dataset {
 
     /**
      * Last Update
-     *
-     * <p>Most recent date on which the dataset was changed, updated or modified. (Required)
-     *
-     * @return The modified
+     * <p>
+     * Most recent date on which the dataset was changed, updated or modified.
+     * (Required)
+     * 
+     * @return
+     *     The modified
      */
     public Object getModified() {
         return modified;
@@ -753,10 +786,12 @@ public class Dataset {
 
     /**
      * Last Update
-     *
-     * <p>Most recent date on which the dataset was changed, updated or modified. (Required)
-     *
-     * @param modified The modified
+     * <p>
+     * Most recent date on which the dataset was changed, updated or modified.
+     * (Required)
+     * 
+     * @param modified
+     *     The modified
      */
     public void setModified(Object modified) {
         this.modified = modified;
@@ -764,10 +799,11 @@ public class Dataset {
 
     /**
      * Primary IT Investment UII
-     *
-     * <p>For linking a dataset with an IT Unique Investment Identifier (UII)
-     *
-     * @return The primaryITInvestmentUII
+     * <p>
+     * For linking a dataset with an IT Unique Investment Identifier (UII)
+     * 
+     * @return
+     *     The primaryITInvestmentUII
      */
     public Object getPrimaryITInvestmentUII() {
         return primaryITInvestmentUII;
@@ -775,10 +811,11 @@ public class Dataset {
 
     /**
      * Primary IT Investment UII
-     *
-     * <p>For linking a dataset with an IT Unique Investment Identifier (UII)
-     *
-     * @param primaryITInvestmentUII The primaryITInvestmentUII
+     * <p>
+     * For linking a dataset with an IT Unique Investment Identifier (UII)
+     * 
+     * @param primaryITInvestmentUII
+     *     The primaryITInvestmentUII
      */
     public void setPrimaryITInvestmentUII(Object primaryITInvestmentUII) {
         this.primaryITInvestmentUII = primaryITInvestmentUII;
@@ -786,12 +823,12 @@ public class Dataset {
 
     /**
      * Program Code
-     *
-     * <p>Federal agencies, list the primary program related to this data asset, from the <a
-     * href="http://goals.performance.gov/sites/default/files/images/FederalProgramInventory_FY13_MachineReadable_091613.xls">Federal
-     * Program Inventory</a>. Use the format of <code>015:001</code> (Required)
-     *
-     * @return The programCode
+     * <p>
+     * Federal agencies, list the primary program related to this data asset, from the <a href="http://goals.performance.gov/sites/default/files/images/FederalProgramInventory_FY13_MachineReadable_091613.xls">Federal Program Inventory</a>. Use the format of <code>015:001</code>
+     * (Required)
+     * 
+     * @return
+     *     The programCode
      */
     public Set<String> getProgramCode() {
         return programCode;
@@ -799,12 +836,12 @@ public class Dataset {
 
     /**
      * Program Code
-     *
-     * <p>Federal agencies, list the primary program related to this data asset, from the <a
-     * href="http://goals.performance.gov/sites/default/files/images/FederalProgramInventory_FY13_MachineReadable_091613.xls">Federal
-     * Program Inventory</a>. Use the format of <code>015:001</code> (Required)
-     *
-     * @param programCode The programCode
+     * <p>
+     * Federal agencies, list the primary program related to this data asset, from the <a href="http://goals.performance.gov/sites/default/files/images/FederalProgramInventory_FY13_MachineReadable_091613.xls">Federal Program Inventory</a>. Use the format of <code>015:001</code>
+     * (Required)
+     * 
+     * @param programCode
+     *     The programCode
      */
     public void setProgramCode(Set<String> programCode) {
         this.programCode = programCode;
@@ -812,10 +849,12 @@ public class Dataset {
 
     /**
      * Project Open Data Organization
-     *
-     * <p>A Dataset Publisher Organization as a foaf:Agent object (Required)
-     *
-     * @return The publisher
+     * <p>
+     * A Dataset Publisher Organization as a foaf:Agent object
+     * (Required)
+     * 
+     * @return
+     *     The publisher
      */
     public Publisher getPublisher() {
         return publisher;
@@ -823,10 +862,12 @@ public class Dataset {
 
     /**
      * Project Open Data Organization
-     *
-     * <p>A Dataset Publisher Organization as a foaf:Agent object (Required)
-     *
-     * @param publisher The publisher
+     * <p>
+     * A Dataset Publisher Organization as a foaf:Agent object
+     * (Required)
+     * 
+     * @param publisher
+     *     The publisher
      */
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
@@ -834,11 +875,11 @@ public class Dataset {
 
     /**
      * Related Documents
-     *
-     * <p>Related documents such as technical information about a dataset, developer documentation,
-     * etc.
-     *
-     * @return The references
+     * <p>
+     * Related documents such as technical information about a dataset, developer documentation, etc.
+     * 
+     * @return
+     *     The references
      */
     public Object getReferences() {
         return references;
@@ -846,11 +887,11 @@ public class Dataset {
 
     /**
      * Related Documents
-     *
-     * <p>Related documents such as technical information about a dataset, developer documentation,
-     * etc.
-     *
-     * @param references The references
+     * <p>
+     * Related documents such as technical information about a dataset, developer documentation, etc.
+     * 
+     * @param references
+     *     The references
      */
     public void setReferences(Object references) {
         this.references = references;
@@ -858,11 +899,11 @@ public class Dataset {
 
     /**
      * Spatial
-     *
-     * <p>The range of spatial applicability of a dataset. Could include a spatial region like a
-     * bounding box or a named place.
-     *
-     * @return The spatial
+     * <p>
+     * The range of spatial applicability of a dataset. Could include a spatial region like a bounding box or a named place.
+     * 
+     * @return
+     *     The spatial
      */
     public Object getSpatial() {
         return spatial;
@@ -870,11 +911,11 @@ public class Dataset {
 
     /**
      * Spatial
-     *
-     * <p>The range of spatial applicability of a dataset. Could include a spatial region like a
-     * bounding box or a named place.
-     *
-     * @param spatial The spatial
+     * <p>
+     * The range of spatial applicability of a dataset. Could include a spatial region like a bounding box or a named place.
+     * 
+     * @param spatial
+     *     The spatial
      */
     public void setSpatial(Object spatial) {
         this.spatial = spatial;
@@ -882,11 +923,11 @@ public class Dataset {
 
     /**
      * System of Records
-     *
-     * <p>If the systems is designated as a system of records under the Privacy Act of 1974, provide
-     * the URL to the System of Records Notice related to this dataset.
-     *
-     * @return The systemOfRecords
+     * <p>
+     * If the systems is designated as a system of records under the Privacy Act of 1974, provide the URL to the System of Records Notice related to this dataset.
+     * 
+     * @return
+     *     The systemOfRecords
      */
     public Object getSystemOfRecords() {
         return systemOfRecords;
@@ -894,11 +935,11 @@ public class Dataset {
 
     /**
      * System of Records
-     *
-     * <p>If the systems is designated as a system of records under the Privacy Act of 1974, provide
-     * the URL to the System of Records Notice related to this dataset.
-     *
-     * @param systemOfRecords The systemOfRecords
+     * <p>
+     * If the systems is designated as a system of records under the Privacy Act of 1974, provide the URL to the System of Records Notice related to this dataset.
+     * 
+     * @param systemOfRecords
+     *     The systemOfRecords
      */
     public void setSystemOfRecords(Object systemOfRecords) {
         this.systemOfRecords = systemOfRecords;
@@ -906,11 +947,11 @@ public class Dataset {
 
     /**
      * Temporal
-     *
-     * <p>The range of temporal applicability of a dataset (i.e., a start and end date of
-     * applicability for the data).
-     *
-     * @return The temporal
+     * <p>
+     * The range of temporal applicability of a dataset (i.e., a start and end date of applicability for the data).
+     * 
+     * @return
+     *     The temporal
      */
     public Object getTemporal() {
         return temporal;
@@ -918,11 +959,11 @@ public class Dataset {
 
     /**
      * Temporal
-     *
-     * <p>The range of temporal applicability of a dataset (i.e., a start and end date of
-     * applicability for the data).
-     *
-     * @param temporal The temporal
+     * <p>
+     * The range of temporal applicability of a dataset (i.e., a start and end date of applicability for the data).
+     * 
+     * @param temporal
+     *     The temporal
      */
     public void setTemporal(Object temporal) {
         this.temporal = temporal;
@@ -930,10 +971,11 @@ public class Dataset {
 
     /**
      * Collection
-     *
-     * <p>The collection of which the dataset is a subset
-     *
-     * @return The isPartOf
+     * <p>
+     * The collection of which the dataset is a subset
+     * 
+     * @return
+     *     The isPartOf
      */
     public Object getIsPartOf() {
         return isPartOf;
@@ -941,10 +983,11 @@ public class Dataset {
 
     /**
      * Collection
-     *
-     * <p>The collection of which the dataset is a subset
-     *
-     * @param isPartOf The isPartOf
+     * <p>
+     * The collection of which the dataset is a subset
+     * 
+     * @param isPartOf
+     *     The isPartOf
      */
     public void setIsPartOf(Object isPartOf) {
         this.isPartOf = isPartOf;
@@ -952,10 +995,11 @@ public class Dataset {
 
     /**
      * Category
-     *
-     * <p>Main thematic category of the dataset.
-     *
-     * @return The theme
+     * <p>
+     * Main thematic category of the dataset.
+     * 
+     * @return
+     *     The theme
      */
     public Object getTheme() {
         return theme;
@@ -963,10 +1007,11 @@ public class Dataset {
 
     /**
      * Category
-     *
-     * <p>Main thematic category of the dataset.
-     *
-     * @param theme The theme
+     * <p>
+     * Main thematic category of the dataset.
+     * 
+     * @param theme
+     *     The theme
      */
     public void setTheme(Object theme) {
         this.theme = theme;
@@ -974,11 +1019,12 @@ public class Dataset {
 
     /**
      * Title
-     *
-     * <p>Human-readable name of the asset. Should be in plain English and include sufficient detail
-     * to facilitate search and discovery. (Required)
-     *
-     * @return The title
+     * <p>
+     * Human-readable name of the asset. Should be in plain English and include sufficient detail to facilitate search and discovery.
+     * (Required)
+     * 
+     * @return
+     *     The title
      */
     public String getTitle() {
         return title;
@@ -986,11 +1032,12 @@ public class Dataset {
 
     /**
      * Title
-     *
-     * <p>Human-readable name of the asset. Should be in plain English and include sufficient detail
-     * to facilitate search and discovery. (Required)
-     *
-     * @param title The title
+     * <p>
+     * Human-readable name of the asset. Should be in plain English and include sufficient detail to facilitate search and discovery.
+     * (Required)
+     * 
+     * @param title
+     *     The title
      */
     public void setTitle(String title) {
         this.title = title;
@@ -1003,38 +1050,7 @@ public class Dataset {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(type)
-                .append(accessLevel)
-                .append(rights)
-                .append(accrualPeriodicity)
-                .append(bureauCode)
-                .append(contactPoint)
-                .append(describedBy)
-                .append(describedByType)
-                .append(conformsTo)
-                .append(dataQuality)
-                .append(description)
-                .append(distribution)
-                .append(identifier)
-                .append(issued)
-                .append(keyword)
-                .append(landingPage)
-                .append(webService)
-                .append(language)
-                .append(license)
-                .append(modified)
-                .append(primaryITInvestmentUII)
-                .append(programCode)
-                .append(publisher)
-                .append(references)
-                .append(spatial)
-                .append(systemOfRecords)
-                .append(temporal)
-                .append(isPartOf)
-                .append(theme)
-                .append(title)
-                .toHashCode();
+        return new HashCodeBuilder().append(type).append(accessLevel).append(rights).append(accrualPeriodicity).append(bureauCode).append(contactPoint).append(describedBy).append(describedByType).append(conformsTo).append(dataQuality).append(description).append(distribution).append(identifier).append(issued).append(keyword).append(landingPage).append(webService).append(language).append(license).append(modified).append(primaryITInvestmentUII).append(programCode).append(publisher).append(references).append(spatial).append(systemOfRecords).append(temporal).append(isPartOf).append(theme).append(title).toHashCode();
     }
 
     @Override
@@ -1046,41 +1062,11 @@ public class Dataset {
             return false;
         }
         Dataset rhs = ((Dataset) other);
-        return new EqualsBuilder()
-                .append(type, rhs.type)
-                .append(accessLevel, rhs.accessLevel)
-                .append(rights, rhs.rights)
-                .append(accrualPeriodicity, rhs.accrualPeriodicity)
-                .append(bureauCode, rhs.bureauCode)
-                .append(contactPoint, rhs.contactPoint)
-                .append(describedBy, rhs.describedBy)
-                .append(describedByType, rhs.describedByType)
-                .append(conformsTo, rhs.conformsTo)
-                .append(dataQuality, rhs.dataQuality)
-                .append(description, rhs.description)
-                .append(distribution, rhs.distribution)
-                .append(identifier, rhs.identifier)
-                .append(issued, rhs.issued)
-                .append(keyword, rhs.keyword)
-                .append(landingPage, rhs.landingPage)
-                .append(webService, rhs.webService)
-                .append(language, rhs.language)
-                .append(license, rhs.license)
-                .append(modified, rhs.modified)
-                .append(primaryITInvestmentUII, rhs.primaryITInvestmentUII)
-                .append(programCode, rhs.programCode)
-                .append(publisher, rhs.publisher)
-                .append(references, rhs.references)
-                .append(spatial, rhs.spatial)
-                .append(systemOfRecords, rhs.systemOfRecords)
-                .append(temporal, rhs.temporal)
-                .append(isPartOf, rhs.isPartOf)
-                .append(theme, rhs.theme)
-                .append(title, rhs.title)
-                .isEquals();
+        return new EqualsBuilder().append(type, rhs.type).append(accessLevel, rhs.accessLevel).append(rights, rhs.rights).append(accrualPeriodicity, rhs.accrualPeriodicity).append(bureauCode, rhs.bureauCode).append(contactPoint, rhs.contactPoint).append(describedBy, rhs.describedBy).append(describedByType, rhs.describedByType).append(conformsTo, rhs.conformsTo).append(dataQuality, rhs.dataQuality).append(description, rhs.description).append(distribution, rhs.distribution).append(identifier, rhs.identifier).append(issued, rhs.issued).append(keyword, rhs.keyword).append(landingPage, rhs.landingPage).append(webService, rhs.webService).append(language, rhs.language).append(license, rhs.license).append(modified, rhs.modified).append(primaryITInvestmentUII, rhs.primaryITInvestmentUII).append(programCode, rhs.programCode).append(publisher, rhs.publisher).append(references, rhs.references).append(spatial, rhs.spatial).append(systemOfRecords, rhs.systemOfRecords).append(temporal, rhs.temporal).append(isPartOf, rhs.isPartOf).append(theme, rhs.theme).append(title, rhs.title).isEquals();
     }
 
     public enum AccessLevel {
+
         @SerializedName("public")
         PUBLIC("public"),
         @SerializedName("restricted public")
@@ -1088,11 +1074,10 @@ public class Dataset {
         @SerializedName("non-public")
         NON_PUBLIC("non-public");
         private final String value;
-        private static final Map<String, Dataset.AccessLevel> CONSTANTS =
-                new HashMap<String, Dataset.AccessLevel>();
+        private final static Map<String, Dataset.AccessLevel> CONSTANTS = new HashMap<String, Dataset.AccessLevel>();
 
         static {
-            for (Dataset.AccessLevel c : values()) {
+            for (Dataset.AccessLevel c: values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
@@ -1118,17 +1103,18 @@ public class Dataset {
                 return constant;
             }
         }
+
     }
 
     public enum Type {
+
         @SerializedName("dcat:Dataset")
         DCAT_DATASET("dcat:Dataset");
         private final String value;
-        private static final Map<String, Dataset.Type> CONSTANTS =
-                new HashMap<String, Dataset.Type>();
+        private final static Map<String, Dataset.Type> CONSTANTS = new HashMap<String, Dataset.Type>();
 
         static {
-            for (Dataset.Type c : values()) {
+            for (Dataset.Type c: values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
@@ -1154,5 +1140,7 @@ public class Dataset {
                 return constant;
             }
         }
+
     }
+
 }

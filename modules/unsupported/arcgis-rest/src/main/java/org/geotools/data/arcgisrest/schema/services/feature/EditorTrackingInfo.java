@@ -1,163 +1,220 @@
+
 package org.geotools.data.arcgisrest.schema.services.feature;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class EditorTrackingInfo {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("enableEditorTracking")
     @Expose
     private Boolean enableEditorTracking;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("enableOwnershipAccessControl")
     @Expose
     private Boolean enableOwnershipAccessControl;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("allowOthersToQuery")
     @Expose
     private Boolean allowOthersToQuery;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("allowOthersToUpdate")
     @Expose
     private Boolean allowOthersToUpdate;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("allowOthersToDelete")
     @Expose
     private Boolean allowOthersToDelete;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("allowAnonymousToUpdate")
     @Expose
     private Boolean allowAnonymousToUpdate;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("allowAnonymousToDelete")
     @Expose
     private Boolean allowAnonymousToDelete;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The enableEditorTracking
+     * 
+     * @return
+     *     The enableEditorTracking
      */
     public Boolean getEnableEditorTracking() {
         return enableEditorTracking;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param enableEditorTracking The enableEditorTracking
+     * 
+     * @param enableEditorTracking
+     *     The enableEditorTracking
      */
     public void setEnableEditorTracking(Boolean enableEditorTracking) {
         this.enableEditorTracking = enableEditorTracking;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The enableOwnershipAccessControl
+     * 
+     * @return
+     *     The enableOwnershipAccessControl
      */
     public Boolean getEnableOwnershipAccessControl() {
         return enableOwnershipAccessControl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param enableOwnershipAccessControl The enableOwnershipAccessControl
+     * 
+     * @param enableOwnershipAccessControl
+     *     The enableOwnershipAccessControl
      */
     public void setEnableOwnershipAccessControl(Boolean enableOwnershipAccessControl) {
         this.enableOwnershipAccessControl = enableOwnershipAccessControl;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The allowOthersToQuery
+     * 
+     * @return
+     *     The allowOthersToQuery
      */
     public Boolean getAllowOthersToQuery() {
         return allowOthersToQuery;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param allowOthersToQuery The allowOthersToQuery
+     * 
+     * @param allowOthersToQuery
+     *     The allowOthersToQuery
      */
     public void setAllowOthersToQuery(Boolean allowOthersToQuery) {
         this.allowOthersToQuery = allowOthersToQuery;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The allowOthersToUpdate
+     * 
+     * @return
+     *     The allowOthersToUpdate
      */
     public Boolean getAllowOthersToUpdate() {
         return allowOthersToUpdate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param allowOthersToUpdate The allowOthersToUpdate
+     * 
+     * @param allowOthersToUpdate
+     *     The allowOthersToUpdate
      */
     public void setAllowOthersToUpdate(Boolean allowOthersToUpdate) {
         this.allowOthersToUpdate = allowOthersToUpdate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The allowOthersToDelete
+     * 
+     * @return
+     *     The allowOthersToDelete
      */
     public Boolean getAllowOthersToDelete() {
         return allowOthersToDelete;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param allowOthersToDelete The allowOthersToDelete
+     * 
+     * @param allowOthersToDelete
+     *     The allowOthersToDelete
      */
     public void setAllowOthersToDelete(Boolean allowOthersToDelete) {
         this.allowOthersToDelete = allowOthersToDelete;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The allowAnonymousToUpdate
+     * 
+     * @return
+     *     The allowAnonymousToUpdate
      */
     public Boolean getAllowAnonymousToUpdate() {
         return allowAnonymousToUpdate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param allowAnonymousToUpdate The allowAnonymousToUpdate
+     * 
+     * @param allowAnonymousToUpdate
+     *     The allowAnonymousToUpdate
      */
     public void setAllowAnonymousToUpdate(Boolean allowAnonymousToUpdate) {
         this.allowAnonymousToUpdate = allowAnonymousToUpdate;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The allowAnonymousToDelete
+     * 
+     * @return
+     *     The allowAnonymousToDelete
      */
     public Boolean getAllowAnonymousToDelete() {
         return allowAnonymousToDelete;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param allowAnonymousToDelete The allowAnonymousToDelete
+     * 
+     * @param allowAnonymousToDelete
+     *     The allowAnonymousToDelete
      */
     public void setAllowAnonymousToDelete(Boolean allowAnonymousToDelete) {
         this.allowAnonymousToDelete = allowAnonymousToDelete;
@@ -170,15 +227,7 @@ public class EditorTrackingInfo {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(enableEditorTracking)
-                .append(enableOwnershipAccessControl)
-                .append(allowOthersToQuery)
-                .append(allowOthersToUpdate)
-                .append(allowOthersToDelete)
-                .append(allowAnonymousToUpdate)
-                .append(allowAnonymousToDelete)
-                .toHashCode();
+        return new HashCodeBuilder().append(enableEditorTracking).append(enableOwnershipAccessControl).append(allowOthersToQuery).append(allowOthersToUpdate).append(allowOthersToDelete).append(allowAnonymousToUpdate).append(allowAnonymousToDelete).toHashCode();
     }
 
     @Override
@@ -190,14 +239,7 @@ public class EditorTrackingInfo {
             return false;
         }
         EditorTrackingInfo rhs = ((EditorTrackingInfo) other);
-        return new EqualsBuilder()
-                .append(enableEditorTracking, rhs.enableEditorTracking)
-                .append(enableOwnershipAccessControl, rhs.enableOwnershipAccessControl)
-                .append(allowOthersToQuery, rhs.allowOthersToQuery)
-                .append(allowOthersToUpdate, rhs.allowOthersToUpdate)
-                .append(allowOthersToDelete, rhs.allowOthersToDelete)
-                .append(allowAnonymousToUpdate, rhs.allowAnonymousToUpdate)
-                .append(allowAnonymousToDelete, rhs.allowAnonymousToDelete)
-                .isEquals();
+        return new EqualsBuilder().append(enableEditorTracking, rhs.enableEditorTracking).append(enableOwnershipAccessControl, rhs.enableOwnershipAccessControl).append(allowOthersToQuery, rhs.allowOthersToQuery).append(allowOthersToUpdate, rhs.allowOthersToUpdate).append(allowOthersToDelete, rhs.allowOthersToDelete).append(allowAnonymousToUpdate, rhs.allowAnonymousToUpdate).append(allowAnonymousToDelete, rhs.allowAnonymousToDelete).isEquals();
     }
+
 }

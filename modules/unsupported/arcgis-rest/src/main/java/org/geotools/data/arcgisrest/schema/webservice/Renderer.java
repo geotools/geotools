@@ -1,53 +1,70 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Renderer {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("type")
     @Expose
     private String type;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("symbol")
     @Expose
     private Symbol symbol;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The type
+     * 
+     * @return
+     *     The type
      */
     public String getType() {
         return type;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param type The type
+     * 
+     * @param type
+     *     The type
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The symbol
+     * 
+     * @return
+     *     The symbol
      */
     public Symbol getSymbol() {
         return symbol;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param symbol The symbol
+     * 
+     * @param symbol
+     *     The symbol
      */
     public void setSymbol(Symbol symbol) {
         this.symbol = symbol;
@@ -74,4 +91,5 @@ public class Renderer {
         Renderer rhs = ((Renderer) other);
         return new EqualsBuilder().append(type, rhs.type).append(symbol, rhs.symbol).isEquals();
     }
+
 }

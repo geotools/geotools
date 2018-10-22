@@ -1,31 +1,40 @@
+
 package org.geotools.data.arcgisrest.schema.catalog;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Error {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("error")
     @Expose
     private Error_ error;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The error
+     * 
+     * @return
+     *     The error
      */
     public Error_ getError() {
         return error;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param error The error
+     * 
+     * @param error
+     *     The error
      */
     public void setError(Error_ error) {
         this.error = error;
@@ -52,4 +61,5 @@ public class Error {
         Error rhs = ((Error) other);
         return new EqualsBuilder().append(error, rhs.error).isEquals();
     }
+
 }

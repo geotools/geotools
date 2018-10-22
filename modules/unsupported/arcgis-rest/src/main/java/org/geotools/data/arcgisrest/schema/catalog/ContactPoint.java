@@ -1,40 +1,48 @@
+
 package org.geotools.data.arcgisrest.schema.catalog;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 /**
  * Project Open Data ContactPoint vCard
- *
- * <p>A Dataset ContactPoint as a vCard object
+ * <p>
+ * A Dataset ContactPoint as a vCard object
+ * 
  */
 public class ContactPoint {
 
     /**
      * Metadata Context
-     *
-     * <p>IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
+     * <p>
+     * IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
+     * 
      */
     @SerializedName("@type")
     @Expose
     private ContactPoint.Type type;
     /**
      * Contact Name
-     *
-     * <p>A full formatted name, eg Firstname Lastname (Required)
+     * <p>
+     * A full formatted name, eg Firstname Lastname
+     * (Required)
+     * 
      */
     @SerializedName("fn")
     @Expose
     private String fn;
     /**
      * Email
-     *
-     * <p>Email address for the contact (Required)
+     * <p>
+     * Email address for the contact
+     * (Required)
+     * 
      */
     @SerializedName("hasEmail")
     @Expose
@@ -42,10 +50,11 @@ public class ContactPoint {
 
     /**
      * Metadata Context
-     *
-     * <p>IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
-     *
-     * @return The type
+     * <p>
+     * IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
+     * 
+     * @return
+     *     The type
      */
     public ContactPoint.Type getType() {
         return type;
@@ -53,10 +62,11 @@ public class ContactPoint {
 
     /**
      * Metadata Context
-     *
-     * <p>IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
-     *
-     * @param type The @type
+     * <p>
+     * IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint
+     * 
+     * @param type
+     *     The @type
      */
     public void setType(ContactPoint.Type type) {
         this.type = type;
@@ -64,10 +74,12 @@ public class ContactPoint {
 
     /**
      * Contact Name
-     *
-     * <p>A full formatted name, eg Firstname Lastname (Required)
-     *
-     * @return The fn
+     * <p>
+     * A full formatted name, eg Firstname Lastname
+     * (Required)
+     * 
+     * @return
+     *     The fn
      */
     public String getFn() {
         return fn;
@@ -75,10 +87,12 @@ public class ContactPoint {
 
     /**
      * Contact Name
-     *
-     * <p>A full formatted name, eg Firstname Lastname (Required)
-     *
-     * @param fn The fn
+     * <p>
+     * A full formatted name, eg Firstname Lastname
+     * (Required)
+     * 
+     * @param fn
+     *     The fn
      */
     public void setFn(String fn) {
         this.fn = fn;
@@ -86,10 +100,12 @@ public class ContactPoint {
 
     /**
      * Email
-     *
-     * <p>Email address for the contact (Required)
-     *
-     * @return The hasEmail
+     * <p>
+     * Email address for the contact
+     * (Required)
+     * 
+     * @return
+     *     The hasEmail
      */
     public String getHasEmail() {
         return hasEmail;
@@ -97,10 +113,12 @@ public class ContactPoint {
 
     /**
      * Email
-     *
-     * <p>Email address for the contact (Required)
-     *
-     * @param hasEmail The hasEmail
+     * <p>
+     * Email address for the contact
+     * (Required)
+     * 
+     * @param hasEmail
+     *     The hasEmail
      */
     public void setHasEmail(String hasEmail) {
         this.hasEmail = hasEmail;
@@ -125,22 +143,18 @@ public class ContactPoint {
             return false;
         }
         ContactPoint rhs = ((ContactPoint) other);
-        return new EqualsBuilder()
-                .append(type, rhs.type)
-                .append(fn, rhs.fn)
-                .append(hasEmail, rhs.hasEmail)
-                .isEquals();
+        return new EqualsBuilder().append(type, rhs.type).append(fn, rhs.fn).append(hasEmail, rhs.hasEmail).isEquals();
     }
 
     public enum Type {
+
         @SerializedName("vcard:Contact")
         VCARD_CONTACT("vcard:Contact");
         private final String value;
-        private static final Map<String, ContactPoint.Type> CONSTANTS =
-                new HashMap<String, ContactPoint.Type>();
+        private final static Map<String, ContactPoint.Type> CONSTANTS = new HashMap<String, ContactPoint.Type>();
 
         static {
-            for (ContactPoint.Type c : values()) {
+            for (ContactPoint.Type c: values()) {
                 CONSTANTS.put(c.value, c);
             }
         }
@@ -166,5 +180,7 @@ public class ContactPoint {
                 return constant;
             }
         }
+
     }
+
 }

@@ -110,7 +110,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <postgresql.jdbc.version>42.2.5</postgresql.jdbc.version>
     <solrj.version>7.2.1</solrj.version>
-    <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
     <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>

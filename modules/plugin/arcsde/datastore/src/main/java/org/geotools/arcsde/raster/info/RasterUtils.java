@@ -27,7 +27,7 @@ import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_4BIT;
 import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_64BIT_REAL;
 import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_8BIT_U;
 
-import com.sun.imageio.plugins.common.BogusColorSpace;
+import com.sun.media.imageioimpl.common.BogusColorSpace;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Transparency;

@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import junit.framework.TestCase;
 
@@ -30,6 +31,8 @@ public class CommonsConverterFactoryTest extends TestCase {
 
     protected void setUp() throws Exception {
         factory = new CommonsConverterFactory();
+        //Some locales are not compatible with the date formats tested below
+        Locale.setDefault(new Locale("en", "US"));
     }
 
     public void testStringNumberConversion() throws Exception {

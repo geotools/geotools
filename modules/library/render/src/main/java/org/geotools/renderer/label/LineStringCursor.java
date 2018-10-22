@@ -333,7 +333,8 @@ public class LineStringCursor {
                 }
                 ordinate += distance;
 
-                if (delegate.segment < (delegate.segmentLenghts.length - 1)) {
+                if (ordinate < endOrdinate
+                        && delegate.segment < (delegate.segmentLenghts.length - 1)) {
                     double angle = getSegmentAngle(delegate.segment);
                     accumulator.accumulate(angle);
                 }

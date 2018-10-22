@@ -32,7 +32,6 @@ import java.util.ResourceBundle;
  *
  * @author David Zwiers, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class ValidationBeanInfo extends SimpleBeanInfo {

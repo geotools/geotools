@@ -42,7 +42,6 @@ import org.opengis.util.Cloneable;
  * <p align="center"><img src="../doc-files/BursaWolf.png">
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

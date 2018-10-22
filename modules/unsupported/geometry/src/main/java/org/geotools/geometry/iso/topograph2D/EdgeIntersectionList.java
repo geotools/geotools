@@ -26,8 +26,6 @@ import java.util.TreeMap;
 /**
  * A list of edge intersections along an {@link Edge}. Implements splitting an edge with
  * intersections into multiple resultant edges.
- *
- * @source $URL$
  */
 public class EdgeIntersectionList {
 

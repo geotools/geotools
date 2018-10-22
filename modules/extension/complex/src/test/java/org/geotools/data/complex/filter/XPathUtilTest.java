@@ -41,7 +41,6 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class XPathUtilTest {

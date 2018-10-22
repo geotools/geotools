@@ -23,7 +23,6 @@ import org.opengis.parameter.ParameterNotFoundException;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @since GeoAPI 2.0
  * @see javax.imageio.ImageReader
- * @source $URL$
  */
 public interface GridCoverageReader {
     /** Returns the format handled by this {@code GridCoverageReader}. */

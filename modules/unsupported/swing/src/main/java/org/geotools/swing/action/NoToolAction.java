@@ -26,7 +26,6 @@ import org.geotools.swing.locale.LocaleUtils;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class NoToolAction extends MapAction {

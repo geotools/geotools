@@ -44,10 +44,7 @@ import org.geotools.util.logging.Logging;
  *
  * @author mcr
  */
-/**
- * @author christian
- * @source $URL$
- */
+/** @author christian */
 public class ImageDecoderThread extends AbstractThread {
     /** Logger. */
     protected static final Logger LOGGER =

@@ -14,7 +14,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Test for ReferencedEnvelope3D
  *
  * @author Niels Charlier
- * @source $URL$
  */
 public class ReferencedEnvelope3DTest {
 

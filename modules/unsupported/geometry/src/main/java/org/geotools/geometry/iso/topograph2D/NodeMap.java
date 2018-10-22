@@ -24,11 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * A map of nodes, indexed by the coordinate of the node
- *
- * @source $URL$
- */
+/** A map of nodes, indexed by the coordinate of the node */
 public class NodeMap {
 
     Map nodeMap = new TreeMap();

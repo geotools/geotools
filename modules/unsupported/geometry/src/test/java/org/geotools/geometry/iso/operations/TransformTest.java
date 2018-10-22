@@ -47,7 +47,6 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-/** @source $URL$ */
 public class TransformTest extends TestCase {
 
     private CoordinateReferenceSystem crs1;

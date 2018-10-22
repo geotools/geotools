@@ -27,7 +27,6 @@ import org.opengis.feature.type.FeatureType;
  * number of features passed in.
  *
  * @author Chris Holmes
- * @source $URL$
  * @version $Id$
  */
 public class MaxFeatureReader<T extends FeatureType, F extends Feature>

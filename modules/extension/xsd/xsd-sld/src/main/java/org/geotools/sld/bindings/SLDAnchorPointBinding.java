@@ -51,7 +51,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDAnchorPointBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

@@ -24,7 +24,6 @@ import org.geotools.resources.i18n.Errors;
  * Simple mathematical functions.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

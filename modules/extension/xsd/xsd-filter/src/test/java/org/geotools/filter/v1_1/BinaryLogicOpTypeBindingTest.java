@@ -22,7 +22,6 @@ import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Or;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
     public void testBinaryLogicOpType() {
         assertEquals(BinaryLogicOperator.class, binding(OGC.BinaryLogicOpType).getType());

@@ -47,7 +47,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class _HTTPBinding extends AbstractComplexEMFBinding {
     public _HTTPBinding(Ows10Factory factory) {

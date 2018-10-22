@@ -30,7 +30,6 @@ import org.geotools.swing.locale.LocaleUtils;
  * @see JMapStatusBar
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class JExtentStatusBarItem extends StatusBarItem {

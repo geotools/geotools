@@ -34,7 +34,6 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.Identifier;
 
-/** @source $URL$ */
 public class SimplifyingFilterVisitorTest extends TestCase {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);

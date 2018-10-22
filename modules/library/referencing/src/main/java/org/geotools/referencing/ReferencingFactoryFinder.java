@@ -85,7 +85,6 @@ import org.opengis.referencing.operation.MathTransformFactory;
  * FactoryFinder} class is simply a convenience wrapper around a {@code FactoryRegistry} instance.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

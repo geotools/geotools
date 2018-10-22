@@ -24,7 +24,6 @@ import org.opengis.filter.expression.Expression;
  * positioning it relative to a point geometry.
  *
  * @author Ian Turton
- * @source $URL$
  * @version $Id$
  */
 public interface AnchorPoint extends org.opengis.style.AnchorPoint {

@@ -30,7 +30,6 @@ import org.geotools.xml.resolver.SchemaResolver;
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public class AppSchemaXSD extends XSD {
 

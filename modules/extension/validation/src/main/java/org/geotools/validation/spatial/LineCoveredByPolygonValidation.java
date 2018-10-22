@@ -53,7 +53,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class LineCoveredByPolygonValidation extends LinePolygonAbstractValidation {

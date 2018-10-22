@@ -51,7 +51,6 @@ import si.uom.SI;
  * coordinate points. Input points must be longitudes, latitudes and heights above the ellipsoid.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Frank Warmerdam
  * @author Martin Desruisseaux (IRD)

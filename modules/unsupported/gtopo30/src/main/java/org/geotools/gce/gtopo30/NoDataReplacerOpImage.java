@@ -59,7 +59,6 @@ import org.geotools.resources.image.ImageUtilities;
  * where "CRIF" stands for {@link java.awt.image.renderable.ContextualRenderedImageFactory}. The
  * image operation name is "org.geotools.gce.NoDataReplacer".
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  * @since 2.2

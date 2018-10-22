@@ -46,7 +46,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Leprosy
  * @since 0.3 TODO: test wkt geometry parse.
- * @source $URL$
  */
 public class GeometryAttributeImpl extends AttributeImpl implements GeometryAttribute {
     /** bounds, derived */

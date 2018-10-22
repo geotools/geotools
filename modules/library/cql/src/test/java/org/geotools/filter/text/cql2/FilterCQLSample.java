@@ -56,7 +56,6 @@ import org.opengis.temporal.Period;
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering
  * @since 2.5
- * @source $URL$
  */
 public class FilterCQLSample {
 

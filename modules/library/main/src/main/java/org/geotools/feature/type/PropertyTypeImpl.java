@@ -27,7 +27,6 @@ import org.opengis.feature.type.PropertyType;
 import org.opengis.filter.Filter;
 import org.opengis.util.InternationalString;
 
-/** @source $URL$ */
 public abstract class PropertyTypeImpl implements PropertyType {
 
     private static final List<Filter> NO_RESTRICTIONS = Collections.emptyList();

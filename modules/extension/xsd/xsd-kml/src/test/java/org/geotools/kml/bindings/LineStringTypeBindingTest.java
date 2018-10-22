@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.LineString;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class LineStringTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(LineString.class, binding(KML.LineStringType).getType());

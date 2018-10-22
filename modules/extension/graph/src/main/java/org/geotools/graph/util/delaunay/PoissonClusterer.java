@@ -24,10 +24,7 @@ import org.geotools.graph.structure.basic.BasicGraph;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class PoissonClusterer {
 
     private static double threshold = 1.0E-10;

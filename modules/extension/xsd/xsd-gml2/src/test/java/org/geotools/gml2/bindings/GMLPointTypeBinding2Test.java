@@ -21,7 +21,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLPointTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Point.class, binding(GML.PointType).getType());

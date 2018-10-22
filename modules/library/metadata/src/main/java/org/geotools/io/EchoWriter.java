@@ -25,7 +25,6 @@ import java.io.Writer;
  * copy of what is sent to an other writer. For example, it may be used for echoing to the standard
  * output the content sent to a file. This writer is usefull for debugging purpose.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1

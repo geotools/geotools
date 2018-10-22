@@ -29,7 +29,6 @@ import org.geotools.ows.ServiceException;
  * resolved GridCoverage in a manner similar to GetCapabilities.
  *
  * @author Richard Gould, Refractions Research
- * @source $URL$
  */
 public class GetMapResponse extends Response {
     public GetMapResponse(HTTPResponse httpResponse) throws ServiceException, IOException {

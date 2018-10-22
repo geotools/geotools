@@ -65,7 +65,6 @@ import org.opengis.filter.sort.SortBy;
  *
  * @author jgarnett
  * @since 2.1.RC0
- * @source $URL$
  */
 public abstract class DataFeatureCollection implements SimpleFeatureCollection {
 

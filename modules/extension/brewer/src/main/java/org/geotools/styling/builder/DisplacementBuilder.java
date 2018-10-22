@@ -19,7 +19,6 @@ package org.geotools.styling.builder;
 import org.geotools.styling.Displacement;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
     private Expression x = null;
 

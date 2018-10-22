@@ -27,10 +27,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
- */
+/** @author Cory Horner, Refractions Research Inc. */
 public class QuantileFunctionTest extends FunctionTestSupport {
 
     public QuantileFunctionTest(String testName) {

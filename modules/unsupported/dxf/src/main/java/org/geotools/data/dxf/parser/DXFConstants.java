@@ -2,7 +2,7 @@ package org.geotools.data.dxf.parser;
 
 /**
  * @author Chris
- * @source $URL$
+
  */
 public interface DXFConstants {
 

@@ -31,7 +31,6 @@ import org.opengis.util.InternationalString;
  * name and extended metadata elements can be obtained.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

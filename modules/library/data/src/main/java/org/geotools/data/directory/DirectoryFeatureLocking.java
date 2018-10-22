@@ -22,7 +22,6 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureLocking;
 import org.opengis.filter.Filter;
 
-/** @source $URL$ */
 public class DirectoryFeatureLocking extends DirectoryFeatureStore implements SimpleFeatureLocking {
 
     SimpleFeatureLocking flocking;

@@ -22,7 +22,6 @@ import org.geotools.data.shapefile.shp.IndexFile;
  * DOCUMENT ME!
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public interface IndexStore {
     /**

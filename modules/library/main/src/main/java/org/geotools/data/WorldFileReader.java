@@ -56,7 +56,6 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
- * @source $URL$
  */
 public class WorldFileReader {
 

@@ -8,7 +8,6 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCVirtualTableOnlineTest;
 import org.geotools.util.logging.Logging;
 
-/** @source $URL$ */
 public class PostgisVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
 
     @Override

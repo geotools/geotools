@@ -25,7 +25,6 @@ import org.geotools.factory.Hints;
  * Convenience class for looking up a property accessor for a particular object type.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class PropertyAccessors {
     static final PropertyAccessorFactory[] FACTORY_CACHE;

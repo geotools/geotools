@@ -27,7 +27,6 @@ import org.opengis.metadata.citation.Citation;
  *
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
- * @source $URL$
  */
 @Extension
 public interface Factory {

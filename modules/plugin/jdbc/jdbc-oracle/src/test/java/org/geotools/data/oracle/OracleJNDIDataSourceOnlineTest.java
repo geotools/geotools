@@ -20,7 +20,6 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCJNDIDataSourceOnlineTest;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
-/** @source $URL$ */
 public class OracleJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest {
 
     protected JDBCJNDITestSetup createTestSetup() {

@@ -50,7 +50,6 @@ import tec.uom.se.unit.BaseUnit;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MeasureTypeBinding extends AbstractComplexBinding {
     /** @generated */

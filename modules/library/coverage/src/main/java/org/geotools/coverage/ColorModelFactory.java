@@ -37,7 +37,6 @@ import org.geotools.util.WeakValueHashMap;
  * ColorModel} are shared among all callers in the running virtual machine.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

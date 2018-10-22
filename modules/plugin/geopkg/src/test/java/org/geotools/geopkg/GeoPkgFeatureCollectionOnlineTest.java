@@ -19,7 +19,6 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCFeatureCollectionOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class GeoPkgFeatureCollectionOnlineTest extends JDBCFeatureCollectionOnlineTest {
 
     @Override

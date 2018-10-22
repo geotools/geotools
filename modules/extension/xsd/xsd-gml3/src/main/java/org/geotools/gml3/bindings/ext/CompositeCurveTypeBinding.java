@@ -35,11 +35,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 
-/**
- * Simple type binding for Composite Curve GML elements.
- *
- * @source $URL$
- */
+/** Simple type binding for Composite Curve GML elements. */
 public class CompositeCurveTypeBinding extends LineStringTypeBinding {
 
     private final GeometryFactory gFactory;

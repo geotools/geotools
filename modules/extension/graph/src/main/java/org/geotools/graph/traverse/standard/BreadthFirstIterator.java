@@ -37,7 +37,6 @@ import org.geotools.graph.util.Queue;
  * node queue intially contains only the source node of the traversal.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BreadthFirstIterator extends SourceGraphIterator {
 

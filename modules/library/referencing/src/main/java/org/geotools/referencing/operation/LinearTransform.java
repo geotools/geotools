@@ -31,7 +31,6 @@ import org.opengis.referencing.operation.Matrix;
  * #getTargetDimensions target dimensions} plus 1.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

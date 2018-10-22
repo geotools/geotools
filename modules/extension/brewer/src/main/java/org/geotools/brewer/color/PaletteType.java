@@ -16,11 +16,7 @@
  */
 package org.geotools.brewer.color;
 
-/**
- * This class doubles as a filter and an identifier for colour palettes.
- *
- * @source $URL$
- */
+/** This class doubles as a filter and an identifier for colour palettes. */
 public class PaletteType {
     /** name of the type, if null this will match any name */
     String name;

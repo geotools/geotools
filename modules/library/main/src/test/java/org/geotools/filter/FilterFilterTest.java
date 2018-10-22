@@ -40,7 +40,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.helpers.ParserAdapter;
 import org.xml.sax.helpers.XMLFilterImpl;
 
-/** @source $URL$ */
 public class FilterFilterTest extends TestCase {
 
     public static void testWithoutFunction() throws Exception {
@@ -336,12 +335,12 @@ public class FilterFilterTest extends TestCase {
                         ((BinaryLogicOperator) f).getChildren().iterator();
                 filters.hasNext();
                 i++) {
-            BinaryComparisonOperator subFitler = (BinaryComparisonOperator) filters.next();
+            BinaryComparisonOperator subFilter = (BinaryComparisonOperator) filters.next();
             StringBuffer attName = new StringBuffer();
             for (int repCount = 0; repCount <= i; repCount++) {
                 attName.append("eventtype-" + repCount + "_");
             }
-            String parsedName = ((PropertyName) subFitler.getExpression1()).getPropertyName();
+            String parsedName = ((PropertyName) subFilter.getExpression1()).getPropertyName();
             try {
                 assertEquals("at index " + i, attName.toString(), parsedName);
             } catch (AssertionFailedError e) {
@@ -349,7 +348,7 @@ public class FilterFilterTest extends TestCase {
                         .warning("expected " + attName + ",\n but was " + parsedName);
                 throw e;
             }
-            assertEquals("literal-" + i, ((Literal) subFitler.getExpression2()).getValue());
+            assertEquals("literal-" + i, ((Literal) subFilter.getExpression2()).getValue());
         }
         assertEquals(filterCount, i);
     }

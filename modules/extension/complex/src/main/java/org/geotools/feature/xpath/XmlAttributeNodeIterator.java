@@ -27,7 +27,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Justin Deoliveira (The Open Planning Project)
  * @author Gabriel Roldan (Axios Engineering)
- * @source $URL$
  */
 public class XmlAttributeNodeIterator implements NodeIterator {
 

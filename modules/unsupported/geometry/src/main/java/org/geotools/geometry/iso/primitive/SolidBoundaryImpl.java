@@ -29,7 +29,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * The boundary of Solids shall be represented as SolidBoundary.
  *
  * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
  */
 public class SolidBoundaryImpl extends PrimitiveBoundaryImpl implements SolidBoundary {
     private static final long serialVersionUID = 113485181749545137L;

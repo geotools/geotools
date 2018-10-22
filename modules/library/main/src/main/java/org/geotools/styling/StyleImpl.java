@@ -30,7 +30,6 @@ import org.opengis.util.Cloneable;
  * Implementation of style.
  *
  * @author James Macgill, CCG
- * @source $URL$
  * @version $Id$
  */
 public class StyleImpl implements org.geotools.styling.Style, Cloneable {

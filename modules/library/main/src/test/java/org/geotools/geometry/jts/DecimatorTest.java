@@ -34,7 +34,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-/** @source $URL$ */
 public class DecimatorTest {
 
     GeometryFactory gf = new GeometryFactory();

@@ -25,7 +25,6 @@ import javax.xml.namespace.QName;
  * injection.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface BindingFactory {
     /**

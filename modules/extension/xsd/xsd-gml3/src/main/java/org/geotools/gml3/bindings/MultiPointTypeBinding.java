@@ -55,7 +55,6 @@ import org.locationtech.jts.geom.Point;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MultiPointTypeBinding extends AbstractComplexBinding {
     GeometryFactory gFactory;

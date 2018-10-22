@@ -28,7 +28,6 @@ import org.opengis.filter.expression.Literal;
  * SQL or as a WFS request).
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public class FallbackFunction extends FunctionExpressionImpl {
 

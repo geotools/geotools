@@ -60,7 +60,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions
  * @author rgould
  * @author Alessio Fabiani, GeoSolutions
- * @source $URL$
  */
 public final class WorldImageWriter extends AbstractGridCoverageWriter
         implements GridCoverageWriter {

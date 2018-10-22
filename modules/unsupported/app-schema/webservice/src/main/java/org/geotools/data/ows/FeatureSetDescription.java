@@ -33,7 +33,7 @@ import org.locationtech.jts.geom.Envelope;
  *
  *
  *
- * @source $URL$
+
  */
 public class FeatureSetDescription {
 	/**

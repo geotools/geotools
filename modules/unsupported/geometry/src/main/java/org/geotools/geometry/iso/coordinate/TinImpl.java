@@ -28,7 +28,6 @@ import org.opengis.geometry.primitive.SurfacePatch;
  *     length of triangle sides (Figure 22). These networks satisfy the Delaunay criterion away from
  *     the modifications: For each triangle in the network, the circle passing through its vertexes
  *     does not contain, in its interior, the vertex of any other triangle.
- * @source $URL$
  */
 public class TinImpl extends TriangulatedSurfaceImpl {
 

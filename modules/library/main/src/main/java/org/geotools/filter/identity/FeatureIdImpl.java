@@ -28,7 +28,6 @@ import org.opengis.filter.identity.FeatureId;
  * <p>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  * @since 2.5
  * @version 8.0
  */

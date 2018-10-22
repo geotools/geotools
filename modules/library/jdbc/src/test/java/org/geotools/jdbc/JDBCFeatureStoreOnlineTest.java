@@ -55,7 +55,6 @@ import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.identity.FeatureId;
 
-/** @source $URL$ */
 public abstract class JDBCFeatureStoreOnlineTest extends JDBCTestSupport {
     JDBCFeatureStore featureStore;
 

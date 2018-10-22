@@ -73,7 +73,6 @@ import org.opengis.filter.expression.Expression;
  *       and semantics which are as close as possible.
  * </ul>
  *
- * @source $URL$
  * @version $Id$
  * @author James Macgill
  */

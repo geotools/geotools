@@ -38,7 +38,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Utility class for gml3 encoding.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public class GML3EncodingUtils {
     static DirectPosition[] positions(LineString line) {

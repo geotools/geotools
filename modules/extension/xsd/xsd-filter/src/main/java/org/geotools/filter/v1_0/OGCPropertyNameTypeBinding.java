@@ -45,7 +45,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
     protected FilterFactory factory;

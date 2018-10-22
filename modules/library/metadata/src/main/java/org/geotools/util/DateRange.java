@@ -31,7 +31,6 @@ import tec.uom.se.unit.MetricPrefix;
  * A range of dates.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

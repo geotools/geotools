@@ -31,7 +31,6 @@ import org.opengis.filter.Filter;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class EqualityValidation extends DefaultFeatureValidation {

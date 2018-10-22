@@ -47,10 +47,6 @@ import org.opengis.filter.Filter;
  * <p>The features are similar to MappedFeature found in GeoSciML.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/sample-data-access
- *     /src/main/java/org/geotools/data/SampleDataAccessData.java $
  * @since 2.6
  */
 @SuppressWarnings("serial")

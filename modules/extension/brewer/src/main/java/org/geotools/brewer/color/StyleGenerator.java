@@ -65,7 +65,6 @@ import org.opengis.filter.expression.PropertyName;
  * WARNING: this is unstable and subject to radical change.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class StyleGenerator {
     private static final java.util.logging.Logger LOGGER =

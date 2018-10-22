@@ -19,7 +19,6 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBC3DOnlineTest;
 import org.geotools.jdbc.JDBC3DTestSetup;
 
-/** @source $URL$ */
 public class DB23DOnlineTest extends JDBC3DOnlineTest {
 
     @Override

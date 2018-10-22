@@ -25,7 +25,6 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.opt.OptEdge;
 import org.geotools.graph.structure.opt.OptNode;
 
-/** @source $URL$ */
 public class OptGraphBuilderTest extends TestCase {
 
     private OptGraphBuilder m_builder;

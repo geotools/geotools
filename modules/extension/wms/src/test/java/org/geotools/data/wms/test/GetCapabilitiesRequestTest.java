@@ -26,7 +26,6 @@ import org.geotools.data.ows.Response;
 import org.geotools.data.wms.response.WMSGetCapabilitiesResponse;
 import org.geotools.ows.ServiceException;
 
-/** @source $URL$ */
 public class GetCapabilitiesRequestTest extends ServerTestCase {
 
     public void testGetCapabilitiesRequest() throws Exception {

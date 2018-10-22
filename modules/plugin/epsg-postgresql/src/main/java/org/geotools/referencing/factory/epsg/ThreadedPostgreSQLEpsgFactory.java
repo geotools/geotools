@@ -96,17 +96,13 @@ import org.postgresql.ds.common.BaseDataSource;
  * be read only.
  *
  * <p>Just having this class accessible in the classpath, together with the registration in the
- * {@code META-INF/services/} directory, is suffisient to get a working EPSG authority factory
+ * {@code META-INF/services/} directory, is sufficient to get a working EPSG authority factory
  * backed by this database. Vendors can create a copy of this class, modify it and bundle it with
  * their own distribution if they want to connect their users to an other database.
  *
  * @since 2.4
- * @source $URL$
- * @version $Id$
  * @author Didier Richard
  * @author Martin Desruisseaux
- * @tutorial
- *     http://docs.codehaus.org/display/GEOTOOLS/How+to+install+the+EPSG+database+in+PostgreSQL
  */
 public class ThreadedPostgreSQLEpsgFactory extends ThreadedEpsgFactory {
     /**

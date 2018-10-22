@@ -42,7 +42,6 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class MockRenderer implements GTRenderer {

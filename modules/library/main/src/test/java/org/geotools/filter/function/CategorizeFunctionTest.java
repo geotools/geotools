@@ -31,7 +31,6 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Jody
  * @author mbedward
- * @source $URL$
  */
 public class CategorizeFunctionTest extends SEFunctionTestBase {
 

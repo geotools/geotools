@@ -48,7 +48,6 @@ import org.geotools.resources.i18n.Errors;
  * </blockquote>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

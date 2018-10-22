@@ -50,7 +50,6 @@ import org.opengis.parameter.ParameterValue;
  * Testing {@link CatalogBuilder} and its related subclasses.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public class CatalogBuilderTest extends Assert {
 

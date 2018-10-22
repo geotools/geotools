@@ -37,7 +37,6 @@ import si.uom.NonSI;
  * Supports the popular visualisation projection used by Google, Microsoft, Yahoo, OSM and others
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class MercatorPseudoProvider extends AbstractProvider {
     /** For cross-version compatibility. */

@@ -54,7 +54,6 @@ import org.xml.sax.InputSource;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class GazetteerNameValidationOnlineTest extends TestCase {

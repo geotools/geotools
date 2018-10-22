@@ -39,11 +39,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * </ol>
  * 
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * 
- *
- * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/webservice/src/main
- *         /java/org/geotools/filter/AsXpathFunctionExpression.java $
  */
 public class AsXpathFunctionExpression extends FunctionExpressionImpl {
     /**

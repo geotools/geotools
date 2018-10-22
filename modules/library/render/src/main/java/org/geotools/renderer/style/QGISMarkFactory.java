@@ -39,7 +39,6 @@ import org.opengis.filter.expression.Expression;
  * </ul>
  *
  * @author Jonathan Moules (LightPear)
- * @source $URL$
  */
 public class QGISMarkFactory implements MarkFactory {
     /** QGIS prefix for explicit reference to QGIS wellknown marks */

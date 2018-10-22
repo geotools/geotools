@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLConfigurationTest extends TestCase {
     GMLConfiguration configuration;
 

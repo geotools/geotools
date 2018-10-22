@@ -50,7 +50,6 @@ import org.opengis.style.OverlapBehavior;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OverlapBehaviorBinding extends AbstractSimpleBinding {
 

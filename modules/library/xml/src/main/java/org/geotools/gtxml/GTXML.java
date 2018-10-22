@@ -11,8 +11,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * <p>This is a simple utility class; if you need more control please look at the implementation of
  * the provided methods.
- *
- * @source $URL$
  */
 public class GTXML {
     /**

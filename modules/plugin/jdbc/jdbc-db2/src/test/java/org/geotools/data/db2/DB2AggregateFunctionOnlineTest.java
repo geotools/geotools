@@ -19,7 +19,6 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCAggregateFunctionOnlineTest;
 import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-/** @source $URL$ */
 public class DB2AggregateFunctionOnlineTest extends JDBCAggregateFunctionOnlineTest {
 
     @Override

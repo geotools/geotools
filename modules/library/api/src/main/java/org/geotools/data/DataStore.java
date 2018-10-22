@@ -32,7 +32,6 @@ import org.opengis.filter.Filter;
  * @see org.opengis.feature.Feature
  * @see SimpleFeature
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  * @version $Id$
  */
 public interface DataStore extends DataAccess<SimpleFeatureType, SimpleFeature> {

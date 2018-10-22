@@ -83,7 +83,6 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class WFS_TransactionResponseTypeBinding extends AbstractComplexEMFBinding {
     public WFS_TransactionResponseTypeBinding(WfsFactory factory) {

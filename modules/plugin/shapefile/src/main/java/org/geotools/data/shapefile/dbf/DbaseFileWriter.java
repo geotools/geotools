@@ -53,7 +53,6 @@ import org.geotools.resources.NIOUtilities;
  * logic...
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class DbaseFileWriter {
     private DbaseFileHeader header;

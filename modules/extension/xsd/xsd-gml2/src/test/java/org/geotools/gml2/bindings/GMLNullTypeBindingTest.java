@@ -20,7 +20,6 @@ import org.geotools.gml2.GML;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-/** @source $URL$ */
 public class GMLNullTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance nul;
 

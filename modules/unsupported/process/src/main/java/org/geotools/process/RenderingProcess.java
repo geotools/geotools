@@ -30,7 +30,6 @@ import org.opengis.parameter.GeneralParameterValue;
  * the appropriate part of the input data that will feed the process
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public interface RenderingProcess extends Process {
 

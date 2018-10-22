@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.geotools.data.dxf.entities.DXFEntity;
 
-/** @source $URL$ */
+
 public abstract class DXFBlockReference extends DXFEntity {
 
     private static final Log log = LogFactory.getLog(DXFBlockReference.class);

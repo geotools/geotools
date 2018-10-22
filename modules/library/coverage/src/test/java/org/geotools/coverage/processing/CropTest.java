@@ -69,7 +69,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the crop operation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)

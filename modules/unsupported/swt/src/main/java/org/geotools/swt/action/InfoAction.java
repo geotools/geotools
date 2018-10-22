@@ -24,7 +24,6 @@ import org.geotools.swt.utils.ImageCache;
  * Action that activates the Info tool for the current {@link SwtMapPane map pane}.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class InfoAction extends MapAction {
 

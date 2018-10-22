@@ -26,7 +26,6 @@ import org.junit.*;
  * Minimal testing for TableWriter class.
  *
  * @author Frank Warmerdam
- * @source $URL$
  */
 public final class TableWriterTest {
     private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");

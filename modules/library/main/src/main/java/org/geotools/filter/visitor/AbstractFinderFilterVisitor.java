@@ -80,7 +80,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * is found. The walk will be stopped and the value returned.
  *
  * @author Jody Garnett (Refractions Research)
- * @source $URL$
  */
 public abstract class AbstractFinderFilterVisitor implements FilterVisitor, ExpressionVisitor {
     protected boolean found = false;

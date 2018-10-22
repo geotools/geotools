@@ -39,7 +39,6 @@ import org.opengis.filter.expression.PropertyName;
  * based on attributes specified in a query.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class ReTypingFeatureCollection extends DecoratingSimpleFeatureCollection {
 

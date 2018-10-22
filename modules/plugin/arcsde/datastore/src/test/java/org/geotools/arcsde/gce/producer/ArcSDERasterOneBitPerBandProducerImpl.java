@@ -24,7 +24,6 @@ import com.esri.sde.sdk.client.SeRasterScanLineProducer;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
-/** @source $URL$ */
 public class ArcSDERasterOneBitPerBandProducerImpl extends ArcSDERasterProducer {
 
     /**

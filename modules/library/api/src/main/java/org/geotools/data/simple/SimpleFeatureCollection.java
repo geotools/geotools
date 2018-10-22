@@ -46,8 +46,6 @@ import org.opengis.filter.sort.SortBy;
  * </code></pre>
  *
  * <p>
- *
- * @source $URL$
  */
 public interface SimpleFeatureCollection
         extends FeatureCollection<SimpleFeatureType, SimpleFeature> {

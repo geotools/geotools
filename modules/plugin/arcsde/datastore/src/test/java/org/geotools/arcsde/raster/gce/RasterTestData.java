@@ -93,7 +93,6 @@ import org.geotools.arcsde.session.ISessionPool;
 import org.geotools.util.logging.Logging;
 
 @SuppressWarnings({"nls", "deprecation"})
-/** @source $URL$ */
 public class RasterTestData {
 
     private TestData testData;

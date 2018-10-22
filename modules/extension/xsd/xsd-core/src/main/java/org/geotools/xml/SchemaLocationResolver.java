@@ -38,7 +38,6 @@ import org.eclipse.xsd.util.XSDSchemaLocationResolver;
  * </code>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class SchemaLocationResolver implements XSDSchemaLocationResolver {
     /** the xsd instance */

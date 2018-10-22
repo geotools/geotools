@@ -16,7 +16,6 @@
  */
 package org.geotools.geopkg;
 
-/** @source $URL$ */
 public class GeoPkgGeometrylessTestSetup extends org.geotools.jdbc.JDBCGeometrylessTestSetup {
 
     protected GeoPkgGeometrylessTestSetup() {

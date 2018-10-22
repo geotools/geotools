@@ -71,11 +71,7 @@ import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 
-/**
- * Tests over legacy data that should not be deleted
- *
- * @source $URL$
- */
+/** Tests over legacy data that should not be deleted */
 @SuppressWarnings("nls")
 @Ignore
 public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {

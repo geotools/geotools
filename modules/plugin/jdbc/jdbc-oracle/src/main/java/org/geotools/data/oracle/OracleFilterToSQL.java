@@ -80,7 +80,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
  * @author Davide Savazzi, GeoSolutions
- * @source $URL$
  */
 public class OracleFilterToSQL extends PreparedFilterToSQL {
 

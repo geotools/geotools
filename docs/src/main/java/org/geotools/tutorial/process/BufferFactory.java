@@ -33,7 +33,6 @@ import org.opengis.util.InternationalString;
  * <p>This process is based on the SFSQL specification and implemented by the JTS Topology Suite
  *
  * @author gdavis
- * @source $URL$
  */
 public class BufferFactory extends SingleProcessFactory {
     // making parameters available as static constants to help java programmers

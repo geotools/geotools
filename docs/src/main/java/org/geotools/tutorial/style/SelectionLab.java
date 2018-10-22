@@ -56,10 +56,6 @@ import org.opengis.filter.identity.FeatureId;
 /**
  * In this example we create a map tool to select a feature clicked with the mouse. The selected
  * feature will be painted yellow.
- *
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/demo/example/src/main/java/org/geotools/demo/SelectionLab.java
- *     $
  */
 public class SelectionLab {
 

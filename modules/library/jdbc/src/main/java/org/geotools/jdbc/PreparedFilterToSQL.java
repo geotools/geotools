@@ -38,7 +38,6 @@ import org.opengis.filter.identity.Identifier;
  *
  * @author Justin Deoliveira, OpenGEO
  * @author Andrea Aime, OpenGEO
- * @source $URL$
  */
 public class PreparedFilterToSQL extends FilterToSQL {
     /** ordered list of literal values encountered and their types */

@@ -25,7 +25,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * coordinate {@linkplain Transformation transformations} or {@linkplain Conversion conversions}
  * between two {@linkplain CoordinateReferenceSystem coordinate reference systems}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-009.pdf">Implementation specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

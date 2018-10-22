@@ -28,10 +28,7 @@ import org.junit.Test;
 import org.opengis.temporal.OrdinalEra;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalEraTest {
 
     private OrdinalEra ordinalEra1;

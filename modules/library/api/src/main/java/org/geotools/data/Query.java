@@ -92,7 +92,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </code></pre>
  *
  * @author Chris Holmes
- * @source $URL$
  * @version $Id$
  */
 public class Query {

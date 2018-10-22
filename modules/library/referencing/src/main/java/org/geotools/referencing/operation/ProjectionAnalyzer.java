@@ -68,7 +68,6 @@ import si.uom.SI;
  * conversion. For example if only false easting/northing differ, then the coordinate conversion is
  * simply a translation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

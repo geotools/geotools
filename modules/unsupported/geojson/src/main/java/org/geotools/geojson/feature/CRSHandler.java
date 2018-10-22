@@ -24,7 +24,6 @@ import org.json.simple.parser.ParseException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class CRSHandler extends HandlerBase implements IContentHandler<CoordinateReferenceSystem> {
 
     CoordinateReferenceSystem crs;

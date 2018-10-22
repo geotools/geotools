@@ -49,7 +49,6 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class DrawSVGTest {
     private static final Logger LOGGER = Logging.getLogger(DrawSVGTest.class);
     private static final long TIME = 4000;

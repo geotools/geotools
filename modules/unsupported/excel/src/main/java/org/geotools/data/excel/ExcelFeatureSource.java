@@ -45,7 +45,7 @@ import org.opengis.feature.type.AttributeType;
 
 /**
  * @author ijt1
- * @source $URL$
+
  */
 public class ExcelFeatureSource extends ContentFeatureSource implements SimpleFeatureSource {
 

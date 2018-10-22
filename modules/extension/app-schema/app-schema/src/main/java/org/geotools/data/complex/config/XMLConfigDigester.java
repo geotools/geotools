@@ -44,7 +44,6 @@ import org.xml.sax.SAXException;
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class XMLConfigDigester {

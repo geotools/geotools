@@ -25,7 +25,6 @@ import org.opengis.util.InternationalString;
  * implementations of the other methods do nothing.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  */
 public class NullProgressListener implements ProgressListener {

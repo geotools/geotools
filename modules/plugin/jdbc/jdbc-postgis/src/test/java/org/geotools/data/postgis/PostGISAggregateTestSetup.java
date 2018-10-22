@@ -18,7 +18,6 @@ package org.geotools.data.postgis;
 
 import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-/** @source $URL$ */
 public class PostGISAggregateTestSetup extends JDBCAggregateTestSetup {
 
     public PostGISAggregateTestSetup() {

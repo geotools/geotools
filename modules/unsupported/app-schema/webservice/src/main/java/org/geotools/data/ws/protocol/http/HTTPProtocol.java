@@ -34,7 +34,7 @@ import java.net.URL;
  *
  *
  *
- * @source $URL$
+
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/main/java/org/geotools/data
  *         /wfs/protocol/http/HTTPProtocol.java $
  */

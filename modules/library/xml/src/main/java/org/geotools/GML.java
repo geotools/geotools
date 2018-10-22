@@ -99,8 +99,6 @@ import org.xml.sax.SAXException;
  * own measures.
  *
  * <p>
- *
- * @source $URL$
  */
 public class GML {
     /** Version of encoder to use */

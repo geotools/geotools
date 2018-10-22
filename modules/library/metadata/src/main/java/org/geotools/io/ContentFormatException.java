@@ -23,7 +23,6 @@ import java.io.IOException;
  * typically has a {@link java.text.ParseException} has its cause. It is similar in spirit to {@link
  * java.util.InvalidPropertiesFormatException}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.2

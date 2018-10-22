@@ -51,7 +51,6 @@ import java.util.List;
  * @see Node
  * @see Edge
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface Graph {
 

@@ -39,7 +39,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCDistanceTypeBinding extends AbstractComplexBinding {
     /** @generated */

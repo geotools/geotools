@@ -26,7 +26,6 @@ import org.junit.Test;
  * Test functionality GeneralMatrix Tests {@link
  * org.geotools.referencing.operation.matrix.GeneralMatrix}.
  *
- * @source $URL$
  * @version $Id$
  * @author James Hughes
  */

@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class CoordinatesTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(CoordinateSequence.class, binding(KML.CoordinatesType).getType());

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class CollectionConverterFactoryTest extends TestCase {
 
     public void testCollectionToCollection() throws Exception {

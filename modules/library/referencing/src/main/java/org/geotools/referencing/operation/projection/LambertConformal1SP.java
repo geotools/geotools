@@ -33,7 +33,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A
  *     HREF="http://www.remotesensing.org/geotiff/proj_list/lambert_conic_conformal_1sp.html">lambert_conic_conformal_1sp</A>
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Rueben Schulz

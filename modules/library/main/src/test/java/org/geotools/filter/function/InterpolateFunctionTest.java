@@ -30,7 +30,6 @@ import org.opengis.filter.expression.Literal;
  * Unit tests for the Interpolate function.
  *
  * @author Michael Bedward
- * @source $URL$
  */
 public class InterpolateFunctionTest extends SEFunctionTestBase {
 

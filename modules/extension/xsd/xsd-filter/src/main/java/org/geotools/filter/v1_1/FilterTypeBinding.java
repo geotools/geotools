@@ -47,7 +47,6 @@ import org.opengis.filter.identity.Identifier;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FilterTypeBinding extends AbstractComplexBinding {
     FilterFactory filterFactory;

@@ -29,7 +29,6 @@ import org.opengis.filter.spatial.BBOX;
  * Test the LOB workaround and triggers directly.
  *
  * @author Ian Schneider
- * @source $URL$
  */
 public class TeradataDialectOnlineTest extends JDBCTestSupport {
     static int cnt = 99;

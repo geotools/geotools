@@ -55,7 +55,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DomainTypeBinding extends AbstractComplexEMFBinding {
     public DomainTypeBinding(Ows10Factory factory) {

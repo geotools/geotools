@@ -88,7 +88,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * used by the GMLSchema
  *
  * @author $author$
- * @source $URL$
  * @version $Revision: 1.9 $
  * @see GMLSchema
  * @see ComplexType

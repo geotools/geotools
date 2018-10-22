@@ -51,7 +51,6 @@ import org.locationtech.jts.geom.Envelope;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLNullTypeBinding implements SimpleBinding {
     /** @generated */

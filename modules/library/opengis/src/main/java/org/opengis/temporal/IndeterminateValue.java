@@ -24,7 +24,6 @@ import org.opengis.util.CodeList;
  * @author Alexander Petkov
  * @author Martin Desruisseaux (IRD)
  * @todo Need javadoc for each enumeration.
- * @source $URL$
  */
 @UML(identifier = "TM_IndeterminateValue", specification = ISO_19108)
 public final class IndeterminateValue extends CodeList<IndeterminateValue> {

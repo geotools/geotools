@@ -34,7 +34,6 @@ import java.util.Collection;
  * SpatialOperator is defined as part of FilterCapabilities.
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider </a>
- * @source $URL$
  */
 public interface SpatialOperator extends Operator {
     /** Returns the geometryOperands. */

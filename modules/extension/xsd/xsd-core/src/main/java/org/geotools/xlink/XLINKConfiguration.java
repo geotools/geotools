@@ -23,7 +23,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the xlink schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class XLINKConfiguration extends Configuration {
     public XLINKConfiguration() {

@@ -30,10 +30,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-/**
- * @author Daniele Romagnoli, GeoSolutions
- * @source $URL$
- */
+/** @author Daniele Romagnoli, GeoSolutions */
 public class BaseCoverageAlgebraProcess {
 
     static final String MISMATCHING_ENVELOPE_MESSAGE =

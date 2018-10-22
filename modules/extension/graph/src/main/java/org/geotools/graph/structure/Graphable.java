@@ -24,7 +24,6 @@ import java.util.Iterator;
  *
  * @see Graph
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface Graphable {
 

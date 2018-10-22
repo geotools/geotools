@@ -38,7 +38,6 @@ import junit.framework.TestCase;
  * test*() methods.
  *
  * @author rgould
- * @source $URL$
  */
 public class ServerTestCase extends TestCase {
 

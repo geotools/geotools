@@ -7,8 +7,6 @@ import org.opengis.filter.expression.Function;
  *
  * <p>Can be used to indicate the background color to make transparent; or to swap colors around as
  * needed.
- *
- * @source $URL$
  */
 public interface ColorReplacement extends org.opengis.style.ColorReplacement {
 

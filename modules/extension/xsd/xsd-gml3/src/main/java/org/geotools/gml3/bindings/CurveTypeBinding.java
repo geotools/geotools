@@ -60,7 +60,6 @@ import org.locationtech.jts.geom.LineString;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class CurveTypeBinding extends AbstractComplexBinding implements Comparable {
     protected GeometryFactory gf;

@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.Envelope;
  * An experimental QIX in memory index cache. It loads the tree into a packed memory structure that
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class CachedQuadTree {
     static final DataDefinition DATA_DEFINITION = new DataDefinition("US-ASCII");

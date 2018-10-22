@@ -18,7 +18,6 @@ package org.geotools.graph.util;
 
 import java.util.HashMap;
 
-/** @source $URL$ */
 public class IndexedStack extends java.util.Stack {
     private HashMap m_index; // object to index in stack
 

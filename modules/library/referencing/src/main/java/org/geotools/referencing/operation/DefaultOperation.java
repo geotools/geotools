@@ -50,7 +50,6 @@ import org.opengis.referencing.operation.Transformation;
  * the {@link #getParameterValues} method.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see DefaultOperationMethod

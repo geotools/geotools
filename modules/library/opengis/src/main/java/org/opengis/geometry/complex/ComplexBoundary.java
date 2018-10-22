@@ -20,7 +20,6 @@ import org.opengis.geometry.Boundary;
  * return a {@code ComplexBoundary}, which is a collection of primitives and a {@linkplain Complex
  * complex} of dimension 1 less than the original object.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

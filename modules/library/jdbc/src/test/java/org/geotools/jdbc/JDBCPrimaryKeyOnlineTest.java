@@ -33,7 +33,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 
-/** @source $URL$ */
 public abstract class JDBCPrimaryKeyOnlineTest extends JDBCTestSupport {
 
     @Override

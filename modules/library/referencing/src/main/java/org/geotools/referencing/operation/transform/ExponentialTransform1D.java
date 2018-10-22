@@ -47,7 +47,6 @@ import tec.uom.se.AbstractUnit;
  * #base}<sup><var>b</var></sup>)<sup><var>x</var></sup>
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see LogarithmicTransform1D

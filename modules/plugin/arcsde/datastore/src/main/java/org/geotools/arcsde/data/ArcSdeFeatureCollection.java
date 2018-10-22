@@ -41,11 +41,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <p>Note this class and the iterators it returns are thread safe.
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcSdeFeatureCollection.java $
  * @see FeatureCollection
  */
 public class ArcSdeFeatureCollection extends DataFeatureCollection {

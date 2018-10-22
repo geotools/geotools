@@ -41,7 +41,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link JP2KReader}
- * @source $URL$
  */
 public final class JP2KTest extends GDALTestCase {
     protected static final Logger LOGGER =

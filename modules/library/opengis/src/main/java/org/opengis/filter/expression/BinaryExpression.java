@@ -17,7 +17,6 @@ import org.opengis.annotation.XmlElement;
  * Abstract base class for the various filter expressions that compute some value from two input
  * values.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

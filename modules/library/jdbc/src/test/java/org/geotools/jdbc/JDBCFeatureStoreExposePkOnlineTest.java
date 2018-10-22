@@ -30,7 +30,6 @@ import org.opengis.filter.PropertyIsEqualTo;
  * Tests data modification when the expose primary key flag is raised
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public abstract class JDBCFeatureStoreExposePkOnlineTest extends JDBCFeatureStoreOnlineTest {
 

@@ -30,7 +30,6 @@ import org.opengis.geometry.complex.CompositePoint;
 import org.opengis.geometry.complex.CompositeSurface;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class ClosureTest extends TestCase {
 
     // private FeatGeomFactoryImpl factory = null;

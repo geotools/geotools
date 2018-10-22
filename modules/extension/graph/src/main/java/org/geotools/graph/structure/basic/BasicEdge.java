@@ -25,7 +25,6 @@ import org.geotools.graph.structure.Node;
  * Basic implementation of Edge.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BasicEdge extends BasicGraphable implements Edge {
 

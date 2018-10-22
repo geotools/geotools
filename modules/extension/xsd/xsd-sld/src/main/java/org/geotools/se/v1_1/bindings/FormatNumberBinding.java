@@ -63,7 +63,6 @@ import org.opengis.filter.expression.Function;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FormatNumberBinding extends AbstractComplexBinding {
 

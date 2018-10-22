@@ -77,7 +77,6 @@ import org.opengis.filter.sort.SortOrder;
  * Test functioning of PropertyDataStore.
  *
  * @author Jody Garnett, Refractions Research Inc.
- * @source $URL$
  */
 public class PropertyDataStoreTest extends TestCase {
     private PropertyDataStore store;

@@ -39,7 +39,6 @@ import org.opengis.referencing.cs.SphericalCS;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

@@ -91,7 +91,6 @@ import org.opengis.util.ProgressListener;
  * @author Rob Hranac, VFNY
  * @author Ian Schneider, USDA-ARS
  * @author Jody Garnett, LISAsoft
- * @source $URL$
  * @version $Id$
  */
 public interface FeatureCollection<T extends FeatureType, F extends Feature> {

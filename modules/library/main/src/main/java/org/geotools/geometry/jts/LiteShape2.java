@@ -47,7 +47,6 @@ import org.opengis.referencing.operation.TransformException;
  * are using a LiteCoordinateSequenceFactory behind your geometry classes.
  *
  * @author Jesse Eichar
- * @source $URL$
  * @version $Id$
  */
 public final class LiteShape2 implements Shape, Cloneable {

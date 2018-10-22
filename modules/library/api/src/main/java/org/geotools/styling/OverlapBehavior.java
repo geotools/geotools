@@ -47,7 +47,6 @@ import org.geotools.filter.ConstantExpression;
  *         </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  * @deprecated Please use org.opengis.style.OverlapBehavior
  */
 public class OverlapBehavior extends ConstantExpression {

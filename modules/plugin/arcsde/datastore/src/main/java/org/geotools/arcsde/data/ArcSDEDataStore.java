@@ -83,10 +83,6 @@ import org.opengis.filter.Filter;
  * in order to release resources (ArcSDE connections).
  *
  * @author Gabriel Roldan (TOPP)
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
- *     /java/org/geotools/arcsde/data/ArcSDEDataStore.java $
- * @version $Id$
  */
 public class ArcSDEDataStore implements DataStore {
 

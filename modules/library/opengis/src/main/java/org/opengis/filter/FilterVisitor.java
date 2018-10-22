@@ -49,7 +49,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * StyleVisitor in the other. The ability to directly focus on transforming data within a larger
  * structure is something a normal data walk can not accomplish in a scalable manner.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

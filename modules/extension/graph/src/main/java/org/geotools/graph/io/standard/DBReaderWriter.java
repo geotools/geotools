@@ -43,7 +43,6 @@ import org.geotools.graph.structure.Node;
  * create the database representation of the graph component.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public abstract class DBReaderWriter extends AbstractReaderWriter {
 

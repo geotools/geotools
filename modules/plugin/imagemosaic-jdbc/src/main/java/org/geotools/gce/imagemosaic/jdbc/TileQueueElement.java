@@ -24,7 +24,6 @@ import org.geotools.geometry.GeneralEnvelope;
  * in the queue from ImageDecoderThread and read from ImageComposerThread
  *
  * @author mcr
- * @source $URL$
  */
 public class TileQueueElement {
 

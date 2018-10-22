@@ -39,7 +39,6 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Cory Horner
  * @since 2.2M2
- * @source $URL$
  */
 public class Collection_MaxFunction extends FunctionExpressionImpl {
 

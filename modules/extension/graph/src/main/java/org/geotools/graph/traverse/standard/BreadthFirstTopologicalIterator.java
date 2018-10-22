@@ -42,7 +42,6 @@ import org.geotools.graph.util.Queue;
  * affected in undefined ways.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BreadthFirstTopologicalIterator extends AbstractGraphIterator {
 

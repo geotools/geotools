@@ -83,7 +83,6 @@ import si.uom.NonSI;
  * last column, which contains 1.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see javax.media.jai.PerspectiveTransform

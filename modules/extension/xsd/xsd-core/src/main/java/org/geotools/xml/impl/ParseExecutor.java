@@ -48,7 +48,6 @@ import org.geotools.xml.impl.BindingWalker.Visitor;
 import org.geotools.xs.facets.Whitespace;
 import org.picocontainer.MutablePicoContainer;
 
-/** @source $URL$ */
 public class ParseExecutor implements Visitor {
     private InstanceComponent instance;
     private Node node;

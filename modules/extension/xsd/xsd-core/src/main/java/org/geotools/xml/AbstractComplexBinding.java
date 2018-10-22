@@ -27,7 +27,6 @@ import org.w3c.dom.Element;
  * Base class for complex bindings.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public abstract class AbstractComplexBinding implements ComplexBinding {
     /** Does nothing, subclasses should override this method. */

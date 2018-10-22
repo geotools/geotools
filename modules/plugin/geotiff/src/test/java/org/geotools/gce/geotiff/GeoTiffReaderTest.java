@@ -88,7 +88,6 @@ import org.opengis.referencing.operation.Projection;
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
  *
  * @author Simone Giannecchini
- * @source $URL$
  */
 public class GeoTiffReaderTest extends org.junit.Assert {
     private static final Logger LOGGER =

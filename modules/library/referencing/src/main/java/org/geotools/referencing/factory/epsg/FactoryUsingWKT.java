@@ -72,7 +72,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * it's used as an extension).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Jody Garnett

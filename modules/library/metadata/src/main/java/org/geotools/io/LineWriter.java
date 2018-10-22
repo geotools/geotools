@@ -28,7 +28,6 @@ import org.geotools.resources.XArray;
  * explicitly set at construction time. This writer also remove trailing blanks before end of lines,
  * but this behavior can be changed by overriding {@link #isWhitespace}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.0

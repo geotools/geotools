@@ -30,7 +30,6 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
 
-/** @source $URL$ */
 public class DirectoryFeatureStore extends DirectoryFeatureSource implements SimpleFeatureStore {
 
     SimpleFeatureStore fstore;

@@ -42,10 +42,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.MathTransform;
 
-/**
- * @author Jody Garnett
- * @source $URL$
- */
+/** @author Jody Garnett */
 public class CRSTest extends TestCase {
     /** Makes sure that the transform between two EPSG:4326 is the identity transform. */
     public void testFindMathTransformIdentity() throws FactoryException {

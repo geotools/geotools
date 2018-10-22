@@ -13,7 +13,7 @@ import org.geotools.data.dxf.parser.DXFColor;
 import org.geotools.data.dxf.parser.DXFConstants;
 import org.geotools.data.dxf.parser.DXFUnivers;
 
-/** @source $URL$ */
+
 public abstract class DXFEntity implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFEntity.class);

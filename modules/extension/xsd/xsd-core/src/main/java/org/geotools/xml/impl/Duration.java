@@ -18,11 +18,7 @@ package org.geotools.xml.impl;
 
 import java.io.Serializable;
 
-/**
- * Implementation of xs:duration.
- *
- * @source $URL$
- */
+/** Implementation of xs:duration. */
 public class Duration implements Serializable, Comparable {
     private static final long serialVersionUID = 3257001055736117303L;
     private final boolean isNegative;

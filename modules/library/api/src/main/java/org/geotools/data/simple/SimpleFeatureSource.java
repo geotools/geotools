@@ -7,11 +7,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-/**
- * FeatureSource explicitly working with SimpleFeatureCollection.
- *
- * @source $URL$
- */
+/** FeatureSource explicitly working with SimpleFeatureCollection. */
 public interface SimpleFeatureSource extends FeatureSource<SimpleFeatureType, SimpleFeature> {
     public SimpleFeatureCollection getFeatures() throws IOException;
 

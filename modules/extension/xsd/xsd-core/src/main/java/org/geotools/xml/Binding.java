@@ -209,7 +209,6 @@ import javax.xml.namespace.QName;
  * the resulting {@link List} will be used.
  *
  * @author Justin Deoliveira,Refractions Research Inc.,jdeolive@refractions.net
- * @source $URL$
  */
 public interface Binding {
     /** Specifies that a binding should be executed after its direct parent */

@@ -28,7 +28,6 @@ import org.apache.commons.dbcp.BasicDataSource;
  * provided delegate to access a test fixture and establish a connection.
  *
  * @see JDBC3DTestSetup
- * @source $URL$
  */
 public class JDBCDelegatingTestSetup extends JDBCTestSetup {
 

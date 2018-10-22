@@ -30,7 +30,6 @@ import org.geotools.gce.grassraster.core.GrassBinaryRasterReadHandler;
  * @see GrassBinaryImageMetadata
  * @see GrassBinaryRasterReadHandler
  * @see JGrassRegion
- * @source $URL$
  */
 public final class GrassBinaryImageMetadataFormat extends IIOMetadataFormatImpl {
 

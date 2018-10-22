@@ -27,7 +27,6 @@ import org.locationtech.jts.index.quadtree.Quadtree;
  * a certain distance from the specified bounds
  *
  * @author Andrea Aime
- * @source $URL$
  */
 public class LabelIndex {
 

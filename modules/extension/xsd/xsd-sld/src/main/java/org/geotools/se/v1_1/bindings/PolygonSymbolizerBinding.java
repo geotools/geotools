@@ -45,7 +45,6 @@ import org.opengis.style.Displacement;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class PolygonSymbolizerBinding extends SLDPolygonSymbolizerBinding {
 

@@ -23,7 +23,6 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class OGCPropertyIsBetweenTypeBindingTest extends FilterTestSupport {
     public void testLowerBoundaryType() {
         assertEquals(Expression.class, binding(OGC.LowerBoundaryType).getType());

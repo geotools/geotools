@@ -26,7 +26,6 @@ import org.geotools.xml.XSD;
  * http://www.opengis.net/wcs schema.
  *
  * @generated
- * @source $URL$
  */
 public final class WCS extends XSD {
 

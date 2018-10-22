@@ -68,7 +68,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  */
 public abstract class AbstractMappingFeatureIterator implements IMappingFeatureIterator {
     /** The logger for the filter module. */

@@ -28,7 +28,6 @@ import org.junit.Test;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class KeyInfoTest {

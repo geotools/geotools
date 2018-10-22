@@ -27,7 +27,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LinearRing;
 import org.opengis.filter.capability.FunctionName;
 
-/** @source $URL$ */
 public class FilterFunction_exteriorRing extends FunctionExpressionImpl {
 
     public static FunctionName NAME =

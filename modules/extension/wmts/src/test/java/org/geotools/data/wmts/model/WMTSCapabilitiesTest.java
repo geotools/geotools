@@ -27,7 +27,6 @@ import org.geotools.data.wmts.WMTSSpecification;
 import org.geotools.data.wmts.WebMapTileServer;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public class WMTSCapabilitiesTest extends TestCase {
 
     protected WMTSSpecification spec;

@@ -38,7 +38,6 @@ import org.geotools.ows.ServiceException;
  *
  * @author Jody Garnett, Refractions Research
  * @author rgould
- * @source $URL$
  */
 public class WMS1_1_1 extends WMS1_1_0 {
     public WMS1_1_1() {}

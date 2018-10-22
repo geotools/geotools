@@ -19,7 +19,6 @@ package org.geotools.swt.control;
  *
  * @author Jesse
  * @since 1.1.0
- * @source $URL$
  */
 public interface Controller {
 

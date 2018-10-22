@@ -33,7 +33,6 @@ import org.opengis.filter.spatial.BBOX;
  * <p>
  *
  * @author Jody
- * @source $URL$
  */
 public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
 

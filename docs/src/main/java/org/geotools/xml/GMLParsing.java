@@ -36,7 +36,6 @@ import org.w3c.dom.Document;
  * GML3 Parsing examples.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class GMLParsing {
 

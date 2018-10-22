@@ -23,7 +23,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 
-/** @source $URL$ */
 public class LineHandler extends GeometryHandlerBase<LineString> {
 
     ArrayList coordinates;

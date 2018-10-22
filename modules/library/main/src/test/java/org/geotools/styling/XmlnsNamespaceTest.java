@@ -26,7 +26,6 @@ import org.geotools.test.TestData;
  * XML says that there is no problem.
  *
  * @author Vitalus
- * @source $URL$
  */
 public class XmlnsNamespaceTest extends TestCase {
 

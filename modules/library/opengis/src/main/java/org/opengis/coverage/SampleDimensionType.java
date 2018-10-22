@@ -22,7 +22,6 @@ import org.opengis.util.CodeList;
  * Specifies the various dimension types for coverage values. For grid coverages, these correspond
  * to band types.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

@@ -26,7 +26,6 @@ import java.net.URL;
  * singular files.
  *
  * @author dzwiers
- * @source $URL$
  */
 public interface FileDataStoreFactorySpi extends DataStoreFactorySpi {
     /**

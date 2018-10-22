@@ -4,7 +4,6 @@ import java.lang.ref.SoftReference;
 import org.geotools.data.DataStore;
 import org.geotools.util.WeakCollectionCleaner;
 
-/** @source $URL$ */
 public class DataStoreSoftReference extends SoftReference<DataStore> {
 
     public DataStoreSoftReference(DataStore referent) {

@@ -27,7 +27,6 @@ import org.geotools.util.logging.Logging;
  * their entry from the collection when {@link Reference#clear} is invoked.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

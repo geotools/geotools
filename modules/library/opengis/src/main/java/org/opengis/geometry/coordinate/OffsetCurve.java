@@ -20,7 +20,6 @@ import org.opengis.geometry.primitive.CurveSegment;
  * A curve at a constant distance from the basis curve. They can be useful as a cheap and simple
  * alternative to constructing curves that are offsets by definition.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

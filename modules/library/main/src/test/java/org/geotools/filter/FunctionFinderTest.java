@@ -30,10 +30,7 @@ import org.junit.Test;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Function;
 
-/**
- * @author jody
- * @source $URL$
- */
+/** @author jody */
 public class FunctionFinderTest {
     static org.opengis.filter.FilterFactory ff;
 

@@ -52,7 +52,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * initial write completes.
  *
  * @author Jesse Eichar
- * @source $URL$
  */
 class ShapefileFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 

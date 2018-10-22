@@ -40,7 +40,6 @@ import org.opengis.filter.capability.IdCapabilities;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Id_CapabilitiesTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

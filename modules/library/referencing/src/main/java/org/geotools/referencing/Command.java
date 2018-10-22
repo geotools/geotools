@@ -53,7 +53,6 @@ import org.opengis.util.InternationalString;
  * Implementation of the {@link CRS#main} method. Exists as a separated class in order to reduce the
  * class loading for applications that don't want to run this main method.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

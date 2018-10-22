@@ -23,7 +23,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * Simple interface for creating visitors to a {@link GranuleCatalog} implementation.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public interface GranuleCatalogVisitor {
     /**

@@ -18,7 +18,6 @@ package org.geotools.util;
 
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class BooleanConverterFactoryTest extends TestCase {
 
     BooleanConverterFactory factory;

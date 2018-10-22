@@ -24,10 +24,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * @author en
- * @source $URL$
- */
+/** @author en */
 public class FeatureCollectionTest extends org.geotools.data.collection.FeatureCollectionTest {
     public FeatureCollectionTest(String testName) {
         super(testName);

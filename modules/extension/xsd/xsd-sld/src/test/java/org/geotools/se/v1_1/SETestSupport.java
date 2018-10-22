@@ -27,7 +27,6 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
 import org.geotools.xml.test.XMLTestSupport;
 
-/** @source $URL$ */
 public abstract class SETestSupport extends XMLTestSupport {
 
     @Override

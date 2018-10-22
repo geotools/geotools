@@ -43,7 +43,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Jody, gdavis
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class ProcessParameterPage extends JPage {

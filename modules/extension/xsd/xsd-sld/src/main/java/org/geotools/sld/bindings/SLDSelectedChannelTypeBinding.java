@@ -42,7 +42,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDSelectedChannelTypeBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

@@ -32,7 +32,6 @@ import org.geotools.resources.NIOUtilities;
  * The Writer writes out the fid and record number of features to the fid index file.
  *
  * @author Jesse
- * @source $URL$
  */
 public class IndexedFidWriter implements FileWriter {
     public static final int HEADER_SIZE = 13;

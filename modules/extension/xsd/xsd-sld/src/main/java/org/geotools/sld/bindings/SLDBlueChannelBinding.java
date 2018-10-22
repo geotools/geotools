@@ -33,7 +33,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDBlueChannelBinding extends AbstractComplexBinding {
     /** @generated */

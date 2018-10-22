@@ -38,7 +38,6 @@ import org.xml.sax.EntityResolver;
  * Tests {@link GeoTools}.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

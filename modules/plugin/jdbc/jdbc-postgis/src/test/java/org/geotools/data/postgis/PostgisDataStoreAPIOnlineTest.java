@@ -27,7 +27,6 @@ import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.util.Version;
 import org.locationtech.jts.geom.Geometry;
 
-/** @source $URL$ */
 public class PostgisDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override

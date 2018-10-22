@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class MultiGeometryTypeBindingTest extends KMLTestSupport {
 
     public void testType() {

@@ -19,7 +19,7 @@ package org.geotools.resources;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class Utilities {
 

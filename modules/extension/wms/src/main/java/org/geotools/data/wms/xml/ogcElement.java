@@ -20,7 +20,6 @@ import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.Type;
 import org.geotools.xml.schema.impl.ElementGT;
 
-/** @source $URL$ */
 public class ogcElement extends ElementGT {
     public ogcElement(String name, Type type, Element substitution) {
         super(null, name, OGCSchema.NAMESPACE, type, 1, 1, false, substitution, false);

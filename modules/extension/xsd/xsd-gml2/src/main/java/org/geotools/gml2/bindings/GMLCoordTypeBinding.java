@@ -48,7 +48,6 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLCoordTypeBinding extends AbstractComplexBinding {
     CoordinateSequenceFactory csFactory;

@@ -30,7 +30,6 @@ import org.xml.sax.helpers.AttributesImpl;
  *
  * @author Chris Holmes
  * @author Ian Schneider
- * @source $URL$
  */
 public class CoordinateWriter {
 

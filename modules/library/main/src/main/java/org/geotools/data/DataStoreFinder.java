@@ -40,8 +40,6 @@ import org.opengis.feature.type.FeatureType;
  *
  * <p>Example:<br>
  * <code>org.geotools.data.mytype.MyTypeDataStoreFacotry</code>
- *
- * @source $URL$
  */
 public final class DataStoreFinder {
     /** The logger for the filter module. */

@@ -45,7 +45,6 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-/** @source $URL$ */
 public class H2FilterToSQL extends FilterToSQL {
     private static final Logger LOGGER = Logging.getLogger(H2FilterToSQL.class);
 

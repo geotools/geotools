@@ -35,11 +35,7 @@ import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.Cloneable;
 
-/**
- * Base class for our JTS-based implementation of the various ISO 19107 geometry classes.
- *
- * @source $URL$
- */
+/** Base class for our JTS-based implementation of the various ISO 19107 geometry classes. */
 public abstract class GeometryImpl implements Geometry, Serializable, Cloneable, JTSGeometry {
 
     // *************************************************************************

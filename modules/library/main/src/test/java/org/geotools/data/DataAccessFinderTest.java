@@ -38,7 +38,6 @@ import org.opengis.filter.Filter;
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- * @source $URL$
  */
 public class DataAccessFinderTest extends TestCase {
 
@@ -196,7 +195,6 @@ public class DataAccessFinderTest extends TestCase {
      * @author Gabriel Roldan (TOPP)
      * @version $Id$
      * @since 2.5.x
-     * @source $URL$
      */
     public static class MockDataAccessFactory implements DataAccessFactory {
         public boolean isAvailable() {
@@ -240,7 +238,6 @@ public class DataAccessFinderTest extends TestCase {
      * @author Gabriel Roldan (TOPP)
      * @version $Id$
      * @since 2.5.x
-     * @source $URL$
      */
     public static class MockDataStoreFactory implements DataStoreFactorySpi {
         public boolean isAvailable() {
@@ -287,7 +284,6 @@ public class DataAccessFinderTest extends TestCase {
      * @author Gabriel Roldan (TOPP)
      * @version $Id$
      * @since 2.5.x
-     * @source $URL$
      */
     public static class MockUnavailableDataStoreFactory extends MockDataStoreFactory {
 

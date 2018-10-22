@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.Touches;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCTouchesBinding extends AbstractComplexBinding {
     FilterFactory2 filterFactory;

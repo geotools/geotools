@@ -23,7 +23,6 @@ import org.opengis.style.StyleVisitor;
 /**
  * Default implementation of ExternalMark.
  *
- * @source $URL$
  * @version $Id$
  */
 public class ExternalMarkImpl implements org.geotools.styling.ExternalMark {

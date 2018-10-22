@@ -26,7 +26,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/** @source $URL$ */
 public class GeoRasterOnlineTest extends AbstractTest {
     protected static DBDialect dialect = null;
     static String CREATE_RDT =

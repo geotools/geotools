@@ -37,7 +37,6 @@ import org.opengis.filter.sort.SortBy;
  * SimpleFeatureSource#getFeatures(Query)}.
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  */
 public class SubFeatureCollection extends BaseSimpleFeatureCollection {
 

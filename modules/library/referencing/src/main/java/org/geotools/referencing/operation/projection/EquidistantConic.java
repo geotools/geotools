@@ -59,7 +59,6 @@ import org.opengis.referencing.operation.PlanarProjection;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/equidistant_conic.html">"Equidistant
  *     Conic" on www.remotesensing.org</A>
  * @since 2.6.1
- * @source $URL$
  * @version $Id$
  * @author Ivan Boldyrev
  */

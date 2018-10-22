@@ -100,7 +100,6 @@ import org.opengis.util.RecordType;
  * </ul>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
@@ -849,8 +848,7 @@ public abstract class AbstractCoverage extends PropertySourceImpl implements Cov
          * Returns all values of a given element for a specified set of coordinates. This method is
          * automatically invoked at rendering time for populating an image tile, providing that the
          * rendered image is created using the "{@link ImageFunctionDescriptor ImageFunction}"
-         * operator and the image type is not {@code double}. The default implementation invokes
-         * {@link AbstractCoverage#evaluate(DirectPosition,float[])} recursively.
+         * operator and the image type is not {@code double}.
          */
         public void getElements(
                 final float startX,

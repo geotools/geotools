@@ -44,7 +44,6 @@ import org.opengis.util.Cloneable;
  *
  * @since 2.1
  * @version 8.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see GeneralEnvelope

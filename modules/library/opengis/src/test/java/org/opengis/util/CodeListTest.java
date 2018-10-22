@@ -27,7 +27,6 @@ import org.opengis.metadata.identification.CharacterSet;
  * Tests every {@link CodeList}.
  *
  * @author Martin desruisseaux (IRD)
- * @source $URL$
  */
 public final class CodeListTest {
     /** The logger to use. */

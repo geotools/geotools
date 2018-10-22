@@ -28,7 +28,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * <p>Geotools 2.1: This class is under revision, pleae help out with feedback. Please see
  * experimental FeatureFactory2 (a subclass) for the current best idea of what is needed.
  *
- * @source $URL$
  * @version $Id$
  * @task REVISIT: consider a static create(Object[] attributes, String FeatureID, FeatureType type)
  *     method.

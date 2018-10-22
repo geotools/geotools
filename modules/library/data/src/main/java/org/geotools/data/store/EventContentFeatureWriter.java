@@ -46,7 +46,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * <p>Please note that if you are using {@link DiffFeatureWriter} it sends out events on its own.
  *
  * @author Jody Garnett (LISASoft)
- * @source $URL$
  */
 public class EventContentFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 

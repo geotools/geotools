@@ -36,7 +36,6 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class HexagonTest extends HexagonTestBase {

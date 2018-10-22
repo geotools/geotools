@@ -27,7 +27,6 @@ import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLCoordinatesTypeBindingTest extends AbstractGMLBindingTest {
     AttributeInstance decimal;
     AttributeInstance ts;

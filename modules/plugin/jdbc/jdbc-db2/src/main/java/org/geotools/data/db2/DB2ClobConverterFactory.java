@@ -22,7 +22,6 @@ import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 
-/** @source $URL$ */
 public class DB2ClobConverterFactory implements ConverterFactory {
 
     DB2ClobConverter converter = new DB2ClobConverter();

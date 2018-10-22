@@ -14,7 +14,7 @@ import org.locationtech.jts.geom.Geometry;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresFeatureReaderTest extends JDBCFeatureReaderTest {
 

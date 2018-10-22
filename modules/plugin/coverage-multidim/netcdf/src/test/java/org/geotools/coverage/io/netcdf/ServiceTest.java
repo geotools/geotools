@@ -38,7 +38,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  *
  * @author Simone Giannecchini
  * @author Daniele Romagnoli
- * @source $URL$
  */
 public class ServiceTest {
 

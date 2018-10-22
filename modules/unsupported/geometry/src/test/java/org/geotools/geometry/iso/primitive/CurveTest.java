@@ -45,10 +45,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class CurveTest extends TestCase {
 
     public void testMain() {

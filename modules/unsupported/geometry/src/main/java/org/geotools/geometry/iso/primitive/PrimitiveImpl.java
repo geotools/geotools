@@ -54,7 +54,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * TRUE for end points). Further, if that object is cast as a Primitive value and as a Complex
  * value, then the two values need not be equal as Objects.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-101.pdf">Abstract Specification V5</A>
  * @author Jackson Roehrig & Sanjay Jena
  */

@@ -14,7 +14,6 @@ import org.geotools.data.shapefile.ShapefileDirectoryFactory;
 import org.junit.Before;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class DirectoryDataStoreFactoryTest extends DirectoryTestSupport {
     private static final String DESTDIR = "dir with spaces";
 

@@ -64,7 +64,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * CoordinateOperationAuthorityFactory} after this one in the {@linkplain
  * org.geotools.factory.AbstractFactory#priority priority} chain.
  *
- * @source $URL$
  * @version $Id$
  * @author Oscar Fonts
  */

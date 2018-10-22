@@ -23,7 +23,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * descriptive information includes such information as the name of the operation, operation
  * description, number of source grid coverages required for the operation etc.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

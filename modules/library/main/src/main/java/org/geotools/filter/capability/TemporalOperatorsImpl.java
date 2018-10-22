@@ -23,7 +23,6 @@ import java.util.Set;
 import org.opengis.filter.capability.TemporalOperator;
 import org.opengis.filter.capability.TemporalOperators;
 
-/** @source $URL$ */
 public class TemporalOperatorsImpl implements TemporalOperators {
 
     Set<TemporalOperator> operators;

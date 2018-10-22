@@ -19,7 +19,6 @@ package org.geotools.xml.impl;
 import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.SAXException;
 
-/** @source $URL$ */
 public abstract class HandlerImpl implements Handler {
     MutablePicoContainer context;
 

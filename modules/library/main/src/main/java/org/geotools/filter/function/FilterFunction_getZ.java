@@ -25,7 +25,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.capability.FunctionName;
 
-/** @source $URL$ */
 public class FilterFunction_getZ extends FunctionExpressionImpl {
 
     public static FunctionName NAME =

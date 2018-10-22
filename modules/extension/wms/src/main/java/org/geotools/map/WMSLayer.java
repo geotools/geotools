@@ -46,7 +46,6 @@ import org.opengis.referencing.operation.MathTransform;
  * choosing which style to use
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class WMSLayer extends GridReaderLayer {
 

@@ -47,7 +47,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @author Ugo Moschini, GeoSolutions
  *     <p>Testing {@link VRTReader}
- * @source $URL$
  */
 public final class VRTTest extends GDALTestCase {
 

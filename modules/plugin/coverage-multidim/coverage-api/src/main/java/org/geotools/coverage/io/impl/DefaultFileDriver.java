@@ -39,7 +39,6 @@ import org.opengis.util.ProgressListener;
  * Base class extending {@link DefaultDriver} leveraging on URLs.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public class DefaultFileDriver extends DefaultDriver implements FileDriver {
 

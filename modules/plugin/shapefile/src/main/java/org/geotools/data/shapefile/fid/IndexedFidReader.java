@@ -37,7 +37,6 @@ import org.geotools.util.URLs;
  * This object reads from a file the fid of a feature in a shapefile.
  *
  * @author Jesse
- * @source $URL$
  */
 public class IndexedFidReader implements FIDReader, FileReader {
     private static final Logger LOGGER =

@@ -28,10 +28,7 @@ import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 
-/**
- * @author Erik van de Pol. B3Partners BV.
- * @source $URL$
- */
+/** @author Erik van de Pol. B3Partners BV. */
 public class CircleTypeBinding extends AbstractComplexBinding {
     GeometryFactory gFactory;
     CoordinateSequenceFactory csFactory;

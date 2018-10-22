@@ -45,8 +45,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * This is a legacy benchmarking suite I'm using to assess the performance of some very large
  * datasets. Will be removed.
- *
- * @source $URL$
  */
 @Ignore
 public class LargePolygonsPerfTest {

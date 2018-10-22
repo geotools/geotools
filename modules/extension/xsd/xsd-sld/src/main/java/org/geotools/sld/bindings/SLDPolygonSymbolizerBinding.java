@@ -58,7 +58,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDPolygonSymbolizerBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

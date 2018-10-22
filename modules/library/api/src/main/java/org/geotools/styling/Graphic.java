@@ -74,7 +74,6 @@ import org.opengis.style.GraphicalSymbol;
  * </ul>
  *
  * @task REVISIT: There are no setter methods in this interface, is this a problem?
- * @source $URL$
  */
 public interface Graphic
         extends GraphicLegend,

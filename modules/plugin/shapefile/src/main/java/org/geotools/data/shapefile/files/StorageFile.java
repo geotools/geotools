@@ -36,7 +36,6 @@ import org.geotools.util.logging.Logging;
  * Encapsulates the idea of a file for writing data to and then later updating the original.
  *
  * @author jesse
- * @source $URL$
  */
 public final class StorageFile implements Comparable<StorageFile>, FileWriter {
     static final Logger LOGGER = Logging.getLogger("org.geotools.data.shapefile");

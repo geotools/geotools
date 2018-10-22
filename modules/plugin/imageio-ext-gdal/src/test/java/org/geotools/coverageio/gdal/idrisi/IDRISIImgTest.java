@@ -47,9 +47,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link IDRISIReader}
- * @source $URL:
- *     https://svn.osgeo.org/geotools/trunk/modules/plugin/imageio-ext-gdal/src/test/java/org/geotools/coverageio/gdal/erdasimg/IDRISIImgTest.java
- *     $
  */
 public final class IDRISIImgTest extends GDALTestCase {
     protected static final Logger LOGGER =

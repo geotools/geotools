@@ -25,7 +25,6 @@ import java.net.URI;
  * AttributeGroups defined in XML Schemas.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface AttributeGroup {
     /**

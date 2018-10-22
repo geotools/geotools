@@ -41,7 +41,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OutputFormatListTypeBinding extends AbstractComplexEMFBinding {
     public OutputFormatListTypeBinding(WfsFactory factory) {

@@ -56,10 +56,6 @@ import org.locationtech.jts.io.WKTReader;
  * Unit test suite for {@link ArcSDEGeometryBuilder}
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/GeometryBuilderTest.java $
- * @version $Id$
  */
 public class GeometryBuilderTest {
 

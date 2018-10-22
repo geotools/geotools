@@ -23,7 +23,6 @@ import org.junit.*;
 /**
  * Tests the {@link Fraction} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  */

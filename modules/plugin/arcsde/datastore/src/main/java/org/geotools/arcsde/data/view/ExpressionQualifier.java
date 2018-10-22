@@ -64,10 +64,6 @@ import org.geotools.arcsde.session.ISession;
  * the ArcSDE java api to not get confused when using joined tables.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/view/ExpressionQualifier.java $
  * @since 2.3.x
  */
 class ExpressionQualifier implements ExpressionVisitor {

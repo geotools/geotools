@@ -19,7 +19,6 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class TeradataEmptyTestSetup extends JDBCEmptyTestSetup {
 
     public TeradataEmptyTestSetup(JDBCTestSetup delegate) {

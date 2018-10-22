@@ -43,7 +43,6 @@ import org.geotools.graph.structure.Node;
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
  * @see DirectedNode
- * @source $URL$
  */
 public class OptDirectedNode extends OptGraphable implements DirectedNode {
 

@@ -20,7 +20,6 @@ package org.geotools.filter.expression;
  * Used to get and set object properties based on an xpath expression.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface PropertyAccessor {
     /**

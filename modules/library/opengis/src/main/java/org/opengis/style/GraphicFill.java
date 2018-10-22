@@ -17,7 +17,6 @@ import org.opengis.annotation.XmlElement;
  * GraphicFill may be provided in the future to provide more control the exact style of filling. We
  * keep this class to reduce future code changes.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

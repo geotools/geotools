@@ -81,13 +81,13 @@ import java.util.Set;
  *       addAuthroization(String) callback invoked with the value of lockID
  *   <li>FeatureStore.removeFeatures methods are called on the two DataStores.
  *       <ul>
- *         <li>PostgisFeatureStore.removeFeatures(fitler) handles operation without delegation.
+ *         <li>PostgisFeatureStore.removeFeatures(filter) handles operation without delegation.
  *         <li>Most removeFeature(filter) implementations use the implementation provided by
  *             ContentFeatureStore which delegates to FeatureWriter.
  *       </ul>
  *       Any of these operations may make use of the Transaction.putProperty( key, value ).
- *   <li>The transaction is commited, all of the Transaction.State methods have there
- *       Transaction.State.commit() methods called gicing them a chance to applyDiff maps, or commit
+ *   <li>The transaction is committed, all of the Transaction.State methods have there
+ *       Transaction.State.commit() methods called giving them a chance to applyDiff maps, or commit
  *       various connections.
  *   <li>The transaction is closed, all of the Transaction.State methods have there
  *       Transaction.State.setTransaction( null ) called, giving them a chance to clean up diffMaps,
@@ -96,8 +96,6 @@ import java.util.Set;
  *
  * @author Jody Garnett
  * @author Chris Holmes, TOPP
- * @source $URL$
- * @version $Id$
  */
 public interface Transaction extends Closeable {
     /**

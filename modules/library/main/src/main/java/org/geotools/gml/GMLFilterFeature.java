@@ -37,7 +37,6 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * filter.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {

@@ -31,7 +31,6 @@ import org.opengis.coverage.grid.GridCoverageWriter;
  * gtopo30 format.
  *
  * @author Simone Giannecchini
- * @source $URL$
  */
 public class GT30ReaderWriterTest extends GT30TestBase {
     /**

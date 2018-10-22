@@ -54,7 +54,6 @@ import org.opengis.filter.expression.Expression;
  * and spider diagrams are not supported. Check on the Eastwood project pages for details.
  *
  * @since 2.5.6
- * @source $URL$
  */
 public class ChartGraphicFactory implements ExternalGraphicFactory {
 

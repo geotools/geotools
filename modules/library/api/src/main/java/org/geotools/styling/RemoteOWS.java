@@ -42,7 +42,6 @@ package org.geotools.styling;
  * <p>
  *
  * @author James Macgill
- * @source $URL$
  */
 public interface RemoteOWS {
     String getService();

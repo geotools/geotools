@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
  * Represents text encountered in the parse tree.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class Text {
 

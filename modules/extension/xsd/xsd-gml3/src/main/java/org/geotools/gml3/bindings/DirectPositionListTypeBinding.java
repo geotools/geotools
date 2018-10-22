@@ -61,7 +61,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DirectPositionListTypeBinding extends AbstractComplexBinding {
 

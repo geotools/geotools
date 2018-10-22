@@ -63,7 +63,6 @@ import org.xml.sax.helpers.AttributesImpl;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class PropertyTypeBinding extends AbstractComplexEMFBinding {
 

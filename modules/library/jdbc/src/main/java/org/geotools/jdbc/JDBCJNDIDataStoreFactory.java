@@ -34,7 +34,6 @@ import org.geotools.factory.GeoTools;
  * passing in the non JNDI datastore factory to delegate to.
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public abstract class JDBCJNDIDataStoreFactory extends JDBCDataStoreFactory {
 

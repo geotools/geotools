@@ -74,7 +74,6 @@ import org.opengis.filter.sort.SortOrder;
  * Testing Low level index based on PostGis
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
- * @source $URL$
  */
 public final class PostGisIndexTest extends OnlineTestCase {
 

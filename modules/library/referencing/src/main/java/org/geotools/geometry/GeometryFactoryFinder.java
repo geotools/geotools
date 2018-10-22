@@ -33,7 +33,6 @@ import org.opengis.geometry.primitive.PrimitiveFactory;
  * Defines static methods used to access the application's default geometry factory implementations.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  */

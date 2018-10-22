@@ -31,7 +31,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 import org.xml.sax.helpers.NamespaceSupport;
 
-/** @source $URL$ */
 public class ElementEncodeExecutor implements BindingWalker.Visitor {
     /** the object being encoded * */
     Object object;

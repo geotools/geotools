@@ -26,7 +26,6 @@ import org.opengis.referencing.IdentifiedObject;
  * if it doesn't exists, then the plain {@code name} key is used. In other words, this map inherits
  * the {@code "name"} property from the {@linkplain #base} map.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.0

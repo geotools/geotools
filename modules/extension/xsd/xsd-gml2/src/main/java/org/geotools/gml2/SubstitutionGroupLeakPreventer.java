@@ -35,7 +35,6 @@ import org.geotools.util.Utilities;
  * name.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class SubstitutionGroupLeakPreventer implements Adapter {
 

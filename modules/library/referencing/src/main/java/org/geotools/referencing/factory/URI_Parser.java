@@ -33,7 +33,6 @@ import org.opengis.referencing.AuthorityFactory;
  *
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 abstract class URI_Parser {
 

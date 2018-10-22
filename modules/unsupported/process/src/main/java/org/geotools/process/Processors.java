@@ -38,7 +38,6 @@ import org.opengis.feature.type.Name;
  * implementations.
  *
  * @author gdavis
- * @source $URL$
  */
 public class Processors extends FactoryFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */

@@ -32,7 +32,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class DefaultFeatureValidation implements FeatureValidation {

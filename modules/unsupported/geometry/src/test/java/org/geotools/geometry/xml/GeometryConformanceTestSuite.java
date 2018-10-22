@@ -49,8 +49,6 @@ import org.xml.sax.InputSource;
  * intersection and union operations.
  *
  * <p>notes: - spaces must be replaced by "_" in description - "No_description" is the default
- *
- * @source $URL$
  */
 public class GeometryConformanceTestSuite extends TestSuite {
 

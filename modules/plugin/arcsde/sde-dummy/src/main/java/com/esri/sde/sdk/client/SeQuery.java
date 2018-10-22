@@ -2,7 +2,6 @@ package com.esri.sde.sdk.client;
 
 import com.esri.sde.sdk.client.SeTable.SeTableStats;
 
-/** @source $URL$ */
 public class SeQuery extends SeStreamOp {
 
     public static short SE_SPATIAL_FIRST = 0;

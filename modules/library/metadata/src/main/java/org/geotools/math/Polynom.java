@@ -32,7 +32,6 @@ import org.geotools.resources.Classes;
  * equation without creating a {@code Polygon} object.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Ken Turkiwski, for algorithmic inspiration

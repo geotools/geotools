@@ -27,7 +27,6 @@ import org.geotools.xml.resolver.SchemaResolver;
  * this will result in bindings not being found at encode time.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class AppSchemaConfiguration extends Configuration {
 

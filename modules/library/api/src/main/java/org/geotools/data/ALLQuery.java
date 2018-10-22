@@ -34,8 +34,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <pre><code>
  * featureSource.getFeatures( Query.FIDS );
  * </code></pre>
- *
- * @source $URL$
  */
 class ALLQuery extends Query {
     public final String[] getPropertyNames() {

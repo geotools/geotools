@@ -47,8 +47,7 @@ import org.locationtech.jts.geom.GeometryCollection;
  *          </code>
  *         </pre>
  *
- * @generated
- * @source $URL$ JD: this binding should not longer be used
+ * @generated JD: this binding should not longer be used
  */
 public class GMLAbstractGeometryCollectionBaseTypeBinding extends AbstractComplexBinding {
     /** @generated */

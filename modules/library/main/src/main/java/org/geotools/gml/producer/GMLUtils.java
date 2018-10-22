@@ -29,10 +29,10 @@ import org.locationtech.jts.geom.Polygon;
 // import org.geotools.feature.*;
 
 /*
- * Utilities for gml and xml;
- * @author Chris Holmes, TOPP
- * @source $URL$
- */
+* Utilities for gml and xml;
+* @author Chris Holmes, TOPP
+
+*/
 final class GMLUtils {
     /** The logger for the filter module. */
     private static final Logger LOGGER =

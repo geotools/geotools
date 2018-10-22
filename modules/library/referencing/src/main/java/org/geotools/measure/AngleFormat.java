@@ -91,7 +91,6 @@ import org.geotools.util.logging.LoggedFormat;
  * @see Latitude
  * @see Longitude
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
  */

@@ -23,7 +23,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class BBOXImplTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();

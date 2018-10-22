@@ -24,7 +24,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class BoundingShapeTypeBindingTest extends GML3TestSupport {
 
     public void testEncode() throws Exception {

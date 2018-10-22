@@ -29,7 +29,6 @@ import org.jfree.chart.plot.XYPlot;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
 
-/** @source $URL$ */
 public class GeometryRendererTest extends TestCase {
 
     WKTReader wkt = new WKTReader();

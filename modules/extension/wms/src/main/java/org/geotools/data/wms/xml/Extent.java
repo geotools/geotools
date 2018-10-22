@@ -33,7 +33,6 @@ import java.util.List;
  * <!ELEMENT Extent (#PCDATA) > <!ATTLIST Extent name CDATA #REQUIRED default CDATA #IMPLIED
  * nearestValue (0 | 1) "0">
  *
- * @source $URL$
  * @version SVN $Id$
  * @author Per Engstrom, Curalia AB, pereng@gmail.com
  */

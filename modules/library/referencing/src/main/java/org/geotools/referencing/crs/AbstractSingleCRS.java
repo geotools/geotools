@@ -50,7 +50,6 @@ import org.opengis.referencing.datum.Datum;
  * identify the exact type.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see org.geotools.referencing.cs.AbstractCS

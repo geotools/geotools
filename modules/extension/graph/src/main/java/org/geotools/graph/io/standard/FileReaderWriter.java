@@ -22,7 +22,6 @@ import org.geotools.graph.io.GraphReaderWriter;
  * Represents a GraphReaderWriter that reads/writes from/to files.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface FileReaderWriter extends GraphReaderWriter {
 

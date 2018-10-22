@@ -36,7 +36,6 @@ import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.handlers.DocumentHandler;
 import org.geotools.xml.schema.Schema;
 
-/** @source $URL$ */
 public class WMSSchemaTest extends TestCase {
 
     public void testSchema() throws URISyntaxException {

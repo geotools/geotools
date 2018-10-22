@@ -21,7 +21,6 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import javax.media.jai.CRIFImpl;
 
-/** @source $URL$ */
 public class ColorReductionCRIF extends CRIFImpl {
 
     public RenderedImage create(ParameterBlock pb, RenderingHints hints) {

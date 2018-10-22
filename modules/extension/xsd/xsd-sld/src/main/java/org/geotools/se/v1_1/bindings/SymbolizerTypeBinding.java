@@ -52,7 +52,6 @@ import org.opengis.style.Description;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SymbolizerTypeBinding extends AbstractComplexBinding {
 

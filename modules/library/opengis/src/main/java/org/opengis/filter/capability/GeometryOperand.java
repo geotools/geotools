@@ -48,7 +48,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Justin Deoliveira (The Open Planning Project)
  * @author Martin Desruisseaux (Geomatys)
- * @source $URL$
  */
 public final class GeometryOperand implements Name, Serializable {
     /** For cross-version compatibility. */

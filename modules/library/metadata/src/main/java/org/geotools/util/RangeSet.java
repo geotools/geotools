@@ -45,7 +45,6 @@ import org.opengis.util.Cloneable;
  *
  * @param <T> The type of range elements.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Andrea Aime

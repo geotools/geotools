@@ -32,11 +32,7 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.lite.SynchronizedLabelCache;
 
-/**
- * This class is not usable yet !
- *
- * @source $URL$
- */
+/** This class is not usable yet ! */
 public class JLayeredMapPane extends AbstractMapPane {
 
     private static class LayerOperands {

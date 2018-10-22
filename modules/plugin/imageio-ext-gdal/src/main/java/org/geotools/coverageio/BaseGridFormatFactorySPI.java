@@ -29,7 +29,6 @@ import org.geotools.coverage.grid.io.UnknownFormat;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.5.x
- * @source $URL$
  */
 public class BaseGridFormatFactorySPI implements GridFormatFactorySpi {
 

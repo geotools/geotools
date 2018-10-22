@@ -11,7 +11,6 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class DashedShapeTest {
     static final float EPS = 1e-3f;
 

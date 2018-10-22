@@ -39,7 +39,6 @@ import org.geotools.factory.Hints;
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.4
- * @source $URL$
  */
 public class NumericConverterFactory implements ConverterFactory {
 

@@ -59,7 +59,6 @@ import org.w3c.dom.NodeList;
  *
  * @author Andrea Aime - GeoSolutions
  * @since 2.7.2
- * @source $URL$
  */
 public class ImageIOExt {
 

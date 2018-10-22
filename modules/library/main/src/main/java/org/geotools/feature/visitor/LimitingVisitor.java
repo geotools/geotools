@@ -25,7 +25,6 @@ import org.opengis.feature.FeatureVisitor;
  * @author Mauro Bartolomeoli (mauro.bartolomeoli at geo-solutions.it)
  * @see FeatureVisitor
  * @since 12.x
- * @source $URL$
  */
 public interface LimitingVisitor extends FeatureVisitor {
     /**

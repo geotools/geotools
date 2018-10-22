@@ -39,10 +39,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * implementations
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/util/ArcSDEUtils.java $
- * @version $Id$
  * @since 2.5.6
  */
 public final class ArcSDEUtils {

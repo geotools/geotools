@@ -25,8 +25,6 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * <p>Examples of context information include the transformations employed at different stages of
  * the rendering pileline.
- *
- * @source $URL$
  */
 class SymbolizerAssociation {
     /**

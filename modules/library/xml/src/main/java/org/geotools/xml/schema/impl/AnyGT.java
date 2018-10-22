@@ -25,7 +25,6 @@ import org.geotools.xml.schema.ElementGrouping;
  * DOCUMENT ME!
  *
  * @author dzwiers
- * @source $URL$
  */
 public class AnyGT implements Any {
     private String id = null;

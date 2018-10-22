@@ -35,7 +35,6 @@ import org.xml.sax.SAXException;
  * Provides a hook up to parse the capabilities document from inputstream.
  *
  * @author gdavis
- * @source $URL$
  */
 public class WPSGetCapabilitiesResponse extends AbstractWPSGetCapabilitiesResponse {
 

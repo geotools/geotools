@@ -39,7 +39,6 @@ import org.opengis.filter.Or;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCOrBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

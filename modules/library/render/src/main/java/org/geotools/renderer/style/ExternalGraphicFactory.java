@@ -20,11 +20,7 @@ import javax.swing.Icon;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 
-/**
- * Symbol handler for an external symbolizers.
- *
- * @source $URL$
- */
+/** Symbol handler for an external symbolizers. */
 public interface ExternalGraphicFactory {
     /**
      * Turns the specified URL into an Icon, eventually using the Feature attributes to evaluate CQL

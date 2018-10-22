@@ -18,7 +18,6 @@ package org.geotools.graph.util;
 
 import junit.framework.TestSuite;
 
-/** @source $URL$ */
 public class AllTests extends TestSuite {
     public AllTests() {
         super();

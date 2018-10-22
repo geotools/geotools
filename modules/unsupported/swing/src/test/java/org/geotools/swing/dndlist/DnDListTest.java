@@ -27,7 +27,6 @@ import org.geotools.swing.control.DnDListModel;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class DnDListTest {
 
     boolean isHeadless() {

@@ -35,7 +35,6 @@ import org.geotools.graph.structure.basic.BasicNode;
  * nodes and edges are added to the builder, it is reflected in the built graph.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BasicGraphBuilder implements GraphBuilder {
 

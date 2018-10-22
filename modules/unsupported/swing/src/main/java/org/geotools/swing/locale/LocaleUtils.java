@@ -68,7 +68,6 @@ import org.geotools.util.logging.Logging;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class LocaleUtils {

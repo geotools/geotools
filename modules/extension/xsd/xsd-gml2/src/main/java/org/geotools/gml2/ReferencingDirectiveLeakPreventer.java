@@ -35,7 +35,6 @@ import org.geotools.util.Utilities;
  * namespace) to reference it.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class ReferencingDirectiveLeakPreventer implements Adapter {
 

@@ -36,7 +36,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FeatureTypeType_NoSRSBinding extends AbstractComplexEMFBinding {
     public FeatureTypeType_NoSRSBinding(WfsFactory factory) {

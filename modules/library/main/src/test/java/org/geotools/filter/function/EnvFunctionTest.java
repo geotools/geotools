@@ -49,7 +49,6 @@ import org.opengis.filter.expression.Function;
  * @author Michael Bedward
  * @author Frank Gasdorf
  * @since 2.6
- * @source $URL$
  * @version $Id $
  */
 public class EnvFunctionTest {

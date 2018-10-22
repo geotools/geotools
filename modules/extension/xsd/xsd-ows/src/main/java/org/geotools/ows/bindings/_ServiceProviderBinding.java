@@ -52,7 +52,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class _ServiceProviderBinding extends AbstractComplexEMFBinding {
     public _ServiceProviderBinding(Ows10Factory factory) {

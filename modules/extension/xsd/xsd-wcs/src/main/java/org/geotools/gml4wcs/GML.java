@@ -10,7 +10,6 @@ import org.geotools.xml.XSD;
  * http://www.opengis.net/gml schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GML extends XSD {
 

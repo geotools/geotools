@@ -32,7 +32,6 @@ import org.geotools.styling.visitor.DuplicatingStyleVisitor;
  * <p>Also, see {@link AbstractGridFormat#BANDS} for the reader band selection parameter
  * description.
  *
- * @source $URL$
  * @version $Id$
  */
 public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor {

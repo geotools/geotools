@@ -26,10 +26,6 @@ import org.geotools.arcsde.session.ISession;
  * Qualifies a column reference in a subselect clause.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id$
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/view/SubSelectQualifier.java $
  * @since 2.3.x
  */
 class SubSelectQualifier {

@@ -24,7 +24,6 @@ import java.util.Map;
  * been merged.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

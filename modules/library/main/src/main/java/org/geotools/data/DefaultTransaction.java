@@ -31,7 +31,6 @@ import java.util.logging.Logger;
  * <p>Please see Transaction interface for an outline of what this class is all about.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class DefaultTransaction implements Transaction {
     /** The logger for the data module. */

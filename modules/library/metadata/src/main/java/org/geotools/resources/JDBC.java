@@ -27,7 +27,6 @@ import org.geotools.resources.i18n.Loggings;
 /**
  * A set of utilities methods related to JDBC (<cite>Java Database Connectivity</cite>).
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @todo This class may be removed when we will be allowed to compile for J2SE 1.6.

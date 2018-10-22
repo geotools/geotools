@@ -52,7 +52,6 @@ import org.opengis.filter.expression.PropertyName;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
     private FilterFactory factory;

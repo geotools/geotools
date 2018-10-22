@@ -30,7 +30,6 @@ import org.geotools.graph.structure.GraphVisitor;
 import org.geotools.graph.structure.Graphable;
 import org.geotools.graph.structure.Node;
 
-/** @source $URL$ */
 public class BasicGraphSerializerTest extends TestCase {
 
     private GraphBuilder m_builder;

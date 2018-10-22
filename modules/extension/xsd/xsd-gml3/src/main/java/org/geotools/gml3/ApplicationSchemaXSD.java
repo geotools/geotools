@@ -29,7 +29,6 @@ import org.geotools.xml.XSD;
  * XSD instance for an application schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class ApplicationSchemaXSD extends XSD {
     /** application schema namespace */

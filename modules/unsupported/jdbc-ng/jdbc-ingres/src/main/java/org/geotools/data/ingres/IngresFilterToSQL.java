@@ -29,7 +29,7 @@ import org.locationtech.jts.geom.LinearRing;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresFilterToSQL extends PreparedFilterToSQL {
 

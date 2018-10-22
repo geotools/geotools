@@ -56,7 +56,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Justin Deoliveira (The Open Planning Project)
  * @author Gabriel Roldan (Axios Engineering)
- * @source $URL$
  */
 public class FeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 

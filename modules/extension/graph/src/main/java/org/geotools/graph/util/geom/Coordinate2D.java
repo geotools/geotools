@@ -16,7 +16,6 @@
  */
 package org.geotools.graph.util.geom;
 
-/** @source $URL$ */
 public class Coordinate2D {
     public double x;
     public double y;

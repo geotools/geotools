@@ -1,6 +1,5 @@
 package org.geotools.filter;
 
-/** @source $URL$ */
 public class SubFilterBuilder<P> extends FilterBuilder {
     P parent;
 

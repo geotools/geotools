@@ -41,7 +41,6 @@ import java.util.Set;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface Schema extends Map<Name, AttributeType> {
 

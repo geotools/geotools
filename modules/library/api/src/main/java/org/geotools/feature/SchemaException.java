@@ -16,11 +16,7 @@
  */
 package org.geotools.feature;
 
-/**
- * Indicates client class has attempted to create an invalid schema.
- *
- * @source $URL$
- */
+/** Indicates client class has attempted to create an invalid schema. */
 public class SchemaException extends Exception {
     /** */
     private static final long serialVersionUID = 5453903672192802976L;

@@ -64,7 +64,6 @@ import org.xml.sax.SAXException;
  * be using the SLD 1.0 (or SE 1.1) xml-xsd bindings.
  *
  * @author Jody
- * @source $URL$
  */
 public class SLDTransformerTest {
     static StyleFactory2 sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);

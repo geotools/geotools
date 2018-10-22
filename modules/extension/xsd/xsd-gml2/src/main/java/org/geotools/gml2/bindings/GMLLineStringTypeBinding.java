@@ -57,7 +57,6 @@ import org.locationtech.jts.geom.LineString;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLLineStringTypeBinding extends AbstractComplexBinding {
     CoordinateSequenceFactory csFactory;

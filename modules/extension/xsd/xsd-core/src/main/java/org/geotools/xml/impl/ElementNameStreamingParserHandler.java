@@ -19,7 +19,6 @@ package org.geotools.xml.impl;
 import javax.xml.namespace.QName;
 import org.geotools.xml.Configuration;
 
-/** @source $URL$ */
 public class ElementNameStreamingParserHandler extends StreamingParserHandler {
     /** The name of elements to stream */
     QName name;

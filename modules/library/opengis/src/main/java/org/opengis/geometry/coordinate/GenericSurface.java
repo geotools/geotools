@@ -21,7 +21,6 @@ import org.opengis.geometry.DirectPosition;
  * SurfacePatch} represent sections of surface geometry, and therefore share a number of operation
  * signatures.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

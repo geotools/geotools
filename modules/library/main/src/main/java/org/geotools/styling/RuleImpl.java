@@ -35,7 +35,6 @@ import org.opengis.util.Cloneable;
  *
  * @author James Macgill
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class RuleImpl implements org.geotools.styling.Rule, Cloneable {

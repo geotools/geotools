@@ -9,7 +9,6 @@ import java.io.ObjectOutputStream;
 import org.junit.*;
 import org.opengis.feature.type.Name;
 
-/** @source $URL$ */
 public class NameImplTest {
 
     @Test

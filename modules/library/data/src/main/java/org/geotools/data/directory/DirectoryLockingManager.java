@@ -27,7 +27,6 @@ import org.geotools.data.Transaction;
  * Locking manager that will delegate its work to the locking managers of the delegate data stores
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public class DirectoryLockingManager implements LockingManager {
 

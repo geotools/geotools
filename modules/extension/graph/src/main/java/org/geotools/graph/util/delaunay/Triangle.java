@@ -27,10 +27,7 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class Triangle {
 
     Edge edge1, edge2, edge3;

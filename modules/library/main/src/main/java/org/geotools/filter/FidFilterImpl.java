@@ -43,7 +43,6 @@ import org.opengis.filter.identity.Identifier;
  * @author Rob Hranac, TOPP
  * @author Justin Deoliveira, TOPP
  *     <p>TODO: this class shoul be renamed to IdFilterImpl
- * @source $URL$
  * @version $Id$
  */
 public class FidFilterImpl extends AbstractFilter implements Id {

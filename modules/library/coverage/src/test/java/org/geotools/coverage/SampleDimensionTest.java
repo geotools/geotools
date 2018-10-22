@@ -28,7 +28,6 @@ import org.opengis.util.InternationalString;
  * {@link CategoryList} for many of its work, many {@code GridSampleDimension} tests are actually
  * {@code CategoryList} tests.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

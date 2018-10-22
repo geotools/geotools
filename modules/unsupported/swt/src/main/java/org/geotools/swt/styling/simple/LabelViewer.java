@@ -76,7 +76,6 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Jody Garnett
  * @since 1.0.0
- * @source $URL$
  */
 public class LabelViewer {
     boolean enabled;

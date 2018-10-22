@@ -27,7 +27,6 @@ import org.opengis.util.InternationalString;
  * A data type that shall be used to identify temporal position within a calendar.
  *
  * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
  */
 public class DefaultCalendarDate extends DefaultTemporalPosition implements CalendarDate {
 

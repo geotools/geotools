@@ -19,7 +19,6 @@ package org.geotools.filter.v1_1;
 import org.opengis.filter.expression.PropertyName;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class PropertyNameTypeBindingTest extends FilterTestSupport {
     public void testParse() throws Exception {
         FilterMockData.propertyName(document, document);

@@ -38,7 +38,6 @@ import org.opengis.referencing.Factory;
  * Prints a list of factory. This is used for {@link ReferencingFactoryFinder#listProviders}
  * implementation only.
  *
- * @source $URL$
  * @version $Id$
  * @author Desruisseaux
  */

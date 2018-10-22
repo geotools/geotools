@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
-/** @source $URL$ */
 public class GeometryTransformationTest {
     private static final long TIME = 2000;
 

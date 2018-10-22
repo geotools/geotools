@@ -49,7 +49,6 @@ import org.geotools.ows.ServiceException;
  *
  * @author Jody Garnett, Refractions Research
  * @author rgould
- * @source $URL$
  */
 public class WMS1_0_0 extends WMSSpecification {
     static final Map formatMimeTypes = new HashMap();

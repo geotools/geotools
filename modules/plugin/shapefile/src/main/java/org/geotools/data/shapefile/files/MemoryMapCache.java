@@ -160,7 +160,6 @@ class MemoryMapCache {
      * Cleans up the buffers before the soft reference gets deallocated
      *
      * @author Andrea Aime
-     * @source $URL$
      */
     public class BufferCleaner implements ValueCleaner {
 

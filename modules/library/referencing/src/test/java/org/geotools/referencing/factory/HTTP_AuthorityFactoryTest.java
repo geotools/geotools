@@ -31,7 +31,6 @@ import org.opengis.referencing.crs.GeographicCRS;
 /**
  * Tests the {@link HTTP_AuthorityFactory} class backed by WMS or AUTO factories.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

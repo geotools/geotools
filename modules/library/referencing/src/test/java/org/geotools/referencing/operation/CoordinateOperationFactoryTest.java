@@ -67,7 +67,6 @@ import org.opengis.referencing.operation.Transformation;
  * tests should be executed with Maven. It may occurs during an execution from the IDE however, in
  * which case the tests are disabled in order to allows normal execution of other tests.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

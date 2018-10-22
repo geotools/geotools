@@ -27,7 +27,6 @@ import org.opengis.util.InternationalString;
  * directly. Use the factory method {@link #getResources} or use static convenience methods instead.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

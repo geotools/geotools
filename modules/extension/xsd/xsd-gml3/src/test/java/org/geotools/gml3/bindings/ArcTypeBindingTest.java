@@ -20,10 +20,7 @@ import org.geotools.geometry.jts.CircularString;
 import org.geotools.gml3.GML3TestSupport;
 import org.locationtech.jts.geom.LineString;
 
-/**
- * @author Erik van de Pol
- * @source $URL$
- */
+/** @author Erik van de Pol */
 public class ArcTypeBindingTest extends GML3TestSupport {
 
     @Override

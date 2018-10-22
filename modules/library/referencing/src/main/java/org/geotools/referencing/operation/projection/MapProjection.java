@@ -80,8 +80,6 @@ import tec.uom.se.AbstractUnit;
  * Know Text) or XML (not yet implemented) are more appropriate.
  *
  * @since 2.0
- * @version $Id$
- * @source $URL$
  * @author André Gosselin
  * @author Martin Desruisseaux (PMO, IRD)
  * @author Rueben Schulz
@@ -89,7 +87,6 @@ import tec.uom.se.AbstractUnit;
  * @see <A
  *     HREF="http://atlas.gc.ca/site/english/learningresources/carto_corner/map_projections.html">Map
  *     projections on the atlas of Canada</A>
- * @tutorial http://www.geotools.org/display/GEOTOOLS/How+to+add+new+projections
  */
 public abstract class MapProjection extends AbstractMathTransform
         implements MathTransform2D, Serializable {

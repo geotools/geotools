@@ -62,7 +62,6 @@ import org.geotools.xml.Node;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class ExternalGraphicBinding extends SLDExternalGraphicBinding {
 

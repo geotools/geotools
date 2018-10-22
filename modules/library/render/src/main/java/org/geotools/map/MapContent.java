@@ -59,7 +59,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Jody Garnett
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class MapContent {

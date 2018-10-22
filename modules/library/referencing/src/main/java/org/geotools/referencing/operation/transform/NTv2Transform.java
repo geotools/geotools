@@ -57,7 +57,6 @@ import org.opengis.referencing.operation.Transformation;
  * thrown on instantiation.
  *
  * @see {@link IdentifiedObjectSet IdentifiedObjectSet exception handling}.
- * @source $URL$
  * @version $Id$
  * @author Oscar Fonts
  */

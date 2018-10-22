@@ -46,7 +46,6 @@ import org.opengis.filter.expression.Expression;
  * </code>).
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public class TTFMarkFactory implements MarkFactory {
 

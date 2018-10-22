@@ -15,7 +15,6 @@ import org.geotools.util.Converters;
  * This is a simple watermark used to place a message (such as copyright information) onto a map.
  *
  * @author Jody
- * @source $URL$
  */
 public class MessageDirectLayer extends DirectLayer {
 

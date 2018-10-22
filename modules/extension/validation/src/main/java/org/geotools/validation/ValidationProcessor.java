@@ -82,7 +82,6 @@ import org.opengis.feature.type.Name;
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class ValidationProcessor {

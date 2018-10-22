@@ -128,13 +128,9 @@ import org.opengis.referencing.operation.TransformException;
  * way math transforms are setup. Use with care.
  *
  * @since 2.1
- * @source $URL$
- * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux
  * @author Andrea Aime
- * @tutorial
- *     http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Services+for+Geotools+2.1
  */
 public final class CRS {
 

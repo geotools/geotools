@@ -33,10 +33,7 @@ import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class BoundaryTest extends TestCase {
 
     private CoordinateReferenceSystem crs;

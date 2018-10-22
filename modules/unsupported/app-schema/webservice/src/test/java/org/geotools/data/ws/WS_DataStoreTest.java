@@ -38,7 +38,7 @@ import org.junit.Test;
  *
  *
  *
- * @source $URL$
+
  *         http://gtsvn.refractions.net/trunk/modules/plugin/wfs/src/test/java/org/geotools/data
  *         /wfs/v1_1_0/WFSDataStoreTest.java $
  */

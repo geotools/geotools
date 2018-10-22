@@ -67,7 +67,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

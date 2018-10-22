@@ -21,7 +21,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.Envelope;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLBoxTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(Envelope.class, binding(GML.BoxType).getType());

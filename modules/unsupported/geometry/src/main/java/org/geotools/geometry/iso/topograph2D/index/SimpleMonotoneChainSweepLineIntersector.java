@@ -28,8 +28,6 @@ import org.geotools.geometry.iso.topograph2D.Edge;
  * conjunction with Monotone Chains. While still O(n^2) in the worst case, this algorithm
  * drastically improves the average-case time. The use of MonotoneChains as the items in the index
  * seems to offer an improvement in performance over a sweep-line alone.
- *
- * @source $URL$
  */
 public class SimpleMonotoneChainSweepLineIntersector extends EdgeSetIntersector {
 

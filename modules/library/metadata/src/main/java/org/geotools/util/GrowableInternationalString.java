@@ -39,7 +39,6 @@ import org.opengis.util.InternationalString;
  * making constructionss easier, and being suitable for use in immutable objects.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

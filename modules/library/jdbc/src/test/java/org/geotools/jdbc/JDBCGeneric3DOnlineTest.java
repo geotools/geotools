@@ -58,7 +58,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Andrea Aime - OpenGeo
  * @author Martin Davis - OpenGeo
- * @source $URL$
  */
 public abstract class JDBCGeneric3DOnlineTest extends JDBCTestSupport {
 

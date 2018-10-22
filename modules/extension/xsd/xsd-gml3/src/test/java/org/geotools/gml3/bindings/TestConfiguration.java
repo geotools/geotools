@@ -20,7 +20,6 @@ import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
-/** @source $URL$ */
 public class TestConfiguration extends Configuration {
     public TestConfiguration() {
         super(TEST.getInstance());

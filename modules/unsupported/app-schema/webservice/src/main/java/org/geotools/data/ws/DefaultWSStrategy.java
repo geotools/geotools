@@ -43,7 +43,7 @@ import net.opengis.wfs.GetFeatureType;
  *
  *
  *
- * @source $URL$
+
  *         http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main
  *         /java/org/geotools/data /ws/v1_1_0/DefaultWSStrategy.java $
  */

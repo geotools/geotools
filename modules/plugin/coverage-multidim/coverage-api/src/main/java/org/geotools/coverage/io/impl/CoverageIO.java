@@ -50,7 +50,6 @@ import org.opengis.util.ProgressListener;
  * @todo add caching mechanism
  * @todo add method for removing and creating connections to access
  * @todo fix javadocs
- * @source $URL$
  */
 public class CoverageIO {
     /** The {@link Logger}. */

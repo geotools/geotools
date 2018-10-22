@@ -50,12 +50,9 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * </blockquote>
  *
  * @since 2.3
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux
  * @see OrderedAxisAuthorityFactory
  * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
- * @tutorial http://docs.codehaus.org/display/GEOTOOLS/The+axis+order+issue
  */
 public class LongitudeFirstFactory extends DeferredAuthorityFactory
         implements CRSAuthorityFactory,

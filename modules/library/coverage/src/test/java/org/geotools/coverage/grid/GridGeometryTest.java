@@ -47,7 +47,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Test the {@link GridGeometry} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

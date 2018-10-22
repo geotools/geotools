@@ -43,7 +43,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-/** @source $URL$ */
 public class GML3EncodingOnlineTest extends TestCase {
 
     @Override

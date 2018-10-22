@@ -20,7 +20,6 @@ import org.opengis.geometry.coordinate.GenericSurface;
  * Defines a homogeneous portion of a {@linkplain Surface surface}. Each {@code SurfacePatch} shall
  * be in at most one {@linkplain Surface surface}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

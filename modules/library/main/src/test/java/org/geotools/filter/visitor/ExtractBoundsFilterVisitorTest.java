@@ -16,7 +16,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-/** @source $URL$ */
 public class ExtractBoundsFilterVisitorTest extends TemporalFilterTestSupport {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

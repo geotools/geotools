@@ -68,8 +68,6 @@ import org.opengis.util.InternationalString;
  * }
  * </pre>
  * </ol>
- *
- * @source $URL$
  */
 public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory {
     Map<String, Class<?>> classMap;

@@ -21,7 +21,6 @@ import org.geotools.styling.ColorMapEntry;
 import org.geotools.util.Converters;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class ColorMapEntryBuilder extends AbstractStyleBuilder<ColorMapEntry> {
 
     String label;

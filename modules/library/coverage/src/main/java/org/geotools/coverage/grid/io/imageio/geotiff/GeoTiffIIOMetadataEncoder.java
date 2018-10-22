@@ -36,7 +36,6 @@ import org.jdom2.Element;
  *
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.3
- * @source $URL$
  */
 public class GeoTiffIIOMetadataEncoder {
 

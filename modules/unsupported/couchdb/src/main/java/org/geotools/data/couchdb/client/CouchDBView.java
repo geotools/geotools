@@ -23,7 +23,7 @@ import org.json.simple.JSONObject;
 
 /**
  * @author Ian Schneider (OpenGeo)
- * @source $URL$
+
  */
 public class CouchDBView extends CouchDBViewSupport {
 

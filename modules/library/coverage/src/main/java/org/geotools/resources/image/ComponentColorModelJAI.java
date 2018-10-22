@@ -49,7 +49,6 @@ import javax.media.jai.iterator.RectIter;
  *
  * @todo Remove this patch when JAI will recognize J2SE 1.4 classes.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

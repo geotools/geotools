@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import org.eclipse.xsd.XSDTypeDefinition;
 
-/** @source $URL$ */
 public class TypeWalker {
     /** Cached type hieracty */
     HashMap /*<XSDTypeDefinition,List>*/ cache = new HashMap();

@@ -39,7 +39,6 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * Provides basic information about the grass raster format IO.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public final class GrassCoverageFormat extends AbstractGridFormat implements Format {
 

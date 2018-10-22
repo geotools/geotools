@@ -28,7 +28,6 @@ import org.opengis.temporal.TemporalPrimitive;
  * Boundary enclosing the dataset, expressed as the closed set of (<var>x</var>,<var>y</var>)
  * coordinates of the polygon. The last point replicates first point.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

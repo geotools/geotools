@@ -66,10 +66,7 @@ import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.temporal.BinaryTemporalOperator;
 
-/**
- * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
- */
+/** @author Niels Charlier (Curtin University of Technology) */
 public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor {
 
     private static final Logger LOGGER = Logging.getLogger(ComplexFilterSplitter.class);

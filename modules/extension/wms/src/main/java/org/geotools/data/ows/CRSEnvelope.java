@@ -46,9 +46,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </ul>
  *
  * @author Richard Gould
- * @source $URL$
- *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/extension/wms/src/main/java/org
- *     /geotools/data/ows/CRSEnvelope.java $
  */
 public class CRSEnvelope implements Envelope {
     /**

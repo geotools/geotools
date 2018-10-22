@@ -74,7 +74,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * Encode/Decode Filter types.
  *
  * @author dzwiers
- * @source $URL$
  */
 public class FilterOpsComplexTypes {
 

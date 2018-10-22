@@ -20,7 +20,6 @@ package org.geotools.gml;
  * An exception used to represent any GML related errors.
  *
  * @author Ian Turton, CCG
- * @source $URL$
  * @version $Id$
  */
 public class GMLException extends java.lang.Exception {

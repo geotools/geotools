@@ -21,7 +21,6 @@ import org.geotools.xml.Binding;
 import org.locationtech.jts.geom.MultiLineString;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLMultiLineStringPropertyTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(MultiLineString.class, binding(GML.MultiLineStringPropertyType).getType());

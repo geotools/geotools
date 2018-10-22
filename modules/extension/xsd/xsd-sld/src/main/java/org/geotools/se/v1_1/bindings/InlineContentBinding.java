@@ -71,7 +71,6 @@ import org.geotools.xml.*;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class InlineContentBinding extends AbstractComplexBinding {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.sld");

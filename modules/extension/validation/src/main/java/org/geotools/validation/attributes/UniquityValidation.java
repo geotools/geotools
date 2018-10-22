@@ -29,7 +29,6 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class UniquityValidation extends DefaultIntegrityValidation {

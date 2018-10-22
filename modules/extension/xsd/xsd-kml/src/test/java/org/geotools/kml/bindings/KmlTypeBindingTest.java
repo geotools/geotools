@@ -22,7 +22,6 @@ import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public class KmlTypeBindingTest extends KMLTestSupport {
     public void testType() throws Exception {
         assertEquals(FeatureCollection.class, binding(KML.KmlType).getType());

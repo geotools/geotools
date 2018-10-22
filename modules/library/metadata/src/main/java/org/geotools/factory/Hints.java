@@ -66,7 +66,6 @@ import org.xml.sax.EntityResolver;
  * library for their needs.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Jody Garnett
@@ -293,7 +292,6 @@ public class Hints extends RenderingHints {
      * @see org.geotools.referencing.FactoryFinder#getCRSFactory
      * @see org.geotools.referencing.factory.OrderedAxisAuthorityFactory
      * @see org.geotools.referencing.factory.epsg.LongitudeFirstFactory
-     * @tutorial http://docs.codehaus.org/display/GEOTOOLS/The+axis+order+issue
      * @since 2.3
      */
     public static final Key FORCE_LONGITUDE_FIRST_AXIS_ORDER = new Key(Boolean.class);
@@ -1408,7 +1406,6 @@ public class Hints extends RenderingHints {
      * key} is not a complete non-sense), but may impact other aspects of an application as well.
      *
      * @since 2.1
-     * @source $URL$
      * @version $Id$
      * @author Martin Desruisseaux
      */
@@ -1527,7 +1524,6 @@ public class Hints extends RenderingHints {
      * Class<T>}.
      *
      * @since 2.4
-     * @source $URL$
      * @version $Id$
      * @author Martin Desruisseaux
      */
@@ -1613,7 +1609,6 @@ public class Hints extends RenderingHints {
      * String} object.
      *
      * @since 2.4
-     * @source $URL$
      * @version $Id$
      * @author Jody Garnett
      * @author Martin Desruisseaux
@@ -1656,7 +1651,6 @@ public class Hints extends RenderingHints {
      * may be checked with {@link #getDefault()}.
      *
      * @since 2.4
-     * @source $URL$
      * @version $Id$
      * @author Jody Garnett
      */
@@ -1725,7 +1719,6 @@ public class Hints extends RenderingHints {
      * be checked with {@link #getDefault()}.
      *
      * @since 2.6
-     * @source $URL$
      * @version $Id$
      * @author Jody Garnett
      */
@@ -1794,7 +1787,6 @@ public class Hints extends RenderingHints {
      * Hints#DATUM_SHIFT_METHOD}).
      *
      * @since 2.4
-     * @source $URL$
      * @version $Id$
      * @author Jody Garnett
      */
@@ -1846,7 +1838,6 @@ public class Hints extends RenderingHints {
      * String ) should be used to put together your nam
      *
      * @since 2.4
-     * @source $URL$
      * @version $Id$
      * @author Martin Desruisseaux
      */
@@ -1871,7 +1862,6 @@ public class Hints extends RenderingHints {
      * into queries.
      *
      * @since 2.6
-     * @source $URL$
      * @version $Id$
      * @author Sampo Savolainen
      */

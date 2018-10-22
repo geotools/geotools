@@ -31,7 +31,6 @@ import org.geotools.data.Parameter;
  * A datasource factory using DBCP connection pool
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
 

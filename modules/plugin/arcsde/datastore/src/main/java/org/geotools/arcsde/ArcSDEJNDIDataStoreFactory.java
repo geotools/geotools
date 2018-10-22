@@ -61,10 +61,6 @@ import org.geotools.util.logging.Logging;
  * not, and the required jar files are on a J2EE container shared libraries folder or not.
  *
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/ArcSDEJNDIDataStoreFactory.java $
- * @version $Id$
  * @since 2.5.7
  */
 public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {

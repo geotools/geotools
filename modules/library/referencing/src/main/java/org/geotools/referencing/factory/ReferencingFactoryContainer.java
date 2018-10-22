@@ -47,7 +47,6 @@ import org.opengis.referencing.operation.*;
  * helper methods and somewhat implementation-dependent, they are not part of GeoAPI.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

@@ -48,7 +48,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCPropertyIsBetweenTypeBinding extends AbstractComplexBinding {
     private FilterFactory factory;

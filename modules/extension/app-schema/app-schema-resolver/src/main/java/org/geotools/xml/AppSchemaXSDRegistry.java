@@ -33,7 +33,6 @@ import org.eclipse.xsd.util.XSDSchemaLocator;
  * content in memory isn't cluttered with multiple versions of the same schema (with respect to .
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public final class AppSchemaXSDRegistry implements XSDSchemaLocator {
 

@@ -35,8 +35,6 @@ import org.geotools.geometry.iso.topograph2D.Envelope;
  * chain for intersection. Property 2 allows binary search to be used to find the intersection
  * points of two monotone chains. For many types of real-world data, these properties eliminate a
  * large number of segment comparisons, producing substantial speed gains.
- *
- * @source $URL$
  */
 public class MonotoneChainEdge {
 

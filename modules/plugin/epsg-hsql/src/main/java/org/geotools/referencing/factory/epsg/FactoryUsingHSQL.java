@@ -30,7 +30,6 @@ import org.geotools.factory.Hints;
  * parenthesis are required by MS-Access. We need to removes them programmatically here.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

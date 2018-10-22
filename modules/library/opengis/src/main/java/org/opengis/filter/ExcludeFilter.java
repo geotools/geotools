@@ -28,7 +28,6 @@ import java.io.Serializable;
  *
  * @author Jody Garnett (Refractions Research, Inc.)
  * @author Martin Desruisseaux (Geomatys)
- * @source $URL$
  */
 public final class ExcludeFilter implements Filter, Serializable {
     /** For cross-version compatibility. */

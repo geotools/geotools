@@ -19,7 +19,6 @@ import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
 import org.opengis.geometry.aggregate.Aggregate;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class AggregateImpl extends GeometryImpl implements Aggregate {
     private Set /*<Primitive>*/ elements;
 

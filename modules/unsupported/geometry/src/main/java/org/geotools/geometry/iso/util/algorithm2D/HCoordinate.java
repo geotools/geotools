@@ -22,8 +22,6 @@ import org.geotools.geometry.iso.topograph2D.Coordinate;
 /**
  * Represents a homogeneous coordinate in a 2-D coordinate space. In JTS {@link HCoordinate}s are
  * used as a clean way of computing intersections between line segments.
- *
- * @source $URL$
  */
 public class HCoordinate {
 

@@ -51,7 +51,6 @@ import org.opengis.feature.type.AttributeDescriptor;
  * based on descriptor name.
  *
  * @author Jody Garnett (Refractions Research)
- * @source $URL$
  */
 public class ReTypeFeatureReader
         implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {

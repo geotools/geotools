@@ -26,7 +26,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class GMLAbstractFeatureTypeBindingTest extends GMLTestSupport {
     protected Configuration createConfiguration() {
         return new TestConfiguration();

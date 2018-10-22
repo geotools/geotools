@@ -25,8 +25,6 @@ import org.opengis.feature.type.Name;
  * <p>GeoTools includes a really simple RepositoryImpl which you can use to manage DataStore in your
  * own application; or if you have your own advanced "catalog" you can make your own implementation.
  * </ul>
- *
- * @source $URL$
  */
 public interface Repository {
     /**

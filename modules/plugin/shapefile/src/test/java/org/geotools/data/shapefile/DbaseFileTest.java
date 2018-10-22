@@ -37,7 +37,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  * @author James Macgill

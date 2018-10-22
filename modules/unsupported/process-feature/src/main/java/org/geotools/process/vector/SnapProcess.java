@@ -59,7 +59,6 @@ import systems.uom.common.USCustomary;
     description =
             "Returns the feature in a feature collection nearest to a given point.  Attributes for distance and bearing are added."
 )
-/** @source $URL$ */
 public class SnapProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(SnapProcess.class);
 

@@ -35,7 +35,6 @@ import org.opengis.filter.capability.FunctionName;
  * Calculate the Jenks' Natural Breaks classification for a featurecollection
  *
  * @author Ian Turton
- * @source $URL$
  */
 public class JenksNaturalBreaksFunction extends ClassificationFunction {
     org.opengis.util.ProgressListener progress;

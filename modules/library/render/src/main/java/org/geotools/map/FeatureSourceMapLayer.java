@@ -32,7 +32,6 @@ import org.opengis.feature.type.FeatureType;
  * <p>
  *
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
- * @source $URL$
  * @deprecated Please use MapLayer directly; or you are just interested in rendering a subclass of
  *     Layer
  */

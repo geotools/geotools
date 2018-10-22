@@ -28,7 +28,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * <p>We are making this an interface so that applications can implement their own icons as needed.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public interface GlyphFactory {
 

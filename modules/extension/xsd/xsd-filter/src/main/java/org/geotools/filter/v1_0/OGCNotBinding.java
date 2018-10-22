@@ -44,7 +44,6 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCNotBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

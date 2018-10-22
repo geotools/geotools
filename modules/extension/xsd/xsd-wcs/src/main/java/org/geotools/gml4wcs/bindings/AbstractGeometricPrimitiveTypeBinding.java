@@ -24,7 +24,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class AbstractGeometricPrimitiveTypeBinding extends AbstractComplexBinding {
 

@@ -19,7 +19,6 @@ import org.opengis.filter.expression.Function;
  * ExternalGraphic, the color specified in the OriginalColor sub-element, by another color as a
  * result of a recode function as defined in {@link Interpolate} .
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

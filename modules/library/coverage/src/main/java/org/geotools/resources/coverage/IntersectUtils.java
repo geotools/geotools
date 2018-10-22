@@ -30,7 +30,6 @@ import org.locationtech.jts.geom.Polygon;
  * Performs some naive intersections on GeometryCollections, because JTS is not supporting them.
  *
  * @author Emanuele Tajariol (GeoSolutions)
- * @source $URL$
  */
 public class IntersectUtils {
 

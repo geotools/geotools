@@ -35,7 +35,6 @@ import org.opengis.referencing.operation.Matrix;
 /**
  * The translation to apply for different values of {@link PixelOrientation}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.5

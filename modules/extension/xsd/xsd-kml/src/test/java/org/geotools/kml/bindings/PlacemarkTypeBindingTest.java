@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class PlacemarkTypeBindingTest extends KMLTestSupport {
 
     public void testType() throws Exception {

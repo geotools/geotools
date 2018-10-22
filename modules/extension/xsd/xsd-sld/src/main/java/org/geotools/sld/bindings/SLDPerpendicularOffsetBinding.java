@@ -39,7 +39,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDPerpendicularOffsetBinding extends AbstractComplexBinding {
     /** @generated */

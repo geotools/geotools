@@ -54,7 +54,6 @@ import org.w3c.dom.NodeList;
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
  * @author David Zwiers
- * @source $URL$
  */
 public class XMLEncoderTest extends TestCase {
 

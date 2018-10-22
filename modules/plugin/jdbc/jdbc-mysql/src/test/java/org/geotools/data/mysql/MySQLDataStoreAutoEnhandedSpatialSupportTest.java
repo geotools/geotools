@@ -24,7 +24,6 @@ import org.geotools.jdbc.JDBCTestSupport;
  * MySQL version.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class MySQLDataStoreAutoEnhandedSpatialSupportTest extends JDBCTestSupport {
     protected JDBCTestSetup createTestSetup() {

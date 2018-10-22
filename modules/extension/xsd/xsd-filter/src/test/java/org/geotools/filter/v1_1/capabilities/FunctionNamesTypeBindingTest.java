@@ -39,7 +39,6 @@ import org.w3c.dom.Document;
  *   </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FunctionNamesTypeBindingTest extends OGCTestSupport {
     public void testType() {

@@ -74,7 +74,7 @@ import org.geotools.wps.WPS;
  *
  *
  *
- * @source $URL$
+ *
  */
 public class WebProcessingService extends AbstractWPS<WPSCapabilitiesType, Object> {
 

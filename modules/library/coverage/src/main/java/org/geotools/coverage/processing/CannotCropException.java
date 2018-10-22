@@ -20,7 +20,6 @@ package org.geotools.coverage.processing;
  * Throws when a "crop" operation has been requested but the specified grid coverage can't be
  * scaled.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  * @since 2.3

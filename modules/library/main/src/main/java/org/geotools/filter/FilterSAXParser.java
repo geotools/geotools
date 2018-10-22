@@ -42,7 +42,6 @@ import org.xml.sax.Attributes;
  *
  * @author Rob Hranac, Vision for New York<br>
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @version $Id$
  */
 public class FilterSAXParser {
@@ -333,7 +332,7 @@ public class FilterSAXParser {
     }
 
     /**
-     * Sets the state that shall be expected next based on the fitlerType. So if a between, null or
+     * Sets the state that shall be expected next based on the filterType. So if a between, null or
      * like is the currentFilter then attribute should be next, if an fid filter then fid should be
      * next. If it's a comparison, geometry or not, then leftValue should be next.
      *

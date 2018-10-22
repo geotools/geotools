@@ -46,7 +46,6 @@ import org.opengis.referencing.operation.MathTransform;
  * great cache for a JDBCDataStore, a temporary copy of an original file may work for shapefile etc.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class DefaultFeatureResults extends DataFeatureCollection {
     /** Shared package logger */

@@ -24,7 +24,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.VolatileFunction;
 
-/** @source $URL$ */
 public class FilterFunction_random extends FunctionExpressionImpl implements VolatileFunction {
 
     public static FunctionName NAME = new FunctionNameImpl("random", Double.class);

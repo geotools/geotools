@@ -73,7 +73,6 @@ import org.opengis.geometry.BoundingBox;
  *
  * @author Jesse Eichar, Refractions Research
  * @author Niels Charlier
- * @source $URL$
  */
 public abstract class AbstractIntegrationTest {
 

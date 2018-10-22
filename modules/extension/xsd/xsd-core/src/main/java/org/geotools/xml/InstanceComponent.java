@@ -19,7 +19,6 @@ package org.geotools.xml;
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDTypeDefinition;
 
-/** @source $URL$ */
 public interface InstanceComponent {
     /** @return The object containing the type definiton of the instance. */
     XSDTypeDefinition getTypeDefinition();

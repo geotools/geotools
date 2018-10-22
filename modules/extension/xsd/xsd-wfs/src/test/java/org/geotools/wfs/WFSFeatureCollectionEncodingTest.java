@@ -30,7 +30,6 @@ import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class WFSFeatureCollectionEncodingTest extends TestCase {
 
     FeatureCollectionType fc;

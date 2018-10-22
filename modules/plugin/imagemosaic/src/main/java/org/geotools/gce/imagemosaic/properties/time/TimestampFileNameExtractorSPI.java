@@ -29,7 +29,6 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
 
-/** @source $URL$ */
 public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
 
     public static final String REGEX = "regex";

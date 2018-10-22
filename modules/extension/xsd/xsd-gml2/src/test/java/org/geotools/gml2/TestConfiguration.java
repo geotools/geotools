@@ -19,7 +19,6 @@ package org.geotools.gml2;
 import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
-/** @source $URL$ */
 public class TestConfiguration extends Configuration {
     public TestConfiguration() {
         super(TEST.getInstance());

@@ -38,7 +38,6 @@ import org.opengis.filter.spatial.Contains;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCContainsBinding extends AbstractComplexBinding {
     FilterFactory2 filterFactory;

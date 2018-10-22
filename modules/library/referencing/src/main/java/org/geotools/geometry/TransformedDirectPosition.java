@@ -89,7 +89,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @since 2.2
  * @author Martin Desruisseaux (IRD)
- * @source $URL$
  * @version $Id$
  */
 public class TransformedDirectPosition extends GeneralDirectPosition {

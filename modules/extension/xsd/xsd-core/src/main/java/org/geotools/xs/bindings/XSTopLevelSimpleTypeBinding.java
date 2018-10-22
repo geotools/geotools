@@ -52,7 +52,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSTopLevelSimpleTypeBinding extends AbstractComplexBinding {
     /** @generated */

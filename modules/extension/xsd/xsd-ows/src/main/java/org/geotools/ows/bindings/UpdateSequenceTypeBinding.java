@@ -39,7 +39,6 @@ import org.geotools.xml.*;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class UpdateSequenceTypeBinding extends AbstractSimpleBinding {
     public UpdateSequenceTypeBinding(Ows10Factory factory) {}

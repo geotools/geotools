@@ -22,7 +22,6 @@ import java.util.logging.Logger;
  * Creates the appropriate SubHandler element for a given OGC simple geometry type.
  *
  * @author Rob Hranac, Vision for New York
- * @source $URL$
  * @version $Id$
  */
 public class SubHandlerFactory {

@@ -50,7 +50,6 @@ import org.opengis.parameter.ParameterDescriptor;
  * wld may be used in place of the format specific extension (jpg+wld, etc) Designed to be used with
  * GridCoverageExchange.
  *
- * @source $URL$
  * @author Simone Giannecchini
  */
 public final class WorldImageFormat extends AbstractGridFormat implements Format {

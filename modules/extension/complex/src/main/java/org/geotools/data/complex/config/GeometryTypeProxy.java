@@ -25,7 +25,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * @author Gabriel Roldan
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 class GeometryTypeProxy extends AttributeTypeProxy implements GeometryType {

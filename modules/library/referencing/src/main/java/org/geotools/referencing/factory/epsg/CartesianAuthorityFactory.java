@@ -44,7 +44,6 @@ import org.opengis.util.InternationalString;
  * A factory providing a EPSG code for a cartesian engineering systems
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class CartesianAuthorityFactory extends DirectAuthorityFactory
         implements CRSAuthorityFactory {

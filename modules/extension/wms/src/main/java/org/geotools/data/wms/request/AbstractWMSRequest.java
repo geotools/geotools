@@ -20,7 +20,6 @@ import java.net.URL;
 import java.util.Properties;
 import org.geotools.data.ows.AbstractRequest;
 
-/** @source $URL$ */
 public abstract class AbstractWMSRequest extends AbstractRequest {
     public AbstractWMSRequest(URL onlineResource, Properties properties) {
         super(onlineResource, properties);

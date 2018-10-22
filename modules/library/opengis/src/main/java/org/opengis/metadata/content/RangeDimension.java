@@ -19,7 +19,6 @@ import org.opengis.util.MemberName;
 /**
  * Information on the range of each dimension of a cell measurement value.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @author Cory Horner (Refractions Research)

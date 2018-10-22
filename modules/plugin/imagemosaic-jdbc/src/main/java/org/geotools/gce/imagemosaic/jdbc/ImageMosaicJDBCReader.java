@@ -69,7 +69,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author mcr
  * @since 2.5
- * @source $URL$
  */
 public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
     private static final Logger LOGGER =

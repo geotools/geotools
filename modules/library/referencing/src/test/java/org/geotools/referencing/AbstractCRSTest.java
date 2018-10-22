@@ -49,7 +49,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests if the CRS utility class is functioning correctly when using HSQL datastore.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

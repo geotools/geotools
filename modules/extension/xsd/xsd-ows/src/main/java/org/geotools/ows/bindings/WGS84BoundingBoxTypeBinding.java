@@ -67,7 +67,6 @@ import org.geotools.ows.OWS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class WGS84BoundingBoxTypeBinding extends BoundingBoxTypeBinding {
 

@@ -52,7 +52,6 @@ import org.locationtech.jts.geom.Polygon;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class PolygonTypeBinding extends AbstractComplexBinding {
     GeometryFactory gFactory;

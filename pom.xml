@@ -810,8 +810,12 @@
         <artifactId>jt-zonalstats</artifactId>
         <version>${jt.version}</version>
       </dependency>
-
-       
+			<!-- JAXB -->
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.3.0</version>
+      </dependency> 
       <!-- Mathematic, geometries, SVG... -->
       <dependency>
         <groupId>org.ejml</groupId>

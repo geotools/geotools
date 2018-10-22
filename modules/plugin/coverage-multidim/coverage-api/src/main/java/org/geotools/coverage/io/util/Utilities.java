@@ -47,6 +47,7 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -90,8 +91,6 @@ import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import si.uom.SI;
-import sun.awt.OSInfo;
-import sun.awt.OSInfo.OSType;
 import tec.uom.se.AbstractUnit;
 import tec.uom.se.format.SimpleUnitFormat;
 
@@ -100,8 +99,6 @@ public class Utilities {
 
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(Utilities.class.toString());
-
-    private static final OSType OSTYPE = OSInfo.getOSType();
 
     /**
      * TODO: Define a contains method which allows to know if the extent of a CoverageSlice contains
@@ -170,7 +167,7 @@ public class Utilities {
         final String path = fileCheck.getAbsolutePath();
         final int imageSpecifierIndex = path.lastIndexOf(":");
         final File file;
-        if (OSTYPE.equals(OSType.WINDOWS)) {
+        if (SystemUtils.IS_OS_WINDOWS) {
             if (imageSpecifierIndex > 1 && imageSpecifierIndex > path.indexOf(":")) {
                 file = new File(path.substring(0, imageSpecifierIndex));
             } else {

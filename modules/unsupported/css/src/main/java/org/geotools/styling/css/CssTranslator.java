@@ -92,7 +92,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Style;
-import org.w3c.dom.css.CSSRule;
 
 /**
  * Transforms a GeoCSS into an equivalent GeoTools {@link Style} object
@@ -892,7 +891,7 @@ public class CssTranslator {
     }
 
     /**
-     * Turns an SLD compatible {@link CSSRule} into a {@link Rule}, appending it to the {@link
+     * Turns an SLD compatible {@link CssRule} into a {@link Rule}, appending it to the {@link
      * FeatureTypeStyleBuilder}
      *
      * @param cssRule
@@ -1374,7 +1373,6 @@ public class CssTranslator {
      *
      * @param ceb
      * @param constrastEnhancements
-     * @param constrastAlgorithms
      * @param constrastParameters
      * @param gammas
      * @param i
@@ -1669,7 +1667,7 @@ public class CssTranslator {
      * Returns true if the value is a {@link Literal}, or a {@link MultiValue} made of {@link
      * Literal}
      *
-     * @param dasharrayValue
+     * @param value
      * @return
      */
     private boolean isLiterals(Value value) {

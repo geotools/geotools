@@ -100,7 +100,8 @@
     <dependency>
 	  <groupId>javax.xml.bind</groupId>
 	  <artifactId>jaxb-api</artifactId>
-	  <version>2.2.11</version>
+    <!-- version is provided by parent pom -->
+	  <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.locationtech.jts</groupId>

@@ -30,7 +30,7 @@ public class CommonsConverterFactoryTest extends TestCase {
 
     protected void setUp() throws Exception {
         factory = new CommonsConverterFactory();
-        //Some locales are not compatible with the date formats tested below
+        // Some locales are not compatible with the date formats tested below
         Locale.setDefault(new Locale("en", "US"));
     }
 

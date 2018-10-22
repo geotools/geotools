@@ -22,10 +22,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,6 +68,7 @@ public class FilterToSQLTest extends TestCase {
 
     public void setUp() throws Exception {
         Level debugLevel = Level.FINE;
+        Locale.setDefault(new Locale("en", "US"));
         Logger log = LOGGER;
         while (log != null) {
             log.setLevel(debugLevel);

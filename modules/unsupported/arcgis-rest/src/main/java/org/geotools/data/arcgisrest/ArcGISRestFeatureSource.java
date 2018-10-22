@@ -86,8 +86,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     static {
         EsriJTSMapping.put("esriGeometryPoint", org.locationtech.jts.geom.Point.class);
         EsriJTSMapping.put("esriGeometryMultipoint", org.locationtech.jts.geom.MultiPoint.class);
-        EsriJTSMapping.put(
-                "esriGeometryPolyline", org.locationtech.jts.geom.MultiLineString.class);
+        EsriJTSMapping.put("esriGeometryPolyline", org.locationtech.jts.geom.MultiLineString.class);
         EsriJTSMapping.put("esriGeometryPolygon", org.locationtech.jts.geom.MultiPolygon.class);
     }
 

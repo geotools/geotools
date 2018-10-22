@@ -391,7 +391,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                 }
             }
         } catch (Exception e) {
-           java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // Shutdowsn the executor thread pool

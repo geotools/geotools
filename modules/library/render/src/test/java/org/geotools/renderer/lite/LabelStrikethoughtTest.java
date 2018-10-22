@@ -63,6 +63,6 @@ public class LabelStrikethoughtTest extends AbstractLabelLineTest {
         File reference =
                 new File(
                         "./src/test/resources/org/geotools/renderer/lite/test-data/strikethroughDisabledStyle.sld.png");
-        ImageAssert.assertEquals(reference, image, 4200);
+        ImageAssert.assertEquals(reference, image, 4500);
     }
 }

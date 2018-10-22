@@ -15,13 +15,14 @@ package org.opengis.filter.capability;
  * <p>
  *
  * <pre>
- * &lt;xsd:complexType name="ArithmeticOperatorsType">
- *     &lt;xsd:choice maxOccurs="unbounded">
- *        &lt;xsd:element ref="ogc:SimpleArithmetic"/>
- *        &lt;xsd:element name="Functions" type="ogc:FunctionsType"/>
- *     &lt;/xsd:choice>
- *  &lt;/xsd:complexType>
+ * &lt;xsd:complexType name="ArithmeticOperatorsType"&gt;
+ *     &lt;xsd:choice maxOccurs="unbounded"&gt;
+ *        &lt;xsd:element ref="ogc:SimpleArithmetic"/&gt;
+ *        &lt;xsd:element name="Functions" type="ogc:FunctionsType"/&gt;
+ *     &lt;/xsd:choice&gt;
+ *  &lt;/xsd:complexType&gt;
  * </pre>
+ * </p>
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
@@ -33,7 +34,7 @@ public interface ArithmeticOperators {
      * <p>
      *
      * <pre>
-     * &lt;xsd:element ref="ogc:SimpleArithmetic"/>
+     * &lt;xsd:element ref="ogc:SimpleArithmetic"/&gt;
      * </pre>
      */
     boolean hasSimpleArithmetic();
@@ -44,7 +45,7 @@ public interface ArithmeticOperators {
      * <p>
      *
      * <pre>
-     * &lt;xsd:element name="Functions" type="ogc:FunctionsType"/>
+     * &lt;xsd:element name="Functions" type="ogc:FunctionsType"/&gt;
      * </pre>
      */
     Functions getFunctions();

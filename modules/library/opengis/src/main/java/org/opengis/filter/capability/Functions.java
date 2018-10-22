@@ -17,12 +17,13 @@ import java.util.Collection;
  * <p>
  *
  * <pre>
- *  &lt;xsd:complexType name="FunctionsType">
- *    &lt;xsd:sequence>
- *       &lt;xsd:element name="FunctionNames" type="ogc:FunctionNamesType"/>
- *    &lt;/xsd:sequence>
- *  &lt;/xsd:complexType>
+ *  &lt;xsd:complexType name="FunctionsType"&gt;
+ *    &lt;xsd:sequence&gt;
+ *       &lt;xsd:element name="FunctionNames" type="ogc:FunctionNamesType"/&gt;
+ *    &lt;/xsd:sequence&gt;
+ *  &lt;/xsd:complexType&gt;
  * </pre>
+ * </p>
  *
  * @author Justin Deoliveira, The Open Planning Project
  */
@@ -34,7 +35,7 @@ public interface Functions {
      * <p>
      *
      * <pre>
-     * &lt;xsd:element name="FunctionNames" type="ogc:FunctionNamesType"/>
+     * &lt;xsd:element name="FunctionNames" type="ogc:FunctionNamesType"/&gt;
      * </pre>
      */
     Collection<FunctionName> getFunctionNames();

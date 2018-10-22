@@ -19,9 +19,9 @@ import java.io.Serializable;
  * <p>
  *
  * <ul>
- *   <li>EXCLUDE or Filter ==> Filter
- *   <li>EXCLUDE and Filter ==> EXCLUDE
- *   <li>EXCLUDE ==> INCLUDE
+ *   <li>EXCLUDE or Filter ==&gt; Filter
+ *   <li>EXCLUDE and Filter ==&gt; EXCLUDE
+ *   <li>EXCLUDE ==&gt; INCLUDE
  * </ul>
  *
  * <p>The above does imply that the AND opperator can short circuit on encountering ALL.

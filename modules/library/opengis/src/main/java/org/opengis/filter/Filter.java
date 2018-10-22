@@ -17,7 +17,7 @@ import org.opengis.filter.expression.Function;
 /**
  * Defines a constraint that can be checked against an instance of an object (Usually a Feature).
  *
- * <p?
+ * <p>
  * This is an abstract super type of the Filters defined by the Filter specification; you are not
  * free to define your own filters. For extensibility please explore the definition of
  * your own {@link Function}.

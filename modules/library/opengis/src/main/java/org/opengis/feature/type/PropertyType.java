@@ -79,13 +79,13 @@ import org.opengis.util.InternationalString;
  * schema. Consider the following xml schema:
  *
  * <pre>
- *    &lt; simpleType name="number"/>
+ *    &lt; simpleType name="number"/&gt;
  *
- *    &lt; simpleType name="integer"/>
+ *    &lt; simpleType name="integer"/&gt;
  *
- *    &lt; complexType name="myComplexType"/>
- *      &lt;element name="foo" type="integer"/>
- *    &lt;/complexType>
+ *    &lt; complexType name="myComplexType"/&gt;
+ *      &lt;element name="foo" type="integer"/&gt;
+ *    &lt;/complexType&gt;
  *  </pre>
  *
  * <br>

@@ -48,6 +48,8 @@ public interface AttributeDescriptor extends PropertyDescriptor {
      *
      * <p>This value may be <code>null</code>. If it is non-null it should be an instance of of the
      * class specified by <code>getType().getBinding()</code>.
+     *
+     * @return TODO
      */
     Object getDefaultValue();
 }

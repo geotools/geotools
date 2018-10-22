@@ -53,7 +53,8 @@ public interface FeatureTypeFactory {
      * @param minOccurs The minimum number of occurences of the described attribute.
      * @param maxOccurs The maximum number of occurences of the described attribute.
      * @param isNillable Flag indicating if the described attribute may have a null value.
-     * @param defaulValue The default value of the described attribute.
+     * @param defaultValue The default value of the described attribute.
+     * @return TODO
      */
     AttributeDescriptor createAttributeDescriptor(
             AttributeType type,
@@ -71,7 +72,8 @@ public interface FeatureTypeFactory {
      * @param minOccurs The minimum number of occurences of the described attribute.
      * @param maxOccurs The maximum number of occurences of the described attribute.
      * @param isNillable Flag indicating if the described attribute may have a null value.
-     * @param defaulValue The default value of the described attribute.
+     * @param defaultValue The default value of the described attribute.
+     * @return TODO
      */
     GeometryDescriptor createGeometryDescriptor(
             GeometryType type,
@@ -90,6 +92,7 @@ public interface FeatureTypeFactory {
      * @param restrictions Set of restrictions on the association.
      * @param superType Parent type.
      * @param description A description of the type..
+     * @return TODO
      */
     AssociationType createAssociationType(
             Name name,
@@ -109,6 +112,7 @@ public interface FeatureTypeFactory {
      * @param restrictions Set of restrictions on the attribute.
      * @param superType Parent type.
      * @param description A description of the type.
+     * @return TODO
      */
     AttributeType createAttributeType(
             Name name,
@@ -130,6 +134,7 @@ public interface FeatureTypeFactory {
      * @param restrictions Set of restrictions on the attribute.
      * @param superType Parent type.
      * @param description A description of the type.
+     * @return TODO
      */
     GeometryType createGeometryType(
             Name name,
@@ -151,6 +156,7 @@ public interface FeatureTypeFactory {
      * @param restrictions Set of restrictions on the attribute.
      * @param superType Parent type.
      * @param description A description of the type.
+     * @return TODO
      */
     ComplexType createComplexType(
             Name name,
@@ -170,6 +176,7 @@ public interface FeatureTypeFactory {
      * @param restrictions Set of restrictions on the attribute.
      * @param superType Parent type.
      * @param description A description of the type.
+     * @return TODO
      */
     FeatureType createFeatureType(
             Name name,
@@ -189,6 +196,7 @@ public interface FeatureTypeFactory {
      * @param restrictions Set of restrictions on the attribute.
      * @param superType Parent type.
      * @param description A description of the type.
+     * @return TODO
      */
     SimpleFeatureType createSimpleFeatureType(
             Name name,

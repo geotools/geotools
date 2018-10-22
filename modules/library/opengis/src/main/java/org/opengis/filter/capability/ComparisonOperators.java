@@ -17,11 +17,11 @@ import java.util.Collection;
  * <p>
  *
  * <pre>
- * &lt;xsd:complexType name="ComparisonOperatorsType">
- *     &lt;xsd:sequence maxOccurs="unbounded">
- *        &lt;xsd:element name="ComparisonOperator" type="ogc:ComparisonOperatorType"/>
- *     &lt;/xsd:sequence>
- *  &lt;/xsd:complexType>
+ * &lt;xsd:complexType name="ComparisonOperatorsType"&gt;
+ *     &lt;xsd:sequence maxOccurs="unbounded"&gt;
+ *        &lt;xsd:element name="ComparisonOperator" type="ogc:ComparisonOperatorType"/&gt;
+ *     &lt;/xsd:sequence&gt;
+ *  &lt;/xsd:complexType&gt;
  * </pre>
  *
  * @author Justin Deoliveira, The Open Planning Project
@@ -34,7 +34,7 @@ public interface ComparisonOperators {
      * <p>
      *
      * <pre>
-     *  &lt;xsd:element name="ComparisonOperator" type="ogc:ComparisonOperatorType"/>
+     *  &lt;xsd:element name="ComparisonOperator" type="ogc:ComparisonOperatorType"/&gt;
      *  </pre>
      */
     Collection<Operator> getOperators();

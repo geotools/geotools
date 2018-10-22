@@ -17,18 +17,18 @@ import org.opengis.filter.expression.Expression;
 /**
  * Filter operator that checks if an expression's value is nil.
  *
- * <p>From the specification: <i>
+ * <p>From the specification:
  *
  * <pre>
  * The PropertyIsNil operator tests the content of the specified property and evaluates if it is nil.
  * The operator can also evaluate the nil reason using the nilReason parameter. The implied operator
  * for evaluating the nil reason is "equals".
  * </pre>
- *
- * </i>
+ * </p>
+ * 
+ * <p>See http://portal.opengeospatial.org/files/?artifact_id=39968</p>
  *
  * @author Justin Deoliveira, OpenGeo
- * @see http://portal.opengeospatial.org/files/?artifact_id=39968
  * @since GeoAPI 2.0
  */
 @XmlElement("PropertyIsNil")

@@ -17,14 +17,13 @@ import java.io.Serializable;
  * used in data structuring definition.
  *
  * <p>
- *
  * <ul>
- *   <li>INCLUDE or Filter ==> INCLUDE
- *   <li>INCLUDE and Filter ==> Filter
- *   <li>not INCLUDE ==> EXCLUDE
+ *   <li>INCLUDE or Filter ==&gt; INCLUDE</li>
+ *   <li>INCLUDE and Filter ==&gt; Filter</li>
+ *   <li>not INCLUDE ==&gt; EXCLUDE</li>
  * </ul>
- *
- * <p>The above does imply that the OR opperator can short circuit on encountering NONE.
+ * </p>
+ * <p>The above does imply that the OR opperator can short circuit on encountering NONE.</p>
  *
  * @author Jody Garnett (Refractions Research, Inc.)
  * @author Martin Desruisseaux (Geomatys)

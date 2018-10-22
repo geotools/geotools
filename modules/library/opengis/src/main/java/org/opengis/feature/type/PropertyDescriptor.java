@@ -31,11 +31,11 @@ import org.opengis.feature.ComplexAttribute;
  * following xml schema definition:
  *
  * <pre>
- *   &lt;complexType name="someComplexType">
- *     &lt;sequence>
- *       &lt;element name="foo" minOccurs="2" maxOccurs="4" type="xs:string" nillable="false"/>
- *     &lt;sequence>
- *   &lt;complexType>
+ *   &lt;complexType name="someComplexType"&gt;
+ *     &lt;sequence&gt;
+ *       &lt;element name="foo" minOccurs="2" maxOccurs="4" type="xs:string" nillable="false"/&gt;
+ *     &lt;sequence&gt;
+ *   &lt;complexType&gt;
  * </pre>
  *
  * <br>
@@ -66,8 +66,8 @@ import org.opengis.feature.ComplexAttribute;
  *  Collection properties = complexAttribute.getProperties( "foo" );
  *
  *  //make assertions about properties
- *  properties.size() >= 2;  //minOccurs = 2
- *  properties.size() <= 4; //maxOccurs = 4
+ *  properties.size() &gt;= 2;  //minOccurs = 2
+ *  properties.size() &lt;= 4; //maxOccurs = 4
  *
  *  for ( Property p : properties ) {
  *      p.getDescriptor() == descriptor
@@ -78,7 +78,7 @@ import org.opengis.feature.ComplexAttribute;
  *  }
  * </pre>
  *
- * <p>
+ * </p>
  *
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
@@ -99,6 +99,8 @@ public interface PropertyDescriptor {
      * <p>This value may be <code>null</code> in some instances. Also note that this is not the same
      * name as <code>getType().getName()</code>. The former is the name of the instance, the latter
      * is the name of the type of the instance.
+     * 
+     * @return TODO
      */
     Name getName();
 
@@ -107,7 +109,7 @@ public interface PropertyDescriptor {
      *
      * <p>This value is always an integer greater than or equal to zero.
      *
-     * @return An integer >= 0
+     * @return An integer &gt;= 0
      */
     int getMinOccurs();
 
@@ -117,7 +119,7 @@ public interface PropertyDescriptor {
      * <p>This value is a positive integer. A value of <code>-1</code> means that the max number of
      * occurrences is unbounded.
      *
-     * @return An integer >= 0, or -1.
+     * @return An integer &gt;= 0, or -1.
      */
     int getMaxOccurs();
 

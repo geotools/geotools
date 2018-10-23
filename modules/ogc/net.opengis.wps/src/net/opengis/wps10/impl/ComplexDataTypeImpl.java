@@ -26,284 +26,284 @@ import org.eclipse.emf.ecore.xml.type.impl.AnyTypeImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.impl.ComplexDataTypeImpl#getEncoding <em>Encoding</em>}</li>
  *   <li>{@link net.opengis.wps10.impl.ComplexDataTypeImpl#getMimeType <em>Mime Type</em>}</li>
  *   <li>{@link net.opengis.wps10.impl.ComplexDataTypeImpl#getSchema <em>Schema</em>}</li>
  *   <li>{@link net.opengis.wps10.impl.ComplexDataTypeImpl#getData <em>Data</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ComplexDataTypeImpl extends AnyTypeImpl implements ComplexDataType {
     /**
-     * The default value of the '{@link #getEncoding() <em>Encoding</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getEncoding() <em>Encoding</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getEncoding()
-     * @generated
-     * @ordered
-     */
+   * @see #getEncoding()
+   * @generated
+   * @ordered
+   */
     protected static final String ENCODING_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getEncoding() <em>Encoding</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getEncoding() <em>Encoding</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getEncoding()
-     * @generated
-     * @ordered
-     */
+   * @see #getEncoding()
+   * @generated
+   * @ordered
+   */
     protected String encoding = ENCODING_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getMimeType() <em>Mime Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getMimeType() <em>Mime Type</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getMimeType()
-     * @generated
-     * @ordered
-     */
+   * @see #getMimeType()
+   * @generated
+   * @ordered
+   */
     protected static final String MIME_TYPE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getMimeType() <em>Mime Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getMimeType() <em>Mime Type</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getMimeType()
-     * @generated
-     * @ordered
-     */
+   * @see #getMimeType()
+   * @generated
+   * @ordered
+   */
     protected String mimeType = MIME_TYPE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getSchema() <em>Schema</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getSchema() <em>Schema</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getSchema()
-     * @generated
-     * @ordered
-     */
+   * @see #getSchema()
+   * @generated
+   * @ordered
+   */
     protected static final String SCHEMA_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getSchema() <em>Schema</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getSchema() <em>Schema</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getSchema()
-     * @generated
-     * @ordered
-     */
+   * @see #getSchema()
+   * @generated
+   * @ordered
+   */
     protected String schema = SCHEMA_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getData() <em>Data</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getData() <em>Data</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getData()
-     * @generated
-     * @ordered
-     */
+   * @see #getData()
+   * @generated
+   * @ordered
+   */
     protected EList data;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ComplexDataTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected EClass eStaticClass() {
-        return Wps10Package.Literals.COMPLEX_DATA_TYPE;
-    }
+    return Wps10Package.Literals.COMPLEX_DATA_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getEncoding() {
-        return encoding;
-    }
+    return encoding;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setEncoding(String newEncoding) {
-        String oldEncoding = encoding;
-        encoding = newEncoding;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_TYPE__ENCODING, oldEncoding, encoding));
-    }
+    String oldEncoding = encoding;
+    encoding = newEncoding;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_TYPE__ENCODING, oldEncoding, encoding));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getMimeType() {
-        return mimeType;
-    }
+    return mimeType;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setMimeType(String newMimeType) {
-        String oldMimeType = mimeType;
-        mimeType = newMimeType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE, oldMimeType, mimeType));
-    }
+    String oldMimeType = mimeType;
+    mimeType = newMimeType;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE, oldMimeType, mimeType));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getSchema() {
-        return schema;
-    }
+    return schema;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setSchema(String newSchema) {
-        String oldSchema = schema;
-        schema = newSchema;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_TYPE__SCHEMA, oldSchema, schema));
-    }
+    String oldSchema = schema;
+    schema = newSchema;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wps10Package.COMPLEX_DATA_TYPE__SCHEMA, oldSchema, schema));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList getData() {
-        if (data == null) {
-            data = new EDataTypeUniqueEList(Object.class, this, Wps10Package.COMPLEX_DATA_TYPE__DATA);
-        }
-        return data;
+    if (data == null) {
+      data = new EDataTypeUniqueEList(Object.class, this, Wps10Package.COMPLEX_DATA_TYPE__DATA);
     }
+    return data;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
-                return getEncoding();
-            case Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE:
-                return getMimeType();
-            case Wps10Package.COMPLEX_DATA_TYPE__SCHEMA:
-                return getSchema();
-            case Wps10Package.COMPLEX_DATA_TYPE__DATA:
-                return getData();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
+        return getEncoding();
+      case Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE:
+        return getMimeType();
+      case Wps10Package.COMPLEX_DATA_TYPE__SCHEMA:
+        return getSchema();
+      case Wps10Package.COMPLEX_DATA_TYPE__DATA:
+        return getData();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
-                setEncoding((String)newValue);
-                return;
-            case Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE:
-                setMimeType((String)newValue);
-                return;
-            case Wps10Package.COMPLEX_DATA_TYPE__SCHEMA:
-                setSchema((String)newValue);
-                return;
-            case Wps10Package.COMPLEX_DATA_TYPE__DATA:
-                getData().clear();
-                getData().addAll((Collection)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
+        setEncoding((String)newValue);
+        return;
+      case Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE:
+        setMimeType((String)newValue);
+        return;
+      case Wps10Package.COMPLEX_DATA_TYPE__SCHEMA:
+        setSchema((String)newValue);
+        return;
+      case Wps10Package.COMPLEX_DATA_TYPE__DATA:
+        getData().clear();
+        getData().addAll((Collection)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
-                setEncoding(ENCODING_EDEFAULT);
-                return;
-            case Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE:
-                setMimeType(MIME_TYPE_EDEFAULT);
-                return;
-            case Wps10Package.COMPLEX_DATA_TYPE__SCHEMA:
-                setSchema(SCHEMA_EDEFAULT);
-                return;
-            case Wps10Package.COMPLEX_DATA_TYPE__DATA:
-                getData().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
+        setEncoding(ENCODING_EDEFAULT);
+        return;
+      case Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE:
+        setMimeType(MIME_TYPE_EDEFAULT);
+        return;
+      case Wps10Package.COMPLEX_DATA_TYPE__SCHEMA:
+        setSchema(SCHEMA_EDEFAULT);
+        return;
+      case Wps10Package.COMPLEX_DATA_TYPE__DATA:
+        getData().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
-                return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
-            case Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE:
-                return MIME_TYPE_EDEFAULT == null ? mimeType != null : !MIME_TYPE_EDEFAULT.equals(mimeType);
-            case Wps10Package.COMPLEX_DATA_TYPE__SCHEMA:
-                return SCHEMA_EDEFAULT == null ? schema != null : !SCHEMA_EDEFAULT.equals(schema);
-            case Wps10Package.COMPLEX_DATA_TYPE__DATA:
-                return data != null && !data.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wps10Package.COMPLEX_DATA_TYPE__ENCODING:
+        return ENCODING_EDEFAULT == null ? encoding != null : !ENCODING_EDEFAULT.equals(encoding);
+      case Wps10Package.COMPLEX_DATA_TYPE__MIME_TYPE:
+        return MIME_TYPE_EDEFAULT == null ? mimeType != null : !MIME_TYPE_EDEFAULT.equals(mimeType);
+      case Wps10Package.COMPLEX_DATA_TYPE__SCHEMA:
+        return SCHEMA_EDEFAULT == null ? schema != null : !SCHEMA_EDEFAULT.equals(schema);
+      case Wps10Package.COMPLEX_DATA_TYPE__DATA:
+        return data != null && !data.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (encoding: ");
-        result.append(encoding);
-        result.append(", mimeType: ");
-        result.append(mimeType);
-        result.append(", schema: ");
-        result.append(schema);
-        result.append(", data: ");
-        result.append(data);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (encoding: ");
+    result.append(encoding);
+    result.append(", mimeType: ");
+    result.append(mimeType);
+    result.append(", schema: ");
+    result.append(schema);
+    result.append(", data: ");
+    result.append(data);
+    result.append(')');
+    return result.toString();
+  }
 
 } //ComplexDataTypeImpl

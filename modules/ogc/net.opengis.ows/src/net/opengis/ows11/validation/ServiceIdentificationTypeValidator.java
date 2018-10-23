@@ -1,14 +1,10 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
 package net.opengis.ows11.validation;
 
 import net.opengis.ows11.CodeType;
-
-import org.eclipse.emf.common.util.EList;
 
 /**
  * A sample validator interface for {@link net.opengis.ows11.ServiceIdentificationType}.
@@ -17,11 +13,11 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface ServiceIdentificationTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateServiceType(CodeType value);
-    boolean validateServiceTypeVersion(EList value);
-    boolean validateProfile(EList value);
-    boolean validateFees(String value);
-    boolean validateAccessConstraints(EList value);
+  boolean validateServiceType(CodeType value);
+  boolean validateServiceTypeVersion(String value);
+  boolean validateProfile(String value);
+  boolean validateFees(String value);
+  boolean validateAccessConstraints(String value);
 }

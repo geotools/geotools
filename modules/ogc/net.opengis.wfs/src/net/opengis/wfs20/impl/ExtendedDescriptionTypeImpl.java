@@ -30,127 +30,127 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.ExtendedDescriptionTypeImpl#getElement <em>Element</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ExtendedDescriptionTypeImpl extends EObjectImpl implements ExtendedDescriptionType {
     /**
-     * The cached value of the '{@link #getElement() <em>Element</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getElement() <em>Element</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getElement()
-     * @generated
-     * @ordered
-     */
+   * @see #getElement()
+   * @generated
+   * @ordered
+   */
     protected EList<ElementType> element;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ExtendedDescriptionTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.EXTENDED_DESCRIPTION_TYPE;
-    }
+    return Wfs20Package.Literals.EXTENDED_DESCRIPTION_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<ElementType> getElement() {
-        if (element == null) {
-            element = new EObjectContainmentEList<ElementType>(ElementType.class, this, Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT);
-        }
-        return element;
+    if (element == null) {
+      element = new EObjectContainmentEList<ElementType>(ElementType.class, this, Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT);
     }
+    return element;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
-                return ((InternalEList<?>)getElement()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
+        return ((InternalEList<?>)getElement()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
-                return getElement();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
+        return getElement();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
-                getElement().clear();
-                getElement().addAll((Collection<? extends ElementType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
+        getElement().clear();
+        getElement().addAll((Collection<? extends ElementType>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
-                getElement().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
+        getElement().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
-                return element != null && !element.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.EXTENDED_DESCRIPTION_TYPE__ELEMENT:
+        return element != null && !element.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 } //ExtendedDescriptionTypeImpl

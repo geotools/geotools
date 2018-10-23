@@ -1,10 +1,10 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
 package net.opengis.ows11.validation;
+
+import java.util.Map;
 
 import net.opengis.ows11.AcceptFormatsType;
 import net.opengis.ows11.AcceptVersionsType;
@@ -17,12 +17,13 @@ import net.opengis.ows11.SectionsType;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface GetCapabilitiesTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateAcceptVersions(AcceptVersionsType value);
-    boolean validateSections(SectionsType value);
-    boolean validateAcceptFormats(AcceptFormatsType value);
-    boolean validateUpdateSequence(String value);
-
-    boolean validateBaseUrl(String value);
+  boolean validateAcceptVersions(AcceptVersionsType value);
+  boolean validateSections(SectionsType value);
+  boolean validateAcceptFormats(AcceptFormatsType value);
+  boolean validateUpdateSequence(String value);
+  boolean validateBaseUrl(String value);
+  boolean validateNamespace(String value);
+  boolean validateExtendedProperties(Map value);
 }

@@ -18,10 +18,11 @@ package org.geotools.ows.v1_1.bindings;
 
 import net.opengis.ows11.GetCapabilitiesType;
 import org.geotools.ows.v1_1.OWS;
-import org.geotools.ows.v1_1.OWSTestSupport;
+import org.geotools.ows.v1_1.OWSTestSupport_1_1;
 import org.geotools.xml.Binding;
+import org.junit.Assert;
 
-public class GetCapabilitiesTypeBindingTest extends OWSTestSupport {
+public class GetCapabilitiesTypeBindingTest extends OWSTestSupport_1_1 {
     public void testType() throws Exception {
         assertEquals(GetCapabilitiesType.class, binding(OWS.GetCapabilitiesType).getType());
     }
@@ -41,9 +42,9 @@ public class GetCapabilitiesTypeBindingTest extends OWSTestSupport {
         buildDocument(xml);
 
         GetCapabilitiesType getCaps = (GetCapabilitiesType) parse();
-        assertNotNull(getCaps);
+        Assert.assertNotNull(getCaps);
 
-        assertEquals(1, getCaps.getAcceptVersions().getVersion().size());
-        assertEquals("1.0.0", getCaps.getAcceptVersions().getVersion().get(0));
+        Assert.assertEquals(1, getCaps.getAcceptVersions().getVersion().size());
+        Assert.assertEquals("1.0.0", getCaps.getAcceptVersions().getVersion().get(0));
     }
 }

@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -17,10 +15,10 @@ import java.util.List;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface BoundingBoxTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateLowerCorner(List value);
-    boolean validateUpperCorner(List value);
-    boolean validateCrs(String value);
-    boolean validateDimensions(BigInteger value);
+  boolean validateLowerCorner(List value);
+  boolean validateUpperCorner(List value);
+  boolean validateCrs(String value);
+  boolean validateDimensions(BigInteger value);
 }

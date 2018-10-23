@@ -2,7 +2,6 @@
  */
 package net.opengis.ows11.impl;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import net.opengis.ows11.AcceptFormatsType;

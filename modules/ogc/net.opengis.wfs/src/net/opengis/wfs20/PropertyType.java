@@ -16,11 +16,11 @@ import org.opengis.filter.expression.PropertyName;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.PropertyType#getValueReference <em>Value Reference</em>}</li>
  *   <li>{@link net.opengis.wfs20.PropertyType#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs20.Wfs20Package#getPropertyType()
  * @model extendedMetaData="name='PropertyType' kind='elementOnly'"
@@ -43,13 +43,13 @@ public interface PropertyType extends EObject {
     ValueReferenceType getValueReference();
 
     /**
-     * Sets the value of the '{@link net.opengis.wfs20.PropertyType#getValueReference <em>Value Reference</em>}' reference.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs20.PropertyType#getValueReference <em>Value Reference</em>}' reference.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Value Reference</em>' reference.
-     * @see #getValueReference()
-     * @generated
-     */
+   * @param value the new value of the '<em>Value Reference</em>' reference.
+   * @see #getValueReference()
+   * @generated
+   */
     void setValueReference(ValueReferenceType value);
 
     /**
@@ -68,13 +68,13 @@ public interface PropertyType extends EObject {
     Object getValue();
 
     /**
-     * Sets the value of the '{@link net.opengis.wfs20.PropertyType#getValue <em>Value</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs20.PropertyType#getValue <em>Value</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Value</em>' attribute.
-     * @see #getValue()
-     * @generated
-     */
+   * @param value the new value of the '<em>Value</em>' attribute.
+   * @see #getValue()
+   * @generated
+   */
     void setValue(Object value);
 
 } // PropertyType

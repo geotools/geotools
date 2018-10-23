@@ -170,7 +170,7 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         assertTrue(simpleKeywords.contains("GEOSERVER"));
 
         assertEquals("WFS", sa.getServiceType().getValue());
-        assertEquals("2.0.0", sa.getServiceTypeVersion().get(0));
+        assertEquals("2.0.0", sa.getServiceTypeVersion());
     }
 
     void assertOperationsMetadata(WFSCapabilitiesType caps) {

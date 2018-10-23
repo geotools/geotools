@@ -26,283 +26,283 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.impl.LockFeatureResponseTypeImpl#getLockId <em>Lock Id</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.LockFeatureResponseTypeImpl#getFeaturesLocked <em>Features Locked</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.LockFeatureResponseTypeImpl#getFeaturesNotLocked <em>Features Not Locked</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class LockFeatureResponseTypeImpl extends EObjectImpl implements LockFeatureResponseType {
 	/**
-     * The default value of the '{@link #getLockId() <em>Lock Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getLockId() <em>Lock Id</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getLockId()
-     * @generated
-     * @ordered
-     */
+   * @see #getLockId()
+   * @generated
+   * @ordered
+   */
 	protected static final String LOCK_ID_EDEFAULT = null;
 
 	/**
-     * The cached value of the '{@link #getLockId() <em>Lock Id</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getLockId() <em>Lock Id</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getLockId()
-     * @generated
-     * @ordered
-     */
+   * @see #getLockId()
+   * @generated
+   * @ordered
+   */
 	protected String lockId = LOCK_ID_EDEFAULT;
 
 	/**
-     * The cached value of the '{@link #getFeaturesLocked() <em>Features Locked</em>}' containment reference.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFeaturesLocked() <em>Features Locked</em>}' containment reference.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFeaturesLocked()
-     * @generated
-     * @ordered
-     */
+   * @see #getFeaturesLocked()
+   * @generated
+   * @ordered
+   */
 	protected FeaturesLockedType featuresLocked;
 
 	/**
-     * The cached value of the '{@link #getFeaturesNotLocked() <em>Features Not Locked</em>}' containment reference.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getFeaturesNotLocked() <em>Features Not Locked</em>}' containment reference.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getFeaturesNotLocked()
-     * @generated
-     * @ordered
-     */
+   * @see #getFeaturesNotLocked()
+   * @generated
+   * @ordered
+   */
 	protected FeaturesNotLockedType featuresNotLocked;
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected LockFeatureResponseTypeImpl() {
-        super();
-    }
+    super();
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected EClass eStaticClass() {
-        return WfsPackage.Literals.LOCK_FEATURE_RESPONSE_TYPE;
-    }
+    return WfsPackage.Literals.LOCK_FEATURE_RESPONSE_TYPE;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String getLockId() {
-        return lockId;
-    }
+    return lockId;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setLockId(String newLockId) {
-        String oldLockId = lockId;
-        lockId = newLockId;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID, oldLockId, lockId));
-    }
+    String oldLockId = lockId;
+    lockId = newLockId;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID, oldLockId, lockId));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public FeaturesLockedType getFeaturesLocked() {
-        return featuresLocked;
-    }
+    return featuresLocked;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public NotificationChain basicSetFeaturesLocked(FeaturesLockedType newFeaturesLocked, NotificationChain msgs) {
-        FeaturesLockedType oldFeaturesLocked = featuresLocked;
-        featuresLocked = newFeaturesLocked;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED, oldFeaturesLocked, newFeaturesLocked);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
+    FeaturesLockedType oldFeaturesLocked = featuresLocked;
+    featuresLocked = newFeaturesLocked;
+    if (eNotificationRequired()) {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED, oldFeaturesLocked, newFeaturesLocked);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setFeaturesLocked(FeaturesLockedType newFeaturesLocked) {
-        if (newFeaturesLocked != featuresLocked) {
-            NotificationChain msgs = null;
-            if (featuresLocked != null)
-                msgs = ((InternalEObject)featuresLocked).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED, null, msgs);
-            if (newFeaturesLocked != null)
-                msgs = ((InternalEObject)newFeaturesLocked).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED, null, msgs);
-            msgs = basicSetFeaturesLocked(newFeaturesLocked, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED, newFeaturesLocked, newFeaturesLocked));
+    if (newFeaturesLocked != featuresLocked) {
+      NotificationChain msgs = null;
+      if (featuresLocked != null)
+        msgs = ((InternalEObject)featuresLocked).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED, null, msgs);
+      if (newFeaturesLocked != null)
+        msgs = ((InternalEObject)newFeaturesLocked).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED, null, msgs);
+      msgs = basicSetFeaturesLocked(newFeaturesLocked, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED, newFeaturesLocked, newFeaturesLocked));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public FeaturesNotLockedType getFeaturesNotLocked() {
-        return featuresNotLocked;
-    }
+    return featuresNotLocked;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public NotificationChain basicSetFeaturesNotLocked(FeaturesNotLockedType newFeaturesNotLocked, NotificationChain msgs) {
-        FeaturesNotLockedType oldFeaturesNotLocked = featuresNotLocked;
-        featuresNotLocked = newFeaturesNotLocked;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED, oldFeaturesNotLocked, newFeaturesNotLocked);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
+    FeaturesNotLockedType oldFeaturesNotLocked = featuresNotLocked;
+    featuresNotLocked = newFeaturesNotLocked;
+    if (eNotificationRequired()) {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED, oldFeaturesNotLocked, newFeaturesNotLocked);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setFeaturesNotLocked(FeaturesNotLockedType newFeaturesNotLocked) {
-        if (newFeaturesNotLocked != featuresNotLocked) {
-            NotificationChain msgs = null;
-            if (featuresNotLocked != null)
-                msgs = ((InternalEObject)featuresNotLocked).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED, null, msgs);
-            if (newFeaturesNotLocked != null)
-                msgs = ((InternalEObject)newFeaturesNotLocked).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED, null, msgs);
-            msgs = basicSetFeaturesNotLocked(newFeaturesNotLocked, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED, newFeaturesNotLocked, newFeaturesNotLocked));
+    if (newFeaturesNotLocked != featuresNotLocked) {
+      NotificationChain msgs = null;
+      if (featuresNotLocked != null)
+        msgs = ((InternalEObject)featuresNotLocked).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED, null, msgs);
+      if (newFeaturesNotLocked != null)
+        msgs = ((InternalEObject)newFeaturesNotLocked).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED, null, msgs);
+      msgs = basicSetFeaturesNotLocked(newFeaturesNotLocked, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED, newFeaturesNotLocked, newFeaturesNotLocked));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
-                return basicSetFeaturesLocked(null, msgs);
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
-                return basicSetFeaturesNotLocked(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
+        return basicSetFeaturesLocked(null, msgs);
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
+        return basicSetFeaturesNotLocked(null, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
-                return getLockId();
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
-                return getFeaturesLocked();
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
-                return getFeaturesNotLocked();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
+        return getLockId();
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
+        return getFeaturesLocked();
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
+        return getFeaturesNotLocked();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
-                setLockId((String)newValue);
-                return;
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
-                setFeaturesLocked((FeaturesLockedType)newValue);
-                return;
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
-                setFeaturesNotLocked((FeaturesNotLockedType)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
+        setLockId((String)newValue);
+        return;
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
+        setFeaturesLocked((FeaturesLockedType)newValue);
+        return;
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
+        setFeaturesNotLocked((FeaturesNotLockedType)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
-                setLockId(LOCK_ID_EDEFAULT);
-                return;
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
-                setFeaturesLocked((FeaturesLockedType)null);
-                return;
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
-                setFeaturesNotLocked((FeaturesNotLockedType)null);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
+        setLockId(LOCK_ID_EDEFAULT);
+        return;
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
+        setFeaturesLocked((FeaturesLockedType)null);
+        return;
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
+        setFeaturesNotLocked((FeaturesNotLockedType)null);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
-                return LOCK_ID_EDEFAULT == null ? lockId != null : !LOCK_ID_EDEFAULT.equals(lockId);
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
-                return featuresLocked != null;
-            case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
-                return featuresNotLocked != null;
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__LOCK_ID:
+        return LOCK_ID_EDEFAULT == null ? lockId != null : !LOCK_ID_EDEFAULT.equals(lockId);
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_LOCKED:
+        return featuresLocked != null;
+      case WfsPackage.LOCK_FEATURE_RESPONSE_TYPE__FEATURES_NOT_LOCKED:
+        return featuresNotLocked != null;
     }
+    return super.eIsSet(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (lockId: ");
-        result.append(lockId);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (lockId: ");
+    result.append(lockId);
+    result.append(')');
+    return result.toString();
+  }
 
 } //LockFeatureResponseTypeImpl

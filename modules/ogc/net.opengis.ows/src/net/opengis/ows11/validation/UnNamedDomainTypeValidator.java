@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -22,16 +20,16 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface UnNamedDomainTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateAllowedValues(AllowedValuesType value);
-    boolean validateAnyValue(AnyValueType value);
-    boolean validateNoValues(NoValuesType value);
-    boolean validateValuesReference(ValuesReferenceType value);
-    boolean validateDefaultValue(ValueType value);
-    boolean validateMeaning(DomainMetadataType value);
-    boolean validateDataType(DomainMetadataType value);
-    boolean validateUOM(DomainMetadataType value);
-    boolean validateReferenceSystem(DomainMetadataType value);
-    boolean validateMetadata(EList value);
+  boolean validateAllowedValues(AllowedValuesType value);
+  boolean validateAnyValue(AnyValueType value);
+  boolean validateNoValues(NoValuesType value);
+  boolean validateValuesReference(ValuesReferenceType value);
+  boolean validateDefaultValue(ValueType value);
+  boolean validateMeaning(DomainMetadataType value);
+  boolean validateDataType(DomainMetadataType value);
+  boolean validateUOM(DomainMetadataType value);
+  boolean validateReferenceSystem(DomainMetadataType value);
+  boolean validateMetadata(EList value);
 }

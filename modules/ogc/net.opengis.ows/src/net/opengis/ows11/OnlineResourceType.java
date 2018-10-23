@@ -20,10 +20,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows11.OnlineResourceType#getHref <em>Href</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows11.Ows11Package#getOnlineResourceType()
  * @model extendedMetaData="name='OnlineResourceType' kind='empty'"
@@ -37,12 +37,12 @@ public interface OnlineResourceType extends EObject {
 	String getHref();
 
 	/**
-	 * Sets the value of the '{@link net.opengis.ows11.OnlineResourceType#getHref <em>Href</em>}' attribute.
-	 * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.ows11.OnlineResourceType#getHref <em>Href</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Href</em>' attribute.
-	 * @see #getHref()
-	 * @generated
-	 */
+   * @param value the new value of the '<em>Href</em>' attribute.
+   * @see #getHref()
+   * @generated
+   */
 	void setHref(String value);
 } // OnlineResourceType

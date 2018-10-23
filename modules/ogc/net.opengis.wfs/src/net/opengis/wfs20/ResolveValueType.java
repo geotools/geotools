@@ -23,244 +23,250 @@ import org.eclipse.emf.common.util.Enumerator;
  */
 public enum ResolveValueType implements Enumerator {
     /**
-     * The '<em><b>Local</b></em>' literal object.
-     * <!-- begin-user-doc -->
+   * The '<em><b>Local</b></em>' literal object.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #LOCAL_VALUE
-     * @generated
-     * @ordered
-     */
+   * @see #LOCAL_VALUE
+   * @generated
+   * @ordered
+   */
     LOCAL(0, "local", "local"),
 
     /**
-     * The '<em><b>Remote</b></em>' literal object.
-     * <!-- begin-user-doc -->
+   * The '<em><b>Remote</b></em>' literal object.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #REMOTE_VALUE
-     * @generated
-     * @ordered
-     */
+   * @see #REMOTE_VALUE
+   * @generated
+   * @ordered
+   */
     REMOTE(1, "remote", "remote"),
 
     /**
-     * The '<em><b>All</b></em>' literal object.
-     * <!-- begin-user-doc -->
+   * The '<em><b>All</b></em>' literal object.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #ALL_VALUE
-     * @generated
-     * @ordered
-     */
+   * @see #ALL_VALUE
+   * @generated
+   * @ordered
+   */
     ALL(2, "all", "all"),
 
     /**
-     * The '<em><b>None</b></em>' literal object.
-     * <!-- begin-user-doc -->
+   * The '<em><b>None</b></em>' literal object.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #NONE_VALUE
-     * @generated
-     * @ordered
-     */
+   * @see #NONE_VALUE
+   * @generated
+   * @ordered
+   */
     NONE(3, "none", "none");
 
     /**
-     * The '<em><b>Local</b></em>' literal value.
-     * <!-- begin-user-doc -->
+   * The '<em><b>Local</b></em>' literal value.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of '<em><b>Local</b></em>' literal object isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @see #LOCAL
-     * @model name="local"
-     * @generated
-     * @ordered
-     */
+   * @see #LOCAL
+   * @model name="local"
+   * @generated
+   * @ordered
+   */
     public static final int LOCAL_VALUE = 0;
 
     /**
-     * The '<em><b>Remote</b></em>' literal value.
-     * <!-- begin-user-doc -->
+   * The '<em><b>Remote</b></em>' literal value.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of '<em><b>Remote</b></em>' literal object isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @see #REMOTE
-     * @model name="remote"
-     * @generated
-     * @ordered
-     */
+   * @see #REMOTE
+   * @model name="remote"
+   * @generated
+   * @ordered
+   */
     public static final int REMOTE_VALUE = 1;
 
     /**
-     * The '<em><b>All</b></em>' literal value.
-     * <!-- begin-user-doc -->
+   * The '<em><b>All</b></em>' literal value.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of '<em><b>All</b></em>' literal object isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @see #ALL
-     * @model name="all"
-     * @generated
-     * @ordered
-     */
+   * @see #ALL
+   * @model name="all"
+   * @generated
+   * @ordered
+   */
     public static final int ALL_VALUE = 2;
 
     /**
-     * The '<em><b>None</b></em>' literal value.
-     * <!-- begin-user-doc -->
+   * The '<em><b>None</b></em>' literal value.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of '<em><b>None</b></em>' literal object isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @see #NONE
-     * @model name="none"
-     * @generated
-     * @ordered
-     */
+   * @see #NONE
+   * @model name="none"
+   * @generated
+   * @ordered
+   */
     public static final int NONE_VALUE = 3;
 
     /**
-     * An array of all the '<em><b>Resolve Value Type</b></em>' enumerators.
-     * <!-- begin-user-doc -->
+   * An array of all the '<em><b>Resolve Value Type</b></em>' enumerators.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     private static final ResolveValueType[] VALUES_ARRAY =
         new ResolveValueType[] {
-            LOCAL,
-            REMOTE,
-            ALL,
-            NONE,
-        };
+      LOCAL,
+      REMOTE,
+      ALL,
+      NONE,
+    };
 
     /**
-     * A public read-only list of all the '<em><b>Resolve Value Type</b></em>' enumerators.
-     * <!-- begin-user-doc -->
+   * A public read-only list of all the '<em><b>Resolve Value Type</b></em>' enumerators.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public static final List<ResolveValueType> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * Returns the '<em><b>Resolve Value Type</b></em>' literal with the specified literal value.
-     * <!-- begin-user-doc -->
+   * Returns the '<em><b>Resolve Value Type</b></em>' literal with the specified literal value.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @param literal the literal.
+   * @return the matching enumerator or <code>null</code>.
+   * @generated
+   */
     public static ResolveValueType get(String literal) {
-        for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            ResolveValueType result = VALUES_ARRAY[i];
-            if (result.toString().equals(literal)) {
-                return result;
-            }
-        }
-        return null;
+    for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+      ResolveValueType result = VALUES_ARRAY[i];
+      if (result.toString().equals(literal)) {
+        return result;
+      }
     }
+    return null;
+  }
 
     /**
-     * Returns the '<em><b>Resolve Value Type</b></em>' literal with the specified name.
-     * <!-- begin-user-doc -->
+   * Returns the '<em><b>Resolve Value Type</b></em>' literal with the specified name.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @param name the name.
+   * @return the matching enumerator or <code>null</code>.
+   * @generated
+   */
     public static ResolveValueType getByName(String name) {
-        for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            ResolveValueType result = VALUES_ARRAY[i];
-            if (result.getName().equals(name)) {
-                return result;
-            }
-        }
-        return null;
+    for (int i = 0; i < VALUES_ARRAY.length; ++i) {
+      ResolveValueType result = VALUES_ARRAY[i];
+      if (result.getName().equals(name)) {
+        return result;
+      }
     }
+    return null;
+  }
 
     /**
-     * Returns the '<em><b>Resolve Value Type</b></em>' literal with the specified integer value.
-     * <!-- begin-user-doc -->
+   * Returns the '<em><b>Resolve Value Type</b></em>' literal with the specified integer value.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @param value the integer value.
+   * @return the matching enumerator or <code>null</code>.
+   * @generated
+   */
     public static ResolveValueType get(int value) {
-        switch (value) {
-            case LOCAL_VALUE: return LOCAL;
-            case REMOTE_VALUE: return REMOTE;
-            case ALL_VALUE: return ALL;
-            case NONE_VALUE: return NONE;
-        }
-        return null;
+    switch (value) {
+      case LOCAL_VALUE: return LOCAL;
+      case REMOTE_VALUE: return REMOTE;
+      case ALL_VALUE: return ALL;
+      case NONE_VALUE: return NONE;
     }
+    return null;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     private final int value;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     private final String name;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     private final String literal;
 
     /**
-     * Only this class can construct instances.
-     * <!-- begin-user-doc -->
+   * Only this class can construct instances.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     private ResolveValueType(int value, String name, String literal) {
-        this.value = value;
-        this.name = name;
-        this.literal = literal;
-    }
+    this.value = value;
+    this.name = name;
+    this.literal = literal;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public int getValue() {
-      return value;
-    }
+    return value;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getName() {
-      return name;
-    }
+    return name;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getLiteral() {
-      return literal;
-    }
+    return literal;
+  }
 
     /**
-     * Returns the literal value of the enumerator, which is its string representation.
-     * <!-- begin-user-doc -->
+   * Returns the literal value of the enumerator, which is its string representation.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        return literal;
-    }
+    return literal;
+  }
     
 } //ResolveValueType

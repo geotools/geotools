@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows10.AcceptVersionsType#getVersion <em>Version</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows10.Ows10Package#getAcceptVersionsType()
  * @model extendedMetaData="name='AcceptVersionsType' kind='elementOnly'"
@@ -32,19 +32,19 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface AcceptVersionsType extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Version</b></em>' attribute list.
-	 * The list contents are of type {@link java.lang.String}.
-	 * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Version</b></em>' attribute list.
+   * The list contents are of type {@link java.lang.String}.
+   * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Version</em>' attribute list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Version</em>' attribute list.
-	 * @see net.opengis.ows10.Ows10Package#getAcceptVersionsType_Version()
-	 * @model dataType="net.opengis.ows10.MimeType"
-	 * @generated
-	 */
-	EList getVersion();
+   * @return the value of the '<em>Version</em>' attribute list.
+   * @see net.opengis.ows10.Ows10Package#getAcceptVersionsType_Version()
+   * @model dataType="net.opengis.ows10.VersionType"
+   * @generated
+   */
+	EList<String> getVersion();
 
 } // AcceptVersionsType

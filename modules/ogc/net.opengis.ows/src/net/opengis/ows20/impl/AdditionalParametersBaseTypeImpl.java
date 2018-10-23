@@ -20,156 +20,156 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.impl.AdditionalParametersBaseTypeImpl#getAdditionalParameter <em>Additional Parameter</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class AdditionalParametersBaseTypeImpl extends MetadataTypeImpl implements AdditionalParametersBaseType {
     /**
-     * The cached value of the '{@link #getAdditionalParameter() <em>Additional Parameter</em>}' containment reference.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getAdditionalParameter() <em>Additional Parameter</em>}' containment reference.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getAdditionalParameter()
-     * @generated
-     * @ordered
-     */
+   * @see #getAdditionalParameter()
+   * @generated
+   * @ordered
+   */
     protected AdditionalParameterType additionalParameter;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected AdditionalParametersBaseTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.ADDITIONAL_PARAMETERS_BASE_TYPE;
-    }
+    return Ows20Package.Literals.ADDITIONAL_PARAMETERS_BASE_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public AdditionalParameterType getAdditionalParameter() {
-        return additionalParameter;
-    }
+    return additionalParameter;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public NotificationChain basicSetAdditionalParameter(AdditionalParameterType newAdditionalParameter, NotificationChain msgs) {
-        AdditionalParameterType oldAdditionalParameter = additionalParameter;
-        additionalParameter = newAdditionalParameter;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER, oldAdditionalParameter, newAdditionalParameter);
-            if (msgs == null) msgs = notification; else msgs.add(notification);
-        }
-        return msgs;
+    AdditionalParameterType oldAdditionalParameter = additionalParameter;
+    additionalParameter = newAdditionalParameter;
+    if (eNotificationRequired()) {
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER, oldAdditionalParameter, newAdditionalParameter);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setAdditionalParameter(AdditionalParameterType newAdditionalParameter) {
-        if (newAdditionalParameter != additionalParameter) {
-            NotificationChain msgs = null;
-            if (additionalParameter != null)
-                msgs = ((InternalEObject)additionalParameter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER, null, msgs);
-            if (newAdditionalParameter != null)
-                msgs = ((InternalEObject)newAdditionalParameter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER, null, msgs);
-            msgs = basicSetAdditionalParameter(newAdditionalParameter, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER, newAdditionalParameter, newAdditionalParameter));
+    if (newAdditionalParameter != additionalParameter) {
+      NotificationChain msgs = null;
+      if (additionalParameter != null)
+        msgs = ((InternalEObject)additionalParameter).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER, null, msgs);
+      if (newAdditionalParameter != null)
+        msgs = ((InternalEObject)newAdditionalParameter).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER, null, msgs);
+      msgs = basicSetAdditionalParameter(newAdditionalParameter, msgs);
+      if (msgs != null) msgs.dispatch();
     }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER, newAdditionalParameter, newAdditionalParameter));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
-                return basicSetAdditionalParameter(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
+        return basicSetAdditionalParameter(null, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
-                return getAdditionalParameter();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
+        return getAdditionalParameter();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
-                setAdditionalParameter((AdditionalParameterType)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
+        setAdditionalParameter((AdditionalParameterType)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
-                setAdditionalParameter((AdditionalParameterType)null);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
+        setAdditionalParameter((AdditionalParameterType)null);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
-                return additionalParameter != null;
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_BASE_TYPE__ADDITIONAL_PARAMETER:
+        return additionalParameter != null;
     }
+    return super.eIsSet(featureID);
+  }
 
 } //AdditionalParametersBaseTypeImpl

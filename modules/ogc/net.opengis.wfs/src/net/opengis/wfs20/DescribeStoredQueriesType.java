@@ -17,10 +17,10 @@ import org.eclipse.emf.common.util.EList;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.DescribeStoredQueriesType#getStoredQueryId <em>Stored Query Id</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs20.Wfs20Package#getDescribeStoredQueriesType()
  * @model extendedMetaData="name='DescribeStoredQueriesType' kind='elementOnly'"

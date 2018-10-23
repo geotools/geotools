@@ -1446,15 +1446,28 @@
         <version>3.0.0</version>
         <executions>
           <execution>
-            <id>regex-property</id>
+            <id>remove_gt_from_modulename</id>
+            <goals>
+              <goal>regex-property</goal>
+            </goals>
+            <configuration>
+              <name>moduleIdentifierStep1</name>
+              <value>${project.groupId}.${project.artifactId}</value>
+              <regex>gt-</regex>
+              <replacement></replacement>
+              <failIfNoMatch>false</failIfNoMatch>
+            </configuration>
+          </execution>
+          <execution>
+            <id>remove_dashes_from_modulename</id>
             <goals>
               <goal>regex-property</goal>
             </goals>
             <configuration>
               <name>moduleIdentifier</name>
-              <value>${project.groupId}.${project.artifactId}</value>
-              <regex>gt-</regex>
-              <replacement></replacement>
+              <value>${moduleIdentifierStep1}</value>
+              <regex>-</regex>
+              <replacement>_</replacement>
               <failIfNoMatch>false</failIfNoMatch>
             </configuration>
           </execution>

@@ -1707,6 +1707,8 @@
           <encoding>UTF-8</encoding>
             <!-- Set an additional parameter for the command line. -->
           <additionalparam>-keywords -Xdoclint:none</additionalparam>
+          <additionalJOption>-Xdoclint:none</additionalJOption>
+
           <breakiterator>true</breakiterator>
           <excludePackageNames>
             org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions

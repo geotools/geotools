@@ -1,12 +1,9 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
 package net.opengis.ows11.validation;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * A sample validator interface for {@link net.opengis.ows11.AddressType}.
@@ -15,12 +12,12 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface AddressTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateDeliveryPoint(EList value);
-    boolean validateCity(String value);
-    boolean validateAdministrativeArea(String value);
-    boolean validatePostalCode(String value);
-    boolean validateCountry(String value);
-    boolean validateElectronicMailAddress(EList value);
+  boolean validateDeliveryPoint(String value);
+  boolean validateCity(String value);
+  boolean validateAdministrativeArea(String value);
+  boolean validatePostalCode(String value);
+  boolean validateCountry(String value);
+  boolean validateElectronicMailAddress(String value);
 }

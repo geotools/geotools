@@ -1,12 +1,9 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
 package net.opengis.ows11.validation;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * A sample validator interface for {@link net.opengis.ows11.SectionsType}.
@@ -15,7 +12,7 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface SectionsTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateSection(EList value);
+  boolean validateSection(String value);
 }

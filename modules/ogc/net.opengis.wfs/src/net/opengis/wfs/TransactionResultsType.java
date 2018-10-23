@@ -24,11 +24,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.TransactionResultsType#getHandle <em>Handle</em>}</li>
  *   <li>{@link net.opengis.wfs.TransactionResultsType#getAction <em>Action</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs.WfsPackage#getTransactionResultsType()
  * @model extendedMetaData="name='TransactionResultsType' kind='elementOnly'"
@@ -51,33 +51,33 @@ public interface TransactionResultsType extends EObject {
 	String getHandle();
 	
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.TransactionResultsType#getHandle <em>Handle</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.TransactionResultsType#getHandle <em>Handle</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Handle</em>' attribute.
-     * @see #getHandle()
-     * @generated
-     */
+   * @param value the new value of the '<em>Handle</em>' attribute.
+   * @see #getHandle()
+   * @generated
+   */
 	void setHandle(String value);
 
 	/**
-     * Returns the value of the '<em><b>Action</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.wfs.ActionType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Action</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.wfs.ActionType}.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * 
-     *                   The Action element reports an exception code
-     *                   and exception message indicating why the
-     *                   corresponding action of a transaction request
-     *                   failed.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Action</em>' containment reference list.
-     * @see net.opengis.wfs.WfsPackage#getTransactionResultsType_Action()
-     * @model type="net.opengis.wfs.ActionType" containment="true"
-     *        extendedMetaData="kind='element' name='Action' namespace='##targetNamespace'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * 
+   *                   The Action element reports an exception code
+   *                   and exception message indicating why the
+   *                   corresponding action of a transaction request
+   *                   failed.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Action</em>' containment reference list.
+   * @see net.opengis.wfs.WfsPackage#getTransactionResultsType_Action()
+   * @model type="net.opengis.wfs.ActionType" containment="true"
+   *        extendedMetaData="kind='element' name='Action' namespace='##targetNamespace'"
+   * @generated
+   */
 	EList getAction();
 
 } // TransactionResultsType

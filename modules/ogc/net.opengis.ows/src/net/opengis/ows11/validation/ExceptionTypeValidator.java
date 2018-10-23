@@ -1,12 +1,9 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
 package net.opengis.ows11.validation;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * A sample validator interface for {@link net.opengis.ows11.ExceptionType}.
@@ -15,9 +12,9 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface ExceptionTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateExceptionText(EList value);
-    boolean validateExceptionCode(String value);
-    boolean validateLocator(String value);
+  boolean validateExceptionText(String value);
+  boolean validateExceptionCode(String value);
+  boolean validateLocator(String value);
 }

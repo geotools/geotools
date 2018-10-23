@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic.remote;
 
+import it.geosolutions.imageio.stream.input.spi.FileImageInputStreamExtImplSpi;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,8 +24,6 @@ import java.net.URL;
 import java.util.Locale;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.stream.ImageInputStream;
-
-import it.geosolutions.imageio.stream.input.spi.FileImageInputStreamExtImplSpi;
 import org.geotools.TestData;
 import org.geotools.gce.imagemosaic.RemoteTest;
 

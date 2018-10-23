@@ -206,7 +206,7 @@
     <dependency>
       <groupId>org.glassfish.jaxb</groupId>
       <artifactId>jaxb-runtime</artifactId>
-      <version>2.3.0</version>
+      <version>${jaxb.runtime.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

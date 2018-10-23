@@ -537,6 +537,10 @@ public class Parser {
             schemaLocation.append(dependency.getSchemaFileURL());
         }
 
+        // TODO: temporary debugging statement to figure out what's going on in the build server, to
+        // be removed
+        System.out.println("Setting schema location to " + schemaLocation);
+
         // set the property to map namespaces to schema locations
         parser.setProperty(
                 "http://apache.org/xml/properties/schema/external-schemaLocation",

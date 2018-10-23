@@ -34,7 +34,6 @@ The GeoTools PMC is the formal "Project Steering Committee" for GeoTools:
 Current PMC members:
 
 * Andrea Aime
-* Ben Caradoc-Davies
 * Ian Turton
 * Jody Garnett
 * Nuno Oliveira
@@ -45,6 +44,7 @@ Our thanks to previous PMC members:
     
 * Andrea Aime
 * Artur Hefczyc
+* Ben Caradoc-Davies
 * Cameron Shorter
 * Chris Holmes
 * Christian Mueller

@@ -22,234 +22,234 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.AbstractTypeImpl#getValue <em>Value</em>}</li>
  *   <li>{@link net.opengis.wfs20.impl.AbstractTypeImpl#getLang <em>Lang</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class AbstractTypeImpl extends EObjectImpl implements AbstractType {
     /**
-     * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getValue()
-     * @generated
-     * @ordered
-     */
+   * @see #getValue()
+   * @generated
+   * @ordered
+   */
     protected static final String VALUE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getValue()
-     * @generated
-     * @ordered
-     */
+   * @see #getValue()
+   * @generated
+   * @ordered
+   */
     protected String value = VALUE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getLang() <em>Lang</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getLang() <em>Lang</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLang()
-     * @generated
-     * @ordered
-     */
+   * @see #getLang()
+   * @generated
+   * @ordered
+   */
     protected static final String LANG_EDEFAULT = "en";
 
     /**
-     * The cached value of the '{@link #getLang() <em>Lang</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getLang() <em>Lang</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getLang()
-     * @generated
-     * @ordered
-     */
+   * @see #getLang()
+   * @generated
+   * @ordered
+   */
     protected String lang = LANG_EDEFAULT;
 
     /**
-     * This is true if the Lang attribute has been set.
-     * <!-- begin-user-doc -->
+   * This is true if the Lang attribute has been set.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+   * @generated
+   * @ordered
+   */
     protected boolean langESet;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected AbstractTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.ABSTRACT_TYPE;
-    }
+    return Wfs20Package.Literals.ABSTRACT_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getValue() {
-        return value;
-    }
+    return value;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setValue(String newValue) {
-        String oldValue = value;
-        value = newValue;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.ABSTRACT_TYPE__VALUE, oldValue, value));
-    }
+    String oldValue = value;
+    value = newValue;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.ABSTRACT_TYPE__VALUE, oldValue, value));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getLang() {
-        return lang;
-    }
+    return lang;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setLang(String newLang) {
-        String oldLang = lang;
-        lang = newLang;
-        boolean oldLangESet = langESet;
-        langESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.ABSTRACT_TYPE__LANG, oldLang, lang, !oldLangESet));
-    }
+    String oldLang = lang;
+    lang = newLang;
+    boolean oldLangESet = langESet;
+    langESet = true;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.ABSTRACT_TYPE__LANG, oldLang, lang, !oldLangESet));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void unsetLang() {
-        String oldLang = lang;
-        boolean oldLangESet = langESet;
-        lang = LANG_EDEFAULT;
-        langESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, Wfs20Package.ABSTRACT_TYPE__LANG, oldLang, LANG_EDEFAULT, oldLangESet));
-    }
+    String oldLang = lang;
+    boolean oldLangESet = langESet;
+    lang = LANG_EDEFAULT;
+    langESet = false;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.UNSET, Wfs20Package.ABSTRACT_TYPE__LANG, oldLang, LANG_EDEFAULT, oldLangESet));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public boolean isSetLang() {
-        return langESet;
-    }
+    return langESet;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.ABSTRACT_TYPE__VALUE:
-                return getValue();
-            case Wfs20Package.ABSTRACT_TYPE__LANG:
-                return getLang();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.ABSTRACT_TYPE__VALUE:
+        return getValue();
+      case Wfs20Package.ABSTRACT_TYPE__LANG:
+        return getLang();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.ABSTRACT_TYPE__VALUE:
-                setValue((String)newValue);
-                return;
-            case Wfs20Package.ABSTRACT_TYPE__LANG:
-                setLang((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.ABSTRACT_TYPE__VALUE:
+        setValue((String)newValue);
+        return;
+      case Wfs20Package.ABSTRACT_TYPE__LANG:
+        setLang((String)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.ABSTRACT_TYPE__VALUE:
-                setValue(VALUE_EDEFAULT);
-                return;
-            case Wfs20Package.ABSTRACT_TYPE__LANG:
-                unsetLang();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.ABSTRACT_TYPE__VALUE:
+        setValue(VALUE_EDEFAULT);
+        return;
+      case Wfs20Package.ABSTRACT_TYPE__LANG:
+        unsetLang();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.ABSTRACT_TYPE__VALUE:
-                return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
-            case Wfs20Package.ABSTRACT_TYPE__LANG:
-                return isSetLang();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.ABSTRACT_TYPE__VALUE:
+        return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+      case Wfs20Package.ABSTRACT_TYPE__LANG:
+        return isSetLang();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (value: ");
-        result.append(value);
-        result.append(", lang: ");
-        if (langESet) result.append(lang); else result.append("<unset>");
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (value: ");
+    result.append(value);
+    result.append(", lang: ");
+    if (langESet) result.append(lang); else result.append("<unset>");
+    result.append(')');
+    return result.toString();
+  }
 
 } //AbstractTypeImpl

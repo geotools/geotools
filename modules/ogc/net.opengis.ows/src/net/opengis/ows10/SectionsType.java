@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows10.SectionsType#getSection <em>Section</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows10.Ows10Package#getSectionsType()
  * @model extendedMetaData="name='SectionsType' kind='elementOnly'"
@@ -32,19 +32,29 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface SectionsType extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Section</b></em>' attribute list.
-	 * The list contents are of type {@link java.lang.String}.
-	 * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Section</b></em>' attribute.
+   * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Section</em>' attribute list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Section</em>' attribute list.
-	 * @see net.opengis.ows10.Ows10Package#getSectionsType_Section()
-	 * @model dataType="net.opengis.ows10.MimeType"
-	 * @generated
-	 */
-	EList getSection();
+   * @return the value of the '<em>Section</em>' attribute.
+   * @see #setSection(String)
+   * @see net.opengis.ows10.Ows10Package#getSectionsType_Section()
+   * @model dataType="net.opengis.ows10.MimeType"
+   * @generated
+   */
+	String getSection();
+
+  /**
+   * Sets the value of the '{@link net.opengis.ows10.SectionsType#getSection <em>Section</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Section</em>' attribute.
+   * @see #getSection()
+   * @generated
+   */
+  void setSection(String value);
 
 } // SectionsType

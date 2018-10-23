@@ -29,210 +29,210 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.impl.DescribeFeatureTypeTypeImpl#getTypeName <em>Type Name</em>}</li>
  *   <li>{@link net.opengis.wfs.impl.DescribeFeatureTypeTypeImpl#getOutputFormat <em>Output Format</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class DescribeFeatureTypeTypeImpl extends BaseRequestTypeImpl implements DescribeFeatureTypeType {
 	/**
-     * The cached value of the '{@link #getTypeName() <em>Type Name</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getTypeName() <em>Type Name</em>}' attribute list.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getTypeName()
-     * @generated
-     * @ordered
-     */
+   * @see #getTypeName()
+   * @generated
+   * @ordered
+   */
 	protected EList typeName;
 
 	/**
-     * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getOutputFormat()
-     * @generated
-     * @ordered
-     */
+   * @see #getOutputFormat()
+   * @generated
+   * @ordered
+   */
 	protected static final String OUTPUT_FORMAT_EDEFAULT = "text/xml; subtype=gml/3.1.1";
 
 	/**
-     * The cached value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @see #getOutputFormat()
-     * @generated
-     * @ordered
-     */
+   * @see #getOutputFormat()
+   * @generated
+   * @ordered
+   */
 	protected String outputFormat = OUTPUT_FORMAT_EDEFAULT;
 
 	/**
-     * This is true if the Output Format attribute has been set.
-     * <!-- begin-user-doc -->
+   * This is true if the Output Format attribute has been set.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     * @ordered
-     */
+   * @generated
+   * @ordered
+   */
 	protected boolean outputFormatESet;
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected DescribeFeatureTypeTypeImpl() {
-        super();
-    }
+    super();
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected EClass eStaticClass() {
-        return WfsPackage.Literals.DESCRIBE_FEATURE_TYPE_TYPE;
-    }
+    return WfsPackage.Literals.DESCRIBE_FEATURE_TYPE_TYPE;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public EList getTypeName() {
-        if (typeName == null) {
-            typeName = new EDataTypeUniqueEList(QName.class, this, WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME);
-        }
-        return typeName;
+    if (typeName == null) {
+      typeName = new EDataTypeUniqueEList(QName.class, this, WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME);
     }
+    return typeName;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String getOutputFormat() {
-        return outputFormat;
-    }
+    return outputFormat;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void setOutputFormat(String newOutputFormat) {
-        String oldOutputFormat = outputFormat;
-        outputFormat = newOutputFormat;
-        boolean oldOutputFormatESet = outputFormatESet;
-        outputFormatESet = true;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT, oldOutputFormat, outputFormat, !oldOutputFormatESet));
-    }
+    String oldOutputFormat = outputFormat;
+    outputFormat = newOutputFormat;
+    boolean oldOutputFormatESet = outputFormatESet;
+    outputFormatESet = true;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT, oldOutputFormat, outputFormat, !oldOutputFormatESet));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void unsetOutputFormat() {
-        String oldOutputFormat = outputFormat;
-        boolean oldOutputFormatESet = outputFormatESet;
-        outputFormat = OUTPUT_FORMAT_EDEFAULT;
-        outputFormatESet = false;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.UNSET, WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT, oldOutputFormat, OUTPUT_FORMAT_EDEFAULT, oldOutputFormatESet));
-    }
+    String oldOutputFormat = outputFormat;
+    boolean oldOutputFormatESet = outputFormatESet;
+    outputFormat = OUTPUT_FORMAT_EDEFAULT;
+    outputFormatESet = false;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.UNSET, WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT, oldOutputFormat, OUTPUT_FORMAT_EDEFAULT, oldOutputFormatESet));
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public boolean isSetOutputFormat() {
-        return outputFormatESet;
-    }
+    return outputFormatESet;
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
-                return getTypeName();
-            case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
-                return getOutputFormat();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
+        return getTypeName();
+      case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
+        return getOutputFormat();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
-                getTypeName().clear();
-                getTypeName().addAll((Collection)newValue);
-                return;
-            case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
-                setOutputFormat((String)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
+        getTypeName().clear();
+        getTypeName().addAll((Collection)newValue);
+        return;
+      case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
+        setOutputFormat((String)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public void eUnset(int featureID) {
-        switch (featureID) {
-            case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
-                getTypeName().clear();
-                return;
-            case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
-                unsetOutputFormat();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
+        getTypeName().clear();
+        return;
+      case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
+        unsetOutputFormat();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
-                return typeName != null && !typeName.isEmpty();
-            case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
-                return isSetOutputFormat();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__TYPE_NAME:
+        return typeName != null && !typeName.isEmpty();
+      case WfsPackage.DESCRIBE_FEATURE_TYPE_TYPE__OUTPUT_FORMAT:
+        return isSetOutputFormat();
     }
+    return super.eIsSet(featureID);
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (typeName: ");
-        result.append(typeName);
-        result.append(", outputFormat: ");
-        if (outputFormatESet) result.append(outputFormat); else result.append("<unset>");
-        result.append(')');
-        return result.toString();
-    }
+    StringBuffer result = new StringBuffer(super.toString());
+    result.append(" (typeName: ");
+    result.append(typeName);
+    result.append(", outputFormat: ");
+    if (outputFormatESet) result.append(outputFormat); else result.append("<unset>");
+    result.append(')');
+    return result.toString();
+  }
 
 } //DescribeFeatureTypeTypeImpl

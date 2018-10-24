@@ -1908,8 +1908,8 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="abstractTransactionAction"
-        upperBound="-1" eType="#//AbstractTransactionActionType" changeable="false"
-        volatile="true" transient="true" derived="true" containment="true" resolveProxies="false">
+        upperBound="-1" eType="#//AbstractTransactionActionType" volatile="true" transient="true"
+        derived="true" containment="true" resolveProxies="false">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="element"/>
         <details key="name" value="AbstractTransactionAction"/>

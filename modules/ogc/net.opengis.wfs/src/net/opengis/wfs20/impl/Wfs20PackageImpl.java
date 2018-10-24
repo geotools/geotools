@@ -724,6 +724,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
     Ows11Package.eINSTANCE.eClass();
     Fes20Package.eINSTANCE.eClass();
     XlinkPackage.eINSTANCE.eClass();
+    XMLTypePackage.eINSTANCE.eClass();
 
     // Create package meta-data objects
     theWfs20Package.createPackageContents();
@@ -3964,6 +3965,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
     EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
     Ows11Package theOws11Package = (Ows11Package)EPackage.Registry.INSTANCE.getEPackage(Ows11Package.eNS_URI);
     Fes20Package theFes20Package = (Fes20Package)EPackage.Registry.INSTANCE.getEPackage(Fes20Package.eNS_URI);
+    XMLTypePackage theXMLTypePackage_1 = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
     XlinkPackage theXlinkPackage = (XlinkPackage)EPackage.Registry.INSTANCE.getEPackage(XlinkPackage.eNS_URI);
 
     // Create type parameters
@@ -4172,7 +4174,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
     initEAttribute(getGetPropertyValueType_Count(), theXMLTypePackage.getNonNegativeInteger(), "count", null, 0, 1, GetPropertyValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getGetPropertyValueType_OutputFormat(), theXMLTypePackage.getString(), "outputFormat", "application/gml+xml; version=3.2", 0, 1, GetPropertyValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getGetPropertyValueType_Resolve(), this.getResolveValueType(), "resolve", "none", 0, 1, GetPropertyValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getGetPropertyValueType_ResolveDepth(), theXMLTypePackage.getString(), "resolveDepth", "*", 0, 1, GetPropertyValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getGetPropertyValueType_ResolveDepth(), theXMLTypePackage_1.getString(), "resolveDepth", "*", 0, 1, GetPropertyValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getGetPropertyValueType_ResolvePath(), theXMLTypePackage.getString(), "resolvePath", null, 0, 1, GetPropertyValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getGetPropertyValueType_ResolveTimeout(), theXMLTypePackage.getPositiveInteger(), "resolveTimeout", "300", 0, 1, GetPropertyValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getGetPropertyValueType_ResultType(), this.getResultTypeType(), "resultType", "results", 0, 1, GetPropertyValueType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4320,7 +4322,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
     initEClass(transactionTypeEClass, TransactionType.class, "TransactionType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getTransactionType_Group(), theEcorePackage.getEFeatureMapEntry(), "group", null, 0, -1, TransactionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTransactionType_AbstractTransactionActionGroup(), theEcorePackage.getEFeatureMapEntry(), "abstractTransactionActionGroup", null, 0, -1, TransactionType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, IS_DERIVED, IS_ORDERED);
-    initEReference(getTransactionType_AbstractTransactionAction(), this.getAbstractTransactionActionType(), null, "abstractTransactionAction", null, 0, -1, TransactionType.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+    initEReference(getTransactionType_AbstractTransactionAction(), this.getAbstractTransactionActionType(), null, "abstractTransactionAction", null, 0, -1, TransactionType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
     initEAttribute(getTransactionType_LockId(), theXMLTypePackage.getString(), "lockId", null, 0, 1, TransactionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTransactionType_ReleaseAction(), this.getAllSomeType(), "releaseAction", "ALL", 0, 1, TransactionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getTransactionType_SrsName(), theXMLTypePackage.getAnyURI(), "srsName", null, 0, 1, TransactionType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

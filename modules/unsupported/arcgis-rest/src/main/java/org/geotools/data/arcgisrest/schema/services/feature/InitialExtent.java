@@ -2,9 +2,6 @@ package org.geotools.data.arcgisrest.schema.services.feature;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class InitialExtent {
 
@@ -27,112 +24,104 @@ public class InitialExtent {
     /** (Required) */
     @SerializedName("spatialReference")
     @Expose
-    private SpatialReference_ spatialReference;
+    private SpatialReference__1 spatialReference;
 
-    /**
-     * (Required)
-     *
-     * @return The xmin
-     */
+    /** (Required) */
     public Double getXmin() {
         return xmin;
     }
 
-    /**
-     * (Required)
-     *
-     * @param xmin The xmin
-     */
+    /** (Required) */
     public void setXmin(Double xmin) {
         this.xmin = xmin;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The ymin
-     */
+    /** (Required) */
     public Double getYmin() {
         return ymin;
     }
 
-    /**
-     * (Required)
-     *
-     * @param ymin The ymin
-     */
+    /** (Required) */
     public void setYmin(Double ymin) {
         this.ymin = ymin;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The xmax
-     */
+    /** (Required) */
     public Double getXmax() {
         return xmax;
     }
 
-    /**
-     * (Required)
-     *
-     * @param xmax The xmax
-     */
+    /** (Required) */
     public void setXmax(Double xmax) {
         this.xmax = xmax;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The ymax
-     */
+    /** (Required) */
     public Double getYmax() {
         return ymax;
     }
 
-    /**
-     * (Required)
-     *
-     * @param ymax The ymax
-     */
+    /** (Required) */
     public void setYmax(Double ymax) {
         this.ymax = ymax;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The spatialReference
-     */
-    public SpatialReference_ getSpatialReference() {
+    /** (Required) */
+    public SpatialReference__1 getSpatialReference() {
         return spatialReference;
     }
 
-    /**
-     * (Required)
-     *
-     * @param spatialReference The spatialReference
-     */
-    public void setSpatialReference(SpatialReference_ spatialReference) {
+    /** (Required) */
+    public void setSpatialReference(SpatialReference__1 spatialReference) {
         this.spatialReference = spatialReference;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(InitialExtent.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("xmin");
+        sb.append('=');
+        sb.append(((this.xmin == null) ? "<null>" : this.xmin));
+        sb.append(',');
+        sb.append("ymin");
+        sb.append('=');
+        sb.append(((this.ymin == null) ? "<null>" : this.ymin));
+        sb.append(',');
+        sb.append("xmax");
+        sb.append('=');
+        sb.append(((this.xmax == null) ? "<null>" : this.xmax));
+        sb.append(',');
+        sb.append("ymax");
+        sb.append('=');
+        sb.append(((this.ymax == null) ? "<null>" : this.ymax));
+        sb.append(',');
+        sb.append("spatialReference");
+        sb.append('=');
+        sb.append(((this.spatialReference == null) ? "<null>" : this.spatialReference));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(xmin)
-                .append(ymin)
-                .append(xmax)
-                .append(ymax)
-                .append(spatialReference)
-                .toHashCode();
+        int result = 1;
+        result = ((result * 31) + ((this.ymin == null) ? 0 : this.ymin.hashCode()));
+        result = ((result * 31) + ((this.xmin == null) ? 0 : this.xmin.hashCode()));
+        result = ((result * 31) + ((this.ymax == null) ? 0 : this.ymax.hashCode()));
+        result = ((result * 31) + ((this.xmax == null) ? 0 : this.xmax.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.spatialReference == null) ? 0 : this.spatialReference.hashCode()));
+        return result;
     }
 
     @Override
@@ -144,12 +133,16 @@ public class InitialExtent {
             return false;
         }
         InitialExtent rhs = ((InitialExtent) other);
-        return new EqualsBuilder()
-                .append(xmin, rhs.xmin)
-                .append(ymin, rhs.ymin)
-                .append(xmax, rhs.xmax)
-                .append(ymax, rhs.ymax)
-                .append(spatialReference, rhs.spatialReference)
-                .isEquals();
+        return ((((((this.ymin == rhs.ymin) || ((this.ymin != null) && this.ymin.equals(rhs.ymin)))
+                                        && ((this.xmin == rhs.xmin)
+                                                || ((this.xmin != null)
+                                                        && this.xmin.equals(rhs.xmin))))
+                                && ((this.ymax == rhs.ymax)
+                                        || ((this.ymax != null) && this.ymax.equals(rhs.ymax))))
+                        && ((this.xmax == rhs.xmax)
+                                || ((this.xmax != null) && this.xmax.equals(rhs.xmax))))
+                && ((this.spatialReference == rhs.spatialReference)
+                        || ((this.spatialReference != null)
+                                && this.spatialReference.equals(rhs.spatialReference))));
     }
 }

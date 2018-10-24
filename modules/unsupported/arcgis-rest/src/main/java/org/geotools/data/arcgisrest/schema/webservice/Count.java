@@ -2,35 +2,45 @@ package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Count {
 
-    /** */
     @SerializedName("count")
     @Expose
     private Integer count;
 
-    /** @return The count */
     public Integer getCount() {
         return count;
     }
 
-    /** @param count The count */
     public void setCount(Integer count) {
         this.count = count;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Count.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("count");
+        sb.append('=');
+        sb.append(((this.count == null) ? "<null>" : this.count));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(count).toHashCode();
+        int result = 1;
+        result = ((result * 31) + ((this.count == null) ? 0 : this.count.hashCode()));
+        return result;
     }
 
     @Override
@@ -42,6 +52,7 @@ public class Count {
             return false;
         }
         Count rhs = ((Count) other);
-        return new EqualsBuilder().append(count, rhs.count).isEquals();
+        return ((this.count == rhs.count)
+                || ((this.count != null) && this.count.equals(rhs.count)));
     }
 }

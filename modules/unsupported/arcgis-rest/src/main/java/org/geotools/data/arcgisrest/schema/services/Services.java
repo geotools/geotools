@@ -4,9 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Services {
 
@@ -19,50 +16,57 @@ public class Services {
     @Expose
     private List<Service> services = new ArrayList<Service>();
 
-    /**
-     * (Required)
-     *
-     * @return The currentVersion
-     */
+    /** (Required) */
     public Double getCurrentVersion() {
         return currentVersion;
     }
 
-    /**
-     * (Required)
-     *
-     * @param currentVersion The currentVersion
-     */
+    /** (Required) */
     public void setCurrentVersion(Double currentVersion) {
         this.currentVersion = currentVersion;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The services
-     */
+    /** (Required) */
     public List<Service> getServices() {
         return services;
     }
 
-    /**
-     * (Required)
-     *
-     * @param services The services
-     */
+    /** (Required) */
     public void setServices(List<Service> services) {
         this.services = services;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Services.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("currentVersion");
+        sb.append('=');
+        sb.append(((this.currentVersion == null) ? "<null>" : this.currentVersion));
+        sb.append(',');
+        sb.append("services");
+        sb.append('=');
+        sb.append(((this.services == null) ? "<null>" : this.services));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(currentVersion).append(services).toHashCode();
+        int result = 1;
+        result =
+                ((result * 31)
+                        + ((this.currentVersion == null) ? 0 : this.currentVersion.hashCode()));
+        result = ((result * 31) + ((this.services == null) ? 0 : this.services.hashCode()));
+        return result;
     }
 
     @Override
@@ -74,9 +78,10 @@ public class Services {
             return false;
         }
         Services rhs = ((Services) other);
-        return new EqualsBuilder()
-                .append(currentVersion, rhs.currentVersion)
-                .append(services, rhs.services)
-                .isEquals();
+        return (((this.currentVersion == rhs.currentVersion)
+                        || ((this.currentVersion != null)
+                                && this.currentVersion.equals(rhs.currentVersion)))
+                && ((this.services == rhs.services)
+                        || ((this.services != null) && this.services.equals(rhs.services))));
     }
 }

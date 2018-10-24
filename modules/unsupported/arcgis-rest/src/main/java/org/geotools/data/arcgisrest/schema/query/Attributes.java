@@ -1,19 +1,26 @@
 package org.geotools.data.arcgisrest.schema.query;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 public class Attributes {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Attributes.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().toHashCode();
+        int result = 1;
+        return result;
     }
 
     @Override
@@ -25,6 +32,6 @@ public class Attributes {
             return false;
         }
         Attributes rhs = ((Attributes) other);
-        return new EqualsBuilder().isEquals();
+        return true;
     }
 }

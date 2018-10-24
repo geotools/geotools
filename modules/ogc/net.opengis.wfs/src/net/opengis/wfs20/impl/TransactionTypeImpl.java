@@ -6,6 +6,7 @@
  */
 package net.opengis.wfs20.impl;
 
+import java.util.Collection;
 import net.opengis.wfs20.AbstractTransactionActionType;
 import net.opengis.wfs20.AllSomeType;
 import net.opengis.wfs20.TransactionType;
@@ -309,6 +310,7 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
      * <!-- end-user-doc -->
    * @generated
    */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
@@ -317,6 +319,10 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
         return;
       case Wfs20Package.TRANSACTION_TYPE__ABSTRACT_TRANSACTION_ACTION_GROUP:
         ((FeatureMap.Internal)getAbstractTransactionActionGroup()).set(newValue);
+        return;
+      case Wfs20Package.TRANSACTION_TYPE__ABSTRACT_TRANSACTION_ACTION:
+        getAbstractTransactionAction().clear();
+        getAbstractTransactionAction().addAll((Collection<? extends AbstractTransactionActionType>)newValue);
         return;
       case Wfs20Package.TRANSACTION_TYPE__LOCK_ID:
         setLockId((String)newValue);
@@ -344,6 +350,9 @@ public class TransactionTypeImpl extends BaseRequestTypeImpl implements Transact
         return;
       case Wfs20Package.TRANSACTION_TYPE__ABSTRACT_TRANSACTION_ACTION_GROUP:
         getAbstractTransactionActionGroup().clear();
+        return;
+      case Wfs20Package.TRANSACTION_TYPE__ABSTRACT_TRANSACTION_ACTION:
+        getAbstractTransactionAction().clear();
         return;
       case Wfs20Package.TRANSACTION_TYPE__LOCK_ID:
         setLockId(LOCK_ID_EDEFAULT);

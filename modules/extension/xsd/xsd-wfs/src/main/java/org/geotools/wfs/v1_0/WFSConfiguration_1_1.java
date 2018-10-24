@@ -24,13 +24,13 @@ import org.geotools.filter.v1_0.OGCConfiguration;
  *
  * @generated
  */
-public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
+public class WFSConfiguration_1_1 extends org.geotools.wfs.WFSConfiguration {
     /**
      * Creates a new configuration.
      *
      * @generated
      */
-    public WFSConfiguration() {
+    public WFSConfiguration_1_1() {
         super(WFS.getInstance());
 
         addDependency(new OGCConfiguration());

@@ -77,7 +77,7 @@ public interface TransactionType extends BaseRequestType {
      * <!-- end-user-doc -->
    * @return the value of the '<em>Abstract Transaction Action</em>' containment reference list.
    * @see net.opengis.wfs20.Wfs20Package#getTransactionType_AbstractTransactionAction()
-   * @model containment="true" transient="true" changeable="false" volatile="true" derived="true"
+   * @model containment="true" transient="true" volatile="true" derived="true"
    *        extendedMetaData="kind='element' name='AbstractTransactionAction' namespace='##targetNamespace' group='AbstractTransactionAction:group'"
    * @generated
    */

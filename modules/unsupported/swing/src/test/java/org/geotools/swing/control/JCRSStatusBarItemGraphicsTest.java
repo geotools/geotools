@@ -17,15 +17,16 @@
 
 package org.geotools.swing.control;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import javax.swing.JFrame;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.FrameFixture;
-import org.fest.swing.fixture.JButtonFixture;
+import org.assertj.swing.driver.FrameDriver;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.JButtonFixture;
 import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.swing.MapPane;
@@ -44,7 +45,8 @@ import org.junit.runner.RunWith;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JCRSStatusBarItemGraphicsTest extends GraphicsTestBase<Frame> {
+public class JCRSStatusBarItemGraphicsTest
+        extends GraphicsTestBase<FrameFixture, Frame, FrameDriver> {
 
     private MapContent mapContent;
     private MapPane mapPane;

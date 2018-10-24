@@ -23,8 +23,9 @@ import java.awt.AWTEvent;
 import java.awt.Dialog;
 import java.awt.Toolkit;
 import java.util.regex.Pattern;
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.fixture.JLabelFixture;
+import org.assertj.swing.driver.DialogDriver;
+import org.assertj.swing.fixture.DialogFixture;
+import org.assertj.swing.fixture.JLabelFixture;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.geotools.swing.testutils.WindowActivatedListener;
@@ -41,7 +42,7 @@ import org.junit.runner.RunWith;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
+public class JExceptionReporterTest extends GraphicsTestBase<DialogFixture, Dialog, DialogDriver> {
 
     private static final Class<? extends Dialog> DIALOG_CLASS =
             JExceptionReporter.ReportingDialog.class;
@@ -65,7 +66,7 @@ public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
         showDialog(new IllegalArgumentException(MSG));
 
         ((DialogFixture) windowFixture).requireModal();
-        assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
+        assertEquals("IllegalArgumentException", windowFixture.target().getTitle());
 
         JLabelFixture label = windowFixture.label();
         label.requireText(Pattern.compile(".*" + MSG + ".*"));
@@ -77,7 +78,7 @@ public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
         final String USER_MSG = "You should see this message";
         showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
 
-        assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
+        assertEquals("IllegalArgumentException", windowFixture.target().getTitle());
 
         JLabelFixture label = windowFixture.label();
         label.requireText(Pattern.compile(".*" + USER_MSG + ".*"));
@@ -89,7 +90,7 @@ public class JExceptionReporterTest extends GraphicsTestBase<Dialog> {
         final String USER_MSG = "";
         showDialog(new IllegalArgumentException(EXCEPTION_MSG), USER_MSG);
 
-        assertEquals("IllegalArgumentException", windowFixture.component().getTitle());
+        assertEquals("IllegalArgumentException", windowFixture.target().getTitle());
 
         JLabelFixture label = windowFixture.label();
         label.requireText(Pattern.compile(".*" + EXCEPTION_MSG + ".*"));

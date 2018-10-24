@@ -25,9 +25,9 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.fixture.FrameFixture;
-import org.fest.swing.fixture.WindowFixture;
+import org.assertj.swing.fixture.AbstractWindowFixture;
+import org.assertj.swing.fixture.DialogFixture;
+import org.assertj.swing.fixture.FrameFixture;
 
 /**
  * Listens for a window of specified class to be activated on the AWT event thread and, when it
@@ -41,7 +41,7 @@ public class WindowActivatedListener implements AWTEventListener {
 
     private final Class<? extends Window> windowClass;
     private final CountDownLatch latch;
-    private WindowFixture fixture;
+    private AbstractWindowFixture fixture;
 
     /**
      * Creates a new listener.
@@ -92,7 +92,7 @@ public class WindowActivatedListener implements AWTEventListener {
      * @throws InterruptedException on interruption while waiting for the fixture to become
      *     available
      */
-    public WindowFixture getFixture(long timeOutMillis) throws InterruptedException {
+    public AbstractWindowFixture getFixture(long timeOutMillis) throws InterruptedException {
         if (latch.await(timeOutMillis, TimeUnit.MILLISECONDS)) {
             return fixture;
         } else {

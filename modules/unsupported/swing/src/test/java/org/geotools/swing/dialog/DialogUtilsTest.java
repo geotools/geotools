@@ -30,10 +30,10 @@ import java.awt.image.Raster;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.FrameFixture;
-import org.fest.swing.fixture.JLabelFixture;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.JLabelFixture;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.geotools.swing.testutils.TestImageFrame;
@@ -121,8 +121,8 @@ public class DialogUtilsTest extends GraphicsTestBase {
         fixture.show();
 
         JLabelFixture lf = fixture.label("TheLabel");
-        Point pos = lf.component().getLocationOnScreen();
-        Dimension size = lf.component().getSize();
+        Point pos = lf.target().getLocationOnScreen();
+        Dimension size = lf.target().getSize();
 
         Robot robot = new Robot();
         BufferedImage img = robot.createScreenCapture(new Rectangle(pos, dim));

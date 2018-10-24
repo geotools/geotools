@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import org.fest.swing.core.MouseButton;
+import org.assertj.swing.core.MouseButton;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
 import org.geotools.swing.event.MapPaneEvent;
@@ -61,7 +61,7 @@ public class PanToolTest extends CursorToolTestBase {
         Point startWindowPos = new Point(SCREEN.width / 4, SCREEN.height / 4);
         Point endWindowPos = new Point(SCREEN.width / 2, SCREEN.height / 2);
 
-        Point screenPos = mapPaneFixture.component().getLocationOnScreen();
+        Point screenPos = mapPaneFixture.target().getLocationOnScreen();
 
         Point mouseStartPos =
                 new Point(screenPos.x + startWindowPos.x, screenPos.y + startWindowPos.y);
@@ -71,9 +71,9 @@ public class PanToolTest extends CursorToolTestBase {
         listener.setExpected(MapPaneEvent.Type.DISPLAY_AREA_CHANGED);
 
         mapPane.setCursorTool(tool);
-        mapPaneFixture.robot.pressMouse(mouseStartPos, MouseButton.LEFT_BUTTON);
-        mapPaneFixture.robot.moveMouse(mouseEndPos);
-        mapPaneFixture.robot.releaseMouseButtons();
+        mapPaneFixture.robot().pressMouse(mouseStartPos, MouseButton.LEFT_BUTTON);
+        mapPaneFixture.robot().moveMouse(mouseEndPos);
+        mapPaneFixture.robot().releaseMouseButtons();
 
         assertTrue(listener.await(MapPaneEvent.Type.DISPLAY_AREA_CHANGED, EVENT_TIMEOUT));
 

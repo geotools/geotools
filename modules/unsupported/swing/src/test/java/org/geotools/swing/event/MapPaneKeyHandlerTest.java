@@ -17,7 +17,7 @@
 
 package org.geotools.swing.event;
 
-import static org.fest.swing.core.KeyPressInfo.*;
+import static org.assertj.swing.core.KeyPressInfo.*;
 import static org.junit.Assert.*;
 
 import java.awt.Dimension;
@@ -25,10 +25,11 @@ import java.awt.Frame;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.FrameFixture;
+import org.assertj.swing.core.KeyPressInfo;
+import org.assertj.swing.driver.FrameDriver;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+import org.assertj.swing.fixture.FrameFixture;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
@@ -47,7 +48,7 @@ import org.opengis.geometry.Envelope;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class MapPaneKeyHandlerTest extends GraphicsTestBase<Frame> {
+public class MapPaneKeyHandlerTest extends GraphicsTestBase<FrameFixture, Frame, FrameDriver> {
     private static final long WAIT_TIMEOUT = 1000;
     private static final int WIDTH = 200;
     private static final int HEIGHT = 150;

@@ -26,11 +26,12 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.fixture.JButtonFixture;
+import org.assertj.swing.driver.DialogDriver;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+import org.assertj.swing.edt.GuiTask;
+import org.assertj.swing.fixture.DialogFixture;
+import org.assertj.swing.fixture.JButtonFixture;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.junit.Test;
@@ -44,7 +45,8 @@ import org.junit.runner.RunWith;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class AbstractSimpleDialogTest extends GraphicsTestBase<Dialog> {
+public class AbstractSimpleDialogTest
+        extends GraphicsTestBase<DialogFixture, Dialog, DialogDriver> {
 
     private static final String TITLE = "Foo Dialog";
 

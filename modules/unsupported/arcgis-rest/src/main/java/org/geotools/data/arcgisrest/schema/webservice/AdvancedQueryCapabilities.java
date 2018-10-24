@@ -2,9 +2,6 @@ package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class AdvancedQueryCapabilities {
 
@@ -53,224 +50,248 @@ public class AdvancedQueryCapabilities {
     @Expose
     private Boolean supportsReturningGeometryCentroid;
 
-    /**
-     * (Required)
-     *
-     * @return The supportsPagination
-     */
+    /** (Required) */
     public Boolean getSupportsPagination() {
         return supportsPagination;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsPagination The supportsPagination
-     */
+    /** (Required) */
     public void setSupportsPagination(Boolean supportsPagination) {
         this.supportsPagination = supportsPagination;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsQueryRelatedPagination
-     */
+    /** (Required) */
     public Boolean getSupportsQueryRelatedPagination() {
         return supportsQueryRelatedPagination;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsQueryRelatedPagination The supportsQueryRelatedPagination
-     */
+    /** (Required) */
     public void setSupportsQueryRelatedPagination(Boolean supportsQueryRelatedPagination) {
         this.supportsQueryRelatedPagination = supportsQueryRelatedPagination;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsQueryWithDistance
-     */
+    /** (Required) */
     public Boolean getSupportsQueryWithDistance() {
         return supportsQueryWithDistance;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsQueryWithDistance The supportsQueryWithDistance
-     */
+    /** (Required) */
     public void setSupportsQueryWithDistance(Boolean supportsQueryWithDistance) {
         this.supportsQueryWithDistance = supportsQueryWithDistance;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsReturningQueryExtent
-     */
+    /** (Required) */
     public Boolean getSupportsReturningQueryExtent() {
         return supportsReturningQueryExtent;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsReturningQueryExtent The supportsReturningQueryExtent
-     */
+    /** (Required) */
     public void setSupportsReturningQueryExtent(Boolean supportsReturningQueryExtent) {
         this.supportsReturningQueryExtent = supportsReturningQueryExtent;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsStatistics
-     */
+    /** (Required) */
     public Boolean getSupportsStatistics() {
         return supportsStatistics;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsStatistics The supportsStatistics
-     */
+    /** (Required) */
     public void setSupportsStatistics(Boolean supportsStatistics) {
         this.supportsStatistics = supportsStatistics;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsOrderBy
-     */
+    /** (Required) */
     public Boolean getSupportsOrderBy() {
         return supportsOrderBy;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsOrderBy The supportsOrderBy
-     */
+    /** (Required) */
     public void setSupportsOrderBy(Boolean supportsOrderBy) {
         this.supportsOrderBy = supportsOrderBy;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsDistinct
-     */
+    /** (Required) */
     public Boolean getSupportsDistinct() {
         return supportsDistinct;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsDistinct The supportsDistinct
-     */
+    /** (Required) */
     public void setSupportsDistinct(Boolean supportsDistinct) {
         this.supportsDistinct = supportsDistinct;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsQueryWithResultType
-     */
+    /** (Required) */
     public Boolean getSupportsQueryWithResultType() {
         return supportsQueryWithResultType;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsQueryWithResultType The supportsQueryWithResultType
-     */
+    /** (Required) */
     public void setSupportsQueryWithResultType(Boolean supportsQueryWithResultType) {
         this.supportsQueryWithResultType = supportsQueryWithResultType;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsSqlExpression
-     */
+    /** (Required) */
     public Boolean getSupportsSqlExpression() {
         return supportsSqlExpression;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsSqlExpression The supportsSqlExpression
-     */
+    /** (Required) */
     public void setSupportsSqlExpression(Boolean supportsSqlExpression) {
         this.supportsSqlExpression = supportsSqlExpression;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsAdvancedQueryRelated
-     */
+    /** (Required) */
     public Boolean getSupportsAdvancedQueryRelated() {
         return supportsAdvancedQueryRelated;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsAdvancedQueryRelated The supportsAdvancedQueryRelated
-     */
+    /** (Required) */
     public void setSupportsAdvancedQueryRelated(Boolean supportsAdvancedQueryRelated) {
         this.supportsAdvancedQueryRelated = supportsAdvancedQueryRelated;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsReturningGeometryCentroid
-     */
+    /** (Required) */
     public Boolean getSupportsReturningGeometryCentroid() {
         return supportsReturningGeometryCentroid;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsReturningGeometryCentroid The supportsReturningGeometryCentroid
-     */
+    /** (Required) */
     public void setSupportsReturningGeometryCentroid(Boolean supportsReturningGeometryCentroid) {
         this.supportsReturningGeometryCentroid = supportsReturningGeometryCentroid;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(AdvancedQueryCapabilities.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("supportsPagination");
+        sb.append('=');
+        sb.append(((this.supportsPagination == null) ? "<null>" : this.supportsPagination));
+        sb.append(',');
+        sb.append("supportsQueryRelatedPagination");
+        sb.append('=');
+        sb.append(
+                ((this.supportsQueryRelatedPagination == null)
+                        ? "<null>"
+                        : this.supportsQueryRelatedPagination));
+        sb.append(',');
+        sb.append("supportsQueryWithDistance");
+        sb.append('=');
+        sb.append(
+                ((this.supportsQueryWithDistance == null)
+                        ? "<null>"
+                        : this.supportsQueryWithDistance));
+        sb.append(',');
+        sb.append("supportsReturningQueryExtent");
+        sb.append('=');
+        sb.append(
+                ((this.supportsReturningQueryExtent == null)
+                        ? "<null>"
+                        : this.supportsReturningQueryExtent));
+        sb.append(',');
+        sb.append("supportsStatistics");
+        sb.append('=');
+        sb.append(((this.supportsStatistics == null) ? "<null>" : this.supportsStatistics));
+        sb.append(',');
+        sb.append("supportsOrderBy");
+        sb.append('=');
+        sb.append(((this.supportsOrderBy == null) ? "<null>" : this.supportsOrderBy));
+        sb.append(',');
+        sb.append("supportsDistinct");
+        sb.append('=');
+        sb.append(((this.supportsDistinct == null) ? "<null>" : this.supportsDistinct));
+        sb.append(',');
+        sb.append("supportsQueryWithResultType");
+        sb.append('=');
+        sb.append(
+                ((this.supportsQueryWithResultType == null)
+                        ? "<null>"
+                        : this.supportsQueryWithResultType));
+        sb.append(',');
+        sb.append("supportsSqlExpression");
+        sb.append('=');
+        sb.append(((this.supportsSqlExpression == null) ? "<null>" : this.supportsSqlExpression));
+        sb.append(',');
+        sb.append("supportsAdvancedQueryRelated");
+        sb.append('=');
+        sb.append(
+                ((this.supportsAdvancedQueryRelated == null)
+                        ? "<null>"
+                        : this.supportsAdvancedQueryRelated));
+        sb.append(',');
+        sb.append("supportsReturningGeometryCentroid");
+        sb.append('=');
+        sb.append(
+                ((this.supportsReturningGeometryCentroid == null)
+                        ? "<null>"
+                        : this.supportsReturningGeometryCentroid));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(supportsPagination)
-                .append(supportsQueryRelatedPagination)
-                .append(supportsQueryWithDistance)
-                .append(supportsReturningQueryExtent)
-                .append(supportsStatistics)
-                .append(supportsOrderBy)
-                .append(supportsDistinct)
-                .append(supportsQueryWithResultType)
-                .append(supportsSqlExpression)
-                .append(supportsAdvancedQueryRelated)
-                .append(supportsReturningGeometryCentroid)
-                .toHashCode();
+        int result = 1;
+        result =
+                ((result * 31)
+                        + ((this.supportsStatistics == null)
+                                ? 0
+                                : this.supportsStatistics.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsSqlExpression == null)
+                                ? 0
+                                : this.supportsSqlExpression.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsReturningQueryExtent == null)
+                                ? 0
+                                : this.supportsReturningQueryExtent.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsQueryWithResultType == null)
+                                ? 0
+                                : this.supportsQueryWithResultType.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsOrderBy == null) ? 0 : this.supportsOrderBy.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsQueryRelatedPagination == null)
+                                ? 0
+                                : this.supportsQueryRelatedPagination.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsQueryWithDistance == null)
+                                ? 0
+                                : this.supportsQueryWithDistance.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsPagination == null)
+                                ? 0
+                                : this.supportsPagination.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsDistinct == null) ? 0 : this.supportsDistinct.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsReturningGeometryCentroid == null)
+                                ? 0
+                                : this.supportsReturningGeometryCentroid.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsAdvancedQueryRelated == null)
+                                ? 0
+                                : this.supportsAdvancedQueryRelated.hashCode()));
+        return result;
     }
 
     @Override
@@ -282,18 +303,83 @@ public class AdvancedQueryCapabilities {
             return false;
         }
         AdvancedQueryCapabilities rhs = ((AdvancedQueryCapabilities) other);
-        return new EqualsBuilder()
-                .append(supportsPagination, rhs.supportsPagination)
-                .append(supportsQueryRelatedPagination, rhs.supportsQueryRelatedPagination)
-                .append(supportsQueryWithDistance, rhs.supportsQueryWithDistance)
-                .append(supportsReturningQueryExtent, rhs.supportsReturningQueryExtent)
-                .append(supportsStatistics, rhs.supportsStatistics)
-                .append(supportsOrderBy, rhs.supportsOrderBy)
-                .append(supportsDistinct, rhs.supportsDistinct)
-                .append(supportsQueryWithResultType, rhs.supportsQueryWithResultType)
-                .append(supportsSqlExpression, rhs.supportsSqlExpression)
-                .append(supportsAdvancedQueryRelated, rhs.supportsAdvancedQueryRelated)
-                .append(supportsReturningGeometryCentroid, rhs.supportsReturningGeometryCentroid)
-                .isEquals();
+        return ((((((((((((this.supportsStatistics == rhs.supportsStatistics)
+                                                                                                || ((this
+                                                                                                                        .supportsStatistics
+                                                                                                                != null)
+                                                                                                        && this
+                                                                                                                .supportsStatistics
+                                                                                                                .equals(
+                                                                                                                        rhs.supportsStatistics)))
+                                                                                        && ((this
+                                                                                                                .supportsSqlExpression
+                                                                                                        == rhs.supportsSqlExpression)
+                                                                                                || ((this
+                                                                                                                        .supportsSqlExpression
+                                                                                                                != null)
+                                                                                                        && this
+                                                                                                                .supportsSqlExpression
+                                                                                                                .equals(
+                                                                                                                        rhs.supportsSqlExpression))))
+                                                                                && ((this
+                                                                                                        .supportsReturningQueryExtent
+                                                                                                == rhs.supportsReturningQueryExtent)
+                                                                                        || ((this
+                                                                                                                .supportsReturningQueryExtent
+                                                                                                        != null)
+                                                                                                && this
+                                                                                                        .supportsReturningQueryExtent
+                                                                                                        .equals(
+                                                                                                                rhs.supportsReturningQueryExtent))))
+                                                                        && ((this
+                                                                                                .supportsQueryWithResultType
+                                                                                        == rhs.supportsQueryWithResultType)
+                                                                                || ((this
+                                                                                                        .supportsQueryWithResultType
+                                                                                                != null)
+                                                                                        && this
+                                                                                                .supportsQueryWithResultType
+                                                                                                .equals(
+                                                                                                        rhs.supportsQueryWithResultType))))
+                                                                && ((this.supportsOrderBy
+                                                                                == rhs.supportsOrderBy)
+                                                                        || ((this.supportsOrderBy
+                                                                                        != null)
+                                                                                && this
+                                                                                        .supportsOrderBy
+                                                                                        .equals(
+                                                                                                rhs.supportsOrderBy))))
+                                                        && ((this.supportsQueryRelatedPagination
+                                                                        == rhs.supportsQueryRelatedPagination)
+                                                                || ((this
+                                                                                        .supportsQueryRelatedPagination
+                                                                                != null)
+                                                                        && this
+                                                                                .supportsQueryRelatedPagination
+                                                                                .equals(
+                                                                                        rhs.supportsQueryRelatedPagination))))
+                                                && ((this.supportsQueryWithDistance
+                                                                == rhs.supportsQueryWithDistance)
+                                                        || ((this.supportsQueryWithDistance != null)
+                                                                && this.supportsQueryWithDistance
+                                                                        .equals(
+                                                                                rhs.supportsQueryWithDistance))))
+                                        && ((this.supportsPagination == rhs.supportsPagination)
+                                                || ((this.supportsPagination != null)
+                                                        && this.supportsPagination.equals(
+                                                                rhs.supportsPagination))))
+                                && ((this.supportsDistinct == rhs.supportsDistinct)
+                                        || ((this.supportsDistinct != null)
+                                                && this.supportsDistinct.equals(
+                                                        rhs.supportsDistinct))))
+                        && ((this.supportsReturningGeometryCentroid
+                                        == rhs.supportsReturningGeometryCentroid)
+                                || ((this.supportsReturningGeometryCentroid != null)
+                                        && this.supportsReturningGeometryCentroid.equals(
+                                                rhs.supportsReturningGeometryCentroid))))
+                && ((this.supportsAdvancedQueryRelated == rhs.supportsAdvancedQueryRelated)
+                        || ((this.supportsAdvancedQueryRelated != null)
+                                && this.supportsAdvancedQueryRelated.equals(
+                                        rhs.supportsAdvancedQueryRelated))));
     }
 }

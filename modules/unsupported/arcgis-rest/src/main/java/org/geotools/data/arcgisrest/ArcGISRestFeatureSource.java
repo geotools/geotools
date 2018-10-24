@@ -19,6 +19,7 @@
 package org.geotools.data.arcgisrest;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -30,7 +31,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.logging.Level;
-import javax.xml.ws.http.HTTPException;
 import org.geotools.data.DefaultResourceInfo;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -86,8 +86,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
     static {
         EsriJTSMapping.put("esriGeometryPoint", org.locationtech.jts.geom.Point.class);
         EsriJTSMapping.put("esriGeometryMultipoint", org.locationtech.jts.geom.MultiPoint.class);
-        EsriJTSMapping.put(
-                "esriGeometryPolyline", org.locationtech.jts.geom.MultiLineString.class);
+        EsriJTSMapping.put("esriGeometryPolyline", org.locationtech.jts.geom.MultiLineString.class);
         EsriJTSMapping.put("esriGeometryPolygon", org.locationtech.jts.geom.MultiPolygon.class);
     }
 
@@ -245,8 +244,8 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
                                                     (new URL(this.composeQueryURL())),
                                                     params)),
                                     Count.class);
-        } catch (HTTPException e) {
-            throw new IOException("Error " + e.getStatusCode() + " " + e.getMessage());
+        } catch (JsonSyntaxException e) {
+            throw new IOException("Error " + e.getMessage());
         }
 
         return cnt == null ? -1 : cnt.getCount();
@@ -272,11 +271,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         params.put(ArcGISRestDataStore.FORMAT_PARAM, ArcGISRestDataStore.FORMAT_GEOJSON);
 
         // Executes the request
-        try {
-            result = this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params);
-        } catch (HTTPException e) {
-            throw new IOException("Error " + e.getStatusCode() + " " + e.getMessage());
-        }
+        result = this.dataStore.retrieveJSON("POST", (new URL(this.composeQueryURL())), params);
 
         // Returns a reader for the result
         return new ArcGISRestFeatureReader(this.schema, result, this.dataStore.getLogger());

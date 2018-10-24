@@ -2,9 +2,6 @@ package org.geotools.data.arcgisrest.schema.services.feature;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Layer {
 
@@ -37,148 +34,136 @@ public class Layer {
     @Expose
     private Integer maxScale;
 
-    /**
-     * (Required)
-     *
-     * @return The id
-     */
+    /** (Required) */
     public Integer getId() {
         return id;
     }
 
-    /**
-     * (Required)
-     *
-     * @param id The id
-     */
+    /** (Required) */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The name
-     */
+    /** (Required) */
     public String getName() {
         return name;
     }
 
-    /**
-     * (Required)
-     *
-     * @param name The name
-     */
+    /** (Required) */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The parentLayerId
-     */
+    /** (Required) */
     public Integer getParentLayerId() {
         return parentLayerId;
     }
 
-    /**
-     * (Required)
-     *
-     * @param parentLayerId The parentLayerId
-     */
+    /** (Required) */
     public void setParentLayerId(Integer parentLayerId) {
         this.parentLayerId = parentLayerId;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The defaultVisibility
-     */
+    /** (Required) */
     public Boolean getDefaultVisibility() {
         return defaultVisibility;
     }
 
-    /**
-     * (Required)
-     *
-     * @param defaultVisibility The defaultVisibility
-     */
+    /** (Required) */
     public void setDefaultVisibility(Boolean defaultVisibility) {
         this.defaultVisibility = defaultVisibility;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The subLayerIds
-     */
+    /** (Required) */
     public Object getSubLayerIds() {
         return subLayerIds;
     }
 
-    /**
-     * (Required)
-     *
-     * @param subLayerIds The subLayerIds
-     */
+    /** (Required) */
     public void setSubLayerIds(Object subLayerIds) {
         this.subLayerIds = subLayerIds;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The minScale
-     */
+    /** (Required) */
     public Integer getMinScale() {
         return minScale;
     }
 
-    /**
-     * (Required)
-     *
-     * @param minScale The minScale
-     */
+    /** (Required) */
     public void setMinScale(Integer minScale) {
         this.minScale = minScale;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The maxScale
-     */
+    /** (Required) */
     public Integer getMaxScale() {
         return maxScale;
     }
 
-    /**
-     * (Required)
-     *
-     * @param maxScale The maxScale
-     */
+    /** (Required) */
     public void setMaxScale(Integer maxScale) {
         this.maxScale = maxScale;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Layer.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("id");
+        sb.append('=');
+        sb.append(((this.id == null) ? "<null>" : this.id));
+        sb.append(',');
+        sb.append("name");
+        sb.append('=');
+        sb.append(((this.name == null) ? "<null>" : this.name));
+        sb.append(',');
+        sb.append("parentLayerId");
+        sb.append('=');
+        sb.append(((this.parentLayerId == null) ? "<null>" : this.parentLayerId));
+        sb.append(',');
+        sb.append("defaultVisibility");
+        sb.append('=');
+        sb.append(((this.defaultVisibility == null) ? "<null>" : this.defaultVisibility));
+        sb.append(',');
+        sb.append("subLayerIds");
+        sb.append('=');
+        sb.append(((this.subLayerIds == null) ? "<null>" : this.subLayerIds));
+        sb.append(',');
+        sb.append("minScale");
+        sb.append('=');
+        sb.append(((this.minScale == null) ? "<null>" : this.minScale));
+        sb.append(',');
+        sb.append("maxScale");
+        sb.append('=');
+        sb.append(((this.maxScale == null) ? "<null>" : this.maxScale));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(id)
-                .append(name)
-                .append(parentLayerId)
-                .append(defaultVisibility)
-                .append(subLayerIds)
-                .append(minScale)
-                .append(maxScale)
-                .toHashCode();
+        int result = 1;
+        result = ((result * 31) + ((this.subLayerIds == null) ? 0 : this.subLayerIds.hashCode()));
+        result = ((result * 31) + ((this.maxScale == null) ? 0 : this.maxScale.hashCode()));
+        result = ((result * 31) + ((this.name == null) ? 0 : this.name.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.defaultVisibility == null)
+                                ? 0
+                                : this.defaultVisibility.hashCode()));
+        result = ((result * 31) + ((this.id == null) ? 0 : this.id.hashCode()));
+        result = ((result * 31) + ((this.minScale == null) ? 0 : this.minScale.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.parentLayerId == null) ? 0 : this.parentLayerId.hashCode()));
+        return result;
     }
 
     @Override
@@ -190,14 +175,27 @@ public class Layer {
             return false;
         }
         Layer rhs = ((Layer) other);
-        return new EqualsBuilder()
-                .append(id, rhs.id)
-                .append(name, rhs.name)
-                .append(parentLayerId, rhs.parentLayerId)
-                .append(defaultVisibility, rhs.defaultVisibility)
-                .append(subLayerIds, rhs.subLayerIds)
-                .append(minScale, rhs.minScale)
-                .append(maxScale, rhs.maxScale)
-                .isEquals();
+        return ((((((((this.subLayerIds == rhs.subLayerIds)
+                                                                || ((this.subLayerIds != null)
+                                                                        && this.subLayerIds.equals(
+                                                                                rhs.subLayerIds)))
+                                                        && ((this.maxScale == rhs.maxScale)
+                                                                || ((this.maxScale != null)
+                                                                        && this.maxScale.equals(
+                                                                                rhs.maxScale))))
+                                                && ((this.name == rhs.name)
+                                                        || ((this.name != null)
+                                                                && this.name.equals(rhs.name))))
+                                        && ((this.defaultVisibility == rhs.defaultVisibility)
+                                                || ((this.defaultVisibility != null)
+                                                        && this.defaultVisibility.equals(
+                                                                rhs.defaultVisibility))))
+                                && ((this.id == rhs.id)
+                                        || ((this.id != null) && this.id.equals(rhs.id))))
+                        && ((this.minScale == rhs.minScale)
+                                || ((this.minScale != null) && this.minScale.equals(rhs.minScale))))
+                && ((this.parentLayerId == rhs.parentLayerId)
+                        || ((this.parentLayerId != null)
+                                && this.parentLayerId.equals(rhs.parentLayerId))));
     }
 }

@@ -4,9 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class MultiScaleGeometryInfo {
 
@@ -15,32 +12,40 @@ public class MultiScaleGeometryInfo {
     @Expose
     private List<Integer> levels = new ArrayList<Integer>();
 
-    /**
-     * (Required)
-     *
-     * @return The levels
-     */
+    /** (Required) */
     public List<Integer> getLevels() {
         return levels;
     }
 
-    /**
-     * (Required)
-     *
-     * @param levels The levels
-     */
+    /** (Required) */
     public void setLevels(List<Integer> levels) {
         this.levels = levels;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(MultiScaleGeometryInfo.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("levels");
+        sb.append('=');
+        sb.append(((this.levels == null) ? "<null>" : this.levels));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(levels).toHashCode();
+        int result = 1;
+        result = ((result * 31) + ((this.levels == null) ? 0 : this.levels.hashCode()));
+        return result;
     }
 
     @Override
@@ -52,6 +57,7 @@ public class MultiScaleGeometryInfo {
             return false;
         }
         MultiScaleGeometryInfo rhs = ((MultiScaleGeometryInfo) other);
-        return new EqualsBuilder().append(levels, rhs.levels).isEquals();
+        return ((this.levels == rhs.levels)
+                || ((this.levels != null) && this.levels.equals(rhs.levels)));
     }
 }

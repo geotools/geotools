@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Project Open Data Catalog
@@ -69,8 +66,6 @@ public class Catalog {
      * Metadata Context
      *
      * <p>URL or JSON object for the JSON-LD Context that defines the schema used
-     *
-     * @return The context
      */
     public URI getContext() {
         return context;
@@ -80,8 +75,6 @@ public class Catalog {
      * Metadata Context
      *
      * <p>URL or JSON object for the JSON-LD Context that defines the schema used
-     *
-     * @param context The @context
      */
     public void setContext(URI context) {
         this.context = context;
@@ -92,8 +85,6 @@ public class Catalog {
      *
      * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the
      * data.json file itself.
-     *
-     * @return The id
      */
     public URI getId() {
         return id;
@@ -104,8 +95,6 @@ public class Catalog {
      *
      * <p>IRI for the JSON-LD Node Identifier of the Catalog. This should be the URL of the
      * data.json file itself.
-     *
-     * @param id The @id
      */
     public void setId(URI id) {
         this.id = id;
@@ -115,8 +104,6 @@ public class Catalog {
      * Metadata Context
      *
      * <p>IRI for the JSON-LD data type. This should be dcat:Catalog for the Catalog
-     *
-     * @return The type
      */
     public Catalog.Type getType() {
         return type;
@@ -126,8 +113,6 @@ public class Catalog {
      * Metadata Context
      *
      * <p>IRI for the JSON-LD data type. This should be dcat:Catalog for the Catalog
-     *
-     * @param type The @type
      */
     public void setType(Catalog.Type type) {
         this.type = type;
@@ -137,8 +122,6 @@ public class Catalog {
      * Version of Schema
      *
      * <p>Version of Schema (Required)
-     *
-     * @return The conformsTo
      */
     public Catalog.ConformsTo getConformsTo() {
         return conformsTo;
@@ -148,8 +131,6 @@ public class Catalog {
      * Version of Schema
      *
      * <p>Version of Schema (Required)
-     *
-     * @param conformsTo The conformsTo
      */
     public void setConformsTo(Catalog.ConformsTo conformsTo) {
         this.conformsTo = conformsTo;
@@ -159,8 +140,6 @@ public class Catalog {
      * Data Dictionary
      *
      * <p>URL for the JSON Schema file that defines the schema used
-     *
-     * @return The describedBy
      */
     public URI getDescribedBy() {
         return describedBy;
@@ -170,46 +149,70 @@ public class Catalog {
      * Data Dictionary
      *
      * <p>URL for the JSON Schema file that defines the schema used
-     *
-     * @param describedBy The describedBy
      */
     public void setDescribedBy(URI describedBy) {
         this.describedBy = describedBy;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The dataset
-     */
+    /** (Required) */
     public List<Dataset> getDataset() {
         return dataset;
     }
 
-    /**
-     * (Required)
-     *
-     * @param dataset The dataset
-     */
+    /** (Required) */
     public void setDataset(List<Dataset> dataset) {
         this.dataset = dataset;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Catalog.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("context");
+        sb.append('=');
+        sb.append(((this.context == null) ? "<null>" : this.context));
+        sb.append(',');
+        sb.append("id");
+        sb.append('=');
+        sb.append(((this.id == null) ? "<null>" : this.id));
+        sb.append(',');
+        sb.append("type");
+        sb.append('=');
+        sb.append(((this.type == null) ? "<null>" : this.type));
+        sb.append(',');
+        sb.append("conformsTo");
+        sb.append('=');
+        sb.append(((this.conformsTo == null) ? "<null>" : this.conformsTo));
+        sb.append(',');
+        sb.append("describedBy");
+        sb.append('=');
+        sb.append(((this.describedBy == null) ? "<null>" : this.describedBy));
+        sb.append(',');
+        sb.append("dataset");
+        sb.append('=');
+        sb.append(((this.dataset == null) ? "<null>" : this.dataset));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(context)
-                .append(id)
-                .append(type)
-                .append(conformsTo)
-                .append(describedBy)
-                .append(dataset)
-                .toHashCode();
+        int result = 1;
+        result = ((result * 31) + ((this.context == null) ? 0 : this.context.hashCode()));
+        result = ((result * 31) + ((this.describedBy == null) ? 0 : this.describedBy.hashCode()));
+        result = ((result * 31) + ((this.id == null) ? 0 : this.id.hashCode()));
+        result = ((result * 31) + ((this.conformsTo == null) ? 0 : this.conformsTo.hashCode()));
+        result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
+        result = ((result * 31) + ((this.dataset == null) ? 0 : this.dataset.hashCode()));
+        return result;
     }
 
     @Override
@@ -221,14 +224,23 @@ public class Catalog {
             return false;
         }
         Catalog rhs = ((Catalog) other);
-        return new EqualsBuilder()
-                .append(context, rhs.context)
-                .append(id, rhs.id)
-                .append(type, rhs.type)
-                .append(conformsTo, rhs.conformsTo)
-                .append(describedBy, rhs.describedBy)
-                .append(dataset, rhs.dataset)
-                .isEquals();
+        return (((((((this.context == rhs.context)
+                                                        || ((this.context != null)
+                                                                && this.context.equals(
+                                                                        rhs.context)))
+                                                && ((this.describedBy == rhs.describedBy)
+                                                        || ((this.describedBy != null)
+                                                                && this.describedBy.equals(
+                                                                        rhs.describedBy))))
+                                        && ((this.id == rhs.id)
+                                                || ((this.id != null) && this.id.equals(rhs.id))))
+                                && ((this.conformsTo == rhs.conformsTo)
+                                        || ((this.conformsTo != null)
+                                                && this.conformsTo.equals(rhs.conformsTo))))
+                        && ((this.type == rhs.type)
+                                || ((this.type != null) && this.type.equals(rhs.type))))
+                && ((this.dataset == rhs.dataset)
+                        || ((this.dataset != null) && this.dataset.equals(rhs.dataset))));
     }
 
     public enum ConformsTo {

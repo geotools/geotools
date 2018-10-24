@@ -17,7 +17,7 @@
 
 package org.geotools.swing.dialog;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.AWTEvent;
 import java.awt.Component;
@@ -34,8 +34,10 @@ import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.fixture.JComboBoxFixture;
+import org.assertj.swing.core.GenericTypeMatcher;
+import org.assertj.swing.driver.DialogDriver;
+import org.assertj.swing.fixture.DialogFixture;
+import org.assertj.swing.fixture.JComboBoxFixture;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.geotools.swing.testutils.WindowActivatedListener;
@@ -60,7 +62,7 @@ import org.junit.runner.RunWith;
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
+public class JFileImageChooserTest extends GraphicsTestBase<DialogFixture, Dialog, DialogDriver> {
 
     private static final Class<? extends Component> DIALOG_CLASS = JFileImageChooser.class;
 
@@ -130,7 +132,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
         final int N = comboBox.contents().length;
         for (int i = 0; i < N; i++) {
             JFileImageChooser.FormatFilter filter =
-                    (JFileImageChooser.FormatFilter) comboBox.component().getItemAt(i);
+                    (JFileImageChooser.FormatFilter) comboBox.target().getItemAt(i);
 
             String suffix = filter.getDefaultSuffix();
             if (suffix.startsWith(".")) {
@@ -150,7 +152,7 @@ public class JFileImageChooserTest extends GraphicsTestBase<Dialog> {
         final int N = comboBox.contents().length;
         for (int i = 0; i < N; i++) {
             JFileImageChooser.FormatFilter filter =
-                    (JFileImageChooser.FormatFilter) comboBox.component().getItemAt(i);
+                    (JFileImageChooser.FormatFilter) comboBox.target().getItemAt(i);
 
             String suffix = filter.getDefaultSuffix();
             if (suffix.startsWith(".")) {

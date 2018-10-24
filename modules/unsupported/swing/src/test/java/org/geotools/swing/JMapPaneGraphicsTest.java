@@ -21,11 +21,11 @@ import static org.junit.Assert.*;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import org.fest.swing.edt.FailOnThreadViolationRepaintManager;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.edt.GuiTask;
-import org.fest.swing.fixture.FrameFixture;
+import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+import org.assertj.swing.edt.GuiTask;
+import org.assertj.swing.fixture.FrameFixture;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
 import org.geotools.swing.event.MapPaneEvent;
@@ -160,7 +160,7 @@ public class JMapPaneGraphicsTest extends JMapPaneGraphicsTestBase {
                 new GuiTask() {
                     @Override
                     protected void executeInEDT() throws Throwable {
-                        window.component().setVisible(false);
+                        window.target().setVisible(false);
                     }
                 });
 

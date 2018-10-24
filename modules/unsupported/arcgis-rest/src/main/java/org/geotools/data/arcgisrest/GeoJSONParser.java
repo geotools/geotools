@@ -22,12 +22,6 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.MalformedJsonException;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,10 +33,16 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.arcgisrest.schema.catalog.Error_;
+import org.geotools.data.arcgisrest.schema.catalog.Error__1;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiPoint;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -232,7 +232,7 @@ public class GeoJSONParser implements SimpleFeatureIterator {
         this.inFeatureCollection = false;
     }
 
-    /** Helper funciton to convert a List of double to an array of doubles */
+    /** Helper function to convert a List of double to an array of doubles */
     public static double[] listToArray(List<Double> coords) {
 
         double[] arr = new double[coords.size()];
@@ -619,7 +619,7 @@ public class GeoJSONParser implements SimpleFeatureIterator {
      */
     public IOException parseError() throws IOException {
 
-        Error_ err = new Error_();
+        Error__1 err = new Error__1();
 
         try {
             this.reader.beginObject();

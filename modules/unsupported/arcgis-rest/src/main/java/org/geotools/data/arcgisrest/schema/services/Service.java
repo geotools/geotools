@@ -2,9 +2,6 @@ package org.geotools.data.arcgisrest.schema.services;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Service {
 
@@ -21,68 +18,70 @@ public class Service {
     @Expose
     private String url;
 
-    /**
-     * (Required)
-     *
-     * @return The name
-     */
+    /** (Required) */
     public String getName() {
         return name;
     }
 
-    /**
-     * (Required)
-     *
-     * @param name The name
-     */
+    /** (Required) */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The type
-     */
+    /** (Required) */
     public String getType() {
         return type;
     }
 
-    /**
-     * (Required)
-     *
-     * @param type The type
-     */
+    /** (Required) */
     public void setType(String type) {
         this.type = type;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The url
-     */
+    /** (Required) */
     public String getUrl() {
         return url;
     }
 
-    /**
-     * (Required)
-     *
-     * @param url The url
-     */
+    /** (Required) */
     public void setUrl(String url) {
         this.url = url;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Service.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("name");
+        sb.append('=');
+        sb.append(((this.name == null) ? "<null>" : this.name));
+        sb.append(',');
+        sb.append("type");
+        sb.append('=');
+        sb.append(((this.type == null) ? "<null>" : this.type));
+        sb.append(',');
+        sb.append("url");
+        sb.append('=');
+        sb.append(((this.url == null) ? "<null>" : this.url));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name).append(type).append(url).toHashCode();
+        int result = 1;
+        result = ((result * 31) + ((this.name == null) ? 0 : this.name.hashCode()));
+        result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
+        result = ((result * 31) + ((this.url == null) ? 0 : this.url.hashCode()));
+        return result;
     }
 
     @Override
@@ -94,10 +93,9 @@ public class Service {
             return false;
         }
         Service rhs = ((Service) other);
-        return new EqualsBuilder()
-                .append(name, rhs.name)
-                .append(type, rhs.type)
-                .append(url, rhs.url)
-                .isEquals();
+        return ((((this.name == rhs.name) || ((this.name != null) && this.name.equals(rhs.name)))
+                        && ((this.type == rhs.type)
+                                || ((this.type != null) && this.type.equals(rhs.type))))
+                && ((this.url == rhs.url) || ((this.url != null) && this.url.equals(rhs.url))));
     }
 }

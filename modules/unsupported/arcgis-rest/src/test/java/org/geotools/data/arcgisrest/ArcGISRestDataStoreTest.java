@@ -19,7 +19,6 @@ package org.geotools.data.arcgisrest;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-import org.locationtech.jts.geom.Geometry;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -39,6 +38,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;

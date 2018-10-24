@@ -108,7 +108,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
         Webservice ws =
                 (new Gson())
                         .fromJson(
-                                ArcGISRestDataStore.InputStreamToString(
+                                ArcGISRestDataStore.inputStreamToString(
                                         this.dataStore.retrieveJSON(
                                                 "GET",
                                                 new URL(ds.getWebService().toString()),
@@ -238,7 +238,7 @@ public class ArcGISRestFeatureSource extends ContentFeatureSource {
             cnt =
                     (new Gson())
                             .fromJson(
-                                    ArcGISRestDataStore.InputStreamToString(
+                                    ArcGISRestDataStore.inputStreamToString(
                                             this.dataStore.retrieveJSON(
                                                     "POST",
                                                     (new URL(this.composeQueryURL())),

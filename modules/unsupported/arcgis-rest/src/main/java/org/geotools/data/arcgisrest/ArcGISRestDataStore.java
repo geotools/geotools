@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.io.IOUtils;
 import org.geotools.data.Query;
 import org.geotools.data.arcgisrest.schema.catalog.Catalog;
 import org.geotools.data.arcgisrest.schema.catalog.Dataset;
@@ -56,7 +58,6 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.UnsupportedImplementationException;
 import org.opengis.feature.type.Name;
-import sun.security.util.IOUtils;
 
 /**
  * Main class of the data store
@@ -145,7 +146,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
         Error__1 err;
         try {
             response =
-                    ArcGISRestDataStore.InputStreamToString(
+                    ArcGISRestDataStore.inputStreamToString(
                             this.retrieveJSON("GET", apiUrl, DEFAULT_PARAMS));
         } catch (IOException e) {
             LOGGER.log(
@@ -290,7 +291,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
                 try {
                     responseWSString =
-                            ArcGISRestDataStore.InputStreamToString(
+                            ArcGISRestDataStore.inputStreamToString(
                                     retrieveJSON(
                                             "GET",
                                             new URL(this.dataset.getWebService().toString()),
@@ -528,9 +529,11 @@ public class ArcGISRestDataStore extends ContentDataStore {
      * @throws IOException
      * @returns the converted String
      */
-    public static String InputStreamToString(InputStream istream) throws IOException {
-        String s = new String(IOUtils.readFully(istream, -1, true));
-        istream.close();
-        return s;
+    public static String inputStreamToString(InputStream istream) throws IOException {
+        try {
+            return IOUtils.toString(istream, Charset.defaultCharset());
+        } finally {
+            istream.close();
+        }
     }
 }

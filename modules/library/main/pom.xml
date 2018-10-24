@@ -218,7 +218,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <!-- The version number is specified in the parent POM. -->
-      <scope>test</scope>
+      <scope>provided</scope> <!-- Really provided, not test -->
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>

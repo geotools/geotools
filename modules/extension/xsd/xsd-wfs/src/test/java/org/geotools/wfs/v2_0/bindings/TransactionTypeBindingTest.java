@@ -26,6 +26,7 @@ import net.opengis.wfs20.InsertType;
 import net.opengis.wfs20.PropertyType;
 import net.opengis.wfs20.TransactionType;
 import net.opengis.wfs20.UpdateType;
+import net.opengis.wfs20.ValueReferenceType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLAssert;
@@ -145,7 +146,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         assertTrue(id.getIDs().contains("BuiltUpA_1M.10131"));
     }
 
-    @Ignore("Fails due to 'TransactionType.abstractTransactionAction' being unchangable")
+    
     public void testEncode() throws Exception {
         Wfs20Factory factory = Wfs20Factory.eINSTANCE;
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
@@ -154,7 +155,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         EList<AbstractTransactionActionType> abstractTransactionAction =
                 t.getAbstractTransactionAction();
 
-        /*        UpdateType update = factory.createUpdateType();
+                UpdateType update = factory.createUpdateType();
         update.setTypeName(new QName("http://blabla", "MyFeature", "bla"));
         PropertyType property = factory.createPropertyType();
         ValueReferenceType ref = factory.createValueReferenceType();
@@ -218,7 +219,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         XMLAssert.assertXpathEvaluatesTo("zero", "//wfs:Insert//bla:MyFeature/@gml:id", doc);
         XMLAssert.assertXpathExists("//wfs:Insert//bla:MyFeature/bla:geometry", doc);
         XMLAssert.assertXpathEvaluatesTo("0", "//wfs:Insert//bla:MyFeature/bla:integer", doc);
-        */
+        
     }
 
     public void testParseDelete() throws Exception {

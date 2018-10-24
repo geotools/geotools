@@ -146,7 +146,6 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         assertTrue(id.getIDs().contains("BuiltUpA_1M.10131"));
     }
 
-    
     public void testEncode() throws Exception {
         Wfs20Factory factory = Wfs20Factory.eINSTANCE;
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
@@ -155,7 +154,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         EList<AbstractTransactionActionType> abstractTransactionAction =
                 t.getAbstractTransactionAction();
 
-                UpdateType update = factory.createUpdateType();
+        UpdateType update = factory.createUpdateType();
         update.setTypeName(new QName("http://blabla", "MyFeature", "bla"));
         PropertyType property = factory.createPropertyType();
         ValueReferenceType ref = factory.createValueReferenceType();
@@ -219,7 +218,6 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
         XMLAssert.assertXpathEvaluatesTo("zero", "//wfs:Insert//bla:MyFeature/@gml:id", doc);
         XMLAssert.assertXpathExists("//wfs:Insert//bla:MyFeature/bla:geometry", doc);
         XMLAssert.assertXpathEvaluatesTo("0", "//wfs:Insert//bla:MyFeature/bla:integer", doc);
-        
     }
 
     public void testParseDelete() throws Exception {

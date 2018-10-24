@@ -27,6 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
+import org.apache.commons.lang3.JavaVersion;
+import org.apache.commons.lang3.SystemUtils;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -191,12 +193,19 @@ public final class NIOUtilities {
      * {@code SEVERE} to the logger of the package name. To force logging of errors, set the System
      * property "org.geotools.io.debugBuffer" to "true".
      *
+     * <p>Starting from Java 9 the underlying Java runtime issue got fixed, so the method returns
+     * immediately in that case, without forcing any cleaning by reflection on a non exposed API
+     *
      * @param buffer The buffer to close.
      * @return true if the operation was successful, false otherwise.
      * @see java.nio.MappedByteBuffer
      */
     public static boolean clean(final ByteBuffer buffer) {
-        if (buffer == null || !buffer.isDirect()) {
+        // the issue was fixed in Java 9+, and Java 8 too from a given point, but testing
+        // the minor version is annoying
+        if (buffer == null
+                || !buffer.isDirect()
+                || SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)) {
             return true;
         }
 

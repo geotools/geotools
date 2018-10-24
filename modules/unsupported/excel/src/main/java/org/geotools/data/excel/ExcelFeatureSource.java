@@ -152,11 +152,11 @@ public class ExcelFeatureSource extends ContentFeatureSource implements SimpleFe
                             break;
 
                         default:
-                            // System.out.println(
-                                    "We don't handle "
-                                            + cell.getCellType()
-                                            + " type cells "
-                                            + cell.getStringCellValue());
+//                             System.out.println(
+//                                    "We don't handle "
+//                                            + cell.getCellType()
+//                                            + " type cells "
+//                                            + cell.getStringCellValue());
                     }
                 }
             }

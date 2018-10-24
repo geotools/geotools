@@ -135,6 +135,51 @@ public class YsldParseCookbookTest {
     }
 
     @Test
+    public void testPointWithLegend() throws Exception {
+        // <UserStyle>
+        //   <Title>Simple Point With Legend Graphic</Title>
+        //   <FeatureTypeStyle>
+        //     <Rule>
+        //       <LegendGraphic>
+        //         <Graphic>
+        //           <ExternalGraphic>
+        //             <OnlineResource xlink:href="smileyface.png" />
+        //             <Format>image/png</Format>
+        //           </ExternalGraphic>
+        //           <Size>32</Size>
+        //         </Graphic>
+        //       </LegendGraphic>
+        //       <PointSymbolizer>
+        //         <Graphic>
+        //           <Mark>
+        //             <WellKnownName>circle</WellKnownName>
+        //             <Fill>
+        //               <CssParameter name="fill">#FF0000</CssParameter>
+        //             </Fill>
+        //           </Mark>
+        //           <Size>6</Size>
+        //         </Graphic>
+        //       </PointSymbolizer>
+        //     </Rule>
+        //   </FeatureTypeStyle>
+        // </UserStyle>
+        Style style = parse("point", "legend.sld");
+
+        GraphicLegend legend = (GraphicLegend) SLD.rules(style)[0].getLegend();
+        assertEquals(32, Filters.asInt(legend.getSize()));
+
+        ExternalGraphic external = (ExternalGraphic) legend.graphicalSymbols().get(0);
+        assertEquals("smileyface.png", external.getLocation().getPath());
+        assertEquals("image/png", external.getFormat());
+
+        PointSymbolizer point = SLD.pointSymbolizer(style);
+        assertEquals("circle", SLD.wellKnownName(SLD.mark(point)));
+        assertEquals(1, point.getGraphic().graphicalSymbols().size());
+        assertEquals(Color.red, SLD.color(SLD.fill(point)));
+        assertEquals(6, SLD.pointSize(point));
+    }
+
+    @Test
     public void testPointWithScale() throws Exception {
         //    <UserStyle>
         //      <Title>GeoServer SLD Cook Book: Zoom-based point</Title>

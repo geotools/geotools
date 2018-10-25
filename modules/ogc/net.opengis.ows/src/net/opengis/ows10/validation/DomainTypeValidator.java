@@ -16,6 +16,8 @@ import org.eclipse.emf.common.util.EList;
 public interface DomainTypeValidator {
   boolean validate();
 
+  boolean validateValue(EList<String> value);
+
   boolean validateValue(String value);
   boolean validateMetadata(EList value);
   boolean validateName(EList<String> value);

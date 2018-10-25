@@ -1,8 +1,4 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
 package net.opengis.ows10.impl;
 
@@ -43,106 +39,116 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class DomainTypeImpl extends EObjectImpl implements DomainType {
-	/**
-   * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+  /**
+   * The cached value of the '{@link #getValue() <em>Value</em>}' attribute list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getValue()
    * @generated
    * @ordered
    */
-  protected static final String VALUE_EDEFAULT = null;
+  protected EList<String> value;
 
   /**
-   * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
-   * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-   * @see #getValue()
-   * @generated
-   * @ordered
-   */
-	protected String value = VALUE_EDEFAULT;
-
-	/**
    * The cached value of the '{@link #getMetadata() <em>Metadata</em>}' containment reference list.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @see #getMetadata()
    * @generated
    * @ordered
    */
-	protected EList<MetadataType> metadata;
+  protected EList<MetadataType> metadata;
 
-	/**
-   * The cached value of the '{@link #getName() <em>Name</em>}' attribute list.
+  /**
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @see #getName()
    * @generated
    * @ordered
    */
-	protected EList<String> name;
+  protected static final String NAME_EDEFAULT = null;
 
-	/**
+  /**
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
+  protected String name = NAME_EDEFAULT;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	protected DomainTypeImpl() {
+  protected DomainTypeImpl() {
     super();
   }
 
-	/**
+  /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	@Override
+  @Override
   protected EClass eStaticClass() {
     return Ows10Package.eINSTANCE.getDomainType();
   }
 
-	/**
+  /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-
-  public String getValue() {
+  public EList<String> getValue() {
+    if (value == null) {
+      value = new EDataTypeEList<String>(String.class, this, Ows10Package.DOMAIN_TYPE__VALUE);
+    }
     return value;
   }
 
-
   /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public EList<MetadataType> getMetadata() {
+  public EList<MetadataType> getMetadata() {
     if (metadata == null) {
       metadata = new EObjectContainmentEList<MetadataType>(MetadataType.class, this, Ows10Package.DOMAIN_TYPE__METADATA);
     }
     return metadata;
   }
 
-	/**
+  /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	public EList<String> getName() {
-    if (name == null) {
-      name = new EDataTypeEList<String>(String.class, this, Ows10Package.DOMAIN_TYPE__NAME);
-    }
+  public String getName() {
     return name;
   }
 
-	/**
+  /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	@Override
+  public void setName(String newName) {
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Ows10Package.DOMAIN_TYPE__NAME, oldName, name));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
     switch (featureID) {
       case Ows10Package.DOMAIN_TYPE__METADATA:
@@ -151,12 +157,12 @@ public class DomainTypeImpl extends EObjectImpl implements DomainType {
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
-	/**
+  /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	@Override
+  @Override
   public Object eGet(int featureID, boolean resolve, boolean coreType) {
     switch (featureID) {
       case Ows10Package.DOMAIN_TYPE__VALUE:
@@ -169,75 +175,75 @@ public class DomainTypeImpl extends EObjectImpl implements DomainType {
     return super.eGet(featureID, resolve, coreType);
   }
 
-	/**
+  /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	@SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows10Package.DOMAIN_TYPE__VALUE:
-        setValue((String)newValue);
+        getValue().clear();
+        getValue().addAll((Collection<? extends String>)newValue);
         return;
       case Ows10Package.DOMAIN_TYPE__METADATA:
         getMetadata().clear();
         getMetadata().addAll((Collection<? extends MetadataType>)newValue);
         return;
       case Ows10Package.DOMAIN_TYPE__NAME:
-        getName().clear();
-        getName().addAll((Collection<? extends String>)newValue);
+        setName((String)newValue);
         return;
     }
     super.eSet(featureID, newValue);
   }
 
-	/**
+  /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	@Override
+  @Override
   public void eUnset(int featureID) {
     switch (featureID) {
       case Ows10Package.DOMAIN_TYPE__VALUE:
-        setValue(VALUE_EDEFAULT);
+        getValue().clear();
         return;
       case Ows10Package.DOMAIN_TYPE__METADATA:
         getMetadata().clear();
         return;
       case Ows10Package.DOMAIN_TYPE__NAME:
-        getName().clear();
+        setName(NAME_EDEFAULT);
         return;
     }
     super.eUnset(featureID);
   }
 
-	/**
+  /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	@Override
+  @Override
   public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows10Package.DOMAIN_TYPE__VALUE:
-        return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+        return value != null && !value.isEmpty();
       case Ows10Package.DOMAIN_TYPE__METADATA:
         return metadata != null && !metadata.isEmpty();
       case Ows10Package.DOMAIN_TYPE__NAME:
-        return name != null && !name.isEmpty();
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
     }
     return super.eIsSet(featureID);
   }
 
-	/**
+  /**
    * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+   * <!-- end-user-doc -->
    * @generated
    */
-	@Override
+  @Override
   public String toString() {
     if (eIsProxy()) return super.toString();
 
@@ -248,12 +254,6 @@ public class DomainTypeImpl extends EObjectImpl implements DomainType {
     result.append(name);
     result.append(')');
     return result.toString();
-  }
-
-  @Override
-  public void setValue(String value) {
-    // TODO Auto-generated method stub
-    
   }
 
 } //DomainTypeImpl

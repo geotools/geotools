@@ -36,23 +36,14 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  */
 public class SectionsTypeImpl extends EObjectImpl implements SectionsType {
 	/**
-   * The default value of the '{@link #getSection() <em>Section</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getSection()
-   * @generated
-   * @ordered
-   */
-  protected static final String SECTION_EDEFAULT = null;
-  /**
-   * The cached value of the '{@link #getSection() <em>Section</em>}' attribute.
+   * The cached value of the '{@link #getSection() <em>Section</em>}' attribute list.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @see #getSection()
    * @generated
    * @ordered
    */
-	protected String section = SECTION_EDEFAULT;
+	protected EList<String> section;
 
 	/**
    * <!-- begin-user-doc -->
@@ -78,23 +69,14 @@ public class SectionsTypeImpl extends EObjectImpl implements SectionsType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getSection() {
+	public EList<String> getSection() {
+    if (section == null) {
+      section = new EDataTypeUniqueEList<String>(String.class, this, Ows10Package.SECTIONS_TYPE__SECTION);
+    }
     return section;
   }
 
 	/**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setSection(String newSection) {
-    String oldSection = section;
-    section = newSection;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, Ows10Package.SECTIONS_TYPE__SECTION, oldSection, section));
-  }
-
-  /**
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
@@ -113,11 +95,13 @@ public class SectionsTypeImpl extends EObjectImpl implements SectionsType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
   public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows10Package.SECTIONS_TYPE__SECTION:
-        setSection((String)newValue);
+        getSection().clear();
+        getSection().addAll((Collection<? extends String>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -132,7 +116,7 @@ public class SectionsTypeImpl extends EObjectImpl implements SectionsType {
   public void eUnset(int featureID) {
     switch (featureID) {
       case Ows10Package.SECTIONS_TYPE__SECTION:
-        setSection(SECTION_EDEFAULT);
+        getSection().clear();
         return;
     }
     super.eUnset(featureID);
@@ -147,7 +131,7 @@ public class SectionsTypeImpl extends EObjectImpl implements SectionsType {
   public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows10Package.SECTIONS_TYPE__SECTION:
-        return SECTION_EDEFAULT == null ? section != null : !SECTION_EDEFAULT.equals(section);
+        return section != null && !section.isEmpty();
     }
     return super.eIsSet(featureID);
   }

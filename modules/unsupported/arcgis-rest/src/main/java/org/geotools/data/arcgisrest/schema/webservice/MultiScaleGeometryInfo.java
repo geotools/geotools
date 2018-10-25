@@ -1,23 +1,36 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class MultiScaleGeometryInfo {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("levels")
     @Expose
     private List<Integer> levels = new ArrayList<Integer>();
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     public List<Integer> getLevels() {
         return levels;
     }
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     public void setLevels(List<Integer> levels) {
         this.levels = levels;
     }
@@ -25,16 +38,13 @@ public class MultiScaleGeometryInfo {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(MultiScaleGeometryInfo.class.getName())
-                .append('@')
-                .append(Integer.toHexString(System.identityHashCode(this)))
-                .append('[');
+        sb.append(MultiScaleGeometryInfo.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("levels");
         sb.append('=');
-        sb.append(((this.levels == null) ? "<null>" : this.levels));
+        sb.append(((this.levels == null)?"<null>":this.levels));
         sb.append(',');
-        if (sb.charAt((sb.length() - 1)) == ',') {
-            sb.setCharAt((sb.length() - 1), ']');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
         } else {
             sb.append(']');
         }
@@ -44,7 +54,7 @@ public class MultiScaleGeometryInfo {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result * 31) + ((this.levels == null) ? 0 : this.levels.hashCode()));
+        result = ((result* 31)+((this.levels == null)? 0 :this.levels.hashCode()));
         return result;
     }
 
@@ -57,7 +67,7 @@ public class MultiScaleGeometryInfo {
             return false;
         }
         MultiScaleGeometryInfo rhs = ((MultiScaleGeometryInfo) other);
-        return ((this.levels == rhs.levels)
-                || ((this.levels != null) && this.levels.equals(rhs.levels)));
+        return ((this.levels == rhs.levels)||((this.levels!= null)&&this.levels.equals(rhs.levels)));
     }
+
 }

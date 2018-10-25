@@ -4,6 +4,8 @@
  */
 package net.opengis.ows10.validation;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * A sample validator interface for {@link net.opengis.ows10.SectionsType}.
@@ -13,6 +15,8 @@ package net.opengis.ows10.validation;
  */
 public interface SectionsTypeValidator {
   boolean validate();
+
+  boolean validateSection(EList<String> value);
 
   boolean validateSection(String value);
 }

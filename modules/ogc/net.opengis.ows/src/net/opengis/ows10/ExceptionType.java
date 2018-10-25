@@ -34,31 +34,21 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface ExceptionType extends EObject {
 	/**
-   * Returns the value of the '<em><b>Exception Text</b></em>' attribute.
+   * Returns the value of the '<em><b>Exception Text</b></em>' attribute list.
+   * The list contents are of type {@link java.lang.String}.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * <!-- begin-model-doc -->
    * Ordered sequence of text strings that describe this specific exception or error. The contents of these strings are left open to definition by each server implementation. A server is strongly encouraged to include at least one ExceptionText value, to provide more information about the detected error than provided by the exceptionCode. When included, multiple ExceptionText values shall provide hierarchical information about one detected error, with the most significant information listed first.
    * <!-- end-model-doc -->
-   * @return the value of the '<em>Exception Text</em>' attribute.
-   * @see #setExceptionText(String)
+   * @return the value of the '<em>Exception Text</em>' attribute list.
    * @see net.opengis.ows10.Ows10Package#getExceptionType_ExceptionText()
    * @model dataType="net.opengis.ows10.MimeType"
    * @generated
    */
-	String getExceptionText();
+	EList<String> getExceptionText();
 
 	/**
-   * Sets the value of the '{@link net.opengis.ows10.ExceptionType#getExceptionText <em>Exception Text</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Exception Text</em>' attribute.
-   * @see #getExceptionText()
-   * @generated
-   */
-  void setExceptionText(String value);
-
-  /**
    * Returns the value of the '<em><b>Exception Code</b></em>' attribute.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

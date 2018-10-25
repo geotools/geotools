@@ -902,7 +902,7 @@ public interface Ows10Package extends EPackage {
 	int EXCEPTION_TYPE = 12;
 
 	/**
-   * The feature id for the '<em><b>Exception Text</b></em>' attribute.
+   * The feature id for the '<em><b>Exception Text</b></em>' attribute list.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
@@ -2747,10 +2747,10 @@ public interface Ows10Package extends EPackage {
 	EClass getExceptionType();
 
 	/**
-   * Returns the meta object for the attribute '{@link net.opengis.ows10.ExceptionType#getExceptionText <em>Exception Text</em>}'.
+   * Returns the meta object for the attribute list '{@link net.opengis.ows10.ExceptionType#getExceptionText <em>Exception Text</em>}'.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Exception Text</em>'.
+   * @return the meta object for the attribute list '<em>Exception Text</em>'.
    * @see net.opengis.ows10.ExceptionType#getExceptionText()
    * @see #getExceptionType()
    * @generated

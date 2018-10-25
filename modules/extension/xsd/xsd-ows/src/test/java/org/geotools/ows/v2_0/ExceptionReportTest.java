@@ -13,7 +13,7 @@ public class ExceptionReportTest {
         ExceptionType e = Ows20Factory.eINSTANCE.createExceptionType();
         e.setExceptionCode("testCode");
         e.setLocator("testLocator");
-        e.setExceptionText("testText");
+        e.getExceptionText().add("testText");
 
         ExceptionReportType report = Ows20Factory.eINSTANCE.createExceptionReportType();
         report.setVersion("2.0");

@@ -31,8 +31,24 @@
 
 
   <description>
-    The main module contains the default implementations of the data model
-    that are used by other GeoTools modules.
+    The main module contains the GeoTools public interfaces that are used by
+    other GeoTools modules (and GeoTools applications). Where possible we make
+    use industry standard terms as provided by OGC and ISO standards.
+    
+    The formal GeoTools public api consists of gt-metadata, jts and the gt-main module.
+    
+    The main module contains the default implementations that are available provided
+    to other GeoTools modules using our factory system. Factories are obtained from
+    an appropriate FactoryFinder, giving applications a chance configure the factory
+    used using the Factory Hints facilities.
+       
+       FilterFactory ff = CommonFactoryFinder.getFilterFactory();
+       Expression expr = ff.add( expression1, expression2 );
+    
+    If you find yourself using implementation specific classes chances are you doing it wrong:
+      
+       Expression expr = new AddImpl( expression1, expressiom2 );
+    
   </description>
 
   <licenses>
@@ -51,11 +67,12 @@
     <developer>
       <name>Jody Garnett</name>
       <id>jive</id>
-      <email>jgarnett@refractions.net</email>
-      <organization>Refractions Research, Inc.</organization>
+      <email>jody.garnett@gmail.com</email>
+      <organization>BoundlessSpatial.xa Solutions, Inc.</organization>
       <roles>
         <role>Module Maintainer</role>
         <role>Java Developer</role>
+        <role>Documentation</role>
       </roles>
     </developer>
     <developer>
@@ -194,8 +211,13 @@
   <!-- =========================================================== -->
   <dependencies>
     <dependency>
+      <groupId>org.locationtech.jts</groupId>
+      <artifactId>jts-core</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-api</artifactId>
+      <artifactId>gt-referencing</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>

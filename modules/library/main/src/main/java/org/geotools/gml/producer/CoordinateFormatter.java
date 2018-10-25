@@ -18,6 +18,7 @@ package org.geotools.gml.producer;
 
 import java.text.FieldPosition;
 import java.text.NumberFormat;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -51,6 +52,9 @@ public final class CoordinateFormatter {
     /** Whether we have to format in plain decimal numbers, or we can use scientific notation */
     private boolean forcedDecimal;
 
+    /** True if we have to right-pad decimals with zeros up to the configured number of decimals */
+    private boolean padWithZeros = false;
+
     public CoordinateFormatter(int numDecimals) {
         coordFormatter.setMaximumFractionDigits(numDecimals);
         coordFormatter.setGroupingUsed(false);
@@ -70,6 +74,31 @@ public final class CoordinateFormatter {
         return sb.toString();
     }
 
+    private String zeroPad(String formatted) {
+        if (padWithZeros) {
+            int numDecimals = coordFormatter.getMaximumFractionDigits();
+            if (formatted.indexOf(".") == -1) {
+                return formatted + "." + repeatZeros(numDecimals);
+            } else {
+                int decimals =
+                        numDecimals
+                                - formatted
+                                        .substring(formatted.toString().indexOf('.') + 1)
+                                        .length();
+                if (formatted.toString().toLowerCase().indexOf("e") == -1 && decimals > 0) {
+                    return formatted + repeatZeros(decimals);
+                }
+            }
+        }
+        return formatted;
+    }
+
+    private String repeatZeros(int num) {
+        char[] zeros = new char[num];
+        Arrays.fill(zeros, '0');
+        return new String(zeros);
+    }
+
     /**
      * Formats a number with the configured number of decimals
      *
@@ -77,23 +106,25 @@ public final class CoordinateFormatter {
      * @param sb
      */
     public StringBuffer format(double x, StringBuffer sb) {
+        String formatted;
         if ((Math.abs(x) >= DECIMAL_MIN && x < DECIMAL_MAX) || x == 0) {
             x = truncate(x);
             long lx = (long) x;
             if (lx == x) {
-                sb.append(lx);
+                formatted = lx + "";
             } else {
-                sb.append(x);
+                formatted = x + "";
             }
         } else {
             if (forcedDecimal) {
-                coordFormatter.format(x, sb, ZERO);
+                StringBuffer temp = new StringBuffer();
+                coordFormatter.format(x, temp, ZERO);
+                formatted = temp.toString();
             } else {
-                sb.append(truncate(x));
+                formatted = truncate(x) + "";
             }
         }
-
-        return sb;
+        return sb.append(zeroPad(formatted));
     }
 
     final double truncate(double x) {
@@ -117,6 +148,11 @@ public final class CoordinateFormatter {
         return coordFormatter.getMaximumFractionDigits();
     }
 
+    /** */
+    public void setMaximumFractionDigits(int maxDigits) {
+        coordFormatter.setMaximumFractionDigits(maxDigits);
+    }
+
     /**
      * Returns the force decimal flag, see {@link #setForcedDecimal(boolean)}
      *
@@ -124,6 +160,10 @@ public final class CoordinateFormatter {
      */
     public boolean isForcedDecimal() {
         return forcedDecimal;
+    }
+
+    public boolean isPadWithZeros() {
+        return padWithZeros;
     }
 
     /**
@@ -134,5 +174,9 @@ public final class CoordinateFormatter {
      */
     public void setForcedDecimal(boolean forcedDecimal) {
         this.forcedDecimal = forcedDecimal;
+    }
+
+    public void setPadWithZeros(boolean pad) {
+        this.padWithZeros = pad;
     }
 }

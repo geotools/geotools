@@ -813,7 +813,7 @@ public class Ows20Validator extends EObjectValidator {
     for (Iterator<?> i = positionType.iterator(); i.hasNext() && (result || diagnostics != null); ) {
       Object item = i.next();
       if (XMLTypePackage.Literals.DOUBLE.isInstance(item)) {
-        result &= xmlTypeValidator.validateDouble((Double)item, diagnostics, context);
+        result &= xmlType_1Validator.validateDouble((Double)item, diagnostics, context);
       }
       else {
         result = false;

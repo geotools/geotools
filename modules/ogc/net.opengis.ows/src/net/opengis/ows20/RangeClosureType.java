@@ -22,6 +22,10 @@ public enum RangeClosureType implements Enumerator {
    * The '<em><b>Closed</b></em>' literal object.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+   * <!-- begin-model-doc -->
+   * The specified minimum and maximum values are
+   *             included in this range.
+   * <!-- end-model-doc -->
    * @see #CLOSED_VALUE
    * @generated
    * @ordered
@@ -32,6 +36,10 @@ public enum RangeClosureType implements Enumerator {
    * The '<em><b>Open</b></em>' literal object.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+   * <!-- begin-model-doc -->
+   * The specified minimum and maximum values are NOT
+   *             included in this range.
+   * <!-- end-model-doc -->
    * @see #OPEN_VALUE
    * @generated
    * @ordered
@@ -42,6 +50,11 @@ public enum RangeClosureType implements Enumerator {
    * The '<em><b>Open Closed</b></em>' literal object.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+   * <!-- begin-model-doc -->
+   * The specified minimum value is NOT included in this
+   *             range, and the specified maximum value IS included in this
+   *             range.
+   * <!-- end-model-doc -->
    * @see #OPEN_CLOSED_VALUE
    * @generated
    * @ordered
@@ -52,6 +65,11 @@ public enum RangeClosureType implements Enumerator {
    * The '<em><b>Closed Open</b></em>' literal object.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+   * <!-- begin-model-doc -->
+   * The specified minimum value IS included in this
+   *             range, and the specified maximum value is NOT included in this
+   *             range.
+   * <!-- end-model-doc -->
    * @see #CLOSED_OPEN_VALUE
    * @generated
    * @ordered

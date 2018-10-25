@@ -1795,7 +1795,7 @@ public interface Ows11Package extends EPackage {
     int EXCEPTION_TYPE = 19;
 
     /**
-   * The feature id for the '<em><b>Exception Text</b></em>' attribute.
+   * The feature id for the '<em><b>Exception Text</b></em>' attribute list.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
    * @generated
@@ -4919,10 +4919,10 @@ public interface Ows11Package extends EPackage {
     EClass getExceptionType();
 
     /**
-   * Returns the meta object for the attribute '{@link net.opengis.ows11.ExceptionType#getExceptionText <em>Exception Text</em>}'.
+   * Returns the meta object for the attribute list '{@link net.opengis.ows11.ExceptionType#getExceptionText <em>Exception Text</em>}'.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Exception Text</em>'.
+   * @return the meta object for the attribute list '<em>Exception Text</em>'.
    * @see net.opengis.ows11.ExceptionType#getExceptionText()
    * @see #getExceptionType()
    * @generated
@@ -7386,7 +7386,7 @@ public interface Ows11Package extends EPackage {
         EClass EXCEPTION_TYPE = eINSTANCE.getExceptionType();
 
         /**
-     * The meta object literal for the '<em><b>Exception Text</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Exception Text</b></em>' attribute list feature.
      * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
      * @generated

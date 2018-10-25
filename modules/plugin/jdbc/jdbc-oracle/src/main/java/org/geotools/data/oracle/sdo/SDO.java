@@ -2502,7 +2502,7 @@ public final class SDO {
             } else if (etype == ETYPE.COMPOUND_POLYGON_INTERIOR) {
                 int subelements = INTERPRETATION(elemInfo, i);
                 rings.add(createLinearRing(gf, GTYPE, SRID, elemInfo, i, coords));
-                i += subelements;
+                i = i + subelements + 1;
             } else if (etype == ETYPE.POLYGON) { // nead to test Clockwiseness of Ring to see if it
                 // is
                 // interior or not - (use POLYGON_INTERIOR to avoid

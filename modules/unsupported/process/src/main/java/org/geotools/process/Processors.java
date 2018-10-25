@@ -23,11 +23,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.stream.Stream;
 import org.geotools.data.Parameter;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryFinder;
-import org.geotools.factory.FactoryRegistry;
 import org.geotools.resources.LazySet;
 import org.geotools.util.NullProgressListener;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryFinder;
+import org.geotools.util.factory.FactoryRegistry;
 import org.opengis.feature.type.Name;
 
 /**

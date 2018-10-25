@@ -119,7 +119,7 @@ public class SampleDataAccessFactory implements DataAccessFactory {
     /**
      * Returns an empty list, containing no hints.
      *
-     * @see org.geotools.factory.Factory#getImplementationHints()
+     * @see org.geotools.util.factory.Factory#getImplementationHints()
      */
     public Map<Key, ?> getImplementationHints() {
         return Collections.emptyMap();

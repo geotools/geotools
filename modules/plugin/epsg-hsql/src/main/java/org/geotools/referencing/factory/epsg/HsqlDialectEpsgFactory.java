@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Adapts SQL statements for HSQL. The HSQL database engine doesn't understand the parenthesis in

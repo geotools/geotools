@@ -22,10 +22,10 @@ import java.util.concurrent.Callable;
 import javax.imageio.ImageReadParam;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.operation.MathTransform2D;
 

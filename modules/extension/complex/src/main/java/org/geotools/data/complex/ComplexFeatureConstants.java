@@ -17,10 +17,10 @@
 
 package org.geotools.data.complex;
 
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
+import org.geotools.util.factory.Hints;
 import org.geotools.xlink.XLINK;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.Property;

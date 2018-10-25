@@ -26,7 +26,7 @@ import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import javax.swing.Icon;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;

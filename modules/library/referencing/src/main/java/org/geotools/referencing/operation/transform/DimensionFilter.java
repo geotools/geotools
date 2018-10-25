@@ -17,7 +17,6 @@
 package org.geotools.referencing.operation.transform;
 
 import java.util.Arrays;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
@@ -26,6 +25,7 @@ import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.resources.XArray;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;

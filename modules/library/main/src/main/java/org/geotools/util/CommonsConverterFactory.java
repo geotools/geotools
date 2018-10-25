@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Convert String to common scalar values.

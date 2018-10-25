@@ -19,9 +19,9 @@ package org.geotools.filter.expression;
 
 import java.util.List;
 import org.geotools.data.complex.xml.XmlXpathFilterData;
-import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.util.XmlXpathUtilites;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.Feature;
 import org.xml.sax.helpers.NamespaceSupport;
 

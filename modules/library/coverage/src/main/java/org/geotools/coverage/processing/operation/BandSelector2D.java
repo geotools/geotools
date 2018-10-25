@@ -29,10 +29,10 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ColorUtilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.parameter.ParameterValueGroup;
 
 /**

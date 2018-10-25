@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Base class for EPSG factories to be registered in {@link GeometryFactoryFinder}.

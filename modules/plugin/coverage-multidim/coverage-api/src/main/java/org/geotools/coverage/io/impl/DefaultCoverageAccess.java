@@ -31,8 +31,8 @@ import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.data.Parameter;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.Hints;
 import org.geotools.util.NullProgressListener;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 import org.opengis.util.ProgressListener;
 

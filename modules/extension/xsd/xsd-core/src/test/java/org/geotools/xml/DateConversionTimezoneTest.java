@@ -20,7 +20,7 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.TimeZone;
 import junit.framework.TestCase;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.geotools.xs.bindings.XSDateBinding;
 import org.junit.After;
 import org.junit.Before;

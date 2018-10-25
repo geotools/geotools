@@ -19,7 +19,7 @@ package org.geotools.data;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

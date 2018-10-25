@@ -19,7 +19,7 @@ package org.geotools.filter.expression;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Convenience class for looking up a property accessor for a particular object type.

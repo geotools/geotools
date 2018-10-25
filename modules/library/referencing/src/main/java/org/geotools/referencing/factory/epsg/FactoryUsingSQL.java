@@ -19,7 +19,7 @@ package org.geotools.referencing.factory.epsg;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.sql.DataSource;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Please use {@link AccessDialectEpsgFactory}.

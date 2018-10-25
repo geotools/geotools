@@ -17,12 +17,12 @@
 package org.geotools.temporal;
 
 import java.util.Date;
-import org.geotools.factory.Hints;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.TemporalObject;
 

@@ -19,9 +19,9 @@ package org.geotools.coverage.io.netcdf.crs;
 import java.io.File;
 import java.net.URL;
 import java.util.logging.Level;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

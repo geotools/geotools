@@ -29,7 +29,6 @@ import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.Parameter;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridReaderLayer;
@@ -48,6 +47,7 @@ import org.geotools.swing.action.SafeAction;
 import org.geotools.swing.data.JParameterListWizard;
 import org.geotools.swing.wizard.JWizard;
 import org.geotools.util.KVP;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.style.ContrastMethod;
 

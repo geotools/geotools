@@ -40,8 +40,6 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataEncoder.T
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.data.WorldFileReader;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -51,6 +49,8 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.projection.AzimuthalEquidistant;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.coverage.grid.GridCoverageReader;

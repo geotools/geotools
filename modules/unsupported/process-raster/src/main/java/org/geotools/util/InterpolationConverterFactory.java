@@ -25,7 +25,7 @@ import javax.media.jai.InterpolationBicubic;
 import javax.media.jai.InterpolationBicubic2;
 import javax.media.jai.InterpolationBilinear;
 import javax.media.jai.InterpolationNearest;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Convert String to Interpolation classes.

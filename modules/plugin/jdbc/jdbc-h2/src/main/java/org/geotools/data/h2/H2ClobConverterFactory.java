@@ -18,9 +18,9 @@
 package org.geotools.data.h2;
 
 import java.io.Reader;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 import org.h2.jdbc.JdbcClob;
 
 /**

@@ -16,8 +16,8 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.algorithm.CGAlgorithms;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;

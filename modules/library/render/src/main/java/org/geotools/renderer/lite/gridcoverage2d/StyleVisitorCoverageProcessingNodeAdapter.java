@@ -18,10 +18,10 @@ package org.geotools.renderer.lite.gridcoverage2d;
 
 import java.util.List;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.factory.Hints;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleVisitor;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.InternationalString;
 

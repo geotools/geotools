@@ -16,9 +16,9 @@
  */
 package org.geotools.data.wmts.model;
 
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;

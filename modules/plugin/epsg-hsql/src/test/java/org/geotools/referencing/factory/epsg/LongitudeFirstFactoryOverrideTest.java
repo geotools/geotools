@@ -19,10 +19,10 @@ package org.geotools.referencing.factory.epsg;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Properties;
-import org.geotools.factory.AbstractFactory;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.factory.AbstractFactory;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

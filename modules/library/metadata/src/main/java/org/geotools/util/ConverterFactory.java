@@ -16,8 +16,8 @@
  */
 package org.geotools.util;
 
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 
 /**
  * Factory used to create instances of {@link Converter}.

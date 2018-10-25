@@ -23,12 +23,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.geotools.factory.Hints;
-import org.geotools.factory.OptionalFactory;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.LoggingKeys;
 import org.geotools.resources.i18n.Loggings;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.OptionalFactory;
 import org.opengis.referencing.FactoryException;
 
 /**

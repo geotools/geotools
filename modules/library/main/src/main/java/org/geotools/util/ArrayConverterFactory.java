@@ -17,7 +17,7 @@
 package org.geotools.util;
 
 import java.lang.reflect.Array;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /** Converter factory converting objects to single element arrays and vice-versa */
 public class ArrayConverterFactory implements ConverterFactory {

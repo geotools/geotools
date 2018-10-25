@@ -16,8 +16,8 @@
  */
 package org.geotools.util;
 
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.WKTReader2;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;

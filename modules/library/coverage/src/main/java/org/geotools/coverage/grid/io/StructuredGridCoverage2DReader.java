@@ -18,7 +18,7 @@ package org.geotools.coverage.grid.io;
 
 import java.io.IOException;
 import java.util.List;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**

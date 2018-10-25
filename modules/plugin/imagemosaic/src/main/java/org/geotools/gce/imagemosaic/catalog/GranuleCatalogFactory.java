@@ -26,10 +26,10 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.Repository;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
 /**

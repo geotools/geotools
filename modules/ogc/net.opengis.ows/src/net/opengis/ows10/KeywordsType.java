@@ -46,20 +46,30 @@ public interface KeywordsType extends EObject {
   EList<String> getKeyword();
 
   /**
-   * Returns the value of the '<em><b>Type</b></em>' containment reference list.
-   * The list contents are of type {@link net.opengis.ows10.CodeType}.
+   * Returns the value of the '<em><b>Type</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Type</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Type</em>' containment reference list.
+   * @return the value of the '<em>Type</em>' containment reference.
+   * @see #setType(CodeType)
    * @see net.opengis.ows10.Ows10Package#getKeywordsType_Type()
-   * @model containment="true"
+   * @model containment="true" upper="-2"
    *        extendedMetaData="kind='element' name='Type' namespace='##targetNamespace'"
    * @generated
    */
-  EList<CodeType> getType();
+  CodeType getType();
+
+  /**
+   * Sets the value of the '{@link net.opengis.ows10.KeywordsType#getType <em>Type</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Type</em>' containment reference.
+   * @see #getType()
+   * @generated
+   */
+  void setType(CodeType value);
 
 } // KeywordsType

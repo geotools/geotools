@@ -810,7 +810,7 @@ public interface Ows10Package extends EPackage {
 	int DOMAIN_TYPE = 10;
 
 	/**
-   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * The feature id for the '<em><b>Value</b></em>' attribute list.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
@@ -828,7 +828,7 @@ public interface Ows10Package extends EPackage {
 	int DOMAIN_TYPE__METADATA = 1;
 
 	/**
-   * The feature id for the '<em><b>Name</b></em>' attribute list.
+   * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
@@ -1194,7 +1194,7 @@ public interface Ows10Package extends EPackage {
 	int KEYWORDS_TYPE__KEYWORD = 0;
 
 	/**
-   * The feature id for the '<em><b>Type</b></em>' containment reference list.
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
@@ -1571,7 +1571,7 @@ public interface Ows10Package extends EPackage {
 	int SECTIONS_TYPE = 24;
 
 	/**
-   * The feature id for the '<em><b>Section</b></em>' attribute.
+   * The feature id for the '<em><b>Section</b></em>' attribute list.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
@@ -2661,10 +2661,10 @@ public interface Ows10Package extends EPackage {
 	EClass getDomainType();
 
 	/**
-   * Returns the meta object for the attribute '{@link net.opengis.ows10.DomainType#getValue <em>Value</em>}'.
+   * Returns the meta object for the attribute list '{@link net.opengis.ows10.DomainType#getValue <em>Value</em>}'.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Value</em>'.
+   * @return the meta object for the attribute list '<em>Value</em>'.
    * @see net.opengis.ows10.DomainType#getValue()
    * @see #getDomainType()
    * @generated
@@ -2683,10 +2683,10 @@ public interface Ows10Package extends EPackage {
 	EReference getDomainType_Metadata();
 
 	/**
-   * Returns the meta object for the attribute list '{@link net.opengis.ows10.DomainType#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link net.opengis.ows10.DomainType#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-   * @return the meta object for the attribute list '<em>Name</em>'.
+   * @return the meta object for the attribute '<em>Name</em>'.
    * @see net.opengis.ows10.DomainType#getName()
    * @see #getDomainType()
    * @generated
@@ -3018,10 +3018,10 @@ public interface Ows10Package extends EPackage {
 	EAttribute getKeywordsType_Keyword();
 
 	/**
-   * Returns the meta object for the containment reference list '{@link net.opengis.ows10.KeywordsType#getType <em>Type</em>}'.
+   * Returns the meta object for the containment reference '{@link net.opengis.ows10.KeywordsType#getType <em>Type</em>}'.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Type</em>'.
+   * @return the meta object for the containment reference '<em>Type</em>'.
    * @see net.opengis.ows10.KeywordsType#getType()
    * @see #getKeywordsType()
    * @generated
@@ -3362,10 +3362,10 @@ public interface Ows10Package extends EPackage {
 	EClass getSectionsType();
 
 	/**
-   * Returns the meta object for the attribute '{@link net.opengis.ows10.SectionsType#getSection <em>Section</em>}'.
+   * Returns the meta object for the attribute list '{@link net.opengis.ows10.SectionsType#getSection <em>Section</em>}'.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Section</em>'.
+   * @return the meta object for the attribute list '<em>Section</em>'.
    * @see net.opengis.ows10.SectionsType#getSection()
    * @see #getSectionsType()
    * @generated

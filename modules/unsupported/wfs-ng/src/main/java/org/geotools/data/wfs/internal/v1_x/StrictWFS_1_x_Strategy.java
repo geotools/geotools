@@ -611,6 +611,7 @@ public class StrictWFS_1_x_Strategy extends AbstractWFSStrategy {
         final OperationType operationMetadata = getOperationMetadata(operation);
 
         Set<String> serverSupportedFormats;
+        LOGGER.fine("requesting " + parameterName + " from " + operationMetadata);
         serverSupportedFormats = findParameters(operationMetadata, parameterName);
         return serverSupportedFormats;
     }

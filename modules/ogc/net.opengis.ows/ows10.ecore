@@ -779,7 +779,8 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="An Exception element describes one detected error that a server chooses to convey to the client."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exceptionText" eType="#//MimeType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="exceptionText" upperBound="-1"
+        eType="#//MimeType">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="Ordered sequence of text strings that describe this specific exception or error. The contents of these strings are left open to definition by each server implementation. A server is strongly encouraged to include at least one ExceptionText value, to provide more information about the detected error than provided by the exceptionCode. When included, multiple ExceptionText values shall provide hierarchical information about one detected error, with the most significant information listed first."/>
       </eAnnotations>

@@ -993,8 +993,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         ExceptionReportType report = response.getExceptionResponse();
         assertNotNull(report);
         ExceptionType exception = (ExceptionType) report.getException().get(0);
-        String errorMessage = exception.getExceptionText().get(0).toString();
-        assertTrue(errorMessage.contains(processIdenLocal));
+        EList<String> errorMessage = exception.getExceptionText();
+        assertTrue(errorMessage.get(0).contains(processIdenLocal));
     }
 
     /**

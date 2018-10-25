@@ -27,8 +27,6 @@
   <artifactId>gt-main</artifactId>
   <packaging>jar</packaging>
   <name>Main module</name>
-  
-
 
   <description>
     The main module contains the GeoTools public interfaces that are used by
@@ -50,7 +48,10 @@
        Expression expr = new AddImpl( expression1, expressiom2 );
     
   </description>
-
+  <properties>
+    <moduleIdentifier>org.geotools.main</moduleIdentifier>
+  </properties>
+  
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>

@@ -27,14 +27,16 @@
   <artifactId>gt-jdbc</artifactId>
   <packaging>jar</packaging>
   <name>JDBC DataStore Support</name>
-  
-
 
   <description>
     Abstract datastore implementation and helper classes / apis to be extended
     by datastores backed by releational databases accesible via jdbc.
   </description>
-
+  
+  <properties>
+    <moduleIdentifier>org.geotools.jdbc</moduleIdentifier>
+  </properties>
+  
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>

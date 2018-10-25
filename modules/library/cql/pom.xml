@@ -27,13 +27,15 @@
   <artifactId>gt-cql</artifactId>
   <packaging>jar</packaging>
   <name>OGC CQL to Filter parser</name>
-  
-
 
   <description>
     A parser that takes a Constraint Query Language input string and produces
     an equivalent org.opengis.filter.Filter.
   </description>
+
+  <properties>
+    <moduleIdentifier>org.geotools.text.cql</moduleIdentifier>
+  </properties>
 
   <licenses>
     <license>

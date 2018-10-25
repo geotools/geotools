@@ -27,11 +27,9 @@
   <artifactId>gt-xml</artifactId>
   <packaging>jar</packaging>
   <name>XML Parsing Support</name>
-  
-
 
   <description>
-    XML Parser based on the XDO design.
+    GTXML Schema Driven Parser
   </description>
 
   <licenses>

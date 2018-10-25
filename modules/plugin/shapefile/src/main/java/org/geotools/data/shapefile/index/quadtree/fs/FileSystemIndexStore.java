@@ -87,18 +87,18 @@ public class FileSystemIndexStore implements IndexStore {
 
                 IndexHeader header = new IndexHeader(byteOrder);
                 header.writeTo(buf);
-                buf.flip();
+                ((Buffer) buf).flip();
                 channel.write(buf);
             }
 
             ByteOrder order = byteToOrder(this.byteOrder);
 
-            ((Buffer)buf).clear();
+            ((Buffer) buf).clear();
             buf.order(order);
 
             buf.putInt(tree.getNumShapes());
             buf.putInt(tree.getMaxDepth());
-            buf.flip();
+            ((Buffer) buf).flip();
 
             channel.write(buf);
 
@@ -149,7 +149,7 @@ public class FileSystemIndexStore implements IndexStore {
         }
 
         buf.putInt(node.getNumSubNodes());
-        buf.flip();
+        ((Buffer) buf).flip();
 
         channel.write(buf);
 
@@ -202,7 +202,7 @@ public class FileSystemIndexStore implements IndexStore {
             ByteBuffer buf = ByteBuffer.allocate(8);
             buf.order(order);
             channel.read(buf);
-            buf.flip();
+            ((Buffer) buf).flip();
 
             tree =
                     new QuadTree(buf.getInt(), buf.getInt(), indexfile) {

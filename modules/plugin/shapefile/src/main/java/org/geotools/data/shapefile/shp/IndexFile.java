@@ -84,7 +84,7 @@ public class IndexFile implements FileReader {
                     LOGGER.finest("Reading from file...");
                     this.buf = NIOUtilities.allocate(8 * RECS_IN_BUFFER);
                     channel.read(buf);
-                    buf.flip();
+                    ((Buffer) buf).flip();
                     this.channelOffset = 0;
                 }
 
@@ -125,7 +125,7 @@ public class IndexFile implements FileReader {
             while (buffer.remaining() > 0) {
                 channel.read(buffer);
             }
-            buffer.flip();
+            ((Buffer) buffer).flip();
             header = new ShapefileHeader();
             header.read(buffer, true);
         } finally {
@@ -142,7 +142,7 @@ public class IndexFile implements FileReader {
             while (buffer.remaining() > 0) {
                 channel.read(buffer);
             }
-            buffer.flip();
+            ((Buffer) buffer).flip();
             int records = remaining / 4;
             content = new int[records];
             IntBuffer ints = buffer.asIntBuffer();
@@ -164,13 +164,13 @@ public class IndexFile implements FileReader {
                 LOGGER.finest("Filling buffer...");
                 this.channelOffset = pos;
                 this.channel.position(pos);
-                ((Buffer)buf).clear();
+                ((Buffer) buf).clear();
                 this.channel.read(buf);
-                buf.flip();
+                ((Buffer) buf).flip();
             }
         }
 
-        buf.position(pos - this.channelOffset);
+        ((Buffer) buf).position(pos - this.channelOffset);
         this.recOffset = buf.getInt();
         this.recLen = buf.getInt();
         this.lastIndex = index;

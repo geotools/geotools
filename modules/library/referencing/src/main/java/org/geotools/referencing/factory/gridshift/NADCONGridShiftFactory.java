@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.Channels;
@@ -185,7 +186,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             // read header info
             // //////////////////////
             // skip the header description
-            latBuffer.position(latBuffer.position() + DESCRIPTION_LENGTH);
+            ((Buffer) latBuffer).position(latBuffer.position() + DESCRIPTION_LENGTH);
 
             int nc = latBuffer.getInt();
             int nr = latBuffer.getInt();
@@ -201,7 +202,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             float ymax = ymin + ((nr - 1) * dy);
 
             // skip the longitude header description
-            longBuffer.position(longBuffer.position() + DESCRIPTION_LENGTH);
+            ((Buffer) longBuffer).position(longBuffer.position() + DESCRIPTION_LENGTH);
 
             // check that latitude grid header is the same as for latitude grid
             if ((nc != longBuffer.getInt())
@@ -223,18 +224,19 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             final int START_OF_DATA = RECORD_LENGTH - HEADER_BYTES;
 
             latBuffer = fillBuffer(latChannel, NUM_BYTES_LEFT);
-            latBuffer.position(START_OF_DATA); // start of second record (data)
+            ((Buffer) latBuffer).position(START_OF_DATA); // start of second record (data)
 
             longBuffer = fillBuffer(longChannel, NUM_BYTES_LEFT);
-            longBuffer.position(START_OF_DATA);
+            ((Buffer) longBuffer).position(START_OF_DATA);
 
             gridShift = new NADConGridShift(xmin, ymin, xmax, ymax, dx, dy, nc, nr);
 
             int i = 0;
             int j = 0;
             for (i = 0; i < nr; i++) {
-                latBuffer.position(latBuffer.position() + SEPARATOR_BYTES); // skip record separator
-                longBuffer.position(longBuffer.position() + SEPARATOR_BYTES);
+                ((Buffer) latBuffer)
+                        .position(latBuffer.position() + SEPARATOR_BYTES); // skip record separator
+                ((Buffer) longBuffer).position(longBuffer.position() + SEPARATOR_BYTES);
 
                 for (j = 0; j < nc; j++) {
                     gridShift.setLocalizationPoint(
@@ -273,7 +275,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
             throw new EOFException(Errors.format(ErrorKeys.END_OF_DATA_FILE));
         }
 
-        buf.flip();
+        ((Buffer) buf).flip();
         buf.order(ByteOrder.LITTLE_ENDIAN);
 
         return buf;
@@ -297,7 +299,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
         }
 
         if (r == -1) {
-            buffer.limit(buffer.position());
+            ((Buffer) buffer).limit(buffer.position());
         }
 
         return r;

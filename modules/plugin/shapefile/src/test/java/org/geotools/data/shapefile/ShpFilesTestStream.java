@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -209,7 +210,7 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
 
         ByteBuffer buffer = ByteBuffer.allocate(10);
         in.read(buffer);
-        buffer.flip();
+        ((Buffer) buffer).flip();
         String read = "";
         try {
             while (buffer.hasRemaining()) {
@@ -233,7 +234,7 @@ public class ShpFilesTestStream implements org.geotools.data.shapefile.files.Fil
         try {
             ByteBuffer buffer = ByteBuffer.allocate(10);
             buffer.put(shpFileType.name().getBytes());
-            buffer.flip();
+            ((Buffer) buffer).flip();
             out.write(buffer);
         } finally {
             out.close();

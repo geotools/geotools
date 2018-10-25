@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -325,7 +326,7 @@ public class GrassBinaryRasterReadHandler {
         monitor.complete();
 
         // prepare for reading
-        rasterByteBuffer.rewind();
+        ((Buffer) rasterByteBuffer).rewind();
 
         rowCacheRow = -1;
         nullRow = null;
@@ -772,7 +773,7 @@ public class GrassBinaryRasterReadHandler {
                     rowBuffer.putDouble(Double.NaN);
                 }
             } else {
-                rowCache.position((int) x * numberOfBytesPerValue);
+                ((Buffer) rowCache).position((int) x * numberOfBytesPerValue);
                 if (readerMapType > 0) {
                     /* Integers */
                     int cell = rowCache.getInt();

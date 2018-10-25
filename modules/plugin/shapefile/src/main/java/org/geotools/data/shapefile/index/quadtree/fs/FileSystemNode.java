@@ -214,7 +214,7 @@ public class FileSystemNode extends Node {
                 this.buffer = NIOUtilities.allocate(8 * 1024);
                 this.buffer.order(order);
                 channel.read(buffer);
-                buffer.flip();
+                ((Buffer) buffer).flip();
             }
         }
 
@@ -236,7 +236,7 @@ public class FileSystemNode extends Node {
             if (!useMemoryMapping && buffer.remaining() < 32) refillBuffer(32);
 
             buffer.asDoubleBuffer().get(envelope);
-            buffer.position(buffer.position() + 32);
+            ((Buffer) buffer).position(buffer.position() + 32);
             return new Envelope(envelope[0], envelope[2], envelope[1], envelope[3]);
         }
 
@@ -249,7 +249,7 @@ public class FileSystemNode extends Node {
             intView.get(array);
             // don't forget to update the original buffer position, since the
             // view is independent
-            buffer.position(buffer.position() + size);
+            ((Buffer) buffer).position(buffer.position() + size);
         }
 
         /**
@@ -271,9 +271,9 @@ public class FileSystemNode extends Node {
 
         private void readBuffer(long currentPosition) throws IOException {
             channel.position(currentPosition);
-            ((Buffer)buffer).clear();
+            ((Buffer) buffer).clear();
             channel.read(buffer);
-            buffer.flip();
+            ((Buffer) buffer).flip();
             bufferStart = currentPosition;
         }
 
@@ -289,7 +289,7 @@ public class FileSystemNode extends Node {
             // otherwise we have to reload it
             if (useMemoryMapping
                     || newPosition >= bufferStart && newPosition <= bufferStart + buffer.limit()) {
-                buffer.position((int) (newPosition - bufferStart));
+                ((Buffer) buffer).position((int) (newPosition - bufferStart));
             } else {
                 readBuffer(newPosition);
             }

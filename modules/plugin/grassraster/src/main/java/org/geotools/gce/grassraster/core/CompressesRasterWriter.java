@@ -233,7 +233,7 @@ public class CompressesRasterWriter {
             //            System.out.println("row: " + (i+1) + " position: " +
             // pointerInFilePosition);
 
-            ((Buffer)rowAsByteBuffer).clear();
+            ((Buffer) rowAsByteBuffer).clear();
 
             progress = (float) (progress + 100f * i / dataWindowRows);
             monitor.progress(progress);

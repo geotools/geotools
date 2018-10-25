@@ -23,6 +23,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -194,7 +195,7 @@ public class DbaseFileReader implements FileReader {
             } else {
                 buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, Integer.MAX_VALUE);
             }
-            buffer.position((int) fc.position());
+            ((Buffer) buffer).position((int) fc.position());
             header.readHeader(buffer);
 
             this.currentOffset = 0;
@@ -210,7 +211,7 @@ public class DbaseFileReader implements FileReader {
             buffer = NIOUtilities.allocate(header.getRecordLength());
             // fill it and reset
             fill(buffer, channel);
-            buffer.flip();
+            ((Buffer) buffer).flip();
             this.currentOffset = header.getHeaderLength();
         }
 
@@ -244,7 +245,7 @@ public class DbaseFileReader implements FileReader {
             r = channel.read(buffer);
         }
         if (r == -1) {
-            buffer.limit(buffer.position());
+            ((Buffer) buffer).limit(buffer.position());
         }
         return r;
     }
@@ -273,7 +274,7 @@ public class DbaseFileReader implements FileReader {
             this.currentOffset += buffer.position();
             buffer.compact();
             fill(buffer, channel);
-            buffer.position(0);
+            ((Buffer) buffer).position(0);
         }
     }
 
@@ -346,7 +347,7 @@ public class DbaseFileReader implements FileReader {
             final char tempDeleted = (char) buffer.get();
 
             // skip the next bytes
-            buffer.position(buffer.position() + header.getRecordLength() - 1); // the
+            ((Buffer) buffer).position(buffer.position() + header.getRecordLength() - 1); // the
             // 1 is
             // for
             // the
@@ -407,9 +408,9 @@ public class DbaseFileReader implements FileReader {
     /** Transfer, by bytes, the next record to the writer. */
     public void transferTo(final DbaseFileWriter writer) throws IOException {
         bufferCheck();
-        buffer.limit(buffer.position() + header.getRecordLength());
+        ((Buffer) buffer).limit(buffer.position() + header.getRecordLength());
         writer.channel.write(buffer);
-        buffer.limit(buffer.capacity());
+        ((Buffer) buffer).limit(buffer.capacity());
 
         cnt++;
     }
@@ -430,9 +431,9 @@ public class DbaseFileReader implements FileReader {
             final char deleted = (char) buffer.get();
             row.deleted = deleted == '*';
 
-            buffer.limit(buffer.position() + header.getRecordLength() - 1);
+            ((Buffer) buffer).limit(buffer.position() + header.getRecordLength() - 1);
             buffer.get(bytes); // SK: There is a side-effect here!!!
-            buffer.limit(buffer.capacity());
+            ((Buffer) buffer).limit(buffer.capacity());
 
             foundRecord = true;
         }

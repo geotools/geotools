@@ -24,6 +24,7 @@ import static org.junit.Assert.assertFalse;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Arrays;
@@ -90,7 +91,7 @@ public class StorageFileTest implements FileReader {
         try {
             ByteBuffer buffer = ByteBuffer.allocate(20);
             channel.read(buffer);
-            buffer.flip();
+            ((Buffer) buffer).flip();
             String data = new String(buffer.array()).trim();
             assertEquals(writtenToStorageFile, data);
         } finally {

@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
@@ -106,7 +107,7 @@ public class MultiPointHandler implements ShapeHandler {
         }
 
         // read bounding box (not needed)
-        buffer.position(buffer.position() + 4 * 8);
+        ((Buffer) buffer).position(buffer.position() + 4 * 8);
 
         int numpoints = buffer.getInt();
         int dimensions = shapeType == shapeType.MULTIPOINTZ && !flatGeometry ? 3 : 2;

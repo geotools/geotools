@@ -20,6 +20,7 @@ import static org.geotools.data.shapefile.files.ShpFileType.FIX;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -77,7 +78,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
         getHeader(shpFiles);
 
         buffer = NIOUtilities.allocate(IndexedFidWriter.RECORD_SIZE * 1024);
-        buffer.position(buffer.limit());
+        ((Buffer) buffer).position(buffer.limit());
     }
 
     private void getHeader(ShpFiles shpFiles) throws IOException {
@@ -92,7 +93,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
                 return;
             }
 
-            buffer.position(0);
+            ((Buffer) buffer).position(0);
 
             byte version = buffer.get();
 
@@ -192,7 +193,7 @@ public class IndexedFidReader implements FIDReader, FileReader {
         goTo(predictedRec);
         hasNext(); // force data reading
         next();
-        buffer.limit(buffer.capacity());
+        ((Buffer) buffer).limit(buffer.capacity());
         if (currentId == desired) {
             return currentShxIndex;
         }
@@ -231,10 +232,10 @@ public class IndexedFidReader implements FIDReader, FileReader {
             if (newPosition >= bufferStart + buffer.limit() || newPosition < bufferStart) {
                 FileChannel fc = (FileChannel) readChannel;
                 fc.position(newPosition);
-                buffer.limit(buffer.capacity());
-                buffer.position(buffer.limit());
+                ((Buffer) buffer).limit(buffer.capacity());
+                ((Buffer) buffer).position(buffer.limit());
             } else {
-                buffer.position((int) (newPosition - bufferStart));
+                ((Buffer) buffer).position((int) (newPosition - bufferStart));
             }
         } else {
             throw new IOException("Read Channel is not a File Channel so this is not possible.");
@@ -259,14 +260,14 @@ public class IndexedFidReader implements FIDReader, FileReader {
         }
 
         if (buffer.position() == buffer.limit()) {
-            buffer.position(0);
+            ((Buffer) buffer).position(0);
 
             FileChannel fc = (FileChannel) readChannel;
             bufferStart = fc.position();
             int read = ShapefileReader.fill(buffer, readChannel);
 
             if (read != 0) {
-                buffer.position(0);
+                ((Buffer) buffer).position(0);
             }
         }
 

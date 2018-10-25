@@ -19,6 +19,7 @@ package org.geotools.data.shapefile;
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
@@ -234,7 +235,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             in = shpFiles.getReadChannel(SHP, reader);
             try {
                 in.read(buffer);
-                buffer.flip();
+                ((Buffer) buffer).flip();
 
                 ShapefileHeader header = new ShapefileHeader();
                 header.read(buffer, true);

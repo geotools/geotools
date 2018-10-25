@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.shp;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -104,7 +105,7 @@ public class ShapefileReader implements FileReader {
         /** Fetch the shape stored in this record. */
         public Object shape() {
             if (shape == null) {
-                buffer.position(start);
+                ((Buffer) buffer).position(start);
                 buffer.order(ByteOrder.LITTLE_ENDIAN);
                 if (type == ShapeType.NULL) {
                     shape = null;
@@ -321,7 +322,7 @@ public class ShapefileReader implements FileReader {
         while (buffer.remaining() > 0 && r != -1) {
             r = channel.read(buffer);
         }
-        buffer.limit(buffer.position());
+        ((Buffer) buffer).limit(buffer.position());
         return r;
     }
 
@@ -331,7 +332,7 @@ public class ShapefileReader implements FileReader {
         if (channel instanceof FileChannel && useMemoryMappedBuffer) {
             FileChannel fc = (FileChannel) channel;
             buffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-            buffer.position(0);
+            ((Buffer) buffer).position(0);
             this.currentOffset = 0;
         } else {
             // force useMemoryMappedBuffer to false
@@ -339,7 +340,7 @@ public class ShapefileReader implements FileReader {
             // start small
             buffer = NIOUtilities.allocate(1024);
             fill(buffer, channel);
-            buffer.flip();
+            ((Buffer) buffer).flip();
             this.currentOffset = 0;
         }
         header = new ShapefileHeader();
@@ -441,7 +442,7 @@ public class ShapefileReader implements FileReader {
         }
 
         // reset things to as they were
-        buffer.position(position);
+        ((Buffer) buffer).position(position);
 
         return hasNext;
     }
@@ -463,7 +464,7 @@ public class ShapefileReader implements FileReader {
     public int transferTo(ShapefileWriter writer, int recordNum, double[] bounds)
             throws IOException {
 
-        buffer.position(this.toBufferOffset(record.end));
+        ((Buffer) buffer).position(this.toBufferOffset(record.end));
         buffer.order(ByteOrder.BIG_ENDIAN);
 
         buffer.getInt(); // record number
@@ -484,18 +485,18 @@ public class ShapefileReader implements FileReader {
         }
 
         // write header to shp and shx
-        headerTransfer.position(0);
-        headerTransfer.putInt(recordNum).putInt(rl).position(0);
+        ((Buffer) headerTransfer).position(0);
+        ((Buffer) headerTransfer.putInt(recordNum).putInt(rl)).position(0);
         writer.shpChannel.write(headerTransfer);
-        headerTransfer.putInt(0, writer.offset).position(0);
+        ((Buffer) headerTransfer.putInt(0, writer.offset)).position(0);
         writer.offset += rl + 4;
         writer.shxChannel.write(headerTransfer);
 
         // reset to mark and limit at end of record, then write
         int oldLimit = buffer.limit();
-        buffer.position(mark).limit(mark + len);
+        ((Buffer) buffer).position(mark).limit(mark + len);
         writer.shpChannel.write(buffer);
-        buffer.limit(oldLimit);
+        ((Buffer) buffer).limit(oldLimit);
 
         record.end = this.toFileOffset(buffer.position());
         record.number++;
@@ -505,14 +506,14 @@ public class ShapefileReader implements FileReader {
 
     private void positionBufferForOffset(ByteBuffer buffer, int offset) throws IOException {
         if (useMemoryMappedBuffer) {
-            buffer.position(offset);
+            ((Buffer) buffer).position(offset);
             return;
         }
 
         // Check to see if requested offset is already loaded; ensure that record header is in the
         // buffer
         if (currentOffset <= offset && currentOffset + buffer.limit() >= offset + 8) {
-            buffer.position(toBufferOffset(offset));
+            ((Buffer) buffer).position(toBufferOffset(offset));
         } else {
             if (!randomAccessEnabled) {
                 throw new UnsupportedOperationException("Random Access not enabled");
@@ -520,10 +521,10 @@ public class ShapefileReader implements FileReader {
             FileChannel fc = (FileChannel) this.channel;
             fc.position(offset);
             currentOffset = offset;
-            buffer.position(0);
-            buffer.limit(buffer.capacity());
+            ((Buffer) buffer).position(0);
+            ((Buffer) buffer).limit(buffer.capacity());
             fill(buffer, fc);
-            buffer.flip();
+            ((Buffer) buffer).flip();
         }
     }
 
@@ -560,7 +561,7 @@ public class ShapefileReader implements FileReader {
                 buffer.put(old);
                 NIOUtilities.clean(old, useMemoryMappedBuffer);
                 fill(buffer, channel);
-                buffer.position(0);
+                ((Buffer) buffer).position(0);
             } else
             // remaining is less than record length
             // compact the remaining data and read again,
@@ -569,7 +570,7 @@ public class ShapefileReader implements FileReader {
                 this.currentOffset += buffer.position();
                 buffer.compact();
                 fill(buffer, channel);
-                buffer.position(0);
+                ((Buffer) buffer).position(0);
             }
         }
 
@@ -589,7 +590,7 @@ public class ShapefileReader implements FileReader {
         // peek at bounds, then reset for handler
         // many handler's may ignore bounds reading, but we don't want to
         // second guess them...
-        buffer.mark();
+        ((Buffer) buffer).mark();
         if (recordType.isMultiPoint()) {
             record.minX = buffer.getDouble();
             record.minY = buffer.getDouble();
@@ -599,7 +600,7 @@ public class ShapefileReader implements FileReader {
             record.minX = record.maxX = buffer.getDouble();
             record.minY = record.maxY = buffer.getDouble();
         }
-        buffer.reset();
+        ((Buffer) buffer).reset();
 
         record.offset = record.end;
         // update all the record info.

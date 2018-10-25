@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
@@ -159,7 +160,7 @@ public class DbaseFileWriter {
     }
 
     private void write() throws IOException {
-        buffer.position(0);
+        ((Buffer) buffer).position(0);
         int r = buffer.remaining();
         while ((r -= channel.write(buffer)) > 0) {; // do nothing
         }
@@ -181,7 +182,7 @@ public class DbaseFileWriter {
                             + header.getNumFields());
         }
 
-        buffer.position(0);
+        ((Buffer) buffer).position(0);
 
         // put the 'not-deleted' marker
         buffer.put((byte) ' ');
@@ -292,7 +293,7 @@ public class DbaseFileWriter {
         // 0x00 (which is wrong anyway) lets just do away with this :)
         // - produced dbf works in OpenOffice and ArcExplorer java, so it must
         // be okay.
-        // buffer.position(0);
+        // ((Buffer)buffer).position(0);
         // buffer.put((byte) 0).position(0).limit(1);
         // write();
         if (channel != null && channel.isOpen()) {

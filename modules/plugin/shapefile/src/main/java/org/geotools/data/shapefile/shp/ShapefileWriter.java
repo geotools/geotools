@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.shp;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.FileChannel;
@@ -101,17 +102,17 @@ public class ShapefileWriter {
 
     /** Drain internal buffers into underlying channels. */
     private void drain() throws IOException {
-        shapeBuffer.flip();
-        indexBuffer.flip();
+        ((Buffer) shapeBuffer).flip();
+        ((Buffer) indexBuffer).flip();
         while (shapeBuffer.remaining() > 0) shpChannel.write(shapeBuffer);
         while (indexBuffer.remaining() > 0) shxChannel.write(indexBuffer);
-        shapeBuffer.flip().limit(shapeBuffer.capacity());
-        indexBuffer.flip().limit(indexBuffer.capacity());
+        ((Buffer) shapeBuffer).flip().limit(shapeBuffer.capacity());
+        ((Buffer) indexBuffer).flip().limit(indexBuffer.capacity());
     }
 
     private void writeHeaders(GeometryCollection geometries, ShapeType type) throws IOException {
         // ShapefileHeader header = new ShapefileHeader();
-        // Envelope bounds = geometries.getEnvelopeInternal();
+        // Envelope bounds = geometries.getEnvelopeInternal();By
         // header.write(shapeBuffer, type, geometries.getNumGeometries(),
         // fileLength / 2,
         // bounds.getMinX(),bounds.getMinY(), bounds.getMaxX(),bounds.getMaxY()

@@ -16,6 +16,7 @@
  */
 package org.geotools.data.shapefile.shp;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
@@ -124,7 +125,7 @@ public class PolygonHandler implements ShapeHandler {
             return createNull();
         }
         // bounds
-        buffer.position(buffer.position() + 4 * 8);
+        ((Buffer) buffer).position(buffer.position() + 4 * 8);
 
         int[] partOffsets;
 

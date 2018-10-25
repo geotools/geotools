@@ -21,6 +21,7 @@ package org.geotools.data.shapefile.dbf;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.ReadableByteChannel;
@@ -523,10 +524,10 @@ public class DbaseFileHeader {
             in.order(ByteOrder.LITTLE_ENDIAN);
 
             // only want to read first 10 bytes...
-            in.limit(10);
+            ((Buffer) in).limit(10);
 
             read(in, channel);
-            in.position(0);
+            ((Buffer) in).position(0);
 
             // type of file.
             byte magic = in.get();
@@ -563,17 +564,17 @@ public class DbaseFileHeader {
                 NIOUtilities.clean(in, false);
                 in = NIOUtilities.allocate(headerLength - 10);
             }
-            in.limit(headerLength - 10);
-            in.position(0);
+            ((Buffer) in).limit(headerLength - 10);
+            ((Buffer) in).position(0);
             read(in, channel);
-            in.position(0);
+            ((Buffer) in).position(0);
 
             // read the length of a record
             // ahhh.. unsigned little-endian shorts
             recordLength = (in.get() & 0xff) | ((in.get() & 0xff) << 8);
 
             // skip the reserved bytes in the header.
-            in.position(in.position() + 20);
+            ((Buffer) in).position(in.position() + 20);
 
             // calculate the number of Fields in the header
             fieldCnt = (headerLength - FILE_DESCRIPTOR_SIZE - 1) / FILE_DESCRIPTOR_SIZE;
@@ -615,7 +616,7 @@ public class DbaseFileHeader {
 
                 // reserved bytes.
                 // in.skipBytes(14);
-                in.position(in.position() + 14);
+                ((Buffer) in).position(in.position() + 14);
 
                 // some broken shapefiles have 0-length attributes. The reference
                 // implementation
@@ -627,7 +628,7 @@ public class DbaseFileHeader {
 
             // Last byte is a marker for the end of the field definitions.
             // in.skipBytes(1);
-            in.position(in.position() + 1);
+            ((Buffer) in).position(in.position() + 1);
 
             fields = new DbaseField[lfields.size()];
             fields = (DbaseField[]) lfields.toArray(fields);
@@ -689,7 +690,7 @@ public class DbaseFileHeader {
         recordLength = (in.get() & 0xff) | ((in.get() & 0xff) << 8);
 
         // skip the reserved bytes in the header.
-        in.position(in.position() + 20);
+        ((Buffer) in).position(in.position() + 20);
 
         // calculate the number of Fields in the header
         fieldCnt = (headerLength - FILE_DESCRIPTOR_SIZE - 1) / FILE_DESCRIPTOR_SIZE;
@@ -731,7 +732,7 @@ public class DbaseFileHeader {
 
             // reserved bytes.
             // in.skipBytes(14);
-            in.position(in.position() + 14);
+            ((Buffer) in).position(in.position() + 14);
 
             // some broken shapefiles have 0-length attributes. The reference
             // implementation
@@ -743,7 +744,7 @@ public class DbaseFileHeader {
 
         // Last byte is a marker for the end of the field definitions.
         // in.skipBytes(1);
-        in.position(in.position() + 1);
+        ((Buffer) in).position(in.position() + 1);
 
         fields = new DbaseField[lfields.size()];
         fields = (DbaseField[]) lfields.toArray(fields);
@@ -804,7 +805,7 @@ public class DbaseFileHeader {
 
             // // write the reserved bytes in the header
             // for (int i=0; i<20; i++) out.writeByteLE(0);
-            buffer.position(buffer.position() + 20);
+            ((Buffer) buffer).position(buffer.position() + 20);
 
             // write all of the header records
             int tempOffset = 0;
@@ -834,13 +835,13 @@ public class DbaseFileHeader {
 
                 // write the reserved bytes.
                 // for (in j=0; jj<14; j++) out.writeByteLE(0);
-                buffer.position(buffer.position() + 14);
+                ((Buffer) buffer).position(buffer.position() + 14);
             }
 
             // write the end of the field definitions marker
             buffer.put((byte) 0x0D);
 
-            buffer.position(0);
+            ((Buffer) buffer).position(0);
 
             int r = buffer.remaining();
             while ((r -= out.write(buffer)) > 0) {; // do nothing

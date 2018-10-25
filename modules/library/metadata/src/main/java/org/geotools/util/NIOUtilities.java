@@ -17,6 +17,7 @@
 package org.geotools.util;
 
 import java.lang.reflect.Method;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.security.AccessController;
@@ -127,7 +128,9 @@ public final class NIOUtilities {
             }
             // clean up the buffer and return it
             if (buffer != null) {
-                buffer.clear();
+                // cast to Buffer for compatibility with java 11 covariant return types when running
+                // on java 8
+                ((Buffer) buffer).clear();
                 return buffer;
             }
         }
@@ -262,7 +265,9 @@ public final class NIOUtilities {
 
         // clean up the buffer -> we need to zero out its contents as if it was just
         // created or some shapefile tests will start failing
-        buffer.clear();
+        // cast to Buffer for compatibility with java 11 covariant return types when running on java
+        // 8
+        ((Buffer) buffer).clear();
         buffer.order(ByteOrder.BIG_ENDIAN);
 
         // set the buffer back in the cache, either as a soft reference or as

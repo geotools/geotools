@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.index.quadtree.fs;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -270,7 +271,7 @@ public class FileSystemNode extends Node {
 
         private void readBuffer(long currentPosition) throws IOException {
             channel.position(currentPosition);
-            buffer.clear();
+            ((Buffer)buffer).clear();
             channel.read(buffer);
             buffer.flip();
             bufferStart = currentPosition;

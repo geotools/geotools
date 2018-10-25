@@ -19,6 +19,7 @@ package org.geotools.gce.grassraster.core;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.util.BitSet;
 import java.util.zip.Deflater;
@@ -232,7 +233,7 @@ public class CompressesRasterWriter {
             //            System.out.println("row: " + (i+1) + " position: " +
             // pointerInFilePosition);
 
-            rowAsByteBuffer.clear();
+            ((Buffer)rowAsByteBuffer).clear();
 
             progress = (float) (progress + 100f * i / dataWindowRows);
             monitor.progress(progress);

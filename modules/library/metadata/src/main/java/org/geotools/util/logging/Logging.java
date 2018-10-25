@@ -387,7 +387,7 @@ public final class Logging {
      * setting. A user trying to configure his logging properties may find confusing to see his
      * setting ignored.
      *
-     * @see org.geotools.factory.GeoTools#init
+     * @see org.geotools.util.factory.GeoTools#init
      */
     public void forceMonolineConsoleOutput(final Level level) {
         final Logger logger =

@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.filter.function.InterpolateFunction;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

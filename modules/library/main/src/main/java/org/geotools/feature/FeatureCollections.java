@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.Map;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Factory;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * A utility class for working with FeatureCollections. Provides a mechanism for obtaining a

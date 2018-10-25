@@ -38,8 +38,8 @@ import org.geotools.coverage.io.impl.DefaultFileCoverageAccess;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Parameter;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 import org.opengis.util.ProgressListener;
 

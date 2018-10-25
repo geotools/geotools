@@ -23,12 +23,11 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import org.geotools.factory.FactoryNotFoundException;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.FactoryNotFoundException;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;

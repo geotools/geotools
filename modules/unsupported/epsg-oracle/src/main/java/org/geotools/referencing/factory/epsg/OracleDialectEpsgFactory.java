@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
 import javax.sql.DataSource;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * An EPSG factory suitable for Oracle SQL syntax.

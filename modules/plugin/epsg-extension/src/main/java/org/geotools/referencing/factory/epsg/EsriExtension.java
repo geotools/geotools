@@ -17,8 +17,8 @@
 package org.geotools.referencing.factory.epsg;
 
 import java.net.URL;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 

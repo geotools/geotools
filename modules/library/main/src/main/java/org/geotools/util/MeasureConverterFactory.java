@@ -22,8 +22,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.measure.Unit;
-import org.geotools.factory.Hints;
 import org.geotools.measure.Measure;
+import org.geotools.util.factory.Hints;
 import tec.uom.se.format.SimpleUnitFormat;
 
 /**

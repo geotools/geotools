@@ -20,8 +20,8 @@ import org.opengis.filter.Filter;
 
 /**
  * Policy to be used while running a removal on {@link GranuleStore#removeGranules(Filter,
- * org.geotools.factory.Hints)}. Needs to be specified as part of the {@link
- * org.geotools.factory.Hints}
+ * org.geotools.util.factory.Hints)}. Needs to be specified as part of the {@link
+ * org.geotools.util.factory.Hints}
  */
 public enum GranuleRemovalPolicy {
 

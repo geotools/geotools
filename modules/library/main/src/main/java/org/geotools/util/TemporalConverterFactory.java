@@ -24,7 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.temporal.Instant;
 
 /**

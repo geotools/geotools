@@ -18,8 +18,8 @@ package org.geotools.util;
 
 import java.awt.Color;
 import junit.framework.TestCase;
-import org.geotools.factory.Hints;
 import org.geotools.filter.ConstantExpression;
+import org.geotools.util.factory.Hints;
 
 public class ColorConverterFactoryTest extends TestCase {
 

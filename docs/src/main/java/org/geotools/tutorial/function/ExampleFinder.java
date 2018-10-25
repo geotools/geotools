@@ -2,12 +2,12 @@ package org.geotools.tutorial.function;
 
 import java.util.Set;
 import java.util.stream.Stream;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryFinder;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.Hints;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.resources.LazySet;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryFinder;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.FilterFactory;
 
 public class ExampleFinder extends FactoryFinder {

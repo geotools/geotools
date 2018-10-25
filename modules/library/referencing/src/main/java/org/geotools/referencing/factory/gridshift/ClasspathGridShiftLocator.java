@@ -17,8 +17,8 @@
 package org.geotools.referencing.factory.gridshift;
 
 import java.net.URL;
-import org.geotools.factory.AbstractFactory;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.util.factory.AbstractFactory;
 import org.opengis.metadata.citation.Citation;
 
 /**

@@ -30,12 +30,12 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-import org.geotools.factory.BufferedFactory;
 import org.geotools.referencing.factory.ReferencingFactory;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.BufferedFactory;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 

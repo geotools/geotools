@@ -20,8 +20,8 @@ import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Factory;
-import org.geotools.factory.FactoryRegistryException;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.FactoryRegistryException;
 
 /**
  * This specifies the interface to create FeatureLocks.

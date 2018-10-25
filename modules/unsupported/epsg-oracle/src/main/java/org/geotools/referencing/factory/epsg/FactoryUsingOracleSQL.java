@@ -20,7 +20,7 @@ import java.sql.Connection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * An EPSG factory suitable for Oracle SQL syntax.

@@ -24,8 +24,6 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
@@ -37,6 +35,8 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.LoggingKeys;
 import org.geotools.resources.i18n.Loggings;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
@@ -62,7 +62,7 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * <p>If an operation is not found in the properties file, this factory will delegate creation on a
  * fallback factory. The fallback factory is the next registered {@link
  * CoordinateOperationAuthorityFactory} after this one in the {@linkplain
- * org.geotools.factory.AbstractFactory#priority priority} chain.
+ * org.geotools.util.factory.AbstractFactory#priority priority} chain.
  *
  * @version $Id$
  * @author Oscar Fonts
@@ -84,7 +84,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
      *
      * <ul>
      *   <li>In the directory specified by the {@value
-     *       org.geotools.factory.GeoTools#CRS_AUTHORITY_EXTRA_DIRECTORY} system property.
+     *       org.geotools.util.factory.GeoTools#CRS_AUTHORITY_EXTRA_DIRECTORY} system property.
      *   <li>In every {@code org/geotools/referencing/factory/espg} directories found on the
      *       classpath.
      * </ul>

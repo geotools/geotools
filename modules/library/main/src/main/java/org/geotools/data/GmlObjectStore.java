@@ -17,7 +17,7 @@
 package org.geotools.data;
 
 import java.io.IOException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.identity.GmlObjectId;
 
 /**

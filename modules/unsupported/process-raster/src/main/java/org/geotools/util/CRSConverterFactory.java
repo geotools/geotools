@@ -18,8 +18,8 @@ package org.geotools.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

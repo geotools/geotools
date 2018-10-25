@@ -21,9 +21,9 @@ import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.Map;
 import org.geotools.data.Parameter;
-import org.geotools.factory.Factory;
-import org.geotools.factory.Hints;
-import org.geotools.factory.OptionalFactory;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.OptionalFactory;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 

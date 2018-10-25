@@ -18,8 +18,8 @@ package org.geotools.filter.function.math;
 
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;

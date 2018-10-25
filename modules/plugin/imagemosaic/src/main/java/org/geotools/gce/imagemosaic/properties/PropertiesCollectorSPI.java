@@ -17,7 +17,7 @@
 package org.geotools.gce.imagemosaic.properties;
 
 import java.util.List;
-import org.geotools.factory.OptionalFactory;
+import org.geotools.util.factory.OptionalFactory;
 
 public interface PropertiesCollectorSPI extends OptionalFactory {
 

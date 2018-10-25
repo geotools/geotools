@@ -17,14 +17,14 @@
 package org.geotools.referencing.factory;
 
 import java.util.*;
-import org.geotools.factory.Factory;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.GenericName;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.*;
 import org.opengis.referencing.crs.*;

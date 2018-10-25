@@ -26,13 +26,13 @@ import java.io.RandomAccessFile;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.factory.AbstractFactory;
-import org.geotools.factory.BufferedFactory;
 import org.geotools.referencing.factory.ReferencingFactory;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.AbstractFactory;
+import org.geotools.util.factory.BufferedFactory;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 

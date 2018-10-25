@@ -18,9 +18,9 @@
 package org.geotools.referencing.crs;
 
 import java.util.Set;
-import org.geotools.factory.AbstractFactory;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.util.factory.AbstractFactory;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;

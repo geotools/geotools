@@ -22,8 +22,8 @@ import static org.geotools.util.Utilities.toUnmodifiableSet;
 import java.util.Arrays;
 import java.util.Set;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
 
 /** @author Simone Giannecchini, GeoSolutions SAS */
 public final class PropertiesCollectorFinder {

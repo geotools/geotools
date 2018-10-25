@@ -38,9 +38,9 @@ import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.FileDriver;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
-import org.geotools.factory.Hints;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.util.ProgressListener;
 
 /** NetCDF Driver */

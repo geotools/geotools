@@ -25,7 +25,7 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import org.geotools.data.DataStore;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * Abstract implementation of DataStoreFactory for jdbc datastores which obtain a JNDI connection.

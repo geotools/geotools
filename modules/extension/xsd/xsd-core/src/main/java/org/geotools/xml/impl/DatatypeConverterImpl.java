@@ -24,7 +24,7 @@ import java.util.Calendar;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /** @author <a href="mailto:joe@ispsoft.de">Jochen Wiedmann</a> */
 public class DatatypeConverterImpl implements DatatypeConverterInterface {

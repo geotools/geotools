@@ -17,10 +17,10 @@
 package org.geotools.s3.geotiff;
 
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.s3.S3ImageInputStreamImpl;
 import org.geotools.s3.S3ImageInputStreamImplSpi;
+import org.geotools.util.factory.Hints;
 
 /**
  * Very simple wrapper around GeoTIff reader in order to support S3 geotiff. The goal is to have

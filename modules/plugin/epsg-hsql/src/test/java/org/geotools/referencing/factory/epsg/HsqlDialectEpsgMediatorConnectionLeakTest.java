@@ -21,8 +21,8 @@ import junit.framework.TestCase;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.epsg.HsqlDialectEpsgMediatorStressTest.ClientThread;
+import org.geotools.util.factory.Hints;
 
 /**
  * Multi-threaded test to check that no connections are leaked by the EPSG mediator/factory code.

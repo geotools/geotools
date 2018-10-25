@@ -17,7 +17,7 @@
  */
 package org.geotools.util;
 
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Converts between enumerations and strings

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.geotools.data.DataAccessFactory.Param;
-import org.geotools.factory.Factory;
+import org.geotools.util.factory.Factory;
 
 /**
  * Constructs a live DataSource from a set of parameters.

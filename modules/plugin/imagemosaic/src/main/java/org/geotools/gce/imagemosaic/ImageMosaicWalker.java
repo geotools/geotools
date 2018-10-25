@@ -35,10 +35,10 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.UnknownFormat;
 import org.geotools.data.DefaultTransaction;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.acceptors.GranuleAcceptor;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 
 /**
  * This class is responsible for walking through the files inside a directory (and its children

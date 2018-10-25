@@ -101,7 +101,7 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
         List<String> paramValues = childNames(paramParentNode);
 
         DomainType domain = ows10Factory.createDomainType();
-        domain.getValue().add(parameterName);
+        domain.setName(parameterName);
 
         for (String paramValue : paramValues) {
             domain.getValue().add(paramValue);

@@ -39,24 +39,14 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  */
 public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
 	/**
-   * The default value of the '{@link #getExceptionText() <em>Exception Text</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getExceptionText()
-   * @generated
-   * @ordered
-   */
-  protected static final String EXCEPTION_TEXT_EDEFAULT = null;
-
-  /**
-   * The cached value of the '{@link #getExceptionText() <em>Exception Text</em>}' attribute.
+   * The cached value of the '{@link #getExceptionText() <em>Exception Text</em>}' attribute list.
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @see #getExceptionText()
    * @generated
    * @ordered
    */
-	protected String exceptionText = EXCEPTION_TEXT_EDEFAULT;
+	protected EList<String> exceptionText;
 
 	/**
    * The default value of the '{@link #getExceptionCode() <em>Exception Code</em>}' attribute.
@@ -122,23 +112,14 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	public String getExceptionText() {
+	public EList<String> getExceptionText() {
+    if (exceptionText == null) {
+      exceptionText = new EDataTypeUniqueEList<String>(String.class, this, Ows10Package.EXCEPTION_TYPE__EXCEPTION_TEXT);
+    }
     return exceptionText;
   }
 
 	/**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setExceptionText(String newExceptionText) {
-    String oldExceptionText = exceptionText;
-    exceptionText = newExceptionText;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, Ows10Package.EXCEPTION_TYPE__EXCEPTION_TEXT, oldExceptionText, exceptionText));
-  }
-
-  /**
    * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
    * @generated
@@ -203,11 +184,13 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
 	 * <!-- end-user-doc -->
    * @generated
    */
-	@Override
+	@SuppressWarnings("unchecked")
+  @Override
   public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Ows10Package.EXCEPTION_TYPE__EXCEPTION_TEXT:
-        setExceptionText((String)newValue);
+        getExceptionText().clear();
+        getExceptionText().addAll((Collection<? extends String>)newValue);
         return;
       case Ows10Package.EXCEPTION_TYPE__EXCEPTION_CODE:
         setExceptionCode((String)newValue);
@@ -228,7 +211,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
   public void eUnset(int featureID) {
     switch (featureID) {
       case Ows10Package.EXCEPTION_TYPE__EXCEPTION_TEXT:
-        setExceptionText(EXCEPTION_TEXT_EDEFAULT);
+        getExceptionText().clear();
         return;
       case Ows10Package.EXCEPTION_TYPE__EXCEPTION_CODE:
         setExceptionCode(EXCEPTION_CODE_EDEFAULT);
@@ -249,7 +232,7 @@ public class ExceptionTypeImpl extends EObjectImpl implements ExceptionType {
   public boolean eIsSet(int featureID) {
     switch (featureID) {
       case Ows10Package.EXCEPTION_TYPE__EXCEPTION_TEXT:
-        return EXCEPTION_TEXT_EDEFAULT == null ? exceptionText != null : !EXCEPTION_TEXT_EDEFAULT.equals(exceptionText);
+        return exceptionText != null && !exceptionText.isEmpty();
       case Ows10Package.EXCEPTION_TYPE__EXCEPTION_CODE:
         return EXCEPTION_CODE_EDEFAULT == null ? exceptionCode != null : !EXCEPTION_CODE_EDEFAULT.equals(exceptionCode);
       case Ows10Package.EXCEPTION_TYPE__LOCATOR:

@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>org.geotools</groupId>
-            <artifactId>gt-api</artifactId>
+            <artifactId>gt-main</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

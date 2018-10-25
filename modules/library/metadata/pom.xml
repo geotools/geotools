@@ -26,14 +26,15 @@
   <groupId>org.geotools</groupId>
   <artifactId>gt-metadata</artifactId>
   <packaging>jar</packaging>
+
   <name>Metadata</name>
-  
-
-
   <description>
     Contains implementations of metadata and some core utilities classes.
   </description>
-
+  <properties>
+    <moduleIdentifier>org.geotools.metadata</moduleIdentifier>
+  </properties>
+  
   <licenses>
     <license>
       <name>Lesser General Public License (LGPL)</name>

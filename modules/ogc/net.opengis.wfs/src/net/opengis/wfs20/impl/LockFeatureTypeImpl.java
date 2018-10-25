@@ -8,6 +8,7 @@ package net.opengis.wfs20.impl;
 
 import java.math.BigInteger;
 
+import java.util.Collection;
 import net.opengis.fes20.AbstractQueryExpressionType;
 
 import net.opengis.wfs20.AllSomeType;
@@ -331,11 +332,16 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
      * <!-- end-user-doc -->
    * @generated
    */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
     switch (featureID) {
       case Wfs20Package.LOCK_FEATURE_TYPE__ABSTRACT_QUERY_EXPRESSION_GROUP:
         ((FeatureMap.Internal)getAbstractQueryExpressionGroup()).set(newValue);
+        return;
+      case Wfs20Package.LOCK_FEATURE_TYPE__ABSTRACT_QUERY_EXPRESSION:
+        getAbstractQueryExpression().clear();
+        getAbstractQueryExpression().addAll((Collection<? extends AbstractQueryExpressionType>)newValue);
         return;
       case Wfs20Package.LOCK_FEATURE_TYPE__EXPIRY:
         setExpiry((BigInteger)newValue);
@@ -360,6 +366,9 @@ public class LockFeatureTypeImpl extends BaseRequestTypeImpl implements LockFeat
     switch (featureID) {
       case Wfs20Package.LOCK_FEATURE_TYPE__ABSTRACT_QUERY_EXPRESSION_GROUP:
         getAbstractQueryExpressionGroup().clear();
+        return;
+      case Wfs20Package.LOCK_FEATURE_TYPE__ABSTRACT_QUERY_EXPRESSION:
+        getAbstractQueryExpression().clear();
         return;
       case Wfs20Package.LOCK_FEATURE_TYPE__EXPIRY:
         unsetExpiry();

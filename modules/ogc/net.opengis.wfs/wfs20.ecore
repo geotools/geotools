@@ -1216,8 +1216,7 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="abstractQueryExpression"
         lowerBound="1" upperBound="-1" eType="ecore:EClass ../net.opengis.fes/fes20.ecore#//AbstractQueryExpressionType"
-        changeable="false" volatile="true" transient="true" derived="true" containment="true"
-        resolveProxies="false">
+        volatile="true" transient="true" derived="true" containment="true" resolveProxies="false">
       <eAnnotations source="http:///org/eclipse/emf/ecore/util/ExtendedMetaData">
         <details key="kind" value="element"/>
         <details key="name" value="AbstractQueryExpression"/>

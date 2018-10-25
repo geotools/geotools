@@ -64,7 +64,7 @@ public class WFSEncodingTest {
         // try with string
         propertyType.setValue("myvalue");
 
-        Encoder encoder = new Encoder(new WFSConfiguration_1_1());
+        Encoder encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         Document doc = encoder.encodeAsDOM(update, WFS.Update);
         XMLAssert.assertXpathEvaluatesTo("mn:mytypename", "//wfs:Update/@typeName", doc);
@@ -77,7 +77,7 @@ public class WFSEncodingTest {
         // try with numeric value
         propertyType.setValue(100.25);
 
-        encoder = new Encoder(new WFSConfiguration_1_1());
+        encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         doc = encoder.encodeAsDOM(update, WFS.Update);
         XMLAssert.assertXpathEvaluatesTo("100.25", "//wfs:Update/wfs:Property/wfs:Value", doc);
@@ -88,7 +88,7 @@ public class WFSEncodingTest {
 
         propertyType.setValue(myPoint);
 
-        encoder = new Encoder(new WFSConfiguration_1_1());
+        encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(update, WFS.Update));
         doc = encoder.encodeAsDOM(update, WFS.Update);
         XMLAssert.assertXpathEvaluatesTo(
@@ -121,7 +121,7 @@ public class WFSEncodingTest {
         InsertElementType insert = wfsfac.createInsertElementType();
         insert.getFeature().add(feature);
 
-        Encoder encoder = new Encoder(new WFSConfiguration_1_1());
+        Encoder encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(insert, WFS.Insert));
         Document doc = encoder.encodeAsDOM(insert, WFS.Insert);
         XMLAssert.assertXpathEvaluatesTo("dummyId", "//wfs:Insert/wfs:dummyFeatureType/@fid", doc);
@@ -138,7 +138,7 @@ public class WFSEncodingTest {
         DeleteElementType delete = wfsfac.createDeleteElementType();
         delete.setFilter(filterfac.id(filterfac.featureId("someid")));
 
-        Encoder encoder = new Encoder(new WFSConfiguration_1_1());
+        Encoder encoder = new Encoder(new WFSConfiguration_1_0());
         // System.out.println(encoder.encodeAsString(delete, WFS.Delete));
         Document doc = encoder.encodeAsDOM(delete, WFS.Delete);
         XMLAssert.assertXpathEvaluatesTo(

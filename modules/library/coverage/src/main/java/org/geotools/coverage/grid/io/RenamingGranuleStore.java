@@ -20,7 +20,7 @@ import java.io.IOException;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.Filter;
 
 /** Write supporting subclass of {@link RenamingGranuleSource} */

@@ -16,7 +16,7 @@
  */
 package org.geotools.util;
 
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * ConverterFactory which converts between a percentage to Float or Double

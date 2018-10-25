@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
 import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryNotFoundException;
 
 /**
  * Utility class to look up for a parser that can deal with a given WFS response and process it.

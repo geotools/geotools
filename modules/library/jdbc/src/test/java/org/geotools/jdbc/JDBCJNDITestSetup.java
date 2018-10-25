@@ -25,7 +25,7 @@ import javax.naming.NamingException;
 import javax.naming.spi.InitialContextFactory;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.mockito.Mockito;
 
 public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {

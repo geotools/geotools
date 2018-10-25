@@ -35,7 +35,7 @@ import org.apache.batik.bridge.TextNode;
 import org.apache.batik.gvt.CompositeGraphicsNode;
 import org.apache.batik.gvt.GraphicsNode;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.PreventLocalEntityResolver;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;

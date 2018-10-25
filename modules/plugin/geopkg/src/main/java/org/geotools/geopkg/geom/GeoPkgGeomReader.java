@@ -18,8 +18,8 @@ package org.geotools.geopkg.geom;
 
 import java.io.IOException;
 import java.io.InputStream;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.Envelope;

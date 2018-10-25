@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.Map;
 import javax.naming.OperationNotSupportedException;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.filter.FilterComplexTypes.BinaryOperatorType;
 import org.geotools.xml.filter.FilterComplexTypes.Comparison_OperatorsType;

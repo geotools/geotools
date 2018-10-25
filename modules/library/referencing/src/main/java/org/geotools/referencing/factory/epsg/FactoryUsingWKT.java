@@ -30,7 +30,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.geotools.factory.Hints;
 import org.geotools.io.IndentedLineWriter;
 import org.geotools.io.TableWriter;
 import org.geotools.metadata.iso.citation.CitationImpl;
@@ -48,6 +47,7 @@ import org.geotools.resources.i18n.LoggingKeys;
 import org.geotools.resources.i18n.Loggings;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
@@ -94,7 +94,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      *
      * <ul>
      *   <li>In the directory specified by the {@value
-     *       org.geotools.factory.GeoTools#CRS_DIRECTORY_KEY} system property.
+     *       org.geotools.util.factory.GeoTools#CRS_DIRECTORY_KEY} system property.
      *   <li>In every {@code org/geotools/referencing/factory/espg} directories found on the
      *       classpath.
      * </ul>

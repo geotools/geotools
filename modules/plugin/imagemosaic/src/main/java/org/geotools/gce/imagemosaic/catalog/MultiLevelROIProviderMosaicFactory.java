@@ -27,9 +27,9 @@ import org.geotools.coverage.grid.io.footprint.FootprintLoaderSpi;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProviderFactory;
 import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
-import org.geotools.factory.Hints;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.Filter;
 
 /**

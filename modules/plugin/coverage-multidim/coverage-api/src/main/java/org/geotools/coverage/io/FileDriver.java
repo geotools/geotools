@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.util.ProgressListener;
 
 /** @author Simone Giannecchini, GeoSolutions */

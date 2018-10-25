@@ -24,9 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataUtilities;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 
 /**
  * Parse imagePyramid property files and setup the mapping to provide the proper {@link

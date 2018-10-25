@@ -54,7 +54,7 @@ public class GranuleDescriptorTest {
                     org.geotools.coverage.grid.io.footprint.MultiLevelROI roiProvider,
                     boolean heterogeneousGranules,
                     boolean handleArtifactsFiltering,
-                    org.geotools.factory.Hints hints) {
+                    org.geotools.util.factory.Hints hints) {
                 // check the bbox is the one of the first geometry, not the entire feature
                 assertEquals(0, granuleBBOX.getMinimum(0), 0d);
                 assertEquals(10, granuleBBOX.getMaximum(0), 0d);

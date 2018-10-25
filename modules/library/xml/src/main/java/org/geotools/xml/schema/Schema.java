@@ -17,7 +17,7 @@
 package org.geotools.xml.schema;
 
 import java.net.URI;
-import org.geotools.factory.Factory;
+import org.geotools.util.factory.Factory;
 
 /**
  * This Interface is intended to represent the public portion of an XML Schema. By public portion, I

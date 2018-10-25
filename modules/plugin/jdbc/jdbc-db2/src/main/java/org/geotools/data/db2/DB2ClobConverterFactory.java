@@ -18,9 +18,9 @@
 package org.geotools.data.db2;
 
 import java.lang.reflect.Method;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 
 public class DB2ClobConverterFactory implements ConverterFactory {
 

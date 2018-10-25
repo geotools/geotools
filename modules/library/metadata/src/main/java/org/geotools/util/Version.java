@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * @since 2.4
  * @version $Id$
  * @author Martin Desruisseaux
- * @see org.geotools.factory.GeoTools#getVersion
+ * @see org.geotools.util.factory.GeoTools#getVersion
  */
 public class Version implements CharSequence, Comparable<Version>, Serializable {
     /** For cross-version compatibility. */

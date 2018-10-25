@@ -56,7 +56,7 @@ public class PositionalAccuracyImpl extends ElementImpl implements PositionalAcc
      * been found. Such datum shifts are approximative and may have 1 kilometer error. This
      * pseudo-transformation is allowed by {@linkplain
      * org.geotools.referencing.operation.DefaultCoordinateOperationFactory coordinate operation
-     * factory} only if it was created with {@link org.geotools.factory.Hints#LENIENT_DATUM_SHIFT}
+     * factory} only if it was created with {@link org.geotools.util.factory.Hints#LENIENT_DATUM_SHIFT}
      * set to {@link Boolean#TRUE}.
      *
      * @see org.opengis.referencing.operation.Transformation#getPositionalAccuracy

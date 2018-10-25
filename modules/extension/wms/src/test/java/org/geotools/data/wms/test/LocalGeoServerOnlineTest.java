@@ -47,7 +47,6 @@ import org.geotools.data.wms.request.GetStylesRequest;
 import org.geotools.data.wms.response.GetFeatureInfoResponse;
 import org.geotools.data.wms.response.GetMapResponse;
 import org.geotools.data.wms.response.GetStylesResponse;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -62,6 +61,7 @@ import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.builder.NamedLayerBuilder;
 import org.geotools.styling.builder.StyledLayerDescriptorBuilder;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

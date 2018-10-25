@@ -75,7 +75,7 @@ public abstract class AbstractAuthorityFactory extends ReferencingFactory
      * example if a connection to the EPSG database failed. This method is defined here for
      * implementation convenience, but not yet public because not yet applicable. It will be made
      * public in {@link DeferredAuthorityFactory} and {@link AuthorityFactoryAdapter} subclasses,
-     * which implement the {@link org.geotools.factory.OptionalFactory} interface.
+     * which implement the {@link org.geotools.util.factory.OptionalFactory} interface.
      */
     boolean isAvailable() {
         return true;

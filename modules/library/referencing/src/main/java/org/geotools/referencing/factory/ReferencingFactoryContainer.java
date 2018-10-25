@@ -18,11 +18,6 @@ package org.geotools.referencing.factory;
 
 import java.awt.RenderingHints;
 import java.util.*;
-import org.geotools.factory.Factory;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
@@ -32,6 +27,11 @@ import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.resources.XArray;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
@@ -90,7 +90,7 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
      * Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
      * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
      *
-     * <p>This constructor is public mainly for {@link org.geotools.factory.FactoryCreator} usage.
+     * <p>This constructor is public mainly for {@link org.geotools.util.factory.FactoryCreator} usage.
      * Consider invoking <code>{@linkplain #createInstance createInstance}(userHints)</code>
      * instead.
      *

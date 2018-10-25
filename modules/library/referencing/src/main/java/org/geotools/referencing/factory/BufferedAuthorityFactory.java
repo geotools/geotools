@@ -31,13 +31,13 @@ import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.measure.Unit;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.Hints;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.LoggingKeys;
 import org.geotools.resources.i18n.Loggings;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.metadata.extent.Extent;
 import org.opengis.parameter.ParameterDescriptor;
@@ -157,7 +157,7 @@ public class BufferedAuthorityFactory extends AbstractAuthorityFactory implement
      * store creation time.
      *
      * <p>The backing store is of course an important dependency. This method gives a chance to
-     * {@link org.geotools.factory.FactoryRegistry} to compare the user-requested hints (especially
+     * {@link org.geotools.util.factory.FactoryRegistry} to compare the user-requested hints (especially
      * {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER}) against the backing store hints, by following
      * the dependency declared there.
      *

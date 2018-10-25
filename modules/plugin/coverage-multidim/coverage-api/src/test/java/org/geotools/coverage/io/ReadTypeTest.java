@@ -31,10 +31,10 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
 import org.apache.commons.io.IOUtils;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

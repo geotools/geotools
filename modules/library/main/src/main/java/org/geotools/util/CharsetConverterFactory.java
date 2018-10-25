@@ -18,7 +18,7 @@ package org.geotools.util;
 
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * Converter for going from a String to a {@link Charset} and vice versa.

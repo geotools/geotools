@@ -36,7 +36,7 @@ import org.geotools.arcsde.session.ISessionPool;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -289,7 +289,7 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
         return delegateFactory.isAvailable();
     }
 
-    /** @see org.geotools.factory.Factory#getImplementationHints() */
+    /** @see org.geotools.util.factory.Factory#getImplementationHints() */
     public Map<Key, ?> getImplementationHints() {
         return delegateFactory.getImplementationHints();
     }

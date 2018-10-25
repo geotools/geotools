@@ -20,7 +20,7 @@ import it.geosolutions.imageio.plugins.envihdr.ENVIHdrImageReaderSpi;
 import java.util.logging.Logger;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 

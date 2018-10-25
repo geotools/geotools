@@ -17,7 +17,7 @@
 package org.geotools.filter;
 
 import java.util.List;
-import org.geotools.factory.Factory;
+import org.geotools.util.factory.Factory;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 

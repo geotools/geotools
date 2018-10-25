@@ -16,7 +16,7 @@
  */
 package org.geotools.data;
 
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.Feature;
 import org.opengis.filter.sort.SortBy;
 

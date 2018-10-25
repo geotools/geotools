@@ -16,8 +16,8 @@
  */
 package org.geotools.util;
 
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 
 /**

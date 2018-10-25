@@ -31,7 +31,7 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.ROIShape;
 import javax.media.jai.RenderedOp;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * A property generator for the Affine operation that builds a ROI with a sane image layout even

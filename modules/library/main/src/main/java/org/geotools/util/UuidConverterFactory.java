@@ -17,7 +17,7 @@
 package org.geotools.util;
 
 import java.util.UUID;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * ConverterFactory for handling uuid (uniqueidentifier) conversions.

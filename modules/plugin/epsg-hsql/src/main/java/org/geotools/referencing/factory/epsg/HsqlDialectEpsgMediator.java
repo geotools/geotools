@@ -17,10 +17,10 @@
 package org.geotools.referencing.factory.epsg;
 
 import javax.sql.DataSource;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.AbstractCachedAuthorityFactory;
 import org.geotools.referencing.factory.AbstractEpsgMediator;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 
 /**

@@ -19,7 +19,7 @@ package org.geotools.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * ConverterFactory which converts between the "standard" numeric types.

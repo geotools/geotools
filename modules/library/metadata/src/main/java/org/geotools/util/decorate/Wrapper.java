@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.decorate;
+package org.geotools.util.decorate;
 
 /**
  * Interface for classes which provide the ability to retrieve the delegate instance when the

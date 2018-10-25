@@ -58,7 +58,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     }
 
     public void testEncodeFeatureCollection10() throws Exception {
-        Encoder e = new Encoder(new org.geotools.wfs.v1_0.WFSConfiguration_1_1());
+        Encoder e = new Encoder(new org.geotools.wfs.v1_0.WFSConfiguration_1_0());
         e.getNamespaces().declarePrefix("geotools", "http://geotools.org");
         e.setIndenting(true);
 
@@ -75,8 +75,8 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     }
 
     public void testEncodeFeatureCollectionCoordinatesFormatting10() throws Exception {
-        org.geotools.wfs.v1_0.WFSConfiguration_1_1 configuration =
-                new org.geotools.wfs.v1_0.WFSConfiguration_1_1();
+        org.geotools.wfs.v1_0.WFSConfiguration_1_0 configuration =
+                new org.geotools.wfs.v1_0.WFSConfiguration_1_0();
         configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
         ((GMLConfiguration) configuration.getDependency(GMLConfiguration.class))
                 .setForceDecimalEncoding(true);

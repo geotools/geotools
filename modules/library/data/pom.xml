@@ -27,13 +27,15 @@
   <artifactId>gt-data</artifactId>
   <packaging>jar</packaging>
   <name>DataStore Support</name>
-  
-
 
   <description>
     ContentDataStore implementation and support classes for those implementing
     their own datastore.
   </description>
+
+  <properties>
+    <moduleIdentifier>org.geotools.data</moduleIdentifier>
+  </properties>
 
   <licenses>
     <license>

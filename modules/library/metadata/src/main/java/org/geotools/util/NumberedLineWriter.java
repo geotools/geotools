@@ -14,13 +14,12 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.io;
+package org.geotools.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import org.geotools.resources.Arguments;
-import org.geotools.util.Utilities;
 
 /**
  * A writer that put line number in front of every line.

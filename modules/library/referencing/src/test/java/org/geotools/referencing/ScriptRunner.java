@@ -20,7 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.text.NumberFormat;
-import org.geotools.io.TableWriter;
+import org.geotools.util.TableWriter;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.TransformException;
 

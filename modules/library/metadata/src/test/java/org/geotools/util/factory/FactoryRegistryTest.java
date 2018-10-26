@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -291,7 +292,7 @@ public final class FactoryRegistryTest {
                 factory.getClass());
     }
 
-    @Test
+    @Ignore
     public void testLookupWithExtendedClasspath() {
         URL url = getClass().getResource("foo.jar");
         assertNotNull(url);

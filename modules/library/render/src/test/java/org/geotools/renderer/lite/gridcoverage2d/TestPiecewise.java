@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.piecewise;
+package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.imageio.plugins.arcgrid.AsciiGridsImageReader;
 import it.geosolutions.imageio.plugins.arcgrid.spi.AsciiGridsImageReaderSpi;
@@ -44,6 +44,7 @@ import javax.media.jai.RenderedOp;
 import junit.framework.Assert;
 import org.geotools.TestData;
 import org.geotools.image.ImageWorker;
+import org.geotools.renderer.lite.gridcoverage2d.MathTransformationAdapter;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.referencing.operation.TransformException;

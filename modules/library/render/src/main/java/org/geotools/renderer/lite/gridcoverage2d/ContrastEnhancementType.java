@@ -37,7 +37,6 @@ import javax.media.jai.Histogram;
 import javax.media.jai.JAI;
 import javax.media.jai.RasterFactory;
 import org.geotools.image.ImageWorker;
-import org.geotools.referencing.piecewise.MathTransformationAdapter;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.styling.AbstractContrastMethodStrategy;

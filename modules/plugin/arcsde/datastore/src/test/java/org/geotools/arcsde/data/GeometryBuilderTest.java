@@ -59,8 +59,7 @@ import org.locationtech.jts.io.WKTReader;
  */
 public class GeometryBuilderTest {
 
-    static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeometryBuilderTest.class);
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeometryBuilderTest.class);
 
     private WKTReader wktReader;
 

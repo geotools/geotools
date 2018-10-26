@@ -49,8 +49,7 @@ import ucar.nc2.dataset.CoordinateAxis1D;
  */
 public final class CoordinateHandlerFinder {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(CoordinateHandlerFinder.class);
+    private static final Logger LOGGER = Logging.getLogger(CoordinateHandlerFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static FactoryRegistry registry;

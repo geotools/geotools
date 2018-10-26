@@ -23,8 +23,8 @@ import java.util.Date;
 import java.util.TimeZone;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.geotools.util.factory.Hints;
 import junit.framework.TestCase;
+import org.geotools.util.factory.Hints;
 
 public class TemporalConverterFactoryTest extends TestCase {
 

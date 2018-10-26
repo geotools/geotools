@@ -70,8 +70,7 @@ import org.geotools.util.logging.Logging;
  * @author Gabriel Roldan, Axios Engineering
  */
 public class ViewRegisteringFactoryHelper {
-    private static final Logger LOGGER =
-            Logging.getLogger(ViewRegisteringFactoryHelper.class);
+    private static final Logger LOGGER = Logging.getLogger(ViewRegisteringFactoryHelper.class);
 
     private ViewRegisteringFactoryHelper() {
         // no-op

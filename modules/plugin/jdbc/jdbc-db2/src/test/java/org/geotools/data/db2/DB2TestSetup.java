@@ -30,8 +30,7 @@ import org.geotools.util.logging.Logging;
  */
 public class DB2TestSetup extends JDBCTestSetup {
 
-    protected static final Logger LOGGER =
-            Logging.getLogger(DB2TestSetup.class);
+    protected static final Logger LOGGER = Logging.getLogger(DB2TestSetup.class);
 
     //    protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
     //        return new DB2SQLDialect(dataStore);

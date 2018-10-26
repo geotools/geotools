@@ -46,7 +46,8 @@ public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
         Handler handler = Logging.getLogger(TeradataViewOnlineTest.class).getHandlers()[0];
         handler.setLevel(Level.FINEST);
 
-        org.geotools.util.logging.Logging.getLogger(TeradataViewOnlineTest.class).setLevel(Level.FINEST);
+        org.geotools.util.logging.Logging.getLogger(TeradataViewOnlineTest.class)
+                .setLevel(Level.FINEST);
 
         SimpleFeatureType schema = dataStore.getSchema("lakesview2");
         TessellationInfo tesselation =

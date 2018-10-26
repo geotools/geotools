@@ -47,8 +47,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public abstract class TileService {
 
-    protected static final Logger LOGGER =
-            Logging.getLogger(TileService.class);
+    protected static final Logger LOGGER = Logging.getLogger(TileService.class);
 
     /**
      * This WeakHashMap acts as a memory cache.

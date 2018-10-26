@@ -45,8 +45,7 @@ import org.geotools.util.logging.Logging;
  */
 public class CachedImageLoader implements ImageLoader {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(CachedImageLoader.class);
+    private static final Logger LOGGER = Logging.getLogger(CachedImageLoader.class);
 
     private final File cacheDirectory;
 

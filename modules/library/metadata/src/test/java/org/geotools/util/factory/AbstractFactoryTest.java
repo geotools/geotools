@@ -19,11 +19,10 @@ package org.geotools.util.factory;
 import static org.junit.Assert.*;
 
 import java.awt.RenderingHints;
-import org.geotools.util.factory.AbstractFactory;
 import org.junit.*;
 
 /**
- * Tests {@link AbstractFactory}.
+ * Tests {@link org.geotools.util.factory.AbstractFactory}.
  *
  * @since 2.3
  * @version $Id$
@@ -42,7 +41,7 @@ public final class AbstractFactoryTest {
         }
     }
 
-    /** Tests {@link AbstractFactory#equals}. */
+    /** Tests {@link org.geotools.util.factory.AbstractFactory#equals}. */
     @Test
     public void testEquals() {
         final Key key1 = new Key(1);

@@ -40,8 +40,7 @@ import org.geotools.util.logging.Logging;
  */
 public class ImageComposerThread extends AbstractThread {
     /** Logger. */
-    protected static final Logger LOGGER =
-            Logging.getLogger(ImageComposerThread.class);
+    protected static final Logger LOGGER = Logging.getLogger(ImageComposerThread.class);
 
     protected GridCoverageFactory coverageFactory;
 

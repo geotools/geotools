@@ -19,16 +19,11 @@ package org.geotools.util.factory;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
-import org.geotools.util.factory.FactoryIteratorProvider;
-import org.geotools.util.factory.FactoryIteratorProviders;
-import org.geotools.util.factory.FactoryNotFoundException;
-import org.geotools.util.factory.FactoryRegistry;
-import org.geotools.util.factory.FactoryRegistryException;
-import org.geotools.util.factory.Hints;
 import org.junit.*;
 
 /**
- * Tests {@link FactoryIteratorProvider} addition in {@link FactoryIteratorProviders}.
+ * Tests {@link org.geotools.util.factory.FactoryIteratorProvider} addition in {@link
+ * org.geotools.util.factory.FactoryIteratorProviders}.
  *
  * @version $Id$
  * @author Martin Desruisseaux
@@ -46,8 +41,9 @@ public final class FactoryIteratorProviderTest {
     /**
      * Returns a factory from the specified registry.
      *
-     * @throws FactoryNotFoundException if no factory was found.
-     * @throws FactoryRegistryException if a factory can't be returned for some other reason.
+     * @throws org.geotools.util.factory.FactoryNotFoundException if no factory was found.
+     * @throws org.geotools.util.factory.FactoryRegistryException if a factory can't be returned for
+     *     some other reason.
      */
     private static DummyFactory getFactory(
             final FactoryRegistry registry, final Class<? extends DummyFactory> type)

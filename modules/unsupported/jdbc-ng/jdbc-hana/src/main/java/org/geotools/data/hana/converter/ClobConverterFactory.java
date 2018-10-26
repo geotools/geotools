@@ -29,7 +29,8 @@ import org.geotools.util.factory.Hints;
 public class ClobConverterFactory implements ConverterFactory {
 
     @Override
-    public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
+    public Converter createConverter(
+            Class<?> source, Class<?> target, org.geotools.util.factory.Hints hints) {
         if (String.class.equals(target) && Clob.class.isAssignableFrom(source)) {
             return new Converter() {
                 @Override

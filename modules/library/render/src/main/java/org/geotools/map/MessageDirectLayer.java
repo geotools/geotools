@@ -1,4 +1,4 @@
-package org.geotools.map.direct;
+package org.geotools.map;
 
 import java.awt.Color;
 import java.awt.FontMetrics;

@@ -14,13 +14,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.map.event;
+package org.geotools.map;
 
 import java.util.EnumSet;
 import java.util.EventObject;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapViewport;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

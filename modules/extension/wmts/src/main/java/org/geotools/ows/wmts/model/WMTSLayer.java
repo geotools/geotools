@@ -22,8 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.geotools.data.ows.Layer;
-import org.geotools.data.ows.StyleImpl;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.StyleImpl;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

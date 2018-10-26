@@ -18,7 +18,7 @@ package org.geotools.ows.wmts.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.data.ows.CRSEnvelope;
+import org.geotools.ows.wms.CRSEnvelope;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;

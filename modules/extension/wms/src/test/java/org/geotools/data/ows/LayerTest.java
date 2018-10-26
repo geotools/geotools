@@ -3,6 +3,8 @@ package org.geotools.data.ows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
+import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wms.Layer;
 import org.junit.Test;
 
 /** Simple API designed to keep the API stable. */

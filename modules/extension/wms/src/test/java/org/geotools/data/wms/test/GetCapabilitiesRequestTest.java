@@ -23,8 +23,8 @@ import java.util.StringTokenizer;
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
-import org.geotools.data.wms.response.WMSGetCapabilitiesResponse;
 import org.geotools.ows.ServiceException;
+import org.geotools.ows.wms.response.WMSGetCapabilitiesResponse;
 
 public class GetCapabilitiesRequestTest extends ServerTestCase {
 

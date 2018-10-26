@@ -16,16 +16,14 @@
  */
 package org.geotools.data.wms.test;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.net.URL;
 import junit.framework.TestCase;
 import org.geotools.data.ows.HTTPResponse;
-import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.MockHttpClient;
 import org.geotools.data.ows.MockHttpResponse;
-import org.geotools.data.wms.WebMapServer;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WebMapServer;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.opengis.geometry.Envelope;

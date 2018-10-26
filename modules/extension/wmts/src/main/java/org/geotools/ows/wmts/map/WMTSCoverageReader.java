@@ -17,10 +17,11 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.data.wms.xml.Dimension;
+import org.geotools.ows.wms.xml.Dimension;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
+import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.model.WMTSLayer;
 import org.geotools.ows.wmts.request.GetTileRequest;
@@ -95,7 +96,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
      * @param server
      * @param layer
      */
-    public WMTSCoverageReader(WebMapTileServer server, org.geotools.data.ows.Layer layer) {
+    public WMTSCoverageReader(WebMapTileServer server, Layer layer) {
         this.wmts = server;
 
         // init the reader
@@ -119,7 +120,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         }
     }
 
-    final void setLayer(org.geotools.data.ows.Layer owsLayer) {
+    final void setLayer(Layer owsLayer) {
         this.layer = (WMTSLayer) owsLayer;
 
         if (srsName == null) { // initialize from first (unique) layer

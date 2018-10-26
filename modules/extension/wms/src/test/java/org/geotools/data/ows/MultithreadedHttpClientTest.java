@@ -30,6 +30,7 @@ import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
+import org.geotools.ows.wms.MultithreadedHttpClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,7 +50,7 @@ public class MultithreadedHttpClientTest {
 
     private final class MultithreadedHttpTestClient extends MultithreadedHttpClient {
         @Override
-        HttpClient createHttpClient() {
+        public HttpClient createHttpClient() {
             return mockHttpClient;
         }
     };

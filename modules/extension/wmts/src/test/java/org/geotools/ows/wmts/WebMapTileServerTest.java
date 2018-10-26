@@ -21,7 +21,7 @@ import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 import static org.geotools.ows.wmts.WMTSTestUtils.createCapabilities;
 
-import org.geotools.data.ows.Layer;
+import org.geotools.ows.wms.Layer;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.referencing.CRS;

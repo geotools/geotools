@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources.geometry;
+package org.geotools.geometry.util;
 
 import java.awt.geom.Dimension2D;
 import java.io.Serializable;

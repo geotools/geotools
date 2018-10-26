@@ -169,7 +169,7 @@ public final class NoDataReplacerOpImage extends PointOpImage {
     /**
      * Transform a raster. Only the current band in {@code iterator} will be transformed. The
      * transformed value are write back in the {@code iterator}. If a different destination raster
-     * is wanted, a {@link org.geotools.resources.image.DualRectIter} may be used.
+     * is wanted, a {@link org.geotools.referencing.util.image.DualRectIter} may be used.
      *
      * @param iterator An iterator to iterate among the samples to transform.
      */

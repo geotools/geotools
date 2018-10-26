@@ -77,7 +77,7 @@ They can been read as in the following example::
 
 Note the differences compared to the first example above in this page:
 
-* Import the TestData class from org.geotools rather than org.geotools.resources. This is needed in order to get access to the org/geotools/test-data directory provided in the sample-data module.
+* Import the TestData class from org.geotools rather than org.geotools.referencing.util. This is needed in order to get access to the org/geotools/test-data directory provided in the sample-data module.
 
 * Invoke TestData.openFoo(filename) method without this argument value. This is because we want TestData to searchs resources into the shared org/geotools/test-data directory instead of some other test-data owned by the module performing the tests.
 

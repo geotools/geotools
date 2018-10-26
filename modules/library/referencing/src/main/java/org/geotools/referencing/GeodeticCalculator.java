@@ -45,7 +45,7 @@ import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
-import org.geotools.resources.CRSUtilities;
+import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.TableWriter;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.Position;

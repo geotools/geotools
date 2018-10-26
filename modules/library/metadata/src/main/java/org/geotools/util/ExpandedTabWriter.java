@@ -14,12 +14,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.io;
+package org.geotools.util;
 
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
-import org.geotools.util.Utilities;
 
 /**
  * Writes characters to a stream while expanding tabs ({@code '\t'}) into spaces.

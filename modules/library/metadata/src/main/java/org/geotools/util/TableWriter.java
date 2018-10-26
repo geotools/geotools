@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.io;
+package org.geotools.util;
 
 import java.io.FilterWriter;
 import java.io.IOException;
@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 import javax.swing.text.StyleConstants;
 import org.geotools.resources.XArray;
-import org.geotools.util.Utilities;
 
 /**
  * A character stream that can be used to format tables. Columns are separated by tabulations (

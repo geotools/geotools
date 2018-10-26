@@ -1017,7 +1017,8 @@ public final class XArray {
      * @param locale The locale for formatting.
      * @return The formatted array.
      * @todo The separator should be local-dependent.
-     * @todo Should we implements this functionality in {@link org.geotools.io.LineFormat} instead?
+     * @todo Should we implements this functionality in {@link org.geotools.util.LineFormat}
+     *     instead?
      */
     public static String toString(final Object array, final Locale locale) {
         final StringBuffer buffer = new StringBuffer();

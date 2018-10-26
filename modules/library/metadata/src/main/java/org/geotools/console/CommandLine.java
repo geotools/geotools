@@ -22,11 +22,11 @@ import java.lang.reflect.Field;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import org.geotools.io.TableWriter;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.util.TableWriter;
 
 /**
  * Base class for command line tools. Subclasses define fields annotated with {@link Option}, while

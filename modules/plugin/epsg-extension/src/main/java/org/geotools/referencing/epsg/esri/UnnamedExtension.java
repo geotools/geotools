@@ -17,7 +17,6 @@
 package org.geotools.referencing.epsg.esri;
 
 import java.net.URL;
-
 import org.geotools.referencing.factory.epsg.DefaultFactory;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.factory.Hints;

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.crs;
+package org.geotools.referencing.epsg.wkt;
 
 // J2SE dependencies
 
@@ -24,6 +24,7 @@ import junit.framework.TestCase;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.epsg.wkt.EPSGCRSAuthorityFactory;
 import org.geotools.test.TestData;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

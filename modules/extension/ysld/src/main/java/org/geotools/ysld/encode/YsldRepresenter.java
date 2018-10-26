@@ -23,6 +23,7 @@ import javax.measure.quantity.Length;
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.parse.Util;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Represent;
@@ -69,7 +70,7 @@ public class YsldRepresenter extends Representer {
         @Override
         public Node representData(Object data) {
             Tuple t = (Tuple) data;
-            return representSequence(Tag.SEQ, t.toList(), true);
+            return representSequence(Tag.SEQ, t.toList(), DumperOptions.FlowStyle.FLOW);
         }
     }
 }

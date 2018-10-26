@@ -23,129 +23,129 @@ import org.eclipse.emf.ecore.util.EDataTypeEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.impl.AcceptFormatsTypeImpl#getOutputFormat <em>Output Format</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class AcceptFormatsTypeImpl extends EObjectImpl implements AcceptFormatsType {
     /**
-     * The cached value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getOutputFormat() <em>Output Format</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getOutputFormat()
-     * @generated
-     * @ordered
-     */
+   * @see #getOutputFormat()
+   * @generated
+   * @ordered
+   */
     protected EList<String> outputFormat;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected AcceptFormatsTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.ACCEPT_FORMATS_TYPE;
-    }
+    return Ows20Package.Literals.ACCEPT_FORMATS_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<String> getOutputFormat() {
-        if (outputFormat == null) {
-            outputFormat = new EDataTypeEList<String>(String.class, this, Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT);
-        }
-        return outputFormat;
+    if (outputFormat == null) {
+      outputFormat = new EDataTypeEList<String>(String.class, this, Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT);
     }
+    return outputFormat;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
-                return getOutputFormat();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
+        return getOutputFormat();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
-                getOutputFormat().clear();
-                getOutputFormat().addAll((Collection<? extends String>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
+        getOutputFormat().clear();
+        getOutputFormat().addAll((Collection<? extends String>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
-                getOutputFormat().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
+        getOutputFormat().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
-                return outputFormat != null && !outputFormat.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Ows20Package.ACCEPT_FORMATS_TYPE__OUTPUT_FORMAT:
+        return outputFormat != null && !outputFormat.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (outputFormat: ");
-        result.append(outputFormat);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (outputFormat: ");
+    result.append(outputFormat);
+    result.append(')');
+    return result.toString();
+  }
 
 } //AcceptFormatsTypeImpl

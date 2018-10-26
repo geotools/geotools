@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.OutputDefinitionsType#getOutput <em>Output</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wps10.Wps10Package#getOutputDefinitionsType()
  * @model extendedMetaData="name='OutputDefinitionsType' kind='elementOnly'"
@@ -32,19 +32,19 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface OutputDefinitionsType extends EObject {
     /**
-     * Returns the value of the '<em><b>Output</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.wps10.DocumentOutputDefinitionType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Output</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.wps10.DocumentOutputDefinitionType}.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * Output definition as provided in the execute request
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Output</em>' containment reference list.
-     * @see net.opengis.wps10.Wps10Package#getOutputDefinitionsType_Output()
-     * @model type="net.opengis.wps10.DocumentOutputDefinitionType" containment="true" required="true"
-     *        extendedMetaData="kind='element' name='Output' namespace='##targetNamespace'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * Output definition as provided in the execute request
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Output</em>' containment reference list.
+   * @see net.opengis.wps10.Wps10Package#getOutputDefinitionsType_Output()
+   * @model type="net.opengis.wps10.DocumentOutputDefinitionType" containment="true" required="true"
+   *        extendedMetaData="kind='element' name='Output' namespace='##targetNamespace'"
+   * @generated
+   */
     EList getOutput();
 
 } // OutputDefinitionsType

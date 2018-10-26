@@ -19,10 +19,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.DefaultType1#getUOM <em>UOM</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wps10.Wps10Package#getDefaultType1()
  * @model extendedMetaData="name='Default_._2_._type' kind='elementOnly'"
@@ -41,17 +41,17 @@ public interface DefaultType1 extends EObject {
      * @see net.opengis.wps10.Wps10Package#getDefaultType1_UOM()
      * @model 
      */
-    Unit getUOM();
+    javax.measure.Unit getUOM();
 
     /**
-     * Sets the value of the '{@link net.opengis.wps10.DefaultType1#getUOM <em>UOM</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>UOM</em>' reference.
-     * @see #getUOM()
-     * @generated
-     */
-    void setUOM(Unit value);
+   * Sets the value of the '{@link net.opengis.wps10.DefaultType1#getUOM <em>UOM</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>UOM</em>' reference.
+   * @see #getUOM()
+   * @generated
+   */
+  void setUOM(javax.measure.Unit value);
 
     
 } // DefaultType1

@@ -24,6 +24,7 @@ import java.util.List;
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.Versions;
+import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
 import org.geotools.xml.Configuration;
 import org.opengis.feature.type.FeatureType;
 
@@ -93,7 +94,7 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
         } else if (request.getStrategy().getVersion().equals(Versions.v1_1_0.toString())) {
             config = new org.geotools.wfs.v1_1.WFSConfiguration();
         } else if (request.getStrategy().getVersion().equals(Versions.v1_0_0.toString())) {
-            config = new org.geotools.wfs.v1_0.WFSConfiguration();
+            config = new WFSConfiguration_1_0();
         }
         return new PullParserFeatureReader(
                 config, in, queryType, request.getStrategy().getConfig().getAxisOrder());

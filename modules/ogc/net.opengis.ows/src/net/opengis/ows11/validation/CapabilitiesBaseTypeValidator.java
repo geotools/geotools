@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -17,11 +15,11 @@ import net.opengis.ows11.ServiceProviderType;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface CapabilitiesBaseTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateServiceIdentification(ServiceIdentificationType value);
-    boolean validateServiceProvider(ServiceProviderType value);
-    boolean validateOperationsMetadata(OperationsMetadataType value);
-    boolean validateUpdateSequence(String value);
-    boolean validateVersion(String value);
+  boolean validateServiceIdentification(ServiceIdentificationType value);
+  boolean validateServiceProvider(ServiceProviderType value);
+  boolean validateOperationsMetadata(OperationsMetadataType value);
+  boolean validateUpdateSequence(String value);
+  boolean validateVersion(String value);
 }

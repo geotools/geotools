@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -15,7 +13,7 @@ import net.opengis.ows11.HTTPType;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface DCPTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateHTTP(HTTPType value);
+  boolean validateHTTP(HTTPType value);
 }

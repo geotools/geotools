@@ -278,7 +278,7 @@ public class GML {
         if (Version.WFS1_0 == version) {
             gmlNamespace = org.geotools.gml2.GML.NAMESPACE;
             gmlLocation = "gml/2.1.2/feature.xsd";
-            gmlConfiguration = new org.geotools.wfs.v1_0.WFSConfiguration();
+            gmlConfiguration = new org.geotools.wfs.v1_0.WFSConfiguration_1_0();
 
             schemas.add(new org.geotools.gml2.GMLSchema().profile());
         }
@@ -352,8 +352,8 @@ public class GML {
                         "Cannot encode a feature collection using GML2 (only WFS)");
             }
         } else if (version == Version.WFS1_0) {
-            org.geotools.wfs.v1_0.WFSConfiguration configuration =
-                    new org.geotools.wfs.v1_0.WFSConfiguration();
+            org.geotools.wfs.v1_0.WFSConfiguration_1_0 configuration =
+                    new org.geotools.wfs.v1_0.WFSConfiguration_1_0();
             configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
             Encoder e = new Encoder(configuration);
             e.getNamespaces().declarePrefix(prefix, namespace);

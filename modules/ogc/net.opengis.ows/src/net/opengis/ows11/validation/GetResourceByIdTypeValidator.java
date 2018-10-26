@@ -1,12 +1,9 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
 package net.opengis.ows11.validation;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * A sample validator interface for {@link net.opengis.ows11.GetResourceByIdType}.
@@ -15,10 +12,10 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface GetResourceByIdTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateResourceID(EList value);
-    boolean validateOutputFormat(String value);
-    boolean validateService(String value);
-    boolean validateVersion(String value);
+  boolean validateResourceID(String value);
+  boolean validateOutputFormat(String value);
+  boolean validateService(String value);
+  boolean validateVersion(String value);
 }

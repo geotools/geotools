@@ -24,127 +24,127 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.impl.AdditionalParametersTypeImpl#getAdditionalParameter1 <em>Additional Parameter1</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class AdditionalParametersTypeImpl extends AdditionalParametersBaseTypeImpl implements AdditionalParametersType {
     /**
-     * The cached value of the '{@link #getAdditionalParameter1() <em>Additional Parameter1</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getAdditionalParameter1() <em>Additional Parameter1</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getAdditionalParameter1()
-     * @generated
-     * @ordered
-     */
+   * @see #getAdditionalParameter1()
+   * @generated
+   * @ordered
+   */
     protected EList<AdditionalParameterType> additionalParameter1;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected AdditionalParametersTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Ows20Package.Literals.ADDITIONAL_PARAMETERS_TYPE;
-    }
+    return Ows20Package.Literals.ADDITIONAL_PARAMETERS_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<AdditionalParameterType> getAdditionalParameter1() {
-        if (additionalParameter1 == null) {
-            additionalParameter1 = new EObjectContainmentEList<AdditionalParameterType>(AdditionalParameterType.class, this, Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1);
-        }
-        return additionalParameter1;
+    if (additionalParameter1 == null) {
+      additionalParameter1 = new EObjectContainmentEList<AdditionalParameterType>(AdditionalParameterType.class, this, Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1);
     }
+    return additionalParameter1;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
-                return ((InternalEList<?>)getAdditionalParameter1()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
+        return ((InternalEList<?>)getAdditionalParameter1()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
-                return getAdditionalParameter1();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
+        return getAdditionalParameter1();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
-                getAdditionalParameter1().clear();
-                getAdditionalParameter1().addAll((Collection<? extends AdditionalParameterType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
+        getAdditionalParameter1().clear();
+        getAdditionalParameter1().addAll((Collection<? extends AdditionalParameterType>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
-                getAdditionalParameter1().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
+        getAdditionalParameter1().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
-                return additionalParameter1 != null && !additionalParameter1.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Ows20Package.ADDITIONAL_PARAMETERS_TYPE__ADDITIONAL_PARAMETER1:
+        return additionalParameter1 != null && !additionalParameter1.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 } //AdditionalParametersTypeImpl

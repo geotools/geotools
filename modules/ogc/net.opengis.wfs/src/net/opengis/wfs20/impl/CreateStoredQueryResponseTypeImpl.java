@@ -15,29 +15,27 @@ import org.eclipse.emf.ecore.EClass;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Create Stored Query Response Type</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */
 public class CreateStoredQueryResponseTypeImpl extends ExecutionStatusTypeImpl implements CreateStoredQueryResponseType {
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected CreateStoredQueryResponseTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.CREATE_STORED_QUERY_RESPONSE_TYPE;
-    }
+    return Wfs20Package.Literals.CREATE_STORED_QUERY_RESPONSE_TYPE;
+  }
 
 } //CreateStoredQueryResponseTypeImpl

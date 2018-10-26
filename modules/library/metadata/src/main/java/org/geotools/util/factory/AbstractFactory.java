@@ -25,10 +25,10 @@ import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.io.TableWriter;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
+import org.geotools.util.TableWriter;
 import org.geotools.util.Utilities;
 import org.opengis.referencing.AuthorityFactory;
 

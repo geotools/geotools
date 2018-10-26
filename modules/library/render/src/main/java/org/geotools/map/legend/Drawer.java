@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.legend;
+package org.geotools.map.legend;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

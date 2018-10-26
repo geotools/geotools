@@ -24,6 +24,7 @@ import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.factory.epsg.oracle.OracleDialectEpsgMediator;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
 import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;

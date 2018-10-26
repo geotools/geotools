@@ -101,7 +101,7 @@ public class ThreadedEpsgFactory extends DeferredAuthorityFactory
     private static final boolean ALLOW_REGISTRATION = false;
 
     /** The default priority level for this factory. */
-    static final int PRIORITY = MAXIMUM_PRIORITY - 10;
+    protected static final int PRIORITY = MAXIMUM_PRIORITY - 10;
 
     /** The factories to be given to the backing store. */
     private final ReferencingFactoryContainer factories;

@@ -31,6 +31,7 @@ import javax.mail.internet.ContentType;
 import junit.framework.TestCase;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.StringBuilderWriter;
+import org.geotools.brewer.styling.builder.StyleBuilder;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.CRSEnvelope;
@@ -57,8 +58,8 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
 import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.styling.builder.NamedLayerBuilder;
-import org.geotools.styling.builder.StyledLayerDescriptorBuilder;
+import org.geotools.brewer.styling.builder.NamedLayerBuilder;
+import org.geotools.brewer.styling.builder.StyledLayerDescriptorBuilder;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
@@ -490,7 +491,7 @@ public class LocalGeoServerOnlineTest extends TestCase {
 
         NamedLayerBuilder namedLayerBuilder = SLDBuilder.namedLayer();
         namedLayerBuilder.name(layers);
-        org.geotools.styling.builder.StyleBuilder styleBuilder = namedLayerBuilder.style();
+        StyleBuilder styleBuilder = namedLayerBuilder.style();
 
         for (int i = 0; i < styles.length; i++) {
             styleBuilder.reset(styles[i]);

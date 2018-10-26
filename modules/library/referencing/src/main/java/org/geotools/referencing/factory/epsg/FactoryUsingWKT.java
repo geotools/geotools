@@ -290,7 +290,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      * @throws FactoryException if an error occured.
      * @since 2.4
      */
-    protected Set reportDuplicatedCodes(final PrintWriter out) throws FactoryException {
+    public Set reportDuplicatedCodes(final PrintWriter out) throws FactoryException {
         final AbstractAuthorityFactory sqlFactory = getFactory(ThreadedEpsgFactory.class);
         final Vocabulary resources = Vocabulary.getResources(null);
         out.println(resources.getLabel(VocabularyKeys.COMPARE_WITH));
@@ -342,7 +342,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      *     authority codes}.
      * @since 2.4
      */
-    protected Set reportInstantiationFailures(final PrintWriter out) throws FactoryException {
+    public Set reportInstantiationFailures(final PrintWriter out) throws FactoryException {
         final Set<String> codes = getAuthorityCodes(CoordinateReferenceSystem.class);
         final Map<String, String> failures = new TreeMap<String, String>();
         for (final String code : codes) {

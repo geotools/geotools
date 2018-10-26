@@ -69,15 +69,5 @@
     <module>mongodb</module>
   </modules>
 
-  <!-- temporarily kicking OGR out of the build -->
-  <profiles>
-    <profile>
-        <id>pending</id>
-        <modules>
-          <module>ogr</module>
-        </modules>
-    </profile>
-  </profiles>
-
 </project>
 

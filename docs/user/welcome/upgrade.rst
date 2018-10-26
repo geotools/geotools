@@ -1839,8 +1839,8 @@ Swap to moved Coverage utility classes.
 
   Wrapping a GridCoverage into a feature in 2.4::
 
-    org.geotools.resources.coverage.CoverageUtilities #wrapGc(GridCoverage gridCoverage)
-    org.geotools.resources.coverage.CoverageUtilities #wrapGcReader(
+    org.geotools.referencing.util.coverage.CoverageUtilities #wrapGc(GridCoverage gridCoverage)
+    org.geotools.referencing.util.coverage.CoverageUtilities #wrapGcReader(
                 AbstractGridCoverage2DReader gridCoverageReader,
                 GeneralParameterValue[] params)
 

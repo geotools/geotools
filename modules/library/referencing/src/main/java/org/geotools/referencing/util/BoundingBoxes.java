@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources;
+package org.geotools.referencing.util;
 
 import java.text.FieldPosition;
 import java.util.Locale;

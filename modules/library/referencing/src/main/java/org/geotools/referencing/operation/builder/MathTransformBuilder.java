@@ -43,7 +43,7 @@ import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 import org.geotools.referencing.operation.DefaultTransformation;
-import org.geotools.resources.CRSUtilities;
+import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
 import org.geotools.util.factory.Hints;

@@ -2,7 +2,7 @@
  * This code is licensed under the GPL 2.0 license, available at the root
  * application directory.
  */
-package org.geotools.renderer.style;
+package org.geotools.renderer.style.svg;
 
 import java.awt.*;
 import java.awt.RenderingHints.Key;
@@ -14,6 +14,7 @@ import org.apache.batik.gvt.CompositeGraphicsNode;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.gvt.ShapeNode;
 import org.geotools.geometry.jts.TransformedShape;
+import org.geotools.renderer.style.MarkFactory;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 

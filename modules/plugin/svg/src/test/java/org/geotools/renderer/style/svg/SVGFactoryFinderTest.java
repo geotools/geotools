@@ -14,12 +14,15 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.style;
+package org.geotools.renderer.style.svg;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import junit.framework.TestCase;
+import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
+import org.geotools.renderer.style.ExternalGraphicFactory;
+import org.geotools.renderer.style.MarkFactory;
 
 /**
  * Makes sure the symbol factory lookup works as advertised

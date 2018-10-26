@@ -2,7 +2,7 @@
  * This code is licensed under the GPL 2.0 license, available at the root
  * application directory.
  */
-package org.geotools.renderer.style;
+package org.geotools.renderer.style.svg;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;

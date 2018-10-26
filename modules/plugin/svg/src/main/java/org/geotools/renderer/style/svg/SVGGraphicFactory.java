@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.style;
+package org.geotools.renderer.style.svg;
 
 import java.awt.*;
 import java.awt.RenderingHints.Key;
@@ -36,6 +36,8 @@ import java.util.stream.Collectors;
 import javax.swing.*;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.util.XMLResourceDescriptor;
+import org.geotools.renderer.style.ExternalGraphicFactory;
+import org.geotools.renderer.style.GraphicCache;
 import org.geotools.util.CanonicalSet;
 import org.geotools.util.factory.Factory;
 import org.opengis.feature.Feature;

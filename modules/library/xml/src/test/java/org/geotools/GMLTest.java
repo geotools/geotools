@@ -284,7 +284,7 @@ public class GMLTest {
 
     @Test
     public void testGML3FeatureCollection() throws Exception {
-        Logger log = org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
+        Logger log = org.geotools.util.logging.Logging.getLogger(GMLTest.class);
         Level level = log.getLevel();
         try {
             log.setLevel(Level.ALL);

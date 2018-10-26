@@ -52,7 +52,7 @@ public class FilterEqualsTest extends TestCase {
 
     /** Standard logging instance */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.defaultcore");
+            org.geotools.util.logging.Logging.getLogger(FilterEqualsTest.class);
 
     private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     private Expression testExp1;

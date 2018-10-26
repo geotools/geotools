@@ -868,7 +868,7 @@ public final class GeoTools {
         if (className == null) {
             return defaultValue;
         }
-        final Logger LOGGER = Logging.getLogger("org.geotools.xml");
+        final Logger LOGGER = Logging.getLogger(GeoTools.class);
         try {
             Class<?> kind = Class.forName(className);
             // step 1 look for instance field

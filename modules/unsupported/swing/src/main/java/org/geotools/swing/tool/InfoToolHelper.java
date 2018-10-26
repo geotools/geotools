@@ -40,7 +40,7 @@ import org.opengis.referencing.operation.MathTransform;
  * @version $URL$
  */
 public abstract class InfoToolHelper implements MapBoundsListener {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    private static final Logger LOGGER = Logging.getLogger(InfoToolHelper.class);
 
     /**
      * String key used for the position element in the {@code Map} passed to {@linkplain #getInfo(

@@ -95,8 +95,7 @@ public class BasicFeatureTypes {
             build.setName("polygonFeature");
             tmpPolygon = build.buildFeatureType();
         } catch (Exception ex) {
-            org.geotools.util.logging.Logging.getLogger(
-                            "org.geotools.feature.type.BasicFeatureTypes")
+            org.geotools.util.logging.Logging.getLogger(BasicFeatureTypes.class)
                     .log(Level.SEVERE, "Error creating basic feature types", ex);
         }
         POINT = tmpPoint;

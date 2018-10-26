@@ -78,8 +78,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class TimeSeriesTest extends AppSchemaTestSupport {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    TimeSeriesTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(TimeSeriesTest.class);
 
     private static final String AWNS = "http://www.water.gov.au/awdip";
 

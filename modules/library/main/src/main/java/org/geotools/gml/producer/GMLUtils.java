@@ -36,7 +36,7 @@ import org.locationtech.jts.geom.Polygon;
 final class GMLUtils {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gml.producer");
+            org.geotools.util.logging.Logging.getLogger(GMLUtils.class);
 
     /** Internal representation of URL used to represent GML */
     public static final String GML_URL = "http://www.opengis.net/gml";

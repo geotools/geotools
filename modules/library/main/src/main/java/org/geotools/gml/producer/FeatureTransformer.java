@@ -103,7 +103,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class FeatureTransformer extends TransformerBase {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
+            org.geotools.util.logging.Logging.getLogger(FeatureTransformer.class);
 
     private static Set gmlAtts;
     private String collectionPrefix = "wfs";

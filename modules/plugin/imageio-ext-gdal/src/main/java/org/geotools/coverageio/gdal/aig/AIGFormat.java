@@ -36,7 +36,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class AIGFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AIGFormat.class.toString());
+            org.geotools.util.logging.Logging.getLogger(AIGFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public AIGFormat() {

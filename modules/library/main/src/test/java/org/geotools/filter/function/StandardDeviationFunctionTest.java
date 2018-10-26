@@ -29,7 +29,7 @@ import org.opengis.filter.expression.PropertyName;
 /** @author Cory Horner, Refractions Research */
 public class StandardDeviationFunctionTest extends FunctionTestSupport {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(StandardDeviationFunctionTest.class);
 
     public StandardDeviationFunctionTest(String testName) {
         super(testName);

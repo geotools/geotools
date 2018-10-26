@@ -98,7 +98,7 @@ import tec.uom.se.format.SimpleUnitFormat;
 public class Utilities {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Utilities.class.toString());
+            org.geotools.util.logging.Logging.getLogger(Utilities.class);
 
     /**
      * TODO: Define a contains method which allows to know if the extent of a CoverageSlice contains

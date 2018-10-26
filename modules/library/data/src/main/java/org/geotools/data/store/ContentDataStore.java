@@ -142,8 +142,7 @@ public abstract class ContentDataStore implements DataStore {
         this.entries = new ConcurrentHashMap<Name, ContentEntry>();
         // grabbing the logger here makes the logger name polymorphic (the name of the actual
         // subclass will be used
-        this.LOGGER =
-                org.geotools.util.logging.Logging.getLogger(getClass().getPackage().getName());
+        this.LOGGER = org.geotools.util.logging.Logging.getLogger(getClass());
         // default
         setFilterFactory(CommonFactoryFinder.getFilterFactory());
     }

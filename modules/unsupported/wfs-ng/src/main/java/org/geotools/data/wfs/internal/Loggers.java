@@ -29,11 +29,11 @@ public final class Loggers {
         //
     }
 
-    public static final Logger MODULE = Logging.getLogger("org.geotools.data.wfs");
+    public static final Logger MODULE = Logging.getLogger(Loggers.class);
 
-    public static final Logger REQUESTS = Logging.getLogger("org.geotools.data.wfs.requests");
+    public static final Logger REQUESTS = Logging.getLogger(Loggers.class);
 
-    public static final Logger RESPONSES = Logging.getLogger("org.geotools.data.wfs.responses");
+    public static final Logger RESPONSES = Logging.getLogger(Loggers.class);
 
     public static final Level MODULE_TRACE_LEVEL = Level.FINER;
 

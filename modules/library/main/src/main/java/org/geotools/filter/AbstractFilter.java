@@ -29,7 +29,7 @@ public abstract class AbstractFilter extends FilterAbstract implements FilterTyp
 
     /** The logger for the default core module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(AbstractFilter.class);
 
     /** @param factory */
     protected AbstractFilter() {}

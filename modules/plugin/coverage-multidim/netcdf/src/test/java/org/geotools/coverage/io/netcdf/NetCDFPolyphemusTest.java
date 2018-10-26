@@ -61,7 +61,7 @@ import org.opengis.referencing.operation.MathTransform2D;
 
 public final class NetCDFPolyphemusTest extends Assert {
 
-    private static final Logger LOGGER = Logging.getLogger(NetCDFPolyphemusTest.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(NetCDFPolyphemusTest.class);
     private File testDirectory;
 
     @Test

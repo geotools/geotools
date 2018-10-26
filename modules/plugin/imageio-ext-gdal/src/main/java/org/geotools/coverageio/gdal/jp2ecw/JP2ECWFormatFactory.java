@@ -34,7 +34,7 @@ public final class JP2ECWFormatFactory extends BaseGridFormatFactorySPI
         implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.jp2ecw");
+            org.geotools.util.logging.Logging.getLogger(JP2ECWFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access JP2K via ECW driver is available or not.

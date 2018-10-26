@@ -45,7 +45,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class TileLayer extends DirectLayer {
 
-    private static final Logger LOGGER = Logging.getLogger(TileLayer.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(TileLayer.class);
 
     private static final GridCoverageFactory gridFactory = new GridCoverageFactory();
 

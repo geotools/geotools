@@ -72,7 +72,7 @@ import org.opengis.filter.identity.Identifier;
 @SuppressWarnings("deprecation")
 public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /** Standard java logger */
-    private static Logger LOGGER = Logging.getLogger(FilterToSQLSDE.class.getName());
+    private static Logger LOGGER = Logging.getLogger(FilterToSQLSDE.class);
 
     private final String layerFidFieldName;
 

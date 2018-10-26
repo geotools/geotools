@@ -62,7 +62,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @version $Id$ 
  */
 public class WS_DataStore implements XmlDataStore {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.ws");
+    private static final Logger LOGGER = Logging.getLogger(WS_DataStore.class);
 
     private static final XMLOutputter out = new XMLOutputter(Format.getPrettyFormat()); 
     private static final SAXBuilder sax = new SAXBuilder();

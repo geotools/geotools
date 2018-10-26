@@ -40,7 +40,7 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class GranuleCatalogFactory {
 
-    private static final Logger LOGGER = Logging.getLogger("GranuleCatalogFactory");
+    private static final Logger LOGGER = Logging.getLogger(GranuleCatalogFactory.class);
 
     /** Default private constructor to enforce singleton */
     private GranuleCatalogFactory() {}

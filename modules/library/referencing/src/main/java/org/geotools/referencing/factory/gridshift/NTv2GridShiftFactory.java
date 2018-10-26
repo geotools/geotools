@@ -49,7 +49,7 @@ public class NTv2GridShiftFactory extends ReferencingFactory implements Buffered
     private static final int GRID_CACHE_HARD_REFERENCES = 10;
 
     /** Logger. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.referencing");
+    protected static final Logger LOGGER = Logging.getLogger(NTv2GridShiftFactory.class);
 
     /** The soft cache that holds loaded grids. */
     private SoftValueHashMap<String, GridShiftFile> ntv2GridCache;

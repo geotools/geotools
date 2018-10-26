@@ -56,7 +56,7 @@ public class FeatureTypeStyleImpl implements org.geotools.styling.FeatureTypeSty
     public static String VALUE_EVALUATION_MODE_FIRST = "first";
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(FeatureTypeStyleImpl.class);
 
     private List<Rule> rules = new ArrayList<Rule>();
     private Set<SemanticType> semantics = new LinkedHashSet<SemanticType>();

@@ -77,7 +77,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class BoreholeTest extends AppSchemaTestSupport {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(BoreholeTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(BoreholeTest.class);
 
     private static final String XMMLNS = "http://www.opengis.net/xmml";
 

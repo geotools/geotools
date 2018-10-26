@@ -72,7 +72,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 public abstract class AbstractMappingFeatureIterator implements IMappingFeatureIterator {
     /** The logger for the filter module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(AbstractMappingFeatureIterator.class);
 
     protected FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
 

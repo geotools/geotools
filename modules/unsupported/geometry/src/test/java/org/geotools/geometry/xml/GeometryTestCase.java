@@ -35,7 +35,7 @@ import org.opengis.geometry.Geometry;
 public class GeometryTestCase implements Test {
     private String name;
     private static final Logger LOG =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");
+            org.geotools.util.logging.Logging.getLogger(GeometryTestCase.class);
     private List<GeometryTestOperation> operationList;
     private Geometry geomA;
     private Geometry geomB;

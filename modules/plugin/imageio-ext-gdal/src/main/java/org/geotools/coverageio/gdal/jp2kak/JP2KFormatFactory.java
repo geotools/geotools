@@ -34,7 +34,7 @@ public final class JP2KFormatFactory extends BaseGridFormatFactorySPI
         implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.jp2k");
+            org.geotools.util.logging.Logging.getLogger(JP2KFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access JP2K is available or not.

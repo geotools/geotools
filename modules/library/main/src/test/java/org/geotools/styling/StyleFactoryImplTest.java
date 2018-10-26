@@ -42,7 +42,7 @@ public class StyleFactoryImplTest extends TestCase {
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
     static SimpleFeature feature;
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(StyleFactoryImplTest.class);
 
     public void testCommonFactoryFinder() {
         LOGGER.finer("testCreateStyle");

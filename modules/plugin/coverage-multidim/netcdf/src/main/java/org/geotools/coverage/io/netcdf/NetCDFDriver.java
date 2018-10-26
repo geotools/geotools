@@ -53,7 +53,7 @@ public class NetCDFDriver extends DefaultFileDriver implements FileDriver, Drive
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverage.io.netcdf");
+            org.geotools.util.logging.Logging.getLogger(NetCDFDriver.class);
 
     /** A static {@link ImageReaderSpi} to be used to call canDecodeInput */
     static final ImageReaderSpi SPI;

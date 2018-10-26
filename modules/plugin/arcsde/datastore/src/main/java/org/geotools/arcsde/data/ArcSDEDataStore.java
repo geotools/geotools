@@ -86,7 +86,7 @@ import org.opengis.filter.Filter;
  */
 public class ArcSDEDataStore implements DataStore {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEDataStore.class);
 
     /**
      * Default value for how often, in seconds, to update the feature type name cache.

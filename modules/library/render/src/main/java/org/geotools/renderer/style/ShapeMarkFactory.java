@@ -35,7 +35,7 @@ public class ShapeMarkFactory implements MarkFactory {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(ShapeMarkFactory.class);
 
     static Map<String, Shape> shapes = new HashMap<String, Shape>();
 

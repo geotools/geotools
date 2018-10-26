@@ -64,7 +64,7 @@ public class WorldFileReader {
 
     /** Logger for this class. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.data");
+            org.geotools.util.logging.Logging.getLogger(WorldFileReader.class);
 
     /** Resolution on the first dimension. */
     private double xPixelSize = 0.0;

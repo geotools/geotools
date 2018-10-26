@@ -62,8 +62,7 @@ public class DbaseFileHeader {
 
     private int largestFieldSize = 0;
 
-    private Logger logger =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+    private Logger logger = org.geotools.util.logging.Logging.getLogger(DbaseFileHeader.class);
 
     /**
      * Returns the number of millis at January 1st 4713 BC

@@ -54,8 +54,7 @@ import org.opengis.util.InternationalString;
 // not quite sure how I am going to create a new factory (what should the geoapi method be)
 public class EPSGCRSAuthorityFactory extends AbstractFactory implements CRSAuthorityFactory {
 
-    private static final Logger LOGGER =
-            Logging.getLogger("org.geotools.referencing.crs.EPSGCRSAuthorityFactory");
+    private static final Logger LOGGER = Logging.getLogger(EPSGCRSAuthorityFactory.class);
 
     public static final String AUTHORITY = "EPSG";
     public static final String AUTHORITY_PREFIX = "EPSG:";

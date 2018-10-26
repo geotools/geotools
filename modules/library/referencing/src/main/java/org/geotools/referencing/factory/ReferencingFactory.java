@@ -59,7 +59,7 @@ import org.opengis.referencing.Factory;
  */
 public class ReferencingFactory extends AbstractFactory implements Factory {
     /** The logger for event related to Geotools's factories. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.referencing.factory");
+    public static final Logger LOGGER = Logging.getLogger(ReferencingFactory.class);
 
     /**
      * A citation which contains only the title "All" in localized language. Used as a

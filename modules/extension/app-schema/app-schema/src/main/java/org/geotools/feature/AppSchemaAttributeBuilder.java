@@ -37,8 +37,7 @@ import org.opengis.feature.type.Name;
 public class AppSchemaAttributeBuilder extends AttributeBuilder {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    AppSchemaAttributeBuilder.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(AppSchemaAttributeBuilder.class);
 
     public AppSchemaAttributeBuilder(FeatureFactory attributeFactory) {
         super(attributeFactory);

@@ -62,7 +62,7 @@ import org.opengis.parameter.GeneralParameterDescriptor;
 @SuppressWarnings({"nls", "deprecation"})
 public final class ArcSDERasterFormat extends AbstractGridFormat implements Format {
 
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    protected static final Logger LOGGER = Logging.getLogger(ArcSDERasterFormat.class);
 
     private final Map<String, ArcSDEConnectionConfig> connectionConfigs =
             new WeakHashMap<String, ArcSDEConnectionConfig>();

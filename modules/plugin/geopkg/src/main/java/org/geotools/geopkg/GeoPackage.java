@@ -86,7 +86,7 @@ import org.sqlite.Function;
  */
 public class GeoPackage {
 
-    static final Logger LOGGER = Logging.getLogger("org.geotools.geopkg");
+    static final Logger LOGGER = Logging.getLogger(GeoPackage.class);
 
     public static final String GEOPACKAGE_CONTENTS = "gpkg_contents";
 

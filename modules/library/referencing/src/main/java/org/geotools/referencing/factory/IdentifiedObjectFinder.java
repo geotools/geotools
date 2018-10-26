@@ -49,8 +49,7 @@ import org.opengis.util.GenericName;
  * @author Martin Desruisseaux
  */
 public class IdentifiedObjectFinder {
-    public static final Logger LOGGER =
-            Logging.getLogger("org.geotools.referencing.factory.finder");
+    public static final Logger LOGGER = Logging.getLogger(IdentifiedObjectFinder.class);
 
     /** The proxy for object creation. */
     private AuthorityFactoryProxy proxy;

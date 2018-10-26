@@ -42,7 +42,7 @@ import org.opengis.filter.expression.Expression;
 public class Collection_MinFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(Collection_MinFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
     Object min = null;

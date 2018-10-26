@@ -43,7 +43,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class WMTSMapLayer extends GridReaderLayer {
 
     public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.map");
+            org.geotools.util.logging.Logging.getLogger(WMTSMapLayer.class);
 
     private static Style createStyle() {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);

@@ -35,7 +35,7 @@ import org.apache.xml.resolver.CatalogManager;
 public class SchemaCatalog {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemaCatalog.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(SchemaCatalog.class);
 
     private final Catalog catalog;
 

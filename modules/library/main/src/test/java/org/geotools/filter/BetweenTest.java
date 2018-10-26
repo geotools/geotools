@@ -41,7 +41,7 @@ import org.opengis.filter.PropertyIsBetween;
 public class BetweenTest extends TestCase {
     /** Standard logging instance */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(BetweenTest.class);
 
     public BetweenTest(java.lang.String testName) {
         super(testName);

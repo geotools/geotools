@@ -109,7 +109,7 @@ public class MBTilesFile implements AutoCloseable {
     protected final String MD_MAXZOOM = "maxzoom";
 
     /** Logger */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.mbtiles");
+    protected static final Logger LOGGER = Logging.getLogger(MBTilesFile.class);
 
     /** database file */
     protected File file;

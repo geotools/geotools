@@ -37,7 +37,7 @@ public class GeometryTestOperation extends Assert {
     private Map<String, OperationHandler> operationMap;
 
     private static final Logger LOG =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");
+            org.geotools.util.logging.Logging.getLogger(GeometryTestOperation.class);
 
     /**
      * Constructor

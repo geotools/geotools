@@ -42,7 +42,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class LineNoSelfOverlappingValidation extends DefaultFeatureValidation {
     /** The logger for the validation module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(LineNoSelfOverlappingValidation.class);
 
     /**
      * LineNoSelfOverlappingFeatureValidation constructor.

@@ -63,7 +63,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @version $Id$
  */
 public class JCRSChooser {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    private static final Logger LOGGER = Logging.getLogger(JCRSChooser.class);
 
     /** Default authority name (EPSG). */
     public static final String DEFAULT_AUTHORITY = "EPSG";

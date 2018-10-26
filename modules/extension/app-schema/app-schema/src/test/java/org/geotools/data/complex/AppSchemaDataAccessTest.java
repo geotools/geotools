@@ -73,8 +73,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class AppSchemaDataAccessTest extends AppSchemaTestSupport {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    AppSchemaDataAccessTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccessTest.class);
 
     Name targetName;
 

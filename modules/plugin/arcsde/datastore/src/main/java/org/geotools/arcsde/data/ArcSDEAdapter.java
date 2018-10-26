@@ -76,7 +76,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 @SuppressWarnings("deprecation")
 public class ArcSDEAdapter {
     /** Logger for this class' package */
-    private static final Logger LOGGER = Logging.getLogger(ArcSDEAdapter.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEAdapter.class);
 
     /** mappings of SDE attribute's types to Java ones */
     private static final Map<Integer, Class<?>> sde2JavaTypes = new HashMap<Integer, Class<?>>();

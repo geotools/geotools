@@ -58,7 +58,7 @@ import org.opengis.feature.type.Name;
  */
 public class GeoSciMLTest extends AppSchemaTestSupport {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoSciMLTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(GeoSciMLTest.class);
 
     private static final String GSMLNS = "http://www.cgi-iugs.org/xml/GeoSciML/2";
 

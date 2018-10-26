@@ -139,7 +139,7 @@ import org.opengis.filter.temporal.TOverlaps;
 public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisitor {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(CapabilitiesFilterSplitter.class);
 
     /**
      * The stack holding the bits of the filter that are not processable by something with the given

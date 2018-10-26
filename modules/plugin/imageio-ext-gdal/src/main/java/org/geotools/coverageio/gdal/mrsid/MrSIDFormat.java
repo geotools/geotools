@@ -34,7 +34,7 @@ import org.opengis.geometry.MismatchedDimensionException;
  */
 public final class MrSIDFormat extends BaseGDALGridFormat implements Format {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.mrsid");
+            org.geotools.util.logging.Logging.getLogger(MrSIDFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public MrSIDFormat() {

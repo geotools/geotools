@@ -41,7 +41,7 @@ import org.locationtech.jts.geom.Polygon;
 public class SubHandlerMulti extends SubHandler {
     /** The logger for the GML module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
+            org.geotools.util.logging.Logging.getLogger(SubHandlerMulti.class);
 
     /** Remembers the list of all possible sub (base) types for this multi type. */
     private static final Collection BASE_GEOMETRY_TYPES =

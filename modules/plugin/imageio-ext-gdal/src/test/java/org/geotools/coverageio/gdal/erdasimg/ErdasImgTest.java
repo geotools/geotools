@@ -50,7 +50,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  */
 public final class ErdasImgTest extends GDALTestCase {
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.erdasimg");
+            org.geotools.util.logging.Logging.getLogger(ErdasImgTest.class);
 
     /** file name of a valid Erdas Imagine sample data to be used for tests. */
     private static final String fileName = "sample.img";

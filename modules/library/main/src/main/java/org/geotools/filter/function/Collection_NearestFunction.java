@@ -43,7 +43,7 @@ public class Collection_NearestFunction extends FunctionImpl {
 
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(Collection_NearestFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
 

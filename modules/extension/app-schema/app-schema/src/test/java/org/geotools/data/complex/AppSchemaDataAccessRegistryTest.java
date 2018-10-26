@@ -58,7 +58,7 @@ import org.opengis.feature.type.Name;
 public class AppSchemaDataAccessRegistryTest extends AppSchemaTestSupport {
 
     public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccessRegistryTest.class);
 
     private static final String GSMLNS = "urn:cgi:xmlns:CGI:GeoSciML:2.0";
 

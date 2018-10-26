@@ -48,7 +48,7 @@ import org.opengis.filter.identity.Identifier;
 public class FidFilterImpl extends AbstractFilter implements Id {
     /** Logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(FidFilterImpl.class);
 
     /** List of the Identifer. */
     private Set<Identifier> fids = new HashSet<Identifier>();

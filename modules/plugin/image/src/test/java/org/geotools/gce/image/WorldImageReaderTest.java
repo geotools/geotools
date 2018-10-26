@@ -58,7 +58,7 @@ import org.opengis.parameter.ParameterValue;
 public class WorldImageReaderTest extends WorldImageBaseTestCase {
 
     private Logger logger =
-            org.geotools.util.logging.Logging.getLogger(WorldImageReaderTest.class.toString());
+            org.geotools.util.logging.Logging.getLogger(WorldImageReaderTest.class);
 
     /**
      * Constructor for WorldImageReaderTest.

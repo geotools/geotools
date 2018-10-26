@@ -38,7 +38,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 @SuppressWarnings("nls")
 public class WFSResponse extends Response {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs.protocol.wfs");
+    private static final Logger LOGGER = Logging.getLogger(WFSResponse.class);
 
     private Charset charset;
 

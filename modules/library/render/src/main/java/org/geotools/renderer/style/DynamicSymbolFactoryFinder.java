@@ -45,7 +45,7 @@ import org.geotools.util.factory.Hints;
 public final class DynamicSymbolFactoryFinder {
     /** The logger for the filter module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
+            org.geotools.util.logging.Logging.getLogger(DynamicSymbolFactoryFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static FactoryRegistry registry;

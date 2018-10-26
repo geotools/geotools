@@ -35,7 +35,7 @@ import org.opengis.util.Cloneable;
 public class StyleImpl implements org.geotools.styling.Style, Cloneable {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(StyleImpl.class);
 
     private List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
     private DescriptionImpl description = new DescriptionImpl();

@@ -96,9 +96,6 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
     /** The prefix to put in front of URL to the database. */
     static final String PREFIX = "jdbc:hsqldb:file:";
 
-    /** The logger name. */
-    static final String LOGGER = "org.geotools.referencing.factory.epsg";
-
     /**
      * Creates a new instance of this factory. If the {@value #DIRECTORY_KEY} {@linkplain
      * System#getProperty(String) system property} is defined and contains the name of a directory
@@ -183,7 +180,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
 
     /** Returns a data source for the HSQL database. */
     protected DataSource createDataSource() throws SQLException {
-        final Logger logger = Logging.getLogger(LOGGER);
+        final Logger logger = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
         logger.log(Level.FINE, "Building new data source for " + getClass().getName());
 
         DataSource candidate = super.createDataSource();
@@ -242,7 +239,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * @throws SQLException if connection to the database failed.
      */
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
-        final Logger logger = Logging.getLogger(LOGGER);
+        final Logger logger = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
         logger.log(Level.FINE, "Building backing store for " + getClass().getName());
 
         final DataSource source = getDataSource();

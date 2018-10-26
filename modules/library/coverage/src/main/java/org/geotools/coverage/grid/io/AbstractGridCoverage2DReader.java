@@ -109,7 +109,7 @@ import org.opengis.referencing.operation.TransformException;
 public abstract class AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
     /** The {@link Logger} for this {@link AbstractGridCoverage2DReader}. */
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.coverage.grid");
+    private static final Logger LOGGER = Logging.getLogger(AbstractGridCoverage2DReader.class);
 
     /** Small number used for double comparisons */
     protected static double EPS = 1e-6;

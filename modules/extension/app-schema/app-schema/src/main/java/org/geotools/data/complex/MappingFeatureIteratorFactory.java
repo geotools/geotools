@@ -48,7 +48,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class MappingFeatureIteratorFactory {
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(MappingFeatureIteratorFactory.class);
 
     /**
      * Temporary filter visitor to determine whether the filter concerns any attribute mapping that

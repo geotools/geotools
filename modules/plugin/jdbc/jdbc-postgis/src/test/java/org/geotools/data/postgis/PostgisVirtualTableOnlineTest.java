@@ -35,7 +35,7 @@ public class PostgisVirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
                 };
         handler.setLevel(Level.WARNING);
         ((PostGISDialect) dataStore.getSQLDialect()).setEstimatedExtentsEnabled(true);
-        Logger logger = Logging.getLogger("org.geotools.jdbc");
+        Logger logger = Logging.getLogger(PostgisVirtualTableOnlineTest.class);
         Level oldLevel = logger.getLevel();
         try {
             logger.setLevel(java.util.logging.Level.WARNING);

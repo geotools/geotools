@@ -45,7 +45,7 @@ public class GMLFilterFeature extends XMLFilterImpl implements GMLHandlerJTS {
 
     /** The logger for the GML module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.gml");
+            org.geotools.util.logging.Logging.getLogger(GMLFilterFeature.class);
 
     /** GML namespace string. */
 

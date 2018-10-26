@@ -48,7 +48,7 @@ import org.opengis.filter.expression.Literal;
  */
 public class FunctionFinder {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(FunctionFinder.class);
 
     private volatile Map<Name, FunctionFactory> functionFactoryCache;
 

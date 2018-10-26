@@ -49,7 +49,7 @@ import org.w3c.dom.NodeList;
 public final class FilterDOMParser {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(FilterDOMParser.class);
 
     /** Factory to create filters. */
     private static final FilterFactory2 FILTER_FACT = CommonFactoryFinder.getFilterFactory2(null);

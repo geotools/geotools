@@ -83,7 +83,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     private static final double DELTA = 1E-10;
 
     /** The logger for grid sample dimensions. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage");
+    public static final Logger LOGGER = Logging.getLogger(GridSampleDimension.class);
 
     /**
      * The category list for this sample dimension, or {@code null} if this sample dimension has no

@@ -37,7 +37,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
  */
 public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.property");
+    private static final Logger LOGGER = Logging.getLogger(KMLFeatureReader.class);
 
     SimpleFeatureType type = null;
     SimpleFeature f = null;

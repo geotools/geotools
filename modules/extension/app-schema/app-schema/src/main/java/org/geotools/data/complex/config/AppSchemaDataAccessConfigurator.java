@@ -104,8 +104,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class AppSchemaDataAccessConfigurator {
     /** DOCUMENT ME! */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    AppSchemaDataAccessConfigurator.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccessConfigurator.class);
 
     public static String PROPERTY_JOINING = "app-schema.joining";
 

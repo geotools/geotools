@@ -215,7 +215,7 @@ public class StreamingRenderer implements GTRenderer {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(StreamingRenderer.class);
 
     int error = 0;
 

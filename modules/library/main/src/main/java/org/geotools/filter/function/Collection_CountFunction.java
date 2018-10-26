@@ -40,7 +40,7 @@ import org.opengis.filter.capability.FunctionName;
 public class Collection_CountFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(Collection_CountFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
 

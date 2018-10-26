@@ -67,7 +67,7 @@ import org.opengis.feature.type.Name;
  */
 final class FeatureTypeInfoCache {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");
+    private static final Logger LOGGER = Logging.getLogger(FeatureTypeInfoCache.class);
 
     /** ArcSDE registered layers definitions */
     private final Map<String, FeatureTypeInfo> featureTypeInfos;

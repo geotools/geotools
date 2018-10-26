@@ -35,7 +35,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class ErdasImgFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.erdasimg");
+            org.geotools.util.logging.Logging.getLogger(ErdasImgFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public ErdasImgFormat() {

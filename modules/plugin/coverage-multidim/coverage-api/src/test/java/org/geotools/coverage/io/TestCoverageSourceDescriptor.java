@@ -46,7 +46,7 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
 
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(
-                    TestCoverageSourceDescriptor.class.toString());
+                    TestCoverageSourceDescriptor.class);
 
     private static CoordinateReferenceSystem WGS84;
 

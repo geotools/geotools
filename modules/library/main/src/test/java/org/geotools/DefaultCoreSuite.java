@@ -30,7 +30,7 @@ import org.geotools.styling.TextSymbolTest;
 /** @author jamesm */
 public class DefaultCoreSuite extends TestCase {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(DefaultCoreSuite.class);
 
     public DefaultCoreSuite(java.lang.String testName) {
         super(testName);

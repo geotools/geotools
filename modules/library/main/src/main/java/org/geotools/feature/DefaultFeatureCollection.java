@@ -57,7 +57,7 @@ import org.opengis.geometry.BoundingBox;
 public class DefaultFeatureCollection
         implements SimpleFeatureCollection, Collection<SimpleFeature> {
     protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
+            org.geotools.util.logging.Logging.getLogger(DefaultFeatureCollection.class);
 
     /**
      * Contents of collection, referenced by FeatureID.

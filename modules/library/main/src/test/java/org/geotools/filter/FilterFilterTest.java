@@ -257,7 +257,7 @@ public class FilterFilterTest extends TestCase {
         GMLFilterGeometry geometryFilter = new GMLFilterGeometry(filterParser);
         GMLFilterDocument documentFilter = new GMLFilterDocument(geometryFilter);
 
-        //        Logger logger = Logging.getLogger("org.geotools.filter");
+        //        Logger logger = Logging.getLogger(FilterFilterTest.class);
         //        logger.setLevel(Level.ALL);
         //        ConsoleHandler consoleHandler = new ConsoleHandler();
         //        consoleHandler.setLevel(Level.ALL);
@@ -312,7 +312,7 @@ public class FilterFilterTest extends TestCase {
         GMLFilterGeometry geometryFilter = new GMLFilterGeometry(filterParser);
         GMLFilterDocument documentFilter = new GMLFilterDocument(geometryFilter);
 
-        Logger logger = Logging.getLogger("org.geotools.filter");
+        Logger logger = Logging.getLogger(FilterFilterTest.class);
         logger.setLevel(Level.INFO);
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setLevel(Level.INFO);
@@ -344,7 +344,7 @@ public class FilterFilterTest extends TestCase {
             try {
                 assertEquals("at index " + i, attName.toString(), parsedName);
             } catch (AssertionFailedError e) {
-                Logging.getLogger("org.geotools.filter")
+                Logging.getLogger(FilterFilterTest.class)
                         .warning("expected " + attName + ",\n but was " + parsedName);
                 throw e;
             }

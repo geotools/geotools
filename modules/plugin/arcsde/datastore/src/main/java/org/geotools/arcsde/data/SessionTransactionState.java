@@ -41,8 +41,7 @@ import org.geotools.data.Transaction.State;
  */
 final class SessionTransactionState implements Transaction.State {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    SessionTransactionState.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(SessionTransactionState.class);
 
     /**
      * The session being managed, it will be held open until commit(), rollback() or close() is

@@ -44,7 +44,7 @@ public final class GTopo30Format extends AbstractGridFormat implements Format {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.gtopo30");
+            org.geotools.util.logging.Logging.getLogger(GTopo30Format.class);
 
     /** Creates an instance and sets the metadata. */
     public GTopo30Format() {

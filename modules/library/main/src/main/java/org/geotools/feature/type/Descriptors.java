@@ -39,7 +39,7 @@ import org.opengis.feature.type.Name;
  */
 public class Descriptors {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Descriptors.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(Descriptors.class);
 
     /**
      * Wraps a list of {@link AttributeType} in {@link AttributeDescriptor}.

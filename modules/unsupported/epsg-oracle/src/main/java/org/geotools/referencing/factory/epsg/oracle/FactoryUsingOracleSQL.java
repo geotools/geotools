@@ -104,7 +104,7 @@ public class FactoryUsingOracleSQL extends FactoryUsingAnsiSQL {
     }
 
     @Override
-    protected void setSchema(String schema) {
+    public void setSchema(String schema) {
         super.setSchema(schema);
     }
 }

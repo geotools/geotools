@@ -24,7 +24,6 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
@@ -127,37 +126,5 @@ public class PropertyExistsFunction extends FunctionExpressionImpl {
         } catch (IntrospectionException ignore) {
         }
         return false;
-    }
-
-    public String toString() {
-        StringBuffer sb = new StringBuffer("PropertyExists('");
-        sb.append(getPropertyName());
-        sb.append("')");
-
-        String stringVal = sb.toString();
-
-        return stringVal;
-    }
-
-    public boolean equals(Object obj) {
-
-        if (obj == this) return true;
-        if (!(obj instanceof PropertyExistsFunction)) {
-
-            return false;
-        }
-        PropertyExistsFunction other = (PropertyExistsFunction) obj;
-
-        if (other.getParameters().size() != this.getParameters().size()) return false;
-        if (other.getParameters().size() > 0) {
-            final String propName = getPropertyName();
-
-            Expression otherPropNameExpr = (Expression) other.getParameters().get(0);
-            final String otherPropName = getPropertyName(otherPropNameExpr);
-
-            return Utilities.equals(propName, otherPropName);
-        } else {
-            return true;
-        }
     }
 }

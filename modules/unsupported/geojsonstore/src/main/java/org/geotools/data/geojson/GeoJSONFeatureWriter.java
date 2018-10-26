@@ -36,7 +36,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
-    private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureWriter.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureWriter.class);
 
     private ContentState state;
 

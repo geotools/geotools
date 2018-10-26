@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.piecewise;
+package org.geotools.renderer.lite.gridcoverage2d;
 
 import it.geosolutions.jaiext.piecewise.MathTransformation;
 import it.geosolutions.jaiext.piecewise.Position;

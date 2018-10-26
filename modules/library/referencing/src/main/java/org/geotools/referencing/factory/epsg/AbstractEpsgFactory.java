@@ -77,7 +77,7 @@ import org.geotools.referencing.operation.DefaultConcatenatedOperation;
 import org.geotools.referencing.operation.DefaultOperation;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 import org.geotools.referencing.operation.DefiningConversion;
-import org.geotools.resources.CRSUtilities;
+import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.util.LocalName;
 import org.geotools.util.ObjectCache;
 import org.geotools.util.ScopedName;

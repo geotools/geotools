@@ -43,8 +43,8 @@ final class Adapter extends Formattable {
      * object as WKT, then an {@link UnsupportedImplementationException} is thrown.
      */
     protected String formatWKT(final Formatter formatter) {
-        if (object instanceof org.geotools.resources.Formattable) {
-            return ((org.geotools.resources.Formattable) object).formatWKT(formatter);
+        if (object instanceof org.geotools.referencing.util.Formattable) {
+            return ((org.geotools.referencing.util.Formattable) object).formatWKT(formatter);
         }
         final Class classe = object.getClass();
         final String wkt;

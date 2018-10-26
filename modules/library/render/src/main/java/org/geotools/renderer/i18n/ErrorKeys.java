@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *
  *    THIS IS AN AUTOMATICALLY GENERATED FILE. DO NOT EDIT!
- *    Generated with: org.geotools.resources.IndexedResourceCompiler
+ *    Generated with: org.geotools.referencing.util.IndexedResourceCompiler
  */
 package org.geotools.renderer.i18n;
 

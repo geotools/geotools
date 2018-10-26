@@ -25,7 +25,6 @@ import org.geotools.data.wfs.internal.parsers.XmlComplexFeatureParser;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.collection.BaseFeatureCollection;
-import org.geotools.feature.collection.ComplexFeatureIteratorImpl;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;

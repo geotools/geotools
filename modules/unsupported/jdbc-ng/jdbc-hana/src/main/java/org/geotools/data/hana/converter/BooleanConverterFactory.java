@@ -16,9 +16,9 @@
  */
 package org.geotools.data.hana.converter;
 
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 
 /**
  * Converter factory for converting Short objects to Boolean objects.

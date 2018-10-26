@@ -6,9 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DirectLayer;
-import org.geotools.map.MapContent;
-import org.geotools.map.MapViewport;
 import org.geotools.util.Converters;
 
 /**

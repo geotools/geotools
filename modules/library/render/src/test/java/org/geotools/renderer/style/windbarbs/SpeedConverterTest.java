@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.style.windbarbs;
 
-import org.geotools.renderer.style.windbarbs.SpeedConverter;
 import org.junit.Assert;
 import org.junit.Test;
 import systems.uom.common.USCustomary;

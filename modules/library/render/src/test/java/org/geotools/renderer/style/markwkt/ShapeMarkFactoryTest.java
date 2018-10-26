@@ -22,7 +22,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.renderer.style.markwkt.MeteoMarkFactory;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

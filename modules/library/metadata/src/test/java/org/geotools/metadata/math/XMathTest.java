@@ -14,9 +14,9 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.math;
+package org.geotools.metadata.math;
 
-import static org.geotools.math.XMath.*;
+import static org.geotools.metadata.math.XMath.*;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
@@ -24,23 +24,23 @@ import org.geotools.resources.XArray;
 import org.junit.*;
 
 /**
- * Tests the {@link XMath} static methods.
+ * Tests the {@link org.geotools.metadata.math.XMath} static methods.
  *
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class XMathTest {
-    /** Tests the {@link XMath#pow10} method. */
-    @Test
-    public void testPow10() {
+  /** Tests the {@link org.geotools.metadata.math.XMath#pow10} method. */
+  @Test
+  public void testPow10() {
         for (int i = -304; i <= 304; i++) {
             assertEquals(Double.parseDouble("1E" + i), pow10(i), 0);
         }
     }
 
-    /** Tests the {@link XMath#countFractionDigits} method. */
-    @Test
-    public void testCountDecimalFractionDigits() {
+  /** Tests the {@link org.geotools.metadata.math.XMath#countFractionDigits} method. */
+  @Test
+  public void testCountDecimalFractionDigits() {
         assertEquals(0, countDecimalFractionDigits(-65.0));
         assertEquals(1, countDecimalFractionDigits(-65.5));
         assertEquals(6, countDecimalFractionDigits(65.123456));
@@ -52,9 +52,9 @@ public final class XMathTest {
         assertEquals(203, countDecimalFractionDigits(5.125E-200));
     }
 
-    /** Tests the {@link XMath#fixRoundingError} method. */
-    @Test
-    public void testTrimDecimalFractionDigits() {
+  /** Tests the {@link org.geotools.metadata.math.XMath#fixRoundingError} method. */
+  @Test
+  public void testTrimDecimalFractionDigits() {
         assertEquals(-61.5, trimDecimalFractionDigits(-61.50000000000001, 4, 12), 0);
         assertEquals(-61.5, trimDecimalFractionDigits(-61.50000000000001, 4, 13), 0);
         assertEquals(-61.50000000000001, trimDecimalFractionDigits(-61.50000000000001, 4, 14), 0);
@@ -62,9 +62,9 @@ public final class XMathTest {
         assertEquals(-61.5, trimDecimalFractionDigits(-61.50000000000000, 4, 15), 0);
     }
 
-    /** Tests the {@link XMath#primeNumber} method. */
-    @Test
-    public void testPrimeNumber() {
+  /** Tests the {@link org.geotools.metadata.math.XMath#primeNumber} method. */
+  @Test
+  public void testPrimeNumber() {
         final int[] primes = {
             2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83,
             89, 97, 101, 103, 107, 109, 113
@@ -74,9 +74,9 @@ public final class XMathTest {
         }
     }
 
-    /** Tests the {@link XMath#divisors} method. */
-    @Test
-    public void testDivisors() {
+  /** Tests the {@link org.geotools.metadata.math.XMath#divisors} method. */
+  @Test
+  public void testDivisors() {
         for (int i = 0; i < 10000; i++) {
             final int[] divisors = divisors(i);
             assertTrue(XArray.isStrictlySorted(divisors));

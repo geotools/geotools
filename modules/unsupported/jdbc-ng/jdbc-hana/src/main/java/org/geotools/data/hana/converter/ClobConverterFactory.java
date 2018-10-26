@@ -19,7 +19,6 @@ package org.geotools.data.hana.converter;
 import java.sql.Clob;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
-import org.geotools.util.factory.Hints;
 
 /**
  * Converter factory for converting all classes implementing java.sql.Clob to String.

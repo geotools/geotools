@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.math;
+package org.geotools.metadata.math;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;

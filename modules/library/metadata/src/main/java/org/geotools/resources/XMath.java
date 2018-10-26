@@ -38,7 +38,7 @@ public final class XMath {
     /**
      * Table of some integer powers of 10. Used for fast computation of {@link #pow10(int)}.
      *
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     private static final double[] POW10 = {
         1E+00, 1E+01, 1E+02, 1E+03, 1E+04, 1E+05, 1E+06, 1E+07, 1E+08, 1E+09,
@@ -73,11 +73,11 @@ public final class XMath {
     /**
      * Computes 10 power <var>x</var>.
      *
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static double pow10(final double x) {
-        return org.geotools.math.XMath.pow10(x);
+        return org.geotools.metadata.math.XMath.pow10(x);
     }
 
     /**
@@ -85,11 +85,11 @@ public final class XMath {
      * but has some rounding error issues (see
      * http://developer.java.sun.com/developer/bugParade/bugs/4358794.html).
      *
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static strictfp double pow10(final int x) {
-        return org.geotools.math.XMath.pow10(x);
+        return org.geotools.metadata.math.XMath.pow10(x);
     }
 
     /**
@@ -97,11 +97,11 @@ public final class XMath {
      * <var>x</var> is null or {@code NaN} and +1 if <var>x</var> is positive.
      *
      * @see Math#signum(double)
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static int sgn(final double x) {
-        return org.geotools.math.XMath.sgn(x);
+        return org.geotools.metadata.math.XMath.sgn(x);
     }
 
     /**
@@ -109,55 +109,55 @@ public final class XMath {
      * <var>x</var> is null or {@code NaN} and +1 if <var>x</var> is positive.
      *
      * @see Math#signum(float)
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static int sgn(final float x) {
-        return org.geotools.math.XMath.sgn(x);
+        return org.geotools.metadata.math.XMath.sgn(x);
     }
 
     /**
      * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
      * <var>x</var> is null and +1 if <var>x</var> is positive.
      *
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static int sgn(long x) {
-        return org.geotools.math.XMath.sgn(x);
+        return org.geotools.metadata.math.XMath.sgn(x);
     }
 
     /**
      * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
      * <var>x</var> is null and +1 if <var>x</var> is positive.
      *
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static int sgn(int x) {
-        return org.geotools.math.XMath.sgn(x);
+        return org.geotools.metadata.math.XMath.sgn(x);
     }
 
     /**
      * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
      * <var>x</var> is null and +1 if <var>x</var> is positive.
      *
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static short sgn(short x) {
-        return org.geotools.math.XMath.sgn(x);
+        return org.geotools.metadata.math.XMath.sgn(x);
     }
 
     /**
      * Returns the sign of <var>x</var>. This method returns -1 if <var>x</var> is negative, 0 if
      * <var>x</var> is null and +1 if <var>x</var> is positive.
      *
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static byte sgn(byte x) {
-        return org.geotools.math.XMath.sgn(x);
+        return org.geotools.metadata.math.XMath.sgn(x);
     }
 
     /**
@@ -168,11 +168,11 @@ public final class XMath {
      * @param value The value to round.
      * @param flu The amount of floating point units.
      * @return The rounded value, of {@code value} if it was not close enough to an integer.
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static double round(final double value, int flu) {
-        return org.geotools.math.XMath.roundIfAlmostInteger(value, flu);
+        return org.geotools.metadata.math.XMath.roundIfAlmostInteger(value, flu);
     }
 
     /**
@@ -188,11 +188,11 @@ public final class XMath {
      * @param n The minimum amount of fraction digits.
      * @return The fixed value, or the unchanged {@code value} if there is no small change that
      *     remove at least {@code n} fraction digits.
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static double fixRoundingError(final double value, int n) {
-        return org.geotools.math.XMath.trimDecimalFractionDigits(value, 4, n);
+        return org.geotools.metadata.math.XMath.trimDecimalFractionDigits(value, 4, n);
     }
 
     /**
@@ -200,11 +200,11 @@ public final class XMath {
      * is equivalent to a call to <code>{@linkplain Double#toString(double) Double#toString}(value)
      * </code> and counting the number of digits after the decimal separator.
      *
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static int countFractionDigits(final double value) {
-        return org.geotools.math.XMath.countDecimalFractionDigits(value);
+        return org.geotools.metadata.math.XMath.countDecimalFractionDigits(value);
     }
 
     /**
@@ -361,11 +361,11 @@ public final class XMath {
      * @param index The index, from -2097152 to 2097151 inclusive.
      * @return One of the legal {@link Float#NaN NaN} values as a float.
      * @throws IndexOutOfBoundsException if the specified index is out of bounds.
-     * @deprecated Moved to {@link org.geotools.math.XMath}.
+     * @deprecated Moved to {@link org.geotools.metadata.math.XMath}.
      */
     @Deprecated
     public static float toNaN(int index) throws IndexOutOfBoundsException {
-        return org.geotools.math.XMath.toNaN(index);
+        return org.geotools.metadata.math.XMath.toNaN(index);
     }
 
     /**

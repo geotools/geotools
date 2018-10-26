@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.crs;
+package org.geotools.referencing.epsg.wkt;
 
 import junit.framework.TestCase;
 import org.geotools.referencing.CRS;

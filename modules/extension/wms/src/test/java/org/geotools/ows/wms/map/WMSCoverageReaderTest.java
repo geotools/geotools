@@ -1,4 +1,4 @@
-package org.geotools.map;
+package org.geotools.ows.wms.map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,7 +26,6 @@ import org.geotools.ows.MockHttpResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.WebMapServer;
-import org.geotools.ows.wms.map.WMSCoverageReader;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;

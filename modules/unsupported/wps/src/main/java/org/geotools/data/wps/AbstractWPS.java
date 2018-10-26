@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.ows;
+package org.geotools.data.wps;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,6 +31,14 @@ import java.util.logging.Logger;
 import net.opengis.wps10.WPSCapabilitiesType;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
+import org.geotools.data.ows.Capabilities;
+import org.geotools.data.ows.GetCapabilitiesRequest;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.Request;
+import org.geotools.data.ows.Response;
+import org.geotools.data.ows.SimpleHttpClient;
+import org.geotools.data.ows.Specification;
 import org.geotools.ows.ServiceException;
 
 /**

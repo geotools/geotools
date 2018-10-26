@@ -4,9 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Layer {
 
@@ -35,129 +32,125 @@ public class Layer {
     @Expose
     private List<Object> features = new ArrayList<Object>();
 
-    /**
-     * (Required)
-     *
-     * @return The objectIdFieldName
-     */
+    /** (Required) */
     public String getObjectIdFieldName() {
         return objectIdFieldName;
     }
 
-    /**
-     * (Required)
-     *
-     * @param objectIdFieldName The objectIdFieldName
-     */
+    /** (Required) */
     public void setObjectIdFieldName(String objectIdFieldName) {
         this.objectIdFieldName = objectIdFieldName;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The globalIdFieldName
-     */
+    /** (Required) */
     public String getGlobalIdFieldName() {
         return globalIdFieldName;
     }
 
-    /**
-     * (Required)
-     *
-     * @param globalIdFieldName The globalIdFieldName
-     */
+    /** (Required) */
     public void setGlobalIdFieldName(String globalIdFieldName) {
         this.globalIdFieldName = globalIdFieldName;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The geometryType
-     */
+    /** (Required) */
     public String getGeometryType() {
         return geometryType;
     }
 
-    /**
-     * (Required)
-     *
-     * @param geometryType The geometryType
-     */
+    /** (Required) */
     public void setGeometryType(String geometryType) {
         this.geometryType = geometryType;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The spatialReference
-     */
+    /** (Required) */
     public SpatialReference getSpatialReference() {
         return spatialReference;
     }
 
-    /**
-     * (Required)
-     *
-     * @param spatialReference The spatialReference
-     */
+    /** (Required) */
     public void setSpatialReference(SpatialReference spatialReference) {
         this.spatialReference = spatialReference;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The fields
-     */
+    /** (Required) */
     public List<Object> getFields() {
         return fields;
     }
 
-    /**
-     * (Required)
-     *
-     * @param fields The fields
-     */
+    /** (Required) */
     public void setFields(List<Object> fields) {
         this.fields = fields;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The features
-     */
+    /** (Required) */
     public List<Object> getFeatures() {
         return features;
     }
 
-    /**
-     * (Required)
-     *
-     * @param features The features
-     */
+    /** (Required) */
     public void setFeatures(List<Object> features) {
         this.features = features;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Layer.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("objectIdFieldName");
+        sb.append('=');
+        sb.append(((this.objectIdFieldName == null) ? "<null>" : this.objectIdFieldName));
+        sb.append(',');
+        sb.append("globalIdFieldName");
+        sb.append('=');
+        sb.append(((this.globalIdFieldName == null) ? "<null>" : this.globalIdFieldName));
+        sb.append(',');
+        sb.append("geometryType");
+        sb.append('=');
+        sb.append(((this.geometryType == null) ? "<null>" : this.geometryType));
+        sb.append(',');
+        sb.append("spatialReference");
+        sb.append('=');
+        sb.append(((this.spatialReference == null) ? "<null>" : this.spatialReference));
+        sb.append(',');
+        sb.append("fields");
+        sb.append('=');
+        sb.append(((this.fields == null) ? "<null>" : this.fields));
+        sb.append(',');
+        sb.append("features");
+        sb.append('=');
+        sb.append(((this.features == null) ? "<null>" : this.features));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(objectIdFieldName)
-                .append(globalIdFieldName)
-                .append(geometryType)
-                .append(spatialReference)
-                .append(fields)
-                .append(features)
-                .toHashCode();
+        int result = 1;
+        result = ((result * 31) + ((this.features == null) ? 0 : this.features.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.globalIdFieldName == null)
+                                ? 0
+                                : this.globalIdFieldName.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.objectIdFieldName == null)
+                                ? 0
+                                : this.objectIdFieldName.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.spatialReference == null) ? 0 : this.spatialReference.hashCode()));
+        result = ((result * 31) + ((this.fields == null) ? 0 : this.fields.hashCode()));
+        result = ((result * 31) + ((this.geometryType == null) ? 0 : this.geometryType.hashCode()));
+        return result;
     }
 
     @Override
@@ -169,13 +162,27 @@ public class Layer {
             return false;
         }
         Layer rhs = ((Layer) other);
-        return new EqualsBuilder()
-                .append(objectIdFieldName, rhs.objectIdFieldName)
-                .append(globalIdFieldName, rhs.globalIdFieldName)
-                .append(geometryType, rhs.geometryType)
-                .append(spatialReference, rhs.spatialReference)
-                .append(fields, rhs.fields)
-                .append(features, rhs.features)
-                .isEquals();
+        return (((((((this.features == rhs.features)
+                                                        || ((this.features != null)
+                                                                && this.features.equals(
+                                                                        rhs.features)))
+                                                && ((this.globalIdFieldName
+                                                                == rhs.globalIdFieldName)
+                                                        || ((this.globalIdFieldName != null)
+                                                                && this.globalIdFieldName.equals(
+                                                                        rhs.globalIdFieldName))))
+                                        && ((this.objectIdFieldName == rhs.objectIdFieldName)
+                                                || ((this.objectIdFieldName != null)
+                                                        && this.objectIdFieldName.equals(
+                                                                rhs.objectIdFieldName))))
+                                && ((this.spatialReference == rhs.spatialReference)
+                                        || ((this.spatialReference != null)
+                                                && this.spatialReference.equals(
+                                                        rhs.spatialReference))))
+                        && ((this.fields == rhs.fields)
+                                || ((this.fields != null) && this.fields.equals(rhs.fields))))
+                && ((this.geometryType == rhs.geometryType)
+                        || ((this.geometryType != null)
+                                && this.geometryType.equals(rhs.geometryType))));
     }
 }

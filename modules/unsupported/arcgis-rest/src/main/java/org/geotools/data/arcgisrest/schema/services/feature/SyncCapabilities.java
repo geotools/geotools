@@ -2,9 +2,6 @@ package org.geotools.data.arcgisrest.schema.services.feature;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SyncCapabilities {
 
@@ -41,167 +38,187 @@ public class SyncCapabilities {
     @Expose
     private Boolean supportsAttachmentsSyncDirection;
 
-    /**
-     * (Required)
-     *
-     * @return The supportsAsync
-     */
+    /** (Required) */
     public Boolean getSupportsAsync() {
         return supportsAsync;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsAsync The supportsAsync
-     */
+    /** (Required) */
     public void setSupportsAsync(Boolean supportsAsync) {
         this.supportsAsync = supportsAsync;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsRegisteringExistingData
-     */
+    /** (Required) */
     public Boolean getSupportsRegisteringExistingData() {
         return supportsRegisteringExistingData;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsRegisteringExistingData The supportsRegisteringExistingData
-     */
+    /** (Required) */
     public void setSupportsRegisteringExistingData(Boolean supportsRegisteringExistingData) {
         this.supportsRegisteringExistingData = supportsRegisteringExistingData;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsSyncDirectionControl
-     */
+    /** (Required) */
     public Boolean getSupportsSyncDirectionControl() {
         return supportsSyncDirectionControl;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsSyncDirectionControl The supportsSyncDirectionControl
-     */
+    /** (Required) */
     public void setSupportsSyncDirectionControl(Boolean supportsSyncDirectionControl) {
         this.supportsSyncDirectionControl = supportsSyncDirectionControl;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsPerLayerSync
-     */
+    /** (Required) */
     public Boolean getSupportsPerLayerSync() {
         return supportsPerLayerSync;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsPerLayerSync The supportsPerLayerSync
-     */
+    /** (Required) */
     public void setSupportsPerLayerSync(Boolean supportsPerLayerSync) {
         this.supportsPerLayerSync = supportsPerLayerSync;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsPerReplicaSync
-     */
+    /** (Required) */
     public Boolean getSupportsPerReplicaSync() {
         return supportsPerReplicaSync;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsPerReplicaSync The supportsPerReplicaSync
-     */
+    /** (Required) */
     public void setSupportsPerReplicaSync(Boolean supportsPerReplicaSync) {
         this.supportsPerReplicaSync = supportsPerReplicaSync;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsSyncModelNone
-     */
+    /** (Required) */
     public Boolean getSupportsSyncModelNone() {
         return supportsSyncModelNone;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsSyncModelNone The supportsSyncModelNone
-     */
+    /** (Required) */
     public void setSupportsSyncModelNone(Boolean supportsSyncModelNone) {
         this.supportsSyncModelNone = supportsSyncModelNone;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsRollbackOnFailure
-     */
+    /** (Required) */
     public Boolean getSupportsRollbackOnFailure() {
         return supportsRollbackOnFailure;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsRollbackOnFailure The supportsRollbackOnFailure
-     */
+    /** (Required) */
     public void setSupportsRollbackOnFailure(Boolean supportsRollbackOnFailure) {
         this.supportsRollbackOnFailure = supportsRollbackOnFailure;
     }
 
-    /**
-     * (Required)
-     *
-     * @return The supportsAttachmentsSyncDirection
-     */
+    /** (Required) */
     public Boolean getSupportsAttachmentsSyncDirection() {
         return supportsAttachmentsSyncDirection;
     }
 
-    /**
-     * (Required)
-     *
-     * @param supportsAttachmentsSyncDirection The supportsAttachmentsSyncDirection
-     */
+    /** (Required) */
     public void setSupportsAttachmentsSyncDirection(Boolean supportsAttachmentsSyncDirection) {
         this.supportsAttachmentsSyncDirection = supportsAttachmentsSyncDirection;
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(SyncCapabilities.class.getName())
+                .append('@')
+                .append(Integer.toHexString(System.identityHashCode(this)))
+                .append('[');
+        sb.append("supportsAsync");
+        sb.append('=');
+        sb.append(((this.supportsAsync == null) ? "<null>" : this.supportsAsync));
+        sb.append(',');
+        sb.append("supportsRegisteringExistingData");
+        sb.append('=');
+        sb.append(
+                ((this.supportsRegisteringExistingData == null)
+                        ? "<null>"
+                        : this.supportsRegisteringExistingData));
+        sb.append(',');
+        sb.append("supportsSyncDirectionControl");
+        sb.append('=');
+        sb.append(
+                ((this.supportsSyncDirectionControl == null)
+                        ? "<null>"
+                        : this.supportsSyncDirectionControl));
+        sb.append(',');
+        sb.append("supportsPerLayerSync");
+        sb.append('=');
+        sb.append(((this.supportsPerLayerSync == null) ? "<null>" : this.supportsPerLayerSync));
+        sb.append(',');
+        sb.append("supportsPerReplicaSync");
+        sb.append('=');
+        sb.append(((this.supportsPerReplicaSync == null) ? "<null>" : this.supportsPerReplicaSync));
+        sb.append(',');
+        sb.append("supportsSyncModelNone");
+        sb.append('=');
+        sb.append(((this.supportsSyncModelNone == null) ? "<null>" : this.supportsSyncModelNone));
+        sb.append(',');
+        sb.append("supportsRollbackOnFailure");
+        sb.append('=');
+        sb.append(
+                ((this.supportsRollbackOnFailure == null)
+                        ? "<null>"
+                        : this.supportsRollbackOnFailure));
+        sb.append(',');
+        sb.append("supportsAttachmentsSyncDirection");
+        sb.append('=');
+        sb.append(
+                ((this.supportsAttachmentsSyncDirection == null)
+                        ? "<null>"
+                        : this.supportsAttachmentsSyncDirection));
+        sb.append(',');
+        if (sb.charAt((sb.length() - 1)) == ',') {
+            sb.setCharAt((sb.length() - 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(supportsAsync)
-                .append(supportsRegisteringExistingData)
-                .append(supportsSyncDirectionControl)
-                .append(supportsPerLayerSync)
-                .append(supportsPerReplicaSync)
-                .append(supportsSyncModelNone)
-                .append(supportsRollbackOnFailure)
-                .append(supportsAttachmentsSyncDirection)
-                .toHashCode();
+        int result = 1;
+        result =
+                ((result * 31)
+                        + ((this.supportsAsync == null) ? 0 : this.supportsAsync.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsSyncDirectionControl == null)
+                                ? 0
+                                : this.supportsSyncDirectionControl.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsRegisteringExistingData == null)
+                                ? 0
+                                : this.supportsRegisteringExistingData.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsAttachmentsSyncDirection == null)
+                                ? 0
+                                : this.supportsAttachmentsSyncDirection.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsPerLayerSync == null)
+                                ? 0
+                                : this.supportsPerLayerSync.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsSyncModelNone == null)
+                                ? 0
+                                : this.supportsSyncModelNone.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsRollbackOnFailure == null)
+                                ? 0
+                                : this.supportsRollbackOnFailure.hashCode()));
+        result =
+                ((result * 31)
+                        + ((this.supportsPerReplicaSync == null)
+                                ? 0
+                                : this.supportsPerReplicaSync.hashCode()));
+        return result;
     }
 
     @Override
@@ -213,15 +230,55 @@ public class SyncCapabilities {
             return false;
         }
         SyncCapabilities rhs = ((SyncCapabilities) other);
-        return new EqualsBuilder()
-                .append(supportsAsync, rhs.supportsAsync)
-                .append(supportsRegisteringExistingData, rhs.supportsRegisteringExistingData)
-                .append(supportsSyncDirectionControl, rhs.supportsSyncDirectionControl)
-                .append(supportsPerLayerSync, rhs.supportsPerLayerSync)
-                .append(supportsPerReplicaSync, rhs.supportsPerReplicaSync)
-                .append(supportsSyncModelNone, rhs.supportsSyncModelNone)
-                .append(supportsRollbackOnFailure, rhs.supportsRollbackOnFailure)
-                .append(supportsAttachmentsSyncDirection, rhs.supportsAttachmentsSyncDirection)
-                .isEquals();
+        return (((((((((this.supportsAsync == rhs.supportsAsync)
+                                                                        || ((this.supportsAsync
+                                                                                        != null)
+                                                                                && this
+                                                                                        .supportsAsync
+                                                                                        .equals(
+                                                                                                rhs.supportsAsync)))
+                                                                && ((this
+                                                                                        .supportsSyncDirectionControl
+                                                                                == rhs.supportsSyncDirectionControl)
+                                                                        || ((this
+                                                                                                .supportsSyncDirectionControl
+                                                                                        != null)
+                                                                                && this
+                                                                                        .supportsSyncDirectionControl
+                                                                                        .equals(
+                                                                                                rhs.supportsSyncDirectionControl))))
+                                                        && ((this.supportsRegisteringExistingData
+                                                                        == rhs.supportsRegisteringExistingData)
+                                                                || ((this
+                                                                                        .supportsRegisteringExistingData
+                                                                                != null)
+                                                                        && this
+                                                                                .supportsRegisteringExistingData
+                                                                                .equals(
+                                                                                        rhs.supportsRegisteringExistingData))))
+                                                && ((this.supportsAttachmentsSyncDirection
+                                                                == rhs.supportsAttachmentsSyncDirection)
+                                                        || ((this.supportsAttachmentsSyncDirection
+                                                                        != null)
+                                                                && this
+                                                                        .supportsAttachmentsSyncDirection
+                                                                        .equals(
+                                                                                rhs.supportsAttachmentsSyncDirection))))
+                                        && ((this.supportsPerLayerSync == rhs.supportsPerLayerSync)
+                                                || ((this.supportsPerLayerSync != null)
+                                                        && this.supportsPerLayerSync.equals(
+                                                                rhs.supportsPerLayerSync))))
+                                && ((this.supportsSyncModelNone == rhs.supportsSyncModelNone)
+                                        || ((this.supportsSyncModelNone != null)
+                                                && this.supportsSyncModelNone.equals(
+                                                        rhs.supportsSyncModelNone))))
+                        && ((this.supportsRollbackOnFailure == rhs.supportsRollbackOnFailure)
+                                || ((this.supportsRollbackOnFailure != null)
+                                        && this.supportsRollbackOnFailure.equals(
+                                                rhs.supportsRollbackOnFailure))))
+                && ((this.supportsPerReplicaSync == rhs.supportsPerReplicaSync)
+                        || ((this.supportsPerReplicaSync != null)
+                                && this.supportsPerReplicaSync.equals(
+                                        rhs.supportsPerReplicaSync))));
     }
 }

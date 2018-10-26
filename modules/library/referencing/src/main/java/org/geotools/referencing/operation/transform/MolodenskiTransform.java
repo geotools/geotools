@@ -414,7 +414,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
             switch (i % sourceDim) {
                 case 0:
                     error -= 360 * floor(error / 360);
-                    break; // Rool Longitude
+                    break; // Roll Longitude
                 case 2:
                     continue; // Ignore height because inacurate.
             }

@@ -17,9 +17,11 @@
  */
 package org.geotools.data.oracle.sdo;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.geotools.data.oracle.sdo.MDSYS.SDO_GEOMETRY;
+import org.geotools.geometry.jts.CurvePolygon;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -288,6 +290,29 @@ public class SDOCreateTest {
                                 13, 99, 2, 11, 99, 2, 4, 99, 7, 5, 99, 7, 10, 99, 10, 10, 99, 10, 5,
                                 99, 7, 5, 99)),
                 "POLYGON ((2 4, 4 3, 10 3, 13 5, 13 9, 11 13, 5 13, 2 11, 2 4), (7 5, 7 10, 10 10, 10 5, 7 5))");
+    }
+
+    /** Checks num of internal rings (holes) */
+    @Test
+    public void testXY_PolygonWithTwoHoles_numInteriorRing() throws Exception {
+        SDO_GEOMETRY oraGeom =
+                MDSYS.SDO_GEOMETRY(
+                        2003,
+                        90112,
+                        NULL,
+                        MDSYS.SDO_ELEM_INFO_ARRAY(
+                                1, 1005, 2, 1, 2, 1, 5, 2, 2, 11, 2005, 2, 11, 2, 2, 15, 2, 1, 21,
+                                2005, 2, 21, 2, 2, 25, 2, 1),
+                        MDSYS.SDO_ORDINATE_ARRAY(
+                                50000, 100000, 100000, 10000, 140000, 100000, 100000, 140000, 50000,
+                                100000, 70000, 110000, 80000, 130000, 90000, 110000, 80000, 90000,
+                                70000, 110000, 100000, 110000, 110000, 130000, 120000, 110000,
+                                110000, 90000, 100000, 110000));
+        final GeometryFactory geometryFactory = new GeometryFactory();
+        final Geometry actual = create(oraGeom, geometryFactory);
+        assertTrue(actual instanceof CurvePolygon);
+        CurvePolygon curvePolygon = (CurvePolygon) actual;
+        assertEquals(2, curvePolygon.getNumInteriorRing());
     }
 
     @Test

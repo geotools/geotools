@@ -113,7 +113,8 @@ public class MultithreadedHttpClientTest {
         System.setProperty(SYS_PROP_KEY_HOST, "myproxy");
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "localhost");
         MultithreadedHttpClient sut = new MultithreadedHttpTestClient();
-        when(mockHttpClient.executeMethod(isNull(), any(HttpMethod.class))).thenReturn(200);
+        when(mockHttpClient.executeMethod((HostConfiguration) isNull(), any(HttpMethod.class)))
+                .thenReturn(200);
         sut.get(new URL("http://localhost"));
 
         System.setProperty(SYS_PROP_KEY_NONPROXYHOSTS, "\"localhost|www.geotools.org\"");

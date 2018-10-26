@@ -19,7 +19,7 @@ package org.geotools.swing;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import org.fest.swing.fixture.FrameFixture;
+import org.assertj.swing.fixture.FrameFixture;
 import org.geotools.swing.event.MapPaneListener;
 
 /**

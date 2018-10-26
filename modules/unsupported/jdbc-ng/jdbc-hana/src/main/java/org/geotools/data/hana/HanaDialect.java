@@ -31,7 +31,6 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.referencing.CRS;
-import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.*;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;

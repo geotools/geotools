@@ -132,7 +132,7 @@ public class FactoryUsingAnsiSQL extends FactoryUsingSQL {
      * @param schema The database schema in which the epsg tables are stored.
      * @since 2.2
      */
-    protected void setSchema(String schema) {
+    public void setSchema(String schema) {
         schema = schema.trim();
         final int length = schema.length();
         if (length == 0) {

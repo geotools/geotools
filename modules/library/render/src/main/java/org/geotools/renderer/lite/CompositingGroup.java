@@ -32,7 +32,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
-import org.geotools.map.event.MapLayerListener;
+import org.geotools.map.MapLayerListener;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;

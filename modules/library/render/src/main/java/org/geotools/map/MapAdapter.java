@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.map.event;
+package org.geotools.map;
 
 /**
  * An abstract adapter class to receive events about map bounds and layer changes. All of the

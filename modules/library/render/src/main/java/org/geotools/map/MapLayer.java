@@ -452,7 +452,7 @@ public class MapLayer {
      *
      * @param listener The listener to register.
      */
-    public synchronized void addMapLayerListener(org.geotools.map.event.MapLayerListener listener) {
+    public synchronized void addMapLayerListener(MapLayerListener listener) {
         internal.addMapLayerListener(listener);
     }
 
@@ -462,7 +462,7 @@ public class MapLayer {
      * @param listener The listener to remove.
      */
     public synchronized void removeMapLayerListener(
-            org.geotools.map.event.MapLayerListener listener) {
+            MapLayerListener listener) {
         internal.removeMapLayerListener(listener);
     }
 

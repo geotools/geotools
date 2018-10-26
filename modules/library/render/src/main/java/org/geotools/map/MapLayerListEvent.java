@@ -14,14 +14,9 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.map.event;
+package org.geotools.map;
 
 import java.util.EventObject;
-import org.geotools.map.DefaultMapLayer;
-import org.geotools.map.Layer;
-import org.geotools.map.MapContent;
-import org.geotools.map.MapContext;
-import org.geotools.map.MapLayer;
 
 /**
  * Event object used to report changes in the list of layers managed by a MapContext

@@ -19,9 +19,6 @@ package org.geotools.map;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import org.geotools.map.event.MapAdapter;
-import org.geotools.map.event.MapBoundsEvent;
-import org.geotools.map.event.MapLayerListEvent;
 
 /**
  * A listener for map bounds and layer list events which can be set to wait for specific events to

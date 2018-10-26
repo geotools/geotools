@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.math;
+package org.geotools.metadata.math;
 
 /**
  * A fraction made of a numerator and a denominator. This is not the purpose of this class to

@@ -14,22 +14,22 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.math;
+package org.geotools.metadata.math;
 
 import static org.junit.Assert.*;
 
 import org.junit.*;
 
 /**
- * Tests the {@link Fraction} class.
+ * Tests the {@link org.geotools.metadata.math.Fraction} class.
  *
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  */
 public final class FractionTest {
-    /** Tests the {@link Fraction#floor} method. */
-    @Test
-    public void testFloor() {
+  /** Tests the {@link org.geotools.metadata.math.Fraction#floor} method. */
+  @Test
+  public void testFloor() {
         final int[] numerators = {0, 1, 2, 3, 9, 10, 11, 12};
         final int[] denominators = {3, 3, 3, 3, 3, 3, 3, 3};
         final int[] positives = {0, 0, 0, 1, 3, 3, 3, 4};
@@ -47,9 +47,9 @@ public final class FractionTest {
         }
     }
 
-    /** Tests the {@link Fraction#ceil} method. */
-    @Test
-    public void testCeil() {
+  /** Tests the {@link org.geotools.metadata.math.Fraction#ceil} method. */
+  @Test
+  public void testCeil() {
         final int[] numerators = {0, 1, 2, 3, 9, 10, 11, 12};
         final int[] denominators = {3, 3, 3, 3, 3, 3, 3, 3};
         final int[] positives = {0, 1, 1, 1, 3, 4, 4, 4};
@@ -67,9 +67,9 @@ public final class FractionTest {
         }
     }
 
-    /** Tests the {@link Fraction#round} method. */
-    @Test
-    public void testRoundFraction() {
+  /** Tests the {@link org.geotools.metadata.math.Fraction#round} method. */
+  @Test
+  public void testRoundFraction() {
         final int[] numerators = {0, 1, 2, 3, 9, 10, 11, 12, 12, 13, 14, 15, 16, 17, 18, 19};
         final int[] denominators = {3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4};
         final int[] results = {0, 0, 1, 1, 3, 3, 4, 4, 3, 3, 4, 4, 4, 4, 4, 5};

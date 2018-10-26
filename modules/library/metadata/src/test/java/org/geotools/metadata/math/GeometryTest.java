@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.math;
+package org.geotools.metadata.math;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,8 @@ import java.util.Random;
 import org.junit.*;
 
 /**
- * Tests the {@link Line} and {@link Plane} classes.
+ * Tests the {@link org.geotools.metadata.math.Line} and {@link org.geotools.metadata.math.Plane}
+ * classes.
  *
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
@@ -33,9 +34,9 @@ public final class GeometryTest {
     /** Tolerance factor for comparaisons. */
     private static final double EPS = 1E-8;
 
-    /** Tests {@link Line#setLine}. */
-    @Test
-    public void testLine() {
+  /** Tests {@link org.geotools.metadata.math.Line#setLine}. */
+  @Test
+  public void testLine() {
         final Line line = new Line();
         line.setLine(new Point2D.Double(-2, 2), new Point2D.Double(8, 22));
         assertEquals("slope", 2, line.getSlope(), EPS);
@@ -67,9 +68,9 @@ public final class GeometryTest {
         assertTrue("y0", Double.isInfinite(line.getY0()));
     }
 
-    /** Tests {@link Line#isoscelesTriangleBase}. */
-    @Test
-    public void testIsoscelesTriangleBase() {
+  /** Tests {@link org.geotools.metadata.math.Line#isoscelesTriangleBase}. */
+  @Test
+  public void testIsoscelesTriangleBase() {
         final Line test = new Line();
         test.setLine(new Point2D.Double(20, 30), new Point2D.Double(80, 95));
         assertEquals("slope", 1.083333333333333333333333, test.getSlope(), EPS);
@@ -90,9 +91,9 @@ public final class GeometryTest {
                 EPS);
     }
 
-    /** Tests {@link Plane#setPlane} methods. */
-    @Test
-    public void testPlaneFit() {
+  /** Tests {@link org.geotools.metadata.math.Plane#setPlane} methods. */
+  @Test
+  public void testPlaneFit() {
         final Random rd = new Random(457821698762354L);
         final Plane plan = new Plane();
         final double[] P1 =

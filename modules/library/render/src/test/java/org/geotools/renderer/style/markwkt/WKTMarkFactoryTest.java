@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.markwkt;
+package org.geotools.renderer.style.markwkt;
 
 import java.io.File;
 import java.net.URL;

@@ -14,24 +14,27 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.factory.epsg.hsql;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.sql.DataSource;
+import org.geotools.referencing.factory.epsg.FactoryUsingAnsiSQL;
 import org.geotools.util.factory.Hints;
 
 /**
  * Adapts SQL statements for HSQL. The HSQL database engine doesn't understand the parenthesis in
- * (INNER JOIN ... ON) statements for the "BursaWolfParameters" query. Unfortunately, those
+ * (INNER JOIN ... ON) statements for the "BursaWolfParameters" query. Unfortunatly, those
  * parenthesis are required by MS-Access. We need to removes them programmatically here.
  *
  * @since 2.2
  * @version $Id$
  * @author Martin Desruisseaux
  */
-final class HsqlDialectEpsgFactory extends AnsiDialectEpsgFactory {
+class FactoryUsingHSQL extends FactoryUsingAnsiSQL {
     /**
      * The regular expression pattern for searching the "FROM (" clause. This is the pattern for the
      * opening parenthesis.
@@ -39,17 +42,12 @@ final class HsqlDialectEpsgFactory extends AnsiDialectEpsgFactory {
     private static final Pattern OPENING_PATTERN =
             Pattern.compile("\\s+FROM\\s*\\(", Pattern.CASE_INSENSITIVE);
 
-    /**
-     * Constructs the factory for the given connection to the HSQL database.
-     *
-     * @throws SQLException
-     */
-    public HsqlDialectEpsgFactory(final Hints hints) throws SQLException {
-        super(hints, HsqlEpsgDatabase.createDataSource());
+    /** Constructs the factory for the given connection to the HSQL database. */
+    public FactoryUsingHSQL(final Hints hints, final Connection connection) {
+        super(hints, connection);
     }
 
-    /** Constructs the factory for the given connection to the HSQL database. */
-    public HsqlDialectEpsgFactory(final Hints hints, final javax.sql.DataSource dataSource) {
+    public FactoryUsingHSQL(final Hints hints, final DataSource dataSource) {
         super(hints, dataSource);
     }
 

@@ -14,14 +14,14 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.factory.epsg.hsql;
 
 import javax.sql.DataSource;
 import junit.framework.TestCase;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.referencing.factory.epsg.HsqlDialectEpsgMediatorStressTest.ClientThread;
+import org.geotools.referencing.factory.epsg.hsql.HsqlDialectEpsgMediatorStressTest.ClientThread;
 import org.geotools.util.factory.Hints;
 
 /**

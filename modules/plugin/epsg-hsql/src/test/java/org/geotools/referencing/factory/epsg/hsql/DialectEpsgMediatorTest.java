@@ -14,8 +14,9 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.factory.epsg.hsql;
 
+import java.sql.Connection;
 import java.util.Set;
 import javax.sql.DataSource;
 import junit.framework.TestCase;
@@ -28,21 +29,22 @@ import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-public class HsqlDialectEpsgMediatorTest extends TestCase {
-    private HsqlDialectEpsgMediator factory;
-    private IdentifiedObjectFinder finder;
+public class DialectEpsgMediatorTest extends TestCase {
+
+    private static HsqlDialectEpsgMediator factory;
+    private static IdentifiedObjectFinder finder;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         if (factory == null) {
             DataSource datasource = HsqlEpsgDatabase.createDataSource();
+            Connection connection = datasource.getConnection();
             Hints hints = new Hints(Hints.CACHE_POLICY, "default");
-            factory = new HsqlDialectEpsgMediator(80, hints, datasource);
+            factory = new HsqlDialectEpsgMediator(hints);
         }
         if (finder == null) {
             finder = factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
@@ -54,7 +56,6 @@ public class HsqlDialectEpsgMediatorTest extends TestCase {
         CoordinateReferenceSystem epsg4326 = factory.createCoordinateReferenceSystem("EPSG:4326");
         CoordinateReferenceSystem code4326 = factory.createCoordinateReferenceSystem("4326");
 
-        assertNotNull(epsg4326);
         assertEquals("4326 equals EPSG:4326", code4326, epsg4326);
         assertSame("4326 == EPSG:4326", code4326, epsg4326);
     }
@@ -76,6 +77,9 @@ public class HsqlDialectEpsgMediatorTest extends TestCase {
     }
 
     public void testFindWSG84() throws FactoryException {
+        if (!TestData.isExtensiveTest()) {
+            return;
+        }
         String wkt;
         wkt =
                 "GEOGCS[\"WGS 84\",\n"
@@ -102,20 +106,12 @@ public class HsqlDialectEpsgMediatorTest extends TestCase {
         assertTrue(
                 "Should found an object equals (ignoring metadata) to the requested one.",
                 CRS.equalsIgnoreMetadata(crs, find));
-        ReferenceIdentifier found =
-                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority());
-        // assertEquals("4326",found.getCode());
-        assertNotNull(found);
+        String code =
+                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode();
+        assertTrue("4326".equals(code) || "63266405".equals(code));
 
         finder.setFullScanAllowed(false);
-        String id = finder.findIdentifier(crs);
-        // this is broken because, as we know from above, it is ambiguous, so it may not be
-        // EPSG:4326 in the cache at all!
-        // assertEquals("The CRS should still in the cache.","EPSG:4326", id);
-        assertEquals(
-                "The CRS should still in the cache.",
-                found.getCodeSpace() + ':' + found.getCode(),
-                id);
+        assertNotNull("The CRS should still in the cache.", finder.findIdentifier(crs));
     }
 
     public void testFindBeijing1954() throws FactoryException {
@@ -157,12 +153,11 @@ public class HsqlDialectEpsgMediatorTest extends TestCase {
         assertTrue(
                 "Should found an object equals (ignoring metadata) to the requested one.",
                 CRS.equalsIgnoreMetadata(crs, find));
+        String code =
+                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode();
+        assertEquals("2442", code);
 
-        assertEquals(
-                "2442",
-                AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode());
         finder.setFullScanAllowed(false);
-        String id = finder.findIdentifier(crs);
-        assertEquals("The CRS should still in the cache.", "EPSG:2442", id);
+        assertEquals("The CRS should still in the cache.", "EPSG:2442", finder.findIdentifier(crs));
     }
 }

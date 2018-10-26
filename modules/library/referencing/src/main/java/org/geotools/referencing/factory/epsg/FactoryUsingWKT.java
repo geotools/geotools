@@ -139,7 +139,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /** Constructs an authority factory using the specified hints and priority. */
-    protected FactoryUsingWKT(final Hints userHints, final int priority) {
+    public FactoryUsingWKT(final Hints userHints, final int priority) {
         super(userHints, priority);
         factories = ReferencingFactoryContainer.instance(userHints);
         Object hint = null;

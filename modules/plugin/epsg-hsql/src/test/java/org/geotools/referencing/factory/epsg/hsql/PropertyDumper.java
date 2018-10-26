@@ -1,4 +1,4 @@
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.factory.epsg.hsql;
 
 import java.io.BufferedWriter;
 import java.io.File;

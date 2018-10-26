@@ -48,7 +48,7 @@ import org.opengis.referencing.operation.Projection;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class AuthorityCodes extends AbstractSet<String> implements Serializable {
+public final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     /** For compatibility with different versions. */
     private static final long serialVersionUID = 7105664579449680562L;
 

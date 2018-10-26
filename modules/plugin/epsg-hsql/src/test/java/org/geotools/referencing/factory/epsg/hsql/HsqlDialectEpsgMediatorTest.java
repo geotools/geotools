@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.factory.epsg.hsql;
 
 import java.util.Set;
 import javax.sql.DataSource;
@@ -32,19 +32,17 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-public class HsqlDialectEpsgFactoryTest extends TestCase {
-
-    private static HsqlDialectEpsgFactory factory;
-    private static IdentifiedObjectFinder finder;
+public class HsqlDialectEpsgMediatorTest extends TestCase {
+    private HsqlDialectEpsgMediator factory;
+    private IdentifiedObjectFinder finder;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         if (factory == null) {
             DataSource datasource = HsqlEpsgDatabase.createDataSource();
-
-            Hints hints = new Hints(Hints.CACHE_POLICY, "weak");
-            factory = new HsqlDialectEpsgFactory(hints, datasource);
+            Hints hints = new Hints(Hints.CACHE_POLICY, "default");
+            factory = new HsqlDialectEpsgMediator(80, hints, datasource);
         }
         if (finder == null) {
             finder = factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
@@ -56,6 +54,7 @@ public class HsqlDialectEpsgFactoryTest extends TestCase {
         CoordinateReferenceSystem epsg4326 = factory.createCoordinateReferenceSystem("EPSG:4326");
         CoordinateReferenceSystem code4326 = factory.createCoordinateReferenceSystem("4326");
 
+        assertNotNull(epsg4326);
         assertEquals("4326 equals EPSG:4326", code4326, epsg4326);
         assertSame("4326 == EPSG:4326", code4326, epsg4326);
     }
@@ -107,6 +106,7 @@ public class HsqlDialectEpsgFactoryTest extends TestCase {
                 AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority());
         // assertEquals("4326",found.getCode());
         assertNotNull(found);
+
         finder.setFullScanAllowed(false);
         String id = finder.findIdentifier(crs);
         // this is broken because, as we know from above, it is ambiguous, so it may not be
@@ -163,6 +163,6 @@ public class HsqlDialectEpsgFactoryTest extends TestCase {
                 AbstractIdentifiedObject.getIdentifier(find, factory.getAuthority()).getCode());
         finder.setFullScanAllowed(false);
         String id = finder.findIdentifier(crs);
-        assertEquals("The CRS should still be in the cache.", "EPSG:2442", id);
+        assertEquals("The CRS should still in the cache.", "EPSG:2442", id);
     }
 }

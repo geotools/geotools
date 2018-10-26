@@ -14,13 +14,14 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.factory.epsg.hsql;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Properties;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.factory.epsg.CoordinateOperationFactoryUsingWKT;
+import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.factory.Hints;
 import org.junit.After;
@@ -41,9 +42,6 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class LongitudeFirstFactoryOverrideTest {
 
-    private static final String DEFINITIONS_FILE_NAME = "epsg_operations.properties";
-    private static Properties properties;
-
     private static final String SOURCE_CRS = "EPSG:TEST1";
     private static final String TARGET_CRS = "EPSG:TEST2";
 
@@ -63,10 +61,6 @@ public class LongitudeFirstFactoryOverrideTest {
 
         ReferencingFactoryFinder.addAuthorityFactory(
                 new CoordinateOperationFactoryUsingWKT(null, AbstractFactory.MAXIMUM_PRIORITY));
-
-        // Read definitions
-        properties = new Properties();
-        properties.load(this.getClass().getResourceAsStream(DEFINITIONS_FILE_NAME));
     }
 
     @After

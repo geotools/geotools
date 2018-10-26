@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.factory.epsg.hsql;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -33,6 +33,7 @@ import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.IdentifiedObjectFinder;
+import org.geotools.referencing.factory.epsg.DirectEpsgFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
@@ -89,6 +90,7 @@ public class ThreadedHsqlEpsgFactoryTest {
         field.setAccessible(true);
         Object def = field.get(factory);
         Method getConnection = DirectEpsgFactory.class.getDeclaredMethod("getConnection");
+        getConnection.setAccessible(true);
         java.sql.Connection conn = (java.sql.Connection) getConnection.invoke(def);
         conn.close();
     }

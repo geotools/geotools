@@ -24,7 +24,7 @@ import java.util.Map;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.function.FilterFunction_area;
-import org.geotools.filter.function.FilterFunction_sdonn;
+import org.geotools.data.oracle.filter.FilterFunction_sdonn;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTS;

@@ -30,8 +30,6 @@ import net.miginfocom.swing.MigLayout;
 import org.geotools.data.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeConstraint;
-import org.geotools.styling.SLDParser;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
@@ -39,6 +37,8 @@ import org.geotools.swing.data.JParameterListWizard;
 import org.geotools.swing.wizard.JWizard;
 import org.geotools.util.KVP;
 import org.geotools.xml.Encoder;
+import org.geotools.xml.styling.SLDParser;
+import org.geotools.xml.styling.SLDTransformer;
 import org.opengis.style.Style;
 
 /**

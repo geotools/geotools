@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.styling.SLDTransformer;
 import org.opengis.filter.FilterFactory2;
 
 public abstract class AbstractStyleTest {

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.gtxml;
+package org.geotools.wfs.gtxml;
 
 import java.io.IOException;
 import java.net.URL;

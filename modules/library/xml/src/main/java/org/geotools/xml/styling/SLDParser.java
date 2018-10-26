@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
+package org.geotools.xml.styling;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -38,6 +38,59 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.ChannelSelection;
+import org.geotools.styling.ColorMap;
+import org.geotools.styling.ColorMapEntry;
+import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.ContrastMethodStrategy;
+import org.geotools.styling.DefaultResourceLocator;
+import org.geotools.styling.Displacement;
+import org.geotools.styling.ExponentialContrastMethodStrategy;
+import org.geotools.styling.Extent;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeConstraint;
+import org.geotools.styling.FeatureTypeConstraintImpl;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Fill;
+import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Halo;
+import org.geotools.styling.HistogramContrastMethodStrategy;
+import org.geotools.styling.LabelPlacement;
+import org.geotools.styling.LinePlacement;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.LogarithmicContrastMethodStrategy;
+import org.geotools.styling.Mark;
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.NamedLayerImpl;
+import org.geotools.styling.NamedStyle;
+import org.geotools.styling.NormalizeContrastMethodStrategy;
+import org.geotools.styling.OtherText;
+import org.geotools.styling.OtherTextImpl;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.RemoteOWS;
+import org.geotools.styling.RemoteOWSImpl;
+import org.geotools.styling.ResourceLocator;
+import org.geotools.styling.Rule;
+import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.SelectedChannelTypeImpl;
+import org.geotools.styling.ShadedRelief;
+import org.geotools.styling.ShadedReliefImpl;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayer;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.UomOgcMapping;
+import org.geotools.styling.UserLayer;
+import org.geotools.styling.UserLayerImpl;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.factory.GeoTools;
@@ -1074,7 +1127,7 @@ public class SLDParser {
     protected PolygonSymbolizer parsePolygonSymbolizer(Node root) {
         PolygonSymbolizer symbol = factory.createPolygonSymbolizer();
         symbol.setFill((Fill) null);
-        symbol.setStroke((Stroke) null);
+        symbol.setStroke((org.geotools.styling.Stroke) null);
 
         NamedNodeMap namedNodeMap = root.getAttributes();
         Node uomNode = namedNodeMap.getNamedItem(uomString);
@@ -1126,7 +1179,7 @@ public class SLDParser {
             symbol.setUnitOfMeasure(uomMapping.getUnit());
         }
 
-        List<Font> fonts = new ArrayList<Font>();
+        List<org.geotools.styling.Font> fonts = new ArrayList<org.geotools.styling.Font>();
         NodeList children = root.getChildNodes();
         final int length = children.getLength();
         for (int i = 0; i < length; i++) {
@@ -1881,8 +1934,8 @@ public class SLDParser {
     }
 
     /** Internal parse method - made protected for unit testing */
-    protected Stroke parseStroke(Node root) {
-        Stroke stroke = factory.getDefaultStroke();
+    protected org.geotools.styling.Stroke parseStroke(Node root) {
+        org.geotools.styling.Stroke stroke = factory.getDefaultStroke();
         NodeList list = findElements(((Element) root), "GraphicFill");
         int length = list.getLength();
         if (length > 0) {
@@ -2310,7 +2363,7 @@ public class SLDParser {
     }
 
     /** Internal method to parse a Font Node; protected to allow for unit testing */
-    protected Font parseFont(Node root) {
+    protected org.geotools.styling.Font parseFont(Node root) {
         if (LOGGER.isLoggable(Level.FINEST)) {
             LOGGER.finest("parsing font");
         }

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.filter;
+package org.geotools.xml.filter;
 
 import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
@@ -28,6 +28,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.test.TestData;
+import org.geotools.xml.ogc.FilterTestSupport;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.xml.sax.helpers.ParserAdapter;
@@ -86,9 +87,9 @@ public class ParserTest extends FilterTestSupport {
         super.setUp();
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
-        ftb.init(testSchema);
+        ftb.init(FilterTestSupport.testSchema);
         ftb.add("testZeroDouble", Double.class);
-        testSchema = ftb.buildFeatureType();
+        FilterTestSupport.testSchema = ftb.buildFeatureType();
 
         GeometryFactory geomFac = new GeometryFactory();
 
@@ -113,7 +114,8 @@ public class ParserTest extends FilterTestSupport {
         attributes[10] = new Double(0.0);
 
         // Creates the feature itself
-        testFeature = SimpleFeatureBuilder.build(testSchema, attributes, null);
+        FilterTestSupport.testFeature =
+                SimpleFeatureBuilder.build(FilterTestSupport.testSchema, attributes, null);
     }
 
     public void test1() throws Exception {

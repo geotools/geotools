@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.filter;
+package org.geotools.xml.filter;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -27,6 +27,10 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+import org.geotools.filter.FilterHandler;
+import org.geotools.filter.FilterType;
+import org.geotools.filter.Filters;
+import org.geotools.filter.LogicFilterImpl;
 import org.geotools.gml.GMLFilterDocument;
 import org.geotools.gml.GMLFilterGeometry;
 import org.geotools.util.logging.Logging;
@@ -91,7 +95,7 @@ public class FilterFilterTest extends TestCase {
         assertEquals(contentHandler.filters.size(), 1);
 
         LogicFilterImpl f = (LogicFilterImpl) contentHandler.filters.get(0);
-        List sub = f.getSubFilters();
+        List sub = f.getChildren();
         assertEquals(2, sub.size());
 
         Filter f1 = (Filter) sub.get(0);

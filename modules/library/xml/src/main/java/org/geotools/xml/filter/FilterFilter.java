@@ -14,11 +14,20 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.filter;
+package org.geotools.xml.filter;
 
 // Java Topology Suite dependencies
 
 import java.util.logging.Logger;
+import org.geotools.filter.AbstractFilter;
+import org.geotools.filter.DefaultExpression;
+import org.geotools.filter.ExpressionSAXParser;
+import org.geotools.filter.ExpressionType;
+import org.geotools.filter.FilterHandler;
+import org.geotools.filter.FilterSAXParser;
+import org.geotools.filter.FilterType;
+import org.geotools.filter.IllegalFilterException;
+import org.geotools.filter.LogicSAXParser;
 import org.geotools.gml.GMLHandlerJTS;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;

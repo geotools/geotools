@@ -16,8 +16,6 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.junit.Assert.*;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.IOException;
@@ -34,11 +32,11 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapContext;
 import org.geotools.map.MapViewport;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.test.TestData;
+import org.geotools.xml.styling.SLDParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;

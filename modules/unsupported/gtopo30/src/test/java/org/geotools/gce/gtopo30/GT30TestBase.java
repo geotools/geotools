@@ -29,7 +29,7 @@ public abstract class GT30TestBase extends TestCase {
     protected GridCoverage2D gc;
 
     protected Logger logger =
-            org.geotools.util.logging.Logging.getLogger(GT30ReaderWriterTest.class.toString());
+            org.geotools.util.logging.Logging.getLogger(GT30ReaderWriterTest.class);
 
     protected File newDir;
 

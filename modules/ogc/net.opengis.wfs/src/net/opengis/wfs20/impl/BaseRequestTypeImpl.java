@@ -142,7 +142,7 @@ public abstract class BaseRequestTypeImpl extends EObjectImpl implements BaseReq
    * @generated
    * @ordered
    */
-    protected static final Map EXTENDED_PROPERTIES_EDEFAULT = null;
+    protected static final Map EXTENDED_PROPERTIES_EDEFAULT = new HashMap<>();
 
     /**
    * The cached value of the '{@link #getExtendedProperties() <em>Extended Properties</em>}' attribute.

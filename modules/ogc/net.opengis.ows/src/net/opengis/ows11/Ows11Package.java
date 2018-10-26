@@ -2903,7 +2903,7 @@ public interface Ows11Package extends EPackage {
     int SECTIONS_TYPE = 38;
 
     /**
-   * The feature id for the '<em><b>Section</b></em>' attribute.
+   * The feature id for the '<em><b>Section</b></em>' attribute list.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
    * @generated
@@ -5769,10 +5769,10 @@ public interface Ows11Package extends EPackage {
     EClass getSectionsType();
 
     /**
-   * Returns the meta object for the attribute '{@link net.opengis.ows11.SectionsType#getSection <em>Section</em>}'.
+   * Returns the meta object for the attribute list '{@link net.opengis.ows11.SectionsType#getSection <em>Section</em>}'.
    * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Section</em>'.
+   * @return the meta object for the attribute list '<em>Section</em>'.
    * @see net.opengis.ows11.SectionsType#getSection()
    * @see #getSectionsType()
    * @generated
@@ -8056,7 +8056,7 @@ public interface Ows11Package extends EPackage {
         EClass SECTIONS_TYPE = eINSTANCE.getSectionsType();
 
         /**
-     * The meta object literal for the '<em><b>Section</b></em>' attribute feature.
+     * The meta object literal for the '<em><b>Section</b></em>' attribute list feature.
      * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
      * @generated

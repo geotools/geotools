@@ -1,4 +1,7 @@
-package org.geotools.data.ows;
+package org.geotools.ows;
+
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
 
 import java.io.IOException;
 import java.io.InputStream;

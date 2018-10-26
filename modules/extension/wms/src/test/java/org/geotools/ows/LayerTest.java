@@ -1,4 +1,4 @@
-package org.geotools.data.ows;
+package org.geotools.ows;
 
 import static org.junit.Assert.assertTrue;
 

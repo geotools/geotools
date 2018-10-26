@@ -23,7 +23,7 @@ package org.geotools.referencing.operation.projection;
 import static java.lang.Math.*;
 
 import java.awt.geom.Point2D;
-import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.ErrorKeys;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
 

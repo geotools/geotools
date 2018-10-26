@@ -20,10 +20,10 @@
 package org.geotools.referencing.wkt;
 
 import java.util.prefs.Preferences;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.GeneralParameterValue;
 

@@ -23,8 +23,8 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Predicate;
 import javax.imageio.spi.ServiceRegistry.Filter;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.logging.Logging;
 
 /**

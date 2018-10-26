@@ -22,7 +22,7 @@ package org.geotools.referencing.cs;
 import java.util.Map;
 import javax.measure.Unit;
 import org.geotools.measure.Measure;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;

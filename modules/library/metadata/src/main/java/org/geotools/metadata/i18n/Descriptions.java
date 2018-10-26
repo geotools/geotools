@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources.i18n;
+package org.geotools.metadata.i18n;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -28,7 +28,7 @@ import org.geotools.resources.IndexedResourceBundle;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class Errors extends IndexedResourceBundle {
+public class Descriptions extends IndexedResourceBundle {
     /**
      * Returns resources in the given locale.
      *
@@ -36,11 +36,11 @@ public class Errors extends IndexedResourceBundle {
      * @return Resources in the given locale.
      * @throws MissingResourceException if resources can't be found.
      */
-    public static Errors getResources(Locale locale) throws MissingResourceException {
+    public static Descriptions getResources(Locale locale) throws MissingResourceException {
         if (locale == null) {
             locale = Locale.getDefault();
         }
-        return (Errors) getBundle(Errors.class.getName(), locale);
+        return (Descriptions) getBundle(Descriptions.class.getName(), locale);
         /*
          * We rely on cache capability of ResourceBundle.
          */
@@ -100,27 +100,5 @@ public class Errors extends IndexedResourceBundle {
             final int key, final Object arg0, final Object arg1, final Object arg2)
             throws MissingResourceException {
         return getResources(null).getString(key, arg0, arg1, arg2);
-    }
-
-    /**
-     * Gets a string for the given key are replace all occurence of "{0}", "{1}", with values of
-     * {@code arg0}, {@code arg1}, etc.
-     *
-     * @param key The key for the desired string.
-     * @param arg0 Value to substitute to "{0}".
-     * @param arg1 Value to substitute to "{1}".
-     * @param arg2 Value to substitute to "{2}".
-     * @param arg3 Value to substitute to "{3}".
-     * @return The formatted string for the given key.
-     * @throws MissingResourceException If no object for the given key can be found.
-     */
-    public static String format(
-            final int key,
-            final Object arg0,
-            final Object arg1,
-            final Object arg2,
-            final Object arg3)
-            throws MissingResourceException {
-        return getResources(null).getString(key, arg0, arg1, arg2, arg3);
     }
 }

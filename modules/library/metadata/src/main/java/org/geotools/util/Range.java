@@ -18,8 +18,8 @@ package org.geotools.util;
 
 import java.io.Serializable;
 import javax.measure.Unit;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * A range between a minimum and maximum comparable. The minimum/maximum may be included, excluded

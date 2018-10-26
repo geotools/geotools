@@ -22,12 +22,12 @@ package org.geotools.referencing.datum;
 import static java.lang.Double.doubleToLongBits;
 
 import java.io.Serializable;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.Matrix4;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.wkt.Formattable;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.operation.Matrix;

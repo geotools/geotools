@@ -19,8 +19,8 @@ package org.geotools.math;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Locale;
-import org.geotools.resources.i18n.DescriptionKeys;
-import org.geotools.resources.i18n.Descriptions;
+import org.geotools.metadata.i18n.DescriptionKeys;
+import org.geotools.metadata.i18n.Descriptions;
 import org.geotools.util.TableWriter;
 import org.opengis.util.Cloneable;
 

@@ -25,8 +25,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import org.geotools.math.XMath;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * Utility methods for affine transforms. This class provides two kind of services:

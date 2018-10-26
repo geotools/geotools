@@ -28,9 +28,9 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.math.XMath;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.LoggedFormat;
 

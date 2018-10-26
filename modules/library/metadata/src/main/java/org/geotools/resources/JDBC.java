@@ -21,8 +21,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 
 /**
  * A set of utilities methods related to JDBC (<cite>Java Database Connectivity</cite>).

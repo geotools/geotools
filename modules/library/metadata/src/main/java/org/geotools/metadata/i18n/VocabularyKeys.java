@@ -17,7 +17,7 @@
  *    THIS IS AN AUTOMATICALLY GENERATED FILE. DO NOT EDIT!
  *    Generated with: org.geotools.resources.IndexedResourceCompiler
  */
-package org.geotools.resources.i18n;
+package org.geotools.metadata.i18n;
 
 /**
  * Resource keys. This class is used when compiling sources, but no dependencies to {@code

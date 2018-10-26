@@ -19,10 +19,10 @@ package org.geotools.util;
 import static org.geotools.resources.ClassChanger.getFinestClass;
 import static org.geotools.resources.ClassChanger.getWidestClass;
 
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.resources.ClassChanger;
 import org.geotools.resources.XMath;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 
 /**
  * A range of numbers. {@linkplain #union Union} and {@linkplain #intersect intersection} are

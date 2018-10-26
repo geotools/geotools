@@ -17,9 +17,9 @@
 package org.geotools.geometry;
 
 import java.awt.geom.Rectangle2D;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.DirectPosition;

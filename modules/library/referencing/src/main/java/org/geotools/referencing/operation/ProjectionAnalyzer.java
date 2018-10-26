@@ -28,6 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.factory.ReferencingFactory;
@@ -36,8 +38,6 @@ import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.operation.projection.MapProjection; // For javadoc
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;

@@ -17,9 +17,9 @@
 
 package org.geotools.referencing.factory;
 
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.GenericName;
 import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;

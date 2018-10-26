@@ -51,10 +51,10 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
     @SuppressWarnings("unchecked")
     private static final Class<? extends IndexedResourceBundle>[] RESOURCES_TO_PROCESS =
             new Class[] {
-                org.geotools.resources.i18n.Descriptions.class,
-                org.geotools.resources.i18n.Vocabulary.class,
-                org.geotools.resources.i18n.Loggings.class,
-                org.geotools.resources.i18n.Errors.class
+                org.geotools.metadata.i18n.Descriptions.class,
+                org.geotools.metadata.i18n.Vocabulary.class,
+                org.geotools.metadata.i18n.Loggings.class,
+                org.geotools.metadata.i18n.Errors.class
             };
 
     /**
@@ -107,7 +107,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * @param sourceDirectory The base directory for {@code "java"} {@code "resources"}
      *     sub-directories. The directory structure must be consistent with Maven conventions.
      * @param bundleClass The resource bundle base class (e.g. <code>
-     *     {@linkplain org.geotools.resources.i18n.Vocabulary}.class}</code>).
+     *     {@linkplain org.geotools.metadata.i18n.Vocabulary}.class}</code>).
      * @param renumber {@code true} for renumbering all key values.
      * @param out The output stream for printing message.
      * @throws IOException if an input/output operation failed.
@@ -153,8 +153,8 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
 
     /**
      * Returns the class name for the keys. For example if {@code bundleClass} is {@code
-     * "org.geotools.resources.i18n.Vocabulary"}, then this method returns {@code
-     * "org.geotools.resources.i18n.VocabularyKeys"}.
+     * "org.geotools.metadata.i18n.Vocabulary"}, then this method returns {@code
+     * "org.geotools.metadata.i18n.VocabularyKeys"}.
      */
     private static String toKeyClass(String bundleClass) {
         if (bundleClass.endsWith("s")) {
@@ -381,7 +381,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * Creates a source file for resource keys.
      *
      * @param bundleClass The resource bundle base class (e.g. <code>
-     *     {@linkplain org.geotools.resources.i18n.Vocabulary}.class}</code>).
+     *     {@linkplain org.geotools.metadata.i18n.Vocabulary}.class}</code>).
      * @throws IOException if an input/output operation failed.
      */
     private void writeJavaSource(final Class bundleClass) throws IOException {
@@ -492,7 +492,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * @param sourceDirectory The base directory for {@code "java"} {@code "resources"}
      *     sub-directories. The directory structure must be consistent with Maven conventions.
      * @param bundleClass The resource bundle base class (e.g. <code>
-     *     {@linkplain org.geotools.resources.i18n.Vocabulary}.class}</code>).
+     *     {@linkplain org.geotools.metadata.i18n.Vocabulary}.class}</code>).
      * @param renumber {@code true} for renumbering all key values.
      * @param out The output stream for printing message.
      * @throws IOException if an input/output operation failed.
@@ -560,7 +560,7 @@ public final class IndexedResourceCompiler implements Comparator<Object> {
      * @param sourceDirectory The base directory for {@code "java"} {@code "resources"}
      *     sub-directories. The directory structure must be consistent with Maven conventions.
      * @param resourcesToProcess The resource bundle base classes (e.g. <code>
-     *     {@linkplain org.geotools.resources.i18n.Vocabulary}.class}</code>).
+     *     {@linkplain org.geotools.metadata.i18n.Vocabulary}.class}</code>).
      */
     public static void main(
             String[] args,

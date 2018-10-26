@@ -61,8 +61,8 @@ import java.util.Map;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 

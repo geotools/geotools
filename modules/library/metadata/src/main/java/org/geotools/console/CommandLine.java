@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.Classes;
+import org.geotools.util.Arguments;
+import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
 
 /**

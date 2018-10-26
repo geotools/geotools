@@ -37,7 +37,7 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.shapefile.files.StreamLogging;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /**
  * A DbaseFileWriter is used to write a dbase III format file. The general use of this class is:

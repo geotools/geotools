@@ -44,7 +44,7 @@ import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultOperationMethod;
 import org.geotools.referencing.operation.DefaultTransformation;
 import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
 import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;

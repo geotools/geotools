@@ -30,7 +30,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.UnmodifiableArrayList;
+import org.geotools.util.UnmodifiableArrayList;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.InvalidParameterNameException;

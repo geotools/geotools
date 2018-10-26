@@ -59,7 +59,7 @@ import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.ScreenMap;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.Hints.Key;
 import org.geotools.util.logging.Logging;

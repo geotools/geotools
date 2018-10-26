@@ -23,7 +23,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
-import org.geotools.resources.UnmodifiableArrayList;
+import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;

@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 import javax.swing.text.StyleConstants;
-import org.geotools.resources.XArray;
 
 /**
  * A character stream that can be used to format tables. Columns are separated by tabulations (

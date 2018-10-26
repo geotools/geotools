@@ -27,7 +27,7 @@ import javax.media.jai.Warp;
 import javax.media.jai.WarpAffine;
 import javax.media.jai.WarpPolynomial;
 import javax.media.jai.WarpQuadratic;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.junit.*;
 import org.opengis.referencing.operation.TransformException;
 

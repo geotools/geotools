@@ -22,7 +22,7 @@ import java.util.Map;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.factory.FactoryNotFoundException;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;

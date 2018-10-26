@@ -24,7 +24,7 @@ import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.matrix.XMatrix;
-import org.geotools.resources.XArray;
+import org.geotools.util.XArray;
 import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;

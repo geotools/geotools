@@ -25,8 +25,8 @@ package org.geotools.metadata.i18n;
  * integer values, using long identifiers will not bloat constant pools of classes compiled against
  * the interface, provided that no class implements this interface.
  *
- * @see org.geotools.resources.IndexedResourceBundle
- * @see org.geotools.resources.IndexedResourceCompiler
+ * @see org.geotools.util.IndexedResourceBundle
+ * @see org.geotools.util.IndexedResourceCompiler
  */
 public final class ErrorKeys {
     private ErrorKeys() {}

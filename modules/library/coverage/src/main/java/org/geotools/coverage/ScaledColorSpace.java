@@ -17,7 +17,7 @@
 package org.geotools.coverage;
 
 import java.awt.color.ColorSpace;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 
 /**
  * Color space for raster backed by floating point numbers ranging between two arbitrary values.

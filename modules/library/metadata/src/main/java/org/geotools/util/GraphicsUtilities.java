@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources;
+package org.geotools.util;
 
 import java.awt.Font;
 import java.awt.Graphics2D;

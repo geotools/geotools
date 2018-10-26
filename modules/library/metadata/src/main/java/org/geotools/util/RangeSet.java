@@ -16,7 +16,7 @@
  */
 package org.geotools.util;
 
-import static org.geotools.resources.Classes.*;
+import static org.geotools.util.Classes.*;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
@@ -28,8 +28,6 @@ import java.util.NoSuchElementException;
 import java.util.SortedSet;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.ClassChanger;
-import org.geotools.resources.Classes;
 import org.opengis.util.Cloneable;
 
 /**

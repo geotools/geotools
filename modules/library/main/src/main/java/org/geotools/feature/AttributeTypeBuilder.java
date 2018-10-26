@@ -24,7 +24,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LengthFunction;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.SimpleInternationalString;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.type.AttributeDescriptor;

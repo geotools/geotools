@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Set;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.referencing.*;
 import org.opengis.referencing.crs.*;

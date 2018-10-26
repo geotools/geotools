@@ -35,7 +35,7 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.DimensionFilter;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.factory.Hints;
 import org.opengis.coverage.CannotEvaluateException;
 import org.opengis.coverage.grid.GridEnvelope;

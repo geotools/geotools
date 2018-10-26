@@ -25,7 +25,7 @@ import java.util.Map;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.extent.Extent;
 import org.opengis.referencing.datum.Datum;

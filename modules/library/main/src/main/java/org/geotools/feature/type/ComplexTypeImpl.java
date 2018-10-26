@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.geotools.feature.NameImpl;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;

@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.RandomAccess;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.XArray;
 import org.opengis.util.Cloneable;
 
 /**

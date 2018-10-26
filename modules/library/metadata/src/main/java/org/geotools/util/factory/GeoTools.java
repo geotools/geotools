@@ -48,14 +48,14 @@ import javax.swing.event.EventListenerList;
 import javax.xml.parsers.SAXParser;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.Classes;
+import org.geotools.util.Arguments;
+import org.geotools.util.Classes;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.Utilities;
 import org.geotools.util.Version;
 import org.geotools.util.logging.LoggerFactory;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.NullEntityResolver;
-import org.geotools.xml.PreventLocalEntityResolver;
 import org.xml.sax.EntityResolver;
 
 /**

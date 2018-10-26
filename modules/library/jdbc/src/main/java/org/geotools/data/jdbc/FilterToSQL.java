@@ -270,8 +270,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Performs the encoding, sends the encoded sql to the writer passed in.
      *
      * @param filter the Filter to be encoded.
-     * @throws OpenGISFilterToOpenGISFilterToSQLEncoderException If filter type not supported, or if
-     *     there were io problems.
+     * @throws FilterToSQLException If filter type not supported, or if there were io problems.
      */
     public void encode(Filter filter) throws FilterToSQLException {
         if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");
@@ -317,8 +316,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Performs the encoding, sends the encoded sql to the writer passed in.
      *
      * @param filter the Filter to be encoded.
-     * @throws OpenGISFilterToOpenGISFilterToSQLEncoderException If filter type not supported, or if
-     *     there were io problems.
+     * @throws FilterToSQLException If filter type not supported, or if there were io problems.
      */
     public void encode(Expression expression) throws FilterToSQLException {
         if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");

@@ -133,8 +133,7 @@ public class JDBCPGRasterConfigurationBuilder {
     private static final String TILETABLE_INSERTION_SQL =
             "insert into " + MOSAIC_KEY + " (NAME,TileTable) values (?,?)";
 
-    private static final Logger LOGGER =
-            Logging.getLogger(ImageMosaicJDBCReader.class);
+    private static final Logger LOGGER = Logging.getLogger(ImageMosaicJDBCReader.class);
 
     private static final String TEMPLATE_FILE_NAME = "coverage.pgraster.template.xml";
 

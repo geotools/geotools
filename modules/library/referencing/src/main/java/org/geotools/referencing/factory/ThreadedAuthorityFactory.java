@@ -146,9 +146,9 @@ public class ThreadedAuthorityFactory extends AbstractAuthorityFactory implement
      * store creation time.
      *
      * <p>The backing store is of course an important dependency. This method gives a chance to
-     * {@link org.geotools.util.factory.FactoryRegistry} to compare the user-requested hints (especially
-     * {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER}) against the backing store hints, by following
-     * the dependency declared there.
+     * {@link org.geotools.util.factory.FactoryRegistry} to compare the user-requested hints
+     * (especially {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER}) against the backing store hints,
+     * by following the dependency declared there.
      *
      * <p>DON'T FORGET to set those hints to {@code null} when {@link DeferredAuthorityFactory}
      * dispose the backing store.

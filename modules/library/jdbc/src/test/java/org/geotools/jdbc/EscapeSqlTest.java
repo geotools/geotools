@@ -17,8 +17,8 @@
 package org.geotools.jdbc;
 
 import java.util.Collections;
-import org.geotools.util.factory.Hints;
 import junit.framework.TestCase;
+import org.geotools.util.factory.Hints;
 
 /** Check that SQL escape code generates the correct strings */
 public class EscapeSqlTest extends TestCase {

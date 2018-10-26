@@ -38,8 +38,7 @@ public class GRIBFormat extends NetCDFFormat {
     public static final ParameterDescriptor<Filter> FILTER =
             new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
 
-    private static final Logger LOGGER =
-            Logging.getLogger(GRIBFormat.class);
+    private static final Logger LOGGER = Logging.getLogger(GRIBFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public GRIBFormat() {

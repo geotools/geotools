@@ -17,6 +17,7 @@
 package org.geotools.referencing.factory;
 
 import static org.junit.Assert.*;
+
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;

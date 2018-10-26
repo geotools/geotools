@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.epsg.esri;
 
 import java.util.Collection;
 import junit.framework.Test;
@@ -23,6 +23,8 @@ import junit.framework.TestSuite;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.factory.epsg.DefaultFactory;
+import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CRSAuthorityFactory;

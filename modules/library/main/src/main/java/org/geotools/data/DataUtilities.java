@@ -802,7 +802,7 @@ public class DataUtilities {
 
     /**
      * Returns a non-null default value for the class that is passed in. This is a helper class an
-     * can't create a default class for any type but it does support:
+     * can't create a default class for all types but it does support:
      *
      * <ul>
      *   <li>String
@@ -822,6 +822,7 @@ public class DataUtilities {
      *   <li>java.sql.Time
      *   <li>java.util.Date
      *   <li>JTS Geometries
+     *   <li>Arrays - will return an empty array of the appropriate type
      * </ul>
      *
      * @param type
@@ -902,6 +903,10 @@ public class DataUtilities {
         }
         if (type == MultiPolygon.class) {
             return fac.createMultiPolygon(new Polygon[] {polygon});
+        }
+
+        if (type.isArray()) {
+            return Array.newInstance(type.getComponentType(), 0);
         }
 
         throw new IllegalArgumentException(type + " is not supported by this method");

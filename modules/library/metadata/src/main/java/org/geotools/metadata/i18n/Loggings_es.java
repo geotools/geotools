@@ -14,13 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources.i18n;
+package org.geotools.metadata.i18n;
 
 /**
- * Spanich language resource.
+ * Spanish language resource.
  *
  * @since 2.2
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class Errors_es extends Errors {}
+public class Loggings_es extends Loggings {}

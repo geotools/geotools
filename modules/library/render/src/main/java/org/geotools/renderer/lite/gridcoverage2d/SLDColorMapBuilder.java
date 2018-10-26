@@ -689,8 +689,8 @@ public class SLDColorMapBuilder {
         for (int i = 0; i < preservedValuesElement.length; i++) {
             preservedValuesElement[i] =
                     LinearColorMapElement.create(
-                            org.geotools.resources.i18n.Vocabulary.format(
-                                            org.geotools.resources.i18n.VocabularyKeys.NODATA)
+                            org.geotools.metadata.i18n.Vocabulary.format(
+                                            org.geotools.metadata.i18n.VocabularyKeys.NODATA)
                                     + Integer.toString(i + 1),
                             preservedValuesColor,
                             RangeFactory.create(preservedValues.get(i), preservedValues.get(i)),

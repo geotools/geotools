@@ -19,6 +19,8 @@ package org.geotools.metadata;
 import static org.junit.Assert.*;
 
 import java.util.Collection;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
@@ -32,6 +34,12 @@ import org.opengis.metadata.quality.ConformanceResult;
  * @author Martin Desruisseaux
  */
 public final class CitationsTest {
+
+    @Test
+    public void testErrors() {
+        String message = Errors.format(ErrorKeys.BAD_ENTRY);
+        assertNotNull(message);
+    }
     /**
      * Tests the {@link AbstractMetadata#toString()} method first, since debugging will relying a
      * lot on this method for the remaining of the test suite.

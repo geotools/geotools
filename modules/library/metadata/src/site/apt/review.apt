@@ -82,7 +82,7 @@ OpenGIS consortium's work is fully acknowledged here.
   Some neat, and more performant implementations for hacking Java 2d.
 
 
-* org.geotools.resources.i18n
+* org.geotools.metadata.i18n
   ~~~~~~~~~~~~~~~~~~~~~~~~~~~
   Contains a breakdown of resource bundle/property files that have been processed to
   use number based lookup for speed, compile-time safety and to minimize resource use.

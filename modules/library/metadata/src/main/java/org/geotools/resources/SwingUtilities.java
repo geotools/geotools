@@ -37,8 +37,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.LookAndFeel;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 
 /**
  * A collection of utility methods for Swing. All <code>show*</code> methods delegate their work to

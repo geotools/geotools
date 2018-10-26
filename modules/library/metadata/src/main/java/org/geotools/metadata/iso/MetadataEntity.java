@@ -20,8 +20,8 @@ import java.io.Serializable;
 import org.geotools.metadata.InvalidMetadataException;
 import org.geotools.metadata.MetadataStandard;
 import org.geotools.metadata.ModifiableMetadata;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * A superclass for implementing ISO 19115 metadata interfaces. Subclasses must implement at least

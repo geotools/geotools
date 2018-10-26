@@ -36,7 +36,7 @@ import org.geotools.referencing.crs.AbstractCRS;
 import org.geotools.referencing.wkt.AbstractConsole;
 import org.geotools.referencing.wkt.Parser;
 import org.geotools.referencing.wkt.Preprocessor;
-import org.geotools.resources.Arguments;
+import org.geotools.util.Arguments;
 import org.geotools.util.TableWriter;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;

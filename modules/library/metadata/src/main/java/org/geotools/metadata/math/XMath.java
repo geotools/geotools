@@ -16,10 +16,10 @@
  */
 package org.geotools.metadata.math;
 
-import static org.geotools.resources.XMath.next;
-import static org.geotools.resources.XMath.previous;
+import static org.geotools.util.XMath.next;
+import static org.geotools.util.XMath.previous;
 
-import org.geotools.resources.XArray;
+import org.geotools.util.XArray;
 
 /**
  * Simple mathematical functions in addition to the ones provided in {@link Math}.
@@ -384,7 +384,7 @@ public final class XMath {
             for (int j = i; j < count; j++) {
                 d2 = d1 * divisors[j];
                 if (number % d2 == 0) {
-                    int p = org.geotools.resources.Java6.binarySearch(divisors, j, count, d2);
+                    int p = org.geotools.util.Java6.binarySearch(divisors, j, count, d2);
                     if (p < 0) {
                         p = ~p; // ~ operator, not minus
                         if (count == divisors.length) {

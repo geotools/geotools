@@ -18,7 +18,6 @@ package org.geotools.util;
 
 import java.io.Serializable;
 import java.util.Map;
-import org.geotools.resources.Classes;
 
 /**
  * A default implementation of {@link java.util.Map.Entry} which map an arbitrary key-value pairs.

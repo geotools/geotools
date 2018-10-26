@@ -33,7 +33,7 @@ import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.cs.AxisDirection;

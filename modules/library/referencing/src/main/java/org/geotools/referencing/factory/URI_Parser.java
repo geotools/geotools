@@ -22,7 +22,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Version;
 import org.opengis.referencing.AuthorityFactory;
 

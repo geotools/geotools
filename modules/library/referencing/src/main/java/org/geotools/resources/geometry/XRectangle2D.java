@@ -21,7 +21,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 
 /**
  * Serializable, high-performance double-precision rectangle. Instead of using {@code x}, {@code y},

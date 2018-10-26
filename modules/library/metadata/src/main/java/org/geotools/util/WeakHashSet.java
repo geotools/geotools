@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.geotools.resources.XArray;
 import org.geotools.util.logging.Logging;
 
 /**

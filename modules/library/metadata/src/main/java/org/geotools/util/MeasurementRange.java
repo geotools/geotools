@@ -20,7 +20,6 @@ import javax.measure.IncommensurableException;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import org.geotools.resources.ClassChanger;
 
 /**
  * A range of numbers associated with a unit of measurement. Unit conversions are applied as needed

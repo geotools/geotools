@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
 import org.geotools.util.factory.FactoryRegistry;
 import org.opengis.metadata.Identifier;

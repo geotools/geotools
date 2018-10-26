@@ -26,7 +26,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.ManyAuthoritiesFactory;
 import org.geotools.referencing.factory.ThreadedAuthorityFactory;
-import org.geotools.resources.UnmodifiableArrayList;
+import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
 import org.opengis.metadata.Identifier;

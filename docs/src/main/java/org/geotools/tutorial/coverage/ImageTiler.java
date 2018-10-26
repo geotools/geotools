@@ -21,7 +21,7 @@ import org.geotools.coverage.processing.Operations;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.resources.Arguments;
+import org.geotools.util.Arguments;
 import org.geotools.util.factory.Hints;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.ParameterValueGroup;

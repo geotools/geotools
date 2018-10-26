@@ -30,7 +30,7 @@ import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.data.shapefile.shp.ShapefileReader;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 import org.geotools.util.URLs;
 
 /**

@@ -26,7 +26,7 @@ import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.Parameters;
 import org.geotools.referencing.operation.transform.MathTransformProxy;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.XArray;
+import org.geotools.util.XArray;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.InvalidParameterNameException;

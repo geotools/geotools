@@ -20,7 +20,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.Arrays;
 import javax.measure.Unit;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
 import org.opengis.referencing.operation.MathTransform1D;

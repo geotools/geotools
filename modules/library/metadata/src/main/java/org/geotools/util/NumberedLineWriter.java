@@ -19,7 +19,6 @@ package org.geotools.util;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import org.geotools.resources.Arguments;
 
 /**
  * A writer that put line number in front of every line.

@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.resources.LazySet;
+import org.geotools.util.LazySet;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.GeoTools;

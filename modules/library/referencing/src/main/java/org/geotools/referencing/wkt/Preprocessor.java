@@ -33,7 +33,7 @@ import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.TableWriter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;

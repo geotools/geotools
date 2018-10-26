@@ -30,7 +30,7 @@ import javax.measure.Unit;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.logging.Logging;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;

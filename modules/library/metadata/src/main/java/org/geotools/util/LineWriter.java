@@ -19,7 +19,6 @@ package org.geotools.util;
 import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.Writer;
-import org.geotools.resources.XArray;
 
 /**
  * Writes characters to a stream while replacing various EOL by a unique string. This class catches

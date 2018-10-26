@@ -32,7 +32,7 @@ import javax.media.jai.util.Range;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.resources.UnmodifiableArrayList;
+import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;

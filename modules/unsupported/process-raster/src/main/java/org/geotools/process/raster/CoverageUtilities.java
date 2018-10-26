@@ -34,7 +34,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.process.ProcessException;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.ClassChanger;
+import org.geotools.util.ClassChanger;
 import org.geotools.util.Utilities;
 import org.jaitools.media.jai.rangelookup.RangeLookupTable;
 import org.jaitools.numeric.Range;

@@ -27,7 +27,7 @@ import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.matrix.Matrix3;
 import org.geotools.referencing.operation.matrix.XMatrix;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.ParameterValueGroup;

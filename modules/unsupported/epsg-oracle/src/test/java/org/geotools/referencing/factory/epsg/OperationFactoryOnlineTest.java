@@ -24,7 +24,7 @@ import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.referencing.operation.AuthorityBackedFactory;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;

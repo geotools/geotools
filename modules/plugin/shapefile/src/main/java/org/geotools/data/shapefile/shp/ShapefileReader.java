@@ -30,7 +30,7 @@ import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.renderer.ScreenMap;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;

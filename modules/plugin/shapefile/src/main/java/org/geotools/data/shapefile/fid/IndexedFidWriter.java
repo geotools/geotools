@@ -26,7 +26,7 @@ import org.geotools.data.shapefile.files.FileWriter;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StorageFile;
 import org.geotools.data.shapefile.files.StreamLogging;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /**
  * The Writer writes out the fid and record number of features to the fid index file.

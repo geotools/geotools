@@ -14,14 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources;
+package org.geotools.util;
 
 import java.lang.reflect.Array;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.Locale;
-import org.geotools.util.Utilities;
 
 /**
  * Simple operations on arrays. This class provides a central place for inserting and deleting

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wms.test;
+package org.geotools.ows.wms.test;
 
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -26,11 +26,7 @@ import java.util.Set;
 import javax.imageio.ImageIO;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.ows.ServiceException;
-import org.geotools.ows.wms.Layer;
-import org.geotools.ows.wms.StyleImpl;
-import org.geotools.ows.wms.WMSCapabilities;
-import org.geotools.ows.wms.WMSUtils;
-import org.geotools.ows.wms.WebMapServer;
+import org.geotools.ows.wms.*;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.response.GetMapResponse;
 import org.geotools.referencing.CRS;

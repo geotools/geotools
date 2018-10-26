@@ -1,11 +1,10 @@
 package org.geotools.ows;
 
-import org.geotools.data.ows.HTTPClient;
-import org.geotools.data.ows.HTTPResponse;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.HTTPResponse;
 
 /**
  * Helper class to test WMS cascading

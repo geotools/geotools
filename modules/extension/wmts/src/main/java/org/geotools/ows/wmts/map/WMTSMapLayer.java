@@ -17,11 +17,11 @@
 package org.geotools.ows.wmts.map;
 
 import java.util.logging.Logger;
-import org.geotools.ows.wms.Layer;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.MapLayer;
+import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wmts.WebMapTileServer;
 import org.geotools.ows.wmts.request.GetTileRequest;
 import org.geotools.referencing.CRS;

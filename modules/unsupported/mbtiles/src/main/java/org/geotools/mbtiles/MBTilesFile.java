@@ -176,7 +176,7 @@ public class MBTilesFile implements AutoCloseable {
         this.connPool = new MBTilesDataStoreFactory().createDataSource(params);
     }
 
-    MBTilesFile(DataSource dataSource) {
+    public MBTilesFile(DataSource dataSource) {
         this.connPool = dataSource;
     }
 

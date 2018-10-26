@@ -27,7 +27,7 @@ import junit.framework.TestSuite;
 import org.geotools.geometry.GeometryBuilder;
 import org.geotools.geometry.iso.primitive.PointImpl;
 import org.geotools.geometry.iso.root.GeometryImpl;
-import org.geotools.geometry.text.WKTParser;
+import org.geotools.geometry.iso.text.WKTParser;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.opengis.geometry.Boundary;

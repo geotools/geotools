@@ -1,4 +1,4 @@
-package org.geotools.sql;
+package org.geotools.jdbc.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

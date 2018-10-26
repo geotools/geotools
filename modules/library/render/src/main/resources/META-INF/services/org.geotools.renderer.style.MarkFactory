@@ -4,4 +4,4 @@ org.geotools.renderer.style.TTFMarkFactory
 org.geotools.renderer.style.ShapeMarkFactory
 org.geotools.renderer.style.markwkt.WKTMarkFactory
 org.geotools.renderer.style.markwkt.MeteoMarkFactory
-org.geotools.renderer.windbarbs.WindBarbsFactory
+org.geotools.renderer.style.windbarbs.WindBarbsFactory

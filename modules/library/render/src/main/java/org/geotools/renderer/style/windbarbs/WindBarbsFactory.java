@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.windbarbs;
+package org.geotools.renderer.style.windbarbs;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -27,7 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.renderer.style.MarkFactory;
-import org.geotools.renderer.windbarbs.WindBarb.WindBarbDefinition;
+import org.geotools.renderer.style.windbarbs.WindBarb.WindBarbDefinition;
 import org.geotools.util.SoftValueHashMap;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;

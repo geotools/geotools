@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-import org.geotools.util.CommonsConverterFactory;
+import org.geotools.data.util.CommonsConverterFactory;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;

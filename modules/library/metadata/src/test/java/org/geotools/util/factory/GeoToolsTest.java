@@ -218,7 +218,7 @@ public final class GeoToolsTest {
 
         resolver =
                 GeoTools.instantiate(
-                        "org.geotools.xml.NullEntityResolver",
+                        "org.geotools.util.NullEntityResolver",
                         EntityResolver.class,
                         PreventLocalEntityResolver.INSTANCE);
         assertTrue(resolver instanceof NullEntityResolver);
@@ -255,7 +255,7 @@ public final class GeoToolsTest {
 
             // test system property functions with INSTANCE field constructor
             System.getProperties()
-                    .put(GeoTools.ENTITY_RESOLVER, "org.geotools.xml.NullEntityResolver");
+                    .put(GeoTools.ENTITY_RESOLVER, "org.geotools.util.NullEntityResolver");
             Hints.scanSystemProperties();
             entityResolver = GeoTools.getEntityResolver(null);
             assertTrue(entityResolver instanceof NullEntityResolver);

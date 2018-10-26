@@ -461,8 +461,7 @@ public class MapLayer {
      *
      * @param listener The listener to remove.
      */
-    public synchronized void removeMapLayerListener(
-            MapLayerListener listener) {
+    public synchronized void removeMapLayerListener(MapLayerListener listener) {
         internal.removeMapLayerListener(listener);
     }
 

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.map;
+package org.geotools.ows.wms.map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -34,7 +34,6 @@ import org.geotools.ows.wms.Layer;
 import org.geotools.ows.wms.StyleImpl;
 import org.geotools.ows.wms.WMSUtils;
 import org.geotools.ows.wms.WebMapServer;
-import org.geotools.ows.wms.map.WMSLayer;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -15,6 +15,8 @@ import org.eclipse.emf.common.util.EList;
 public interface ExceptionTypeValidator {
   boolean validate();
 
+  boolean validateExceptionText(EList value);
+
   boolean validateExceptionText(String value);
   boolean validateExceptionCode(String value);
   boolean validateLocator(String value);

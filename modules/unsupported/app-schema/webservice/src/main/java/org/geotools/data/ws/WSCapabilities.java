@@ -15,24 +15,18 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.ows;
+package org.geotools.data.ws;
 
 import java.util.Iterator;
 import java.util.List;
-
+import org.geotools.data.ows.Capabilities;
+import org.geotools.data.ows.OperationType;
 import org.geotools.filter.FilterCapabilities;
 
-
 /**
- * <p>
  * DOCUMENT ME!
- * </p>
  *
  * @author rpetty
- *
- *
- *
-
  */
 public class WSCapabilities extends Capabilities {
     private List<FeatureSetDescription> featureTypes; // FeatureSetDescriptions
@@ -46,36 +40,37 @@ public class WSCapabilities extends Capabilities {
     private FilterCapabilities filterCapabilities;
 
     /**
-     * Makes a few assumptions about ":" in the name (prefix:typename). 
-     * 
-     * Although this case is uncommon, it may result in the occational error. 
-     * The specification is unclear as to the inclusion or exclusion of the 
-     * prefix (although most xml documents would support prefix exclusion). 
-     * 
+     * Makes a few assumptions about ":" in the name (prefix:typename).
+     *
+     * <p>Although this case is uncommon, it may result in the occational error. The specification
+     * is unclear as to the inclusion or exclusion of the prefix (although most xml documents would
+     * support prefix exclusion).
+     *
      * @param capabilities
      * @param typename
      */
-    public static FeatureSetDescription getFeatureSetDescription(WSCapabilities capabilities, String typename){
+    public static FeatureSetDescription getFeatureSetDescription(
+            WSCapabilities capabilities, String typename) {
         List l = capabilities.getFeatureTypes();
         Iterator i = l.iterator();
         String crsName = null;
 
-        while (i.hasNext() && crsName==null) {
-                FeatureSetDescription fsd = (FeatureSetDescription) i.next();
-                String name = fsd.getName();
-                if (typename.equals( name )) {
+        while (i.hasNext() && crsName == null) {
+            FeatureSetDescription fsd = (FeatureSetDescription) i.next();
+            String name = fsd.getName();
+            if (typename.equals(name)) {
+                return fsd;
+            }
+            if (name != null) {
+                int index = name.indexOf(':');
+                if (index != -1 && typename.equals(name.substring(index + 1))) {
                     return fsd;
                 }
-                if(name !=null){
-                	int index = name.indexOf(':'); 
-                	if(index!=-1 && typename.equals(name.substring(index+1))){
-                	    return fsd;
-                	}
-                }
+            }
         }
         return null;
     }
-    
+
     /**
      * DOCUMENT ME!
      *

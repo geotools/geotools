@@ -14,51 +14,31 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.ows;
+package org.geotools.data.ws;
 
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.locationtech.jts.geom.Envelope;
 
-
 /**
- * <p>
- * Represents a ws:FeatureType ... and didn't want to use FeatureType as it
- * could get confused with org.geotools.data.FeatureType
- * </p>
+ * Represents a ws:FeatureType ... and didn't want to use FeatureType as it could get confused with
+ * org.geotools.data.FeatureType
  *
  * @author rpetty
- *
- *
- *
-
  */
 public class FeatureSetDescription {
-	/**
-	 * Mask for no operation allowed on the FeatureType
-	 */
+    /** Mask for no operation allowed on the FeatureType */
     public static final int NO_OPERATION = 0;
-	/**
-	 * Mask for query operation allowed on the FeatureType
-	 */
+    /** Mask for query operation allowed on the FeatureType */
     public static final int QUERY_OPERATION = 1;
-	/**
-	 * Mask for insert operation allowed on the FeatureType
-	 */
+    /** Mask for insert operation allowed on the FeatureType */
     public static final int INSERT_OPERATION = 2;
-	/**
-	 * Mask for update operation allowed on the FeatureType
-	 */
+    /** Mask for update operation allowed on the FeatureType */
     public static final int UPDATE_OPERATION = 4;
-	/**
-	 * Mask for delete operation allowed on the FeatureType
-	 */
+    /** Mask for delete operation allowed on the FeatureType */
     public static final int DELETE_OPERATION = 8;
-	/**
-	 * Mask for lock operation allowed on the FeatureType
-	 */
+    /** Mask for lock operation allowed on the FeatureType */
     public static final int LOCK_OPERATION = 16;
 
     private String name;
@@ -72,7 +52,7 @@ public class FeatureSetDescription {
 
     /**
      * Converts the string into the appropriate mask.
-     * 
+     *
      * @param s The String to attempt to convert
      * @return one of the Constant Operation Values
      * @see FeatureSetDescription#DELETE_OPERATION
@@ -108,7 +88,7 @@ public class FeatureSetDescription {
 
     /**
      * Converts the int into the appropriate String.
-     * 
+     *
      * @param i the int to convert, must match exactly.
      * @return A string representation of the int.
      * @see FeatureSetDescription#DELETE_OPERATION
@@ -120,20 +100,20 @@ public class FeatureSetDescription {
      */
     public static String writeOperation(int i) {
         switch (i) {
-        case 1:
-            return "Query";
+            case 1:
+                return "Query";
 
-        case 2:
-            return "Insert";
+            case 2:
+                return "Insert";
 
-        case 4:
-            return "Update";
+            case 4:
+                return "Update";
 
-        case 8:
-            return "Delete";
+            case 8:
+                return "Delete";
 
-        case 16:
-            return "Lock";
+            case 16:
+                return "Lock";
         }
 
         return "";
@@ -141,7 +121,7 @@ public class FeatureSetDescription {
 
     /**
      * Converts the int mask into the appropriate set of Strings.
-     * 
+     *
      * @param i The int mask to attempt to convert
      * @return Set of Strings representing the mask
      * @see FeatureSetDescription#DELETE_OPERATION
@@ -302,15 +282,11 @@ public class FeatureSetDescription {
     public void setTitle(String title) {
         this.title = title;
     }
-    /**
-     * @return Returns the namespace.
-     */
+    /** @return Returns the namespace. */
     public URI getNamespace() {
         return namespace;
     }
-    /**
-     * @param namespace The namespace to set.
-     */
+    /** @param namespace The namespace to set. */
     public void setNamespace(URI namespace) {
         this.namespace = namespace;
     }

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.ws;
 
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -28,22 +30,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
-
 import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.GetCapabilitiesType;
 import net.opengis.wfs.GetFeatureType;
 import net.opengis.wfs.WFSCapabilitiesType;
-
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
-
 import org.geotools.data.ws.protocol.http.HTTPProtocol;
-import org.geotools.data.ws.protocol.http.HTTPResponse;
 import org.geotools.data.ws.protocol.http.HTTPProtocol.POSTCallBack;
+import org.geotools.data.ws.protocol.http.HTTPResponse;
 import org.geotools.data.ws.protocol.ws.WSProtocol;
 import org.geotools.data.ws.protocol.ws.WSResponse;
 import org.geotools.filter.Capabilities;
@@ -55,24 +53,17 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.xml.sax.SAXException;
 
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-
 /**
  * {@link WSProtocol} implementation to talk to a WFS 1.1.0 server leveraging the GeoTools {@code
  * xml-xsd} subsystem for schema assisted parsing and encoding of WFS requests and responses.
- * 
+ *
  * @author rpetty
  * @version $Id$
  * @since 2.6
- *
- *
- *
-
- *         http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/data
- *         /wfs/v1_1_0/WFS_1_1_0_Protocol.java $
+ *     <p>http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/data
+ *     /wfs/v1_1_0/WFS_1_1_0_Protocol.java $
  */
-@SuppressWarnings( { "unchecked", "nls" })
+@SuppressWarnings({"unchecked", "nls"})
 public class WS_Protocol implements WSProtocol {
 
     private static final Logger LOGGER = Logging.getLogger(WS_Protocol.class);
@@ -93,8 +84,9 @@ public class WS_Protocol implements WSProtocol {
 
     private InputStream capabilitiesStream;
 
-    public WS_Protocol(InputStream capabilitiesReader, WSStrategy strategy, URL query,
-            HTTPProtocol http) throws IOException {
+    public WS_Protocol(
+            InputStream capabilitiesReader, WSStrategy strategy, URL query, HTTPProtocol http)
+            throws IOException {
         this.strategy = strategy;
         this.capabilitiesStream = capabilitiesReader;
         this.capabilities = parseCapabilities(capabilitiesReader);
@@ -110,16 +102,14 @@ public class WS_Protocol implements WSProtocol {
     public URL getOperationURL() {
         return this.url;
     }
-    
+
     public void clean() throws IOException {
         if (capabilitiesStream != null) {
             capabilitiesStream.close();
         }
     }
 
-    /**
-     * @see WSProtocol#getFeatureTypeNames()
-     */
+    /** @see WSProtocol#getFeatureTypeNames() */
     public Set<QName> getFeatureTypeNames() {
         Set<QName> typeNames = new HashSet<QName>();
         for (FeatureTypeType typeInfo : typeInfos.values()) {
@@ -129,59 +119,58 @@ public class WS_Protocol implements WSProtocol {
         return typeNames;
     }
 
-    /**
-     * @see WSProtocol#getFeaturePOST(Query, String)
-     */
+    /** @see WSProtocol#getFeaturePOST(Query, String) */
     public WSResponse issueGetFeature(final Query query) throws IOException {
-        
+
         Map dataValues = strategy.getRequestData(query);
         return issuePostRequest(dataValues, url);
     }
 
     private WSResponse issuePostRequest(final Map request, final URL url) throws IOException {
 
-        final POSTCallBack requestBodyCallback = new POSTCallBack() {
-            public long getContentLength() {
-                // don't know
-                return -1;
-            }
+        final POSTCallBack requestBodyCallback =
+                new POSTCallBack() {
+                    public long getContentLength() {
+                        // don't know
+                        return -1;
+                    }
 
-            public String getContentType() {
-                return "text/xml";
-            }
+                    public String getContentType() {
+                        return "text/xml";
+                    }
 
-            public void writeBody(final OutputStream out) throws IOException {                
-                WS_Protocol.encode(request, strategy, out);
-            }
-        };
+                    public void writeBody(final OutputStream out) throws IOException {
+                        WS_Protocol.encode(request, strategy, out);
+                    }
+                };
 
         HTTPResponse httpResponse = http.issuePost(url, requestBodyCallback);
         InputStream responseStream = httpResponse.getResponseStream();
-                
+
         return new WSResponse(responseStream);
     }
 
     /**
      * Encodes a WFS request into {@code out}
-     * 
-     * @param request
-     *            one of {@link GetCapabilitiesType}, {@link GetFeatureType}, etc
-     * @param configuration
-     *            the wfs configuration to use for encoding the request into the output stream
-     * @param out
-     *            the output stream where to encode the request into
-     * @param charset
-     *            the charset to use to encode the request in
+     *
+     * @param request one of {@link GetCapabilitiesType}, {@link GetFeatureType}, etc
+     * @param configuration the wfs configuration to use for encoding the request into the output
+     *     stream
+     * @param out the output stream where to encode the request into
+     * @param charset the charset to use to encode the request in
      * @throws IOException
      */
-    public static void encode(final EObject request, final Configuration configuration,
-            final OutputStream out, final Charset charset) throws IOException {
+    public static void encode(
+            final EObject request,
+            final Configuration configuration,
+            final OutputStream out,
+            final Charset charset)
+            throws IOException {
         Encoder encoder = new Encoder(configuration);
-        encoder.setEncoding(charset);        
+        encoder.setEncoding(charset);
     }
 
-    private static void encode(Map data, WSStrategy strategy, OutputStream out)
-            throws IOException {
+    private static void encode(Map data, WSStrategy strategy, OutputStream out) throws IOException {
         Template template = strategy.getTemplate();
         Writer wr = new OutputStreamWriter(out);
         try {
@@ -212,14 +201,12 @@ public class WS_Protocol implements WSProtocol {
         }
         return (WFSCapabilitiesType) parsed;
     }
-    
-    /**
-     * @see WFSProtocol#getFilterCapabilities()
-     */
-    public FilterCapabilities getFilterCapabilities() {        
+
+    /** @see WFSProtocol#getFilterCapabilities() */
+    public FilterCapabilities getFilterCapabilities() {
         return capabilities.getFilterCapabilities();
     }
-    
+
     public Filter[] splitFilters(Filter filter) {
         FilterCapabilities filterCapabilities = getFilterCapabilities();
         Capabilities filterCaps = new Capabilities();

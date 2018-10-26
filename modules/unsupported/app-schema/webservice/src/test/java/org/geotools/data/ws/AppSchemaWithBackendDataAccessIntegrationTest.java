@@ -24,9 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
@@ -52,12 +50,8 @@ import org.xml.sax.helpers.NamespaceSupport;
  * app-schema data access of a different XML form. A new app-schema data access would be created to
  * remap the non-app-schema data access into the output XML form. Then the features can chain or be
  * chained as per normal. See FeatureChainingTest.java to see feature chaining in action.
- * 
+ *
  * @author Rini Angreani, Curtin University of Technology
- *
- *
- *
-
  */
 public class AppSchemaWithBackendDataAccessIntegrationTest extends TestCase {
 
@@ -69,21 +63,16 @@ public class AppSchemaWithBackendDataAccessIntegrationTest extends TestCase {
 
     private static final String schemaBase = "/test-data/";
 
-    /**
-     * Remapped Geologic Unit data access in GSML form
-     */
+    /** Remapped Geologic Unit data access in GSML form */
     private static AppSchemaDataAccess newGuDataAccess;
 
-    /**
-     * Create the input data access containing complex features of MO form.
-     */
+    /** Create the input data access containing complex features of MO form. */
     @BeforeClass
     protected void setUp() throws Exception {
         super.setUp();
         setFilterFactory();
         typeName = Types.typeName("GeologicUnit1");
-        URL url = XmlDataStoreTest.class.getResource(schemaBase
-                + "xmlDataAccessConfig.xml");
+        URL url = XmlDataStoreTest.class.getResource(schemaBase + "xmlDataAccessConfig.xml");
 
         assertNotNull(url);
 
@@ -100,28 +89,29 @@ public class AppSchemaWithBackendDataAccessIntegrationTest extends TestCase {
     }
 
     public void testSimplePropertyFilter() throws Exception {
-        final Filter filter = ff.equals(ff.property("gml:name/@codeSpace"), ff
-                .literal("gsv:NameSpace"));
+        final Filter filter =
+                ff.equals(ff.property("gml:name/@codeSpace"), ff.literal("gsv:NameSpace"));
         runAppSchemaBackendTests(filter);
     }
 
     public void testComplexPropertyFilter() throws Exception {
-        final Filter filter = ff.equals(ff
-                .property("gsml:observationMethod/gsml:CGI_TermValue/gsml:value"), ff
-                .literal("CONSTANT"));
+        final Filter filter =
+                ff.equals(
+                        ff.property("gsml:observationMethod/gsml:CGI_TermValue/gsml:value"),
+                        ff.literal("CONSTANT"));
         runAppSchemaBackendTests(filter);
     }
 
     private void runAppSchemaBackendTests(Filter filter) throws Exception {
         final Name GEOLOGIC_UNIT1 = Types.typeName("GeologicUnit1");
-        FeatureSource<FeatureType, Feature> guFeatureSource = newGuDataAccess
-                .getFeatureSourceByName(GEOLOGIC_UNIT1);
+        FeatureSource<FeatureType, Feature> guFeatureSource =
+                newGuDataAccess.getFeatureSourceByName(GEOLOGIC_UNIT1);
         assertNotNull(guFeatureSource);
         List<Feature> results = new ArrayList<Feature>();
 
         FeatureCollection<FeatureType, Feature> features = getFeatures(MAX_FEATURES, filter);
         FeatureIterator<Feature> it = features.features();
-        for (; it.hasNext();) {
+        for (; it.hasNext(); ) {
             results.add((Feature) it.next());
         }
         it.close();
@@ -134,16 +124,22 @@ public class AppSchemaWithBackendDataAccessIntegrationTest extends TestCase {
         ff = new FilterFactoryImplNamespaceAware(namespaces);
     }
 
-    private FeatureCollection<FeatureType, Feature> getFeatures(final int maxFeatures,
-            Filter inputFilter) throws Exception {
-        FeatureSource<FeatureType, Feature> fSource = newGuDataAccess
-                .getFeatureSourceByName(typeName);
-        FeatureCollection<FeatureType, Feature> features = fSource.getFeatures(namedQuery(
-                inputFilter, new Integer(maxFeatures)));
+    private FeatureCollection<FeatureType, Feature> getFeatures(
+            final int maxFeatures, Filter inputFilter) throws Exception {
+        FeatureSource<FeatureType, Feature> fSource =
+                newGuDataAccess.getFeatureSourceByName(typeName);
+        FeatureCollection<FeatureType, Feature> features =
+                fSource.getFeatures(namedQuery(inputFilter, new Integer(maxFeatures)));
         return features;
     }
 
     private Query namedQuery(Filter filter, int count) throws Exception {
-        return new Query("GeologicUnit", new URI(FeatureChainingTest.GSMLNS), filter, count, new String[] {}, "test");
+        return new Query(
+                "GeologicUnit",
+                new URI(FeatureChainingTest.GSMLNS),
+                filter,
+                count,
+                new String[] {},
+                "test");
     }
 }

@@ -24,7 +24,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.ws.protocol.http.HTTPProtocol;
@@ -35,14 +34,12 @@ import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
 /**
- * 
  * @author rpetty
- *
  * @see XmlDataStore
  * @see WSProtocol
  * @see WSStrategy
  */
-@SuppressWarnings( { "unchecked", "nls" })
+@SuppressWarnings({"unchecked", "nls"})
 public class WSDataStoreFactory extends AbstractDataStoreFactory {
     private static final Logger logger = Logging.getLogger(WSDataStoreFactory.class);
 
@@ -51,7 +48,7 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
 
         /**
          * Creates a required parameter
-         * 
+         *
          * @param key
          * @param type
          * @param description
@@ -62,7 +59,7 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
 
         /**
          * Creates an optional parameter with the supplied default value
-         * 
+         *
          * @param key
          * @param type
          * @param description
@@ -80,6 +77,7 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
     }
 
     private static final WSFactoryParam[] parametersInfo = new WSFactoryParam[7];
+
     static {
         String name;
         Class clazz;
@@ -92,20 +90,23 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
 
         name = "WSDataStoreFactory:TIMEOUT";
         clazz = Integer.class;
-        description = "This allows the user to specify a timeout in milliseconds. This param"
-                + " has a default value of unlimited.";
+        description =
+                "This allows the user to specify a timeout in milliseconds. This param"
+                        + " has a default value of unlimited.";
         parametersInfo[1] = new WSFactoryParam(name, clazz, description, Integer.valueOf(-1));
 
         name = "WSDataStoreFactory:TRY_GZIP";
         clazz = Boolean.class;
-        description = "Indicates that datastore should use gzip to transfer data if the server "
-                + "supports it. Default is true";
+        description =
+                "Indicates that datastore should use gzip to transfer data if the server "
+                        + "supports it. Default is true";
         parametersInfo[2] = new WSFactoryParam(name, clazz, description, Boolean.TRUE);
 
         name = "WSDataStoreFactory:MAXFEATURES";
         clazz = Integer.class;
-        description = "Positive integer used as a hard limit for the amount of Features to retrieve"
-                + " for each FeatureType. A value of zero or not providing this parameter means no limit.";
+        description =
+                "Positive integer used as a hard limit for the amount of Features to retrieve"
+                        + " for each FeatureType. A value of zero or not providing this parameter means no limit.";
         parametersInfo[3] = new WSFactoryParam(name, clazz, description, Integer.valueOf(0));
 
         name = "WSDataStoreFactory:TEMPLATE_NAME";
@@ -124,16 +125,12 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         parametersInfo[6] = new WSFactoryParam(name, clazz, description);
     }
 
-    /**
-     * Mandatory DataStore parameter indicating the URL for the WS GetCapabilities document.
-     */
+    /** Mandatory DataStore parameter indicating the URL for the WS GetCapabilities document. */
     public static final WSFactoryParam<URL> GET_CONNECTION_URL = parametersInfo[0];
 
     /**
      * Optional {@code Integer} DataStore parameter indicating a timeout in milliseconds for the
-     * HTTP connections.
-     * 
-     * @TODO: specify if its just a connection timeout or also a read timeout
+     * HTTP connections. @TODO: specify if its just a connection timeout or also a read timeout
      */
     public static final WSFactoryParam<Integer> TIMEOUT = parametersInfo[1];
 
@@ -146,7 +143,7 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
     public static final WSFactoryParam<String> TEMPLATE_NAME = parametersInfo[4];
 
     public static final WSFactoryParam<URL> TEMPLATE_DIRECTORY = parametersInfo[5];
-    
+
     public static final WSFactoryParam<URL> CAPABILITIES_FILE_LOCATION = parametersInfo[6];
 
     protected Map<Map, XmlDataStore> perParameterSetDataStoreCache = new HashMap();
@@ -155,13 +152,12 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
      * Requests the WS Capabilities document from the {@link WSDataStoreFactory#URL url} parameter
      * in {@code params} and returns a {@link XmlDataStore} according to the version of the
      * GetCapabilities document returned.
-     * <p>
-     * Note the {@code URL} provided as parameter must refer to the actual {@code GetCapabilities}
-     * request. If you need to specify a preferred version or want the GetCapabilities request to be
-     * generated from a base URL build the URL with the
-     * {@link #createGetCapabilitiesRequest(URL, Version)} first.
-     * </p>
-     * 
+     *
+     * <p>Note the {@code URL} provided as parameter must refer to the actual {@code
+     * GetCapabilities} request. If you need to specify a preferred version or want the
+     * GetCapabilities request to be generated from a base URL build the URL with the {@link
+     * #createGetCapabilitiesRequest(URL, Version)} first.
+     *
      * @see org.geotools.data.DataStoreFactorySpi#createDataStore(java.util.Map)
      */
     public XmlDataStore createDataStore(final Map params) throws IOException {
@@ -180,7 +176,8 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         http.setTryGzip(tryGZIP);
         http.setTimeoutMillis(timeoutMillis);
 
-        InputStream capsIn = new BufferedInputStream(new FileInputStream(URLs.urlToFile(capabilitiesDirectory)));
+        InputStream capsIn =
+                new BufferedInputStream(new FileInputStream(URLs.urlToFile(capabilitiesDirectory)));
 
         WSStrategy strategy = determineCorrectStrategy(templateDirectory, templateName);
         WS_Protocol ws = new WS_Protocol(capsIn, strategy, getQueryRequest, http);
@@ -199,25 +196,22 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
 
     /**
      * Unsupported operation, can't create a WS service.
-     * 
-     * @throws UnsupportedOperationException
-     *             always, as this operation is not applicable to WS.
+     *
+     * @throws UnsupportedOperationException always, as this operation is not applicable to WS.
      * @see org.geotools.data.DataStoreFactorySpi#createNewDataStore(java.util.Map)
      */
     public DataStore createNewDataStore(final Map params) throws IOException {
         throw new UnsupportedOperationException("Operation not applicable to a WS service");
     }
 
-    /**
-     * @see org.geotools.data.DataStoreFactorySpi#getDescription()
-     */
+    /** @see org.geotools.data.DataStoreFactorySpi#getDescription() */
     public String getDescription() {
         return "The XmlDataStore represents a connection to a Web Feature Server. This connection provides access to the Features published by the server, and the ability to perform transactions on the server (when supported / allowed).";
     }
 
     /**
      * Returns the set of parameter descriptors needed to connect to a WS.
-     * 
+     *
      * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
      * @see #URL
      * @see #PROTOCOL
@@ -238,17 +232,17 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
 
     /**
      * Checks whether {@code params} contains a valid set of parameters to connecto to a WS.
-     * <p>
-     * Rules are:
+     *
+     * <p>Rules are:
+     *
      * <ul>
-     * <li>the mandatory {@link #URL} is provided.
-     * <li>whether both {@link #USERNAME} and {@link #PASSWORD} are provided, or none.
+     *   <li>the mandatory {@link #URL} is provided.
+     *   <li>whether both {@link #USERNAME} and {@link #PASSWORD} are provided, or none.
      * </ul>
+     *
      * Availability of the other optional parameters is not checked for existence.
-     * </p>
-     * 
-     * @param params
-     *            non null map of datastore parameters.
+     *
+     * @param params non null map of datastore parameters.
      * @see org.geotools.data.DataStoreFactorySpi#canProcess(java.util.Map)
      */
     public boolean canProcess(final Map params) {
@@ -264,13 +258,11 @@ public class WSDataStoreFactory extends AbstractDataStoreFactory {
         } catch (Exception e) {
             return false;
         }
- 
+
         return true;
     }
 
-    /**
-     * @see org.geotools.data.DataStoreFactorySpi#getDisplayName()
-     */
+    /** @see org.geotools.data.DataStoreFactorySpi#getDisplayName() */
     public String getDisplayName() {
         return "Web Service Server";
     }

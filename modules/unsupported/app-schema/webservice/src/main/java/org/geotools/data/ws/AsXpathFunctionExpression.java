@@ -1,9 +1,9 @@
-package org.geotools.filter;
+package org.geotools.data.ws;
 
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2009, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -32,20 +32,19 @@ import org.xml.sax.helpers.NamespaceSupport;
  * throw a CQLParser exception, as it doesn't allow for special characters. This function is to wrap
  * the xpath expression, evaluate against the document and return the value. E.g. strConcat('gsml.',
  * asXpath('gss:geologicEvent/@id'))
- * <p>
- * This function expects:
+ *
+ * <p>This function expects:
+ *
  * <ol>
- * <li>Expression: an xpath to underlying web service
+ *   <li>Expression: an xpath to underlying web service
  * </ol>
- * 
+ *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  */
 public class AsXpathFunctionExpression extends FunctionExpressionImpl {
-    /**
-     * Make the instance of FunctionName available in a consistent spot.
-     */
+    /** Make the instance of FunctionName available in a consistent spot. */
     public static final FunctionName NAME = new FunctionNameImpl("asXpath", "XPATH");
-    
+
     public AsXpathFunctionExpression() {
         super(NAME.getName());
         functionName = NAME;
@@ -61,10 +60,10 @@ public class AsXpathFunctionExpression extends FunctionExpressionImpl {
         NamespaceSupport ns = data.getNamespaces();
 
         // append the parameter from AsXpath() to the prefix
-        xpath += XmlMappingFeatureIterator.XPATH_SEPARATOR
-                + (params.get(0) == null ? "" : params.get(0).toString());
+        xpath +=
+                XmlMappingFeatureIterator.XPATH_SEPARATOR
+                        + (params.get(0) == null ? "" : params.get(0).toString());
         // then evaluate xpath from the xmlResponse
         return XmlXpathUtilites.getSingleXPathValue(ns, xpath, doc);
     }
-
 }

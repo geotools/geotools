@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.util.NullProgressListener;
+import org.geotools.data.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;

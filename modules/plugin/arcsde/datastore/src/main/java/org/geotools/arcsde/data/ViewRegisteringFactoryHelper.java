@@ -71,7 +71,7 @@ import org.geotools.util.logging.Logging;
  */
 public class ViewRegisteringFactoryHelper {
     private static final Logger LOGGER =
-            Logging.getLogger(ViewRegisteringFactoryHelper.class.getName());
+            Logging.getLogger(ViewRegisteringFactoryHelper.class);
 
     private ViewRegisteringFactoryHelper() {
         // no-op

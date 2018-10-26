@@ -57,7 +57,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class NestedAttributeMapping extends AttributeMapping {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(NestedAttributeMapping.class);
 
     /** Input feature source of the nested features */
     private FeatureSource<FeatureType, Feature> source;

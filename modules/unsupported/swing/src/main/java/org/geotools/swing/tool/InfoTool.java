@@ -56,7 +56,7 @@ import org.geotools.util.logging.Logging;
  * @version $URL$
  */
 public class InfoTool extends CursorTool implements TextReporterListener {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    private static final Logger LOGGER = Logging.getLogger(InfoTool.class);
 
     /** The tool name */
     public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "Info");

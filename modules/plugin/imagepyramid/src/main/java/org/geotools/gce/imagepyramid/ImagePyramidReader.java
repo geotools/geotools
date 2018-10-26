@@ -118,7 +118,7 @@ public final class ImagePyramidReader extends AbstractGridCoverage2DReader
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImagePyramidReader.class.toString());
+            org.geotools.util.logging.Logging.getLogger(ImagePyramidReader.class);
 
     /** The input properties file to read the pyramid information from. */
     private URL sourceURL;

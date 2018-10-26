@@ -36,7 +36,7 @@ public class TestFilterHandler implements ContentHandler, FilterHandler {
 
     /** Standard logging class */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.defaultcore");
+            org.geotools.util.logging.Logging.getLogger(TestFilterHandler.class);
 
     /**
      * ****************************************************** Local tracking methods to deal with

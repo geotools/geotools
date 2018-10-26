@@ -50,7 +50,7 @@ import net.opengis.wfs.GetFeatureType;
 @SuppressWarnings("nls")
 public class DefaultWSStrategy implements WSStrategy {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.ws");
+    private static final Logger LOGGER = Logging.getLogger(DefaultWSStrategy.class);
 
     private Configuration cfg;
 

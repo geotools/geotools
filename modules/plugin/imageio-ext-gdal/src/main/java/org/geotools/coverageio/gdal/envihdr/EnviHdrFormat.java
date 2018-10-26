@@ -33,7 +33,7 @@ public final class EnviHdrFormat extends BaseGDALGridFormat implements Format {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.envihdr");
+            org.geotools.util.logging.Logging.getLogger(EnviHdrFormat.class);
 
     /**
      * Constructor for the {@code BaseGDALGridFormat}. It is invoked by the underlying

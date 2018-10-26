@@ -96,8 +96,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Justin Deoliveira, The Open Planning Project
  */
 public class Schemas {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Schemas.class.getPackage().getName());
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Schemas.class);
 
     /*
      * Name of the system property forcing the import of external schemas in any case,

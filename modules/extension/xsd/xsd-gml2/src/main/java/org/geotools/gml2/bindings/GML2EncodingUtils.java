@@ -55,7 +55,7 @@ import org.w3c.dom.Element;
 public class GML2EncodingUtils {
 
     /** logging instance */
-    static Logger LOGGER = Logging.getLogger("org.geotools.gml");
+    static Logger LOGGER = Logging.getLogger(GML2EncodingUtils.class);
 
     static GMLEncodingUtils e = new GMLEncodingUtils(GML.getInstance());
 

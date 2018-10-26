@@ -38,7 +38,7 @@ public final class EsriHdrReader extends BaseGDALGridCoverage2DReader
     /** Logger. */
     @SuppressWarnings("unused")
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.ehdr");
+            org.geotools.util.logging.Logging.getLogger(EsriHdrReader.class);
 
     private static final String worldFileExt = ".wld";
 

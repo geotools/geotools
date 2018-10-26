@@ -59,7 +59,7 @@ import org.opengis.parameter.ParameterDescriptor;
 public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            Logging.getLogger(ImageMosaicJDBCFormat.class.getPackage().getName());
+            Logging.getLogger(ImageMosaicJDBCFormat.class);
 
     /** Control the transparency of the output coverage. */
     public static final ParameterDescriptor<Color> OUTPUT_TRANSPARENT_COLOR =

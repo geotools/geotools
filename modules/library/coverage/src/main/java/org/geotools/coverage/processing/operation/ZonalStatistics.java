@@ -72,8 +72,7 @@ public class ZonalStatistics extends BaseStatisticsOperationJAI {
     public static final String GT_SYNTHETIC_PROPERTY_ZONALSTATS = ZonalStatsDescriptor.ZS_PROPERTY;
 
     /** {@link Logger} for this class. */
-    public static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.processing.operation");
+    public static final Logger LOGGER = Logging.getLogger(ZonalStatistics.class);
 
     /** Constructs a default {@code "ZonalStatistics"} operation. */
     public ZonalStatistics() throws OperationNotFoundException {

@@ -36,7 +36,7 @@ import org.opengis.filter.Filter;
 public class EqualityValidation extends DefaultFeatureValidation {
     /** The logger for the validation module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(EqualityValidation.class);
 
     private String attributeName;
 

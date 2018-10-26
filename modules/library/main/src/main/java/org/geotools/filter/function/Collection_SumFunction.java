@@ -43,7 +43,7 @@ import org.opengis.filter.expression.Expression;
 public class Collection_SumFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(Collection_SumFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
     Object sum = null;

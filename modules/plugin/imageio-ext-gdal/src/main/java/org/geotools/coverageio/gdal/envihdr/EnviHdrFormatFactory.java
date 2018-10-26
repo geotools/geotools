@@ -30,7 +30,7 @@ public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements Gr
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.envihdr");
+            org.geotools.util.logging.Logging.getLogger(EnviHdrFormatFactory.class);
 
     public boolean isAvailable() {
         boolean available = true;

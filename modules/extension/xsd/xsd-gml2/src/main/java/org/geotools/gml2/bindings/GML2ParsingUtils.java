@@ -67,7 +67,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class GML2ParsingUtils {
     /** logging instance */
-    static Logger LOGGER = Logging.getLogger("org.geotools.gml");
+    static Logger LOGGER = Logging.getLogger(GML2ParsingUtils.class);
 
     /**
      * Metadata key used to indicate if a feature type has been parsed from a XML schema, or

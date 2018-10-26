@@ -79,7 +79,7 @@ import org.xml.sax.Attributes;
 public class XPath extends XPathUtil {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(XPath.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(XPath.class);
 
     private FilterFactory FF;
 

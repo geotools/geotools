@@ -70,7 +70,7 @@ import org.opengis.util.ProgressListener;
 /** @author Simone Giannecchini */
 public class GeoTiffWriterTest extends Assert {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoTiffWriterTest.class.toString());
+            org.geotools.util.logging.Logging.getLogger(GeoTiffWriterTest.class);
 
     private static final double DELTA = 1E-4;
 

@@ -93,7 +93,7 @@ import org.opengis.filter.FilterFactory2;
 public class LogicSAXParser {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(LogicSAXParser.class);
 
     /** factory for creating filters. */
     private FilterFactory2 ff;

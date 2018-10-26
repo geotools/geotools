@@ -78,7 +78,7 @@ import org.opengis.filter.sort.SortOrder;
 @SuppressWarnings("deprecation")
 class ArcSDEQuery {
     /** Shared package's logger */
-    private static final Logger LOGGER = Logging.getLogger(ArcSDEQuery.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEQuery.class);
 
     /**
      * The connection to the ArcSDE server obtained when first created the SeQuery in <code>

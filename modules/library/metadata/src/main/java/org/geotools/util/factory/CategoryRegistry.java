@@ -235,7 +235,7 @@ class CategoryRegistry {
      */
     private static class InstanceRegistry<T> {
         /** The logger for all events related to factory registry. */
-        protected static final Logger LOGGER = Logging.getLogger("org.geotools.util.factory");
+        protected static final Logger LOGGER = Logging.getLogger(CategoryRegistry.class);
 
         private static Class<?> REGISTERABLE_SERVICE = null;
 

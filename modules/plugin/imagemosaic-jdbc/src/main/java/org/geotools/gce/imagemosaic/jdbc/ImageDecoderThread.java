@@ -48,7 +48,7 @@ import org.geotools.util.logging.Logging;
 public class ImageDecoderThread extends AbstractThread {
     /** Logger. */
     protected static final Logger LOGGER =
-            Logging.getLogger(ImageDecoderThread.class.getPackage().getName());
+            Logging.getLogger(ImageDecoderThread.class);
 
     private byte[] imageBytes;
 

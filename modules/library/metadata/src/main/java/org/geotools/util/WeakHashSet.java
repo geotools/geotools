@@ -225,7 +225,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
                 }
             }
         }
-        final Logger logger = Logging.getLogger("org.geotools.util");
+        final Logger logger = Logging.getLogger(WeakHashSet.class);
         final Level level = Level.FINEST;
         if (logger.isLoggable(level)) {
             final LogRecord record =

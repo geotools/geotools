@@ -76,7 +76,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
     /** The {@link Logger} for this {@link GeoPackageReader}. */
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.geopkg.mosaic");
+    private static final Logger LOGGER = Logging.getLogger(GeoPackageReader.class);
 
     protected static final int DEFAULT_TILE_SIZE = 256;
 

@@ -314,7 +314,7 @@ public abstract class JDBCVirtualTableOnlineTest extends JDBCTestSupport {
                     }
                 };
         handler.setLevel(Level.WARNING);
-        Logger logger = Logging.getLogger("org.geotools.jdbc");
+        Logger logger = Logging.getLogger(JDBCVirtualTableOnlineTest.class);
         Level oldLevel = logger.getLevel();
 
         logger.setLevel(java.util.logging.Level.SEVERE);

@@ -44,7 +44,7 @@ import org.geotools.util.logging.Logging;
  */
 @SuppressWarnings( { "unchecked", "nls" })
 public class WSDataStoreFactory extends AbstractDataStoreFactory {
-    private static final Logger logger = Logging.getLogger("org.geotools.data.ws");
+    private static final Logger logger = Logging.getLogger(WSDataStoreFactory.class);
 
     public static class WSFactoryParam<T> extends Param {
         private T defaultValue;

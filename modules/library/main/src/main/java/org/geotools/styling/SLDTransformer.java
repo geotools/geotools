@@ -66,7 +66,7 @@ import org.xml.sax.helpers.AttributesImpl;
 public class SLDTransformer extends TransformerBase {
     /** The logger for this package. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(SLDTransformer.class);
 
     static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 

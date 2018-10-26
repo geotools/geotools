@@ -52,7 +52,7 @@ public class MapInfoFileReader {
 
     /** Logger for this class. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.MapInfoFileReader");
+            org.geotools.util.logging.Logging.getLogger(MapInfoFileReader.class);
 
     /** Projection mappings Mapinfo -> WKT */
     private static Map<Integer, String> PROJECTIONS = new HashMap<Integer, String>();

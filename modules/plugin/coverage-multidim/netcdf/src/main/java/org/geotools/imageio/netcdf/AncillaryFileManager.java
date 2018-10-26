@@ -171,7 +171,7 @@ public class AncillaryFileManager implements FileSetManager {
 
     private FileSetManager fileSetManager;
 
-    private static final Logger LOGGER = Logging.getLogger(AncillaryFileManager.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(AncillaryFileManager.class);
 
     private static ObjectFactory OBJECT_FACTORY = new ObjectFactory();
 

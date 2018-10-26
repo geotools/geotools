@@ -50,7 +50,7 @@ public abstract class BaseMathOperationJAI extends OperationJAI {
     private static final long serialVersionUID = 6830028735162290160L;
 
     /** {@link Logger} for this class. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage.processing");
+    public static final Logger LOGGER = Logging.getLogger(BaseMathOperationJAI.class);
 
     /** Name for the Sources parameter */
     public static final String SOURCES_NAME = "Sources";

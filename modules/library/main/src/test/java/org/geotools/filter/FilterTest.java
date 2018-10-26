@@ -87,7 +87,7 @@ import org.opengis.filter.spatial.Within;
 public class FilterTest extends TestCase {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(FilterTest.class);
 
     /** SimpleFeature on which to preform tests */
     private static SimpleFeature testFeature = null;

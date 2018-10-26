@@ -35,7 +35,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class NITFFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.nitf");
+            org.geotools.util.logging.Logging.getLogger(NITFFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public NITFFormat() {

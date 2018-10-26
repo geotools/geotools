@@ -46,7 +46,7 @@ public class QGISMarkFactory implements MarkFactory {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(QGISMarkFactory.class);
 
     /** Tall star for QGIS compatibility */
     private static Shape star = star();

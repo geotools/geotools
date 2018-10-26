@@ -59,7 +59,7 @@ public class TestDriver extends DefaultFileDriver implements Driver {
     private static Map<String, Parameter<?>> emptyMap = Collections.emptyMap();
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TestDriver.class.toString());
+            org.geotools.util.logging.Logging.getLogger(TestDriver.class);
 
     private static final String EXTENSION = ".EXT";
 

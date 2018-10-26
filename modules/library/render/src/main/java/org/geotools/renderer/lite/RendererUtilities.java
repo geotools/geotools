@@ -80,7 +80,7 @@ import si.uom.SI;
 public final class RendererUtilities {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RendererUtilities.class.getName());
+            org.geotools.util.logging.Logging.getLogger(RendererUtilities.class);
 
     /**
      * Enable unit correction in {@link #toMeters(double, CoordinateReferenceSystem)} calculation.

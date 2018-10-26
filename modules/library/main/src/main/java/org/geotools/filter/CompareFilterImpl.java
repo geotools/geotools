@@ -41,7 +41,8 @@ import org.opengis.filter.expression.Expression;
  */
 public abstract class CompareFilterImpl extends BinaryComparisonAbstract {
     /** The logger for the default core module. */
-    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(CompareFilterImpl.class);
 
     /**
      * Constructor with filter type.

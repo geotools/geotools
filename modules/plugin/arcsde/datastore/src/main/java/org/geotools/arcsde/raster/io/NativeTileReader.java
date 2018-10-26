@@ -49,7 +49,7 @@ import org.opengis.coverage.grid.GridEnvelope;
 @SuppressWarnings({"nls"})
 final class NativeTileReader implements TileReader {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(NativeTileReader.class);
 
     private final RasterDatasetInfo rasterInfo;
 

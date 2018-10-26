@@ -99,7 +99,7 @@ public class ArcSDEFeatureStoreTest {
     /** package logger */
     private static Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(
-                    ArcSDEFeatureStoreTest.class.getPackage().getName());
+                    ArcSDEFeatureStoreTest.class);
 
     private TestData testData;
 

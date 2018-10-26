@@ -35,7 +35,7 @@ public class MarkImpl implements Mark, Cloneable {
 
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(MarkImpl.class);
 
     private final FilterFactory filterFactory;
     private FillImpl fill;

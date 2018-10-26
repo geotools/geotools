@@ -35,7 +35,7 @@ public class ExponentialContrastMethodStrategy extends AbstractContrastMethodStr
     static final List<String> PARAM_NAMES = Arrays.asList(NORMALIZATION_FACTOR, CORRECTION_FACTOR);
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(ExponentialContrastMethodStrategy.class);
 
     /** */
     public ExponentialContrastMethodStrategy() {

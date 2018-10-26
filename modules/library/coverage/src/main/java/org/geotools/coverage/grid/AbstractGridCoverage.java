@@ -48,7 +48,7 @@ public abstract class AbstractGridCoverage extends AbstractCoverage implements G
     private static final long serialVersionUID = 6476934258101450793L;
 
     /** The logger for grid coverage operations. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage.grid");
+    public static final Logger LOGGER = Logging.getLogger(AbstractGridCoverage.class);
 
     /**
      * Sources grid coverage, or {@code null} if none. This information is lost during

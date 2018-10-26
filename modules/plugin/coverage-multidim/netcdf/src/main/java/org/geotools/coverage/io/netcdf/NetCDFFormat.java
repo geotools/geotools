@@ -42,7 +42,7 @@ public class NetCDFFormat extends AbstractGridFormat {
             new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
 
     private static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.io.netcdf.NetCDFFormat");
+            Logging.getLogger(NetCDFFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public NetCDFFormat() {

@@ -111,7 +111,7 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageMosaicFormat.class.toString());
+            org.geotools.util.logging.Logging.getLogger(ImageMosaicFormat.class);
 
     /** Filter tiles based on attributes from the input coverage */
     public static final ParameterDescriptor<Filter> FILTER =

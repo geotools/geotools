@@ -46,8 +46,7 @@ import org.junit.Test;
 public class AppSchemaConfigurationTest {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    AppSchemaConfigurationTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(AppSchemaConfigurationTest.class);
 
     /**
      * Set this to true if you want to see all the resolved locations. (Most useful when manually

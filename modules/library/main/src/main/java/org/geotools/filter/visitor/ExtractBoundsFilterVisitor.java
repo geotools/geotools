@@ -109,7 +109,7 @@ public class ExtractBoundsFilterVisitor extends NullFilterVisitor {
     public static NullFilterVisitor BOUNDS_VISITOR = new ExtractBoundsFilterVisitor();
 
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.index.rtree");
+            org.geotools.util.logging.Logging.getLogger(ExtractBoundsFilterVisitor.class);
 
     /**
      * This FilterVisitor is stateless - use ExtractBoundsFilterVisitor.BOUNDS_VISITOR.

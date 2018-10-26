@@ -72,7 +72,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class EmfAppSchemaParser {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");
+    private static final Logger LOGGER = Logging.getLogger(EmfAppSchemaParser.class);
 
     public static SimpleFeatureType parseSimpleFeatureType(
             final QName featureName,

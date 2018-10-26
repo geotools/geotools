@@ -61,8 +61,7 @@ public class ZonalStats extends BaseStatisticsOperationJAI {
     private static final long serialVersionUID = -2027327652181137851L;
 
     /** {@link Logger} for this class. */
-    public static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.processing.operation");
+    public static final Logger LOGGER = Logging.getLogger(ZonalStats.class);
 
     /** {@link String} key for getting the min vector. */
     public static final String GT_SYNTHETIC_PROPERTY_MIN = Statistic.MIN.toString();

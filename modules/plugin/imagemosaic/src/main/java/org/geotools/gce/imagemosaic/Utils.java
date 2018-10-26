@@ -191,7 +191,7 @@ public class Utils {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Utils.class.toString());
+            org.geotools.util.logging.Logging.getLogger(Utils.class);
 
     static {
         final String prop = System.getProperty("org.geotools.imagemosaic.optimizecrop");

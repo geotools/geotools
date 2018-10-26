@@ -63,7 +63,7 @@ public class ArcSDEDataStoreTest {
     /** package logger */
     private static Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(
-                    ArcSDEDataStoreTest.class.getPackage().getName());
+                    ArcSDEDataStoreTest.class.getPackage());
 
     private static TestData testData;
 

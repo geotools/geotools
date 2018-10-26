@@ -44,7 +44,7 @@ class Utils {
 
     /** Logger. */
     static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Utils.class.toString());
+            org.geotools.util.logging.Logging.getLogger(Utils.class);
 
     static URL checkSource(Object source) throws MalformedURLException, DataSourceException {
         URL sourceURL = null;

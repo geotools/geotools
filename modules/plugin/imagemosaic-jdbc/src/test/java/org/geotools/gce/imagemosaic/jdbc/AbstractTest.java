@@ -58,7 +58,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public abstract class AbstractTest extends TestCase {
 
     protected static final Logger LOGGER =
-            Logging.getLogger(AbstractTest.class.getPackage().getName());
+            Logging.getLogger(AbstractTest.class);
 
     protected static String CRSNAME = "EPSG:4326";
 

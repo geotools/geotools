@@ -37,7 +37,7 @@ import org.geotools.util.logging.Logging;
 
 public class ExcelDataStoreFactory extends AbstractDataStoreFactory implements DataStoreFactorySpi {
     private static final Logger logger =
-            Logging.getLogger("org.geotools.excel.datastore.ExcelDataStoreFactory");
+            Logging.getLogger(ExcelDataStoreFactory.class);
 
     static HashSet<Param> params = new HashSet<DataAccessFactory.Param>();
 

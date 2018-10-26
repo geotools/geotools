@@ -114,7 +114,7 @@ public class CSVDataStoreFactory implements DataStoreFactorySpi {
     }
     // createDataStore end
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.csv");
+    private static final Logger LOGGER = Logging.getLogger(CSVDataStoreFactory.class);
 
     // createNewDataStore start
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {

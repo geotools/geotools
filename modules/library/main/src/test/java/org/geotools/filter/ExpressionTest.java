@@ -51,7 +51,7 @@ import org.opengis.filter.expression.PropertyName;
 public class ExpressionTest extends TestCase {
     /** Standard logging instance */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.defaultcore");
+            org.geotools.util.logging.Logging.getLogger(ExpressionTest.class);
 
     /** Feature on which to preform tests */
     private static SimpleFeature testFeature = null;

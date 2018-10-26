@@ -34,7 +34,7 @@ public final class EnviHdrReader extends BaseGDALGridCoverage2DReader
     /** Logger. */
     @SuppressWarnings("unused")
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.envihdr");
+            org.geotools.util.logging.Logging.getLogger(EnviHdrReader.class);
 
     /**
      * Creates a new instance of a {@link EnviHdrReader}. I assume nothing about file extension.

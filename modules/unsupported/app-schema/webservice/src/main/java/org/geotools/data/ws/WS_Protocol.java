@@ -75,7 +75,7 @@ import freemarker.template.TemplateException;
 @SuppressWarnings( { "unchecked", "nls" })
 public class WS_Protocol implements WSProtocol {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.ws");
+    private static final Logger LOGGER = Logging.getLogger(WS_Protocol.class);
 
     private WSStrategy strategy;
 

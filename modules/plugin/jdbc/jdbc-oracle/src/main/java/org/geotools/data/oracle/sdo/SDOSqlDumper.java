@@ -37,7 +37,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class SDOSqlDumper {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.oracle.sdo");
+            org.geotools.util.logging.Logging.getLogger(SDOSqlDumper.class);
 
     /**
      * Converts JTS Geometry to a String version of a SDO Geometry. This should move to a utility

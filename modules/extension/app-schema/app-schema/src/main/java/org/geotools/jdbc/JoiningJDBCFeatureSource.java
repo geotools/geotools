@@ -71,7 +71,7 @@ import org.opengis.filter.sort.SortOrder;
 public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
     private static final Logger LOGGER =
-            Logging.getLogger("org.geotools.jdbc.JoiningJDBCFeatureSource");
+            Logging.getLogger(JoiningJDBCFeatureSource.class);
 
     private static final String TEMP_FILTER_ALIAS = "temp_alias_used_for_filter";
     public static final String FOREIGN_ID = "FOREIGN_ID";
@@ -1117,7 +1117,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
             } else {
                 // build up a statement for the content
                 String sql = selectSQL(querySchema, preQuery, null);
-                getDataStore().getLogger().fine(sql);
+                getDataStore().getLogger(JoiningJDBCFeatureSource.class).fine(sql);
                 reader = new JDBCFeatureReader(sql, cx, this, fullSchema, query);
             }
         } catch (Exception e) {
@@ -1177,7 +1177,7 @@ public class JoiningJDBCFeatureSource extends JDBCFeatureSource {
 
             // build up a statement for the content
             String sql = selectSQL(querySchema, preQuery, null);
-            getDataStore().getLogger().fine(sql);
+            getDataStore().getLogger(JoiningJDBCFeatureSource.class).fine(sql);
 
             StringBuffer finalSql = new StringBuffer();
             finalSql.append("SELECT ");

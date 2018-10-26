@@ -46,7 +46,7 @@ public class DOMParserTestSuite extends TestSuite {
 
     /** Standard logging instance */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(DOMParserTestSuite.class);
 
     /** Schema on which to preform tests */
     protected static SimpleFeatureType testSchema = null;

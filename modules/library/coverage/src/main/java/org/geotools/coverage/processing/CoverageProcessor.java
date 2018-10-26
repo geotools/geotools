@@ -77,7 +77,7 @@ import org.opengis.util.InternationalString;
 public class CoverageProcessor {
 
     /** The logger for coverage processing operations. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage.processing");
+    public static final Logger LOGGER = Logging.getLogger(CoverageProcessor.class);
 
     /**
      * The logging level for reporting coverage operations. This level is equals or slightly lower

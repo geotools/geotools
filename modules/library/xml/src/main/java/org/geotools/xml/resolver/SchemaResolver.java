@@ -46,7 +46,7 @@ public class SchemaResolver {
 
     private static final Logger LOGGER =
             org.geotools.util.logging.Logging.getLogger(
-                    SchemaResolver.class.getPackage().getName());
+                    SchemaResolver.class);
 
     /** A local OASIS catalog (null if not present). */
     private SchemaCatalog catalog;

@@ -42,7 +42,7 @@ public class NetCDFSource extends DefaultCoverageSource {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(NetCDFSource.class.toString());
+            org.geotools.util.logging.Logging.getLogger(NetCDFSource.class);
 
     NetCDFImageReader reader;
 

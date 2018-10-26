@@ -45,8 +45,7 @@ import java.util.regex.Pattern;
 public class InterpolationProperties {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    InterpolationProperties.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(InterpolationProperties.class);
 
     /** Pattern to match a property to be substituted. Note the reluctant quantifier. */
     private static final Pattern PROPERTY_INTERPOLATION_PATTERN = Pattern.compile("\\$\\{(.+?)\\}");

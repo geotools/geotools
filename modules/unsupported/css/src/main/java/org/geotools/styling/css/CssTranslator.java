@@ -2090,9 +2090,9 @@ public class CssTranslator {
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css")
+        org.geotools.util.logging.Logging.getLogger(CssTranslator.class)
                 .setLevel(java.util.logging.Level.FINE);
-        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css").addHandler(handler);
+        org.geotools.util.logging.Logging.getLogger(CssTranslator.class).addHandler(handler);
 
         CssTranslator translator = new CssTranslator();
         Style style = translator.translate(styleSheet);

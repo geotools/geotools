@@ -216,7 +216,7 @@ public enum NetCDFCoordinateReferenceSystemType {
     public abstract NetCDFProjection getNetCDFProjection();
 
     private static final Logger LOGGER =
-            Logging.getLogger(NetCDFCoordinateReferenceSystemType.class.toString());
+            Logging.getLogger(NetCDFCoordinateReferenceSystemType.class);
 
     /**
      * Contains basic information related to a NetCDF Coordinate such as: - short name (as an

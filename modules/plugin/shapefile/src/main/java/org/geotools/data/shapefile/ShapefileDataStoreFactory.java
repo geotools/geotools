@@ -43,7 +43,7 @@ import org.geotools.util.logging.Logging;
 /** Builds instances of the shapefile data store */
 public class ShapefileDataStoreFactory implements FileDataStoreFactorySpi {
 
-    static final Logger LOGGER = Logging.getLogger("org.geotools.data.shapefile");
+    static final Logger LOGGER = Logging.getLogger(ShapefileDataStoreFactory.class);
 
     /** url to the .shp file. */
     public static final Param URLP =

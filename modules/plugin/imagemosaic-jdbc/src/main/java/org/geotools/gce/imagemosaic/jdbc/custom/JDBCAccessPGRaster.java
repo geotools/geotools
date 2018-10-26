@@ -59,7 +59,7 @@ import org.locationtech.jts.io.WKBWriter;
 public class JDBCAccessPGRaster extends JDBCAccessCustom {
 
     private static final Logger LOGGER =
-            Logging.getLogger(JDBCAccessPGRaster.class.getPackage().getName());
+            Logging.getLogger(JDBCAccessPGRaster.class);
 
     /** Different sql statements needed for in-db and out-db raster data */
     protected Map<ImageLevelInfo, String> statementMap;

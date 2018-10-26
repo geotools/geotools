@@ -47,7 +47,7 @@ import org.xml.sax.Attributes;
 public class FilterSAXParser {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(FilterSAXParser.class);
 
     /** The number of attributes to be found in a like filter */
     private static final int NUM_LIKE_ATTS = 3;

@@ -123,7 +123,7 @@ public class CoordinateOperationFactoryUsingWKT extends DeferredAuthorityFactory
     }
 
     /** Constructs an authority factory using the specified hints and priority. */
-    protected CoordinateOperationFactoryUsingWKT(final Hints userHints, final int priority) {
+    public CoordinateOperationFactoryUsingWKT(final Hints userHints, final int priority) {
         super(userHints, priority);
         factories = ReferencingFactoryContainer.instance(userHints);
 

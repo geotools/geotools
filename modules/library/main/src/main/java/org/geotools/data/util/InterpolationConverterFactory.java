@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.util;
+package org.geotools.data.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +25,8 @@ import javax.media.jai.InterpolationBicubic;
 import javax.media.jai.InterpolationBicubic2;
 import javax.media.jai.InterpolationBilinear;
 import javax.media.jai.InterpolationNearest;
+import org.geotools.util.Converter;
+import org.geotools.util.ConverterFactory;
 import org.geotools.util.factory.Hints;
 
 /**

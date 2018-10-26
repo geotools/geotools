@@ -16,3 +16,5 @@ org.geotools.temporal.TemporalConverterFactory
 org.geotools.data.util.NameConverterFactory
 org.geotools.data.util.ArrayConverterFactory
 org.geotools.data.util.ComplexAttributeConverterFactory
+org.geotools.data.util.CRSConverterFactory
+org.geotools.data.util.InterpolationConverterFactory

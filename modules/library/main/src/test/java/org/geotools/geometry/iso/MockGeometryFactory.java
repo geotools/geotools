@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.geometry;
+package org.geotools.geometry.iso;
 
 import java.util.List;
 import java.util.Set;

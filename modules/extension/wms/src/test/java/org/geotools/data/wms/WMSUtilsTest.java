@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import junit.framework.TestCase;
-import org.geotools.data.ows.Layer;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WMSUtils;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

@@ -27,13 +27,13 @@ import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import junit.framework.TestCase;
-import org.geotools.data.ows.CRSEnvelope;
-import org.geotools.data.ows.Layer;
-import org.geotools.data.ows.WMSCapabilities;
-import org.geotools.data.wms.WebMapServer;
-import org.geotools.data.wms.request.GetMapRequest;
-import org.geotools.data.wms.response.GetMapResponse;
 import org.geotools.ows.ServiceException;
+import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WMSCapabilities;
+import org.geotools.ows.wms.WebMapServer;
+import org.geotools.ows.wms.request.GetMapRequest;
+import org.geotools.ows.wms.response.GetMapResponse;
 import org.xml.sax.SAXException;
 
 public class ServersTest extends TestCase {

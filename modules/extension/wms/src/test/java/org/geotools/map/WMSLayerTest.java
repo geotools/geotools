@@ -30,9 +30,11 @@ import org.apache.commons.httpclient.util.ParameterParser;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.MockHttpClient;
 import org.geotools.data.ows.MockHttpResponse;
-import org.geotools.data.ows.StyleImpl;
-import org.geotools.data.wms.WMSUtils;
-import org.geotools.data.wms.WebMapServer;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.StyleImpl;
+import org.geotools.ows.wms.WMSUtils;
+import org.geotools.ows.wms.WebMapServer;
+import org.geotools.ows.wms.map.WMSLayer;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -92,13 +94,10 @@ public class WMSLayerTest {
     @After
     public void tearDown() throws Exception {}
 
-    /**
-     * Test method for {@link org.geotools.map.WMSLayer#WMSLayer(org.geotools.data.wms.WebMapServer,
-     * org.geotools.data.ows.Layer)}.
-     */
+    /** Test method for {@link WMSLayer#WMSLayer(WebMapServer, Layer)}. */
     @Test
     public void testWMSLayer() {
-        org.geotools.data.ows.Layer[] wmsLayers = WMSUtils.getNamedLayers(server.getCapabilities());
+        Layer[] wmsLayers = WMSUtils.getNamedLayers(server.getCapabilities());
 
         WMSLayer l = new WMSLayer(server, wmsLayers[0]);
         assertNotNull(l);

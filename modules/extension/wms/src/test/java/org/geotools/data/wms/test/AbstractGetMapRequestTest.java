@@ -22,9 +22,9 @@ import java.util.Properties;
 import junit.framework.TestCase;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
-import org.geotools.data.wms.request.AbstractGetMapRequest;
-import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.ows.ServiceException;
+import org.geotools.ows.wms.request.AbstractGetMapRequest;
+import org.geotools.ows.wms.request.GetMapRequest;
 
 public class AbstractGetMapRequestTest extends TestCase {
 
@@ -60,7 +60,7 @@ public class AbstractGetMapRequestTest extends TestCase {
         }
 
         /* (non-Javadoc)
-         * @see org.geotools.data.wms.request.AbstractGetMapRequest#initVersion()
+         * @see AbstractGetMapRequest#initVersion()
          */
         protected void initVersion() {
             // TODO Auto-generated method stub

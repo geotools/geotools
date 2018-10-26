@@ -22,15 +22,15 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
-import org.geotools.data.ows.CRSEnvelope;
-import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.Specification;
-import org.geotools.data.ows.WMSCapabilities;
-import org.geotools.data.wms.WMS1_3_0;
-import org.geotools.data.wms.WebMapServer;
-import org.geotools.data.wms.request.GetFeatureInfoRequest;
-import org.geotools.data.wms.request.GetMapRequest;
-import org.geotools.data.wms.response.GetFeatureInfoResponse;
+import org.geotools.ows.wms.CRSEnvelope;
+import org.geotools.ows.wms.Layer;
+import org.geotools.ows.wms.WMS1_3_0;
+import org.geotools.ows.wms.WMSCapabilities;
+import org.geotools.ows.wms.WebMapServer;
+import org.geotools.ows.wms.request.GetFeatureInfoRequest;
+import org.geotools.ows.wms.request.GetMapRequest;
+import org.geotools.ows.wms.response.GetFeatureInfoResponse;
 import org.xml.sax.SAXException;
 
 /** @author rgould */

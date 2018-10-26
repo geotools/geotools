@@ -34,7 +34,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
 public class GeoJSONFeatureSource extends ContentFeatureSource {
-    private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureSource.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(GeoJSONFeatureSource.class);
 
     private FeatureCollection<?, ?> collection = null;
 

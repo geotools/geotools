@@ -44,7 +44,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
     public static final int STOP = -2;
 
     /** DOCUMENT ME! */
-    protected static Logger logger = getLogger(FCBuffer.class);
+    protected static Logger logger = getLogger();
 
     // positive number is the number of feature to parse before yield
 
@@ -88,7 +88,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
      *     Geotools is too verbose below the warning level, then some log messages should probably
      *     be changed from Level.INFO to Level.FINE.
      */
-    private static final Logger getLogger(FCBuffer.class) {
+    private static final Logger getLogger() {
         Logger l = org.geotools.util.logging.Logging.getLogger(FCBuffer.class);
         l.setLevel(Level.WARNING);
         return l;

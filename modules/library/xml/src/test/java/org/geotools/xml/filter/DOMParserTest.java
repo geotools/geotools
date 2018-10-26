@@ -14,16 +14,19 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.filter;
+package org.geotools.xml.filter;
 
 import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.FilterDOMParser;
+import org.geotools.filter.FilterTestSupport;
 import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.locationtech.jts.geom.Coordinate;
@@ -67,14 +70,14 @@ public class DOMParserTest extends FilterTestSupport {
 
     public DOMParserTest(String testName) {
         super(testName);
-        LOGGER.finer("running DOMParserTests");
+        FilterTestSupport.LOGGER.finer("running DOMParserTests");
         dataFolder = System.getProperty("dataFolder");
 
         if (dataFolder == null) {
             // then we are being run by maven
             dataFolder = System.getProperty("basedir");
             dataFolder = "file:////" + dataFolder + "/tests/unit/testData";
-            LOGGER.fine("data folder is " + dataFolder);
+            FilterTestSupport.LOGGER.fine("data folder is " + dataFolder);
         }
     }
 
@@ -91,10 +94,10 @@ public class DOMParserTest extends FilterTestSupport {
         super.setUp();
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
-        ftb.init(testSchema);
+        ftb.init(FilterTestSupport.testSchema);
         ftb.setCRS(null);
         ftb.add("testZeroDouble", Double.class);
-        testSchema = ftb.buildFeatureType();
+        FilterTestSupport.testSchema = ftb.buildFeatureType();
 
         GeometryFactory geomFac = new GeometryFactory();
 
@@ -119,7 +122,8 @@ public class DOMParserTest extends FilterTestSupport {
         attributes[10] = new Double(0.0);
 
         // Creates the feature itself
-        testFeature = SimpleFeatureBuilder.build(testSchema, attributes, null);
+        FilterTestSupport.testFeature =
+                SimpleFeatureBuilder.build(FilterTestSupport.testSchema, attributes, null);
     }
 
     /**
@@ -136,141 +140,141 @@ public class DOMParserTest extends FilterTestSupport {
 
     public void test1() throws Exception {
         Filter test = parseDocument("test1.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test2() throws Exception {
         Filter test = parseDocument("test2.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test3a() throws Exception {
         Filter test = parseDocument("test3a.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void Xtest3b() throws Exception {
         Filter test = parseDocument("test3b.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test4() throws Exception {
         Filter test = parseDocument("test4.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test8() throws Exception {
         Filter test = parseDocument("test8.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test9() throws Exception {
         Filter test = parseDocument("test9.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test11() throws Exception {
         Filter test = parseDocument("test11.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test12() throws Exception {
         Filter test = parseDocument("test12.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test13() throws Exception {
         Filter test = parseDocument("test13.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test14() throws Exception {
         Filter test = parseDocument("test14.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test15() throws Exception {
         Filter test = parseDocument("test15.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test16() throws Exception {
         Filter test = parseDocument("test16.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void test27() throws Exception {
         Filter test = parseDocument("test27.xml");
-        LOGGER.fine("parsed filter is " + test);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void testDWithin() throws Exception {
         Filter test = parseDocument("dwithin.xml");
-        assertTrue(test instanceof DWithin);
+        TestCase.assertTrue(test instanceof DWithin);
         DWithin dw = (DWithin) test;
-        assertEquals("the_geom", ((PropertyName) dw.getExpression1()).getPropertyName());
-        assertTrue(((Literal) dw.getExpression2()).getValue() instanceof Point);
-        assertEquals(5000.0, dw.getDistance());
-        assertEquals("metre", dw.getDistanceUnits());
-        LOGGER.fine("parsed filter is " + test);
+        TestCase.assertEquals("the_geom", ((PropertyName) dw.getExpression1()).getPropertyName());
+        TestCase.assertTrue(((Literal) dw.getExpression2()).getValue() instanceof Point);
+        TestCase.assertEquals(5000.0, dw.getDistance());
+        TestCase.assertEquals("metre", dw.getDistanceUnits());
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void testDWithinQualified() throws Exception {
         Filter test = parseDocument("dwithin-qualified.xml");
-        assertTrue(test instanceof DWithin);
+        TestCase.assertTrue(test instanceof DWithin);
         DWithin dw = (DWithin) test;
-        assertEquals("the_geom", ((PropertyName) dw.getExpression1()).getPropertyName());
-        assertTrue(((Literal) dw.getExpression2()).getValue() instanceof Point);
-        assertEquals(5000.0, dw.getDistance());
-        assertEquals("metre", dw.getDistanceUnits());
-        LOGGER.fine("parsed filter is " + test);
+        TestCase.assertEquals("the_geom", ((PropertyName) dw.getExpression1()).getPropertyName());
+        TestCase.assertTrue(((Literal) dw.getExpression2()).getValue() instanceof Point);
+        TestCase.assertEquals(5000.0, dw.getDistance());
+        TestCase.assertEquals("metre", dw.getDistanceUnits());
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void testBeyond() throws Exception {
         Filter test = parseDocument("beyond.xml");
-        assertTrue(test instanceof Beyond);
+        TestCase.assertTrue(test instanceof Beyond);
         Beyond bd = (Beyond) test;
-        assertEquals("the_geom", ((PropertyName) bd.getExpression1()).getPropertyName());
-        assertTrue(((Literal) bd.getExpression2()).getValue() instanceof Point);
-        assertEquals(5000.0, bd.getDistance());
-        assertEquals("metre", bd.getDistanceUnits());
-        LOGGER.fine("parsed filter is " + test);
+        TestCase.assertEquals("the_geom", ((PropertyName) bd.getExpression1()).getPropertyName());
+        TestCase.assertTrue(((Literal) bd.getExpression2()).getValue() instanceof Point);
+        TestCase.assertEquals(5000.0, bd.getDistance());
+        TestCase.assertEquals("metre", bd.getDistanceUnits());
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void testCrosses() throws Exception {
         Filter test = parseDocument("crosses.xml");
-        assertTrue(test instanceof Crosses);
+        TestCase.assertTrue(test instanceof Crosses);
         Crosses cr = (Crosses) test;
-        assertEquals("the_geom", ((PropertyName) cr.getExpression1()).getPropertyName());
-        assertTrue(((Literal) cr.getExpression2()).getValue() instanceof LineString);
-        LOGGER.fine("parsed filter is " + test);
+        TestCase.assertEquals("the_geom", ((PropertyName) cr.getExpression1()).getPropertyName());
+        TestCase.assertTrue(((Literal) cr.getExpression2()).getValue() instanceof LineString);
+        FilterTestSupport.LOGGER.fine("parsed filter is " + test);
     }
 
     public void testIntersectsCRS() throws Exception {
         Filter test = parseDocument("intersectsCRS.xml");
-        assertTrue(test instanceof Intersects);
+        TestCase.assertTrue(test instanceof Intersects);
         Intersects cr = (Intersects) test;
-        assertEquals("geom", ((PropertyName) cr.getExpression1()).getPropertyName());
+        TestCase.assertEquals("geom", ((PropertyName) cr.getExpression1()).getPropertyName());
         Polygon p = (Polygon) ((Literal) cr.getExpression2()).getValue();
-        assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
+        TestCase.assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
         int epsg = CRS.lookupEpsgCode((CoordinateReferenceSystem) p.getUserData(), false);
-        assertEquals(32631, epsg);
+        TestCase.assertEquals(32631, epsg);
     }
 
     public void test28() throws Exception {
         Id filter = (Id) parseDocumentFirst("test28.xml");
         Set<Object> fids = filter.getIDs();
 
-        assertEquals(3, fids.size());
-        assertTrue(fids.contains("FID.3"));
-        assertTrue(fids.contains("FID.2"));
-        assertTrue(fids.contains("FID.1"));
+        TestCase.assertEquals(3, fids.size());
+        TestCase.assertTrue(fids.contains("FID.3"));
+        TestCase.assertTrue(fids.contains("FID.2"));
+        TestCase.assertTrue(fids.contains("FID.1"));
     }
 
     public void testNotEqual() throws Exception {
         PropertyIsNotEqualTo filter = (PropertyIsNotEqualTo) parseDocumentFirst("testNotEqual.xml");
 
-        assertTrue(filter.isMatchingCase());
+        TestCase.assertTrue(filter.isMatchingCase());
     }
 
     public Filter parseDocument(String uri) throws Exception {
@@ -279,7 +283,7 @@ public class DOMParserTest extends FilterTestSupport {
         DocumentBuilder db = dbf.newDocumentBuilder();
 
         Document dom = db.parse(TestData.getResource(this, uri).toExternalForm());
-        LOGGER.fine("parsing " + uri);
+        FilterTestSupport.LOGGER.fine("parsing " + uri);
 
         // first grab a filter node
         NodeList nodes = dom.getElementsByTagName("Filter");
@@ -300,10 +304,11 @@ public class DOMParserTest extends FilterTestSupport {
                 }
 
                 filter = FilterDOMParser.parseFilter(child);
-                assertNotNull("Null filter returned", filter);
-                LOGGER.finer("filter: " + filter.getClass().toString());
-                LOGGER.fine("parsed: " + filter.toString());
-                LOGGER.finer("result " + filter.evaluate(testFeature));
+                TestCase.assertNotNull("Null filter returned", filter);
+                FilterTestSupport.LOGGER.finer("filter: " + filter.getClass().toString());
+                FilterTestSupport.LOGGER.fine("parsed: " + filter.toString());
+                FilterTestSupport.LOGGER.finer(
+                        "result " + filter.evaluate(FilterTestSupport.testFeature));
             }
         }
 
@@ -315,7 +320,7 @@ public class DOMParserTest extends FilterTestSupport {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document dom = db.parse(TestData.getResource(this, uri).toExternalForm());
-        LOGGER.fine("parsing " + uri);
+        FilterTestSupport.LOGGER.fine("parsing " + uri);
 
         // first grab a filter node
         NodeList nodes = dom.getElementsByTagName("Filter");
@@ -333,10 +338,11 @@ public class DOMParserTest extends FilterTestSupport {
                 }
 
                 filter = FilterDOMParser.parseFilter(child);
-                assertNotNull("Null filter returned", filter);
-                LOGGER.finer("filter: " + filter.getClass().toString());
-                LOGGER.fine("parsed: " + filter.toString());
-                LOGGER.finer("result " + filter.evaluate(testFeature));
+                TestCase.assertNotNull("Null filter returned", filter);
+                FilterTestSupport.LOGGER.finer("filter: " + filter.getClass().toString());
+                FilterTestSupport.LOGGER.fine("parsed: " + filter.toString());
+                FilterTestSupport.LOGGER.finer(
+                        "result " + filter.evaluate(FilterTestSupport.testFeature));
 
                 return filter;
             }

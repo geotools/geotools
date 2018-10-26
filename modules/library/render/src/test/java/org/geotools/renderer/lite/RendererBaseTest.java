@@ -36,13 +36,13 @@ import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.NamedStyle;
 import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
 import org.geotools.xml.Parser;
+import org.geotools.xml.styling.SLDParser;
 
 /**
  * Used to test a renderer implementation.

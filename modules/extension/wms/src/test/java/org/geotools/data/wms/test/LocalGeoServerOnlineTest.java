@@ -53,8 +53,6 @@ import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.NamedLayer;
-import org.geotools.styling.SLDParser;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
@@ -62,6 +60,8 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.builder.NamedLayerBuilder;
 import org.geotools.styling.builder.StyledLayerDescriptorBuilder;
 import org.geotools.util.factory.GeoTools;
+import org.geotools.xml.styling.SLDParser;
+import org.geotools.xml.styling.SLDTransformer;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

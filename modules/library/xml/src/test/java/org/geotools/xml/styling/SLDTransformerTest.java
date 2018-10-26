@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
+package org.geotools.xml.styling;
 
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
 import static org.custommonkey.xmlunit.XMLAssert.assertXpathExists;
@@ -40,8 +40,46 @@ import org.custommonkey.xmlunit.Diff;
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.exceptions.XpathException;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.AnchorPoint;
+import org.geotools.styling.ChannelSelectionImpl;
+import org.geotools.styling.ColorMap;
+import org.geotools.styling.ContrastEnhancement;
+import org.geotools.styling.ContrastEnhancementImpl;
+import org.geotools.styling.Displacement;
+import org.geotools.styling.ExponentialContrastMethodStrategy;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Font;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.GraphicImpl;
+import org.geotools.styling.HistogramContrastMethodStrategy;
+import org.geotools.styling.LabelPlacement;
+import org.geotools.styling.LineSymbolizer;
+import org.geotools.styling.LogarithmicContrastMethodStrategy;
+import org.geotools.styling.Mark;
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.NormalizeContrastMethodStrategy;
+import org.geotools.styling.OtherTextImpl;
+import org.geotools.styling.PointPlacement;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.RuleImpl;
+import org.geotools.styling.SLD;
+import org.geotools.styling.SelectedChannelType;
+import org.geotools.styling.SelectedChannelTypeImpl;
+import org.geotools.styling.Stroke;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyleFactory2;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
+import org.geotools.styling.UomOgcMapping;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.factory.GeoTools;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
@@ -177,7 +215,7 @@ public class SLDTransformerTest {
         Style[] stuff = parser.readXML();
         Style out = stuff[0];
         assertNotNull(out);
-        assertEquals(0.25, SLD.rasterOpacity(out), 0d);
+        Assert.assertEquals(0.25, SLD.rasterOpacity(out), 0d);
     }
 
     /**
@@ -1166,7 +1204,7 @@ public class SLDTransformerTest {
 
     @Test
     public void testLocalizedTitle() throws Exception {
-        RuleImpl rule = new RuleImpl();
+        RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString =
                 new GrowableInternationalString("title") {
 
@@ -1198,7 +1236,7 @@ public class SLDTransformerTest {
     }
 
     public void testLocalizedAbstract() throws Exception {
-        RuleImpl rule = new RuleImpl();
+        RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString = new GrowableInternationalString("title");
         intString.add(Locale.ITALIAN, "titolo");
         intString.add(Locale.FRENCH, "titre");

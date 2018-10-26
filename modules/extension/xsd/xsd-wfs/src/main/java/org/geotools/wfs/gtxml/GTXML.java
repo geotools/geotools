@@ -1,4 +1,4 @@
-package org.geotools.gtxml;
+package org.geotools.wfs.gtxml;
 
 import java.io.IOException;
 import javax.xml.namespace.QName;

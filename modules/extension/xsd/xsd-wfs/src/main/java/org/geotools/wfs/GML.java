@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools;
+package org.geotools.wfs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,9 +65,9 @@ import org.geotools.gml.producer.FeatureTransformer;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.bindings.GML2ParsingUtils;
-import org.geotools.gtxml.GTXML;
 import org.geotools.referencing.CRS;
 import org.geotools.util.PartiallyOrderedSet;
+import org.geotools.wfs.gtxml.GTXML;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;

@@ -1,4 +1,4 @@
-package org.geotools.renderer.style.shape;
+package org.geotools.renderer.util;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -11,6 +11,7 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import junit.framework.TestCase;
+import org.geotools.renderer.util.ExplicitBoundsShape;
 
 public class TestExplicitBoundsShape extends TestCase {
 

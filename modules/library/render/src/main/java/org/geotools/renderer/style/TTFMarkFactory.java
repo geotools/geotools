@@ -33,7 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
-import org.geotools.renderer.style.shape.ExplicitBoundsShape;
+import org.geotools.renderer.util.ExplicitBoundsShape;
 import org.geotools.styling.ExternalMark;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;

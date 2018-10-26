@@ -59,7 +59,7 @@ public class XMLEncoderTest extends TestCase {
 
     /** Standard logging instance */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(XMLEncoderTest.class);
 
     /** Constructor with test name. */
     String dataFolder = "";

@@ -78,7 +78,7 @@ public final class FeatureUtilities {
             DEFAULT_FILTER_FACTORY.property("params");
 
     static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(FeatureUtilities.class.toString());
+            org.geotools.util.logging.Logging.getLogger(FeatureUtilities.class);
 
     /** Do not allows instantiation of this class. */
     private FeatureUtilities() {}

@@ -73,7 +73,7 @@ class RasterLayerRequest {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio");
+            org.geotools.util.logging.Logging.getLogger(RasterLayerRequest.class);
 
     private ReadType readType = ReadType.UNSPECIFIED;
 

@@ -104,7 +104,7 @@ import org.opengis.filter.temporal.TOverlaps;
  */
 public class DB2FilterToSQL extends PreparedFilterToSQL {
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.db2");
+            org.geotools.util.logging.Logging.getLogger(DB2FilterToSQL.class);
 
     // Class to convert geometry value into a Well-known Text string
     private static WKTWriter wktWriter = new WKTWriter();

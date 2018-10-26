@@ -43,7 +43,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
 
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(AttributeExpressionImpl.class);
 
     /** Holds all sub filters of this filter. */
     protected String attPath;

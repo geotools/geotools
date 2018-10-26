@@ -53,7 +53,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.jp2k");
+            org.geotools.util.logging.Logging.getLogger(JP2KFormat.class);
 
     /** The {@code String} representing the parameter to customize multithreading use */
     private static final String USE_MT = "USE_MULTITHREADING";

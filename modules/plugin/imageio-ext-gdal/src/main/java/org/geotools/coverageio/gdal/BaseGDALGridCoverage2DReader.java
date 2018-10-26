@@ -54,8 +54,7 @@ public abstract class BaseGDALGridCoverage2DReader extends BaseGridCoverage2DRea
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    BaseGDALGridCoverage2DReader.class.toString());
+            org.geotools.util.logging.Logging.getLogger(BaseGDALGridCoverage2DReader.class);
 
     /**
      * Creates a new instance of a {@link BaseGDALGridCoverage2DReader}. I assume nothing about file

@@ -40,7 +40,7 @@ import org.w3c.dom.Document;
  */
 public class GenerateSVG {
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.svgsupport");
+            org.geotools.util.logging.Logging.getLogger(GenerateSVG.class);
 
     // exportSVG start
     /**

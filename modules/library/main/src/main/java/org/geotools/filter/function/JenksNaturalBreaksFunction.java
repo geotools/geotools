@@ -39,7 +39,7 @@ import org.opengis.filter.capability.FunctionName;
 public class JenksNaturalBreaksFunction extends ClassificationFunction {
     org.opengis.util.ProgressListener progress;
 
-    private static final Logger logger = Logging.getLogger("org.geotools.filter.function");
+    private static final Logger logger = Logging.getLogger(JenksNaturalBreaksFunction.class);
 
     public static FunctionName NAME =
             new FunctionNameImpl(

@@ -51,7 +51,7 @@ import org.junit.Test;
  */
 public class ArcSDEJNDIDataStoreFactoryTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEJNDIDataStoreFactoryTest.class);
 
     private static ArcSDEJNDIDataStoreFactory factory;
 

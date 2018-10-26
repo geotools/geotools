@@ -94,7 +94,7 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class GMLComplexTypes {
     // used for debugging
-    protected static Logger logger = getLogger();
+    protected static Logger logger = getLogger(GMLComplexTypes.class);
 
     /**
      * Returns the logger to be used for this class.
@@ -105,8 +105,8 @@ public class GMLComplexTypes {
      *     be changed from Level.INFO to Level.FINE.
      * @todo The logger package should probably be {@code "org.geotools.xml.gml"}.
      */
-    private static final Logger getLogger() {
-        Logger l = org.geotools.util.logging.Logging.getLogger("net.refractions.gml.static");
+    private static final Logger getLogger(GMLComplexTypes.class) {
+        Logger l = org.geotools.util.logging.Logging.getLogger(GMLComplexTypes.class);
         l.setLevel(Level.WARNING);
         return l;
     }

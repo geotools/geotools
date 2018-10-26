@@ -65,7 +65,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class GatherCoverageMetadataCommand extends Command<RasterDatasetInfo> {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(GatherCoverageMetadataCommand.class);
 
     private final boolean statisticsMandatory;
 

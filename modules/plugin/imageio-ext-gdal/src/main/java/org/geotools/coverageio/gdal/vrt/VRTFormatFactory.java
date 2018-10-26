@@ -34,7 +34,7 @@ public final class VRTFormatFactory extends BaseGridFormatFactorySPI
         implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.vrt");
+            org.geotools.util.logging.Logging.getLogger(VRTFormatFactory.class);
 
     @Override
     public boolean isAvailable() {

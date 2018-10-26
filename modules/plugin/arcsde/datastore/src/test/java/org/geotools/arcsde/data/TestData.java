@@ -81,7 +81,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class TestData {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TestData.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(TestData.class);
 
     public static final String[] TEST_TABLE_COLS = {
         "INT32_COL",

@@ -44,7 +44,7 @@ import org.junit.Test;
 public class DbaseFileTest extends TestCaseSupport {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+            org.geotools.util.logging.Logging.getLogger(DbaseFileTest.class);
 
     static final String TEST_FILE = "shapes/statepop.dbf";
 

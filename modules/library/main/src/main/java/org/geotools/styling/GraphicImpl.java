@@ -41,7 +41,7 @@ import org.opengis.util.Cloneable;
 public class GraphicImpl implements Graphic, Cloneable {
     /** The logger for the default core module. */
     // private static final java.util.logging.Logger LOGGER =
-    // org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    // org.geotools.util.logging.Logging.getLogger(GraphicImpl.class);
 
     private final List<GraphicalSymbol> graphics = new ArrayList<GraphicalSymbol>();
 

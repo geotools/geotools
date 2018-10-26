@@ -38,7 +38,7 @@ import org.geotools.data.Transaction;
 public class JDBCUtils {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
+            org.geotools.util.logging.Logging.getLogger(JDBCUtils.class);
 
     /** Non Constructable. */
     private JDBCUtils() {

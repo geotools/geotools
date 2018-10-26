@@ -42,7 +42,7 @@ import org.geotools.util.logging.Logging;
 @SuppressWarnings("nls")
 public class SimpleHttpProtocol implements HTTPProtocol {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.ws.protocol.http");
+    private static final Logger LOGGER = Logging.getLogger(SimpleHttpProtocol.class);
 
     private static class SimpleHttpResponse implements HTTPResponse {
 

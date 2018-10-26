@@ -45,7 +45,7 @@ import org.opengis.filter.identity.FeatureId;
 
 public class ArcSdeFeatureStore extends ArcSdeFeatureSource implements SimpleFeatureStore {
 
-    private static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureStore.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureStore.class);
 
     public ArcSdeFeatureStore(
             final FeatureTypeInfo typeInfo, final ArcSDEDataStore arcSDEDataStore) {

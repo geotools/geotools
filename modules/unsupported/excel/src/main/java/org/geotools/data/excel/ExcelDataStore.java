@@ -71,7 +71,7 @@ public class ExcelDataStore extends ContentDataStore {
 
     private CoordinateReferenceSystem projection;
 
-    private static final Logger logger = Logging.getLogger("org.geotools.excel");
+    private static final Logger logger = Logging.getLogger(ExcelDataStore.class);
 
     public ExcelDataStore(
             URL url,

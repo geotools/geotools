@@ -76,7 +76,7 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal");
+            org.geotools.util.logging.Logging.getLogger(BaseGridCoverage2DReader.class);
 
     /** registering ImageReadMT JAI operation (for multithread ImageRead) */
     static {

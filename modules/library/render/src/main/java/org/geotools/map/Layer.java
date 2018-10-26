@@ -48,7 +48,7 @@ import org.opengis.style.FeatureTypeStyle;
 public abstract class Layer {
 
     /** The logger for the map module. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    protected static final Logger LOGGER = Logging.getLogger(Layer.class);
 
     /** Human readable title for the layer. */
     protected String title;

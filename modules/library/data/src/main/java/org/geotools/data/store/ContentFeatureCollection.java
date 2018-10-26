@@ -51,7 +51,7 @@ import org.opengis.filter.Filter;
  */
 public class ContentFeatureCollection implements SimpleFeatureCollection {
 
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.data.store");
+    protected static final Logger LOGGER = Logging.getLogger(ContentFeatureCollection.class);
     /** feature store the collection originated from. */
     protected ContentFeatureSource featureSource;
 

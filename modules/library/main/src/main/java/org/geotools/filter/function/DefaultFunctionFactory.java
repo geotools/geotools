@@ -51,7 +51,7 @@ import org.opengis.filter.expression.Literal;
  * @author Justin Deoliveira, OpenGeo
  */
 public class DefaultFunctionFactory implements FunctionFactory {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.filter");
+    private static final Logger LOGGER = Logging.getLogger(DefaultFunctionFactory.class);
     private FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
 
     private Map<Name, FunctionDescriptor> functionCache;

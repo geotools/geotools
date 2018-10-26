@@ -56,7 +56,7 @@ import org.geotools.xml.Schemas;
  *
  */
 public class BindingGenerator extends AbstractGenerator {
-    static Logger logger = org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
+    static Logger logger = org.geotools.util.logging.Logging.getLogger(BindingGenerator.class);
     boolean generateXsd = true;
     boolean generateAttributes = true;
     boolean generateElements = true;

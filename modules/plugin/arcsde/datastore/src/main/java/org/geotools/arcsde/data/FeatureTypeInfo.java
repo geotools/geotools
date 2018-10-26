@@ -29,7 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  */
 final class FeatureTypeInfo {
 
-    private static final Logger LOGGER = Logging.getLogger(FeatureTypeInfo.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(FeatureTypeInfo.class);
 
     private final SimpleFeatureType featureType;
 

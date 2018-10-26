@@ -36,7 +36,7 @@ public final class IDRISIReader extends BaseGDALGridCoverage2DReader implements 
     /** Logger. */
     @SuppressWarnings("unused")
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IDRISIReader.class.toString());
+            org.geotools.util.logging.Logging.getLogger(IDRISIReader.class);
 
     /**
      * Creates a new instance of a {@link IDRISIReader}. I assume nothing about file extension.

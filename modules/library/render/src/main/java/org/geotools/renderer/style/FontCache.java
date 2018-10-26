@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 public class FontCache {
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(FontCache.class);
 
     static FontCache defaultInstance;
 

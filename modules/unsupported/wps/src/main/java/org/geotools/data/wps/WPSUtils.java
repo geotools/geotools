@@ -56,7 +56,7 @@ import org.opengis.util.InternationalString;
  */
 public class WPSUtils {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wps");
+            org.geotools.util.logging.Logging.getLogger(WPSUtils.class);
 
     /** static ints representing the input types */
     public static final int INPUTTYPE_LITERAL = 1;

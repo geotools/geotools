@@ -39,7 +39,7 @@ public class GRIBFormat extends NetCDFFormat {
             new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
 
     private static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.io.grib.GRIBFormat");
+            Logging.getLogger(GRIBFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public GRIBFormat() {

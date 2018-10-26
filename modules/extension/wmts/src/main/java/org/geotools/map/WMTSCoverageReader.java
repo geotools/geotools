@@ -45,7 +45,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
     /** The logger for the map module. */
     public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.map");
+            org.geotools.util.logging.Logging.getLogger(WMTSCoverageReader.class);
 
     static GridCoverageFactory gcf = new GridCoverageFactory();
 

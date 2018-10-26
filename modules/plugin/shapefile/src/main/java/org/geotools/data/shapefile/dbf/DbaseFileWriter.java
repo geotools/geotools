@@ -320,7 +320,7 @@ public class DbaseFileWriter {
 
         private boolean swallowFieldSizeErrors = false;
         private static Logger logger =
-                org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+                org.geotools.util.logging.Logging.getLogger(DbaseFileWriter.class);
 
         public FieldFormatter(Charset charset, TimeZone timeZone, boolean swallowFieldSizeErrors) {
             // Avoid grouping on number format

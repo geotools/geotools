@@ -39,7 +39,7 @@ import org.junit.Test;
 
 public class ArcGISRestDataStoreFactoryTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.arcgisrest");
+    private static final Logger LOGGER = Logging.getLogger(ArcGISRestDataStoreFactoryTest.class);
 
     public static String URL = "http://data.dhs.opendata.arcgis.com/data.json";
     public static String WSURL =

@@ -35,7 +35,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class JP2KFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.jp2k");
+            org.geotools.util.logging.Logging.getLogger(JP2KFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public JP2KFormat() {

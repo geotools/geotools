@@ -81,7 +81,7 @@ public class Rendering2DTest extends TestCase {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(Rendering2DTest.class);
 
     private final int xCenter = -74;
 

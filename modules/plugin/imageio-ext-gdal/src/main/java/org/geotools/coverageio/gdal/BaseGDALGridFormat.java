@@ -55,7 +55,7 @@ public abstract class BaseGDALGridFormat extends AbstractGridFormat implements F
     }
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal");
+            org.geotools.util.logging.Logging.getLogger(BaseGDALGridFormat.class);
 
     /** The inner {@code ImageReaderSpi} */
     private final ImageReaderSpi spi;

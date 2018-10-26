@@ -102,7 +102,7 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
     /** INTERNAL_INDEX_CREATION_PAGE_SIZE */
     private static final int INTERNAL_INDEX_CREATION_PAGE_SIZE = 1000;
 
-    private static final Logger LOGGER = Logging.getLogger(NetCDFImageReader.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(NetCDFImageReader.class);
 
     private Exception tracer;
 

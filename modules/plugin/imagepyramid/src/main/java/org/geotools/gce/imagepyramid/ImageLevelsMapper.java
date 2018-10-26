@@ -49,7 +49,7 @@ class ImageLevelsMapper {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImageLevelsMapper.class.toString());
+            org.geotools.util.logging.Logging.getLogger(ImageLevelsMapper.class);
 
     /**
      * The whole number of overviews in the pyramid.

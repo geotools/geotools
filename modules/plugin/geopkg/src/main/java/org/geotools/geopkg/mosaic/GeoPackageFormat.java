@@ -42,7 +42,7 @@ import org.opengis.parameter.GeneralParameterDescriptor;
 public class GeoPackageFormat extends AbstractGridFormat {
 
     private static final Logger LOGGER =
-            Logging.getLogger(GeoPackageFormat.class.getPackage().getName());
+            Logging.getLogger(GeoPackageFormat.class);
 
     public static File getFileFromSource(Object source) {
         if (source == null) {

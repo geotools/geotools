@@ -35,7 +35,7 @@ import org.opengis.util.Cloneable;
 public class PointPlacementImpl implements PointPlacement, Cloneable {
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(PointPlacementImpl.class);
 
     // TODO: make container ready
     private final FilterFactory filterFactory;

@@ -44,7 +44,7 @@ import org.geotools.ows.ServiceException;
 public abstract class AbstractWPS<C extends WPSCapabilitiesType, R extends Object> {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
+            org.geotools.util.logging.Logging.getLogger(AbstractWPS.class);
     protected HTTPClient httpClient;
     protected final URL serverURL;
     protected C capabilities;

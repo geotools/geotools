@@ -34,7 +34,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class SRPFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SRPFormat.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(SRPFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public SRPFormat() {

@@ -44,7 +44,7 @@ public final class GrassCoverageFormat extends AbstractGridFormat implements For
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.grassraster");
+            org.geotools.util.logging.Logging.getLogger(GrassCoverageFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public GrassCoverageFormat() {

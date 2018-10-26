@@ -47,7 +47,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class InProcessLockingManager implements LockingManager {
     /** The logger for the postgis module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.data");
+            org.geotools.util.logging.Logging.getLogger(InProcessLockingManager.class);
 
     /** lockTable access by typeName stores Transactions or MemoryLocks */
     protected Map lockTables = new HashMap();

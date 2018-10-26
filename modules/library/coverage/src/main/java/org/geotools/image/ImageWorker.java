@@ -174,7 +174,7 @@ public class ImageWorker {
     }
 
     /** The logger to use for this class. */
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.image");
+    private static final Logger LOGGER = Logging.getLogger(ImageWorker.class);
 
     /** CODEC_LIB_AVAILABLE */
     private static final boolean CODEC_LIB_AVAILABLE = PackageUtil.isCodecLibAvailable();

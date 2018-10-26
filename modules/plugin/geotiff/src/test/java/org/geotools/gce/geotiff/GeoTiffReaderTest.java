@@ -91,7 +91,7 @@ import org.opengis.referencing.operation.Projection;
  */
 public class GeoTiffReaderTest extends org.junit.Assert {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class.toString());
+            org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class);
 
     static boolean oldOverrideInnerCRS;
 

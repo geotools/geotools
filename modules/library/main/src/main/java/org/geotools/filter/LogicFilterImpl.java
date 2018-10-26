@@ -35,7 +35,7 @@ import org.opengis.filter.FilterVisitor;
 public abstract class LogicFilterImpl extends BinaryLogicAbstract {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(LogicFilterImpl.class);
 
     /**
      * Computing the hash can be expensive for large logic filters, Effective Java suggests to cache

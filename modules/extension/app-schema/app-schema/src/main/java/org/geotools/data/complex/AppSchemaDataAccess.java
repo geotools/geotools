@@ -83,8 +83,7 @@ import org.opengis.filter.sort.SortOrder;
 public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    AppSchemaDataAccess.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(AppSchemaDataAccess.class);
 
     private Map<Name, FeatureTypeMapping> mappings = new LinkedHashMap<Name, FeatureTypeMapping>();
 

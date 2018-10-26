@@ -78,7 +78,7 @@ public class NetCDFCFParser {
 
     private static JAXBContext context;
 
-    private static final Logger LOGGER = Logging.getLogger(NetCDFCFParser.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(NetCDFCFParser.class);
 
     static {
         try {

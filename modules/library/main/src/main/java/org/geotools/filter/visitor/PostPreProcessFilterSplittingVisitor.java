@@ -127,7 +127,7 @@ import org.opengis.filter.temporal.TOverlaps;
  */
 public class PostPreProcessFilterSplittingVisitor implements FilterVisitor, ExpressionVisitor {
     private static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(PostPreProcessFilterSplittingVisitor.class);
 
     /**
      * The stack holding the bits of the filter that are not processable by something with the given

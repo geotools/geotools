@@ -173,8 +173,7 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class FeatureTypeTransformer extends TransformerBase {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    "org.geotools.gml.producer.FeatureTypeTransformer");
+            org.geotools.util.logging.Logging.getLogger(FeatureTypeTransformer.class);
     private static final String SCHEMA_NS = "http://www.w3.org/2001/XMLSchema";
 
     /**

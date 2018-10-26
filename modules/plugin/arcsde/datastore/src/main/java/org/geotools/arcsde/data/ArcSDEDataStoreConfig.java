@@ -46,7 +46,7 @@ public class ArcSDEDataStoreConfig {
      * ArcSDEDataStoreConfige's logger
      */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.arcsde.pool");
+            org.geotools.util.logging.Logging.getLogger(ArcSDEDataStoreConfig.class);
 
     /** message of the exception thrown if a mandatory parameter is not supplied */
     private static final String NULL_ARGUMENTS_MSG =

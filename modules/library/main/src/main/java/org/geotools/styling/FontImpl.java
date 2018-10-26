@@ -38,7 +38,7 @@ public class FontImpl implements Font, Cloneable {
     /** The logger for the default core module. */
 
     // private static final Logger LOGGER =
-    // org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    // org.geotools.util.logging.Logging.getLogger(FontImpl.class);
     private final List<Expression> fontFamily = new ArrayList<Expression>();
 
     private Expression fontSize = null;

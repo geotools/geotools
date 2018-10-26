@@ -35,7 +35,7 @@ import org.opengis.coverage.grid.Format;
 public final class IDRISIFormatFactory implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IDRISIFormatFactory.class.toString());
+            org.geotools.util.logging.Logging.getLogger(IDRISIFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access EHdr is available or not.

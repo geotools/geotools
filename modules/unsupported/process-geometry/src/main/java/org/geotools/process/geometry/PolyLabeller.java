@@ -35,7 +35,7 @@ import org.locationtech.jts.geom.Polygon;
  * @author Casper Børgesen
  */
 public class PolyLabeller {
-    private static final Logger LOGGER = Logging.getLogger(PolyLabeller.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(PolyLabeller.class);
 
     static GeometryBuilder GB = new GeometryBuilder();
 

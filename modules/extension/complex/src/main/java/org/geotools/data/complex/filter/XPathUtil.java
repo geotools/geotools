@@ -48,7 +48,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class XPathUtil {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(XPathUtil.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(XPathUtil.class);
 
     public static class StepList extends CheckedArrayList<Step> {
         private static final long serialVersionUID = -5612786286175355862L;

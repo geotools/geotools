@@ -38,8 +38,7 @@ import org.opengis.coverage.grid.GridCoverageWriter;
 public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
 
     /** The {@link Logger} for this {@link AbstractGridCoverageWriter}. */
-    private static final Logger LOGGER =
-            Logging.getLogger(AbstractGridCoverageWriter.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(AbstractGridCoverageWriter.class);
 
     /** the destination object where we will do the writing */
     protected Object destination;

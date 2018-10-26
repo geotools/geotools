@@ -111,7 +111,7 @@ import org.opengis.feature.type.Name;
  */
 public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
     /** logger */
-    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SimpleFeatureBuilder.class);
 
     /** the feature type */
     SimpleFeatureType featureType;

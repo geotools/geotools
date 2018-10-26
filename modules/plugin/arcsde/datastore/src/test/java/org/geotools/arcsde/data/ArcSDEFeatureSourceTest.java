@@ -80,8 +80,7 @@ import org.opengis.filter.spatial.BBOX;
 public class ArcSDEFeatureSourceTest {
     /** package logger */
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    ArcSDEFeatureSourceTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(ArcSDEFeatureSourceTest.class);
 
     private static TestData testData;
 

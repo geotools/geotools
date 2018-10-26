@@ -92,7 +92,7 @@ import org.opengis.style.GraphicalSymbol;
 public class SLDStyleFactory {
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(SLDStyleFactory.class);
 
     /** Java System Property to enable legacy default anchor point. */
     public static final String USE_LEGACY_ANCHOR_POINT_KEY =

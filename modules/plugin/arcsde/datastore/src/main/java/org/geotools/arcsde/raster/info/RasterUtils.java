@@ -66,7 +66,7 @@ import org.opengis.referencing.operation.TransformException;
 @SuppressWarnings({"nls"})
 public class RasterUtils {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(RasterUtils.class);
 
     private RasterUtils() {
         // do nothing

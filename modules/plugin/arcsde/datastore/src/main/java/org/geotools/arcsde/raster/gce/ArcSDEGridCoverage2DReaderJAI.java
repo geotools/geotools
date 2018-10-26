@@ -88,7 +88,7 @@ import org.opengis.referencing.operation.TransformException;
 public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEGridCoverage2DReaderJAI.class);
 
     /** @see LoggingHelper#log(RenderedImage, Long, String) */
     private static final boolean DEBUG_TO_DISK =

@@ -69,7 +69,7 @@ import org.geotools.util.logging.Logging;
 public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
     /** package's logger */
     protected static final Logger LOGGER =
-            Logging.getLogger(ArcSDEDataStoreFactory.class.getName());
+            Logging.getLogger(ArcSDEDataStoreFactory.class);
 
     /** friendly factory description */
     public static final String FACTORY_DESCRIPTION = "ESRI(tm) ArcSDE 9.2+ vector data store";

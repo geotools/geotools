@@ -32,7 +32,7 @@ import org.geotools.util.CheckedArrayList;
  */
 public class TypeMapping implements Serializable {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(TypeMapping.class);
 
     private static final long serialVersionUID = 1444252634598922057L;
 

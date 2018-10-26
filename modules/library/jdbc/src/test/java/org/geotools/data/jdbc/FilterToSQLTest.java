@@ -56,7 +56,7 @@ import org.opengis.filter.identity.FeatureId;
 public class FilterToSQLTest extends TestCase {
     private FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(null);
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
+            org.geotools.util.logging.Logging.getLogger(FilterToSQLTest.class);
 
     private SimpleFeatureType integerFType;
     private SimpleFeatureType stringFType;

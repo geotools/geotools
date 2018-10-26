@@ -39,7 +39,7 @@ import org.xml.sax.SAXException;
 public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
     /** The logger for the GML module */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
+            org.geotools.util.logging.Logging.getLogger(GMLFilterDocument.class);
 
     // Static Globals to handle some expected elements
 

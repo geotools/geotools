@@ -42,7 +42,7 @@ public abstract class ClassificationFunction extends DefaultExpression
         implements FunctionExpression {
 
     protected static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(ClassificationFunction.class);
 
     FunctionName name;
 

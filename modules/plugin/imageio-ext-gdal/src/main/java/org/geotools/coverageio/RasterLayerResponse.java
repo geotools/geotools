@@ -65,7 +65,7 @@ class RasterLayerResponse {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio");
+            org.geotools.util.logging.Logging.getLogger(RasterLayerResponse.class);
 
     /** The GridCoverage produced after a {@link #compute()} method call */
     private GridCoverage gridCoverage;

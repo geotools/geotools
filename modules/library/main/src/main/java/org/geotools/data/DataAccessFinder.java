@@ -49,7 +49,7 @@ import org.opengis.feature.type.FeatureType;
 public final class DataAccessFinder {
     /** The logger for the filter module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data");
+            org.geotools.util.logging.Logging.getLogger(DataAccessFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static FactoryRegistry registry;

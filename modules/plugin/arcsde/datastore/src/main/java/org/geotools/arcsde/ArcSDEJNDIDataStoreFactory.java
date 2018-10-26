@@ -65,7 +65,7 @@ import org.geotools.util.logging.Logging;
  */
 public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEJNDIDataStoreFactory.class);
 
     private final ArcSDEDataStoreFactory delegateFactory;
 

@@ -35,7 +35,7 @@ public abstract class SubchainStyleVisitorCoverageProcessingAdapter
         extends StyleVisitorCoverageProcessingNodeAdapter {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logging.getLogger(RasterSymbolizerHelper.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(RasterSymbolizerHelper.class);
     /**
      * sink for the internal graph of {@link CoverageProcessingNode}s created to satisfy the
      * provided SLD.

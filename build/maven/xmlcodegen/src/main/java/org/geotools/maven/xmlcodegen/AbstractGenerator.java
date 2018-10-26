@@ -43,7 +43,7 @@ import org.geotools.xml.Schemas;
  *
  */
 public abstract class AbstractGenerator {
-    static Logger logger = org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
+    static Logger logger = org.geotools.util.logging.Logging.getLogger(AbstractGenerator.class);
 
     /**
      * Package base

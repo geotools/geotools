@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wms.xml.test;
+package org.geotools.ows.wms.xml.test;
 
 import java.io.File;
 import java.net.URL;

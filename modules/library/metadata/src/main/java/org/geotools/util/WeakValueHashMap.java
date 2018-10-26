@@ -262,7 +262,7 @@ public class WeakValueHashMap<K, V> extends AbstractMap<K, V> {
                 }
             }
         }
-        final Logger logger = Logging.getLogger("org.geotools.util");
+        final Logger logger = Logging.getLogger(WeakValueHashMap.class);
         final Level level = Level.FINEST;
         if (logger.isLoggable(level)) {
             final LogRecord record =

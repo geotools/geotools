@@ -32,7 +32,7 @@ import org.opengis.util.Cloneable;
 public class FillImpl implements Fill, Cloneable {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(FillImpl.class);
 
     private FilterFactory filterFactory;
     private Expression color = null;

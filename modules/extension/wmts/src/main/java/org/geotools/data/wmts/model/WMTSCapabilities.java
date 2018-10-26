@@ -78,7 +78,7 @@ import org.opengis.referencing.operation.TransformException;
 public class WMTSCapabilities extends Capabilities {
 
     public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wmts");
+            org.geotools.util.logging.Logging.getLogger(WMTSCapabilities.class);
 
     private WMTSRequest request;
 

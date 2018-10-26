@@ -66,8 +66,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 abstract class JDBCAccessBase implements JDBCAccess {
     /** Logger. */
-    protected static final Logger LOGGER =
-            Logging.getLogger(JDBCAccessBase.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(JDBCAccessBase.class);
 
     private List<ImageLevelInfo> levelInfos = new ArrayList<ImageLevelInfo>();
 

@@ -86,7 +86,7 @@ public class NADCONGridShiftFactory extends ReferencingFactory implements Buffer
     private static final int GRID_CACHE_HARD_REFERENCES = 10;
 
     /** Logger. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.referencing");
+    protected static final Logger LOGGER = Logging.getLogger(NADCONGridShiftFactory.class);
 
     /** The soft cache that holds loaded grids. */
     private SoftValueHashMap<NADCONKey, NADConGridShift> gridCache;

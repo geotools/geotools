@@ -34,7 +34,7 @@ public final class RPFTOCFormatFactory extends BaseGridFormatFactorySPI
         implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.rpftoc");
+            org.geotools.util.logging.Logging.getLogger(RPFTOCFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access Erdas imagine is available or not.

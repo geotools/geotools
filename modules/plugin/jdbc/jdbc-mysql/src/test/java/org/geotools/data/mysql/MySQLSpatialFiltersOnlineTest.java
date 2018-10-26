@@ -28,15 +28,15 @@ public class MySQLSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest 
         // uncomment code below to enable logging
         // java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         // handler.setLevel(java.util.logging.Level.FINE);
-        // org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
+        // org.geotools.util.logging.Logging.getLogger(MySQLSpatialFiltersOnlineTest.class).addHandler(handler);
 
         if (dialect instanceof MySQLDialect) {
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc")
+            org.geotools.util.logging.Logging.getLogger(MySQLSpatialFiltersOnlineTest.class)
                     .info(
                             "MySQLDialect enhanced spatial support is:"
                                     + ((MySQLDialect) dialect).getUsePreciseSpatialOps());
         } else if (dialect instanceof MySQLDialectBasic) {
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc")
+            org.geotools.util.logging.Logging.getLogger(MySQLSpatialFiltersOnlineTest.class)
                     .info(
                             "MySQLDialectBasic enhanced spatial support is:"
                                     + ((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());

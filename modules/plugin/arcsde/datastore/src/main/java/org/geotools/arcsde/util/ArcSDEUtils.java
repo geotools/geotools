@@ -43,7 +43,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public final class ArcSDEUtils {
 
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    public static final Logger LOGGER = Logging.getLogger(ArcSDEUtils.class);
 
     private static final WeakHashMap<String, CoordinateReferenceSystem> PE_CS_TO_EPSG =
             new WeakHashMap<String, CoordinateReferenceSystem>();

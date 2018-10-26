@@ -101,7 +101,8 @@ import org.opengis.util.InternationalString;
  */
 public class SimpleFeatureTypeBuilder {
     /** logger */
-    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.feature");
+    static Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(SimpleFeatureTypeBuilder.class);
 
     /** factories */
     protected FeatureTypeFactory factory;

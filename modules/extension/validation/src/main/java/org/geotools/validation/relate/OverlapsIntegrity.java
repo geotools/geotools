@@ -61,7 +61,7 @@ import org.opengis.filter.spatial.Disjoint;
  */
 public class OverlapsIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(OverlapsIntegrity.class);
     private static HashSet usedIDs;
     private boolean showPrintLines = true;
 

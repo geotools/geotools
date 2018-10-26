@@ -88,7 +88,7 @@ import org.geotools.util.logging.Logging;
  */
 public class FactoryRegistry {
     /** The logger for all events related to factory registry. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.util.factory");
+    protected static final Logger LOGGER = Logging.getLogger(FactoryRegistry.class);
 
     /** The logger level for debug messages. */
     private static final Level DEBUG_LEVEL = Level.FINEST;

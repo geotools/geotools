@@ -76,7 +76,7 @@ import org.opengis.referencing.cs.AxisDirection;
 public final class ArcGridWriter extends AbstractGridCoverageWriter implements GridCoverageWriter {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.arcgrid");
+            org.geotools.util.logging.Logging.getLogger(ArcGridWriter.class);
 
     /** Imageio {@link AsciiGridsImageWriter} we will use to write out. */
     private AsciiGridsImageWriter mWriter =

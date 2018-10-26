@@ -73,7 +73,7 @@ public class WorldFileWriter {
 
     /** Logger for this class. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.data");
+            org.geotools.util.logging.Logging.getLogger(WorldFileWriter.class);
 
     /**
      * Constructor.

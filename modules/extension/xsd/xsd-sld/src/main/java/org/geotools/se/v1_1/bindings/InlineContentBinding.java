@@ -73,7 +73,7 @@ import org.geotools.xml.*;
  * @generated
  */
 public class InlineContentBinding extends AbstractComplexBinding {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.sld");
+    private static final Logger LOGGER = Logging.getLogger(InlineContentBinding.class);
 
     /** @generated */
     public QName getTarget() {

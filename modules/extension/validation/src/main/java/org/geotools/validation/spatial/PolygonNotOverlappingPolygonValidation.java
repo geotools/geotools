@@ -37,7 +37,8 @@ import org.opengis.feature.simple.SimpleFeature;
 public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstractValidation {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(
+                    PolygonNotOverlappingPolygonValidation.class);
 
     /**
      * PolygonBoundaryCoveredByPolygonValidation constructor.

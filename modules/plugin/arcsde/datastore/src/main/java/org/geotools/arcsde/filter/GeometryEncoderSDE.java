@@ -74,7 +74,8 @@ import org.opengis.filter.spatial.Within;
 @SuppressWarnings("deprecation")
 public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVisitor {
     /** Standard java logger */
-    private static Logger log = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+    private static Logger log =
+            org.geotools.util.logging.Logging.getLogger(GeometryEncoderSDE.class);
 
     private static FilterCapabilities capabilities = new FilterCapabilities();
 

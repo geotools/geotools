@@ -65,7 +65,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class MapViewport {
 
     /** The logger for the map module. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    protected static final Logger LOGGER = Logging.getLogger(MapViewport.class);
 
     /*
      * Flags whether this viewport can be changed

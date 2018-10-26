@@ -49,7 +49,7 @@ import org.geotools.util.logging.Logging;
  */
 class WMTSTile extends Tile {
 
-    protected static final Logger LOGGER = Logging.getLogger(WMTSTile.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(WMTSTile.class);
 
     public static final String WMTS_TILE_CACHE_SIZE_PROPERTY_NAME = "wmts.tile.cache.size";
 

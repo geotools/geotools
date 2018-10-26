@@ -44,7 +44,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  */
 public final class JP2KTest extends GDALTestCase {
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.jp2kak");
+            org.geotools.util.logging.Logging.getLogger(JP2KTest.class);
 
     /** file name of a valid JP2K sample data to be used for tests. */
     private static final String fileName = "sample.jp2";

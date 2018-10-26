@@ -310,7 +310,7 @@ public class ParserHandler extends DefaultHandler2 {
 
         if (logger == null) {
             // create a default
-            logger = org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
+            logger = org.geotools.util.logging.Logging.getLogger(ParserHandler.class);
             context.registerComponentInstance(logger);
         }
 

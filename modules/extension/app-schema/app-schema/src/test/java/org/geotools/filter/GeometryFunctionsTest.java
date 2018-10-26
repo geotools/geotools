@@ -64,7 +64,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class GeometryFunctionsTest extends AppSchemaTestSupport {
 
     public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(GeometryFunctionsTest.class);
 
     private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 

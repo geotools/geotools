@@ -38,7 +38,7 @@ import org.geotools.util.logging.Logging;
  * @author jesse
  */
 public final class StorageFile implements Comparable<StorageFile>, FileWriter {
-    static final Logger LOGGER = Logging.getLogger("org.geotools.data.shapefile");
+    static final Logger LOGGER = Logging.getLogger(StorageFile.class);
 
     private final ShpFiles shpFiles;
     private final File tempFile;

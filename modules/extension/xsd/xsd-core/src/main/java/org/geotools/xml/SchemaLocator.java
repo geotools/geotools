@@ -42,7 +42,7 @@ import org.eclipse.xsd.util.XSDSchemaLocator;
 public class SchemaLocator implements XSDSchemaLocator {
     /** logging instance */
     protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
+            org.geotools.util.logging.Logging.getLogger(SchemaLocator.class);
 
     /** The xsd instance. */
     protected XSD xsd;

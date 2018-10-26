@@ -39,7 +39,7 @@ import org.locationtech.jts.geom.Envelope;
  */
 public class FileSystemIndexStore implements IndexStore {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.index.quadtree");
+            org.geotools.util.logging.Logging.getLogger(FileSystemIndexStore.class);
     private File file;
     private byte byteOrder;
 

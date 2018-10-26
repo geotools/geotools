@@ -72,7 +72,7 @@ public class StyledShapePainter {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(StyledShapePainter.class.getName());
+            org.geotools.util.logging.Logging.getLogger(StyledShapePainter.class);
     /** Whether icon centers should be matched to a pixel center, or not */
     public static boolean ROUND_ICON_COORDS =
             Boolean.parseBoolean(

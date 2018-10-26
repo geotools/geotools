@@ -48,7 +48,7 @@ import org.opengis.feature.type.GeometryDescriptor;
  */
 final class ArcSDEAttributeReader implements AttributeReader {
     /** Shared package's logger */
-    private static final Logger LOGGER = Logging.getLogger(ArcSDEAttributeReader.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEAttributeReader.class);
 
     /** query passed to the constructor */
     private ArcSDEQuery query;

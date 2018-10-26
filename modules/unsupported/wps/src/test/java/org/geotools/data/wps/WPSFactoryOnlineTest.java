@@ -56,7 +56,7 @@ import org.locationtech.jts.io.WKTReader;
  */
 public class WPSFactoryOnlineTest extends OnlineTestCase {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wps");
+            org.geotools.util.logging.Logging.getLogger(WPSFactoryOnlineTest.class);
 
     private WebProcessingService wps;
 

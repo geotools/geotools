@@ -71,8 +71,7 @@ import org.opengis.referencing.operation.TransformException;
  * @since 2.5
  */
 public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
-    private static final Logger LOGGER =
-            Logging.getLogger(ImageMosaicJDBCReader.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(ImageMosaicJDBCReader.class);
 
     protected static final CoordinateOperationFactory operationFactory =
             new BufferedCoordinateOperationFactory(

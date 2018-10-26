@@ -130,7 +130,7 @@ public class HsqlEpsgDatabase {
      */
     private static void generateData(javax.sql.DataSource dataSource) throws SQLException {
         Connection connection = dataSource.getConnection();
-        Logging.getLogger("org.geotools.referencing.factory")
+        Logging.getLogger(HsqlEpsgDatabase.class)
                 .config("Creating cached EPSG database."); // TODO: localize
         final Statement statement = connection.createStatement();
         try {

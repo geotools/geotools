@@ -48,8 +48,7 @@ import org.geotools.arcsde.session.ISession;
 @SuppressWarnings("unchecked")
 public class QueryInfoParser {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    QueryInfoParser.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(QueryInfoParser.class);
 
     public static SeQueryInfo parse(ISession session, PlainSelect select)
             throws SeException, IOException {

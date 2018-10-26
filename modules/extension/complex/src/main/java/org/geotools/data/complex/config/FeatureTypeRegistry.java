@@ -72,7 +72,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class FeatureTypeRegistry {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.complex");
+    private static final Logger LOGGER = Logging.getLogger(FeatureTypeRegistry.class);
 
     private List<SchemaIndex> schemas;
 

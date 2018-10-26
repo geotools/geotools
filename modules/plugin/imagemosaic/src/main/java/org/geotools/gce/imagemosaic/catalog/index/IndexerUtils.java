@@ -39,7 +39,7 @@ public class IndexerUtils {
     public static final String INDEXER_PROPERTIES = "indexer.properties";
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IndexerUtils.class.toString());
+            org.geotools.util.logging.Logging.getLogger(IndexerUtils.class);
 
     /**
      * Build {@link Collectors} element by parsing the specified propertyCollectors, and put them on

@@ -77,7 +77,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public abstract class ArcSDEGeometryBuilder {
 
-    private static final Logger LOGGER = Logging.getLogger(ArcSDEGeometryBuilder.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEGeometryBuilder.class);
 
     /** lookup specialized geometry builders classes by it's geometry type */
     private static final Map<Class<?>, ArcSDEGeometryBuilder> builders =

@@ -81,7 +81,7 @@ public class SLDParser {
             Arrays.asList(NORMALIZE, LOGARITHMIC, EXPONENTIAL, HISTOGRAM);
 
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(SLDParser.class);
 
     private static final String channelSelectionString = "ChannelSelection";
 

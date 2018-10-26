@@ -99,7 +99,7 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.gtopo30");
+            org.geotools.util.logging.Logging.getLogger(GTopo30Reader.class);
     /** Cached {@link ImageIO} SPI for creating instances of {@link RawImageReader}. */
     private static final RawImageReaderSpi imageIOSPI = new RawImageReaderSpi();
 

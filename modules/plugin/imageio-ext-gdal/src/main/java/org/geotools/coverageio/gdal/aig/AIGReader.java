@@ -37,7 +37,7 @@ public final class AIGReader extends BaseGDALGridCoverage2DReader implements Gri
     /** Logger. */
     @SuppressWarnings("unused")
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(AIGReader.class.toString());
+            org.geotools.util.logging.Logging.getLogger(AIGReader.class);
 
     /**
      * Creates a new instance of a {@link AIGReader}. I assume nothing about file extension.

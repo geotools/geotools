@@ -36,7 +36,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public abstract class SQLFilterTestSupport extends TestCase {
     /** Standard logging instance */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(SQLFilterTestSupport.class);
 
     /** Schema on which to preform tests */
     protected static SimpleFeatureType testSchema = null;

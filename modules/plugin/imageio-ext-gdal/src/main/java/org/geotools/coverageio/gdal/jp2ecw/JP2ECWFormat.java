@@ -36,7 +36,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class JP2ECWFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.jp2ecw");
+            org.geotools.util.logging.Logging.getLogger(JP2ECWFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public JP2ECWFormat() {

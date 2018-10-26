@@ -89,7 +89,7 @@ public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType,
      *     be changed from Level.INFO to Level.FINE.
      */
     private static final Logger getLogger() {
-        Logger l = org.geotools.util.logging.Logging.getLogger("org.geotools.xml.gml");
+        Logger l = org.geotools.util.logging.Logging.getLogger(FCBuffer.class);
         l.setLevel(Level.WARNING);
         return l;
     }

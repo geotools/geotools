@@ -49,8 +49,7 @@ import org.xml.sax.SAXException;
 public class XMLConfigDigester {
     /** DOCUMENT ME! */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    XMLConfigDigester.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(XMLConfigDigester.class);
 
     /** Namespace URI for the AppSchemaDataAccess configuration files */
     public static final String CONFIG_NS_URI = "http://www.geotools.org/app-schema";

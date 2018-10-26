@@ -50,8 +50,7 @@ import org.opengis.feature.type.Schema;
  */
 public abstract class XSD {
     /** logging instance */
-    protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
+    protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(XSD.class);
 
     /** schema contents */
     protected XSDSchema schema;

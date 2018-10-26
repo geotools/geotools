@@ -34,7 +34,7 @@ public final class JP2MrSIDFormatFactory extends BaseGridFormatFactorySPI
         implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.jp2mrisd");
+            org.geotools.util.logging.Logging.getLogger(JP2MrSIDFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access JP2K via MrSID driver is available or not.

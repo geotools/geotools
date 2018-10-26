@@ -300,6 +300,6 @@ public final class NIOUtilities {
                         + System.getProperty("java.version")
                         + ' '
                         + System.getProperty("java.vendor");
-        Logging.getLogger("org.geotools.io").log(Level.SEVERE, message, e);
+        Logging.getLogger(NIOUtilities.class).log(Level.SEVERE, message, e);
     }
 }

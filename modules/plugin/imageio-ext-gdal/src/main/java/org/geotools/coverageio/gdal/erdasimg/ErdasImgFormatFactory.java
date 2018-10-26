@@ -34,7 +34,7 @@ public final class ErdasImgFormatFactory extends BaseGridFormatFactorySPI
         implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.erdasimg");
+            org.geotools.util.logging.Logging.getLogger(ErdasImgFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access Erdas imagine is available or not.

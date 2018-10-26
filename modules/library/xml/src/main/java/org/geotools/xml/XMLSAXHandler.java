@@ -59,7 +59,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class XMLSAXHandler extends DefaultHandler {
     /** the logger -- should be used for debugging (assuming there are bugs LOL) */
     protected static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger("net.refractions.xml.sax");
+            org.geotools.util.logging.Logging.getLogger(XMLSAXHandler.class);
 
     protected static Level level = Level.FINE;
 

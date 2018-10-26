@@ -47,8 +47,7 @@ public class WMTSTileFactory extends TileFactory {
 
     private static final double PixelSizeMeters = 0.28e-3;
 
-    private static final Logger LOGGER =
-            Logging.getLogger(WMTSTileFactory.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(WMTSTileFactory.class);
 
     /**
      * Return a tile with the proper row and column indexes.

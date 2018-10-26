@@ -33,7 +33,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class WMTSLayer extends Layer {
 
     public static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wmts");
+            org.geotools.util.logging.Logging.getLogger(WMTSLayer.class);
 
     Map<String, TileMatrixSetLink> limits = new HashMap<>();
 

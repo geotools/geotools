@@ -71,7 +71,7 @@ public abstract class RenderingTransformationHelper {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(RenderingTransformationHelper.class);
 
     private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
 

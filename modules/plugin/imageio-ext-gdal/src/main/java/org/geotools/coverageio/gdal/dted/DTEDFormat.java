@@ -35,7 +35,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class DTEDFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.dted");
+            org.geotools.util.logging.Logging.getLogger(DTEDFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public DTEDFormat() {

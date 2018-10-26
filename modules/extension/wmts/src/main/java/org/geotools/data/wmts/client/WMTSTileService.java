@@ -55,8 +55,7 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class WMTSTileService extends TileService {
 
-    protected static final Logger LOGGER =
-            Logging.getLogger(WMTSTileService.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(WMTSTileService.class);
 
     public static final String DIMENSION_TIME = "time";
 

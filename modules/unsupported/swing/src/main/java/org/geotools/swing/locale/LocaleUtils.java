@@ -71,7 +71,7 @@ import org.geotools.util.logging.Logging;
  * @version $Id$
  */
 public class LocaleUtils {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    private static final Logger LOGGER = Logging.getLogger(LocaleUtils.class);
     private static final String PREFIX = "org/geotools/swing/locale/";
 
     /*

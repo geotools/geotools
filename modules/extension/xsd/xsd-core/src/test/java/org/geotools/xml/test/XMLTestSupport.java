@@ -143,7 +143,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 public abstract class XMLTestSupport extends TestCase {
     /** Logging instance */
     protected static Logger logger =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.xml.test");
+            org.geotools.util.logging.Logging.getLogger(XMLTestSupport.class);
 
     /** the instance document */
     protected Document document;

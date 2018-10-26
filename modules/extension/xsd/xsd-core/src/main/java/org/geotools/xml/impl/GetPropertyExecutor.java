@@ -31,7 +31,7 @@ import org.geotools.xml.ComplexBinding;
  */
 public class GetPropertyExecutor implements BindingWalker.Visitor {
     /** logger */
-    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GetPropertyExecutor.class);
 
     /** parent + child objects * */
     Object parent;

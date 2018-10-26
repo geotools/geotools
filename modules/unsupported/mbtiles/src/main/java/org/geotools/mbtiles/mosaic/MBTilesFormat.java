@@ -19,8 +19,7 @@ import org.opengis.parameter.GeneralParameterDescriptor;
 
 public class MBTilesFormat extends AbstractGridFormat {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(MBTilesFormat.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(MBTilesFormat.class);
 
     public static File getFileFromSource(Object source) {
         if (source == null) {

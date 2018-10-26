@@ -131,8 +131,7 @@ import org.opengis.referencing.operation.TransformException;
 public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
     /** Logger for the {@link GeoTiffReader} class. */
-    private Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class.toString());
+    private Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class);
 
     /**
      * With this java switch I can control whether or not an external PRJ files takes precedence

@@ -37,7 +37,7 @@ import org.geotools.graph.structure.basic.BasicGraph;
 public class AutoClust {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.graph");
+            org.geotools.util.logging.Logging.getLogger(AutoClust.class);
 
     /** Creates a new instance of AutoClust */
     public AutoClust() {}

@@ -40,7 +40,7 @@ import org.xml.sax.helpers.ParserAdapter;
 public class ParserTest extends FilterTestSupport {
     /** Standard logging instance */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(ParserTest.class);
 
     /** Test suite for this test case */
     TestSuite suite = null;

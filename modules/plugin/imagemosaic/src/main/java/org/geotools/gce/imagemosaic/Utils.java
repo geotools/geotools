@@ -190,8 +190,7 @@ public class Utils {
     private static final int COORDS_DECIMATION_THRESHOLD;
 
     /** Logger. */
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Utils.class.toString());
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(Utils.class);
 
     static {
         final String prop = System.getProperty("org.geotools.imagemosaic.optimizecrop");

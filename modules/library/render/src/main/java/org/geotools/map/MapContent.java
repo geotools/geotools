@@ -64,7 +64,7 @@ import org.opengis.referencing.operation.TransformException;
 public class MapContent {
 
     /** The logger for the map module. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    protected static final Logger LOGGER = Logging.getLogger(MapContent.class);
 
     static final String UNDISPOSED_MAPCONTENT_ERROR =
             "Call MapContent dispose() to prevent memory leaks";

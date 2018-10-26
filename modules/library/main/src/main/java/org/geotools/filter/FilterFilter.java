@@ -38,7 +38,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 public class FilterFilter extends XMLFilterImpl implements GMLHandlerJTS {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(FilterFilter.class);
 
     /** For handling and creating logic filters that come in. */
     private LogicSAXParser logicFactory;

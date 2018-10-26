@@ -28,7 +28,7 @@ import org.geotools.TestData;
 public abstract class ArcGridBaseTestCase extends TestCase {
 
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ArcGridBaseTestCase.class.toString());
+            org.geotools.util.logging.Logging.getLogger(ArcGridBaseTestCase.class);
 
     protected File[] testFiles;
 

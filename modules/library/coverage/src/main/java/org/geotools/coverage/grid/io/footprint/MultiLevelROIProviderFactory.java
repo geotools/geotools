@@ -36,8 +36,7 @@ import org.locationtech.jts.geom.Geometry;
 public class MultiLevelROIProviderFactory {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    MultiLevelROIProviderFactory.class.toString());
+            org.geotools.util.logging.Logging.getLogger(MultiLevelROIProviderFactory.class);
 
     // well known properties
     public static final String SOURCE_PROPERTY = "footprint_source";

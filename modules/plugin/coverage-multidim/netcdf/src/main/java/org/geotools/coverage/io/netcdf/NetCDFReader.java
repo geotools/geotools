@@ -125,8 +125,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     private static final String DATATYPE_SUFFIX = "_DATATYPE";
 
-    private static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.io.netcdf.NetCDFReader");
+    private static final Logger LOGGER = Logging.getLogger(NetCDFReader.class);
 
     static FileDriver DRIVER = new NetCDFDriver();
 

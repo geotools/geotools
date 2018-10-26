@@ -51,8 +51,7 @@ public class TTFMarkFactory implements MarkFactory {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    "org.geotools.rendering.style.TTFMarkFactory");
+            org.geotools.util.logging.Logging.getLogger(TTFMarkFactory.class);
 
     private static FontRenderContext FONT_RENDER_CONTEXT =
             new FontRenderContext(new AffineTransform(), false, false);

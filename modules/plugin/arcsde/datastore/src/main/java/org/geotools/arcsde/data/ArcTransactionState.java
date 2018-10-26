@@ -42,7 +42,7 @@ import org.geotools.util.logging.Logging;
  * @author Gabriel Roldan
  */
 final class ArcTransactionState implements Transaction.State {
-    private static final Logger LOGGER = Logging.getLogger(ArcTransactionState.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(ArcTransactionState.class);
 
     /**
      * ArcSDEDataStore we can use to look up a Session for our Transaction.

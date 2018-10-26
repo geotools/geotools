@@ -36,7 +36,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class EsriHdrFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.ehdr");
+            org.geotools.util.logging.Logging.getLogger(EsriHdrFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public EsriHdrFormat() {

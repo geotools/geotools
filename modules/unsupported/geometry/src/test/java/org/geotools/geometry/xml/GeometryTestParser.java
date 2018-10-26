@@ -41,7 +41,7 @@ import org.xml.sax.SAXException;
 /** @author <a href="mailto:joel@lggi.com">Joel Skelton</a> */
 public class GeometryTestParser {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");
+            org.geotools.util.logging.Logging.getLogger(GeometryTestParser.class);
 
     private DocumentBuilderFactory documentBuilderFactory;
     private DocumentBuilder documentBuilder;

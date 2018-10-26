@@ -62,7 +62,7 @@ import org.opengis.util.ProgressListener;
 public class NetCDFAccess extends DefaultFileCoverageAccess
         implements CoverageAccess, FileSetManager {
 
-    private static final Logger LOGGER = Logging.getLogger(NetCDFAccess.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(NetCDFAccess.class);
     private Exception tracer;
 
     GeoSpatialImageReader reader = null;

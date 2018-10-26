@@ -35,7 +35,7 @@ import org.opengis.util.Cloneable;
 public class DisplacementImpl implements Displacement, Cloneable {
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(DisplacementImpl.class);
 
     private FilterFactory filterFactory;
     private Expression displacementX = null;

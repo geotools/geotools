@@ -76,7 +76,7 @@ import org.xml.sax.Attributes;
 public class GMLEncodingUtils {
 
     /** logging instance */
-    static Logger LOGGER = Logging.getLogger("org.geotools.gml");
+    static Logger LOGGER = Logging.getLogger(GMLEncodingUtils.class);
 
     XSD gml;
 

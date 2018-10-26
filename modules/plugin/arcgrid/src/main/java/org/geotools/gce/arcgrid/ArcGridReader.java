@@ -94,7 +94,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.arcgrid");
+            org.geotools.util.logging.Logging.getLogger(ArcGridReader.class);
 
     /** Caches and ImageReaderSpi for an AsciiGridsImageReader. */
     private static final ImageReaderSpi readerSPI = new AsciiGridsImageReaderSpi();

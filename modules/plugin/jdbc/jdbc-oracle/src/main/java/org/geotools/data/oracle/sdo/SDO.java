@@ -68,8 +68,7 @@ import org.locationtech.jts.geom.Polygon;
  * @see net.refractions.jspatial.jts
  */
 public final class SDO {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.oracle.sdo");
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SDO.class);
     public static final int SRID_NULL = -1;
 
     //

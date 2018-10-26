@@ -41,7 +41,7 @@ import org.opengis.filter.Filter;
  */
 public class RelateIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(RelateIntegrity.class);
     private String de9im;
 
     /** RelateIntegrity Constructor */

@@ -16,6 +16,8 @@
  */
 package org.geotools.data;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -500,6 +502,11 @@ public class DataUtilitiesTest extends DataTestCase {
         assertNull(DataUtilities.defaultValue(roadType.getDescriptor("name")));
         assertNull(DataUtilities.defaultValue(roadType.getDescriptor("id")));
         assertNull(DataUtilities.defaultValue(roadType.getDescriptor("geom")));
+    }
+
+    public void testDefaultValueArray() throws Exception {
+        assertArrayEquals(new byte[] {}, (byte[]) DataUtilities.defaultValue(byte[].class));
+        assertArrayEquals(new String[] {}, (String[]) DataUtilities.defaultValue(String[].class));
     }
 
     public void testCollection() {

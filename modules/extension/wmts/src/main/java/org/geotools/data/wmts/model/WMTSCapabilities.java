@@ -102,7 +102,7 @@ public class WMTSCapabilities extends Capabilities {
     public WMTSCapabilities(CapabilitiesType capabilities) throws ServiceException {
         caps = capabilities;
         setService(new WMTSService(caps.getServiceIdentification()));
-        setVersion(caps.getServiceIdentification().getServiceTypeVersion().get(0).toString());
+        setVersion(caps.getServiceIdentification().getServiceTypeVersion().toString());
         ContentsType contents = caps.getContents();
 
         // Parse layers

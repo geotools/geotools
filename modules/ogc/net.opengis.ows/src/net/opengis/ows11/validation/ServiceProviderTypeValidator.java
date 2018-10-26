@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -16,9 +14,9 @@ import net.opengis.ows11.ResponsiblePartySubsetType;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface ServiceProviderTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateProviderName(String value);
-    boolean validateProviderSite(OnlineResourceType value);
-    boolean validateServiceContact(ResponsiblePartySubsetType value);
+  boolean validateProviderName(String value);
+  boolean validateProviderSite(OnlineResourceType value);
+  boolean validateServiceContact(ResponsiblePartySubsetType value);
 }

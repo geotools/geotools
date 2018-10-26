@@ -17,28 +17,26 @@ import org.eclipse.emf.ecore.impl.EObjectImpl;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>No SRS Type</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */
 public class NoSRSTypeImpl extends EObjectImpl implements NoSRSType {
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected NoSRSTypeImpl() {
-        super();
-    }
+    super();
+  }
 
 	/**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
 	protected EClass eStaticClass() {
-        return WfsPackage.Literals.NO_SRS_TYPE;
-    }
+    return WfsPackage.Literals.NO_SRS_TYPE;
+  }
 
 } //NoSRSTypeImpl

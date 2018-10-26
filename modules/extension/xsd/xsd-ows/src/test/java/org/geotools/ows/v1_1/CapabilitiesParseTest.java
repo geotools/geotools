@@ -7,7 +7,7 @@ import net.opengis.ows11.OperationsMetadataType;
 import net.opengis.ows11.ValueType;
 import org.geotools.xml.Parser;
 
-public class CapabilitiesParseTest extends OWSTestSupport {
+public class CapabilitiesParseTest extends OWSTestSupport_1_1 {
 
     public void testParseCapabilities() throws Exception {
         Parser p = new Parser(createConfiguration());

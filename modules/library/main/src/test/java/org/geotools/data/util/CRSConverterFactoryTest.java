@@ -1,4 +1,4 @@
-package org.geotools.util;
+package org.geotools.data.util;
 
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
@@ -26,6 +26,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 import org.geotools.referencing.CRS;
+import org.geotools.util.ConverterFactory;
+import org.geotools.util.Converters;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -36,7 +38,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Nicola Lagomarsini GeoSolutions S.A.S.
  */
-public class CRSConverterFactortTest {
+public class CRSConverterFactoryTest {
 
     /** CRS class */
     private static final Class<CoordinateReferenceSystem> CRS_CLASS =

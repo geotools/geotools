@@ -1,4 +1,4 @@
-package org.geotools.data.ows;
+package org.geotools.ows;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
+import org.geotools.data.ows.HTTPResponse;
 import org.junit.Assert;
 
 /**

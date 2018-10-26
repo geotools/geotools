@@ -18,9 +18,9 @@ package org.geotools.geometry.jts;
 
 import org.geotools.geometry.DirectPosition3D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.geometry.BoundingBox;

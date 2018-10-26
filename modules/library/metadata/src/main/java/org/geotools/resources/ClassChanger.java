@@ -17,8 +17,8 @@
 package org.geotools.resources;
 
 import java.util.Date;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * A central place to register transformations between an arbitrary class and a {@link Number}. For

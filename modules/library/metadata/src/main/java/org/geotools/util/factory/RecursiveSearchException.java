@@ -16,8 +16,8 @@
  */
 package org.geotools.util.factory;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * Thrown when {@link FactoryRegistry} is invoked recursively for the same category. This exception

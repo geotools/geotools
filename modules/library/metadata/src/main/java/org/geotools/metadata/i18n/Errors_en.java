@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources.i18n;
+package org.geotools.metadata.i18n;
 
 /**
  * English language resource.
@@ -23,4 +23,4 @@ package org.geotools.resources.i18n;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class Loggings_en extends Loggings {}
+public class Errors_en extends Errors {}

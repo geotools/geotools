@@ -14,13 +14,12 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources.i18n;
+package org.geotools.metadata.i18n;
 
 /**
- * Portuguese language resource.
+ * Brazil Portuguese language resource.
  *
- * @since 2.2
  * @version $Id$
  * @author Martin Desruisseaux
  */
-public class Vocabulary_pt extends Vocabulary {}
+public class Vocabulary_pt_BR extends Vocabulary_pt {}

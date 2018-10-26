@@ -14,13 +14,11 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources.i18n;
+package org.geotools.metadata.i18n;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
 import org.geotools.resources.IndexedResourceBundle;
-import org.geotools.util.ResourceInternationalString;
-import org.opengis.util.InternationalString;
 
 /**
  * Base class for locale-dependent resources. Instances of this class should never been created
@@ -30,7 +28,7 @@ import org.opengis.util.InternationalString;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class Vocabulary extends IndexedResourceBundle {
+public class Errors extends IndexedResourceBundle {
     /**
      * Returns resources in the given locale.
      *
@@ -38,76 +36,14 @@ public class Vocabulary extends IndexedResourceBundle {
      * @return Resources in the given locale.
      * @throws MissingResourceException if resources can't be found.
      */
-    public static Vocabulary getResources(Locale locale) throws MissingResourceException {
+    public static Errors getResources(Locale locale) throws MissingResourceException {
         if (locale == null) {
             locale = Locale.getDefault();
         }
-        return (Vocabulary) getBundle(Vocabulary.class.getName(), locale);
+        return (Errors) getBundle(Errors.class.getName(), locale);
         /*
          * We rely on cache capability of ResourceBundle.
          */
-    }
-
-    /**
-     * Gets an international string for the given key. This method does not check for the key
-     * validity. If the key is invalid, then a {@link MissingResourceException} may be thrown when a
-     * {@link InternationalString#toString} method is invoked.
-     *
-     * @param key The key for the desired string.
-     * @return An international string for the given key.
-     */
-    public static InternationalString formatInternational(final int key) {
-        return new ResourceInternationalString(Vocabulary.class.getName(), String.valueOf(key));
-    }
-
-    /**
-     * Gets an international string for the given key. This method does not check for the key
-     * validity. If the key is invalid, then a {@link MissingResourceException} may be thrown when a
-     * {@link InternationalString#toString} method is invoked.
-     *
-     * @param key The key for the desired string.
-     * @param arg0 Value to substitute to "{0}".
-     * @return An international string for the given key.
-     * @todo Current implementation just invokes {@link #format}. Need to format only when {@code
-     *     toString(Locale)} is invoked.
-     */
-    public static InternationalString formatInternational(final int key, final Object arg0) {
-        return new org.geotools.util.SimpleInternationalString(format(key, arg0));
-    }
-
-    /**
-     * Gets an international string for the given key. This method does not check for the key
-     * validity. If the key is invalid, then a {@link MissingResourceException} may be thrown when a
-     * {@link InternationalString#toString} method is invoked.
-     *
-     * @param key The key for the desired string.
-     * @param arg0 Value to substitute to "{0}".
-     * @param arg1 Value to substitute to "{1}".
-     * @return An international string for the given key.
-     * @todo Current implementation just invokes {@link #format}. Need to format only when {@code
-     *     toString(Locale)} is invoked.
-     */
-    public static InternationalString formatInternational(
-            final int key, final Object arg0, final Object arg1) {
-        return new org.geotools.util.SimpleInternationalString(format(key, arg0, arg1));
-    }
-
-    /**
-     * Gets an international string for the given key. This method does not check for the key
-     * validity. If the key is invalid, then a {@link MissingResourceException} may be thrown when a
-     * {@link InternationalString#toString} method is invoked.
-     *
-     * @param key The key for the desired string.
-     * @param arg0 Value to substitute to "{0}".
-     * @param arg1 Value to substitute to "{1}".
-     * @param arg2 Value to substitute to "{2}".
-     * @return An international string for the given key.
-     * @todo Current implementation just invokes {@link #format}. Need to format only when {@code
-     *     toString(Locale)} is invoked.
-     */
-    public static InternationalString formatInternational(
-            final int key, final Object arg0, final Object arg1, final Object arg2) {
-        return new org.geotools.util.SimpleInternationalString(format(key, arg0, arg1, arg2));
     }
 
     /**
@@ -164,5 +100,27 @@ public class Vocabulary extends IndexedResourceBundle {
             final int key, final Object arg0, final Object arg1, final Object arg2)
             throws MissingResourceException {
         return getResources(null).getString(key, arg0, arg1, arg2);
+    }
+
+    /**
+     * Gets a string for the given key are replace all occurence of "{0}", "{1}", with values of
+     * {@code arg0}, {@code arg1}, etc.
+     *
+     * @param key The key for the desired string.
+     * @param arg0 Value to substitute to "{0}".
+     * @param arg1 Value to substitute to "{1}".
+     * @param arg2 Value to substitute to "{2}".
+     * @param arg3 Value to substitute to "{3}".
+     * @return The formatted string for the given key.
+     * @throws MissingResourceException If no object for the given key can be found.
+     */
+    public static String format(
+            final int key,
+            final Object arg0,
+            final Object arg1,
+            final Object arg2,
+            final Object arg3)
+            throws MissingResourceException {
+        return getResources(null).getString(key, arg0, arg1, arg2, arg3);
     }
 }

@@ -18,8 +18,8 @@ package org.geotools.coverage.io;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * A class describing the desired layout of an <code>OpImage</code>.

@@ -32,12 +32,12 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.image.ImageWorker;
+import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.image.ColorUtilities;
 import org.geotools.util.factory.GeoTools;
 import org.jaitools.numeric.Range;
@@ -175,7 +175,7 @@ public class RangeLookupProcess implements RasterProcess {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            org.geotools.resources.i18n.Errors.format(
+                            org.geotools.metadata.i18n.Errors.format(
                                     ErrorKeys.ILLEGAL_ARGUMENT_$2,
                                     "classification ranges size",
                                     size));

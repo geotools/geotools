@@ -27,10 +27,10 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Locale;
 import java.util.regex.Pattern;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 
 /**
  * A helper class for parsing command-line arguments. Instance of this class are usually created

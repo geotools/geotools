@@ -19,8 +19,8 @@ package org.geotools.resources;
 import static org.junit.Assert.*;
 
 import java.util.Locale;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.junit.*;
 
 /**

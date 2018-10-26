@@ -16,8 +16,8 @@
  */
 package org.geotools.util;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * Throws when an operation can't use arbitrary implementation of an interface, and a given instance

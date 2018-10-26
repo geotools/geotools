@@ -14,13 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources.i18n;
+package org.geotools.metadata.i18n;
 
 /**
- * English language resource.
+ * German language resource.
  *
  * @since 2.2
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class Errors_en extends Errors {}
+public class Errors_de extends Errors {}

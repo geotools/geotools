@@ -16,7 +16,7 @@
  */
 package org.geotools.coverage.grid;
 
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * Thrown by {@link GeneralGridGeometry} when a grid geometry is in an invalid state. For example

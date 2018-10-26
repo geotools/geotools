@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.epsg.postgresql;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +24,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
+import org.geotools.referencing.factory.epsg.FactoryUsingAnsiSQL;
+import org.geotools.referencing.factory.epsg.ThreadedEpsgFactory;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.postgresql.ds.PGSimpleDataSource;

@@ -20,7 +20,7 @@
 
 <project name="ReplaceSchema" default="rename">
   <target name="rename">
-    <replace dir=".">
+    <replace dir="">
       <include name="*.sql"/>
       <replacefilter token="epsg_versionhistory"             value="epsg.&quot;Version History&quot;"                      />
       <replacefilter token="epsg_unitofmeasure"              value="epsg.&quot;Unit of Measure&quot;"                      />

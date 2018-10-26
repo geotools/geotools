@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer;
+package org.geotools.data.util;
 
 import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.CoordinateSequence;

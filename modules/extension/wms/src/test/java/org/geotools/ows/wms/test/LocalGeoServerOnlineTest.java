@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wms.test;
+package org.geotools.ows.wms.test;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -40,12 +40,7 @@ import org.geotools.data.ows.OperationType;
 import org.geotools.data.ows.Specification;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.ows.wms.CRSEnvelope;
-import org.geotools.ows.wms.Layer;
-import org.geotools.ows.wms.MultithreadedHttpClient;
-import org.geotools.ows.wms.WMS1_1_1;
-import org.geotools.ows.wms.WMSCapabilities;
-import org.geotools.ows.wms.WebMapServer;
+import org.geotools.ows.wms.*;
 import org.geotools.ows.wms.request.GetFeatureInfoRequest;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.request.GetStylesRequest;

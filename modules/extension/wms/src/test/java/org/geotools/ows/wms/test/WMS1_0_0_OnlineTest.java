@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.wms.test;
+package org.geotools.ows.wms.test;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,12 +27,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.Specification;
-import org.geotools.ows.wms.CRSEnvelope;
-import org.geotools.ows.wms.Layer;
-import org.geotools.ows.wms.WMS1_0_0;
-import org.geotools.ows.wms.WMSCapabilities;
-import org.geotools.ows.wms.WMSSpecification;
-import org.geotools.ows.wms.WebMapServer;
+import org.geotools.ows.wms.*;
 import org.geotools.ows.wms.request.GetMapRequest;
 import org.geotools.ows.wms.xml.WMSSchema;
 import org.geotools.test.TestData;

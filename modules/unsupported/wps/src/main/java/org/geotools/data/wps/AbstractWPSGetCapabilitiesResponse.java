@@ -14,11 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.ows;
+package org.geotools.data.wps;
 
 import java.io.IOException;
 import net.opengis.ows11.ExceptionReportType;
 import net.opengis.wps10.WPSCapabilitiesType;
+import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
 
 /**

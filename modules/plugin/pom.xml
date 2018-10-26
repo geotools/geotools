@@ -61,7 +61,6 @@
     <module>jdbc</module>
     <module>jp2k</module>
     <module>property</module>
-    <module>referencing3D</module>
     <module>shapefile</module>
     <module>svg</module>
     <module>coverage-multidim</module>

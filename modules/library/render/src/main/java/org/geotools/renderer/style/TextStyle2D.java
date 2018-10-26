@@ -29,7 +29,7 @@ import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
 import java.text.Bidi;
 import javax.swing.Icon;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 
 /**
  * Style used to represent labels over lines, polygons and points

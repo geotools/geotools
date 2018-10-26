@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /** Class to represent the header of a Dbase III file. Creation date: (5/15/2001 5:15:30 PM) */
 public class DbaseFileHeader {

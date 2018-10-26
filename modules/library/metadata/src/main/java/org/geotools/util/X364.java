@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources;
+package org.geotools.util;
 
 /**
  * Escape codes from ANSI X3.64 standard (aka ECMA-48 and ISO/IEC 6429).

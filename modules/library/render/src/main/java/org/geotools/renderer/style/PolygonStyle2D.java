@@ -20,7 +20,7 @@ package org.geotools.renderer.style;
 
 import java.awt.Composite;
 import java.awt.Paint;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 
 /**
  * A style that contains the specification to renderer both the contour and the interior of a shape

@@ -24,8 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.XArray;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.geotools.util.logging.LoggedFormat;
 
 /**

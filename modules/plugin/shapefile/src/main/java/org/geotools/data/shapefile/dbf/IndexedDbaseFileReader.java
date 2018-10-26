@@ -25,7 +25,7 @@ import java.nio.charset.Charset;
 import java.util.TimeZone;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.shapefile.files.ShpFiles;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /**
  * A DbaseFileReader is used to read a dbase III format file. <br>

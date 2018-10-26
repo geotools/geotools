@@ -17,7 +17,7 @@
 package org.geotools.feature.type;
 
 import java.util.List;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;

@@ -14,11 +14,10 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources;
+package org.geotools.util;
 
 import java.io.Serializable;
 import java.util.AbstractList;
-import org.geotools.util.CheckedCollection;
 
 /**
  * An unmodifiable view of an array. Invoking

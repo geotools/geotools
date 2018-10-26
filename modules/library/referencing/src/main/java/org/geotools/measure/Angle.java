@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.text.Format;
 import java.text.ParseException;
 import java.util.Locale;
-import org.geotools.resources.ClassChanger;
+import org.geotools.util.ClassChanger;
 
 /**
  * An angle in degrees. An angle is the amount of rotation needed to bring one line or plane into

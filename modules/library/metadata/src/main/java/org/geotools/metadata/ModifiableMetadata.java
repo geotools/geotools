@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.UnmodifiableArrayList;
 import org.geotools.util.CheckedArrayList;
 import org.geotools.util.CheckedHashSet;
+import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.logging.Logging;
 
 /**

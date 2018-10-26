@@ -44,7 +44,7 @@ import org.geotools.referencing.factory.DeferredAuthorityFactory;
 import org.geotools.referencing.factory.FactoryNotFoundException;
 import org.geotools.referencing.factory.PropertyAuthorityFactory;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
-import org.geotools.resources.Arguments;
+import org.geotools.util.Arguments;
 import org.geotools.util.IndentedLineWriter;
 import org.geotools.util.TableWriter;
 import org.geotools.util.factory.Hints;

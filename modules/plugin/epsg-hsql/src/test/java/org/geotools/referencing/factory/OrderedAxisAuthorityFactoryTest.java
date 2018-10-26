@@ -30,7 +30,7 @@ import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.geotools.referencing.factory.epsg.LongitudeFirstFactory;
 import org.geotools.referencing.operation.LinearTransform;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
-import org.geotools.resources.Arguments;
+import org.geotools.util.Arguments;
 import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;

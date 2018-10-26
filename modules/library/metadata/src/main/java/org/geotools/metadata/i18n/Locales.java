@@ -18,8 +18,8 @@ package org.geotools.metadata.i18n;
 
 import java.util.Arrays;
 import java.util.Locale;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.XArray;
+import org.geotools.util.Arguments;
+import org.geotools.util.XArray;
 
 /**
  * Static i18n methods.

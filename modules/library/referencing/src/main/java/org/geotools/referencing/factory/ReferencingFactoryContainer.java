@@ -26,7 +26,7 @@ import org.geotools.referencing.crs.DefaultCompoundCRS;
 import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.DefiningConversion;
-import org.geotools.resources.XArray;
+import org.geotools.util.XArray;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryRegistry;

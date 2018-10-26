@@ -14,11 +14,10 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources;
+package org.geotools.util;
 
 import java.lang.ref.SoftReference;
 import java.nio.ByteBuffer;
-import org.geotools.util.WeakCollectionCleaner;
 
 /**
  * A soft reference that will clear the contained byte buffer before getting garbage collected

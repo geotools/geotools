@@ -47,7 +47,7 @@ import org.geotools.referencing.datum.DefaultVerticalDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.geotools.referencing.operation.DefiningConversion;
-import org.geotools.resources.Arguments;
+import org.geotools.util.Arguments;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValue;

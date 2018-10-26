@@ -38,7 +38,7 @@ import org.geotools.referencing.factory.gridshift.NADCONGridShiftFactory;
 import org.geotools.referencing.factory.gridshift.NADConGridShift;
 import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.referencing.operation.builder.LocalizationGrid;
-import org.geotools.resources.Arguments;
+import org.geotools.util.Arguments;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;

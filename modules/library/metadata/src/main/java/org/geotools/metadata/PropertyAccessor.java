@@ -34,11 +34,11 @@ import java.util.Map;
 import java.util.Set;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.Classes;
-import org.geotools.resources.XArray;
 import org.geotools.util.CheckedCollection;
+import org.geotools.util.Classes;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.opengis.annotation.UML;
 import org.opengis.util.InternationalString;
 

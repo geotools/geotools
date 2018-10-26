@@ -26,8 +26,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.ClassChanger;
-import org.geotools.resources.XArray;
 
 /**
  * Parses a line of text data. This class is mostly used for parsing lines in a matrix or a table.

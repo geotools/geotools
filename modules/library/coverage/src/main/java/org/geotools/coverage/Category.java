@@ -24,7 +24,7 @@ import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.operation.transform.LinearTransform1D;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
@@ -348,7 +348,7 @@ public class Category implements Serializable {
     private static double doubleValue(
             final Class<?> type, final Comparable number, final int direction) {
         assert (direction >= -1) && (direction <= +1) : direction;
-        return org.geotools.resources.XMath.rool(type, ((Number) number).doubleValue(), direction);
+        return org.geotools.util.XMath.rool(type, ((Number) number).doubleValue(), direction);
     }
 
     /**

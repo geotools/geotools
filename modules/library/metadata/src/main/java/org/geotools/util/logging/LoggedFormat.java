@@ -27,7 +27,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 
 /**
  * Wraps a {@link Format} object in order to either parse fully a string, or log a warning. This

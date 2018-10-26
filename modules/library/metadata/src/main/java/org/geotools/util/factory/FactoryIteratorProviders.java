@@ -19,7 +19,7 @@ package org.geotools.util.factory;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import org.geotools.resources.XArray;
+import org.geotools.util.XArray;
 
 /**
  * The list of registered {@linkplain FactoryIteratorProvider factory iterator providers}.

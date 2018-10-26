@@ -22,7 +22,7 @@ import java.awt.Composite;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import org.geotools.geometry.jts.TransformedShape;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 
 /**
  * Style to represent points as small filled and stroked shapes

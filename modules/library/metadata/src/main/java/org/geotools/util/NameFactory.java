@@ -19,7 +19,6 @@ package org.geotools.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale; // For javadoc
-import org.geotools.resources.Classes;
 import org.opengis.metadata.Identifier;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString; // For javadoc

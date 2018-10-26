@@ -24,7 +24,7 @@ import java.util.Arrays;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.opengis.coverage.grid.GridCoordinates;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;

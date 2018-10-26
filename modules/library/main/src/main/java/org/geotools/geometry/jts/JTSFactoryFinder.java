@@ -19,7 +19,7 @@ package org.geotools.geometry.jts;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Set;
-import org.geotools.resources.LazySet;
+import org.geotools.util.LazySet;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryFinder;
 import org.geotools.util.factory.FactoryRegistry;

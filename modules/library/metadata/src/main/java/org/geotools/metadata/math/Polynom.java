@@ -18,7 +18,7 @@ package org.geotools.metadata.math;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 
 /**
  * The coefficients of a polynomial equation. The equation must be in the form <code>

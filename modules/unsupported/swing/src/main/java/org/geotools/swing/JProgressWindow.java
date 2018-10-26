@@ -45,9 +45,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import org.geotools.metadata.i18n.Vocabulary;
 import org.geotools.metadata.i18n.VocabularyKeys;
-import org.geotools.resources.SwingUtilities;
 import org.geotools.swing.dialog.JExceptionReporter;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.SwingUtilities;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 

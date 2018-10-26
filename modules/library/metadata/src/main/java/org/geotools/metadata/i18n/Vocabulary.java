@@ -18,7 +18,7 @@ package org.geotools.metadata.i18n;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
-import org.geotools.resources.IndexedResourceBundle;
+import org.geotools.util.IndexedResourceBundle;
 import org.geotools.util.ResourceInternationalString;
 import org.opengis.util.InternationalString;
 

@@ -14,10 +14,10 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.geometry.text;
+package org.geotools.geometry.iso.text;
 
 import junit.framework.TestCase;
-import org.geotools.geometry.MockGeometryFactory;
+import org.geotools.geometry.iso.MockGeometryFactory;
 import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.Point;
 

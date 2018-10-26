@@ -25,7 +25,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.geotools.geometry.GeometryBuilder;
 import org.geotools.geometry.iso.PrecisionModel;
-import org.geotools.geometry.text.WKTParser;
+import org.geotools.geometry.iso.text.WKTParser;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.Geometry;
 import org.opengis.geometry.PrecisionType;

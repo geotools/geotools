@@ -20,6 +20,7 @@ import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.referencing.factory.epsg.OracleDialectEpsgMediatorOnlineStressTest.ClientThread;
+import org.geotools.referencing.factory.epsg.oracle.OracleDialectEpsgMediator;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
 import org.geotools.util.factory.Hints;
 

@@ -14,12 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.referencing.factory.epsg;
+package org.geotools.referencing.factory.epsg.oracle;
 
 import java.sql.Connection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.geotools.referencing.factory.epsg.FactoryUsingAnsiSQL;
 import org.geotools.util.factory.Hints;
 
 /**
@@ -100,5 +101,10 @@ public class FactoryUsingOracleSQL extends FactoryUsingAnsiSQL {
                 }
             }
         }
+    }
+
+    @Override
+    protected void setSchema(String schema) {
+        super.setSchema(schema);
     }
 }

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.style;
+package org.geotools.renderer.style.svg;
 
 import java.awt.RenderingHints.Key;
 import java.io.UnsupportedEncodingException;

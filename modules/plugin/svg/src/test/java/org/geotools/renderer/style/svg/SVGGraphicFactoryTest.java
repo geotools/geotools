@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.style;
+package org.geotools.renderer.style.svg;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
@@ -35,6 +35,7 @@ import org.apache.batik.bridge.TextNode;
 import org.apache.batik.gvt.CompositeGraphicsNode;
 import org.apache.batik.gvt.GraphicsNode;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.renderer.style.GraphicCache;
 import org.geotools.util.PreventLocalEntityResolver;
 import org.geotools.util.factory.Hints;
 import org.opengis.filter.FilterFactory;

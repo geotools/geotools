@@ -176,7 +176,13 @@ public class MBTilesFile implements AutoCloseable {
         this.connPool = new MBTilesDataStoreFactory().createDataSource(params);
     }
 
-    MBTilesFile(DataSource dataSource) {
+    /**
+     * Create an MBTilesFile from an SQL DataSource connected to an MBTiles file. Behaviour is
+     * undefined if the DataSource is any other form of database.
+     *
+     * @param dataSource
+     */
+    public MBTilesFile(DataSource dataSource) {
         this.connPool = dataSource;
     }
 

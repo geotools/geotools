@@ -33,10 +33,20 @@ import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.eclipse.emf.common.util.EList;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.filter.v2_0.FES;
+import org.geotools.gml3.v3_2.GML;
+import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
-import org.junit.Ignore;
+import org.geotools.xlink.XLINK;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
+import org.opengis.filter.identity.Identifier;
+import org.w3c.dom.Document;
 
 public class TransactionTypeBindingTest extends WFSTestSupport {
 

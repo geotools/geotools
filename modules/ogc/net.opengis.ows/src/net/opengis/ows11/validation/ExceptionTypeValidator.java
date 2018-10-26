@@ -4,7 +4,7 @@
  */
 package net.opengis.ows11.validation;
 
-
+import org.eclipse.emf.common.util.EList;
 
 /**
  * A sample validator interface for {@link net.opengis.ows11.ExceptionType}.

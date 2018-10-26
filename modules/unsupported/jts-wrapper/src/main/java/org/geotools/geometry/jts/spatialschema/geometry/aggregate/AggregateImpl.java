@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import org.geotools.geometry.jts.JTSGeometry;
-import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSGeometry;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.opengis.geometry.aggregate.Aggregate;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

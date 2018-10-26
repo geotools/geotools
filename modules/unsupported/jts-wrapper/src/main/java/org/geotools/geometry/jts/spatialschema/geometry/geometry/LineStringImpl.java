@@ -12,9 +12,9 @@ package org.geotools.geometry.jts.spatialschema.geometry.geometry;
 // J2SE direct dependencies
 
 import java.util.List;
-import org.geotools.geometry.jts.JTSGeometry;
-import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSGeometry;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.CurveBoundaryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.PointImpl;
 import org.locationtech.jts.geom.Geometry;

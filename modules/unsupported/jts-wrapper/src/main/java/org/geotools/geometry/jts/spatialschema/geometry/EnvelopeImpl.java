@@ -9,7 +9,6 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry;
 
-import org.geotools.geometry.jts.GeometryUtils;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

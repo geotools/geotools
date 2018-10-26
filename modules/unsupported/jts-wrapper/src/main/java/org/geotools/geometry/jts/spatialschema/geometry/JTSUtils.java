@@ -14,13 +14,12 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.geometry.jts;
+package org.geotools.geometry.jts.spatialschema.geometry;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.geotools.geometry.GeometryFactoryFinder;
-import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.opengis.geometry.DirectPosition;

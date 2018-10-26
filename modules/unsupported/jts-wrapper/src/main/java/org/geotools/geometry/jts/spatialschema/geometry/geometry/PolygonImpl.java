@@ -17,8 +17,8 @@
 package org.geotools.geometry.jts.spatialschema.geometry.geometry;
 
 import java.util.List;
-import org.geotools.geometry.jts.JTSGeometry;
-import org.geotools.geometry.jts.JTSUtils;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSGeometry;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfacePatchImpl;
 import org.opengis.geometry.coordinate.Polygon;
 import org.opengis.geometry.coordinate.PolyhedralSurface;

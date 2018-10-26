@@ -22,7 +22,6 @@
 package org.geotools.geometry.jts.spatialschema.geometry;
 
 import java.io.Serializable;
-import org.geotools.geometry.jts.GeometryUtils;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

@@ -21,8 +21,6 @@ import static org.junit.Assert.*;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
-import org.geotools.util.factory.Factory;
-import org.geotools.util.factory.Hints;
 
 /**
  * An internal dummy factory for testing factory dependencies. It doesn't matter if this factory is

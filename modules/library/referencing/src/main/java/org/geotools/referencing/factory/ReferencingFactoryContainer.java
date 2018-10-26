@@ -90,8 +90,8 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
      * Hints#CRS_FACTORY CRS}, {@link Hints#CS_FACTORY CS}, {@link Hints#DATUM_FACTORY DATUM} and
      * {@link Hints#MATH_TRANSFORM_FACTORY MATH_TRANSFORM} {@code FACTORY} hints.
      *
-     * <p>This constructor is public mainly for {@link org.geotools.util.factory.FactoryCreator} usage.
-     * Consider invoking <code>{@linkplain #createInstance createInstance}(userHints)</code>
+     * <p>This constructor is public mainly for {@link org.geotools.util.factory.FactoryCreator}
+     * usage. Consider invoking <code>{@linkplain #createInstance createInstance}(userHints)</code>
      * instead.
      *
      * @param userHints The hints, or {@code null} if none.

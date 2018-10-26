@@ -118,19 +118,28 @@ class SldTransformContext {
     }
 
     public SldTransformContext mapping() throws IOException {
-        yaml.emit(new MappingStartEvent(null, null, true, null, null, false));
+        yaml.emit(
+                new MappingStartEvent(null, null, true, null, null, DumperOptions.FlowStyle.BLOCK));
         return this;
     }
 
     public SldTransformContext scalar(String value) throws IOException {
         yaml.emit(
                 new ScalarEvent(
-                        null, null, new ImplicitTuple(true, false), value, null, null, null));
+                        null,
+                        null,
+                        new ImplicitTuple(true, false),
+                        value,
+                        null,
+                        null,
+                        DumperOptions.ScalarStyle.PLAIN));
         return this;
     }
 
     public SldTransformContext sequence() throws IOException {
-        yaml.emit(new SequenceStartEvent(null, null, true, null, null, false));
+        yaml.emit(
+                new SequenceStartEvent(
+                        null, null, true, null, null, DumperOptions.FlowStyle.BLOCK));
         return this;
     }
 

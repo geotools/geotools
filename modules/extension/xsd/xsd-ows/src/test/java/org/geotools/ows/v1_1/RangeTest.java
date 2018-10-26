@@ -8,7 +8,7 @@ import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
 import org.junit.Test;
 
-public class RangeTest extends OWSTestSupport {
+public class RangeTest extends OWSTestSupport_1_1 {
 
     @Test
     public void testParseRange() throws Exception {

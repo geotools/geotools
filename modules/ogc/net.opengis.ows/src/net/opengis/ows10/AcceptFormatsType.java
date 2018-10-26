@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows10.AcceptFormatsType#getOutputFormat <em>Output Format</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows10.Ows10Package#getAcceptFormatsType()
  * @model extendedMetaData="name='AcceptFormatsType' kind='elementOnly'"
@@ -32,19 +32,19 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface AcceptFormatsType extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Output Format</b></em>' attribute list.
-	 * The list contents are of type {@link java.lang.String}.
-	 * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Output Format</b></em>' attribute list.
+   * The list contents are of type {@link java.lang.String}.
+   * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Output Format</em>' attribute list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Output Format</em>' attribute list.
-	 * @see net.opengis.ows10.Ows10Package#getAcceptFormatsType_OutputFormat()
-	 * @model dataType="net.opengis.ows10.MimeType"
-	 * @generated
-	 */
-	EList getOutputFormat();
+   * @return the value of the '<em>Output Format</em>' attribute list.
+   * @see net.opengis.ows10.Ows10Package#getAcceptFormatsType_OutputFormat()
+   * @model dataType="net.opengis.ows10.MimeType"
+   * @generated
+   */
+	EList<String> getOutputFormat();
 
 } // AcceptFormatsType

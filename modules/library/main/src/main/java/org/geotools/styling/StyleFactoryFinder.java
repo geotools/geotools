@@ -20,7 +20,9 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.GeoTools;
 
-/** @deprecated Replaced by {@link org.geotools.util.factory.CommonFactoryFinder#getStyleFactory}. */
+/**
+ * @deprecated Replaced by {@link org.geotools.util.factory.CommonFactoryFinder#getStyleFactory}.
+ */
 public class StyleFactoryFinder {
     private static StyleFactory factory = null;
 

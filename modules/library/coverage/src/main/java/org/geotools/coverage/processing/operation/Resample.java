@@ -75,8 +75,8 @@ import org.opengis.referencing.operation.TransformException;
  * org.opengis.referencing.operation.CoordinateOperationFactory} for creating a transformation from
  * the source to the destination coordinate reference systems. If a custom factory is desired, it
  * may be supplied as a rendering hint with the {@link
- * org.geotools.util.factory.Hints#COORDINATE_OPERATION_FACTORY} key. Rendering hints can be supplied to
- * {@link org.geotools.coverage.processing.DefaultProcessor} at construction time.
+ * org.geotools.util.factory.Hints#COORDINATE_OPERATION_FACTORY} key. Rendering hints can be
+ * supplied to {@link org.geotools.coverage.processing.DefaultProcessor} at construction time.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"Resample"</CODE><br>
  * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain AffineDescriptor Affine}"</CODE> or <CODE>

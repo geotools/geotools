@@ -41,8 +41,7 @@ public class NetCDFFormat extends AbstractGridFormat {
     public static final ParameterDescriptor<Filter> FILTER =
             new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
 
-    private static final Logger LOGGER =
-            Logging.getLogger(NetCDFFormat.class);
+    private static final Logger LOGGER = Logging.getLogger(NetCDFFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public NetCDFFormat() {

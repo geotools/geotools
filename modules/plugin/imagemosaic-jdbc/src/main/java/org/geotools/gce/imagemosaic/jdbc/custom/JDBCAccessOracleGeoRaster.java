@@ -57,8 +57,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class JDBCAccessOracleGeoRaster extends JDBCAccessCustom {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(JDBCAccessOracleGeoRaster.class);
+    private static final Logger LOGGER = Logging.getLogger(JDBCAccessOracleGeoRaster.class);
 
     private static String StmtTemplatePixel =
             "SELECT "

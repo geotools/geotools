@@ -20,10 +20,10 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import org.geotools.util.factory.FactoryIteratorProvider;
 
 /**
- * An implementation of {@link FactoryIteratorProvider} over the {@link DummyFactory}.
+ * An implementation of {@link org.geotools.util.factory.FactoryIteratorProvider} over the {@link
+ * DummyFactory}.
  *
  * @version $Id$
  * @author Martin Desruisseaux

@@ -28,25 +28,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import org.geotools.util.factory.Factory;
-import org.geotools.util.factory.FactoryCreator;
-import org.geotools.util.factory.FactoryNotFoundException;
-import org.geotools.util.factory.FactoryRegistry;
-import org.geotools.util.factory.GeoTools;
-import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests {@link FactoryRegistry} implementation.
+ * Tests {@link org.geotools.util.factory.FactoryRegistry} implementation.
  *
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class FactoryRegistryTest {
     /**
-     * Ensures that class {@link Hints} is loaded before {@link DummyFactory}. It is not needed for
-     * normal execution, but Maven seems to mess with class loaders.
+     * Ensures that class {@link org.geotools.util.factory.Hints} is loaded before {@link
+     * DummyFactory}. It is not needed for normal execution, but Maven seems to mess with class
+     * loaders.
      */
     @Before
     public void ensureHintsLoaded() {
@@ -58,11 +53,13 @@ public final class FactoryRegistryTest {
      * than Geotools implementation tests. We basically just ensure that we have setup the service
      * registry properly.
      *
-     * <p>Factories are specified in arguments as {@link Factory} objects in order to avoid the
-     * {@link DummyClass} to be initialized before {@link Hints}. This is not a problem for normal
-     * execution, but Maven seems to mess with class loaders.
+     * <p>Factories are specified in arguments as {@link org.geotools.util.factory.Factory} objects
+     * in order to avoid the {@link DummyClass} to be initialized before {@link
+     * org.geotools.util.factory.Hints}. This is not a problem for normal execution, but Maven seems
+     * to mess with class loaders.
      *
-     * @param creator {@code true} if the registry should be an instance of {@link FactoryCreator}.
+     * @param creator {@code true} if the registry should be an instance of {@link
+     *     org.geotools.util.factory.FactoryCreator}.
      */
     private FactoryRegistry getRegistry(
             final boolean creator,
@@ -102,9 +99,9 @@ public final class FactoryRegistryTest {
     }
 
     /**
-     * Tests the {@link FactoryRegistry#getProvider} method. Note that the tested method do not
-     * create any new factory. If no registered factory matching the hints is found, an exception is
-     * expected. <br>
+     * Tests the {@link org.geotools.util.factory.FactoryRegistry#getProvider} method. Note that the
+     * tested method do not create any new factory. If no registered factory matching the hints is
+     * found, an exception is expected. <br>
      * <br>
      * Three factories are initially registered: factory #1, #2 and #3.
      *
@@ -225,9 +222,10 @@ public final class FactoryRegistryTest {
     }
 
     /**
-     * Tests the {@link FactoryCreator#getProvider} method. This test tries again the cases that was
-     * expected to throws an exception in {@link #testGetProvider}. But now, those cases are
-     * expected to creates automatically new factory instances instead of throwing an exception.
+     * Tests the {@link org.geotools.util.factory.FactoryCreator#getProvider} method. This test
+     * tries again the cases that was expected to throws an exception in {@link #testGetProvider}.
+     * But now, those cases are expected to creates automatically new factory instances instead of
+     * throwing an exception.
      */
     @Test
     public void testCreateProvider() {

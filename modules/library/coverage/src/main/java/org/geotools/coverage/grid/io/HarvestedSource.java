@@ -18,8 +18,8 @@ package org.geotools.coverage.grid.io;
 
 /**
  * Information about one of the sources that have been processed by {@link
- * StructuredGridCoverage2DReader#harvest(String, Object, org.geotools.util.factory.Hints)}, indicating
- * whether the object was successfully ingested or not.
+ * StructuredGridCoverage2DReader#harvest(String, Object, org.geotools.util.factory.Hints)},
+ * indicating whether the object was successfully ingested or not.
  *
  * @author Andrea Aime - GeoSolutions
  */

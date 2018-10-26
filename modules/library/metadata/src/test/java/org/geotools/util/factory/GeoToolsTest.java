@@ -27,9 +27,6 @@ import java.util.jar.Manifest;
 import javax.media.jai.JAI;
 import org.apache.commons.logging.LogFactory;
 import org.geotools.util.Version;
-import org.geotools.util.factory.FactoryRegistry;
-import org.geotools.util.factory.GeoTools;
-import org.geotools.util.factory.Hints;
 import org.geotools.xml.NullEntityResolver;
 import org.geotools.xml.PreventLocalEntityResolver;
 import org.junit.*;
@@ -38,7 +35,7 @@ import org.opengis.filter.Filter;
 import org.xml.sax.EntityResolver;
 
 /**
- * Tests {@link GeoTools}.
+ * Tests {@link org.geotools.util.factory.GeoTools}.
  *
  * @since 2.4
  * @version $Id$
@@ -52,7 +49,10 @@ public final class GeoToolsTest {
         assertTrue("Assertions not enabled.", GeoToolsTest.class.desiredAssertionStatus());
     }
 
-    /** Tests the removal of keys from a hashmap. Required for {@link FactoryRegistry} working. */
+    /**
+     * Tests the removal of keys from a hashmap. Required for {@link
+     * org.geotools.util.factory.FactoryRegistry} working.
+     */
     @Test
     public void testHintsKey() {
         final Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
@@ -192,8 +192,8 @@ public final class GeoToolsTest {
     }
 
     /**
-     * Tests {@link GeoTools#fixName} using simpliest name or no context. We avoid the tests that
-     * would require a real initial context.
+     * Tests {@link org.geotools.util.factory.GeoTools#fixName} using simpliest name or no context.
+     * We avoid the tests that would require a real initial context.
      */
     @Test
     public void testFixName() {

@@ -37,7 +37,8 @@ public class TeradataDialectOnlineTest extends JDBCTestSupport {
         Handler handler = Logging.getLogger(TeradataDialectOnlineTest.class).getHandlers()[0];
         handler.setLevel(level);
 
-        org.geotools.util.logging.Logging.getLogger(TeradataDialectOnlineTest.class).setLevel(level);
+        org.geotools.util.logging.Logging.getLogger(TeradataDialectOnlineTest.class)
+                .setLevel(level);
     }
 
     @Override

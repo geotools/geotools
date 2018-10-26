@@ -334,8 +334,7 @@ class NetCDFGeoreferenceManager {
         }
     }
 
-    private static final Logger LOGGER =
-            Logging.getLogger(NetCDFGeoreferenceManager.class);
+    private static final Logger LOGGER = Logging.getLogger(NetCDFGeoreferenceManager.class);
 
     /**
      * Set it to {@code true} in case the dataset has a single bbox. Set it to {@code false} in case

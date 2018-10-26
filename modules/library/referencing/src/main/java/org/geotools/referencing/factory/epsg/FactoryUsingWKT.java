@@ -396,7 +396,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /** Implementation of the {@link #main} method, shared by subclasses. */
-    static void main(String[] args, final Class<? extends FactoryUsingWKT> type)
+    protected static void main(String[] args, final Class<? extends FactoryUsingWKT> type)
             throws FactoryException {
         final Arguments arguments = new Arguments(args);
         Locale.setDefault(arguments.locale);

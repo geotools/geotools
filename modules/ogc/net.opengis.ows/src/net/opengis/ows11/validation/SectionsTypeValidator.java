@@ -15,5 +15,7 @@ import org.eclipse.emf.common.util.EList;
 public interface SectionsTypeValidator {
   boolean validate();
 
+  boolean validateSection(EList value);
+
   boolean validateSection(String value);
 }

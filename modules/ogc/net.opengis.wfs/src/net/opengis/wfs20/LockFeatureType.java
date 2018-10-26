@@ -63,7 +63,7 @@ public interface LockFeatureType extends BaseRequestType {
      * <!-- end-user-doc -->
    * @return the value of the '<em>Abstract Query Expression</em>' containment reference list.
    * @see net.opengis.wfs20.Wfs20Package#getLockFeatureType_AbstractQueryExpression()
-   * @model containment="true" required="true" transient="true" changeable="false" volatile="true" derived="true"
+   * @model containment="true" required="true" transient="true" volatile="true" derived="true"
    *        extendedMetaData="kind='element' name='AbstractQueryExpression' namespace='http://www.opengis.net/fes/2.0' group='http://www.opengis.net/fes/2.0#AbstractQueryExpression:group'"
    * @generated
    */

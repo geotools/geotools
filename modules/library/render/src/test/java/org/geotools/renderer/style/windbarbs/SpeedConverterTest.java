@@ -14,8 +14,9 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.windbarbs;
+package org.geotools.renderer.style.windbarbs;
 
+import org.geotools.renderer.style.windbarbs.SpeedConverter;
 import org.junit.Assert;
 import org.junit.Test;
 import systems.uom.common.USCustomary;

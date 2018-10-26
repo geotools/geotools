@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.renderer.windbarbs;
+package org.geotools.renderer.style.windbarbs;
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;

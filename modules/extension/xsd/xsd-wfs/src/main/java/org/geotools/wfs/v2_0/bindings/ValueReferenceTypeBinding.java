@@ -23,8 +23,8 @@ import net.opengis.wfs20.Wfs20Factory;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.util.Converters;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.geotools.xs.bindings.XSQNameBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

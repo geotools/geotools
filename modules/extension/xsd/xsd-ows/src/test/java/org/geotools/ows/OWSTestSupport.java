@@ -17,8 +17,8 @@
 package org.geotools.ows;
 
 import org.geotools.xsd.Configuration;
-import org.geotools.xsd.test.XMLTestSupport;
 import org.geotools.xsd.ows.OWSConfiguration;
+import org.geotools.xsd.test.XMLTestSupport;
 
 public class OWSTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {

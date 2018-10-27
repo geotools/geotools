@@ -25,6 +25,7 @@ import java.net.URL;
 import org.geotools.data.complex.config.AppSchemaFeatureTypeRegistry;
 import org.geotools.data.complex.config.EmfComplexFeatureReader;
 import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.util.factory.Hints;

@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.filter.expression;
+package org.geotools.data.complex.expression;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -25,8 +25,10 @@ import java.util.regex.Pattern;
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.Pointer;
 import org.apache.commons.jxpath.ri.JXPathContextReferenceImpl;
-import org.geotools.feature.xpath.AttributeNodePointer;
-import org.geotools.feature.xpath.AttributeNodePointerFactory;
+import org.geotools.data.complex.feature.xpath.AttributeNodePointer;
+import org.geotools.data.complex.feature.xpath.AttributeNodePointerFactory;
+import org.geotools.filter.expression.PropertyAccessor;
+import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Attribute;

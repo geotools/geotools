@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.feature.type;
+package org.geotools.data.complex.feature.type;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -21,10 +21,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.geotools.data.ComplexTestData;
+import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AppSchemaAttributeBuilder;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
-import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.Before;
 import org.junit.Test;

@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.FeatureTypeMapping;
-import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
+import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;

@@ -15,10 +15,11 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.feature.type;
+package org.geotools.data.complex.feature.type;
 
 import java.util.Collection;
 import java.util.List;
+import org.geotools.feature.type.FeatureTypeImpl;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;

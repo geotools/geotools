@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.feature.xpath;
+package org.geotools.data.complex.feature.xpath;
 
 import java.util.Locale;
 import org.apache.commons.jxpath.ri.QName;

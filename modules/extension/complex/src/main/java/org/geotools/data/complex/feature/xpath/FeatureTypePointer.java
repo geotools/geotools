@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.feature.xpath;
+package org.geotools.data.complex.feature.xpath;
 
 import org.apache.commons.jxpath.ri.Compiler;
 import org.apache.commons.jxpath.ri.QName;
@@ -24,80 +24,52 @@ import org.apache.commons.jxpath.ri.compiler.NodeTypeTest;
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.geotools.feature.type.Types;
-import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
 
 /**
- * Pointer to a single attribute of a feature type.
+ * Special node pointer for {@link org.geotools.feature.FeatureType}.
  *
  * @author Niels Charlier (Curtin University of Technology)
  */
-public class FeatureTypeAttributePointer extends NodePointer {
+public class FeatureTypePointer extends NodePointer {
 
     /** */
-    private static final long serialVersionUID = -7238823373667263032L;
+    private static final long serialVersionUID = 7329150854098309040L;
 
-    /** the feature type */
-    protected ComplexType parentType;
+    /** The name of the node. */
+    protected QName name;
 
-    /** the feature type */
-    protected AttributeType attType;
+    /** The underlying feature type */
+    protected ComplexType featureType;
 
-    /** descriptor */
-    protected PropertyDescriptor descriptor;
-
-    /** the indedx of hte property being pointed at */
-    protected Name name;
-
-    /**
-     * Creates the pointer.
-     *
-     * @param parent The parent pointer, pointer at the feature type.
-     * @param parentType Feature Type of parent
-     * @param name Name of Attribute
-     */
-    public FeatureTypeAttributePointer(NodePointer parent, ComplexType parentType, Name name) {
+    protected FeatureTypePointer(NodePointer parent, ComplexType featureType, QName name) {
         super(parent);
-
-        this.parentType = parentType;
         this.name = name;
-
-        descriptor = getDescriptor();
-        attType = (AttributeType) descriptor.getType();
+        this.featureType = featureType;
     }
 
-    public PropertyDescriptor getDescriptor() {
-        return Types.findDescriptor(parentType, name);
-    }
-
-    /** */
     public boolean isLeaf() {
-        return !(attType instanceof ComplexType);
+        return false;
     }
 
-    /** */
     public boolean isCollection() {
         return false;
     }
 
-    /** Return number of elements */
     public int getLength() {
         return 1;
     }
 
-    /** Returns the qname */
     public QName getName() {
-        return new QName(name.getNamespaceURI(), name.getLocalPart());
+        return name;
     }
 
     public Object getBaseValue() {
-        return parentType;
+        return null;
     }
 
     public Object getImmediateNode() {
-        return descriptor;
+        return featureType;
     }
 
     public void setValue(Object value) {
@@ -118,9 +90,9 @@ public class FeatureTypeAttributePointer extends NodePointer {
                 if (nameSpace == null) nameSpace = getNamespaceResolver().getNamespaceURI("");
 
                 return new SingleFeatureTypeAttributeIterator(
-                        this, ((ComplexType) attType), Types.typeName(nameSpace, localName));
+                        this, featureType, Types.typeName(nameSpace, localName));
             } else {
-                return new FeatureTypeAttributeIterator(this, ((ComplexType) attType));
+                return new FeatureTypeAttributeIterator(this, featureType);
             }
         }
 
@@ -128,18 +100,10 @@ public class FeatureTypeAttributePointer extends NodePointer {
             NodeTypeTest nodeTypeTest = (NodeTypeTest) test;
 
             if (nodeTypeTest.getNodeType() == Compiler.NODE_TYPE_NODE) {
-                return new FeatureTypeAttributeIterator(this, ((ComplexType) attType));
+                return new FeatureTypeAttributeIterator(this, featureType);
             }
         }
 
         return super.childIterator(test, reverse, startWith);
-    }
-
-    public NodeIterator attributeIterator(QName qname) {
-        return new DescriptorXmlAttributeNodeIterator(
-                this,
-                Types.typeName(
-                        getNamespaceResolver().getNamespaceURI(qname.getPrefix()),
-                        qname.getName()));
     }
 }

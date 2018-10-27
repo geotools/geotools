@@ -17,6 +17,7 @@
 package org.geotools.filter.function;
 
 import java.util.ArrayList;
+import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.ComplexAttributeImpl;
@@ -26,7 +27,6 @@ import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.filter.AttributeExpressionImpl;
-import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;

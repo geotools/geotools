@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.filter;
+package org.geotools.xsd.filter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.feature.NameImpl;
+import org.geotools.filter.FunctionFinder;
 import org.geotools.xml.Node;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.BinaryComparisonOperator;

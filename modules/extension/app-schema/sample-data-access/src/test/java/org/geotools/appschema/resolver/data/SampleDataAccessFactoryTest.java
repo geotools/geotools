@@ -15,40 +15,34 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data;
+package org.geotools.appschema.resolver.data;
 
 import junit.framework.TestCase;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
+import org.geotools.data.DataAccess;
+import org.geotools.data.DataAccessFinder;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
 /**
- * Test for {@link SampleDataAccess}.
+ * Test for {@link org.geotools.appschema.resolver.data.SampleDataAccessFactory}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
  * @since 2.6
  */
-public class SampleDataAccessTest extends TestCase {
+public class SampleDataAccessFactoryTest extends TestCase {
 
     /**
-     * Test that {@link SampleDataAccess} can be used to obtain two features.
+     * Test that {@link org.geotools.data.DataAccessFinder} can find {@link
+     * org.geotools.appschema.resolver.data.SampleDataAccessFactory} and use it to create a {@link
+     * org.geotools.appschema.resolver.data.SampleDataAccess}.
      *
      * @throws Exception
      */
-    public static void testDataAccess() throws Exception {
+    public static void testFindSamplesDataAccessFactory() throws Exception {
         DataAccess<FeatureType, Feature> dataAccess =
                 DataAccessFinder.getDataStore(SampleDataAccessFactory.PARAMS);
-        FeatureSource<FeatureType, Feature> featureSource =
-                dataAccess.getFeatureSource(SampleDataAccessData.MAPPEDFEATURE_TYPE_NAME);
-        FeatureCollection<FeatureType, Feature> featureCollection = featureSource.getFeatures();
-        int count = 0;
-        for (FeatureIterator<Feature> iterator = featureCollection.features();
-                iterator.hasNext();
-                iterator.next()) {
-            count++;
-        }
-        assertEquals(2, count);
+        assertNotNull(dataAccess);
+        assertEquals(SampleDataAccess.class, dataAccess.getClass());
     }
 }

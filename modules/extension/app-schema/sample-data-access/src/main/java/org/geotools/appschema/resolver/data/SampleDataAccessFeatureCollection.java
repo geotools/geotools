@@ -15,10 +15,11 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data;
+package org.geotools.appschema.resolver.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;

@@ -15,11 +15,14 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data;
+package org.geotools.appschema.resolver.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.data.DataAccess;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.ServiceInfo;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;

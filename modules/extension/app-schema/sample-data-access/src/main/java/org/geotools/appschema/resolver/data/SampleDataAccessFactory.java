@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data;
+package org.geotools.appschema.resolver.data;
 
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
@@ -23,6 +23,9 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.data.DataAccess;
+import org.geotools.data.DataAccessFactory;
+import org.geotools.data.Parameter;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 

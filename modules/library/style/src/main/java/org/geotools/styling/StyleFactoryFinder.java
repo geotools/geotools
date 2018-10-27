@@ -23,12 +23,8 @@ import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
 
-/**
- * 
- * @author Jody Garnett
- */
-public class StyleFactoryFinder extends FactoryFinder
-{
+/** @author Jody Garnett */
+public class StyleFactoryFinder extends FactoryFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static FactoryRegistry registry;
 
@@ -45,12 +41,7 @@ public class StyleFactoryFinder extends FactoryFinder
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CommonFactoryFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {
-                                        StyleFactory.class
-                                    }));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {StyleFactory.class}));
         }
         return registry;
     }
@@ -126,6 +117,5 @@ public class StyleFactoryFinder extends FactoryFinder
         synchronized (CommonFactoryFinder.class) {
             return getServiceRegistry().getFactory(category, null, hints, key);
         }
-    }    
-
+    }
 }

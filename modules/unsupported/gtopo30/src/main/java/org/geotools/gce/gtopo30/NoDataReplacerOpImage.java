@@ -45,9 +45,9 @@ import javax.media.jai.registry.RenderedRegistryMode;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.AbstractGridCoverage;
 import org.geotools.image.TransfertRectIter;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
-import org.geotools.image.util.ImageUtilities;
 
 /**
  * An image that contains transformed samples, specifically this method will transform the NoData

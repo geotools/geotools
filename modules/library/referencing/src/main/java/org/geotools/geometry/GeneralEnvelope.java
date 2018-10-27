@@ -24,7 +24,6 @@ import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.measure.Units;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.Classes;

@@ -49,8 +49,7 @@ public class MultiplyProcessTest {
                 };
 
         HashMap properties = new HashMap<>();
-        CoverageUtilities.setNoDataProperty(
-                properties, new NoDataContainer(2));
+        CoverageUtilities.setNoDataProperty(properties, new NoDataContainer(2));
         GridCoverage2D cov =
                 covFactory.create(
                         "test",

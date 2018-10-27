@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.feature.wrapper;
+package org.geotools.data.complex.feature.wrapper;
 
 import java.io.InvalidClassException;
 import java.lang.reflect.Field;

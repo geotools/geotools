@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.feature.type;
+package org.geotools.data.complex.feature.type;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,29 +26,14 @@ import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 
 /**
- * A specialisation of {@link FeatureTypeFactoryImpl} that returns {@link UniqueNameFeatureTypeImpl}
- * instead of {@link FeatureTypeImpl} to avoid equality tests on types with cyclic definitions.
+ * Feature type factory to produce complex feature type that can be used in feature chaining. The
+ * specific complex feature type will have an additional system field called "FEATURE_LINK" that can
+ * be used to link the feature type to its parent, i.e. allow the type to be nested.
  *
- * <p>Users of this factory must not use it to create multiple FeatureType instances with the same
- * name unless they represent the same type, because other parts of the implementation will assume
- * they are equal, and if they are not, Bad Things Will Happen.
- *
- * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @see GEOT-3354
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  */
-public class UniqueNameFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
+public class ComplexFeatureTypeFactoryImpl extends UniqueNameFeatureTypeFactoryImpl {
 
-    /**
-     * Override superclass to return {@link UniqueNameFeatureTypeImpl} instead of {@link
-     * FeatureTypeImpl}.
-     *
-     * @see
-     *     org.geotools.feature.type.FeatureTypeFactoryImpl#createFeatureType(org.opengis.feature.type.Name,
-     *     java.util.Collection, org.opengis.feature.type.GeometryDescriptor, boolean,
-     *     java.util.List, org.opengis.feature.type.AttributeType,
-     *     org.opengis.util.InternationalString)
-     */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public FeatureType createFeatureType(
             Name name,
@@ -58,7 +43,8 @@ public class UniqueNameFeatureTypeFactoryImpl extends FeatureTypeFactoryImpl {
             List restrictions,
             AttributeType superType,
             InternationalString description) {
-        return new UniqueNameFeatureTypeImpl(
+
+        return new ComplexFeatureTypeImpl(
                 name, schema, defaultGeometry, isAbstract, restrictions, superType, description);
     }
 }

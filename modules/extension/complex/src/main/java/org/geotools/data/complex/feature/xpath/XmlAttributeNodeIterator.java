@@ -14,52 +14,51 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.feature.xpath;
+
+package org.geotools.data.complex.feature.xpath;
 
 import org.apache.commons.jxpath.ri.model.NodeIterator;
 import org.apache.commons.jxpath.ri.model.NodePointer;
-import org.opengis.feature.type.ComplexType;
+import org.opengis.feature.Attribute;
 import org.opengis.feature.type.Name;
 
 /**
- * Iterates over a single attribute of a feature type.
+ * Special node iterator for {@link Attribute}.
  *
- * @author Niels Charlier (Curtin University of Technology)
+ * @author Justin Deoliveira (The Open Planning Project)
+ * @author Gabriel Roldan (Axios Engineering)
  */
-public class SingleFeatureTypeAttributeIterator implements NodeIterator {
+public class XmlAttributeNodeIterator implements NodeIterator {
 
-    /** The feature type node pointer */
-    protected NodePointer pointer;
+    /** The feature node pointer */
+    AttributeNodePointer pointer;
 
-    protected Name name;
+    /** The feature. */
+    Attribute feature;
 
-    protected ComplexType featureType;
+    /** The name */
+    Name name;
 
-    /**
-     * Creates the iteartor.
-     *
-     * @param pointer The pointer to the feature.
-     * @param index The index of the property to iterate over
-     */
-    public SingleFeatureTypeAttributeIterator(
-            NodePointer pointer, ComplexType featureType, Name name) {
+    int position = 0;
+
+    public XmlAttributeNodeIterator(AttributeNodePointer pointer, Name name) {
         this.pointer = pointer;
         this.name = name;
-        this.featureType = featureType;
+        feature = pointer.getImmediateAttribute();
     }
 
     /** Always return 1, only a single property. */
     public int getPosition() {
-        return 1;
+        return position;
     }
 
     /** Return true if position == 1. */
     public boolean setPosition(int position) {
+        this.position = position;
         return position < 2;
     }
 
-    /** Return a pointer to the property at the set index. */
     public NodePointer getNodePointer() {
-        return new FeatureTypeAttributePointer(pointer, featureType, name);
+        return new XmlAttributeNodePointer(pointer, feature, name);
     }
 }

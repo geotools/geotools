@@ -19,8 +19,8 @@ package org.geotools.csw;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
-import org.geotools.xsd.ows.OWS;
 import org.geotools.xml.XSD;
+import org.geotools.xsd.ows.OWS;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the

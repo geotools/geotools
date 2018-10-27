@@ -19,7 +19,7 @@ package org.geotools.coverage.grid;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.geometry.PixelTranslation;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.datum.PixelInCell;

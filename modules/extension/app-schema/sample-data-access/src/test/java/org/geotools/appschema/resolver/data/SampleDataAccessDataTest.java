@@ -15,14 +15,14 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data;
+package org.geotools.appschema.resolver.data;
 
 import java.util.List;
 import junit.framework.TestCase;
 import org.opengis.feature.Feature;
 
 /**
- * Test the test data created by {@link org.geotools.data.SampleDataAccessData}.
+ * Test the test data created by {@link org.geotools.appschema.resolver.data.SampleDataAccessData}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$

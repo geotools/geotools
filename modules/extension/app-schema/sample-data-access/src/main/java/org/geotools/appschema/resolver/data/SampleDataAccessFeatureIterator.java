@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data;
+package org.geotools.appschema.resolver.data;
 
 import java.util.Iterator;
 import org.geotools.feature.FeatureCollection;

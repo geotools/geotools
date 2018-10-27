@@ -15,13 +15,14 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.data;
+package org.geotools.appschema.resolver.data;
 
 import java.awt.RenderingHints;
 import java.awt.RenderingHints.Key;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.data.*;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;

@@ -1,4 +1,4 @@
-package org.geotools;
+package org.geotools.brewer.styling.builder;
 
 /**
  * Builder interface used to impose consistency on Builder implementations.

@@ -20,7 +20,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.Builder;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;

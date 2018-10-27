@@ -18,7 +18,7 @@ package org.geotools.brewer.styling.filter.expression;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.Builder;
+import org.geotools.brewer.styling.builder.Builder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;

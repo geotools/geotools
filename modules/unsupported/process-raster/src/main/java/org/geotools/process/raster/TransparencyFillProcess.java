@@ -28,7 +28,7 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.util.ProgressListener;
 

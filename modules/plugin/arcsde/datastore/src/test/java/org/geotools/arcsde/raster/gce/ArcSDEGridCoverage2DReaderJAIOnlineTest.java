@@ -45,7 +45,7 @@ import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.parameter.Parameter;
-import org.geotools.resources.image.ColorUtilities;
+import org.geotools.image.util.ColorUtilities;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.AfterClass;

@@ -47,7 +47,7 @@ import org.geotools.coverage.grid.AbstractGridCoverage;
 import org.geotools.image.TransfertRectIter;
 import org.geotools.metadata.i18n.LoggingKeys;
 import org.geotools.metadata.i18n.Loggings;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
 
 /**
  * An image that contains transformed samples, specifically this method will transform the NoData

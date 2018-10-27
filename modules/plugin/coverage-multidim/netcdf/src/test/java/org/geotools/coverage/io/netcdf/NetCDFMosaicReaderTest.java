@@ -85,7 +85,7 @@ import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;

@@ -19,7 +19,7 @@ package org.geotools.renderer.lite;
 import java.awt.image.RenderedImage;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
 
 /**
  * Internal wrapper used by streaming renderer to figure out if a GridCoverage2D should be disposed

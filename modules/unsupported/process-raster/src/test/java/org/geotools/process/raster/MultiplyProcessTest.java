@@ -9,6 +9,7 @@ import java.util.HashMap;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.factory.GeoTools;
@@ -48,7 +49,7 @@ public class MultiplyProcessTest {
                 };
 
         HashMap properties = new HashMap<>();
-        org.geotools.resources.coverage.CoverageUtilities.setNoDataProperty(
+        CoverageUtilities.setNoDataProperty(
                 properties, new NoDataContainer(2));
         GridCoverage2D cov =
                 covFactory.create(

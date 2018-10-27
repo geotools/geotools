@@ -20,7 +20,7 @@ import java.io.File;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.locationtech.jts.geom.Geometry;

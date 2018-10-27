@@ -54,7 +54,7 @@ import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.resources.coverage.FeatureUtilities;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;

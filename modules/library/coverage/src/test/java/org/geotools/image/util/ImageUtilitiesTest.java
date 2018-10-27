@@ -15,7 +15,7 @@
  *
  *
  */
-package org.geotools.resources.image;
+package org.geotools.image.util;
 
 import static org.junit.Assert.assertTrue;
 

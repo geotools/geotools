@@ -16,8 +16,8 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.geotools.resources.coverage.FeatureUtilities.GRID_PROPERTY_NAME;
-import static org.geotools.resources.coverage.FeatureUtilities.PARAMS_PROPERTY_NAME;
+import static org.geotools.coverage.util.FeatureUtilities.GRID_PROPERTY_NAME;
+import static org.geotools.coverage.util.FeatureUtilities.PARAMS_PROPERTY_NAME;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -45,7 +45,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.coverage.FeatureUtilities;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;

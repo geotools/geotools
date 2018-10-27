@@ -25,10 +25,10 @@ import java.util.Arrays;
 import java.util.Map;
 import javax.media.jai.FloatDoubleColorModel;
 import javax.media.jai.RasterFactory;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.resources.image.ColorUtilities;
-import org.geotools.resources.image.ComponentColorModelJAI;
 import org.geotools.util.WeakValueHashMap;
 
 /**

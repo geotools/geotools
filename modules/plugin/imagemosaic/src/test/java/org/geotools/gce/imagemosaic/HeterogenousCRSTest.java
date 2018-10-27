@@ -63,7 +63,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.junit.AfterClass;

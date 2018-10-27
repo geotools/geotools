@@ -16,7 +16,7 @@
  */
 package org.geotools.brewer.styling.filter.expression;
 
-import org.geotools.Builder;
+import org.geotools.brewer.styling.builder.Builder;
 import org.opengis.filter.expression.Expression;
 
 /**

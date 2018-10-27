@@ -16,7 +16,6 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.Builder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;

@@ -16,7 +16,6 @@
  */
 package org.geotools.brewer.styling.builder;
 
-import org.geotools.Builder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;

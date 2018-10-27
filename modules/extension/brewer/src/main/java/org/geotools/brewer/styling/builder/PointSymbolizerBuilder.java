@@ -18,7 +18,6 @@ package org.geotools.brewer.styling.builder;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.Builder;
 import org.geotools.styling.PointSymbolizer;
 import org.opengis.filter.expression.Expression;
 

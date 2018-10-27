@@ -2,7 +2,7 @@ package org.geotools.brewer.styling.filter;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.Builder;
+import org.geotools.brewer.styling.builder.Builder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;

@@ -18,7 +18,6 @@ package org.geotools.brewer.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.Builder;
 import org.geotools.styling.GraphicLegend;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Symbolizer;

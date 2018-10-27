@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.Builder;
 import org.geotools.styling.Font;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LinePlacement;

@@ -28,7 +28,7 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.AppSchemaConfiguration;
+import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.resolver.SchemaCatalog;

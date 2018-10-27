@@ -15,9 +15,10 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.appschema.resolver.xml;
 
 import org.eclipse.xsd.XSDSchema;
+import org.geotools.xml.SchemaLocationResolver;
 import org.geotools.xml.resolver.SchemaResolver;
 
 /**

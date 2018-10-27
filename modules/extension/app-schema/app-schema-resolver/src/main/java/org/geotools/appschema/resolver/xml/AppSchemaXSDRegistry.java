@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.appschema.resolver.xml;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceImpl;
 import org.eclipse.xsd.util.XSDSchemaLocator;
+import org.geotools.xml.Schemas;
 
 /**
  * A singleton registry to store all XSD schema's that are created by app-schema. This registry has

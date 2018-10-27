@@ -18,10 +18,10 @@ package org.geotools.filter.v1_0;
 
 import java.util.HashSet;
 import javax.xml.namespace.QName;
-import org.geotools.filter.FilterParsingUtils;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
+import org.geotools.xsd.filter.FilterParsingUtils;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.picocontainer.MutablePicoContainer;

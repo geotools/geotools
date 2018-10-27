@@ -26,7 +26,7 @@ import org.custommonkey.xmlunit.XMLAssert;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml2.GML;
-import org.geotools.ows.OWS;
+import org.geotools.xsd.ows.OWS;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.EncoderDelegate;
 import org.geotools.xml.Parser;

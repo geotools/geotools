@@ -11,7 +11,7 @@ import net.opengis.cat.csw20.SimpleLiteral;
 import net.opengis.cat.csw20.SummaryRecordType;
 import net.opengis.ows10.BoundingBoxType;
 import org.eclipse.emf.common.util.EList;
-import org.geotools.ows.OWS;
+import org.geotools.xsd.ows.OWS;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.Parser;
 import org.junit.Before;

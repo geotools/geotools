@@ -14,7 +14,7 @@ import org.eclipse.xsd.XSDSchema;
 import org.geotools.csw.CSW;
 import org.geotools.csw.DC;
 import org.geotools.csw.DCT;
-import org.geotools.ows.OWS;
+import org.geotools.xsd.ows.OWS;
 import org.geotools.xml.ComplexEMFBinding;
 
 public class RecordBinding extends ComplexEMFBinding {

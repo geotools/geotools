@@ -17,7 +17,7 @@
 package org.geotools.wfs.v1_1;
 
 import org.geotools.filter.v1_1.OGCConfiguration;
-import org.geotools.ows.OWSConfiguration;
+import org.geotools.xsd.ows.OWSConfiguration;
 import org.geotools.wfs.bindings.InsertResultsTypeBinding;
 import org.geotools.wfs.bindings.LockFeatureResponseTypeBinding;
 import org.geotools.wfs.bindings.OperationsTypeBinding;

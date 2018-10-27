@@ -32,13 +32,13 @@ import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.image.ImageWorker;
+import org.geotools.image.util.ColorUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.image.util.ColorUtilities;
 import org.geotools.util.factory.GeoTools;
 import org.jaitools.numeric.Range;
 import org.opengis.coverage.grid.GridCoverage;
@@ -201,8 +201,7 @@ public class RangeLookupProcess implements RasterProcess {
                         put(NoDataContainer.GC_NODATA, new NoDataContainer(0d));
                     }
                 };
-        org.geotools.coverage.util.CoverageUtilities.setROIProperty(
-                properties, worker.getROI());
+        org.geotools.coverage.util.CoverageUtilities.setROIProperty(properties, worker.getROI());
         final GridCoverage2D output =
                 factory.create(
                         "reclassified",

@@ -26,9 +26,9 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wps.AbstractWPSGetCapabilitiesResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.wps.WPSConfiguration;
+import org.geotools.xml.XMLHandlerHints;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.Parser;
-import org.geotools.xml.XMLHandlerHints;
 import org.xml.sax.SAXException;
 
 /**

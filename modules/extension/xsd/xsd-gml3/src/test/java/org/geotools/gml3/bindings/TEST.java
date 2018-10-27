@@ -19,7 +19,7 @@ package org.geotools.gml3.bindings;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 public final class TEST extends XSD {
     private static TEST instance = new TEST();

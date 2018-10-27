@@ -18,9 +18,9 @@ package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:ObjectType.

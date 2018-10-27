@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.Set;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaLocationResolver;
-import org.geotools.xml.SchemaLocator;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaLocationResolver;
+import org.geotools.xsd.SchemaLocator;
+import org.geotools.xsd.XSD;
 import org.geotools.xml.resolver.SchemaResolver;
 
 /**
- * {@link org.geotools.xml.XSD} that uses {@link SchemaResolver} to locate schema resources in a
+ * {@link XSD} that uses {@link SchemaResolver} to locate schema resources in a
  * catalog, on the classpath, or in a cache.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
@@ -58,13 +58,13 @@ public class AppSchemaXSD extends XSD {
         this.resolver = resolver;
     }
 
-    /** @see org.geotools.xml.XSD#getNamespaceURI() */
+    /** @see XSD#getNamespaceURI() */
     @Override
     public String getNamespaceURI() {
         return namespaceUri;
     }
 
-    /** @see org.geotools.xml.XSD#getSchemaLocation() */
+    /** @see XSD#getSchemaLocation() */
     @Override
     public String getSchemaLocation() {
         return schemaLocation;
@@ -75,13 +75,13 @@ public class AppSchemaXSD extends XSD {
         this.configuration = configuration;
     }
 
-    /** @see org.geotools.xml.XSD#createSchemaLocationResolver() */
+    /** @see XSD#createSchemaLocationResolver() */
     @Override
     public SchemaLocationResolver createSchemaLocationResolver() {
         return new AppSchemaLocationResolver(resolver);
     }
 
-    /** @see org.geotools.xml.XSD#addDependencies(java.util.Set) */
+    /** @see XSD#addDependencies(java.util.Set) */
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     protected void addDependencies(Set dependencies) {

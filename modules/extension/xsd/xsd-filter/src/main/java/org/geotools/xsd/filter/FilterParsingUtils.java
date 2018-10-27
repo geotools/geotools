@@ -24,7 +24,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFinder;
-import org.geotools.xml.Node;
+import org.geotools.xsd.Node;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.BinaryLogicOperator;

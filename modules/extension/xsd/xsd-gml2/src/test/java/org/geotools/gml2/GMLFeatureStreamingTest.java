@@ -19,7 +19,7 @@ package org.geotools.gml2;
 import java.io.InputStream;
 import javax.xml.namespace.QName;
 import junit.framework.TestCase;
-import org.geotools.xml.StreamingParser;
+import org.geotools.xsd.StreamingParser;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 

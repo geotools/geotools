@@ -30,9 +30,9 @@ import org.geotools.wfs.WFSParserDelegate;
 import org.geotools.wps.bindings.ComplexDataTypeBinding;
 import org.geotools.wps.bindings.InputReferenceTypeBinding;
 import org.geotools.wps.bindings.LanguagesBinding;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SimpleContentComplexEMFBinding;
 import org.picocontainer.MutablePicoContainer;
 
 /**

@@ -20,7 +20,8 @@ import org.geotools.sld.bindings.SLDUserStyleBinding;
 import org.geotools.styling.Description;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:UserStyle.

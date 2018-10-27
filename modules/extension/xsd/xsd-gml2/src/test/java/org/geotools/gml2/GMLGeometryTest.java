@@ -18,8 +18,8 @@ package org.geotools.gml2;
 
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;

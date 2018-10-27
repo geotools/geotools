@@ -26,7 +26,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceImpl;
 import org.eclipse.xsd.util.XSDSchemaLocator;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 
 /**
  * A singleton registry to store all XSD schema's that are created by app-schema. This registry has

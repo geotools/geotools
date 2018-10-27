@@ -50,9 +50,9 @@ import org.geotools.ows.bindings._OperationsMetadataBinding;
 import org.geotools.ows.bindings._ServiceIdentificationBinding;
 import org.geotools.ows.bindings._ServiceProviderBinding;
 import org.geotools.xlink.XLINKConfiguration;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SimpleContentComplexEMFBinding;
 import org.picocontainer.MutablePicoContainer;
 
 /**

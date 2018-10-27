@@ -23,7 +23,7 @@ import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 
 public class StyleTypeBindingTest extends KMLTestSupport {
     public void testType() {

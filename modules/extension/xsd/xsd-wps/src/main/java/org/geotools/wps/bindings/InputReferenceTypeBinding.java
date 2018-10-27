@@ -22,9 +22,9 @@ import net.opengis.wps10.InputReferenceType;
 import net.opengis.wps10.MethodType;
 import net.opengis.wps10.Wps10Factory;
 import org.geotools.wps.WPS;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding for inputReference attribute of Method element

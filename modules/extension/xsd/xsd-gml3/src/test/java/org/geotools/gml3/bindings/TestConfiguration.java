@@ -17,7 +17,7 @@
 package org.geotools.gml3.bindings;
 
 import org.geotools.gml3.GMLConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 public class TestConfiguration extends Configuration {

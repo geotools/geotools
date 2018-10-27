@@ -14,9 +14,9 @@ import org.geotools.po.Items;
 import org.geotools.po.ObjectFactory;
 import org.geotools.po.PurchaseOrderType;
 import org.geotools.po.USAddress;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.geotools.org/po:PurchaseOrderType.

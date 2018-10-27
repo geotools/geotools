@@ -24,7 +24,7 @@ import net.opengis.wfs.QueryType;
 import net.opengis.wfs.WfsFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.wfs.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:QueryType.

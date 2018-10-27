@@ -24,6 +24,8 @@ import org.geotools.wfs.gtxml.GTXML;
 import org.geotools.xml.gml.GMLComplexTypes;
 import org.geotools.xml.schema.Schema;
 import org.geotools.xs.XSConfiguration;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;

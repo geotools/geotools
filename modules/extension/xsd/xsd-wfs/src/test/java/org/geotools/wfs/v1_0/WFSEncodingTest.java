@@ -18,7 +18,7 @@ import org.custommonkey.xmlunit.exceptions.XpathException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.geotools.xs.XSSchema;
 import org.junit.Before;
 import org.junit.Test;

@@ -4,7 +4,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.ows.v1_1.OWS;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the

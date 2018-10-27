@@ -16,8 +16,8 @@
  */
 package org.geotools.wps;
 
-import org.geotools.xml.Configuration;
-import org.geotools.xml.test.XMLTestSupport;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.test.XMLTestSupport;
 
 public class WPSTestSupport extends XMLTestSupport {
 

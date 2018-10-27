@@ -18,7 +18,8 @@ package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 import org.opengis.style.OverlapBehavior;
 
 /**

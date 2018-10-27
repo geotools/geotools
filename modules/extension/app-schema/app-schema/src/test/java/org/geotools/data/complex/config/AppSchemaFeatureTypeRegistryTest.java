@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.SchemaIndex;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.junit.BeforeClass;
 import org.junit.Test;

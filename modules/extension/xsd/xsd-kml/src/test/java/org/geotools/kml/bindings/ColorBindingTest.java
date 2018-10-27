@@ -19,7 +19,7 @@ package org.geotools.kml.bindings;
 import java.awt.Color;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 
 public class ColorBindingTest extends KMLTestSupport {
     public void testType() {

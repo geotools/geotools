@@ -17,7 +17,7 @@
 
 package org.geotools.appschema.resolver.xml;
 
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.geotools.xml.resolver.SchemaResolver;
 
 /**
@@ -61,7 +61,7 @@ public class AppSchemaConfiguration extends Configuration {
     /**
      * Allow late addition of a dependency such as GML.
      *
-     * @see org.geotools.xml.Configuration#addDependency(org.geotools.xml.Configuration)
+     * @see Configuration#addDependency(Configuration)
      */
     @Override
     public void addDependency(Configuration dependency) {

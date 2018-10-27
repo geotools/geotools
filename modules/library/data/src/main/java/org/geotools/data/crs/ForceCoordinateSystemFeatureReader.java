@@ -19,7 +19,6 @@ package org.geotools.data.crs;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -28,7 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * ForceCoordinateSystemFeatureReader provides a CoordinateReferenceSystem for FeatureTypes.
+ * ForceCoordinateSystemFeatureReader provides a CoordinateReferenceSystem for DataUtilities.
  *
  * <p>ForceCoordinateSystemFeatureReader is a wrapper used to force GeometryAttributes to a user
  * supplied CoordinateReferenceSystem rather then the default supplied by the DataStore.
@@ -107,7 +106,7 @@ public class ForceCoordinateSystemFeatureReader
         CoordinateReferenceSystem originalCs = type.getCoordinateReferenceSystem();
 
         if (!cs.equals(originalCs)) {
-            type = FeatureTypes.transform(type, cs, forceOnlyMissing);
+            type = DataUtilities.transform(type, cs, forceOnlyMissing);
         }
         this.builder = new SimpleFeatureBuilder(type);
 

@@ -54,6 +54,7 @@ public class SimpleHttpClientTest {
                 "dXNlcjowMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5";
         WireMock.verify(
                 WireMock.getRequestedFor(WireMock.urlEqualTo("/test"))
-                        .withHeader("Authorization", WireMock.equalTo("Basic " + encodedCredentials)));
+                        .withHeader(
+                                "Authorization", WireMock.equalTo("Basic " + encodedCredentials)));
     }
 }

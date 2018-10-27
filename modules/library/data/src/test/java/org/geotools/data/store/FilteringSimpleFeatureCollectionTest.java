@@ -19,11 +19,11 @@ package org.geotools.data.store;
 
 import java.io.IOException;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.collection.FilteringSimpleFeatureCollection;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
-import org.geotools.data.collection.FilteringSimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.junit.Test;

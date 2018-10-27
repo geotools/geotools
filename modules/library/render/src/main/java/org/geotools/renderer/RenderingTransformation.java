@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.filter.function;
+package org.geotools.renderer;
 
 import org.geotools.data.Query;
 import org.opengis.coverage.grid.GridCoverageReader;

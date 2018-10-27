@@ -24,7 +24,7 @@ import org.geotools.data.FeatureReader;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.store.DataFeatureCollection;
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;

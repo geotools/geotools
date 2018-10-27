@@ -19,7 +19,7 @@ package org.geotools.feature.collection;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.geotools.data.DataTestCase;
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.filter.Filter;

@@ -25,12 +25,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.collection.*;
+import org.geotools.data.collection.BridgeIterator;
 import org.geotools.data.simple.*;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.data.view.DefaultView;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.*;
-import org.geotools.data.collection.BridgeIterator;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -46,7 +46,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
-import org.geotools.styling.UserLayer;
 import org.geotools.util.Converters;
 import org.geotools.util.URLs;
 import org.geotools.util.factory.Hints;
@@ -220,7 +219,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#attributeNames(SimpleFeatureType)}
      */
     public static String[] attributeNames(SimpleFeatureType featureType) {
-        return FeatureTypes.attributeNames(featureType);
+        return DataUtilities.attributeNames(featureType);
     }
 
     /** @deprecated Use {@link URLs#fileToUrl(File)} */
@@ -242,7 +241,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#attributeNames(Filter, SimpleFeatureType)}
      */
     public static String[] attributeNames(Filter filter, final SimpleFeatureType featureType) {
-        return FeatureTypes.attributeNames(filter, featureType);
+        return DataUtilities.attributeNames(filter, featureType);
     }
 
     /**
@@ -255,7 +254,7 @@ public class DataUtilities {
      */
     public static Set<PropertyName> propertyNames(
             Filter filter, final SimpleFeatureType featureType) {
-        return FeatureTypes.propertyNames(filter, featureType);
+        return DataUtilities.propertyNames(filter, featureType);
     }
 
     /**
@@ -286,7 +285,7 @@ public class DataUtilities {
      */
     public static String[] attributeNames(
             Expression expression, final SimpleFeatureType featureType) {
-        return FeatureTypes.attributeNames(expression, featureType);
+        return DataUtilities.attributeNames(expression, featureType);
     }
 
     /**
@@ -299,7 +298,7 @@ public class DataUtilities {
      */
     public static Set<PropertyName> propertyNames(
             Expression expression, final SimpleFeatureType featureType) {
-        return FeatureTypes.propertyNames(expression, featureType);
+        return DataUtilities.propertyNames(expression, featureType);
     }
 
     /**
@@ -308,7 +307,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#attributeNames(Expression)}
      */
     public static String[] attributeNames(Expression expression) {
-        return FeatureTypes.attributeNames(expression, null);
+        return DataUtilities.attributeNames(expression, null);
     }
 
     /**
@@ -317,7 +316,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#propertyNames(Expression)}
      */
     public static Set<PropertyName> propertyNames(Expression expression) {
-        return FeatureTypes.propertyNames(expression, null);
+        return DataUtilities.propertyNames(expression, null);
     }
 
     /**
@@ -347,7 +346,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#compare(SimpleFeatureType, SimpleFeatureType)}
      */
     public static int compare(SimpleFeatureType typeA, SimpleFeatureType typeB) {
-        return FeatureTypes.compare(typeA, typeB);
+        return DataUtilities.compare(typeA, typeB);
     }
 
     /**
@@ -362,7 +361,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#isMatch(AttributeDescriptor, AttributeDescriptor)}
      */
     public static boolean isMatch(AttributeDescriptor a, AttributeDescriptor b) {
-        return FeatureTypes.isMatch(a, b);
+        return DataUtilities.isMatch(a, b);
     }
 
     /**
@@ -379,7 +378,7 @@ public class DataUtilities {
      */
     public static SimpleFeature reType(SimpleFeatureType featureType, SimpleFeature feature)
             throws IllegalAttributeException {
-        return FeatureTypes.reType(featureType, feature);
+        return DataUtilities.reType(featureType, feature);
     }
 
     /**
@@ -408,7 +407,7 @@ public class DataUtilities {
     public static SimpleFeature reType(
             SimpleFeatureType featureType, SimpleFeature feature, boolean duplicate)
             throws IllegalAttributeException {
-        return FeatureTypes.reType(featureType, feature, duplicate);
+        return DataUtilities.reType(featureType, feature, duplicate);
     }
 
     /**
@@ -430,7 +429,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#duplicate(Object)}
      */
     public static Object duplicate(Object src) {
-        return FeatureTypes.duplicate(src);
+        return DataUtilities.duplicate(src);
     }
 
     /**
@@ -444,7 +443,7 @@ public class DataUtilities {
      */
     public static SimpleFeature template(SimpleFeatureType featureType)
             throws IllegalAttributeException {
-        return FeatureTypes.template(featureType);
+        return DataUtilities.template(featureType);
     }
 
     /**
@@ -459,7 +458,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#template(SimpleFeatureType, String)}
      */
     public static SimpleFeature template(SimpleFeatureType featureType, String featureID) {
-        return FeatureTypes.template(featureType, featureID);
+        return DataUtilities.template(featureType, featureID);
     }
 
     /**
@@ -470,7 +469,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#defaultValues(SimpleFeatureType)}
      */
     public static Object[] defaultValues(SimpleFeatureType featureType) {
-        return FeatureTypes.defaultValues(featureType, null);
+        return DataUtilities.defaultValues(featureType, null);
     }
 
     /**
@@ -484,7 +483,7 @@ public class DataUtilities {
      *     featureType
      */
     public static SimpleFeature template(SimpleFeatureType featureType, Object[] providedValues) {
-        return FeatureTypes.template(featureType, providedValues);
+        return DataUtilities.template(featureType, providedValues);
     }
 
     /**
@@ -501,7 +500,7 @@ public class DataUtilities {
      */
     public static SimpleFeature template(
             SimpleFeatureType featureType, String featureID, Object[] providedValues) {
-        return FeatureTypes.template(featureType, featureID, providedValues);
+        return DataUtilities.template(featureType, featureID, providedValues);
     }
 
     /**
@@ -515,7 +514,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#defaultValues(SimpleFeatureType, Object[])}
      */
     public static Object[] defaultValues(SimpleFeatureType featureType, Object[] values) {
-        return FeatureTypes.defaultValues(featureType, values);
+        return DataUtilities.defaultValues(featureType, values);
     }
 
     /**
@@ -530,7 +529,7 @@ public class DataUtilities {
      */
     public static Object defaultValue(AttributeDescriptor attributeType)
             throws IllegalAttributeException {
-        return FeatureTypes.defaultValue(attributeType);
+        return DataUtilities.defaultValue(attributeType);
     }
 
     /**
@@ -563,7 +562,7 @@ public class DataUtilities {
      * @deprecated see {@link FeatureTypes#defaultValue(Class)}
      */
     public static Object defaultValue(Class type) {
-        return FeatureTypes.defaultValue(type);
+        return DataUtilities.defaultValue(type);
     }
 
     /**
@@ -607,7 +606,7 @@ public class DataUtilities {
         final SimpleFeatureType featureType;
 
         if ((featureArray == null) || (featureArray.length == 0)) {
-            featureType = FeatureTypes.EMPTY;
+            featureType = DataUtilities.EMPTY;
         } else {
             featureType = featureArray[0].getFeatureType();
         }
@@ -1244,7 +1243,7 @@ public class DataUtilities {
      * @deprecated see {@link FeatureTypes#attributesEqual(Object, Object)}
      */
     public static boolean attributesEqual(Object att, Object otherAtt) {
-        return FeatureTypes.attributesEqual(att, otherAtt);
+        return DataUtilities.attributesEqual(att, otherAtt);
     }
 
     //
@@ -1264,7 +1263,7 @@ public class DataUtilities {
     public static SimpleFeatureType createSubType(
             SimpleFeatureType featureType, String[] properties, CoordinateReferenceSystem override)
             throws SchemaException {
-        return FeatureTypes.createSubType(featureType, properties, override);
+        return DataUtilities.createSubType(featureType, properties, override);
     }
     /**
      * Create a derived FeatureType
@@ -1287,7 +1286,7 @@ public class DataUtilities {
             URI namespace)
             throws SchemaException {
 
-        return FeatureTypes.createSubType(featureType, properties, override, typeName, namespace);
+        return DataUtilities.createSubType(featureType, properties, override, typeName, namespace);
     }
 
     /**
@@ -1301,7 +1300,7 @@ public class DataUtilities {
      */
     public static SimpleFeatureType createSubType(
             SimpleFeatureType featureType, String[] properties) throws SchemaException {
-        return FeatureTypes.createSubType(featureType, properties);
+        return DataUtilities.createSubType(featureType, properties);
     }
 
     //
@@ -2225,7 +2224,7 @@ public class DataUtilities {
      * @deprecated use {@link FeatureTypes#bounds(FeatureIterator)}
      */
     public static ReferencedEnvelope bounds(FeatureIterator<?> iterator) {
-        return FeatureTypes.bounds(iterator);
+        return DataUtilities.bounds(iterator);
     }
     /**
      * Manually calculates the bounds of a feature collection using {@link
@@ -2240,7 +2239,7 @@ public class DataUtilities {
      */
     public static ReferencedEnvelope bounds(
             FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
-        return FeatureTypes.bounds(collection);
+        return DataUtilities.bounds(collection);
     }
 
     /**

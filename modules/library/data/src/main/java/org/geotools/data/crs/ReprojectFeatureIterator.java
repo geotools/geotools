@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.geotools.data.DataSourceException;
-import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.locationtech.jts.geom.Geometry;
@@ -31,7 +31,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * ReprojectFeatureReader provides a reprojection for FeatureTypes.
+ * ReprojectFeatureReader provides a reprojection for DataUtilities.
  *
  * <p>ReprojectFeatureReader is a wrapper used to reproject GeometryAttributes to a user supplied
  * CoordinateReferenceSystem from the original CoordinateReferenceSystem supplied by the original

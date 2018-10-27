@@ -18,9 +18,9 @@ package org.geotools.data.collection;
 
 import java.util.Comparator;
 import org.geotools.data.DataUtilities;
-import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.store.FeatureCollectionWrapperTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.sort.SortBy;

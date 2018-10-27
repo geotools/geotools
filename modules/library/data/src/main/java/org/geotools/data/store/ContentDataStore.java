@@ -36,7 +36,6 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opengis.feature.FeatureFactory;
@@ -243,7 +242,7 @@ public abstract class ContentDataStore implements DataStore {
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
         info.setDescription("Features from " + getClass().getSimpleName());
-        info.setSchema(FeatureTypes.DEFAULT_NAMESPACE);
+        info.setSchema(DataUtilities.DEFAULT_NAMESPACE);
         return info;
     }
 

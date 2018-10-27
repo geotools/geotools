@@ -19,8 +19,8 @@ package org.geotools.data.collection;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -84,7 +84,7 @@ public abstract class AdaptorFeatureCollection implements SimpleFeatureCollectio
      * @throws IOException
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
-        FeatureTypes.visit(this, visitor, progress);
+        DataUtilities.visit(this, visitor, progress);
     }
 
     //

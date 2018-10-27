@@ -21,14 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.collection.DecoratingSimpleFeatureCollection;
 import org.geotools.data.collection.DelegateFeatureReader;
-import org.geotools.feature.collection.SimpleFeatureCollection;
-import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
-import org.geotools.data.collection.DecoratingSimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
@@ -130,7 +129,7 @@ public class ReprojectingFeatureCollection extends DecoratingSimpleFeatureCollec
 
     private SimpleFeatureType reType(SimpleFeatureType type, CoordinateReferenceSystem target) {
         try {
-            return FeatureTypes.transform(type, target);
+            return DataUtilities.transform(type, target);
         } catch (SchemaException e) {
             throw new IllegalArgumentException("Could not transform source schema", e);
         }

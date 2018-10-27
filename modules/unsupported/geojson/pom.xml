@@ -64,6 +64,11 @@
             <artifactId>gt-main</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-data</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--   Third-party dependencies   -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>

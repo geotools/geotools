@@ -93,6 +93,12 @@
         <version>${project.version}</version>
         <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <!-- The version number is specified in the parent POM. -->
+      <scope>provided</scope> <!-- Really provided, not test -->
+    </dependency>
   </dependencies>
 
 </project>

@@ -33,11 +33,9 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
-import org.geotools.feature.collection.SubFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
@@ -88,7 +86,7 @@ public class DefaultFeatureCollection
     /**
      * Used to stage content in memory.
      *
-     * <p>Client code is encouraged to use FeatureTypes.collection( collection )
+     * <p>Client code is encouraged to use DataUtilities.collection( collection )
      *
      * @param collection SimpleFeatureCollection to copy into memory
      */
@@ -540,7 +538,7 @@ public class DefaultFeatureCollection
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
-        FeatureTypes.visit(this, visitor, progress);
+        DataUtilities.visit(this, visitor, progress);
     }
 
     /**

@@ -18,8 +18,8 @@ package org.geotools.data.crs;
 
 import junit.framework.TestCase;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.BoundsVisitor;

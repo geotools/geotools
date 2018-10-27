@@ -16,9 +16,6 @@
  */
 package org.geotools.data;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.createNiceMock;
-import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 
 import junit.framework.TestCase;
@@ -51,7 +48,8 @@ public class DefaultFeatureResultsTest extends TestCase {
         // mock up the feature source so that it'll return a count of -1 (too
         // expensive)
         // and then will return a reader
-        FeatureReader<SimpleFeatureType, SimpleFeature> fr = EasyMock.createNiceMock(FeatureReader.class);
+        FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                EasyMock.createNiceMock(FeatureReader.class);
         EasyMock.expect(fr.hasNext()).andReturn(true).times(2).andReturn(false);
         replay(fr);
 

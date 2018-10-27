@@ -19,7 +19,6 @@ package org.geotools.data.collection;
 import java.io.IOException;
 import java.util.Collection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -45,7 +44,7 @@ public class DecoratingSimpleFeatureCollection implements SimpleFeatureCollectio
 
     protected DecoratingSimpleFeatureCollection(
             FeatureCollection<SimpleFeatureType, SimpleFeature> delegate) {
-        this.delegate = FeatureTypes.simple(delegate);
+        this.delegate = DataUtilities.simple(delegate);
     }
 
     protected DecoratingSimpleFeatureCollection(SimpleFeatureCollection delegate) {
@@ -58,7 +57,7 @@ public class DecoratingSimpleFeatureCollection implements SimpleFeatureCollectio
         if (canDelegate(visitor)) {
             delegate.accepts(visitor, progress);
         } else {
-            FeatureTypes.visit(this, visitor, progress);
+            DataUtilities.visit(this, visitor, progress);
         }
     }
 

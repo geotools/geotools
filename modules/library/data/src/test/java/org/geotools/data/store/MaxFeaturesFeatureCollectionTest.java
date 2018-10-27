@@ -16,8 +16,8 @@
  */
 package org.geotools.data.store;
 
-import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.collection.MaxSimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 
 public class MaxFeaturesFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 

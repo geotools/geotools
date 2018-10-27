@@ -18,11 +18,10 @@ package org.geotools.data.crs;
 
 import java.io.IOException;
 import java.util.Iterator;
+import org.geotools.data.collection.AbstractFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
-import org.geotools.data.collection.AbstractFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -30,7 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * ForceCoordinateSystemFeatureResults provides a CoordinateReferenceSystem for FeatureTypes.
+ * ForceCoordinateSystemFeatureResults provides a CoordinateReferenceSystem for DataUtilities.
  *
  * <p>ForceCoordinateSystemFeatureReader is a wrapper used to force GeometryAttributes to a user
  * supplied CoordinateReferenceSystem rather then the default supplied by the DataStore.
@@ -120,7 +119,7 @@ public class ForceCoordinateSystemFeatureResults extends AbstractFeatureCollecti
         if (forcedCS.equals(originalCs)) {
             return startingType;
         } else {
-            return FeatureTypes.transform(startingType, forcedCS, forceOnlyMissing);
+            return DataUtilities.transform(startingType, forcedCS, forceOnlyMissing);
         }
     }
 

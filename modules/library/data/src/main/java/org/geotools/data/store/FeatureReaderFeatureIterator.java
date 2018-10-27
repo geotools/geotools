@@ -19,8 +19,8 @@ package org.geotools.data.store;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
-import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.feature.IllegalAttributeException;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

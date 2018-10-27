@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -210,7 +209,7 @@ public abstract class AbstractFeatureCollection implements SimpleFeatureCollecti
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
-        FeatureTypes.visit(this, visitor, progress);
+        DataUtilities.visit(this, visitor, progress);
     }
 
     //

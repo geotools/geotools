@@ -24,7 +24,6 @@ import java.util.List;
 import org.geotools.data.FeatureReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -50,7 +49,7 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 
     public FilteringSimpleFeatureCollection(
             FeatureCollection<SimpleFeatureType, SimpleFeature> delegate, Filter filter) {
-        this(FeatureTypes.simple(delegate), filter);
+        this(DataUtilities.simple(delegate), filter);
     }
 
     public FilteringSimpleFeatureCollection(SimpleFeatureCollection delegate, Filter filter) {
@@ -147,6 +146,6 @@ public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCol
 
     public ReferencedEnvelope getBounds() {
         // calculate manually
-        return FeatureTypes.bounds(this);
+        return DataUtilities.bounds(this);
     }
 }

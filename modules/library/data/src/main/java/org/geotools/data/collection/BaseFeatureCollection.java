@@ -21,7 +21,6 @@ import java.util.Collection;
 import org.geotools.data.store.FilteringFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
@@ -196,7 +195,7 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
-        FeatureTypes.visit(this, visitor, progress);
+        DataUtilities.visit(this, visitor, progress);
     }
 
     //
@@ -231,7 +230,8 @@ public abstract class BaseFeatureCollection<T extends FeatureType, F extends Fea
             // go for the most efficient way if possible, otherwise rely on pure in memory
             // sorting...
             SimpleFeatureCollection simple =
-                    FeatureTypes.simple((FeatureCollection<SimpleFeatureType, SimpleFeature>) this);
+                    DataUtilities.simple(
+                            (FeatureCollection<SimpleFeatureType, SimpleFeature>) this);
             return (FeatureCollection<T, F>)
                     new SortedSimpleFeatureCollection(simple, new SortBy[] {order});
         } else {

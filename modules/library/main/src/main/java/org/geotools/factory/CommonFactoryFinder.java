@@ -69,7 +69,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
                             Arrays.asList(
                                     new Class<?>[] {
                                         FilterFactory.class,
-                                        //FileDataStoreFactorySpi.class, TODO: add
+                                        // FileDataStoreFactorySpi.class, TODO: add
                                         //                  FunctionImpl.class, // TODO: remove
                                         //                  FunctionExpression.class,//TODO: remove
                                         Function.class,

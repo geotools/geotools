@@ -17,8 +17,8 @@
 package org.geotools.data.store;
 
 import java.util.Iterator;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.data.collection.DelegateFeatureIterator;
+import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
 
 /**

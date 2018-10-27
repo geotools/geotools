@@ -19,12 +19,11 @@ package org.geotools.data.crs;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.geotools.feature.collection.SimpleFeatureIterator;
+import org.geotools.data.collection.AbstractFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
-import org.geotools.data.collection.AbstractFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.locationtech.jts.geom.Envelope;
@@ -39,7 +38,7 @@ import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * ReprojectFeatureReader provides a reprojection for FeatureTypes.
+ * ReprojectFeatureReader provides a reprojection for DataUtilities.
  *
  * <p>ReprojectFeatureResults is a wrapper used to reproject GeometryAttributes to a user supplied
  * CoordinateReferenceSystem from the original CoordinateReferenceSystem supplied by the original
@@ -158,7 +157,7 @@ public class ReprojectFeatureResults extends AbstractFeatureCollection {
         if (forcedCS.equals(originalCs)) {
             return startingType;
         } else {
-            return FeatureTypes.transform(startingType, forcedCS);
+            return DataUtilities.transform(startingType, forcedCS);
         }
     }
 

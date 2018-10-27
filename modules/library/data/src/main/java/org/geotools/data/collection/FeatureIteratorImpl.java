@@ -20,7 +20,6 @@ import java.io.Closeable;
 import java.util.Collection;
 import java.util.Iterator;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
 import org.opengis.feature.Feature;
 
 /**
@@ -71,7 +70,7 @@ public class FeatureIteratorImpl<F extends Feature> implements FeatureIterator<F
     /** Required so SimpleFeatureCollection classes can implement close( SimpleFeatureIterator ). */
     public void close() {
         if (iterator != null) {
-            FeatureTypes.close(iterator);
+            DataUtilities.close(iterator);
             iterator = null;
             collection = null;
         }

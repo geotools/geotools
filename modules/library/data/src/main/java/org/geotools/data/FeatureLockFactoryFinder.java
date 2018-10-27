@@ -23,11 +23,8 @@ import org.geotools.util.factory.FactoryRegistry;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.util.factory.Hints;
 
-/**
- * @author Jody Garnett
- */
-public class FeatureLockFactoryFinder extends FactoryFinder
-{
+/** @author Jody Garnett */
+public class FeatureLockFactoryFinder extends FactoryFinder {
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static FactoryRegistry registry;
 
@@ -44,19 +41,14 @@ public class FeatureLockFactoryFinder extends FactoryFinder
     private static FactoryRegistry getServiceRegistry() {
         assert Thread.holdsLock(CommonFactoryFinder.class);
         if (registry == null) {
-            registry =
-                    new FactoryCreator(
-                            Arrays.asList(
-                                    new Class<?>[] {
-                                            FeatureLockFactory.class
-                                    }));
+            registry = new FactoryCreator(Arrays.asList(new Class<?>[] {FeatureLockFactory.class}));
         }
         return registry;
     }
 
     /**
-     * Returns the first implementation of {@link FeatureLockFactory}. If no implementation matches, a new
-     * one is created if possible or an exception is thrown otherwise.
+     * Returns the first implementation of {@link FeatureLockFactory}. If no implementation matches,
+     * a new one is created if possible or an exception is thrown otherwise.
      *
      * @return The first style factory available
      * @throws FactoryRegistryException if no implementation was found or can be created for the
@@ -131,4 +123,3 @@ public class FeatureLockFactoryFinder extends FactoryFinder
                 getServiceRegistry().getFactories(FeatureLockFactory.class, null, hints));
     }
 }
-

@@ -17,7 +17,6 @@
 package org.geotools.data.collection;
 
 import java.util.Collection;
-
 import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 

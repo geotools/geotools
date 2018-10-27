@@ -28,11 +28,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.geotools.data.DataTestCase;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -47,7 +48,11 @@ import org.opengis.feature.type.FeatureType;
  * @author en
  * @author jgarnett
  */
-public class FeatureTypeTest extends DataTestCase {
+public class FeatureTypeTest extends TestCase {
+
+    protected SimpleFeatureType lakeType; // lake: id, geom, name
+    protected SimpleFeature[] lakeFeatures;
+    protected ReferencedEnvelope lakeBounds;
 
     public FeatureTypeTest(String testName) {
         super(testName);

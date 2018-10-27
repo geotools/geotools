@@ -17,7 +17,6 @@
 package org.geotools.filter.function;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.styling.Symbolizer;
 import org.opengis.filter.expression.Function;
 
 /**

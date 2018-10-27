@@ -1,7 +1,7 @@
 package org.geotools.kml.v22;
 
 import org.geotools.data.DataUtilities;
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.xml.Encoder;

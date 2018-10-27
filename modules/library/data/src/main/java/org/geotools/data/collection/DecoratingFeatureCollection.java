@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Collection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
@@ -49,7 +48,7 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
     public void accepts(
             org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
             throws IOException {
-        FeatureTypes.visit(this, visitor, progress);
+        DataUtilities.visit(this, visitor, progress);
     }
 
     public boolean contains(Object o) {

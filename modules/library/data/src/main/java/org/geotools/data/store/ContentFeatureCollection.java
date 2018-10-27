@@ -29,11 +29,10 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Join;
 import org.geotools.data.Query;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.SchemaException;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
-import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
-import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
@@ -79,11 +78,11 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
         try {
             if (query.getCoordinateSystemReproject() != null) {
                 this.featureType =
-                        FeatureTypes.transform(
+                        DataUtilities.transform(
                                 this.featureType, query.getCoordinateSystemReproject());
             } else if (query.getCoordinateSystem() != null) {
                 this.featureType =
-                        FeatureTypes.transform(this.featureType, query.getCoordinateSystem());
+                        DataUtilities.transform(this.featureType, query.getCoordinateSystem());
             }
         } catch (SchemaException e) {
             LOGGER.log(
@@ -283,7 +282,7 @@ public class ContentFeatureCollection implements SimpleFeatureCollection {
                 || Date.class.isAssignableFrom(binding)) {
             return 4;
         } else if (binding.equals(String.class)) {
-            int fieldLen = FeatureTypes.getFieldLength(ad);
+            int fieldLen = DataUtilities.getFieldLength(ad);
             if (fieldLen > 0) {
                 return fieldLen * 2;
             } else {

@@ -18,7 +18,6 @@ package org.geotools.data.collection;
 
 import org.geotools.data.store.EmptyFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -132,6 +131,6 @@ public class SubFeatureCollection extends BaseSimpleFeatureCollection {
     /** Calculates the bounds of the features without caching. */
     @Override
     public ReferencedEnvelope getBounds() {
-        return FeatureTypes.bounds(this);
+        return DataUtilities.bounds(this);
     }
 }

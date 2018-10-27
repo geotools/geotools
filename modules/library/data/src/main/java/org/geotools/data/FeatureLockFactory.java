@@ -19,7 +19,6 @@ package org.geotools.data;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.FactoryRegistryException;
 

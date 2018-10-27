@@ -21,7 +21,6 @@ import java.util.NoSuchElementException;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DelegatingFeatureReader;
 import org.geotools.data.FeatureReader;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -37,7 +36,7 @@ import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * ReprojectFeatureReader provides a reprojection for FeatureTypes.
+ * ReprojectFeatureReader provides a reprojection for DataUtilities.
  *
  * <p>ReprojectFeatureReader is a wrapper used to reproject GeometryAttributes to a user supplied
  * CoordinateReferenceSystem from the original CoordinateReferenceSystem supplied by the original
@@ -78,7 +77,7 @@ public class ReprojectFeatureReader
      * supplied math transformation).
      *
      * <p>Please note schema is that of the expected results, You may need to use
-     * FeatureTypes.transform( FeatureType, crs ) to create the schema provider.
+     * DataUtilities.transform( FeatureType, crs ) to create the schema provider.
      *
      * @param reader original reader with results in the original coordinate reference system
      * @param schema This is the target schema describing the results in the expected coordinate
@@ -118,7 +117,7 @@ public class ReprojectFeatureReader
                     "CoordinateSystem " + cs + " already used (check before using wrapper)");
         }
 
-        this.schema = FeatureTypes.transform(type, cs);
+        this.schema = DataUtilities.transform(type, cs);
         this.reader = reader;
         transformer.setMathTransform(CRS.findMathTransform(original, cs, true));
     }

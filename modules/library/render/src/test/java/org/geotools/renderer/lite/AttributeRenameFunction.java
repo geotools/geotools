@@ -13,7 +13,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.filter.function.RenderingTransformation;
+import org.geotools.renderer.RenderingTransformation;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.feature.Feature;

@@ -21,10 +21,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.geotools.data.collection.DelegateSimpleFeatureIterator;
+import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
-import org.geotools.feature.IllegalAttributeException;
-import org.geotools.data.collection.DelegateSimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

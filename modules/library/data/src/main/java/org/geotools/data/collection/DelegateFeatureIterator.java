@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
@@ -66,7 +65,7 @@ public class DelegateFeatureIterator<F extends Feature> implements FeatureIterat
     }
 
     public void close() {
-        FeatureTypes.close(delegate);
+        DataUtilities.close(delegate);
         delegate = null;
     }
 }

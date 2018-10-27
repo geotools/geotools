@@ -18,9 +18,9 @@ package org.geotools.data.store;
 
 import static org.easymock.EasyMock.*;
 
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;

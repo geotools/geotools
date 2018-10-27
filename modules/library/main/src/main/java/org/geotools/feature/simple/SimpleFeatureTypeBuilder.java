@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import org.geotools.data.Query;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.BasicFeatureTypes;
@@ -1044,24 +1043,6 @@ public class SimpleFeatureTypeBuilder {
             b.add(descriptor);
         }
         return b.buildFeatureType();
-    }
-
-    /**
-     * Configure expected
-     *
-     * @param origional
-     * @param query
-     * @return
-     */
-    public static SimpleFeatureType retype(SimpleFeatureType origional, Query query) {
-        CoordinateReferenceSystem crs = null;
-        if (query.getCoordinateSystem() != null) {
-            crs = query.getCoordinateSystem();
-        }
-        if (query.getCoordinateSystemReproject() != null) {
-            crs = query.getCoordinateSystemReproject();
-        }
-        return retype(origional, query.getPropertyNames(), crs);
     }
 
     private static SimpleFeatureType retype(

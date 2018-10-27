@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -45,7 +44,7 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
 
     public MaxSimpleFeatureCollection(
             FeatureCollection<SimpleFeatureType, SimpleFeature> delegate, long max) {
-        this(FeatureTypes.simple(delegate), 0, max);
+        this(DataUtilities.simple(delegate), 0, max);
     }
 
     public MaxSimpleFeatureCollection(SimpleFeatureCollection delegate, long max) {
@@ -118,6 +117,6 @@ public class MaxSimpleFeatureCollection extends DecoratingSimpleFeatureCollectio
 
     public ReferencedEnvelope getBounds() {
         // calculate manually
-        return FeatureTypes.bounds(this);
+        return DataUtilities.bounds(this);
     }
 }

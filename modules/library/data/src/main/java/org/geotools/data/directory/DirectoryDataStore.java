@@ -39,7 +39,6 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
@@ -141,7 +140,7 @@ public class DirectoryDataStore implements DataStore {
     public ServiceInfo getInfo() {
         DefaultServiceInfo info = new DefaultServiceInfo();
         info.setDescription("Features from Directory " + cache.directory);
-        info.setSchema(FeatureTypes.DEFAULT_NAMESPACE);
+        info.setSchema(DataUtilities.DEFAULT_NAMESPACE);
         info.setSource(cache.directory.toURI());
         try {
             info.setPublisher(new URI(System.getProperty("user.name")));

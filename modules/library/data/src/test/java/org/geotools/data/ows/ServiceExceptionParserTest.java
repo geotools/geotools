@@ -17,13 +17,6 @@
 
 package org.geotools.data.ows;
 
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URL;
@@ -97,7 +90,9 @@ public class ServiceExceptionParserTest {
                         .and(Matchers.hasProperty("code", Matchers.equalTo("60"))));
         Assert.assertThat(
                 exception.getNext(),
-                Matchers.both(Matchers.hasProperty("message", Matchers.equalTo("still another test")))
+                Matchers.both(
+                                Matchers.hasProperty(
+                                        "message", Matchers.equalTo("still another test")))
                         .and(Matchers.hasProperty("code", Matchers.equalTo("20"))));
         Assert.assertThat(
                 exception.getNext().getNext(),

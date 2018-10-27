@@ -27,14 +27,13 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.feature.collection.SimpleFeatureCollection;
-import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -268,7 +267,7 @@ public class MemoryDataStore extends ContentDataStore {
         synchronized (entries) {
             if (entries.containsKey(typeName)) {
                 MemoryEntry entry = (MemoryEntry) entries.get(typeName);
-                if (FeatureTypes.equals(entry.schema, schema)) {
+                if (DataUtilities.equals(entry.schema, schema)) {
                     return entry;
                 } else {
                     throw new IOException(

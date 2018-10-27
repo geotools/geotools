@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources.coverage;
+package org.geotools.coverage.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -37,7 +37,7 @@ import org.geotools.util.NumberRange;
 import org.junit.Test;
 import tec.uom.se.AbstractUnit;
 
-/** Tests {@link CoverageUtilities}. */
+/** Tests {@link org.geotools.coverage.util.CoverageUtilities}. */
 public final class CoverageUtilitiesTest {
 
     private static final double NO_DATA = -9999.0;
@@ -123,9 +123,12 @@ public final class CoverageUtilitiesTest {
         assertTrue(isEmpty);
     }
 
-    /** Tests the {@link CoverageUtilities#getBackgroundValues(GridCoverage2D)} method. */
-    @Test
-    public void testNodata() {
+  /**
+   * Tests the {@link
+   * org.geotools.coverage.util.CoverageUtilities#getBackgroundValues(GridCoverage2D)} method.
+   */
+  @Test
+  public void testNodata() {
 
         // test coverage no data property
         final HashMap properties = new HashMap();

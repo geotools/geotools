@@ -38,7 +38,7 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.renderer.i18n.Errors;
-import org.geotools.resources.image.ColorUtilities;
+import org.geotools.image.util.ColorUtilities;
 import org.geotools.util.factory.GeoTools;
 import org.jaitools.numeric.Range;
 import org.opengis.coverage.grid.GridCoverage;
@@ -108,7 +108,7 @@ public class RangeLookupProcess implements RasterProcess {
         }
         double nd = DEFAULT_NODATA;
         NoDataContainer noDataProperty =
-                org.geotools.resources.coverage.CoverageUtilities.getNoDataProperty(coverage);
+                org.geotools.coverage.util.CoverageUtilities.getNoDataProperty(coverage);
         if (noData != null) {
             nd = noData.doubleValue();
         } else if (noDataProperty != null) {
@@ -181,7 +181,7 @@ public class RangeLookupProcess implements RasterProcess {
                                     size));
             }
         }
-        worker.setROI(org.geotools.resources.coverage.CoverageUtilities.getROIProperty(coverage));
+        worker.setROI(org.geotools.coverage.util.CoverageUtilities.getROIProperty(coverage));
         worker.setBackground(new double[] {nd});
         final RenderedOp indexedClassification =
                 worker.rangeLookup(lookupTable).getRenderedOperation();
@@ -201,7 +201,7 @@ public class RangeLookupProcess implements RasterProcess {
                         put(NoDataContainer.GC_NODATA, new NoDataContainer(0d));
                     }
                 };
-        org.geotools.resources.coverage.CoverageUtilities.setROIProperty(
+        org.geotools.coverage.util.CoverageUtilities.setROIProperty(
                 properties, worker.getROI());
         final GridCoverage2D output =
                 factory.create(

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.resources.coverage;
+package org.geotools.coverage.util;
 
 import static org.junit.Assert.assertEquals;
 

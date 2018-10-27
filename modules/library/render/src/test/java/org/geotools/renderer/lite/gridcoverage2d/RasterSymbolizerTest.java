@@ -56,7 +56,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
-import org.geotools.resources.image.ComponentColorModelJAI;
+import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.styling.AbstractContrastMethodStrategy;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ChannelSelectionImpl;

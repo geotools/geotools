@@ -22,7 +22,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.resources.coverage.FeatureUtilities;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.styling.Style;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.parameter.GeneralParameterValue;

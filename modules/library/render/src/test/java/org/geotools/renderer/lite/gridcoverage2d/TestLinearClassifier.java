@@ -40,7 +40,7 @@ import javax.media.jai.RasterFactory;
 import javax.media.jai.RenderedOp;
 import org.geotools.TestData;
 import org.geotools.image.ImageWorker;
-import org.geotools.resources.image.ComponentColorModelJAI;
+import org.geotools.image.util.ComponentColorModelJAI;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -20,7 +20,7 @@ package org.geotools.data.complex.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import org.geotools.xml.AppSchemaConfiguration;
+import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
 import org.geotools.xml.Binding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;

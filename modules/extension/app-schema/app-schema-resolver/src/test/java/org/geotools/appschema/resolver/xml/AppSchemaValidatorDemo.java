@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.appschema.resolver.xml;
 
 import java.io.IOException;
 import java.io.InputStream;

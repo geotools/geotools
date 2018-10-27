@@ -19,7 +19,7 @@ package org.geotools.test;
 
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.DataAccessRegistry;
-import org.geotools.xml.AppSchemaXSDRegistry;
+import org.geotools.appschema.resolver.xml.AppSchemaXSDRegistry;
 import org.junit.AfterClass;
 
 /** @author Niels Charlier (Curtin University of Technology) */

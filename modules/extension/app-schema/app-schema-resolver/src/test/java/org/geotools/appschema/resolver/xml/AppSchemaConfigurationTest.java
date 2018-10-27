@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.appschema.resolver.xml;
 
 import java.io.File;
 import java.net.URL;
@@ -27,6 +27,9 @@ import javax.xml.namespace.QName;
 import junit.framework.Assert;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.util.URLs;
+import org.geotools.xml.Configuration;
+import org.geotools.xml.SchemaIndex;
+import org.geotools.xml.Schemas;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;

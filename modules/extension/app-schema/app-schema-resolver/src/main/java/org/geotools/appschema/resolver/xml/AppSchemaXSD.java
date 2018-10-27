@@ -15,13 +15,17 @@
  *    Lesser General Public License for more details.
  */
 
-package org.geotools.xml;
+package org.geotools.appschema.resolver.xml;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
+import org.geotools.xml.Configuration;
+import org.geotools.xml.SchemaLocationResolver;
+import org.geotools.xml.SchemaLocator;
+import org.geotools.xml.XSD;
 import org.geotools.xml.resolver.SchemaResolver;
 
 /**

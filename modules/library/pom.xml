@@ -45,15 +45,16 @@
   <!-- =========================================================== -->
   <modules>
     <module>opengis</module>
-    <module>cql</module>
+    <module>sample-data</module>
     <module>metadata</module>
     <module>referencing</module>
     <module>coverage</module>
     <module>main</module>
-    <module>data</module>
-    <module>sample-data</module>
-    <module>render</module>
     <module>xml</module>
+    <module>data</module>
+    <module>style</module>
+    <module>cql</module>
+    <module>render</module>
     <module>jdbc</module>
   </modules>
 

@@ -20,8 +20,8 @@ package org.geotools.data.complex.config;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URL;
-import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.appschema.resolver.xml.AppSchemaConfiguration;
+import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;

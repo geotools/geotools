@@ -29,10 +29,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.digester.Digester;
+import org.geotools.appschema.util.InterpolationProperties;
 import org.geotools.data.complex.AppSchemaDataAccessFactory;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.spi.CustomSourceDataStore;
-import org.geotools.util.InterpolationProperties;
 import org.geotools.util.URLs;
 import org.xml.sax.SAXException;
 

@@ -60,7 +60,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
      * jdbc feature source to delegate to, we do this b/c we can't inherit from both
      * ContentFeatureStore and JDBCFeatureSource at the same time
      */
-    JDBCFeatureSource delegate;
+    public JDBCFeatureSource delegate;
 
     /**
      * Creates the new feature store.

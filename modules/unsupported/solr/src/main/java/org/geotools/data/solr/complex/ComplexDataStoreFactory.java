@@ -39,7 +39,7 @@ import org.geotools.data.solr.IndexesConfig;
 import org.geotools.data.solr.SingleLayerMapper;
 import org.geotools.data.solr.SolrDataStore;
 import org.geotools.data.solr.SolrFeatureSource;
-import org.geotools.filter.FilterFactoryImplReportInvalidProperty;
+import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.filter.expression.AbstractExpressionVisitor;
 import org.geotools.util.Converters;
 import org.opengis.feature.Feature;

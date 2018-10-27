@@ -17,7 +17,6 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.xsd.InstanceComponent;
 import org.geotools.xsd.SimpleBinding;
 

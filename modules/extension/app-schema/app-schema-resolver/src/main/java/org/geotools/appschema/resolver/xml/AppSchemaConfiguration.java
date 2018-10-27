@@ -17,8 +17,8 @@
 
 package org.geotools.appschema.resolver.xml;
 
-import org.geotools.xsd.Configuration;
 import org.geotools.xml.resolver.SchemaResolver;
+import org.geotools.xsd.Configuration;
 
 /**
  * XML encoder {@link Configuration} that uses {@link SchemaResolver} to obtain schemas.

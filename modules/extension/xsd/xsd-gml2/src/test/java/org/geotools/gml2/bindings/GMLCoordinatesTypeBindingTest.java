@@ -17,10 +17,10 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
+import org.geotools.xs.XS;
 import org.geotools.xsd.AttributeInstance;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;
-import org.geotools.xs.XS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;

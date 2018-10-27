@@ -22,15 +22,15 @@ import java.util.List;
 import java.util.Set;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocator;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaLocationResolver;
 import org.geotools.xsd.SchemaLocator;
 import org.geotools.xsd.XSD;
-import org.geotools.xml.resolver.SchemaResolver;
 
 /**
- * {@link XSD} that uses {@link SchemaResolver} to locate schema resources in a
- * catalog, on the classpath, or in a cache.
+ * {@link XSD} that uses {@link SchemaResolver} to locate schema resources in a catalog, on the
+ * classpath, or in a cache.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @author Niels Charlier (Curtin University of Technology)

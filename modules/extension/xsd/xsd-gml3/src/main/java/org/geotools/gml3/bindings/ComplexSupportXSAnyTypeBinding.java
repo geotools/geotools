@@ -34,10 +34,10 @@ import org.geotools.feature.type.FeatureTypeImpl;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.util.Converters;
 import org.geotools.xlink.XLINK;
-import org.geotools.xsd.AbstractComplexBinding;
-import org.geotools.xsd.Schemas;
 import org.geotools.xs.XS;
 import org.geotools.xs.bindings.XSAnyTypeBinding;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.Schemas;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.GeometryAttribute;
@@ -77,10 +77,7 @@ public class ComplexSupportXSAnyTypeBinding extends XSAnyTypeBinding {
         this.idSet = idRegistry;
     }
 
-    /**
-     * @see AbstractComplexBinding#getProperty(java.lang.Object,
-     *     javax.xml.namespace.QName)
-     */
+    /** @see AbstractComplexBinding#getProperty(java.lang.Object, javax.xml.namespace.QName) */
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (object instanceof ComplexAttribute) {

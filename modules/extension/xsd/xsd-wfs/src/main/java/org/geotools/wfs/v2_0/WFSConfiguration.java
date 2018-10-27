@@ -30,12 +30,12 @@ import org.geotools.wfs.v2_0.bindings.TupleTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ValueCollectionTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ValueReferenceTypeBinding;
 import org.geotools.wfs.v2_0.bindings.WFS_CapabilitiesTypeBinding;
+import org.geotools.xs.bindings.XSQNameBinding;
 import org.geotools.xsd.ComplexEMFBinding;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.EnumSimpleBinding;
 import org.geotools.xsd.Parser;
 import org.geotools.xsd.SimpleContentComplexEMFBinding;
-import org.geotools.xs.bindings.XSQNameBinding;
 import org.picocontainer.MutablePicoContainer;
 
 /**

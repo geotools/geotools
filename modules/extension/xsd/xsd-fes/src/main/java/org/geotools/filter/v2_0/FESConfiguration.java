@@ -88,7 +88,7 @@ import org.geotools.filter.v2_0.bindings.WithinBinding;
 import org.geotools.filter.v2_0.bindings._LogicalOperatorsBinding;
 import org.geotools.gml3.v3_2.GMLConfiguration;
 import org.geotools.ows.v1_1.OWSConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 

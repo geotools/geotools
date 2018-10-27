@@ -26,11 +26,11 @@ import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.eclipse.xsd.util.XSDResourceImpl;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.XSD;
-import org.geotools.xml.impl.SchemaIndexImpl;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.XSD;
+import org.geotools.xsd.impl.SchemaIndexImpl;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -28,7 +28,7 @@ import org.geotools.data.ows.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.wmts.WMTSConfiguration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 

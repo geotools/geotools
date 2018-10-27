@@ -6,9 +6,9 @@ import net.opengis.wcs20.ExtensionType;
 import net.opengis.wcs20.Wcs20Factory;
 import org.eclipse.emf.common.util.EList;
 import org.geotools.wcs.v2_0.WCS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Custom binding for the open ended WCS:Extension element
@@ -61,7 +61,7 @@ public class ExtensionTypeBinding extends AbstractComplexBinding {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.xml.AbstractComplexBinding#getExecutionMode()
+     * @see org.geotools.xsd.AbstractComplexBinding#getExecutionMode()
      */
     @Override
     public int getExecutionMode() {

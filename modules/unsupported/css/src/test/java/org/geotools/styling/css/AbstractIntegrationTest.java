@@ -35,7 +35,7 @@ import org.geotools.sld.SLDConfiguration;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.xml.styling.SLDTransformer;
 import org.junit.Test;

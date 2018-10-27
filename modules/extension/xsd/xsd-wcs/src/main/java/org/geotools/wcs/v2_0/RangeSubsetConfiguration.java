@@ -21,8 +21,8 @@ import net.opengis.wcs20.RangeIntervalType;
 import net.opengis.wcs20.RangeItemType;
 import net.opengis.wcs20.RangeSubsetType;
 import net.opengis.wcs20.Wcs20Factory;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
 
 /**
  * Parser configuration for the http://www.opengis.net/wcs/range-subsetting/1.0 schema.

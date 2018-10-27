@@ -26,8 +26,8 @@ import org.apache.maven.project.MavenProject;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 import org.eclipse.xsd.util.XSDSchemaLocator;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.XSD;
 
 /**
  * Generates the bindings and utility classes used to parse xml documents 
@@ -254,7 +254,7 @@ public abstract class AbstractGeneratorMojo extends AbstractMojo {
 		//use extended classloader to load up configuration classes to load schema files
 		// with
 		final List xsds = new ArrayList();
-                xsds.add( "org.geotools.xml.XML" );
+                xsds.add( "org.geotools.xsd.XML" );
                 xsds.add( "org.geotools.xlink.XLINK" );
                 
                 if (includeGML) {

@@ -18,7 +18,7 @@
 package org.geotools.appschema.resolver.xml;
 
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.xml.SchemaLocationResolver;
+import org.geotools.xsd.SchemaLocationResolver;
 import org.geotools.xml.resolver.SchemaResolver;
 
 /**
@@ -48,7 +48,7 @@ public class AppSchemaLocationResolver extends SchemaLocationResolver {
      * @param schema the parent schema from which the import/include originates
      * @param uri the namespace of an import (ignored in this implementation)
      * @param location the URL of the import or include (may be relative)
-     * @see org.geotools.xml.SchemaLocationResolver#resolveSchemaLocation(org.eclipse.xsd.XSDSchema,
+     * @see SchemaLocationResolver#resolveSchemaLocation(org.eclipse.xsd.XSDSchema,
      *     java.lang.String, java.lang.String)
      */
     @Override
@@ -60,7 +60,7 @@ public class AppSchemaLocationResolver extends SchemaLocationResolver {
     /**
      * We override this because the parent {@link #toString()} is horribly misleading.
      *
-     * @see org.geotools.xml.SchemaLocationResolver#toString()
+     * @see SchemaLocationResolver#toString()
      */
     @Override
     public String toString() {

@@ -2,7 +2,9 @@ package org.geotools.gml3.v3_2.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.gml3.v3_2.GML;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.LineString;
 
 /**

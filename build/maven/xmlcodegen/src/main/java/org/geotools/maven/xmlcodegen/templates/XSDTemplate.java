@@ -3,8 +3,8 @@ package org.geotools.maven.xmlcodegen.templates;
 import java.util.*;
 import java.io.*;
 import org.eclipse.xsd.*;
-import org.geotools.xml.*;
 import org.geotools.maven.xmlcodegen.*;
+import org.geotools.xsd.Schemas;
 
 public class XSDTemplate
 {
@@ -18,7 +18,7 @@ public class XSDTemplate
   }
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
-  protected final String TEXT_1 = NL + "import java.util.Set;" + NL + "import javax.xml.namespace.QName;" + NL + "import org.geotools.xml.XSD;" + NL + "" + NL + "/**" + NL + " * This interface contains the qualified names of all the types,elements, and " + NL + " * attributes in the ";
+  protected final String TEXT_1 = NL + "import java.util.Set;" + NL + "import javax.xml.namespace.QName;" + NL + "import org.geotools.xsd.XSD;" + NL + "" + NL + "/**" + NL + " * This interface contains the qualified names of all the types,elements, and " + NL + " * attributes in the ";
   protected final String TEXT_2 = " schema." + NL + " *" + NL + " * @generated" + NL + " */" + NL + "public final class ";
   protected final String TEXT_3 = " extends XSD {" + NL + "" + NL + "    /** singleton instance */" + NL + "    private static final ";
   protected final String TEXT_4 = " instance = new ";

@@ -10,7 +10,7 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 
 /**
  * Utility class used for generating.

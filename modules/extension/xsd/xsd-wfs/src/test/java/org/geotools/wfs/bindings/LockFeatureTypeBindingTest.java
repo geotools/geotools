@@ -27,7 +27,7 @@ import org.geotools.gml3.GML;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.Id;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

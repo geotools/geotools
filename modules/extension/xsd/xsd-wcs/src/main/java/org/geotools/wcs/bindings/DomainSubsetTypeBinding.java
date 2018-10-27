@@ -5,9 +5,9 @@ import net.opengis.wcs10.DomainSubsetType;
 import net.opengis.wcs10.SpatialSubsetType;
 import net.opengis.wcs10.Wcs10Factory;
 import org.geotools.wcs.WCS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:DomainSubsetType.
@@ -70,7 +70,7 @@ public class DomainSubsetTypeBinding extends AbstractComplexBinding {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.xml.AbstractComplexBinding#getExecutionMode()
+     * @see org.geotools.xsd.AbstractComplexBinding#getExecutionMode()
      */
     @Override
     public int getExecutionMode() {

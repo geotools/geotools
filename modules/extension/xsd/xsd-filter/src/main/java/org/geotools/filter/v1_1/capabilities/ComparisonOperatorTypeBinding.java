@@ -18,7 +18,9 @@ package org.geotools.filter.v1_1.capabilities;
 
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.InstanceComponent;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.Operator;
 

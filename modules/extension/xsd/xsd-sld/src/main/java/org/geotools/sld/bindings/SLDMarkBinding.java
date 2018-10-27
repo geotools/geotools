@@ -26,9 +26,9 @@ import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 

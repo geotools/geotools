@@ -19,7 +19,7 @@ package org.geotools.data.wfs.internal;
 import net.opengis.wfs.WFSCapabilitiesType;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.ows.Capabilities;
-import org.geotools.xml.EMFUtils;
+import org.geotools.xsd.EMFUtils;
 import org.w3c.dom.Document;
 
 public class WFSGetCapabilities extends Capabilities {

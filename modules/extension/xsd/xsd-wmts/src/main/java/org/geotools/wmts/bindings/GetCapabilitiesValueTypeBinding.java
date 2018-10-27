@@ -3,8 +3,8 @@ package org.geotools.wmts.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractSimpleBinding;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Binding object for the type http://www.opengis.net/wmts/1.0:GetCapabilitiesValueType.

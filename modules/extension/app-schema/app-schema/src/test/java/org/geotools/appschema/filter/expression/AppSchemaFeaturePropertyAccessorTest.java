@@ -29,7 +29,7 @@ import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.util.factory.Hints;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.SchemaIndex;
 import org.junit.Test;
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.FeatureType;

@@ -18,7 +18,8 @@ package org.geotools.ows.bindings;
 
 import javax.xml.namespace.QName;
 import net.opengis.ows10.Ows10Factory;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 import org.geotools.xsd.ows.OWS;
 
 /**

@@ -107,7 +107,7 @@
           </schemaLookupDirectories>
           <!--destinationPackage>org.geotools.wps</destinationPackage-->
           <!--generateTypeBindings>true</generateTypeBindings-->
-          <!--complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass-->
+          <!--complexBindingBaseClass>org.geotools.xsd.AbstractComplexEMFBinding</complexBindingBaseClass-->
           <bindingConstructorArguments>
             <bindingConstructorArgument>
               <name>factory</name>

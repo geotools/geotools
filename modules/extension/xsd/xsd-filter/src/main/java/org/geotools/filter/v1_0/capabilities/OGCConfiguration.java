@@ -17,7 +17,7 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import org.geotools.filter.FilterFactoryImpl;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 

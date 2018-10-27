@@ -18,7 +18,8 @@ package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Binding object for the type http://www.opengis.net/se:MethodType.

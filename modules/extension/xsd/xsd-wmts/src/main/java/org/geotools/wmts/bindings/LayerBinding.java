@@ -12,9 +12,9 @@ import net.opengis.wmts.v_1.TileMatrixSetLinkType;
 import net.opengis.wmts.v_1.URLTemplateType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:Layer.

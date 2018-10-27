@@ -3,9 +3,9 @@ package org.geotools.wcs.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.wcs10.DomainSetType;
 import org.geotools.wcs.WCS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:DomainSetType.

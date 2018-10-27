@@ -5,8 +5,8 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.SimpleBinding;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.SimpleBinding;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.opengis.filter.identity.Version;
 

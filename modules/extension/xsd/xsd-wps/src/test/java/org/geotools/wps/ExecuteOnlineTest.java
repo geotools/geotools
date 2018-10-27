@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import javax.xml.parsers.ParserConfigurationException;
 import junit.framework.TestCase;
+import org.geotools.xsd.Parser;
 import org.xml.sax.SAXException;
 
 public class ExecuteOnlineTest extends TestCase {
@@ -36,7 +37,7 @@ public class ExecuteOnlineTest extends TestCase {
                         "http://schemas.opengis.net/wps/1.0.0/examples/51_wpsExecute_request_ResponseDocument.xml");
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-            org.geotools.xml.Parser parser = new org.geotools.xml.Parser(new WPSConfiguration());
+            Parser parser = new Parser(new WPSConfiguration());
             Object obj = parser.parse(in);
             assertNotNull(obj);
         } catch (UnknownHostException notFound) {

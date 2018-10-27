@@ -2,7 +2,9 @@ package org.geotools.wcs.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.wcs.WCS;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:OnlineResourceType.

@@ -2,7 +2,9 @@ package org.geotools.kml.v22.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.kml.v22.KML;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/kml/2.2:SchemaDataType.

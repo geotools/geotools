@@ -17,7 +17,7 @@
 package org.geotools.wfs.v2_0;
 
 import java.util.Set;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * XSD for wfs 1.0. capabilities document; for non capabilities use {@link WFS}, as it's based on a

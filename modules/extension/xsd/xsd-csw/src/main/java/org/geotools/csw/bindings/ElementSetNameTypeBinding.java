@@ -22,9 +22,9 @@ import net.opengis.cat.csw20.Csw20Factory;
 import net.opengis.cat.csw20.ElementSetNameType;
 import net.opengis.cat.csw20.ElementSetType;
 import org.geotools.csw.CSW;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.SimpleContentComplexEMFBinding;
 
 public class ElementSetNameTypeBinding extends SimpleContentComplexEMFBinding {
 

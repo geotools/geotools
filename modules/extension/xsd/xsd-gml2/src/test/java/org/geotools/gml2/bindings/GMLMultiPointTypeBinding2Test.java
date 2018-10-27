@@ -17,7 +17,7 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.locationtech.jts.geom.MultiPoint;
 import org.w3c.dom.Document;
 

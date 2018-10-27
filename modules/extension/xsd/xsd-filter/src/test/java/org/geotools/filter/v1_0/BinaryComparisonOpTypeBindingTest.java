@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;

@@ -35,7 +35,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileService;
 import org.geotools.wmts.WMTSConfiguration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

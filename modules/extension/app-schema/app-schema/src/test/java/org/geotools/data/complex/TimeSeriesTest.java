@@ -53,7 +53,7 @@ import org.geotools.feature.NameImpl;
 import org.geotools.gml3.GML;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.SchemaIndex;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.Attribute;

@@ -18,7 +18,7 @@ package org.geotools.filter.v1_1.capabilities;
 
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.capability.SpatialOperators;
 import org.w3c.dom.Document;
 

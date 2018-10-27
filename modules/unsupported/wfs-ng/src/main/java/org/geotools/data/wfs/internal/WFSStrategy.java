@@ -31,7 +31,7 @@ import org.geotools.data.wfs.WFSServiceInfo;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.util.Version;
 import org.geotools.util.factory.GeoTools;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.filter.Filter;
 import org.opengis.filter.capability.FilterCapabilities;
 

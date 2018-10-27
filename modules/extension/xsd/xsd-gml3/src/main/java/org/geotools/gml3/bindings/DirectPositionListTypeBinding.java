@@ -24,9 +24,9 @@ import org.geotools.geometry.DirectPosition3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml3.GML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -160,7 +160,7 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
 
     /**
      * @param object a CoordinateSequence
-     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
+     * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
      *     org.w3c.dom.Element)
      */
     public Element encode(Object object, Document document, Element value) throws Exception {

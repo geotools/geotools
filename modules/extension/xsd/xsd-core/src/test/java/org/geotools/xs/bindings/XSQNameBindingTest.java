@@ -18,7 +18,7 @@ package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
 import junit.framework.TestCase;
-import org.geotools.xml.impl.NamespaceSupportWrapper;
+import org.geotools.xsd.impl.NamespaceSupportWrapper;
 import org.xml.sax.helpers.NamespaceSupport;
 
 public class XSQNameBindingTest extends TestCase {

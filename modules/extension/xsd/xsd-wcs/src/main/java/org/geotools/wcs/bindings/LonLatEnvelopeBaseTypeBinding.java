@@ -9,9 +9,9 @@ import org.geotools.gml3.GML;
 import org.geotools.referencing.crs.DefaultCompoundCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.wcs.WCS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CompoundCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -105,7 +105,7 @@ public class LonLatEnvelopeBaseTypeBinding extends AbstractComplexBinding {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.xml.AbstractComplexBinding#getExecutionMode()
+     * @see org.geotools.xsd.AbstractComplexBinding#getExecutionMode()
      */
     @Override
     public int getExecutionMode() {

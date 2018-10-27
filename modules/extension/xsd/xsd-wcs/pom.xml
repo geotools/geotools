@@ -116,7 +116,7 @@
           <schemaLocation>wcsAll.xsd</schemaLocation>
           <schemaSourceDirectory>${basedir}/src/main/resources/org/geotools/wcs/v2_0</schemaSourceDirectory>
           <destinationPackage>org.geotools.wcs.v2_0</destinationPackage>
-          <complexBindingBaseClass>org.geotools.xml.AbstractComplexEMFBinding</complexBindingBaseClass>
+          <complexBindingBaseClass>org.geotools.xsd.AbstractComplexEMFBinding</complexBindingBaseClass>
           <bindingConstructorArguments>
             <bindingConstructorArgument>
               <name>factory</name>

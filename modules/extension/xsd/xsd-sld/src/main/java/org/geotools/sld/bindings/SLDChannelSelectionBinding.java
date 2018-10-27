@@ -20,7 +20,9 @@ import javax.xml.namespace.QName;
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**

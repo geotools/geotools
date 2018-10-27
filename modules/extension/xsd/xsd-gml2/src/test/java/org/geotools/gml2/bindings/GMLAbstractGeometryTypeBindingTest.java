@@ -18,7 +18,7 @@ package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
 import org.geotools.referencing.CRS;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

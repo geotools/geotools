@@ -1,7 +1,7 @@
 package org.geotools.gml3.v3_2;
 
 import org.geotools.geometry.jts.CompoundRing;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 

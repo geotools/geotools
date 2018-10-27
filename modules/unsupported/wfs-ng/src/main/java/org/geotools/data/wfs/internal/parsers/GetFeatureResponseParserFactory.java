@@ -25,7 +25,7 @@ import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.wfs.v1_0.WFSConfiguration_1_0;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.feature.type.FeatureType;
 
 /**

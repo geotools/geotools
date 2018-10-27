@@ -31,7 +31,7 @@ import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.LayerType;
 import org.geotools.util.logging.Logging;
 import org.geotools.wmts.WMTSConfiguration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.SAXException;

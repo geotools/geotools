@@ -23,7 +23,7 @@ import net.opengis.wcs20.ScalingType;
 import net.opengis.wcs20.TargetAxisExtentType;
 import net.opengis.wcs20.TargetAxisSizeType;
 import org.eclipse.emf.common.util.EList;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class GetCoverageTest {

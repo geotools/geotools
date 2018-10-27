@@ -19,7 +19,7 @@ package org.geotools.xs;
 import java.util.HashSet;
 import java.util.Set;
 import javax.xml.namespace.QName;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.type.Schema;
 
 /**

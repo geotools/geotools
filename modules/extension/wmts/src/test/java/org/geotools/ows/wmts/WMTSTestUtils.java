@@ -25,7 +25,7 @@ import net.opengis.wmts.v_1.CapabilitiesType;
 import org.geotools.ows.wmts.model.WMTSCapabilities;
 import org.geotools.test.TestData;
 import org.geotools.wmts.WMTSConfiguration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 
 /** @author Emanuele Tajariol (etj AT geo-solutions DOT it) */
 public class WMTSTestUtils {

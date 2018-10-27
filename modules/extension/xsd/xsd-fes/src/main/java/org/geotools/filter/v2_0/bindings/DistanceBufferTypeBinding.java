@@ -20,7 +20,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 
 /**

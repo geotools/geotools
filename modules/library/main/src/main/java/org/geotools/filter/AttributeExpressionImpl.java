@@ -52,7 +52,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
     protected SimpleFeatureType schema = null;
 
     /** NamespaceSupport used to defining the prefix information for the xpath expression */
-    NamespaceSupport namespaceSupport;
+    public NamespaceSupport namespaceSupport;
 
     /**
      * Configures whether evaluate should return null if it cannot find a working property accessor,

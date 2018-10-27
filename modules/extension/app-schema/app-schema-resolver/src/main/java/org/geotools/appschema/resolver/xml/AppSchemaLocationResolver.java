@@ -18,8 +18,8 @@
 package org.geotools.appschema.resolver.xml;
 
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.xsd.SchemaLocationResolver;
 import org.geotools.xml.resolver.SchemaResolver;
+import org.geotools.xsd.SchemaLocationResolver;
 
 /**
  * A {@link SchemaLocationResolver} that uses {@link SchemaResolver} to locate schema resources in a

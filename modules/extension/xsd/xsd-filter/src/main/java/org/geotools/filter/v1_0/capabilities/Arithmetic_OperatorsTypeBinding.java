@@ -17,7 +17,6 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.Node;

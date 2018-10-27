@@ -41,8 +41,8 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 import org.geotools.test.TestData;
-import org.geotools.xsd.Parser;
 import org.geotools.xml.styling.SLDParser;
+import org.geotools.xsd.Parser;
 
 /**
  * Used to test a renderer implementation.

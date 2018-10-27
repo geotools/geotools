@@ -35,11 +35,11 @@ import org.geotools.gml3.GMLConfiguration;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.gml3.smil.SMIL20LANGSchema;
 import org.geotools.gml3.smil.SMIL20Schema;
+import org.geotools.xs.XS;
 import org.geotools.xsd.Configuration;
 import org.geotools.xsd.SchemaIndex;
 import org.geotools.xsd.Schemas;
 import org.geotools.xsd.complex.FeatureTypeRegistryConfiguration;
-import org.geotools.xs.XS;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
 

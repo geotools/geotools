@@ -24,11 +24,11 @@ import javax.xml.namespace.QName;
 import net.opengis.wps10.ComplexDataType;
 import net.opengis.wps10.Wps10Factory;
 import org.geotools.wps.WPS;
+import org.geotools.xs.XS;
 import org.geotools.xsd.AbstractComplexBinding;
 import org.geotools.xsd.ElementInstance;
 import org.geotools.xsd.EncoderDelegate;
 import org.geotools.xsd.Node;
-import org.geotools.xs.XS;
 
 /**
  * &lt;complexType name="ComplexDataType" mixed="true"> &lt;annotation> &lt;documentation>Complex

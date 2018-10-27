@@ -5,9 +5,9 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v2_0.FES;
+import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xsd.InstanceComponent;
 import org.geotools.xsd.SimpleBinding;
-import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.opengis.filter.identity.Version;
 
 /** Binding for FES 2.0 {@code VersionType} mapping to {@link Version} */

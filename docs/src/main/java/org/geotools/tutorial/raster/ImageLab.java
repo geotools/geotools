@@ -53,7 +53,7 @@ import org.opengis.style.ContrastMethod;
 
 public class ImageLab {
 
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+    private StyleFactory sf = StyleFactoryFinder.getStyleFactory();
     private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
     private JMapFrame frame;

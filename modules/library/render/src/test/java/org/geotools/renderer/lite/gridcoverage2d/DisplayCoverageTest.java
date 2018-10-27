@@ -165,7 +165,7 @@ public class DisplayCoverageTest {
     }
 
     private Style createCoverageStyle(String bandName) {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
         ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);
@@ -179,7 +179,7 @@ public class DisplayCoverageTest {
     }
 
     private Style createEnvCoverageStyle(String bandName) {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
         ContrastEnhancement ce =
@@ -196,7 +196,7 @@ public class DisplayCoverageTest {
     }
 
     private Style createEnvMinMaxCoverageStyle(String bandName) {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
         ContrastEnhancement ce = sf.contrastEnhancement(ff.literal(1.0), ContrastMethod.NORMALIZE);

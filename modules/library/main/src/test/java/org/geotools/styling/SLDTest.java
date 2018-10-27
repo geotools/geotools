@@ -27,7 +27,7 @@ import org.opengis.filter.FilterFactory2;
  * @author Jody
  */
 public class SLDTest extends TestCase {
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
     StyleBuilder sb = new StyleBuilder(ff);
 

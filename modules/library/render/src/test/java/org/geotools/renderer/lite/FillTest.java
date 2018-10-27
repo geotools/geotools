@@ -221,7 +221,7 @@ public class FillTest {
     @Test
     public void testGEOT3111() throws Exception {
         FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
         Symbolizer sym =
                 sf.createPolygonSymbolizer(
                         Stroke.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);

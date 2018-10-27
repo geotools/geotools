@@ -28,7 +28,6 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
@@ -59,7 +58,7 @@ public abstract class AbstractLabelLineTest {
 
     protected Style loadParametricStyle(Object loader, String sldFilename, String... parameters)
             throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
 
         java.net.URL url = TestData.getResource(loader, sldFilename);
         String styleTemplate = IOUtils.toString(url);

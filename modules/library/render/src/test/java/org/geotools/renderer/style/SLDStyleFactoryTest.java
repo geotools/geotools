@@ -79,7 +79,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /** @author jamesm */
 public class SLDStyleFactoryTest extends TestCase {
 
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
     SLDStyleFactory sld = new SLDStyleFactory();
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
     NumberRange<Integer> range = NumberRange.create(1, 1);

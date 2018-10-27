@@ -20,7 +20,7 @@ package org.geotools.ysld.parse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.geotools.styling.*;
+
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 

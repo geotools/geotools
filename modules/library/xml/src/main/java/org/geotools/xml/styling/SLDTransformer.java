@@ -113,7 +113,7 @@ public class SLDTransformer extends TransformerBase {
 
     static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-    static final Font DEFAULT_FONT = CommonFactoryFinder.getStyleFactory().getDefaultFont();
+    static final Font DEFAULT_FONT = StyleFactoryFinder.getStyleFactory().getDefaultFont();
 
     /**
      * Additional namespace mappings to emit in the start element of the generated. Each entry has a
@@ -203,7 +203,7 @@ public class SLDTransformer extends TransformerBase {
      */
     public static final void main(String[] args) throws Exception {
         java.net.URL url = new java.io.File(args[0]).toURI().toURL();
-        SLDParser s = new SLDParser(CommonFactoryFinder.getStyleFactory(null), url);
+        SLDParser s = new SLDParser(StyleFactoryFinder.getStyleFactory(null), url);
         SLDTransformer transformer = new SLDTransformer();
         transformer.setIndentation(4);
         transformer.transform(

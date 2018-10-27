@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import org.geotools.image.test.ImageAssert;

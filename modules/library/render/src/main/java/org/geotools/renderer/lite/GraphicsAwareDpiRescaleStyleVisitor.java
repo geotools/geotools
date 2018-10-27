@@ -16,7 +16,6 @@
  */
 package org.geotools.renderer.lite;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.renderer.style.GraphicStyle2D;
 import org.geotools.renderer.style.IconStyle2D;
 import org.geotools.renderer.style.MarkStyle2D;
@@ -41,7 +40,7 @@ import org.opengis.filter.expression.Expression;
  */
 public class GraphicsAwareDpiRescaleStyleVisitor extends DpiRescaleStyleVisitor {
 
-    static final StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+    static final StyleFactory sf = StyleFactoryFinder.getStyleFactory();
     static final Range<Double> INFINITE_RANGE =
             new Range<Double>(Double.class, 0d, Double.POSITIVE_INFINITY);
     SLDStyleFactory ssf = new SLDStyleFactory();

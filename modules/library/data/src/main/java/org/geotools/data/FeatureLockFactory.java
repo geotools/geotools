@@ -19,7 +19,7 @@ package org.geotools.data;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
-import org.geotools.factory.CommonFactoryFinder;
+
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.FactoryRegistryException;
 
@@ -47,7 +47,7 @@ public abstract class FeatureLockFactory implements Factory {
      */
     public static FeatureLockFactory getInstance() throws FactoryRegistryException {
         if (factory == null) {
-            factory = CommonFactoryFinder.getFeatureLockFactory(null);
+            factory = FeatureLockFactoryFinder.getFeatureLockFactory(null);
         }
         return factory;
     }

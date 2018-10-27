@@ -24,23 +24,7 @@ import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.AnchorPoint;
-import org.geotools.styling.Displacement;
-import org.geotools.styling.ExternalGraphic;
-import org.geotools.styling.Font;
-import org.geotools.styling.Graphic;
-import org.geotools.styling.LabelPlacement;
-import org.geotools.styling.LinePlacement;
-import org.geotools.styling.LineSymbolizer;
-import org.geotools.styling.Mark;
-import org.geotools.styling.PointPlacement;
-import org.geotools.styling.PointSymbolizer;
-import org.geotools.styling.PolygonSymbolizer;
-import org.geotools.styling.RasterSymbolizer;
-import org.geotools.styling.Stroke;
-import org.geotools.styling.Symbol;
-import org.geotools.styling.Symbolizer;
-import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.*;
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -84,7 +68,7 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
     }
 
     public RescaleStyleVisitor(FilterFactory2 filterFactory, Expression scale) {
-        super(CommonFactoryFinder.getStyleFactory(null), filterFactory);
+        super(StyleFactoryFinder.getStyleFactory(null), filterFactory);
         this.scale = scale;
     }
     /**

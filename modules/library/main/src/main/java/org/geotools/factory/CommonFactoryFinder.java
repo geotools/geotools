@@ -18,11 +18,8 @@ package org.geotools.factory;
 
 import java.util.Arrays;
 import java.util.Set;
-import org.geotools.data.FeatureLockFactory;
-import org.geotools.data.FileDataStoreFactorySpi;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.filter.FunctionFactory;
-import org.geotools.styling.StyleFactory;
 import org.geotools.util.LazySet;
 import org.geotools.util.factory.FactoryCreator;
 import org.geotools.util.factory.FactoryFinder;
@@ -71,10 +68,8 @@ public final class CommonFactoryFinder extends FactoryFinder {
                     new FactoryCreator(
                             Arrays.asList(
                                     new Class<?>[] {
-                                        StyleFactory.class,
                                         FilterFactory.class,
-                                        FeatureLockFactory.class,
-                                        FileDataStoreFactorySpi.class,
+                                        //FileDataStoreFactorySpi.class, TODO: add
                                         //                  FunctionImpl.class, // TODO: remove
                                         //                  FunctionExpression.class,//TODO: remove
                                         Function.class,
@@ -85,45 +80,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
                                     }));
         }
         return registry;
-    }
-
-    /**
-     * Returns the first implementation of {@link StyleFactory} matching the specified hints. If no
-     * implementation matches, a new one is created if possible or an exception is thrown otherwise.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return The first style factory that matches the supplied hints.
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link StyleFactory} interface.
-     * @see Hints#STYLE_FACTORY
-     */
-    public static StyleFactory getStyleFactory(Hints hints) throws FactoryRegistryException {
-        hints = mergeSystemHints(hints);
-        return (StyleFactory) lookup(StyleFactory.class, hints, Hints.STYLE_FACTORY);
-    }
-    /**
-     * Returns the first implementation of {@link StyleFactory}. If no implementation matches, a new
-     * one is created if possible or an exception is thrown otherwise.
-     *
-     * @return The first style factory available
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link StyleFactory} interface.
-     * @see Hints#STYLE_FACTORY
-     */
-    public static StyleFactory getStyleFactory() throws FactoryRegistryException {
-        return getStyleFactory(null);
-    }
-
-    /**
-     * Returns a set of all available implementations for the {@link StyleFactory} interface.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return Set of available style factory implementations.
-     */
-    public static synchronized Set<StyleFactory> getStyleFactories(Hints hints) {
-        hints = mergeSystemHints(hints);
-        return new LazySet<StyleFactory>(
-                getServiceRegistry().getFactories(StyleFactory.class, null, hints));
     }
 
     /**
@@ -148,37 +104,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
         hints = mergeSystemHints(hints);
         return new LazySet<FunctionFactory>(
                 getServiceRegistry().getFactories(FunctionFactory.class, null, hints));
-    }
-
-    /**
-     * Returns the first implementation of {@link FeatureLockFactory} matching the specified hints.
-     * If no implementation matches, a new one is created if possible or an exception is thrown
-     * otherwise.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return The first feature lock factory that matches the supplied hints.
-     * @throws FactoryRegistryException if no implementation was found or can be created for the
-     *     {@link FeatureLockFactory} interface.
-     * @see Hints#FEATURE_LOCK_FACTORY
-     * @deprecated FeautreLockFactory is no longer needed; please create a FeatureLock directly
-     */
-    public static FeatureLockFactory getFeatureLockFactory(Hints hints) {
-        hints = mergeSystemHints(hints);
-        return (FeatureLockFactory)
-                lookup(FeatureLockFactory.class, hints, Hints.FEATURE_LOCK_FACTORY);
-    }
-
-    /**
-     * Returns a set of all available implementations for the {@link FeatureLockFactory} interface.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return Set<FeatureLockFactory> of available style factory implementations.
-     * @deprecated FeatureLockFactory is no longer needed
-     */
-    public static synchronized Set<FeatureLockFactory> getFeatureLockFactories(Hints hints) {
-        hints = mergeSystemHints(hints);
-        return new LazySet<FeatureLockFactory>(
-                getServiceRegistry().getFactories(FeatureLockFactory.class, null, hints));
     }
 
     /**

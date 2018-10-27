@@ -92,7 +92,7 @@ import org.opengis.style.GraphicalSymbol;
  * @author jamesm
  */
 public class SLDStyleTest extends TestCase {
-    StyleFactory sf = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
+    StyleFactory sf = StyleFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     StyleBuilder sb = new StyleBuilder(sf, ff);
 
@@ -524,7 +524,7 @@ public class SLDStyleTest extends TestCase {
 
     public void testParseSLD_NameSpaceAware() throws Exception {
         URL surl = TestData.getResource(this, "test-ns.sld");
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
 
         SLDParser stylereader = new SLDParser(factory, surl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
@@ -544,7 +544,7 @@ public class SLDStyleTest extends TestCase {
      * @throws Exception boom
      */
     public void testParseSLDNamedLayersOnly() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "namedLayers.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -595,7 +595,7 @@ public class SLDStyleTest extends TestCase {
      * @throws Exception boom
      */
     public void testParseSLDNamedAndUserLayers() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "mixedLayerTypes.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -620,7 +620,7 @@ public class SLDStyleTest extends TestCase {
     public void testParseGeometryFilters() throws IOException {
         final String TYPE_NAME = "testType";
         final String GEOMETRY_ATTR = "Polygons";
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "spatialFilter.xml");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -667,7 +667,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException boom
      */
     public void testParseFidFilter() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "fidFilter.xml");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -701,7 +701,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testParseKmlExtensions() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "kmlSymbolizer.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -731,7 +731,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testParseAnchorDisplacement() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "markDisplacementTest.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -764,7 +764,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException
      */
     public void testParseRasterSymbolizer() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "rasterSymbolizer.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -826,7 +826,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException
      */
     public void testParseRasterSymbolizerWithExpressionGammaValue() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "rasterSymbolizerGammaValue.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -888,7 +888,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException
      */
     public void testParseRasterChannelExpression() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "raster-channel-expression.xml");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -930,7 +930,7 @@ public class SLDStyleTest extends TestCase {
      * @throws IOException
      */
     public void testParseRasterSymbolizerColorMap() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "rasterSymbolizerColorMap.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -978,7 +978,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testParseGeometryExpressions() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "geometryTransformation.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -1000,7 +1000,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testParsePlainGeometryExpression() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "geometryPlain.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -1022,7 +1022,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testDataTransformation() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "transformation.xml");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -1038,7 +1038,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testRuleEvaluationMode() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "ruleEvaluationMode.xml");
         SLDParser stylereader = new SLDParser(factory, surl);
 
@@ -1056,7 +1056,7 @@ public class SLDStyleTest extends TestCase {
     }
 
     public void testMultipleFonts() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         java.net.URL surl = TestData.getResource(this, "multifont.sld");
         SLDParser stylereader = new SLDParser(factory, surl);
 

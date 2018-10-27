@@ -73,7 +73,7 @@ public class StyleGenerator {
     public static final int ELSEMODE_INCLUDEASMIN = 1;
     public static final int ELSEMODE_INCLUDEASMAX = 2;
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    private static StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    private static StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
     private static StyleBuilder sb = new StyleBuilder(sf, ff);
 
     protected StyleGenerator() {}

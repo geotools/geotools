@@ -1,6 +1,5 @@
 package org.geotools.kml.v22;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.kml.FolderStack;
 import org.geotools.kml.StyleMap;
 import org.geotools.kml.bindings.BoundaryTypeBinding;
@@ -61,7 +60,7 @@ public class KMLConfiguration extends Configuration {
 
     @Override
     protected void configureContext(MutablePicoContainer container) {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory(null);
         StyleBuilder styleBuilder = new StyleBuilder(styleFactory);
 
         container.registerComponentInstance(styleFactory);

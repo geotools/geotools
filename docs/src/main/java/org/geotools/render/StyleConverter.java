@@ -28,7 +28,6 @@ import javax.swing.JTextArea;
 import javax.xml.transform.TransformerException;
 import net.miginfocom.swing.MigLayout;
 import org.geotools.parameter.Parameter;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
@@ -176,7 +175,7 @@ public class StyleConverter extends JFrame {
                         "style layer descriptor");
         if (file == null) return; // cancel
 
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory();
         SLDParser sldParser = new SLDParser(factory);
     }
 
@@ -227,7 +226,7 @@ public class StyleConverter extends JFrame {
             return;
         }
         // Wrap style as an SLD
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory();
         StyledLayerDescriptor sld = factory.createStyledLayerDescriptor();
 
         org.geotools.sld.v1_1.SLDConfiguration configuration =
@@ -275,7 +274,7 @@ public class StyleConverter extends JFrame {
     }
 
     private void readSLD_1_0() {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory();
 
         StringReader reader = new StringReader(text.getText());
         SLDParser sldParser = new SLDParser(factory, reader);
@@ -287,7 +286,7 @@ public class StyleConverter extends JFrame {
     }
 
     public static StyledLayerDescriptor createDefaultSLD(Style style) {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = factory.createStyledLayerDescriptor();
         UserLayer layer = factory.createUserLayer();

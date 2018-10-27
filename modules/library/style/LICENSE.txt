@@ -1,8 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2005-2006, GeoTools Project Management Committee (PMC)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,17 +13,3 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.sld.bindings;
-
-import org.geotools.sld.SLDConfiguration;
-import org.geotools.styling.StyleFactory;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.test.XMLTestSupport;
-
-public abstract class SLDTestSupport extends XMLTestSupport {
-    StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
-
-    protected Configuration createConfiguration() {
-        return new SLDConfiguration();
-    }
-}

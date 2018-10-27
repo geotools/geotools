@@ -39,7 +39,7 @@ public class UnitRescaleTest {
 
     @Before
     public void setUp() throws Exception {
-        sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
+        sf = (StyleFactory2) StyleFactoryFinder.getStyleFactory(null);
         ff = CommonFactoryFinder.getFilterFactory2(null);
     }
 

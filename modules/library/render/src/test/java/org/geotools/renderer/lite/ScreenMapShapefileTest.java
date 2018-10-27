@@ -20,7 +20,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -182,7 +181,7 @@ public class ScreenMapShapefileTest {
     }
 
     private static Style createPointStyle() {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory();
         URL iconUrl = ScreenMapShapefileTest.class.getResource("icon.png");
         ExternalGraphic icon = sf.createExternalGraphic(iconUrl, "image/png");
         Graphic graphic =

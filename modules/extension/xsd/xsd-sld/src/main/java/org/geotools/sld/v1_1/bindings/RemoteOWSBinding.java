@@ -18,7 +18,6 @@ package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.sld.bindings.SLDRemoteOWSBinding;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:RemoteOWS.

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-import org.geotools.factory.CommonFactoryFinder;
+
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridReaderLayer;
@@ -55,7 +55,7 @@ public class WMSLayer extends GridReaderLayer {
     static Style STYLE;
 
     static {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         RasterSymbolizer symbolizer = factory.createRasterSymbolizer();
 
         Rule rule = factory.createRule();

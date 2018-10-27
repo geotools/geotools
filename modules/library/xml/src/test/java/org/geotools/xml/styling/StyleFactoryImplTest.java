@@ -59,7 +59,7 @@ import org.opengis.filter.expression.Expression;
  * @author iant
  */
 public class StyleFactoryImplTest extends TestCase {
-    static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+    static StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory(null);
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
     static SimpleFeature feature;
     protected static final Logger LOGGER =
@@ -318,7 +318,7 @@ public class StyleFactoryImplTest extends TestCase {
     }
 
     public void testBuggyStyleCopy() throws Exception {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
         Random rand = new Random();
 

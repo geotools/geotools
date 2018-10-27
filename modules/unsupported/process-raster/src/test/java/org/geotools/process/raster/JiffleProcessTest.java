@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -150,7 +149,7 @@ public class JiffleProcessTest {
 
         GeoTiffReader reader = new GeoTiffReader(file);
 
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
 
         java.net.URL styleURL = TestData.getResource(this, "ndvi.sld");
         SLDParser stylereader = new SLDParser(factory, styleURL);

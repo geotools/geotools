@@ -21,7 +21,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import org.geotools.data.Query;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
@@ -41,7 +40,7 @@ import org.opengis.filter.sort.SortBy;
  */
 class ZGroupLayerFactory {
 
-    private static StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
+    private static StyleFactory STYLE_FACTORY = StyleFactoryFinder.getStyleFactory();
 
     /**
      * Filters a MapContent and returns a new one where adjacent {@link FeatureTypeStyle} using the

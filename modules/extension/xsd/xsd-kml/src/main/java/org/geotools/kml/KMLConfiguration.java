@@ -16,7 +16,6 @@
  */
 package org.geotools.kml;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.kml.bindings.BoundaryTypeBinding;
 import org.geotools.kml.bindings.ColorBinding;
 import org.geotools.kml.bindings.ColorStyleTypeBinding;
@@ -71,7 +70,7 @@ public class KMLConfiguration extends Configuration {
 
     /** Places an instance of {@link GeometryFactory}. */
     protected void configureContext(MutablePicoContainer container) {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory(null);
         StyleBuilder styleBuilder = new StyleBuilder(styleFactory);
 
         container.registerComponentInstance(styleFactory);

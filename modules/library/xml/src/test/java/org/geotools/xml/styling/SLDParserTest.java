@@ -37,7 +37,6 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.Assert;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ContrastEnhancement;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
@@ -352,7 +351,7 @@ public class SLDParserTest {
                     + "\n\t</Normalize>"
                     + "\n\t</ContrastEnhancement>";
 
-    static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+    static StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory(null);
 
     @Test
     public void testBasic() throws Exception {
@@ -534,7 +533,7 @@ public class SLDParserTest {
         List<GraphicalSymbol> graphicalSymbols = ps.getGraphic().graphicalSymbols();
         assertEquals(1, graphicalSymbols.size());
         Mark mark = (Mark) graphicalSymbols.get(0);
-        assertEquals(mark, CommonFactoryFinder.getStyleFactory(null).createMark());
+        assertEquals(mark, StyleFactoryFinder.getStyleFactory(null).createMark());
     }
 
     @Test

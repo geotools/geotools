@@ -24,7 +24,7 @@ import org.opengis.filter.FilterFactory2;
 
 abstract class AbstractSLDBuilder<T> implements Builder<T> {
 
-    protected StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    protected StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
 
     protected AbstractSLDBuilder<?> parent;
 

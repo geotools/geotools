@@ -30,7 +30,7 @@ public class CommonFactoryFinderTest extends TestCase {
     }
 
     public void testGetStyleFactory() {
-        assertNotNull(CommonFactoryFinder.getStyleFactories(GeoTools.getDefaultHints()));
+        assertNotNull(StyleFactoryFinder.getStyleFactories(GeoTools.getDefaultHints()));
     }
 
     public void testGetFilterFactory() {

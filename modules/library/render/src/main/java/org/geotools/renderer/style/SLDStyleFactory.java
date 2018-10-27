@@ -633,7 +633,7 @@ public class SLDStyleFactory {
             // default mark of a "square" with a 50%-gray fill and a black outline, with a size of 6
             // pixels,
             // unless an explicit Size is specified
-            StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+            StyleFactory sf = StyleFactoryFinder.getStyleFactory();
             Mark defaultMark =
                     sf.mark(
                             ff.literal("square"),

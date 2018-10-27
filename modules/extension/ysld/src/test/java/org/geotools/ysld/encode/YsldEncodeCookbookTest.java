@@ -30,7 +30,7 @@ import static org.junit.Assert.assertThat;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import org.geotools.factory.CommonFactoryFinder;
+
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.xml.styling.SLDParser;
 import org.geotools.ysld.UomMapper;
@@ -2130,7 +2130,7 @@ public class YsldEncodeCookbookTest {
     }
 
     YamlMap encode(String dirname, String filename) throws Exception {
-        SLDParser sldParser = new SLDParser(CommonFactoryFinder.getStyleFactory());
+        SLDParser sldParser = new SLDParser(StyleFactoryFinder.getStyleFactory());
         sldParser.setInput(YsldTests.sld(dirname, filename));
 
         StyledLayerDescriptor sld = sldParser.parseSLD();

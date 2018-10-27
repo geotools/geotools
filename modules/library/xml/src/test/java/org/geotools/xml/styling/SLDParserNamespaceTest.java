@@ -20,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 import junit.framework.TestCase;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
@@ -67,7 +66,7 @@ public class SLDParserNamespaceTest extends TestCase {
                     + " </NamedLayer>"
                     + "</StyledLayerDescriptor>";
 
-    static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(null);
+    static StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory(null);
 
     public void testNamespace() throws Exception {
         SLDParser parser = new SLDParser(styleFactory, input());

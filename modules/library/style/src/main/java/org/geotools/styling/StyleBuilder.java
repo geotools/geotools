@@ -65,7 +65,7 @@ public class StyleBuilder {
 
     /** use the default StyleFactory and FilterFactory */
     public StyleBuilder() {
-        this(CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints()));
+        this(StyleFactoryFinder.getStyleFactory(GeoTools.getDefaultHints()));
     }
 
     /**
@@ -83,7 +83,7 @@ public class StyleBuilder {
      * @param filterFactory Use this FilterFactory to build the style
      */
     public StyleBuilder(FilterFactory filterFactory) {
-        this(CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints()), filterFactory);
+        this(StyleFactoryFinder.getStyleFactory(GeoTools.getDefaultHints()), filterFactory);
     }
 
     /**

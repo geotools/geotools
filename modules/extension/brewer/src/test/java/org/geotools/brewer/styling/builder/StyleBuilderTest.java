@@ -37,7 +37,7 @@ public class StyleBuilderTest {
     FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     public void example() {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
         sld.setName("example");
         sld.setAbstract("Example Style Layer Descriptor");

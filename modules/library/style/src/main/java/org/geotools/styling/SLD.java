@@ -52,7 +52,7 @@ import org.opengis.style.SemanticType;
  */
 public class SLD {
 
-    private static StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    private static StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     /** <code>NOTFOUND</code> indicates int value was unavailable */

@@ -84,7 +84,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testFunction() throws Exception {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -116,7 +116,7 @@ public class YsldEncodeTest {
     @Test
     public void testRenderingTransformation() throws IOException {
 
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -166,7 +166,7 @@ public class YsldEncodeTest {
     @Test
     public void testRenderingTransformationInput() throws IOException {
 
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -216,7 +216,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testRenderingTransformationHeatmap() throws IOException {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -289,7 +289,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testRenderingTransformationHeatmapAltBBOX() throws IOException {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -362,7 +362,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testRenderingTransformationSimplifyWithWMSParams() throws IOException {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -434,7 +434,7 @@ public class YsldEncodeTest {
     @Test
     public void testRenderingTransformationNested() throws IOException {
 
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
@@ -509,7 +509,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testLabelShield() throws IOException {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
@@ -559,7 +559,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testLabelDisplacement() throws IOException {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
@@ -615,7 +615,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testLabelLinePlacement() throws IOException {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory();
         FilterFactory ff = CommonFactoryFinder.getFilterFactory();
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
@@ -660,7 +660,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testEmptyColorMap() throws Exception {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = sld(styleFactory.createRasterSymbolizer());
 
@@ -682,7 +682,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testEmptyContrastEnhancement() throws Exception {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = sld(styleFactory.createRasterSymbolizer());
 
@@ -704,7 +704,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testColorMap() throws Exception {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
 
         RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
@@ -756,7 +756,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testColorMapWithExpression() throws Exception {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
 
         RasterSymbolizer symb = styleFactory.createRasterSymbolizer();
@@ -810,7 +810,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testExpressionNil() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         p.getGraphic().setSize(Expression.NIL);
 
         StringWriter out = new StringWriter();
@@ -821,9 +821,9 @@ public class YsldEncodeTest {
 
     @Test
     public void testNameExpressionLiteral() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression nameExpression = CommonFactoryFinder.getFilterFactory2().literal("test");
-        Mark mark = CommonFactoryFinder.getStyleFactory().createMark();
+        Mark mark = StyleFactoryFinder.getStyleFactory().createMark();
         mark.setWellKnownName(nameExpression);
         p.getGraphic().graphicalSymbols().add(mark);
 
@@ -849,9 +849,9 @@ public class YsldEncodeTest {
 
     @Test
     public void testNameExpressionAttribute() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression nameExpression = CommonFactoryFinder.getFilterFactory2().property("test");
-        Mark mark = CommonFactoryFinder.getStyleFactory().createMark();
+        Mark mark = StyleFactoryFinder.getStyleFactory().createMark();
         mark.setWellKnownName(nameExpression);
         p.getGraphic().graphicalSymbols().add(mark);
 
@@ -877,7 +877,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testNonNameExpressionLiteral() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression = CommonFactoryFinder.getFilterFactory2().literal("test");
         p.setGeometry(expression);
 
@@ -900,7 +900,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testNonNameExpressionAttribute() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression = CommonFactoryFinder.getFilterFactory2().property("test");
         p.setGeometry(expression);
 
@@ -923,7 +923,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testEmbededExpression() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression =
                 CommonFactoryFinder.getFilterFactory2()
                         .function(
@@ -952,7 +952,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testEmbededExpressionEscapeLiteral() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression = CommonFactoryFinder.getFilterFactory2().literal("$}\\");
         p.setGeometry(expression);
 
@@ -975,7 +975,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testEmbededExpressionEscapeExpression() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         Expression expression =
                 CommonFactoryFinder.getFilterFactory2()
                         .function(
@@ -1004,7 +1004,7 @@ public class YsldEncodeTest {
     @Test
     public void testFilter() throws Exception {
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
@@ -1036,7 +1036,7 @@ public class YsldEncodeTest {
     @Test
     public void testFilterEscape() throws Exception {
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
@@ -1069,7 +1069,7 @@ public class YsldEncodeTest {
     @Test
     public void testScale() throws Exception {
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
@@ -1120,7 +1120,7 @@ public class YsldEncodeTest {
     @Test
     public void testScaleMinMaxKeywords() throws Exception {
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
@@ -1162,7 +1162,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testGrayBandSelection() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory();
         RasterSymbolizer r = factory.createRasterSymbolizer();
         ChannelSelection sel =
                 factory.channelSelection(
@@ -1195,7 +1195,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testRGBBandSelection() throws Exception {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory();
         RasterSymbolizer r = factory.createRasterSymbolizer();
         ChannelSelection sel =
                 factory.channelSelection(
@@ -1248,7 +1248,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testStrokeGraphic() throws Exception {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory();
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         LineSymbolizer l = sf.createLineSymbolizer();
         Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
@@ -1289,7 +1289,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testStrokeGraphicFill() throws Exception {
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory();
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
         LineSymbolizer l = sf.createLineSymbolizer();
         Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#995555"), null), null);
@@ -1330,7 +1330,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testGrayBandSelectionWithContrast() throws Exception {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
         RasterSymbolizer r = styleFactory.createRasterSymbolizer();
         ChannelSelection sel =
@@ -1368,7 +1368,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testRGBBandSelectionWithContrast() throws Exception {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
         RasterSymbolizer r = styleFactory.createRasterSymbolizer();
         ChannelSelection sel =
@@ -1421,7 +1421,7 @@ public class YsldEncodeTest {
     }
 
     private FeatureTypeStyle fts(Symbolizer sym) {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
 
         Rule rule = styleFactory.createRule();
 
@@ -1433,7 +1433,7 @@ public class YsldEncodeTest {
     }
 
     private StyledLayerDescriptor sld(FeatureTypeStyle fts) {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
 
@@ -1448,7 +1448,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testTextSymbolizerPriority() throws Exception {
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
         TextSymbolizer symb = styleFactory.createTextSymbolizer();
@@ -1482,14 +1482,14 @@ public class YsldEncodeTest {
 
     @Test
     public void testColourNoQuotes() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
 
-        Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
+        Mark m1 = StyleFactoryFinder.getStyleFactory().getCircleMark();
         m1.setFill(
-                CommonFactoryFinder.getStyleFactory()
+                StyleFactoryFinder.getStyleFactory()
                         .createFill(CommonFactoryFinder.getFilterFactory2().literal("#112233")));
         m1.setStroke(
-                CommonFactoryFinder.getStyleFactory()
+                StyleFactoryFinder.getStyleFactory()
                         .createStroke(
                                 CommonFactoryFinder.getFilterFactory2().literal("#005566"),
                                 CommonFactoryFinder.getFilterFactory2().literal(3)));
@@ -1522,11 +1522,11 @@ public class YsldEncodeTest {
 
     @Test
     public void testScientificNotationCase() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
 
-        Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
+        Mark m1 = StyleFactoryFinder.getStyleFactory().getCircleMark();
         m1.setFill(
-                CommonFactoryFinder.getStyleFactory()
+                StyleFactoryFinder.getStyleFactory()
                         .createFill(
                                 CommonFactoryFinder.getFilterFactory2().literal("#112233"),
                                 CommonFactoryFinder.getFilterFactory2()
@@ -1558,11 +1558,11 @@ public class YsldEncodeTest {
 
     @Test
     public void testColourCase() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
 
-        Mark m1 = CommonFactoryFinder.getStyleFactory().getCircleMark();
+        Mark m1 = StyleFactoryFinder.getStyleFactory().getCircleMark();
         m1.setFill(
-                CommonFactoryFinder.getStyleFactory()
+                StyleFactoryFinder.getStyleFactory()
                         .createFill(
                                 CommonFactoryFinder.getFilterFactory2().literal("#abcdef"),
                                 CommonFactoryFinder.getFilterFactory2()
@@ -1592,7 +1592,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testFTSVendorOption() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         FeatureTypeStyle fts = fts(p);
         fts.getOptions().put("foo", "bar");
 
@@ -1609,7 +1609,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerVendorOption() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         FeatureTypeStyle fts = fts(p);
         p.getOptions().put("foo", "bar");
 
@@ -1633,7 +1633,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerUoMMetre() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         FeatureTypeStyle fts = fts(p);
         p.setUnitOfMeasure(UomOgcMapping.METRE.getUnit());
 
@@ -1657,7 +1657,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerUoMFoot() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         FeatureTypeStyle fts = fts(p);
         p.setUnitOfMeasure(UomOgcMapping.FOOT.getUnit());
 
@@ -1681,7 +1681,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerUoMPixel() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         FeatureTypeStyle fts = fts(p);
         p.setUnitOfMeasure(UomOgcMapping.PIXEL.getUnit());
 
@@ -1705,7 +1705,7 @@ public class YsldEncodeTest {
 
     @Test
     public void testSymbolizerUoMOther() throws Exception {
-        PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
+        PointSymbolizer p = StyleFactoryFinder.getStyleFactory().createPointSymbolizer();
         FeatureTypeStyle fts = fts(p);
         p.setUnitOfMeasure(USCustomary.LIGHT_YEAR);
 

@@ -17,7 +17,7 @@
 package org.geotools.ows.wmts.map;
 
 import java.util.logging.Logger;
-import org.geotools.factory.CommonFactoryFinder;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.MapLayer;
@@ -48,7 +48,7 @@ public class WMTSMapLayer extends GridReaderLayer {
             org.geotools.util.logging.Logging.getLogger(WMTSMapLayer.class);
 
     private static Style createStyle() {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         RasterSymbolizer symbolizer = factory.createRasterSymbolizer();
 
         Rule rule = factory.createRule();

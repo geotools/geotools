@@ -110,7 +110,7 @@ public class Rendering2DTest extends TestCase {
     }
 
     Style loadTestStyle() throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
 
         URL surl = TestData.getResource(this, "test-sld.xml");
         SLDParser stylereader = new SLDParser(factory, surl);
@@ -120,7 +120,7 @@ public class Rendering2DTest extends TestCase {
     }
 
     Style createTestStyle() throws IllegalFilterException {
-        StyleFactory sFac = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory sFac = StyleFactoryFinder.getStyleFactory(null);
         // The following is complex, and should be built from
         // an SLD document and not by hand
         PointSymbolizer pointsym = sFac.createPointSymbolizer();

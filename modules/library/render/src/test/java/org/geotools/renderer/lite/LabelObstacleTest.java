@@ -31,7 +31,6 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Transaction;
 import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -125,7 +124,7 @@ public class LabelObstacleTest {
         // return RendererBaseTest.loadStyle(this, "test-data/obstacles/" + name + ".sld");
         SLDParser p =
                 new SLDParser(
-                        CommonFactoryFinder.getStyleFactory(null),
+                        StyleFactoryFinder.getStyleFactory(null),
                         getClass().getResourceAsStream("test-data/obstacles/" + name + ".sld"));
         return p.readXML()[0];
     }

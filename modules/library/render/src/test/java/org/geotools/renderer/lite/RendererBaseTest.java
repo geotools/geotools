@@ -25,7 +25,6 @@ import java.awt.image.ColorModel;
 import java.awt.image.Raster;
 import java.io.IOException;
 import junit.framework.Assert;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContext;
 import org.geotools.renderer.GTRenderer;
@@ -245,7 +244,7 @@ public abstract class RendererBaseTest {
      * @throws IOException
      */
     public static Style loadStyle(Object loader, String sldFilename) throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
 
         java.net.URL surl = TestData.getResource(loader, sldFilename);
         SLDParser stylereader = new SLDParser(factory, surl);

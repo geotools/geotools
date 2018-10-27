@@ -85,7 +85,7 @@ public class DuplicatingStyleVisitorTest extends TestCase {
     }
 
     protected void setUp() throws Exception {
-        sf = CommonFactoryFinder.getStyleFactory(null);
+        sf = StyleFactoryFinder.getStyleFactory(null);
         ff = CommonFactoryFinder.getFilterFactory2(null);
         sb = new StyleBuilder(sf, ff);
         visitor = new DuplicatingStyleVisitor(sf, ff);

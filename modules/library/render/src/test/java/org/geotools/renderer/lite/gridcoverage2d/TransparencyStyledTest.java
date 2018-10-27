@@ -38,7 +38,6 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.imagemosaic.ImageMosaicFormatFactory;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -70,7 +69,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 public class TransparencyStyledTest {
 
     private static final StyleFactory SF =
-            CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
+            StyleFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
 
     private GridCoverage2D readCoverage(
             File mosaicDirectory, FootprintBehavior fp, Color transparentColor)

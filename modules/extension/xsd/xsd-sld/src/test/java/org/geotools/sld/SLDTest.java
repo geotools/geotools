@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.IOUtils;
-import org.geotools.styling.*;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Parser;
 import org.junit.Ignore;

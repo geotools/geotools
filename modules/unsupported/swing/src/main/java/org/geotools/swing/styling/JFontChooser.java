@@ -51,7 +51,7 @@ public class JFontChooser extends JDialog {
     /** serialVersionUID */
     private static final long serialVersionUID = -1543116265293436599L;
 
-    private static StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    private static StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
     private static final String[] families =

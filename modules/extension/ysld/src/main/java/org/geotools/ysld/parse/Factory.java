@@ -34,7 +34,7 @@ public class Factory {
     FilterFactory filter;
 
     public Factory() {
-        this(CommonFactoryFinder.getStyleFactory(), CommonFactoryFinder.getFilterFactory());
+        this(StyleFactoryFinder.getStyleFactory(), CommonFactoryFinder.getFilterFactory());
     }
 
     public Factory(StyleFactory style, FilterFactory filter) {

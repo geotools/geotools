@@ -18,7 +18,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer;
-import org.geotools.styling.*;
 import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -38,7 +37,7 @@ import org.opengis.filter.FilterFactory2;
 @Ignore // sigh, as expected it's not working all the time
 public class StreamingRendererMapContentReleaseTest extends LoggerTest {
 
-    private static final StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+    private static final StyleFactory sf = StyleFactoryFinder.getStyleFactory();
     private static final FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     private static final GeometryFactory geom = JTSFactoryFinder.getGeometryFactory();
 

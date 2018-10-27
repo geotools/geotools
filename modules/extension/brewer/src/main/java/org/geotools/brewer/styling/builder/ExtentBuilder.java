@@ -17,12 +17,11 @@
 package org.geotools.brewer.styling.builder;
 
 import org.geotools.Builder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.Extent;
 import org.geotools.styling.StyleFactory;
 
 public class ExtentBuilder<P> implements Builder<Extent> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    private StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
 
     private P parent;
 

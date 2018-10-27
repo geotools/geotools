@@ -40,7 +40,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 import org.geotools.data.DataStore;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.map.RasterLayer;
 import org.geotools.map.StyleLayer;
@@ -92,7 +91,7 @@ import org.opengis.filter.expression.Expression;
  */
 public class JSimpleStyleDialog extends JDialog {
 
-    private static StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    private static StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
 
     /**
      * Well known text names for symbol options

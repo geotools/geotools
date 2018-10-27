@@ -104,7 +104,7 @@ import org.xml.sax.SAXException;
  * @author Jody
  */
 public class SLDTransformerTest {
-    static StyleFactory2 sf = (StyleFactory2) CommonFactoryFinder.getStyleFactory(null);
+    static StyleFactory2 sf = (StyleFactory2) StyleFactoryFinder.getStyleFactory(null);
 
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -161,7 +161,7 @@ public class SLDTransformerTest {
         assertNotNull(xmlFragment);
 
         // more complex raster symbolizer
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
         StyleBuilder styleBuilder = new StyleBuilder(styleFactory);
 
         RasterSymbolizer rasterSymbolizer = styleFactory.createRasterSymbolizer();
@@ -893,7 +893,7 @@ public class SLDTransformerTest {
 
         SLDTransformer st = new SLDTransformer();
         String firstExport = st.transform(style);
-        SLDParser sldp = new SLDParser(CommonFactoryFinder.getStyleFactory(null));
+        SLDParser sldp = new SLDParser(StyleFactoryFinder.getStyleFactory(null));
         sldp.setInput(new StringReader(firstExport));
         Style[] firstImport = sldp.readXML();
 
@@ -921,7 +921,7 @@ public class SLDTransformerTest {
         // Encode the style, and parse it
         SLDTransformer st = new SLDTransformer();
         String firstExport = st.transform(style);
-        SLDParser sldp = new SLDParser(CommonFactoryFinder.getStyleFactory(null));
+        SLDParser sldp = new SLDParser(StyleFactoryFinder.getStyleFactory(null));
         sldp.setInput(new StringReader(firstExport));
         Style[] firstImport = sldp.readXML();
 
@@ -969,7 +969,7 @@ public class SLDTransformerTest {
 
         SLDTransformer st = new SLDTransformer();
         String firstExport = st.transform(style);
-        SLDParser sldp = new SLDParser(CommonFactoryFinder.getStyleFactory(null));
+        SLDParser sldp = new SLDParser(StyleFactoryFinder.getStyleFactory(null));
         sldp.setInput(new StringReader(firstExport));
         Style[] firstImport = sldp.readXML();
 
@@ -994,7 +994,7 @@ public class SLDTransformerTest {
         {
             // NPE here??
             String secondExport = st.transform(firstImport);
-            SLDParser sldp2 = new SLDParser(CommonFactoryFinder.getStyleFactory(null));
+            SLDParser sldp2 = new SLDParser(StyleFactoryFinder.getStyleFactory(null));
             sldp2.setInput(new StringReader(secondExport));
             Style[] readXML = sldp2.readXML();
 
@@ -1204,7 +1204,7 @@ public class SLDTransformerTest {
 
     @Test
     public void testLocalizedTitle() throws Exception {
-        RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
+        RuleImpl rule = (RuleImpl) StyleFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString =
                 new GrowableInternationalString("title") {
 
@@ -1236,7 +1236,7 @@ public class SLDTransformerTest {
     }
 
     public void testLocalizedAbstract() throws Exception {
-        RuleImpl rule = (RuleImpl) CommonFactoryFinder.getStyleFactory().createRule();
+        RuleImpl rule = (RuleImpl) StyleFactoryFinder.getStyleFactory().createRule();
         GrowableInternationalString intString = new GrowableInternationalString("title");
         intString.add(Locale.ITALIAN, "titolo");
         intString.add(Locale.FRENCH, "titre");

@@ -50,7 +50,6 @@ import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
@@ -91,7 +90,7 @@ import org.opengis.style.ContrastMethod;
 public class RasterSymbolizerTest extends org.junit.Assert {
 
     private static final StyleFactory sf =
-            CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
+            StyleFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
 
     private static final double DELTA = 1E-7d;
 

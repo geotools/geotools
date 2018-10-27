@@ -44,7 +44,7 @@ import org.opengis.filter.FilterFactory;
 
 public class StyleLab {
 
-    static StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+    static StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
     static FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
     public static void main(String[] args) throws Exception {

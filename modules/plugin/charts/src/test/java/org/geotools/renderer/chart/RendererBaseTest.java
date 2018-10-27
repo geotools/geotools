@@ -29,7 +29,7 @@ import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import org.geotools.factory.CommonFactoryFinder;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.styling.Style;
@@ -141,7 +141,7 @@ public abstract class RendererBaseTest {
     }
 
     static Style loadStyle(Object loader, String sldFilename) throws IOException {
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
 
         java.net.URL surl = TestData.getResource(loader, sldFilename);
         SLDParser stylereader = new SLDParser(factory, surl);

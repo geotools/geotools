@@ -24,7 +24,6 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
@@ -142,7 +141,7 @@ public class TileViewer {
 
         ReferencedEnvelope env = t.getExtent();
 
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
         RasterSymbolizer sym = sf.getDefaultRasterSymbolizer();
 
         Style rasterStyle = SLD.wrapSymbolizers(sym);

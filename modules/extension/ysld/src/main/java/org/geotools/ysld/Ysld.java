@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import org.geotools.factory.CommonFactoryFinder;
+
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.xml.styling.SLDParser;
@@ -211,7 +211,7 @@ public class Ysld {
      * @param ysld Ysld writer.
      */
     public static void transform(InputStream sld, Writer ysld) throws IOException {
-        SLDParser parser = new SLDParser(CommonFactoryFinder.getStyleFactory(), sld);
+        SLDParser parser = new SLDParser(StyleFactoryFinder.getStyleFactory(), sld);
         StyledLayerDescriptor style = parser.parseSLD();
         Ysld.encode(style, ysld);
     }

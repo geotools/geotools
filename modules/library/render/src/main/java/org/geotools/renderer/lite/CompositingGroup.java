@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.FeatureLayer;
@@ -48,7 +47,7 @@ class CompositingGroup {
 
     private static final Logger LOGGER = Logging.getLogger(CompositingGroup.class);
 
-    private static StyleFactory STYLE_FACTORY = CommonFactoryFinder.getStyleFactory();
+    private static StyleFactory STYLE_FACTORY = StyleFactoryFinder.getStyleFactory();
 
     public static List<CompositingGroup> splitOnCompositingBase(
             Graphics2D graphics, Rectangle screenSize, MapContent mc) {

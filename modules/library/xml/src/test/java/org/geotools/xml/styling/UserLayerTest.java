@@ -26,7 +26,6 @@ import java.util.Map;
 import junit.framework.TestCase;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -143,7 +142,7 @@ public class UserLayerTest extends TestCase {
         final DataStore ds = DataUtilities.dataStore(fc);
 
         // create and populate the layer --------------------------------------
-        final StyleFactory sf = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
+        final StyleFactory sf = StyleFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
 
         final UserLayer layer = sf.createUserLayer();
         layer.setName(LAYER_NAME);
@@ -203,7 +202,7 @@ public class UserLayerTest extends TestCase {
 
     public void testUserLayerWithRemoteOWS() throws Exception {
         URL sldUrl = TestData.getResource(this, "remoteOws.sld");
-        StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory factory = StyleFactoryFinder.getStyleFactory(null);
         SLDParser stylereader = new SLDParser(factory, sldUrl);
         StyledLayerDescriptor sld = stylereader.parseSLD();
         assertEquals(1, sld.getStyledLayers().length);

@@ -27,7 +27,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
@@ -405,7 +404,7 @@ public abstract class Layer {
         // using user data to cache this placeholder so we don't have to create it each time
         Style style = (Style) getUserData().get("style");
         if (style == null) {
-            StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+            StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
 
             // create a style that does nothing
             List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();

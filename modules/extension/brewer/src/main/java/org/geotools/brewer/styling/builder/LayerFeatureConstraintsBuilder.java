@@ -18,13 +18,12 @@ package org.geotools.brewer.styling.builder;
 
 import org.geotools.Builder;
 import org.geotools.brewer.styling.filter.expression.ChildExpressionBuilder;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.LayerFeatureConstraints;
 import org.geotools.styling.StyleFactory;
 
 public class LayerFeatureConstraintsBuilder<P> implements Builder<LayerFeatureConstraints> {
-    private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+    private StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
 
     private P parent;
 

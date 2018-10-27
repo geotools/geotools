@@ -205,7 +205,7 @@ public class StyledShapePainterTest extends TestCase {
         legend.setOpacity(1);
         Style pStyle = RendererBaseTest.loadStyle(this, "externalGraphic.sld");
         URL url = StreamingRenderer.class.getResource("test-data/");
-        StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
+        StyleFactory sf = StyleFactoryFinder.getStyleFactory(null);
         ExternalGraphic eg = sf.createExternalGraphic(url + "icon64.png", "image/png");
         legend.addExternalGraphic(eg);
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);

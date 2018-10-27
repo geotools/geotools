@@ -52,7 +52,7 @@ public class StyleExamples {
         // styleFactoryExample start
         //
         // We are using the GeoTools styleFactory that allows access to get/set methods
-        org.geotools.styling.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        org.geotools.styling.StyleFactory sf = StyleFactoryFinder.getStyleFactory();
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
         StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
@@ -218,7 +218,7 @@ public class StyleExamples {
 
     private void sldExample() {
         // sldExample start
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
 
         StyledLayerDescriptor sld = styleFactory.createStyledLayerDescriptor();
         sld.setName("example");
@@ -270,7 +270,7 @@ public class StyleExamples {
 
     private void twoFeatureTypeStyles() {
         // twoFeatureTypeStyles start
-        StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+        StyleFactory styleFactory = StyleFactoryFinder.getStyleFactory();
         FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2();
 
         Style style = styleFactory.getDefaultStyle();

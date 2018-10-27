@@ -27,7 +27,7 @@ public class StyleExamples {
     private void styleFactoryExample() throws Exception {
         // styleFactoryExample start
         //
-        org.opengis.style.StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        org.opengis.style.StyleFactory sf = StyleFactoryFinder.getStyleFactory();
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
         //

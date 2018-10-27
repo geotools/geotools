@@ -45,7 +45,7 @@ public class DpiRescaleStyleVisitorTest {
 
     @Before
     public void setUp() throws Exception {
-        sf = CommonFactoryFinder.getStyleFactory(null);
+        sf = StyleFactoryFinder.getStyleFactory(null);
         ff = CommonFactoryFinder.getFilterFactory2(null);
         sb = new StyleBuilder(sf, ff);
         scale = 2.0;

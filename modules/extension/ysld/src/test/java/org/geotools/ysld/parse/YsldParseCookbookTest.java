@@ -28,7 +28,6 @@ import java.io.StringWriter;
 import java.util.Map;
 import org.geotools.filter.Filters;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.styling.*;
 import org.geotools.styling.Font;
 import org.geotools.styling.Stroke;
 import org.geotools.ysld.TestUtils;

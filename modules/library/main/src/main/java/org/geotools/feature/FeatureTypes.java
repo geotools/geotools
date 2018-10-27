@@ -16,22 +16,21 @@
  */
 package org.geotools.feature;
 
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.net.URL;
+import java.util.*;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.locationtech.jts.geom.Geometry;
+import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -45,6 +44,8 @@ import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -121,7 +122,7 @@ public class FeatureTypes {
      * <p>This code is copied from the ShapefileDataStore where it was written (probably by
      * dzwiers). Cholmes is providing documentation.
      *
-     * @param type the AttributeType
+     * @param descriptor the AttributeType
      * @return an int indicating the max length of field in characters, or ANY_LENGTH
      */
     public static int getFieldLength(PropertyDescriptor descriptor) {
@@ -629,5 +630,733 @@ public class FeatureTypes {
         else if (!namespaceA.equals(namespaceB)) return false;
 
         return true;
+    }
+
+    /**
+     * Retrieve the attributeNames defined by the featureType
+     *
+     * @param featureType
+     * @return array of simple attribute names
+     */
+    public static String[] attributeNames(SimpleFeatureType featureType) {
+        String[] names = new String[featureType.getAttributeCount()];
+        final int count = featureType.getAttributeCount();
+        for (int i = 0; i < count; i++) {
+            names[i] = featureType.getDescriptor(i).getLocalName();
+        }
+        return names;
+    }
+
+    /**
+     * Traverses the filter and returns any encountered property names.
+     *
+     * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
+     * attributeName does not match the actual name of the type.
+     */
+    public static String[] attributeNames(Filter filter, final SimpleFeatureType featureType) {
+        if (filter == null) {
+            return new String[0];
+        }
+        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
+        filter.accept(attExtractor, null);
+        String[] attributeNames = attExtractor.getAttributeNames();
+        return attributeNames;
+    }
+
+    /**
+     * Traverses the filter and returns any encountered property names.
+     *
+     * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
+     * attributeName does not match the actual name of the type.
+     */
+    public static Set<PropertyName> propertyNames(
+            Filter filter, final SimpleFeatureType featureType) {
+        if (filter == null) {
+            return Collections.emptySet();
+        }
+        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
+        filter.accept(attExtractor, null);
+        Set<PropertyName> propertyNames = attExtractor.getPropertyNameSet();
+        return propertyNames;
+    }
+
+    /** Traverses the filter and returns any encountered property names. */
+    public static String[] attributeNames(Filter filter) {
+        return attributeNames(filter, null);
+    }
+
+    /** Traverses the filter and returns any encountered property names. */
+    public static Set<PropertyName> propertyNames(Filter filter) {
+        return propertyNames(filter, null);
+    }
+
+    /**
+     * Traverses the expression and returns any encountered property names.
+     *
+     * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
+     * attributeName does not match the actual name of the type.
+     */
+    public static String[] attributeNames(
+            Expression expression, final SimpleFeatureType featureType) {
+        if (expression == null) {
+            return new String[0];
+        }
+        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
+        expression.accept(attExtractor, null);
+        String[] attributeNames = attExtractor.getAttributeNames();
+        return attributeNames;
+    }
+
+    /**
+     * Traverses the expression and returns any encountered property names.
+     *
+     * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
+     * attributeName does not match the actual name of the type.
+     */
+    public static Set<PropertyName> propertyNames(
+            Expression expression, final SimpleFeatureType featureType) {
+        if (expression == null) {
+            return Collections.emptySet();
+        }
+        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
+        expression.accept(attExtractor, null);
+        Set<PropertyName> propertyNames = attExtractor.getPropertyNameSet();
+        return propertyNames;
+    }
+
+    /** Traverses the expression and returns any encountered property names. */
+    public static String[] attributeNames(Expression expression) {
+        return attributeNames(expression, null);
+    }
+
+    /** Traverses the expression and returns any encountered property names. */
+    public static Set<PropertyName> propertyNames(Expression expression) {
+        return propertyNames(expression, null);
+    }
+
+    /**
+     * Compare attribute coverage between two feature types (allowing the identification of
+     * subTypes).
+     *
+     * <p>The comparison results in a number with the following meaning:
+     *
+     * <ul>
+     *   <li>1: if typeA is a sub type/reorder/renamespace of typeB
+     *   <li>0: if typeA and typeB are the same type
+     *   <li>-1: if typeA is not subtype of typeB
+     * </ul>
+     *
+     * <p>Comparison is based on {@link AttributeDescriptor} - the {@link
+     * #isMatch(AttributeDescriptor, AttributeDescriptor)} method is used to quickly confirm that
+     * the local name and java binding are compatible.
+     *
+     * <p>Namespace is not considered in this opperations. You may still need to reType to get the
+     * correct namesapce, or reorder.
+     *
+     * <p>Please note this method will not result in a stable sort if used in a {@link Comparator}
+     * as -1 is used to indicate incompatiblity (rather than simply "before").
+     *
+     * @param typeA FeatureType beind compared
+     * @param typeB FeatureType being compared against
+     */
+    public static int compare(SimpleFeatureType typeA, SimpleFeatureType typeB) {
+        if (typeA == typeB) {
+            return 0;
+        }
+
+        if (typeA == null) {
+            return -1;
+        }
+
+        if (typeB == null) {
+            return -1;
+        }
+
+        int countA = typeA.getAttributeCount();
+        int countB = typeB.getAttributeCount();
+
+        if (countA > countB) {
+            return -1;
+        }
+
+        // may still be the same featureType (Perhaps they differ on namespace?)
+        AttributeDescriptor a;
+        int match = 0;
+
+        for (int i = 0; i < countA; i++) {
+            a = typeA.getDescriptor(i);
+
+            if (isMatch(a, typeB.getDescriptor(i))) {
+                match++;
+            } else if (isMatch(a, typeB.getDescriptor(a.getLocalName()))) {
+                // match was found in a different position
+            } else {
+                // cannot find any match for Attribute in typeA
+                return -1;
+            }
+        }
+
+        if ((countA == countB) && (match == countA)) {
+            // all attributes in typeA agreed with typeB
+            // (same order and type)
+            return 0;
+        }
+
+        return 1;
+    }
+
+    /**
+     * Quickly check if two descriptors are at all compatible.
+     *
+     * <p>This method checks the descriptors name and class binding to see if the values have any
+     * chance of being compatible.
+     *
+     * @param a descriptor to compare
+     * @param b descriptor to compare
+     * @return true to the descriptors name and binding class match
+     */
+    public static boolean isMatch(AttributeDescriptor a, AttributeDescriptor b) {
+        if (a == b) {
+            return true;
+        }
+
+        if (b == null) {
+            return false;
+        }
+
+        if (a == null) {
+            return false;
+        }
+
+        if (a.equals(b)) {
+            return true;
+        }
+
+        if (a.getLocalName().equals(b.getLocalName()) && a.getClass().equals(b.getClass())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Creates duplicate of feature adjusted to the provided featureType.
+     *
+     * <p>Please note this implementation provides "deep copy" using {@link #duplicate(Object)} to
+     * copy each attribute.
+     *
+     * @param featureType FeatureType requested
+     * @param feature Origional Feature from DataStore
+     * @return An instance of featureType based on feature
+     * @throws org.opengis.feature.IllegalAttributeException If opperation could not be performed
+     */
+    public static SimpleFeature reType(SimpleFeatureType featureType, SimpleFeature feature)
+            throws org.opengis.feature.IllegalAttributeException {
+        SimpleFeatureType origional = feature.getFeatureType();
+
+        if (featureType.equals(origional)) {
+            return SimpleFeatureBuilder.copy(feature);
+        }
+
+        String id = feature.getID();
+        int numAtts = featureType.getAttributeCount();
+        Object[] attributes = new Object[numAtts];
+        String xpath;
+
+        for (int i = 0; i < numAtts; i++) {
+            AttributeDescriptor curAttType = featureType.getDescriptor(i);
+            xpath = curAttType.getLocalName();
+            attributes[i] = duplicate(feature.getAttribute(xpath));
+        }
+
+        return SimpleFeatureBuilder.build(featureType, attributes, id);
+    }
+
+    /**
+     * Retypes the feature to match the provided featureType.
+     *
+     * <p>The duplicate parameter indicates how the new feature is to be formed:
+     *
+     * <ul>
+     *   <li>dupliate is true: A "deep copy" is made of each attribute resulting in a safe
+     *       "copy"Adjusts the attribute order to match the provided featureType.
+     *   <li>duplicate is false: the attributes are simply reordered and are actually the same
+     *       instances as those in the origional feature
+     * </ul>
+     *
+     * In the future this method may simply return a "wrapper" when duplicate is false.
+     *
+     * <p>
+     *
+     * @param featureType
+     * @param feature
+     * @param duplicate True to perform {@link #duplicate(Object)} on each attribute
+     * @return
+     * @throws org.opengis.feature.IllegalAttributeException
+     */
+    public static SimpleFeature reType(
+            SimpleFeatureType featureType, SimpleFeature feature, boolean duplicate)
+            throws org.opengis.feature.IllegalAttributeException {
+        if (duplicate) {
+            return reType(featureType, feature);
+        }
+
+        FeatureType origional = feature.getFeatureType();
+        if (featureType.equals(origional)) {
+            return feature;
+        }
+        String id = feature.getID();
+        int numAtts = featureType.getAttributeCount();
+        Object[] attributes = new Object[numAtts];
+        String xpath;
+
+        for (int i = 0; i < numAtts; i++) {
+            AttributeDescriptor curAttType = featureType.getDescriptor(i);
+            attributes[i] = feature.getAttribute(curAttType.getLocalName());
+        }
+        return SimpleFeatureBuilder.build(featureType, attributes, id);
+    }
+
+    /**
+     * Performs a deep copy of the provided object.
+     *
+     * <p>A number of tricks are used to make this as fast as possible:
+     *
+     * <ul>
+     *   <li>Simple or Immutable types are copied as is (String, Integer, Float, URL, etc..)
+     *   <li>JTS Geometry objects are cloned
+     *   <li>Arrays and the Collection classes are duplicated element by element
+     * </ul>
+     *
+     * This function is used recusively for (in order to handle complext features) no attempt is
+     * made to detect cycles at this time so your milage may vary.
+     *
+     * @param src Source object
+     * @return copy of source object
+     */
+    public static Object duplicate(Object src) {
+        // JD: this method really needs to be replaced with somethign better
+
+        if (src == null) {
+            return null;
+        }
+
+        //
+        // The following are things I expect
+        // Features will contain.
+        //
+        if (src instanceof String
+                || src instanceof Integer
+                || src instanceof Double
+                || src instanceof Float
+                || src instanceof Byte
+                || src instanceof Boolean
+                || src instanceof Short
+                || src instanceof Long
+                || src instanceof Character
+                || src instanceof Number) {
+            return src;
+        }
+
+        if (src instanceof Date) {
+            return new Date(((Date) src).getTime());
+        }
+
+        if (src instanceof URL || src instanceof URI) {
+            return src; // immutable
+        }
+
+        if (src instanceof Object[]) {
+            Object[] array = (Object[]) src;
+            Object[] copy = new Object[array.length];
+
+            for (int i = 0; i < array.length; i++) {
+                copy[i] = duplicate(array[i]);
+            }
+
+            return copy;
+        }
+
+        if (src instanceof Geometry) {
+            Geometry geometry = (Geometry) src;
+
+            return geometry.copy();
+        }
+
+        if (src instanceof SimpleFeature) {
+            SimpleFeature feature = (SimpleFeature) src;
+            return SimpleFeatureBuilder.copy(feature);
+        }
+
+        //
+        // We are now into diminishing returns
+        // I don't expect Features to contain these often
+        // (eveything is still nice and recursive)
+        //
+        Class<? extends Object> type = src.getClass();
+
+        if (type.isArray() && type.getComponentType().isPrimitive()) {
+            int length = Array.getLength(src);
+            Object copy = Array.newInstance(type.getComponentType(), length);
+            System.arraycopy(src, 0, copy, 0, length);
+
+            return copy;
+        }
+
+        if (type.isArray()) {
+            int length = Array.getLength(src);
+            Object copy = Array.newInstance(type.getComponentType(), length);
+
+            for (int i = 0; i < length; i++) {
+                Array.set(copy, i, duplicate(Array.get(src, i)));
+            }
+
+            return copy;
+        }
+
+        if (src instanceof List) {
+            List list = (List) src;
+            List<Object> copy = new ArrayList<Object>(list.size());
+
+            for (Iterator i = list.iterator(); i.hasNext(); ) {
+                copy.add(duplicate(i.next()));
+            }
+
+            return Collections.unmodifiableList(copy);
+        }
+
+        if (src instanceof Map) {
+            Map map = (Map) src;
+            Map copy = new HashMap(map.size());
+
+            for (Iterator i = map.entrySet().iterator(); i.hasNext(); ) {
+                Map.Entry entry = (Map.Entry) i.next();
+                copy.put(entry.getKey(), duplicate(entry.getValue()));
+            }
+
+            return Collections.unmodifiableMap(copy);
+        }
+
+        if (src instanceof GridCoverage) {
+            return src; // inmutable
+        }
+
+        //
+        // I have lost hope and am returning the orgional reference
+        // Please extend this to support additional classes.
+        //
+        // And good luck getting Cloneable to work
+        throw new org.opengis.feature.IllegalAttributeException(
+                null, "Do not know how to deep copy " + type.getName());
+    }
+
+    /**
+     * Constructs an empty feature to use as a Template for new content.
+     *
+     * <p>We may move this functionality to FeatureType.create( null )?
+     *
+     * @param featureType Type of feature we wish to create
+     * @return A new Feature of type featureType
+     */
+    public static SimpleFeature template(SimpleFeatureType featureType)
+            throws org.opengis.feature.IllegalAttributeException {
+        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType), null);
+    }
+
+    /**
+     * Use the provided featureType to create an empty feature.
+     *
+     * <p>The {@link #defaultValues(SimpleFeatureType)} method is used to generate the intial values
+     * (making use of {@link AttributeDescriptor#getDefaultValue()} as required.
+     *
+     * @param featureType
+     * @param featureID
+     * @return Craeted feature
+     */
+    public static SimpleFeature template(SimpleFeatureType featureType, String featureID) {
+        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType), featureID);
+    }
+
+    /**
+     * Produce a set of default values for the provided FeatureType
+     *
+     * @param featureType
+     * @return Array of values, that are good starting point for data entry
+     */
+    public static Object[] defaultValues(SimpleFeatureType featureType) {
+        return defaultValues(featureType, null);
+    }
+
+    /**
+     * Create a new feature from the provided values, using appropriate default values for any nulls
+     * provided.
+     *
+     * @param featureType
+     * @param providedValues
+     * @return newly created feature
+     * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
+     *     featureType
+     */
+    public static SimpleFeature template(SimpleFeatureType featureType, Object[] providedValues) {
+        return SimpleFeatureBuilder.build(
+                featureType, defaultValues(featureType, providedValues), null);
+    }
+
+    /**
+     * Create a new feature from the provided values, using appropriate default values for any nulls
+     * provided.
+     *
+     * @param featureType
+     * @param featureID
+     * @param providedValues provided attributes
+     * @return newly created feature
+     * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
+     *     featureType
+     */
+    public static SimpleFeature template(
+            SimpleFeatureType featureType, String featureID, Object[] providedValues) {
+        return SimpleFeatureBuilder.build(
+                featureType, defaultValues(featureType, providedValues), featureID);
+    }
+
+    /**
+     * Create default values matching the provided feature type.
+     *
+     * @param featureType
+     * @param values
+     * @return set of default values
+     * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
+     *     featureType
+     */
+    public static Object[] defaultValues(SimpleFeatureType featureType, Object[] values) {
+        if (values == null) {
+            values = new Object[featureType.getAttributeCount()];
+        } else if (values.length != featureType.getAttributeCount()) {
+            throw new ArrayIndexOutOfBoundsException("values");
+        }
+
+        for (int i = 0; i < featureType.getAttributeCount(); i++) {
+            AttributeDescriptor descriptor = featureType.getDescriptor(i);
+            values[i] = descriptor.getDefaultValue();
+        }
+
+        return values;
+    }
+
+    /**
+     * Provides a defautlValue for attributeType.
+     *
+     * <p>Will return null if attributeType isNillable(), or attempt to use Reflection, or
+     * attributeType.parse( null )
+     *
+     * @param attributeType
+     * @return null for nillable attributeType, attempt at reflection
+     * @deprecated Please {@link AttributeDescriptor#getDefaultValue()}
+     */
+    public static Object defaultValue(AttributeDescriptor attributeType)
+            throws org.opengis.feature.IllegalAttributeException {
+        Object value = attributeType.getDefaultValue();
+
+        if (value == null && !attributeType.isNillable()) {
+            return null; // sometimes there is no valid default value :-(
+        }
+        return value;
+    }
+
+    //
+    // Attribute Value Utility Methods
+    //
+    /**
+     * Used to compare if two values are equal.
+     *
+     * <p>This method is here to work around the fact that JTS Geometry requires a specific method
+     * to be called rather than object.equals.
+     *
+     * <p>This method uses:
+     *
+     * <ul>
+     *   <li>Object.equals( Object )
+     *   <li>Geometry.equals( Geometry ) - similar to {@link Geometry#equalsExact(Geometry)}
+     * </ul>
+     *
+     * @param att Attribute value
+     * @param otherAtt Other value
+     * @return True if the values are equal
+     */
+    public static boolean attributesEqual(Object att, Object otherAtt) {
+        if (att == null) {
+            if (otherAtt != null) {
+                return false;
+            }
+        } else {
+            // Note: for JTS Geometry objects this is equivalent
+            // to equalsExact( Geometry )
+            if (!att.equals(otherAtt)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    //
+    // TypeConversion methods used by FeatureReaders
+    //
+    /**
+     * Create a derived FeatureType
+     *
+     * @param featureType Original feature type to derive from.
+     * @param properties If null, every property of the featureType in input will be used
+     * @param override Intended CoordinateReferenceSystem, if null original will be used
+     * @return derived FeatureType
+     * @throws SchemaException
+     */
+    public static SimpleFeatureType createSubType(
+            SimpleFeatureType featureType, String[] properties, CoordinateReferenceSystem override)
+            throws SchemaException {
+        URI namespaceURI = null;
+        if (featureType.getName().getNamespaceURI() != null) {
+            try {
+                namespaceURI = new URI(featureType.getName().getNamespaceURI());
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return createSubType(
+                featureType, properties, override, featureType.getTypeName(), namespaceURI);
+    }
+    /**
+     * Create a derived FeatureType
+     *
+     * @param featureType Original feature type to derive from.
+     * @param properties If null, every property of the featureType in input will be used
+     * @param override Intended CoordinateReferenceSystem, if null original will be used
+     * @param typeName Type name override
+     * @param namespace Namespace override
+     * @return derived FeatureType
+     * @throws SchemaException
+     */
+    public static SimpleFeatureType createSubType(
+            SimpleFeatureType featureType,
+            String[] properties,
+            CoordinateReferenceSystem override,
+            String typeName,
+            URI namespace)
+            throws SchemaException {
+
+        if ((properties == null) && (override == null)) {
+            return featureType;
+        }
+
+        if (properties == null) {
+            properties = new String[featureType.getAttributeCount()];
+            for (int i = 0; i < properties.length; i++) {
+                properties[i] = featureType.getDescriptor(i).getLocalName();
+            }
+        }
+
+        String namespaceURI = namespace != null ? namespace.toString() : null;
+        boolean same =
+                featureType.getAttributeCount() == properties.length
+                        && featureType.getTypeName().equals(typeName)
+                        && Utilities.equals(featureType.getName().getNamespaceURI(), namespaceURI);
+
+        for (int i = 0; (i < featureType.getAttributeCount()) && same; i++) {
+            AttributeDescriptor type = featureType.getDescriptor(i);
+            same =
+                    type.getLocalName().equals(properties[i])
+                            && (((override == null) || !(type instanceof GeometryDescriptor))
+                                    || Objects.equals(
+                                            override,
+                                            ((GeometryDescriptor) type)
+                                                    .getCoordinateReferenceSystem()));
+        }
+
+        if (same) {
+            return featureType;
+        }
+
+        AttributeDescriptor[] types = new AttributeDescriptor[properties.length];
+
+        for (int i = 0; i < properties.length; i++) {
+            types[i] = featureType.getDescriptor(properties[i]);
+
+            if ((override != null) && types[i] instanceof GeometryDescriptor) {
+                AttributeTypeBuilder ab = new AttributeTypeBuilder();
+                ab.init(types[i]);
+                ab.setCRS(override);
+                types[i] = ab.buildDescriptor(types[i].getLocalName(), ab.buildGeometryType());
+            }
+        }
+
+        if (typeName == null) typeName = featureType.getTypeName();
+        if (namespace == null && featureType.getName().getNamespaceURI() != null)
+            try {
+                namespace = new URI(featureType.getName().getNamespaceURI());
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName(typeName);
+        tb.setNamespaceURI(namespace);
+        tb.setCRS(null); // not interested in warnings from this simple method
+        tb.addAll(types);
+        setDefaultGeometry(tb, properties, featureType);
+        return tb.buildFeatureType();
+    }
+
+    /**
+     * Create a type limited to the named properties provided.
+     *
+     * @param featureType
+     * @param properties
+     * @return type limited to the named properties provided
+     * @throws SchemaException
+     */
+    public static SimpleFeatureType createSubType(
+            SimpleFeatureType featureType, String[] properties) throws SchemaException {
+        if (properties == null) {
+            return featureType;
+        }
+
+        boolean same = featureType.getAttributeCount() == properties.length;
+
+        for (int i = 0; (i < featureType.getAttributeCount()) && same; i++) {
+            same = featureType.getDescriptor(i).getLocalName().equals(properties[i]);
+        }
+
+        if (same) {
+            return featureType;
+        }
+
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.setName(featureType.getName());
+        tb.setCRS(null); // not interested in warnings from this simple method
+        for (int i = 0; i < properties.length; i++) {
+            // let's get the attribute descriptor corresponding to the current property
+            AttributeDescriptor attributeDescriptor = featureType.getDescriptor(properties[i]);
+            if (attributeDescriptor != null) {
+                // if the property doesn't map to an attribute descriptor we ignore it
+                // an attribute descriptor may be omitted for security proposes for example
+                tb.add(attributeDescriptor);
+            }
+        }
+        setDefaultGeometry(tb, properties, featureType);
+        return tb.buildFeatureType();
+    }
+
+    private static void setDefaultGeometry(
+            SimpleFeatureTypeBuilder typeBuilder,
+            String[] properties,
+            SimpleFeatureType featureType) {
+        GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
+        if (geometryDescriptor != null) {
+            String propertyName = geometryDescriptor.getLocalName();
+            if (Arrays.asList(properties).contains(propertyName)) {
+                typeBuilder.setDefaultGeometry(propertyName);
+            }
+        }
     }
 }

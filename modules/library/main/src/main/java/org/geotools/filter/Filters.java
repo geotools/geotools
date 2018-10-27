@@ -17,6 +17,8 @@
 package org.geotools.filter;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -1176,5 +1178,55 @@ public class Filters {
             }
         }
         return retVal;
+    }
+
+    /**
+     * Returns a {@link FilenameFilter} obtained by excluding from the first input filter argument,
+     * the additional filter arguments.
+     *
+     * @param inputFilter the initial filter from which to exclude other ones.
+     * @param filters additional filters to be excluded
+     * @return the updated {@link FilenameFilter}
+     */
+    public static FilenameFilter excludeFilters(
+            final FilenameFilter inputFilter, final FilenameFilter... filters) {
+        return new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                if (inputFilter.accept(dir, name)) {
+                    for (FilenameFilter exclude : filters) {
+                        if (exclude.accept(dir, name)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
+    /**
+     * Returns a {@link FilenameFilter} obtained by adding to the first input filter argument, the
+     * additional filter arguments.
+     *
+     * @param inputFilter the initial filter to which to add other ones.
+     * @param filters additional filters to be included in the main filter.
+     * @return the updated {@link FilenameFilter}
+     */
+    public static FilenameFilter includeFilters(
+            final FilenameFilter inputFilter, final FilenameFilter... filters) {
+        return new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                if (inputFilter.accept(dir, name)) {
+                    return true;
+                }
+                for (FilenameFilter include : filters) {
+                    if (include.accept(dir, name)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
     }
 }

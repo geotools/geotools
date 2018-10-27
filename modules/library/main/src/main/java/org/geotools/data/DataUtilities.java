@@ -16,61 +16,24 @@
  */
 package org.geotools.data;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.data.DataAccessFactory.Param;
-import org.geotools.data.collection.CollectionFeatureSource;
-import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.collection.SpatialIndexFeatureCollection;
-import org.geotools.data.collection.SpatialIndexFeatureSource;
-import org.geotools.data.collection.TreeSetFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.simple.SimpleFeatureLocking;
-import org.geotools.data.simple.SimpleFeatureReader;
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.collection.*;
+import org.geotools.data.simple.*;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.data.view.DefaultView;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.AttributeImpl;
-import org.geotools.feature.AttributeTypeBuilder;
-import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.FeatureTypes;
-import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.NameImpl;
-import org.geotools.feature.SchemaException;
+import org.geotools.feature.*;
 import org.geotools.feature.collection.BridgeIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -78,7 +41,7 @@ import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.GeometryDescriptorImpl;
 import org.geotools.feature.type.GeometryTypeImpl;
-import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.Filters;
 import org.geotools.filter.visitor.PropertyNameResolvingVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -88,34 +51,14 @@ import org.geotools.referencing.CRS;
 import org.geotools.styling.UserLayer;
 import org.geotools.util.Converters;
 import org.geotools.util.URLs;
-import org.geotools.util.Utilities;
 import org.geotools.util.factory.Hints;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.geom.Polygon;
-import org.opengis.coverage.grid.GridCoverage;
-import org.opengis.feature.Feature;
+import org.locationtech.jts.geom.*;
+import org.opengis.feature.*;
 import org.opengis.feature.FeatureFactory;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.IllegalAttributeException;
-import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.GeometryType;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.feature.type.*;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -142,7 +85,6 @@ import org.opengis.util.ProgressListener;
  *       convert to SimpleFeature, SimpleFeatureCollection,SimpleFeatureSource
  *   <li>{@link #list} to quickly copy features into a memory based list
  *   <li>{@link #reader} methods to convert to FeatureReader
- *   <li>{@link #expression} setup a FeatureSource wrapper around the provided data
  * </ul>
  *
  * <p>SimpleFeatureType and SimpleFeature encoding/decoding from String as used by the
@@ -195,7 +137,7 @@ public class DataUtilities {
     /** Typemap used by {@link #createType(String, String)} methods */
     static Map<String, Class> typeMap = new HashMap<String, Class>();
 
-    /** Reverse type map used by {@link #encodeType(FeatureType)} */
+    /** Reverse type map used by {@link #encodeType(SimpleFeatureType)} */
     static Map<Class, String> typeEncode = new HashMap<Class, String>();
 
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
@@ -278,14 +220,10 @@ public class DataUtilities {
      *
      * @param featureType
      * @return array of simple attribute names
+     * @deprecated use {@link FeatureTypes#attributeNames(SimpleFeatureType)}
      */
     public static String[] attributeNames(SimpleFeatureType featureType) {
-        String[] names = new String[featureType.getAttributeCount()];
-        final int count = featureType.getAttributeCount();
-        for (int i = 0; i < count; i++) {
-            names[i] = featureType.getDescriptor(i).getLocalName();
-        }
-        return names;
+        return FeatureTypes.attributeNames(featureType);
     }
 
     /** @deprecated Use {@link URLs#fileToUrl(File)} */
@@ -303,15 +241,11 @@ public class DataUtilities {
      *
      * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
+     *
+     * @deprecated use {@link FeatureTypes#attributeNames(Filter, SimpleFeatureType)}
      */
     public static String[] attributeNames(Filter filter, final SimpleFeatureType featureType) {
-        if (filter == null) {
-            return new String[0];
-        }
-        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
-        filter.accept(attExtractor, null);
-        String[] attributeNames = attExtractor.getAttributeNames();
-        return attributeNames;
+        return FeatureTypes.attributeNames(filter, featureType);
     }
 
     /**
@@ -319,24 +253,28 @@ public class DataUtilities {
      *
      * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
+     *
+     * @deprecated use {@link FeatureTypes#propertyNames(Filter, SimpleFeatureType)}
      */
     public static Set<PropertyName> propertyNames(
             Filter filter, final SimpleFeatureType featureType) {
-        if (filter == null) {
-            return Collections.emptySet();
-        }
-        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
-        filter.accept(attExtractor, null);
-        Set<PropertyName> propertyNames = attExtractor.getPropertyNameSet();
-        return propertyNames;
+        return FeatureTypes.propertyNames(filter, featureType);
     }
 
-    /** Traverses the filter and returns any encountered property names. */
+    /**
+     * Traverses the filter and returns any encountered property names.
+     *
+     * @deprecated use {@link FeatureTypes#attributeNames(Filter)}
+     */
     public static String[] attributeNames(Filter filter) {
         return attributeNames(filter, null);
     }
 
-    /** Traverses the filter and returns any encountered property names. */
+    /**
+     * Traverses the filter and returns any encountered property names.
+     *
+     * @deprecated use {@link FeatureTypes#propertyNames(Filter)}
+     */
     public static Set<PropertyName> propertyNames(Filter filter) {
         return propertyNames(filter, null);
     }
@@ -346,16 +284,12 @@ public class DataUtilities {
      *
      * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
+     *
+     * @deprecated use {@link FeatureTypes#attributeNames(Expression, SimpleFeatureType)}
      */
     public static String[] attributeNames(
             Expression expression, final SimpleFeatureType featureType) {
-        if (expression == null) {
-            return new String[0];
-        }
-        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
-        expression.accept(attExtractor, null);
-        String[] attributeNames = attExtractor.getAttributeNames();
-        return attributeNames;
+        return FeatureTypes.attributeNames(expression, featureType);
     }
 
     /**
@@ -363,26 +297,30 @@ public class DataUtilities {
      *
      * <p>The feature type is supplied as contexts used to lookup expressions in cases where the
      * attributeName does not match the actual name of the type.
+     *
+     * @deprecated use {@link FeatureTypes#attributeNames(Expression, SimpleFeatureType)}
      */
     public static Set<PropertyName> propertyNames(
             Expression expression, final SimpleFeatureType featureType) {
-        if (expression == null) {
-            return Collections.emptySet();
-        }
-        FilterAttributeExtractor attExtractor = new FilterAttributeExtractor(featureType);
-        expression.accept(attExtractor, null);
-        Set<PropertyName> propertyNames = attExtractor.getPropertyNameSet();
-        return propertyNames;
+        return FeatureTypes.propertyNames(expression, featureType);
     }
 
-    /** Traverses the expression and returns any encountered property names. */
+    /**
+     * Traverses the expression and returns any encountered property names.
+     *
+     * @deprecated use {@link FeatureTypes#attributeNames(Expression)}
+     */
     public static String[] attributeNames(Expression expression) {
-        return attributeNames(expression, null);
+        return FeatureTypes.attributeNames(expression, null);
     }
 
-    /** Traverses the expression and returns any encountered property names. */
+    /**
+     * Traverses the expression and returns any encountered property names.
+     *
+     * @deprecated use {@link FeatureTypes#propertyNames(Expression)}
+     */
     public static Set<PropertyName> propertyNames(Expression expression) {
-        return propertyNames(expression, null);
+        return FeatureTypes.propertyNames(expression, null);
     }
 
     /**
@@ -409,51 +347,10 @@ public class DataUtilities {
      *
      * @param typeA FeatureType beind compared
      * @param typeB FeatureType being compared against
+     * @deprecated use {@link FeatureTypes#compare(SimpleFeatureType, SimpleFeatureType)}
      */
     public static int compare(SimpleFeatureType typeA, SimpleFeatureType typeB) {
-        if (typeA == typeB) {
-            return 0;
-        }
-
-        if (typeA == null) {
-            return -1;
-        }
-
-        if (typeB == null) {
-            return -1;
-        }
-
-        int countA = typeA.getAttributeCount();
-        int countB = typeB.getAttributeCount();
-
-        if (countA > countB) {
-            return -1;
-        }
-
-        // may still be the same featureType (Perhaps they differ on namespace?)
-        AttributeDescriptor a;
-        int match = 0;
-
-        for (int i = 0; i < countA; i++) {
-            a = typeA.getDescriptor(i);
-
-            if (isMatch(a, typeB.getDescriptor(i))) {
-                match++;
-            } else if (isMatch(a, typeB.getDescriptor(a.getLocalName()))) {
-                // match was found in a different position
-            } else {
-                // cannot find any match for Attribute in typeA
-                return -1;
-            }
-        }
-
-        if ((countA == countB) && (match == countA)) {
-            // all attributes in typeA agreed with typeB
-            // (same order and type)
-            return 0;
-        }
-
-        return 1;
+        return FeatureTypes.compare(typeA, typeB);
     }
 
     /**
@@ -465,29 +362,10 @@ public class DataUtilities {
      * @param a descriptor to compare
      * @param b descriptor to compare
      * @return true to the descriptors name and binding class match
+     * @deprecated use {@link FeatureTypes#isMatch(AttributeDescriptor, AttributeDescriptor)}
      */
     public static boolean isMatch(AttributeDescriptor a, AttributeDescriptor b) {
-        if (a == b) {
-            return true;
-        }
-
-        if (b == null) {
-            return false;
-        }
-
-        if (a == null) {
-            return false;
-        }
-
-        if (a.equals(b)) {
-            return true;
-        }
-
-        if (a.getLocalName().equals(b.getLocalName()) && a.getClass().equals(b.getClass())) {
-            return true;
-        }
-
-        return false;
+        return FeatureTypes.isMatch(a, b);
     }
 
     /**
@@ -500,27 +378,11 @@ public class DataUtilities {
      * @param feature Origional Feature from DataStore
      * @return An instance of featureType based on feature
      * @throws IllegalAttributeException If opperation could not be performed
+     * @deprecated use {@link FeatureTypes#reType(SimpleFeatureType, SimpleFeature)}
      */
     public static SimpleFeature reType(SimpleFeatureType featureType, SimpleFeature feature)
             throws IllegalAttributeException {
-        SimpleFeatureType origional = feature.getFeatureType();
-
-        if (featureType.equals(origional)) {
-            return SimpleFeatureBuilder.copy(feature);
-        }
-
-        String id = feature.getID();
-        int numAtts = featureType.getAttributeCount();
-        Object[] attributes = new Object[numAtts];
-        String xpath;
-
-        for (int i = 0; i < numAtts; i++) {
-            AttributeDescriptor curAttType = featureType.getDescriptor(i);
-            xpath = curAttType.getLocalName();
-            attributes[i] = duplicate(feature.getAttribute(xpath));
-        }
-
-        return SimpleFeatureBuilder.build(featureType, attributes, id);
+        return FeatureTypes.reType(featureType, feature);
     }
 
     /**
@@ -544,28 +406,12 @@ public class DataUtilities {
      * @param duplicate True to perform {@link #duplicate(Object)} on each attribute
      * @return
      * @throws IllegalAttributeException
+     * @deprecated use {@link FeatureTypes#reType(SimpleFeatureType, SimpleFeature, boolean)}
      */
     public static SimpleFeature reType(
             SimpleFeatureType featureType, SimpleFeature feature, boolean duplicate)
             throws IllegalAttributeException {
-        if (duplicate) {
-            return reType(featureType, feature);
-        }
-
-        FeatureType origional = feature.getFeatureType();
-        if (featureType.equals(origional)) {
-            return feature;
-        }
-        String id = feature.getID();
-        int numAtts = featureType.getAttributeCount();
-        Object[] attributes = new Object[numAtts];
-        String xpath;
-
-        for (int i = 0; i < numAtts; i++) {
-            AttributeDescriptor curAttType = featureType.getDescriptor(i);
-            attributes[i] = feature.getAttribute(curAttType.getLocalName());
-        }
-        return SimpleFeatureBuilder.build(featureType, attributes, id);
+        return FeatureTypes.reType(featureType, feature, duplicate);
     }
 
     /**
@@ -584,120 +430,10 @@ public class DataUtilities {
      *
      * @param src Source object
      * @return copy of source object
+     * @deprecated use {@link FeatureTypes#duplicate(Object)}
      */
     public static Object duplicate(Object src) {
-        // JD: this method really needs to be replaced with somethign better
-
-        if (src == null) {
-            return null;
-        }
-
-        //
-        // The following are things I expect
-        // Features will contain.
-        //
-        if (src instanceof String
-                || src instanceof Integer
-                || src instanceof Double
-                || src instanceof Float
-                || src instanceof Byte
-                || src instanceof Boolean
-                || src instanceof Short
-                || src instanceof Long
-                || src instanceof Character
-                || src instanceof Number) {
-            return src;
-        }
-
-        if (src instanceof Date) {
-            return new Date(((Date) src).getTime());
-        }
-
-        if (src instanceof URL || src instanceof URI) {
-            return src; // immutable
-        }
-
-        if (src instanceof Object[]) {
-            Object[] array = (Object[]) src;
-            Object[] copy = new Object[array.length];
-
-            for (int i = 0; i < array.length; i++) {
-                copy[i] = duplicate(array[i]);
-            }
-
-            return copy;
-        }
-
-        if (src instanceof Geometry) {
-            Geometry geometry = (Geometry) src;
-
-            return geometry.copy();
-        }
-
-        if (src instanceof SimpleFeature) {
-            SimpleFeature feature = (SimpleFeature) src;
-            return SimpleFeatureBuilder.copy(feature);
-        }
-
-        //
-        // We are now into diminishing returns
-        // I don't expect Features to contain these often
-        // (eveything is still nice and recursive)
-        //
-        Class<? extends Object> type = src.getClass();
-
-        if (type.isArray() && type.getComponentType().isPrimitive()) {
-            int length = Array.getLength(src);
-            Object copy = Array.newInstance(type.getComponentType(), length);
-            System.arraycopy(src, 0, copy, 0, length);
-
-            return copy;
-        }
-
-        if (type.isArray()) {
-            int length = Array.getLength(src);
-            Object copy = Array.newInstance(type.getComponentType(), length);
-
-            for (int i = 0; i < length; i++) {
-                Array.set(copy, i, duplicate(Array.get(src, i)));
-            }
-
-            return copy;
-        }
-
-        if (src instanceof List) {
-            List list = (List) src;
-            List<Object> copy = new ArrayList<Object>(list.size());
-
-            for (Iterator i = list.iterator(); i.hasNext(); ) {
-                copy.add(duplicate(i.next()));
-            }
-
-            return Collections.unmodifiableList(copy);
-        }
-
-        if (src instanceof Map) {
-            Map map = (Map) src;
-            Map copy = new HashMap(map.size());
-
-            for (Iterator i = map.entrySet().iterator(); i.hasNext(); ) {
-                Map.Entry entry = (Map.Entry) i.next();
-                copy.put(entry.getKey(), duplicate(entry.getValue()));
-            }
-
-            return Collections.unmodifiableMap(copy);
-        }
-
-        if (src instanceof GridCoverage) {
-            return src; // inmutable
-        }
-
-        //
-        // I have lost hope and am returning the orgional reference
-        // Please extend this to support additional classes.
-        //
-        // And good luck getting Cloneable to work
-        throw new IllegalAttributeException(null, "Do not know how to deep copy " + type.getName());
+        return FeatureTypes.duplicate(src);
     }
 
     /**
@@ -707,10 +443,11 @@ public class DataUtilities {
      *
      * @param featureType Type of feature we wish to create
      * @return A new Feature of type featureType
+     * @deprecated use {@link FeatureTypes#template(SimpleFeatureType)}
      */
     public static SimpleFeature template(SimpleFeatureType featureType)
             throws IllegalAttributeException {
-        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType), null);
+        return FeatureTypes.template(featureType);
     }
 
     /**
@@ -722,9 +459,10 @@ public class DataUtilities {
      * @param featureType
      * @param featureID
      * @return Craeted feature
+     * @deprecated use {@link FeatureTypes#template(SimpleFeatureType, String)}
      */
     public static SimpleFeature template(SimpleFeatureType featureType, String featureID) {
-        return SimpleFeatureBuilder.build(featureType, defaultValues(featureType), featureID);
+        return FeatureTypes.template(featureType, featureID);
     }
 
     /**
@@ -732,9 +470,10 @@ public class DataUtilities {
      *
      * @param featureType
      * @return Array of values, that are good starting point for data entry
+     * @deprecated use {@link FeatureTypes#defaultValues(SimpleFeatureType)}
      */
     public static Object[] defaultValues(SimpleFeatureType featureType) {
-        return defaultValues(featureType, null);
+        return FeatureTypes.defaultValues(featureType, null);
     }
 
     /**
@@ -748,8 +487,7 @@ public class DataUtilities {
      *     featureType
      */
     public static SimpleFeature template(SimpleFeatureType featureType, Object[] providedValues) {
-        return SimpleFeatureBuilder.build(
-                featureType, defaultValues(featureType, providedValues), null);
+        return FeatureTypes.template(featureType, providedValues);
     }
 
     /**
@@ -762,11 +500,11 @@ public class DataUtilities {
      * @return newly created feature
      * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
      *     featureType
+     * @deprecated use {@link FeatureTypes#template(SimpleFeatureType, String, Object[])}
      */
     public static SimpleFeature template(
             SimpleFeatureType featureType, String featureID, Object[] providedValues) {
-        return SimpleFeatureBuilder.build(
-                featureType, defaultValues(featureType, providedValues), featureID);
+        return FeatureTypes.template(featureType, featureID, providedValues);
     }
 
     /**
@@ -777,20 +515,10 @@ public class DataUtilities {
      * @return set of default values
      * @throws ArrayIndexOutOfBoundsException If the number of provided values does not match the
      *     featureType
+     * @deprecated use {@link FeatureTypes#defaultValues(SimpleFeatureType, Object[])}
      */
     public static Object[] defaultValues(SimpleFeatureType featureType, Object[] values) {
-        if (values == null) {
-            values = new Object[featureType.getAttributeCount()];
-        } else if (values.length != featureType.getAttributeCount()) {
-            throw new ArrayIndexOutOfBoundsException("values");
-        }
-
-        for (int i = 0; i < featureType.getAttributeCount(); i++) {
-            AttributeDescriptor descriptor = featureType.getDescriptor(i);
-            values[i] = descriptor.getDefaultValue();
-        }
-
-        return values;
+        return FeatureTypes.defaultValues(featureType, values);
     }
 
     /**
@@ -805,12 +533,7 @@ public class DataUtilities {
      */
     public static Object defaultValue(AttributeDescriptor attributeType)
             throws IllegalAttributeException {
-        Object value = attributeType.getDefaultValue();
-
-        if (value == null && !attributeType.isNillable()) {
-            return null; // sometimes there is no valid default value :-(
-        }
-        return value;
+        return FeatureTypes.defaultValue(attributeType);
     }
 
     /**
@@ -926,45 +649,32 @@ public class DataUtilities {
     }
 
     /**
-     * Creates a FeatureReader<SimpleFeatureType, SimpleFeature> for testing.
+     * Return a 'view' of the given {@code DataStore} constrained by a {@code Query}.
      *
-     * @param features Array of features
-     * @return FeatureReader<SimpleFeatureType, SimpleFeature> spaning provided feature array
-     * @throws IOException If provided features Are null or empty
-     * @throws NoSuchElementException DOCUMENT ME!
+     * @param store the data store
+     * @param query the query
+     * @return the constrained view
+     * @throws IOException if the data store cannot be accessed
+     * @throws SchemaException if the query is incompatible with the store's contents
      */
-    public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(
-            final SimpleFeature[] features) throws IOException {
-        if ((features == null) || (features.length == 0)) {
-            throw new IOException("Provided features where empty");
-        }
+    public static SimpleFeatureSource createView(final DataStore store, final Query query)
+            throws IOException, SchemaException {
+        return createView(store.getFeatureSource(query.getTypeName()), query);
+    }
 
-        return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
-            SimpleFeature[] array = features;
-
-            int offset = -1;
-
-            public SimpleFeatureType getFeatureType() {
-                return features[0].getFeatureType();
-            }
-
-            public SimpleFeature next() {
-                if (!hasNext()) {
-                    throw new NoSuchElementException("No more features");
-                }
-
-                return array[++offset];
-            }
-
-            public boolean hasNext() {
-                return (array != null) && (offset < (array.length - 1));
-            }
-
-            public void close() {
-                array = null;
-                offset = -1;
-            }
-        };
+    /**
+     * Return a 'view' of the given {@code FeatureSource} constrained by a {@code Query}.
+     *
+     * @param source feature source
+     * @param query the query
+     * @return the constrained view
+     * @throws IOException if the data store cannot be accessed
+     * @throws SchemaException if the query is incompatible with the store's contents
+     */
+    public static SimpleFeatureSource createView(
+            final SimpleFeatureSource source, final Query query)
+            throws IOException, SchemaException {
+        return new DefaultView(source, query);
     }
 
     /**
@@ -1029,38 +739,9 @@ public class DataUtilities {
 
             return source;
         }
-        SimpleFeatureCollection simpleFeatureCollection = simple(collection);
+        SimpleFeatureCollection simpleFeatureCollection = DataUtilities.simple(collection);
         CollectionFeatureSource source = new CollectionFeatureSource(simpleFeatureCollection);
         return source;
-    }
-
-    /**
-     * Return a 'view' of the given {@code DataStore} constrained by a {@code Query}.
-     *
-     * @param store the data store
-     * @param query the query
-     * @return the constrained view
-     * @throws IOException if the data store cannot be accessed
-     * @throws SchemaException if the query is incompatible with the store's contents
-     */
-    public static SimpleFeatureSource createView(final DataStore store, final Query query)
-            throws IOException, SchemaException {
-        return createView(store.getFeatureSource(query.getTypeName()), query);
-    }
-
-    /**
-     * Return a 'view' of the given {@code FeatureSource} constrained by a {@code Query}.
-     *
-     * @param source feature source
-     * @param query the query
-     * @return the constrained view
-     * @throws IOException if the data store cannot be accessed
-     * @throws SchemaException if the query is incompatible with the store's contents
-     */
-    public static SimpleFeatureSource createView(
-            final SimpleFeatureSource source, final Query query)
-            throws IOException, SchemaException {
-        return new DefaultView(source, query);
     }
 
     /**
@@ -1086,6 +767,48 @@ public class DataUtilities {
     public static DataStore dataStore(SimpleFeatureSource source) {
         return new DataStoreAdaptor(source);
     }
+    /**
+     * Creates a FeatureReader<SimpleFeatureType, SimpleFeature> for testing.
+     *
+     * @param features Array of features
+     * @return FeatureReader<SimpleFeatureType, SimpleFeature> spaning provided feature array
+     * @throws IOException If provided features Are null or empty
+     * @throws NoSuchElementException DOCUMENT ME!
+     */
+    public static FeatureReader<SimpleFeatureType, SimpleFeature> reader(
+            final SimpleFeature[] features) throws IOException {
+        if ((features == null) || (features.length == 0)) {
+            throw new IOException("Provided features where empty");
+        }
+
+        return new FeatureReader<SimpleFeatureType, SimpleFeature>() {
+            SimpleFeature[] array = features;
+
+            int offset = -1;
+
+            public SimpleFeatureType getFeatureType() {
+                return features[0].getFeatureType();
+            }
+
+            public SimpleFeature next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException("No more features");
+                }
+
+                return array[++offset];
+            }
+
+            public boolean hasNext() {
+                return (array != null) && (offset < (array.length - 1));
+            }
+
+            public void close() {
+                array = null;
+                offset = -1;
+            }
+        };
+    }
+
     /**
      * Adapt a collection to a reader for use with FeatureStore.setFeatures( reader ).
      *
@@ -1139,7 +862,7 @@ public class DataUtilities {
      *
      * <p>Often used when gathering a SimpleFeatureCollection into memory.
      *
-     * @param SimpleFeatureCollection the features to add to a new feature collection.
+     * @param featureCollection the features to add to a new feature collection.
      * @return FeatureCollection
      */
     public static DefaultFeatureCollection collection(
@@ -1600,21 +1323,10 @@ public class DataUtilities {
      * @param att Attribute value
      * @param otherAtt Other value
      * @return True if the values are equal
+     * @deprecated see {@link FeatureTypes#attributesEqual(Object, Object)}
      */
     public static boolean attributesEqual(Object att, Object otherAtt) {
-        if (att == null) {
-            if (otherAtt != null) {
-                return false;
-            }
-        } else {
-            // Note: for JTS Geometry objects this is equivalent
-            // to equalsExact( Geometry )
-            if (!att.equals(otherAtt)) {
-                return false;
-            }
-        }
-
-        return true;
+        return FeatureTypes.attributesEqual(att, otherAtt);
     }
 
     //
@@ -1628,21 +1340,13 @@ public class DataUtilities {
      * @param override Intended CoordinateReferenceSystem, if null original will be used
      * @return derived FeatureType
      * @throws SchemaException
+     * @deprecated use {@link FeatureTypes#createSubType(SimpleFeatureType, String[],
+     *     CoordinateReferenceSystem)}
      */
     public static SimpleFeatureType createSubType(
             SimpleFeatureType featureType, String[] properties, CoordinateReferenceSystem override)
             throws SchemaException {
-        URI namespaceURI = null;
-        if (featureType.getName().getNamespaceURI() != null) {
-            try {
-                namespaceURI = new URI(featureType.getName().getNamespaceURI());
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        return createSubType(
-                featureType, properties, override, featureType.getTypeName(), namespaceURI);
+        return FeatureTypes.createSubType(featureType, properties, override);
     }
     /**
      * Create a derived FeatureType
@@ -1654,6 +1358,8 @@ public class DataUtilities {
      * @param namespace Namespace override
      * @return derived FeatureType
      * @throws SchemaException
+     * @deprecated use {@link FeatureTypes#createSubType(SimpleFeatureType, String[],
+     *     CoordinateReferenceSystem, String, URI)}
      */
     public static SimpleFeatureType createSubType(
             SimpleFeatureType featureType,
@@ -1663,71 +1369,7 @@ public class DataUtilities {
             URI namespace)
             throws SchemaException {
 
-        if ((properties == null) && (override == null)) {
-            return featureType;
-        }
-
-        if (properties == null) {
-            properties = new String[featureType.getAttributeCount()];
-            for (int i = 0; i < properties.length; i++) {
-                properties[i] = featureType.getDescriptor(i).getLocalName();
-            }
-        }
-
-        String namespaceURI = namespace != null ? namespace.toString() : null;
-        boolean same =
-                featureType.getAttributeCount() == properties.length
-                        && featureType.getTypeName().equals(typeName)
-                        && Utilities.equals(featureType.getName().getNamespaceURI(), namespaceURI);
-
-        for (int i = 0; (i < featureType.getAttributeCount()) && same; i++) {
-            AttributeDescriptor type = featureType.getDescriptor(i);
-            same =
-                    type.getLocalName().equals(properties[i])
-                            && (((override != null) && type instanceof GeometryDescriptor)
-                                    ? assertEquals(
-                                            override,
-                                            ((GeometryDescriptor) type)
-                                                    .getCoordinateReferenceSystem())
-                                    : true);
-        }
-
-        if (same) {
-            return featureType;
-        }
-
-        AttributeDescriptor[] types = new AttributeDescriptor[properties.length];
-
-        for (int i = 0; i < properties.length; i++) {
-            types[i] = featureType.getDescriptor(properties[i]);
-
-            if ((override != null) && types[i] instanceof GeometryDescriptor) {
-                AttributeTypeBuilder ab = new AttributeTypeBuilder();
-                ab.init(types[i]);
-                ab.setCRS(override);
-                types[i] = ab.buildDescriptor(types[i].getLocalName(), ab.buildGeometryType());
-            }
-        }
-
-        if (typeName == null) typeName = featureType.getTypeName();
-        if (namespace == null && featureType.getName().getNamespaceURI() != null)
-            try {
-                namespace = new URI(featureType.getName().getNamespaceURI());
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
-
-        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
-        tb.setName(typeName);
-        tb.setNamespaceURI(namespace);
-        tb.setCRS(null); // not interested in warnings from this simple method
-        tb.addAll(types);
-        setDefaultGeometry(tb, properties, featureType);
-        return tb.buildFeatureType();
-    }
-
-    private static boolean assertEquals(Object o1, Object o2) {
-        return o1 == null && o2 == null ? true : (o1 != null ? o1.equals(o2) : false);
+        return FeatureTypes.createSubType(featureType, properties, override, typeName, namespace);
     }
 
     /**
@@ -1737,51 +1379,13 @@ public class DataUtilities {
      * @param properties
      * @return type limited to the named properties provided
      * @throws SchemaException
+     * @deprecated use {@link FeatureTypes#createSubType(SimpleFeatureType, String[])}
      */
     public static SimpleFeatureType createSubType(
             SimpleFeatureType featureType, String[] properties) throws SchemaException {
-        if (properties == null) {
-            return featureType;
-        }
-
-        boolean same = featureType.getAttributeCount() == properties.length;
-
-        for (int i = 0; (i < featureType.getAttributeCount()) && same; i++) {
-            same = featureType.getDescriptor(i).getLocalName().equals(properties[i]);
-        }
-
-        if (same) {
-            return featureType;
-        }
-
-        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
-        tb.setName(featureType.getName());
-        tb.setCRS(null); // not interested in warnings from this simple method
-        for (int i = 0; i < properties.length; i++) {
-            // let's get the attribute descriptor corresponding to the current property
-            AttributeDescriptor attributeDescriptor = featureType.getDescriptor(properties[i]);
-            if (attributeDescriptor != null) {
-                // if the property doesn't map to an attribute descriptor we ignore it
-                // an attribute descriptor may be omitted for security proposes for example
-                tb.add(attributeDescriptor);
-            }
-        }
-        setDefaultGeometry(tb, properties, featureType);
-        return tb.buildFeatureType();
+        return FeatureTypes.createSubType(featureType, properties);
     }
 
-    private static void setDefaultGeometry(
-            SimpleFeatureTypeBuilder typeBuilder,
-            String[] properties,
-            SimpleFeatureType featureType) {
-        GeometryDescriptor geometryDescriptor = featureType.getGeometryDescriptor();
-        if (geometryDescriptor != null) {
-            String propertyName = geometryDescriptor.getLocalName();
-            if (Arrays.asList(properties).contains(propertyName)) {
-                typeBuilder.setDefaultGeometry(propertyName);
-            }
-        }
-    }
     //
     // Decoding (ie Parsing) support for PropertyAttributeReader and tutorials
     //
@@ -1790,7 +1394,7 @@ public class DataUtilities {
      *
      * <p>Will parse a String of the form: <i>"name:Type,name2:Type2,..."</i>
      *
-     * <p>Where <i>Type</i> is defined by {@link createAttribute}:
+     * <p>Where <i>Type</i> is defined by {@link #createAttribute}:
      *
      * <ul>
      *   <li>Each attribute descriptor is defined using the form: <i>"name:Type:hint"</i>
@@ -2227,7 +1831,6 @@ public class DataUtilities {
      *
      * @param txt Origional raw text as stored
      * @return decoded text as provided for storage
-     * @see PropertyAttributeWriter#encodeString(String)
      */
     private static String decodeEscapedCharacters(String txt) {
         // unpack whitespace constants
@@ -2246,7 +1849,6 @@ public class DataUtilities {
      *
      * @param txt
      * @return txt encoded for storage
-     * @see PropertyAttributeReader#decodeString(String)
      */
     private static String encodeString(String txt) {
         // encode our escaped characters
@@ -2525,7 +2127,7 @@ public class DataUtilities {
      * list, and all mandatory (minoccurs > 0) added.
      *
      * @param type feature type
-     * @param propNames given list of properties
+     * @param oldProps given list of properties
      * @return list of properties including all mandatory properties
      * @throws IOException
      */
@@ -2649,7 +2251,7 @@ public class DataUtilities {
      * is intended for FeatureCollection implementors and test case verification. Client code should
      * always call {@link FeatureCollection#size()}
      *
-     * @param collection
+     * @param iterator
      * @return number of featuers in feature collection
      */
     public static int count(FeatureIterator<?> iterator) {
@@ -2869,7 +2471,7 @@ public class DataUtilities {
      * followed by the separator char if missing ({@code '/'} On UNIX systems; {@code '\\} on
      * Microsoft Windows systems.
      *
-     * @param directoryPath the input directory path. Must not be null.
+     * @param file the input directory path. Must not be null.
      * @return the re-formatted directory path.
      * @throws IllegalArgumentException in case the specified path doesn't rely on a
      *     existing/readable directory.
@@ -2969,53 +2571,31 @@ public class DataUtilities {
     }
 
     /**
-     * Returns a {@link IOFileFilter} obtained by excluding from the first input filter argument,
+     * Returns a {@link FilenameFilter} obtained by excluding from the first input filter argument,
      * the additional filter arguments.
      *
      * @param inputFilter the initial filter from which to exclude other ones.
      * @param filters additional filters to be excluded
-     * @return the updated {@link IOFileFilter}
+     * @return the updated {@link FilenameFilter}
+     * @deprecated use {@link Filters#excludeFilters(FilenameFilter, FilenameFilter...)}
      */
     public static FilenameFilter excludeFilters(
             final FilenameFilter inputFilter, final FilenameFilter... filters) {
-        return new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                if (inputFilter.accept(dir, name)) {
-                    for (FilenameFilter exclude : filters) {
-                        if (exclude.accept(dir, name)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            }
-        };
+        return Filters.excludeFilters(inputFilter, filters);
     }
 
     /**
-     * Returns a {@link IOFileFilter} obtained by adding to the first input filter argument, the
+     * Returns a {@link FilenameFilter} obtained by adding to the first input filter argument, the
      * additional filter arguments.
      *
      * @param inputFilter the initial filter to which to add other ones.
      * @param filters additional filters to be included in the main filter.
-     * @return the updated {@link IOFileFilter}
+     * @return the updated {@link FilenameFilter}
+     * @deprecated use {@link Filters#includeFilters(FilenameFilter, FilenameFilter...)}
      */
     public static FilenameFilter includeFilters(
             final FilenameFilter inputFilter, final FilenameFilter... filters) {
-        return new FilenameFilter() {
-            public boolean accept(File dir, String name) {
-                if (inputFilter.accept(dir, name)) {
-                    return true;
-                }
-                for (FilenameFilter include : filters) {
-                    if (include.accept(dir, name)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
+        return Filters.includeFilters(inputFilter, filters);
     }
 
     /**

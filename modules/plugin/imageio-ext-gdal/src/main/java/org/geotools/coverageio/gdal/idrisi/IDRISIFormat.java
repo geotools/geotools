@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.MismatchedDimensionException;
 
@@ -37,7 +37,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class IDRISIFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(IDRISIFormat.class.toString());
+            org.geotools.util.logging.Logging.getLogger(IDRISIFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public IDRISIFormat() {

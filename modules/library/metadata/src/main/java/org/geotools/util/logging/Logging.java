@@ -23,10 +23,10 @@ import java.util.Comparator;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.geotools.resources.Classes;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.Classes;
+import org.geotools.util.XArray;
 
 /**
  * A set of utilities method for configuring loggings in GeoTools. <strong>All GeoTools code should
@@ -387,7 +387,7 @@ public final class Logging {
      * setting. A user trying to configure his logging properties may find confusing to see his
      * setting ignored.
      *
-     * @see org.geotools.factory.GeoTools#init
+     * @see org.geotools.util.factory.GeoTools#init
      */
     public void forceMonolineConsoleOutput(final Level level) {
         final Logger logger =

@@ -42,7 +42,7 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class PolygonHandler implements ShapeHandler {
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+            org.geotools.util.logging.Logging.getLogger(PolygonHandler.class);
 
     GeometryFactory geometryFactory;
 

@@ -2,8 +2,8 @@ package org.geotools.gml4wcs.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.gml4wcs.GML;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:TemporalPositionType.

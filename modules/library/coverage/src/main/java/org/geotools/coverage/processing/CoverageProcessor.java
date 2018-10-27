@@ -42,19 +42,19 @@ import javax.media.jai.TileCache;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Interpolator2D;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
+import org.geotools.util.Arguments;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.processing.Operation;
@@ -77,7 +77,7 @@ import org.opengis.util.InternationalString;
 public class CoverageProcessor {
 
     /** The logger for coverage processing operations. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage.processing");
+    public static final Logger LOGGER = Logging.getLogger(CoverageProcessor.class);
 
     /**
      * The logging level for reporting coverage operations. This level is equals or slightly lower

@@ -1,7 +1,7 @@
 package org.geotools.mbtiles;
 
 import static java.lang.String.format;
-import static org.geotools.sql.SqlUtil.prepare;
+import static org.geotools.jdbc.util.SqlUtil.prepare;
 
 import java.io.Closeable;
 import java.io.File;
@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.jdbc.datasource.ManageableDataSource;
 import org.geotools.jdbc.JDBCDataStore;
-import org.geotools.sql.SqlUtil;
+import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.util.logging.Logging;
 
 public class MBTilesFile implements AutoCloseable {
@@ -109,7 +109,7 @@ public class MBTilesFile implements AutoCloseable {
     protected final String MD_MAXZOOM = "maxzoom";
 
     /** Logger */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.mbtiles");
+    protected static final Logger LOGGER = Logging.getLogger(MBTilesFile.class);
 
     /** database file */
     protected File file;

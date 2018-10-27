@@ -9,10 +9,10 @@ import net.opengis.ows10.DomainType;
 import net.opengis.ows10.OperationType;
 import net.opengis.ows10.OperationsMetadataType;
 import net.opengis.ows10.Ows10Factory;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.Node;
 
 public class CapabilityBinding extends AbstractComplexEMFBinding {
 

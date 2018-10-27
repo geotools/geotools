@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /** Class to represent the header of a Dbase III file. Creation date: (5/15/2001 5:15:30 PM) */
 public class DbaseFileHeader {
@@ -62,8 +62,7 @@ public class DbaseFileHeader {
 
     private int largestFieldSize = 0;
 
-    private Logger logger =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+    private Logger logger = org.geotools.util.logging.Logging.getLogger(DbaseFileHeader.class);
 
     /**
      * Returns the number of millis at January 1st 4713 BC

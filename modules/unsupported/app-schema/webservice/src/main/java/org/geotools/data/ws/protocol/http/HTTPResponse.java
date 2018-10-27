@@ -21,23 +21,18 @@ import java.io.InputStream;
 
 /**
  * A handle to an HTTP response headers and contents.
- * 
+ *
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
- *
- *
- *
-
  */
 public interface HTTPResponse {
 
     /**
      * Returns the stream to the response contents ready to be consumed, whether gzip encoding is
      * being used or not.
-     * 
-     * @throws IOException
-     *             the plain stream to the response contents
+     *
+     * @throws IOException the plain stream to the response contents
      */
     public InputStream getResponseStream() throws IOException;
 }

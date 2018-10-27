@@ -34,8 +34,8 @@ import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -49,7 +49,7 @@ import org.opengis.filter.sort.SortBy;
 
 public class ArcSdeFeatureSource implements SimpleFeatureSource {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");
+    private static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureSource.class);
 
     /**
      * {@link Hints#FEATURE_DETACHED} and the ones supported by {@link

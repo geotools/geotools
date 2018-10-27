@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.geotools.resources.IndexedResourceBundle;
+import org.geotools.util.IndexedResourceBundle;
 
 /**
  * Base class for locale-dependent resources. Instances of this class should never been created

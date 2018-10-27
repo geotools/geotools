@@ -17,8 +17,8 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import java.io.ByteArrayInputStream;
-import org.geotools.xml.Binding;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.Parser;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.w3c.dom.Document;
 

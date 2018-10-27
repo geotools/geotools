@@ -19,9 +19,9 @@ package org.geotools.data.oracle;
 
 import java.lang.reflect.Method;
 import java.util.Date;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 
 public class OracleDateConverterFactory implements ConverterFactory {
 

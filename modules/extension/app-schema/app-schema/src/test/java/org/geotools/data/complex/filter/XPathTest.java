@@ -30,7 +30,7 @@ import org.geotools.data.complex.config.EmfComplexFeatureReader;
 import org.geotools.data.complex.config.Types;
 import org.geotools.gml3.GMLSchema;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.SchemaIndex;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.type.ComplexType;

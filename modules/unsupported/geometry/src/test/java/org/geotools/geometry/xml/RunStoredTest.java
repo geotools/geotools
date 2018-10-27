@@ -28,7 +28,7 @@ import org.xml.sax.InputSource;
 /** @author <a href="mailto:joel@lggi.com">Joel Skelton</a> */
 public class RunStoredTest extends TestCase {
     private static final Logger LOG =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.geometry");
+            org.geotools.util.logging.Logging.getLogger(RunStoredTest.class);
 
     private static String TEST_DIRECTORY = "src/main/resources/org/geotools/test-data/xml/geometry";
     // TODO: use TestData.copy and acquire files from sample-data module

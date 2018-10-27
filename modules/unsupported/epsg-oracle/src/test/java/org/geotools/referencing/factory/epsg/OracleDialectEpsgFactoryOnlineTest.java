@@ -17,8 +17,9 @@
 package org.geotools.referencing.factory.epsg;
 
 import java.util.Set;
-import org.geotools.factory.Hints;
+import org.geotools.referencing.factory.epsg.oracle.OracleDialectEpsgFactory;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class OracleDialectEpsgFactoryOnlineTest extends OracleOnlineTestCase {

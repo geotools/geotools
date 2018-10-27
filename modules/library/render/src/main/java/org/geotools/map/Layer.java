@@ -29,8 +29,6 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapLayerEvent;
-import org.geotools.map.event.MapLayerListener;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.logging.Logging;
@@ -48,7 +46,7 @@ import org.opengis.style.FeatureTypeStyle;
 public abstract class Layer {
 
     /** The logger for the map module. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    protected static final Logger LOGGER = Logging.getLogger(Layer.class);
 
     /** Human readable title for the layer. */
     protected String title;

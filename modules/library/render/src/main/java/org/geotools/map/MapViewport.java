@@ -27,9 +27,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapBoundsEvent;
-import org.geotools.map.event.MapBoundsEvent.Type;
-import org.geotools.map.event.MapBoundsListener;
+import org.geotools.map.MapBoundsEvent.Type;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -65,7 +63,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class MapViewport {
 
     /** The logger for the map module. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    protected static final Logger LOGGER = Logging.getLogger(MapViewport.class);
 
     /*
      * Flags whether this viewport can be changed

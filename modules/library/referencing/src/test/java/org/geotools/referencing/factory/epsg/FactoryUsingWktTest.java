@@ -20,11 +20,11 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.Collection;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.factory.Hints;
 import org.junit.*;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;

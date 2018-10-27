@@ -25,7 +25,7 @@ import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml3.GML;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.capability.ArithmeticOperators;
 import org.opengis.filter.capability.ComparisonOperators;
 import org.opengis.filter.capability.FilterCapabilities;

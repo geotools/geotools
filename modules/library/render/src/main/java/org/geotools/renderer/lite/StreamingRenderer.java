@@ -62,13 +62,14 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.FeatureTypes;
@@ -89,6 +90,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.OffsetCurveBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.map.DirectLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -103,7 +105,6 @@ import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.RenderListener;
-import org.geotools.renderer.ScreenMap;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.label.LabelCacheImpl;
@@ -113,8 +114,6 @@ import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.renderer.style.LineStyle2D;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.Style2D;
-import org.geotools.resources.coverage.FeatureUtilities;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
@@ -126,6 +125,7 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.visitor.DpiRescaleStyleVisitor;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.styling.visitor.UomRescaleStyleVisitor;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -215,7 +215,7 @@ public class StreamingRenderer implements GTRenderer {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(StreamingRenderer.class);
 
     int error = 0;
 

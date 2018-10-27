@@ -36,16 +36,16 @@ import org.geotools.gml3.ApplicationSchemaConfiguration;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.bindings.GML3ParsingUtils;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.Binding;
-import org.geotools.xml.BindingFactory;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.impl.BindingFactoryImpl;
-import org.geotools.xml.impl.BindingLoader;
-import org.geotools.xml.impl.BindingWalkerFactoryImpl;
-import org.geotools.xml.impl.NamespaceSupportWrapper;
-import org.geotools.xml.impl.ParserHandler;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.BindingFactory;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.impl.BindingFactoryImpl;
+import org.geotools.xsd.impl.BindingLoader;
+import org.geotools.xsd.impl.BindingWalkerFactoryImpl;
+import org.geotools.xsd.impl.NamespaceSupportWrapper;
+import org.geotools.xsd.impl.ParserHandler;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -72,7 +72,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  */
 public class EmfAppSchemaParser {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.wfs");
+    private static final Logger LOGGER = Logging.getLogger(EmfAppSchemaParser.class);
 
     public static SimpleFeatureType parseSimpleFeatureType(
             final QName featureName,

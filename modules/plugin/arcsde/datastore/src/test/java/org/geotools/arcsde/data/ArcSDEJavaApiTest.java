@@ -73,8 +73,7 @@ import org.junit.Test;
 public class ArcSDEJavaApiTest {
     /** package logger */
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    ArcSDEJavaApiTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(ArcSDEJavaApiTest.class);
 
     /** utility to load test parameters and build a datastore with them */
     private static TestData testData;

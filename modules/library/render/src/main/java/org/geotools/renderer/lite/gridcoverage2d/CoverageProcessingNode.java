@@ -20,7 +20,7 @@ import java.util.List;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.processing.CoverageProcessingException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.InternationalString;

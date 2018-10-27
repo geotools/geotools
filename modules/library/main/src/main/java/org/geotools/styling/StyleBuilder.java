@@ -21,8 +21,8 @@ import java.util.Arrays;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.filter.IllegalFilterException;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
@@ -40,7 +40,7 @@ import org.opengis.filter.expression.PropertyName;
  */
 public class StyleBuilder {
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(StyleBuilder.class);
     public static final String LINE_JOIN_MITRE = "mitre";
     public static final String LINE_JOIN_ROUND = "round";
     public static final String LINE_JOIN_BEVEL = "bevel";

@@ -40,7 +40,7 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.referencing.CRS;
 import org.geotools.wfs.v1_1.WFSConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;

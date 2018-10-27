@@ -78,7 +78,8 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
     private static final String RASTER_TEST_DEBUG_TO_DISK = "raster.test.debugToDisk";
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER =
+            Logging.getLogger(ArcSDEGridCoverage2DReaderJAILegacyOnlineTest.class);
 
     /** Whether to write the fetched rasters to disk or not */
     private static boolean DEBUG;

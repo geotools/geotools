@@ -69,7 +69,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class AbstractWfsDataStoreOnlineTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.wfs.v_1_1_0.data.test");
+    private static final Logger LOGGER = Logging.getLogger(AbstractWfsDataStoreOnlineTest.class);
 
     protected static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 

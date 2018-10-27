@@ -20,7 +20,8 @@ import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/se:CoverageStyle.

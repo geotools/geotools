@@ -34,7 +34,7 @@ import org.opengis.feature.simple.SimpleFeature;
 public class AutoClustUtils {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.graph");
+            org.geotools.util.logging.Logging.getLogger(AutoClustUtils.class);
 
     /** Creates a new instance of AutoClustUtils */
     public AutoClustUtils() {}

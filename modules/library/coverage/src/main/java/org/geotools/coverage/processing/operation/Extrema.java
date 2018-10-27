@@ -32,7 +32,7 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ExtremaDescriptor;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.BaseStatisticsOperationJAI;
-import org.geotools.resources.coverage.CoverageUtilities;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
@@ -80,8 +80,7 @@ public class Extrema extends BaseStatisticsOperationJAI {
     private static final long serialVersionUID = 7731039381590398047L;
 
     /** {@link Logger} for this class. */
-    public static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.processing.operation");
+    public static final Logger LOGGER = Logging.getLogger(Extrema.class);
 
     /** {@link String} key for getting the minimum vector. */
     public static final String GT_SYNTHETIC_PROPERTY_MINIMUM = "minimum";

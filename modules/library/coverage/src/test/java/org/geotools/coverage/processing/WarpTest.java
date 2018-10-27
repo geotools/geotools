@@ -28,7 +28,7 @@ import javax.media.jai.WarpAffine;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.operation.Warp;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;

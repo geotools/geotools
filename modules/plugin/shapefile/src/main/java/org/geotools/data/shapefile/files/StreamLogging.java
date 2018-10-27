@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 public class StreamLogging {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+            org.geotools.util.logging.Logging.getLogger(StreamLogging.class);
 
     private String name;
     private int open = 0;

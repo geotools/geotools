@@ -18,9 +18,9 @@ package org.geotools.gml2.bindings;
 
 import java.math.BigDecimal;
 import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
 import org.geotools.xs.XS;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;

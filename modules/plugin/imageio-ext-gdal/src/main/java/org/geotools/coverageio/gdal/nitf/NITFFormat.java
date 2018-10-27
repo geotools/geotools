@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.MismatchedDimensionException;
 
@@ -35,7 +35,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 public final class NITFFormat extends BaseGDALGridFormat implements Format {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.nitf");
+            org.geotools.util.logging.Logging.getLogger(NITFFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public NITFFormat() {

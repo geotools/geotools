@@ -26,7 +26,7 @@ import java.util.UUID;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.config.MultipleValue;
-import org.geotools.filter.FilterFactoryImplReportInvalidProperty;
+import org.geotools.appschema.filter.FilterFactoryImplReportInvalidProperty;
 import org.opengis.feature.Feature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;

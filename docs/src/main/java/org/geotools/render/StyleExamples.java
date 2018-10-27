@@ -40,6 +40,8 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UserLayer;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
@@ -378,8 +380,8 @@ public class StyleExamples {
     private void parseSLD() throws Exception {
         // parseSLD start
         // create the parser with the sld configuration
-        org.geotools.xml.Configuration configuration = new org.geotools.sld.SLDConfiguration();
-        org.geotools.xml.Parser parser = new org.geotools.xml.Parser(configuration);
+        Configuration configuration = new org.geotools.sld.SLDConfiguration();
+        Parser parser = new Parser(configuration);
 
         // the xml instance document above
         InputStream xml = new FileInputStream("markTest.sld");

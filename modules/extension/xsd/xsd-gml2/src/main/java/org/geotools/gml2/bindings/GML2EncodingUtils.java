@@ -35,8 +35,8 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -55,7 +55,7 @@ import org.w3c.dom.Element;
 public class GML2EncodingUtils {
 
     /** logging instance */
-    static Logger LOGGER = Logging.getLogger("org.geotools.gml");
+    static Logger LOGGER = Logging.getLogger(GML2EncodingUtils.class);
 
     static GMLEncodingUtils e = new GMLEncodingUtils(GML.getInstance());
 

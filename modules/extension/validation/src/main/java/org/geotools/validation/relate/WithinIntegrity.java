@@ -39,7 +39,7 @@ import org.opengis.filter.FilterFactory;
  */
 public class WithinIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(WithinIntegrity.class);
 
     /** OverlapsIntegrity Constructor */
     public WithinIntegrity() {

@@ -34,10 +34,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Formatter;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
@@ -328,24 +330,30 @@ public class EnvFunctionTest {
     /** The setFallback method should log a warning and ignore the argument. */
     @Test
     public void testSetFallbackNotAllowed() {
-        Logger logger = Logger.getLogger(EnvFunction.class.getName());
-
-        Formatter formatter = new SimpleFormatter();
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        Handler handler = new StreamHandler(out, formatter);
-        logger.addHandler(handler);
-
+        Logger logger = Logging.getLogger(EnvFunction.class);
+        Level level = logger.getLevel();
         try {
-            EnvFunction function = new EnvFunction();
-            function.setFallbackValue(ff.literal(0));
+            logger.setLevel(Level.INFO);
 
-            handler.flush();
-            String logMsg = out.toString();
-            assertNotNull(logMsg);
-            assertTrue(logMsg.toLowerCase().contains("setfallbackvalue"));
+            Formatter formatter = new SimpleFormatter();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            Handler handler = new StreamHandler(out, formatter);
+            logger.addHandler(handler);
 
+            try {
+                EnvFunction function = new EnvFunction();
+                function.setFallbackValue(ff.literal(0));
+
+                handler.flush();
+                String logMsg = out.toString();
+                assertNotNull(logMsg);
+                assertTrue(logMsg.toLowerCase().contains("setfallbackvalue"));
+
+            } finally {
+                logger.removeHandler(handler);
+            }
         } finally {
-            logger.removeHandler(handler);
+            logger.setLevel(level);
         }
     }
 

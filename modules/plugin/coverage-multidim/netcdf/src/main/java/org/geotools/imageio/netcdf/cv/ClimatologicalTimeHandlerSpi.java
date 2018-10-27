@@ -29,8 +29,7 @@ public class ClimatologicalTimeHandlerSpi implements CoordinateHandlerSpi {
 
     private static final String CLIMATOLOGICAL_UNITS = "CCYYMMDDHHMMSS";
 
-    private static final Logger LOGGER =
-            Logging.getLogger(ClimatologicalTimeHandlerSpi.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(ClimatologicalTimeHandlerSpi.class);
 
     private static final Set<String> IGNORED;
 

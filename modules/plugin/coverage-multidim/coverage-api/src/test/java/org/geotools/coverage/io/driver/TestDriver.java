@@ -38,8 +38,8 @@ import org.geotools.coverage.io.impl.DefaultFileCoverageAccess;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Parameter;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 import org.opengis.util.ProgressListener;
 
@@ -59,7 +59,7 @@ public class TestDriver extends DefaultFileDriver implements Driver {
     private static Map<String, Parameter<?>> emptyMap = Collections.emptyMap();
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TestDriver.class.toString());
+            org.geotools.util.logging.Logging.getLogger(TestDriver.class);
 
     private static final String EXTENSION = ".EXT";
 

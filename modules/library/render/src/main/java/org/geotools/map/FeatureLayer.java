@@ -25,7 +25,6 @@ import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapLayerEvent;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.Style;
 import org.opengis.feature.Feature;

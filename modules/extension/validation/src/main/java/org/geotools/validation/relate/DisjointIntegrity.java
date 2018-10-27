@@ -36,7 +36,7 @@ import org.opengis.filter.FilterFactory;
  */
 public class DisjointIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(DisjointIntegrity.class);
 
     /** OverlapsIntegrity Constructor */
     public DisjointIntegrity() {

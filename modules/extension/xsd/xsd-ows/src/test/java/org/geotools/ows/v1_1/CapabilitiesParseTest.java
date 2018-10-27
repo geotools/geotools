@@ -5,7 +5,7 @@ import net.opengis.ows11.DomainType;
 import net.opengis.ows11.OperationType;
 import net.opengis.ows11.OperationsMetadataType;
 import net.opengis.ows11.ValueType;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 
 public class CapabilitiesParseTest extends OWSTestSupport_1_1 {
 

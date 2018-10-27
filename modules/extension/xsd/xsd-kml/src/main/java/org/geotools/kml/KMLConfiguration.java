@@ -47,7 +47,7 @@ import org.geotools.kml.bindings.StyleTypeBinding;
 import org.geotools.kml.v22.SchemaRegistry;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;

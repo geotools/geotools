@@ -35,9 +35,9 @@ import java.util.logging.Logger;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.Driver.DriverCapabilities;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.ProgressListener;
 

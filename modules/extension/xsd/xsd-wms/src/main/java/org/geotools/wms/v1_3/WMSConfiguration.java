@@ -17,7 +17,7 @@
 package org.geotools.wms.v1_3;
 
 import org.geotools.xlink.XLINKConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**

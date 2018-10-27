@@ -22,12 +22,12 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.io.netcdf.NetCDFFormat;
-import org.geotools.factory.Hints;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -38,8 +38,7 @@ public class GRIBFormat extends NetCDFFormat {
     public static final ParameterDescriptor<Filter> FILTER =
             new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
 
-    private static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.io.grib.GRIBFormat");
+    private static final Logger LOGGER = Logging.getLogger(GRIBFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public GRIBFormat() {

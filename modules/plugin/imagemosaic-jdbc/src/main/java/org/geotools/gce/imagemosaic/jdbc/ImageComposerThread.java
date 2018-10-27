@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.geometry.GeneralEnvelope;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -40,8 +40,7 @@ import org.geotools.util.logging.Logging;
  */
 public class ImageComposerThread extends AbstractThread {
     /** Logger. */
-    protected static final Logger LOGGER =
-            Logging.getLogger(ImageComposerThread.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(ImageComposerThread.class);
 
     protected GridCoverageFactory coverageFactory;
 

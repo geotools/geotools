@@ -29,10 +29,10 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -53,7 +53,7 @@ public final class JP2KFormat extends AbstractGridFormat implements Format {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.jp2k");
+            org.geotools.util.logging.Logging.getLogger(JP2KFormat.class);
 
     /** The {@code String} representing the parameter to customize multithreading use */
     private static final String USE_MT = "USE_MULTITHREADING";

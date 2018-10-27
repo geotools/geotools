@@ -33,7 +33,7 @@ import org.geotools.data.wfs.internal.WFSException;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSResponseFactory;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.xml.sax.EntityResolver;
 
 /**

@@ -35,7 +35,7 @@ public class GTopo30FormatFactory implements GridFormatFactorySpi {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.gtopo30");
+            org.geotools.util.logging.Logging.getLogger(GTopo30FormatFactory.class);
 
     /**
      * Creates a new instance of GTopo30Format

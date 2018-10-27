@@ -31,11 +31,11 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Parameter;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.locationtech.jts.geom.GeometryFactory;
 
 /**

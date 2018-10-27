@@ -37,8 +37,6 @@ import net.opengis.wps10.WPSCapabilitiesType;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.data.ows.AbstractWPS;
-import org.geotools.data.ows.AbstractWPSGetCapabilitiesResponse;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.HTTPResponse;

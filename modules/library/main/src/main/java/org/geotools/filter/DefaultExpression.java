@@ -91,7 +91,7 @@ public abstract class DefaultExpression extends ExpressionAbstract {
      * @param expressionType Type of expression for check.
      * @return Whether or not this is a geometry expression type.
      */
-    protected static boolean isExpression(short expressionType) {
+    public static boolean isExpression(short expressionType) {
         return (isMathExpression(expressionType)
                         || isAttributeExpression(expressionType)
                         || isLiteralExpression(expressionType))

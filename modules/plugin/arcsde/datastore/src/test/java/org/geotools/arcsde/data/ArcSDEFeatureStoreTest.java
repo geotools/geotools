@@ -98,8 +98,7 @@ import org.opengis.filter.identity.FeatureId;
 public class ArcSDEFeatureStoreTest {
     /** package logger */
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    ArcSDEFeatureStoreTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(ArcSDEFeatureStoreTest.class);
 
     private TestData testData;
 

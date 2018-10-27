@@ -33,7 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
-import org.geotools.renderer.style.shape.ExplicitBoundsShape;
+import org.geotools.renderer.util.ExplicitBoundsShape;
 import org.geotools.styling.ExternalMark;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
@@ -51,8 +51,7 @@ public class TTFMarkFactory implements MarkFactory {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    "org.geotools.rendering.style.TTFMarkFactory");
+            org.geotools.util.logging.Logging.getLogger(TTFMarkFactory.class);
 
     private static FontRenderContext FONT_RENDER_CONTEXT =
             new FontRenderContext(new AffineTransform(), false, false);

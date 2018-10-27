@@ -27,7 +27,7 @@ import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.GML;
 import org.geotools.referencing.CRS;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;

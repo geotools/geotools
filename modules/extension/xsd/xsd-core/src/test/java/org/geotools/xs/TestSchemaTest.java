@@ -19,7 +19,7 @@ package org.geotools.xs;
 import java.lang.reflect.Field;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
-import org.geotools.xml.ElementInstance;
+import org.geotools.xsd.ElementInstance;
 
 public class TestSchemaTest extends TestSchema {
     public void testInitialize() {

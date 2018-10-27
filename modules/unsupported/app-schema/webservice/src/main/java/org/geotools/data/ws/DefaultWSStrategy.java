@@ -16,12 +16,15 @@
  */
 package org.geotools.data.ws;
 
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.Template;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
+import net.opengis.wfs.GetFeatureType;
 import org.geotools.data.Query;
 import org.geotools.filter.Capabilities;
 import org.geotools.filter.text.cql2.CQL;
@@ -31,26 +34,17 @@ import org.geotools.util.logging.Logging;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.opengis.filter.Filter;
 
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.Template;
-import net.opengis.wfs.GetFeatureType;
-
 /**
  * @author rpetty
  * @version $Id$
  * @since 2.6
- *
- *
- *
-
- *         http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main
- *         /java/org/geotools/data /ws/v1_1_0/DefaultWSStrategy.java $
+ *     <p>http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main
+ *     /java/org/geotools/data /ws/v1_1_0/DefaultWSStrategy.java $
  */
 @SuppressWarnings("nls")
 public class DefaultWSStrategy implements WSStrategy {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.data.ws");
+    private static final Logger LOGGER = Logging.getLogger(DefaultWSStrategy.class);
 
     private Configuration cfg;
 
@@ -86,9 +80,9 @@ public class DefaultWSStrategy implements WSStrategy {
      * Creates the mapping {@link GetFeatureType GetFeature} request for the given {@link Query} and
      * {@code outputFormat}, and post-processing filter based on the server's stated filter
      * capabilities.
-     * 
+     *
      * @see WSStrategy#createGetFeatureRequest(Query)
-     */   
+     */
     public Map getRequestData(Query query) throws IOException {
 
         Map root = new HashMap();
@@ -97,27 +91,26 @@ public class DefaultWSStrategy implements WSStrategy {
         if (maxfeatures == null) {
             maxfeatures = new Integer(0);
         }
-        //provide a variety of ways to express the data sent to a webservice
-        //more can be added, and referenced in the template via by the name added to root.
+        // provide a variety of ways to express the data sent to a webservice
+        // more can be added, and referenced in the template via by the name added to root.
         String filterString = filter.toString();
         String cqlFilter = CQL.toCQL(filter);
-       
+
         LOGGER.info("Filter string: " + filterString);
         LOGGER.info("Filter CQL: " + cqlFilter);
         LOGGER.info("MaxFeatures: " + maxfeatures);
-        
+
         root.put("filterString", filterString);
         root.put("filterCql", cqlFilter);
-        // maxFeatures.toString removes commas that would otherwise appear in the result, and cause a crash.
+        // maxFeatures.toString removes commas that would otherwise appear in the result, and cause
+        // a crash.
         root.put("maxFeatures", maxfeatures.toString());
-        root.put("query", query);        
-        
+        root.put("query", query);
+
         return root;
     }
 
-    /**
-     * @see WFSStrategy#getWfsConfiguration()
-     */
+    /** @see WFSStrategy#getWfsConfiguration() */
     public org.geotools.xml.Configuration getWsConfiguration() {
         return ws_Configuration;
     }
@@ -125,12 +118,11 @@ public class DefaultWSStrategy implements WSStrategy {
     /**
      * Splits the filter provided by the geotools query into the server supported and unsupported
      * ones.
-     * 
-     * @param caps
-     *            the server filter capabilities description
+     *
+     * @param caps the server filter capabilities description
      * @param queryFilter
      * @return a two-element array where the first element is the supported filter and the second
-     *         the one to post-process
+     *     the one to post-process
      * @see WSStrategy#splitFilters(WS_Protocol, Filter)
      */
     public Filter[] splitFilters(Capabilities caps, Filter queryFilter) {
@@ -141,7 +133,6 @@ public class DefaultWSStrategy implements WSStrategy {
         Filter server = splitter.getFilterPre();
         Filter post = splitter.getFilterPost();
 
-        return new Filter[] { server, post };
+        return new Filter[] {server, post};
     }
-
 }

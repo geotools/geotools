@@ -19,7 +19,6 @@ package org.geotools.gce.imagemosaic.catalogbuilder;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.apache.commons.beanutils.BeanUtils;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.index.Indexer;
@@ -28,6 +27,7 @@ import org.geotools.gce.imagemosaic.catalog.index.ParametersType.Parameter;
 import org.geotools.gce.imagemosaic.catalog.index.SchemaType;
 import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 
 /**
  * Simple bean that conveys the information needed by the CatalogBuilder to create a catalogue of

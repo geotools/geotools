@@ -27,18 +27,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.geotools.data.ws.XmlDataStore;
-import org.geotools.data.ws.WSDataStoreFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- *
-
- */
+/** */
 public class WSDataStoreFactoryTest {
 
     private static final String BASE_DIRECTORY = "./src/test/resources/test-data/";
@@ -64,31 +57,34 @@ public class WSDataStoreFactoryTest {
         // URL not set
         assertFalse(dsf.canProcess(params));
 
-        params.put(WSDataStoreFactory.GET_CONNECTION_URL.key,
+        params.put(
+                WSDataStoreFactory.GET_CONNECTION_URL.key,
                 "http://someserver.example.org/wfs?request=GetCapabilities");
         assertFalse(dsf.canProcess(params));
 
         params.put(WSDataStoreFactory.TEMPLATE_NAME.key, "request.ftl");
         assertFalse(dsf.canProcess(params));
-        
+
         try {
-            params.put(WSDataStoreFactory.TEMPLATE_DIRECTORY.key, new URL(
-                    "file:./src/test/resources/test-data"));
+            params.put(
+                    WSDataStoreFactory.TEMPLATE_DIRECTORY.key,
+                    new URL("file:./src/test/resources/test-data"));
         } catch (MalformedURLException e) {
             fail(e.getMessage());
         }
         assertFalse(dsf.canProcess(params));
 
         try {
-            params.put(WSDataStoreFactory.CAPABILITIES_FILE_LOCATION.key, new URL(
-                    "file:./src/test/resources/test-data/ws_capabilities.xml"));
+            params.put(
+                    WSDataStoreFactory.CAPABILITIES_FILE_LOCATION.key,
+                    new URL("file:./src/test/resources/test-data/ws_capabilities.xml"));
         } catch (MalformedURLException e) {
             fail(e.getMessage());
         }
         assertTrue(dsf.canProcess(params));
 
         params.put(WSDataStoreFactory.TIMEOUT.key, "30000");
-        assertTrue(dsf.canProcess(params));       
+        assertTrue(dsf.canProcess(params));
     }
 
     @Test
@@ -99,16 +95,15 @@ public class WSDataStoreFactoryTest {
     }
 
     private void testCreateDataStore_WS(final String capabilitiesFile) throws IOException {
-         final WSDataStoreFactory dsf = new WSDataStoreFactory(); 
+        final WSDataStoreFactory dsf = new WSDataStoreFactory();
         Map<String, Serializable> params = new HashMap<String, Serializable>();
-         
-            
+
         File file = new File(BASE_DIRECTORY + capabilitiesFile);
         if (!file.exists()) {
             throw new IllegalArgumentException(capabilitiesFile + " not found");
-        }    
+        }
         URL url = file.toURL();
-       
+
         params.put(WSDataStoreFactory.GET_CONNECTION_URL.key, url);
         params.put(WSDataStoreFactory.TEMPLATE_DIRECTORY.key, new URL("file:" + BASE_DIRECTORY));
         params.put(WSDataStoreFactory.TEMPLATE_NAME.key, "request.ftl");

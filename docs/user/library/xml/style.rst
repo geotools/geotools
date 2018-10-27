@@ -59,8 +59,8 @@ To parse the document::
   import javax.xml.parsers.ParserConfigurationException;
   import org.geotools.sld.SLDConfiguration;
   import org.geotools.styling.StyledLayerDescriptor;
-  import org.geotools.xml.Configuration;
-  import org.geotools.xml.Parser;
+  import org.geotools.xsd.Configuration;
+  import org.geotools.xsd.Parser;
   import org.xml.sax.SAXException;
   ...
   
@@ -127,7 +127,7 @@ Encoder
 The same SLDConfiguration can be used for encoding::
   
   Configuration configuration = new SLDConfiguration();
-  Encoder encoder = new org.geotools.xml.Encoder( configuration );
+  Encoder encoder = new org.geotools.xsd.Encoder( configuration );
   encoder.encode( sld, org.geotools.sld.bindings.SLD.STYLEDLAYERDESCRIPTOR, outputStream );
 
 SLDTransformer
@@ -187,13 +187,13 @@ To encode an SE document use the SEConfiguration with the appropriate target.
 As an example a feature type style::
 
   Configuration = new SEConfiguration();
-  Encoder encoder = new org.geotools.xml.Encoder( configuration );
+  Encoder encoder = new org.geotools.xsd.Encoder( configuration );
   encoder.encode( style, org.geotools.se.SE.FeatureTypeStyle, outputStream );
 
 Example with a coverage style::
 
   Configuration = new SEConfiguration();
-  Encoder encoder = new org.geotools.xml.Encoder( configuration );
+  Encoder encoder = new org.geotools.xsd.Encoder( configuration );
   encoder.encode( style, org.geotools.se.SE.CoverageStyle, outputStream );
 
 There is also an SLD 1.1 configuration you can use.

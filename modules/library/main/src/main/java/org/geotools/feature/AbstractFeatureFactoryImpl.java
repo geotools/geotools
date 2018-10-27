@@ -52,7 +52,7 @@ public abstract class AbstractFeatureFactoryImpl implements FeatureFactory {
     /** Factory used to create geomtries */
     GeometryFactory geometryFactory;
 
-    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+    public FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
     /**
      * Whether the features to be built should be self validating on construction and value setting,

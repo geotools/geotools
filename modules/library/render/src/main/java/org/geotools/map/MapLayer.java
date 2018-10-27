@@ -23,11 +23,11 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.memory.CollectionSource;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.styling.Style;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.operation.TransformException;
@@ -452,7 +452,7 @@ public class MapLayer {
      *
      * @param listener The listener to register.
      */
-    public synchronized void addMapLayerListener(org.geotools.map.event.MapLayerListener listener) {
+    public synchronized void addMapLayerListener(MapLayerListener listener) {
         internal.addMapLayerListener(listener);
     }
 
@@ -461,8 +461,7 @@ public class MapLayer {
      *
      * @param listener The listener to remove.
      */
-    public synchronized void removeMapLayerListener(
-            org.geotools.map.event.MapLayerListener listener) {
+    public synchronized void removeMapLayerListener(MapLayerListener listener) {
         internal.removeMapLayerListener(listener);
     }
 

@@ -26,10 +26,10 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -64,7 +64,7 @@ public class WorldFileReader {
 
     /** Logger for this class. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.data");
+            org.geotools.util.logging.Logging.getLogger(WorldFileReader.class);
 
     /** Resolution on the first dimension. */
     private double xPixelSize = 0.0;

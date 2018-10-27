@@ -34,10 +34,8 @@ import org.geotools.util.KVP;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
-
 public class ExcelDataStoreFactory extends AbstractDataStoreFactory implements DataStoreFactorySpi {
-    private static final Logger logger =
-            Logging.getLogger("org.geotools.excel.datastore.ExcelDataStoreFactory");
+    private static final Logger logger = Logging.getLogger(ExcelDataStoreFactory.class);
 
     static HashSet<Param> params = new HashSet<DataAccessFactory.Param>();
 

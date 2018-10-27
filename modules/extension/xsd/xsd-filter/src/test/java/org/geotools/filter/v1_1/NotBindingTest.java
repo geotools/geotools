@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.v1_1;
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.Not;
 import org.w3c.dom.Document;
 

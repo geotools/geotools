@@ -18,7 +18,9 @@ package org.geotools.se.v1_1.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 

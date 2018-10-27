@@ -34,7 +34,7 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;

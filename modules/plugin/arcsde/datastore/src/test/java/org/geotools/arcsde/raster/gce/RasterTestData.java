@@ -97,7 +97,7 @@ public class RasterTestData {
 
     private TestData testData;
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(RasterTestData.class);
 
     public void setUp() throws IOException {
         // load a raster dataset into SDE

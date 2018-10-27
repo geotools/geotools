@@ -9,7 +9,8 @@ import javax.xml.transform.stream.*;
 
 import org.eclipse.xsd.*;
 import java.io.*;
-import org.geotools.xml.*;
+
+import org.geotools.xsd.Schemas;
 
 public class CLASS
 {

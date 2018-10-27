@@ -18,8 +18,8 @@ package org.geotools.data.complex;
 
 import java.util.Arrays;
 import java.util.List;
+import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.util.IndexQueryUtils;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 

@@ -51,7 +51,7 @@ import org.opengis.feature.type.Name;
 public class Validator {
     /** Standard logging instance for class */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.vfny.geoserver.responses");
+            org.geotools.util.logging.Logging.getLogger(Validator.class);
 
     private ValidationProcessor validationProcessor;
 

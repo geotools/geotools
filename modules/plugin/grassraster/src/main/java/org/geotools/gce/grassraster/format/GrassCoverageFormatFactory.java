@@ -33,7 +33,7 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.grassraster.format");
+            org.geotools.util.logging.Logging.getLogger(GrassCoverageFormatFactory.class);
 
     /**
      * Creates a new instance of GrassCoverageFormat

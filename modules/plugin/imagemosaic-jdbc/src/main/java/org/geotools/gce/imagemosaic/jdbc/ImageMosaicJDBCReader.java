@@ -41,12 +41,12 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.processing.Operations;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.coverage.grid.Format;
@@ -71,8 +71,7 @@ import org.opengis.referencing.operation.TransformException;
  * @since 2.5
  */
 public class ImageMosaicJDBCReader extends AbstractGridCoverage2DReader {
-    private static final Logger LOGGER =
-            Logging.getLogger(ImageMosaicJDBCReader.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(ImageMosaicJDBCReader.class);
 
     protected static final CoordinateOperationFactory operationFactory =
             new BufferedCoordinateOperationFactory(

@@ -29,7 +29,7 @@ import org.geotools.filter.v1_1.OGC;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFSTestSupport;
 import org.geotools.wfs.v1_1.WFS;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

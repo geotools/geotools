@@ -18,9 +18,9 @@
 package org.geotools.data.oracle;
 
 import java.lang.reflect.Method;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 
 public class OracleBlobConverterFactory implements ConverterFactory {
 

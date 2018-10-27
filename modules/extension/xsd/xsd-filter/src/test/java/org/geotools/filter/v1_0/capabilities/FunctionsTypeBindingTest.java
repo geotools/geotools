@@ -17,7 +17,7 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.capability.Functions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

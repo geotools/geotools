@@ -28,7 +28,7 @@ import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
 import org.geotools.ows.ServiceException;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

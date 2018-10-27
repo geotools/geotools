@@ -9,7 +9,7 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
-import org.geotools.geometry.jts.JTSUtils;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.complex.CompositeCurveImpl;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.geometry.complex.CompositeCurve;

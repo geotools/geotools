@@ -71,7 +71,7 @@ import org.opengis.geometry.BoundingBox;
  */
 public class TreeSetFeatureCollection implements SimpleFeatureCollection {
     protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.collection");
+            org.geotools.util.logging.Logging.getLogger(TreeSetFeatureCollection.class);
 
     /**
      * Contents of collection, referenced by FeatureID.

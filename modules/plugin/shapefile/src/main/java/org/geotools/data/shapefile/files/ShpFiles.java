@@ -65,7 +65,7 @@ import org.geotools.util.logging.Logging;
  */
 public class ShpFiles {
 
-    static final Logger LOGGER = Logging.getLogger("org.geotools.data.shapefile");
+    static final Logger LOGGER = Logging.getLogger(ShpFiles.class);
 
     /**
      * The urls for each type of file that is associated with the shapefile. The key is the type of

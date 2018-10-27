@@ -23,7 +23,8 @@ import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/se:Graphic.

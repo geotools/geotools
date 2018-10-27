@@ -17,9 +17,9 @@
 package org.geotools.xs.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.ElementInstance;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
+import org.geotools.xsd.ElementInstance;
 
 public class XSDoubleStrategyTest extends TestSchema {
     /**

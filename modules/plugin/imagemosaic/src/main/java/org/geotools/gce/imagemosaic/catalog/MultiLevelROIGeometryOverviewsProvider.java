@@ -29,8 +29,8 @@ import org.geotools.coverage.grid.io.footprint.FootprintLoader;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 

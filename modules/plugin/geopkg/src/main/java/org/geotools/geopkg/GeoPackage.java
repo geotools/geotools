@@ -17,7 +17,7 @@
 package org.geotools.geopkg;
 
 import static java.lang.String.format;
-import static org.geotools.sql.SqlUtil.prepare;
+import static org.geotools.jdbc.util.SqlUtil.prepare;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,8 +63,8 @@ import org.geotools.geopkg.geom.GeometryFunction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.referencing.CRS;
-import org.geotools.sql.SqlUtil;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -86,7 +86,7 @@ import org.sqlite.Function;
  */
 public class GeoPackage {
 
-    static final Logger LOGGER = Logging.getLogger("org.geotools.geopkg");
+    static final Logger LOGGER = Logging.getLogger(GeoPackage.class);
 
     public static final String GEOPACKAGE_CONTENTS = "gpkg_contents";
 

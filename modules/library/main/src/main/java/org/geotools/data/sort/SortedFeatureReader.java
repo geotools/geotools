@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureReader;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.sort.SortBy;

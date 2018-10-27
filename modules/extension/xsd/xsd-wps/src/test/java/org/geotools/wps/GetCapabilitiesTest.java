@@ -35,7 +35,7 @@ import net.opengis.wps10.LanguagesType1;
 import net.opengis.wps10.ProcessBriefType;
 import net.opengis.wps10.ProcessOfferingsType;
 import net.opengis.wps10.WPSCapabilitiesType;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 
 public class GetCapabilitiesTest extends TestCase {
 

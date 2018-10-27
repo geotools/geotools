@@ -3,7 +3,7 @@ package org.geotools.ows.v2_0;
 import net.opengis.ows20.ExceptionReportType;
 import net.opengis.ows20.ExceptionType;
 import net.opengis.ows20.Ows20Factory;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.junit.Test;
 
 public class ExceptionReportTest {

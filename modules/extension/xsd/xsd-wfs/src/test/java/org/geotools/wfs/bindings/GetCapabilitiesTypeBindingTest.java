@@ -19,7 +19,7 @@ package org.geotools.wfs.bindings;
 import net.opengis.wfs.GetCapabilitiesType;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.w3c.dom.Document;
 
 /**

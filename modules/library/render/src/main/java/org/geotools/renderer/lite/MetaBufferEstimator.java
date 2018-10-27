@@ -78,7 +78,7 @@ import org.opengis.style.GraphicalSymbol;
 public class MetaBufferEstimator extends FilterAttributeExtractor implements StyleVisitor {
     /** The logger for the rendering module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(MetaBufferEstimator.class);
 
     protected FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 

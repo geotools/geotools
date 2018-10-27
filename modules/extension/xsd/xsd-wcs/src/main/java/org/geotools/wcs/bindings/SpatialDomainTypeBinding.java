@@ -3,9 +3,9 @@ package org.geotools.wcs.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.wcs10.SpatialDomainType;
 import org.geotools.wcs.WCS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:SpatialDomainType.
@@ -65,7 +65,7 @@ public class SpatialDomainTypeBinding extends AbstractComplexBinding {
     }
 
     /* (non-Javadoc)
-     * @see org.geotools.xml.AbstractComplexBinding#getExecutionMode()
+     * @see org.geotools.xsd.AbstractComplexBinding#getExecutionMode()
      */
     @Override
     public int getExecutionMode() {

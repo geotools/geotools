@@ -21,9 +21,9 @@ import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.PointPlacement;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 

@@ -17,24 +17,14 @@
 package org.geotools.data.ws.protocol.ws;
 
 import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.geotools.util.logging.Logging;
 
 /**
  * A handle to a WFS response that contains the input stream to the actual contents and some well
  * known response information derived from the HTTP response headers.
- * 
+ *
  * @author rpetty
  * @version $Id$
  * @since 2.6
- *
- *
- *
-
  */
 @SuppressWarnings("nls")
 public class WSResponse {
@@ -42,12 +32,9 @@ public class WSResponse {
     private InputStream inputStream;
 
     /**
-     * @param charset
-     *            the response charset, {@code null} if unknown, utf-8 will be assumed then
-     * @param contentType
-     *            the response content type
-     * @param in
-     *            the response input stream ready to be consumed
+     * @param charset the response charset, {@code null} if unknown, utf-8 will be assumed then
+     * @param contentType the response content type
+     * @param in the response input stream ready to be consumed
      */
     public WSResponse(InputStream in) {
         this.inputStream = in;
@@ -55,7 +42,7 @@ public class WSResponse {
 
     /**
      * The open input stream for the response contents
-     * 
+     *
      * @return the input stream for the response
      */
     public InputStream getInputStream() {

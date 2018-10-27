@@ -46,16 +46,16 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.coverage.processing.operation.SelectSampleDimension;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -76,7 +76,7 @@ import org.opengis.referencing.cs.AxisDirection;
 public final class ArcGridWriter extends AbstractGridCoverageWriter implements GridCoverageWriter {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.arcgrid");
+            org.geotools.util.logging.Logging.getLogger(ArcGridWriter.class);
 
     /** Imageio {@link AsciiGridsImageWriter} we will use to write out. */
     private AsciiGridsImageWriter mWriter =

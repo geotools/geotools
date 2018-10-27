@@ -26,8 +26,109 @@ But first to upgrade - change your dependency to |release| (or an appropriate st
         ....
     </dependencies>
 
+GeoTools 21.x
+-------------
+
+GeoTools 21 is the first is compatible with Java 8 and Java 11.
+
+Restructured Library
+^^^^^^^^^^^^^^^^^^^^
+
+The library has been restructured with automatic module names for Java 11 use.
+
+The following table shows how maven dependencies have changed, and the resulting automatic module name for Java 11 use.
+
+.. list-table:: Restructure Library
+   :widths: 30, 30, 40
+   :header-rows: 1
+   
+   * - Dependency
+     - Upgrade
+     - Automatic Module Name
+   * - gt-opengis
+     - gt-opengis
+     - org.geotools.opengis
+   * - gt-metadata
+     - gt-metadata
+     - org.geotools.metadata
+   * - gt-api
+     - (removed)
+     - 
+   * - gt-referencing 
+     - gt-referencing 
+     - org.geotools.referencing
+   * - gt-main
+     - gt-main
+     - org.geotools.main
+   * - gt-xml
+     - gt-xml
+     - org.geotools.xml
+   * - gt-xml
+     - gt-xml
+     - org.geotools.xml
+   * - gt-data
+     - gt-data
+     - org.geotools.data
+   * - gt-jdbc
+     - gt-jdbc
+     - org.geotools.jdbc
+
+Repackage Library
+^^^^^^^^^^^^^^^^^
+
+Previously GeoTools reused packages across modules by design, this approach is no longer supported by JDK resulting in the following classes changing package.
+
+.. list-table:: Restructure Library
+   :widths: 30, 70
+   :header-rows: 3
+   
+   * - Module
+     - Package
+   * - Upgrade
+     - Package
+   * - 
+     - Classes Affected
+   * - **gt-api**
+     - **org.geotools.decorate**
+   * - gt-metadata
+     - org.geotools.util.decorate
+   * - 
+     - Abstract Store, Wrapper
+   * - **gt-api**
+     - **org.geotools.data**
+   * - gt-main
+     - org.geotools.data
+   * - **gt-api**
+     - **org.geotools.data.simple**
+   * - gt-main
+     - org.geotools.data.simple
+   * - **gt-api**
+     - **org.geotools.decorate**
+   * - gt-main
+     - org.geotools.util.decorate
+   * - 
+     - AbstractDecorator, Wrapper
+   * - **gt-api**
+     - **org.geotools.factory**
+   * - gt-main
+     - org.geotools.factory
+   * - **gt-api**
+     - **org.geotools.feature**
+   * - gt-main
+     - org.geotools.feature
+   * - **gt-api**
+     - **org.geotools.filter**
+   * - gt-main
+     - org.geotools.filter
+   * - **gt-api**
+     - **org.geotools.filter.expression**
+   * - gt-main
+     - org.geotools.filter.expression
+
 GeoTools 20.x
 -------------
+
+GeoTools 20 requires Java 8.
 
 Upgrade to JTS-1.16
 ^^^^^^^^^^^^^^^^^^^
@@ -1839,8 +1940,8 @@ Swap to moved Coverage utility classes.
 
   Wrapping a GridCoverage into a feature in 2.4::
 
-    org.geotools.resources.coverage.CoverageUtilities #wrapGc(GridCoverage gridCoverage)
-    org.geotools.resources.coverage.CoverageUtilities #wrapGcReader(
+    org.geotools.referencing.util.coverage.CoverageUtilities #wrapGc(GridCoverage gridCoverage)
+    org.geotools.referencing.util.coverage.CoverageUtilities #wrapGcReader(
                 AbstractGridCoverage2DReader gridCoverageReader,
                 GeneralParameterValue[] params)
 

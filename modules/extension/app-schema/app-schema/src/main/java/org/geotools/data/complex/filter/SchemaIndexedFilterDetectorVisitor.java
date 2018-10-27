@@ -16,8 +16,8 @@
  */
 package org.geotools.data.complex.filter;
 
+import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.complex.FeatureTypeMapping;
-import org.geotools.util.IndexQueryUtils;
 import org.opengis.filter.Filter;
 
 /**

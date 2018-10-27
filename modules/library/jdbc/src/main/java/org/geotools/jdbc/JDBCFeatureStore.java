@@ -35,8 +35,8 @@ import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -60,7 +60,7 @@ public final class JDBCFeatureStore extends ContentFeatureStore {
      * jdbc feature source to delegate to, we do this b/c we can't inherit from both
      * ContentFeatureStore and JDBCFeatureSource at the same time
      */
-    JDBCFeatureSource delegate;
+    public JDBCFeatureSource delegate;
 
     /**
      * Creates the new feature store.

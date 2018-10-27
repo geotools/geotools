@@ -28,20 +28,20 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 import net.opengis.wfs20.ResolveValueType;
+import org.geotools.appschema.feature.AppSchemaFeatureFactoryImpl;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.complex.config.Types;
+import org.geotools.data.complex.feature.type.ComplexFeatureTypeFactoryImpl;
 import org.geotools.data.complex.filter.XPath;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningQuery;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
-import org.geotools.feature.AppSchemaFeatureFactoryImpl;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.util.factory.Hints;
 import org.geotools.xlink.XLINK;
 import org.locationtech.jts.geom.EmptyGeometry;
 import org.locationtech.jts.geom.Geometry;
@@ -72,7 +72,7 @@ import org.xml.sax.helpers.NamespaceSupport;
 public abstract class AbstractMappingFeatureIterator implements IMappingFeatureIterator {
     /** The logger for the filter module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(AbstractMappingFeatureIterator.class);
 
     protected FilterFactory2 filterFac = CommonFactoryFinder.getFilterFactory2(null);
 

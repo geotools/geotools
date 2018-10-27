@@ -37,7 +37,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 public class IsValidGeometryValidation extends DefaultFeatureValidation {
     /** The logger for the validation module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(IsValidGeometryValidation.class);
 
     /**
      * IsValidGeometryFeatureValidation constructor.

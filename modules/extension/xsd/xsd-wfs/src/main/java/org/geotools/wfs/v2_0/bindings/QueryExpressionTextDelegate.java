@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.QueryExpressionTextType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xml.ParserDelegate;
+import org.geotools.xsd.ParserDelegate;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.NamespaceSupport;

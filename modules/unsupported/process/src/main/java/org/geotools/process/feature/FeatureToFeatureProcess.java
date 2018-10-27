@@ -18,11 +18,11 @@ package org.geotools.process.feature;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.util.NullProgressListener;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.util.ProgressListener;

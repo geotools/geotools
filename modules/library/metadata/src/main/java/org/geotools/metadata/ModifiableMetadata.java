@@ -24,11 +24,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.resources.UnmodifiableArrayList;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.CheckedArrayList;
 import org.geotools.util.CheckedHashSet;
+import org.geotools.util.UnmodifiableArrayList;
 import org.geotools.util.logging.Logging;
 
 /**

@@ -17,7 +17,7 @@
 
 package org.geotools.filter.expression;
 
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * This class supports the use of Expression/NIL for referring to a 'null' value.

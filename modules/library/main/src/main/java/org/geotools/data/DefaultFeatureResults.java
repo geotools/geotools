@@ -50,7 +50,7 @@ import org.opengis.referencing.operation.MathTransform;
 public class DefaultFeatureResults extends DataFeatureCollection {
     /** Shared package logger */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data");
+            org.geotools.util.logging.Logging.getLogger(DefaultFeatureResults.class);
 
     /** Query used to define this subset of features from the feature source */
     protected Query query;

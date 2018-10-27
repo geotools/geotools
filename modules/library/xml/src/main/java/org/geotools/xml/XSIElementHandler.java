@@ -36,7 +36,7 @@ import org.xml.sax.SAXNotSupportedException;
 public abstract class XSIElementHandler implements Serializable {
     /** the logger -- should be used for debugging (assuming there are bugs LOL) */
     public static final Logger logger =
-            org.geotools.util.logging.Logging.getLogger("net.refractions.xsi.element");
+            org.geotools.util.logging.Logging.getLogger(XSIElementHandler.class);
 
     private static Level level = Level.WARNING;
 

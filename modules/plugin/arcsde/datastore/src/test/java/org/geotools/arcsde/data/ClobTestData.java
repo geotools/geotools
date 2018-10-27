@@ -33,7 +33,7 @@ import org.locationtech.jts.io.WKTReader;
 
 public class ClobTestData {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TestData.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(TestData.class);
 
     public static SeColumnDefinition[] TEST_TABLE_COLS;
 

@@ -42,7 +42,7 @@ import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.SchemaIndex;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -58,7 +58,7 @@ import org.opengis.feature.type.Name;
  */
 public class GeoSciMLTest extends AppSchemaTestSupport {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoSciMLTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(GeoSciMLTest.class);
 
     private static final String GSMLNS = "http://www.cgi-iugs.org/xml/GeoSciML/2";
 

@@ -3,8 +3,8 @@ package org.geotools.ows.v2_0;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.XML;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XML;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the

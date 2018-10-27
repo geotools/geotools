@@ -21,8 +21,8 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.sld.bindings.SLDUserLayerBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.UserLayer;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**

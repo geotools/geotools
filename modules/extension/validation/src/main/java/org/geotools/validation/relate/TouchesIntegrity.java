@@ -40,7 +40,7 @@ import org.opengis.filter.FilterFactory;
  */
 public class TouchesIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(TouchesIntegrity.class);
 
     /** OverlapsIntegrity Constructor */
     public TouchesIntegrity() {

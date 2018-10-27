@@ -21,10 +21,10 @@ import java.util.Collections;
 import java.util.List;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
+import org.geotools.map.MapBoundsListener;
 import org.geotools.map.MapContent;
+import org.geotools.map.MapLayerListListener;
 import org.geotools.map.MapViewport;
-import org.geotools.map.event.MapBoundsListener;
-import org.geotools.map.event.MapLayerListListener;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**

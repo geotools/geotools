@@ -19,7 +19,7 @@ package org.geotools.process;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.data.Parameter;
-import org.geotools.factory.OptionalFactory;
+import org.geotools.util.factory.OptionalFactory;
 import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 

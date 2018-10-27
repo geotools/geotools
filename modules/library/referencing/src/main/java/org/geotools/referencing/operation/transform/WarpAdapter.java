@@ -19,8 +19,8 @@ package org.geotools.referencing.operation.transform;
 import java.awt.geom.Point2D;
 import java.awt.image.RasterFormatException;
 import javax.media.jai.Warp;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.TransformException;
 

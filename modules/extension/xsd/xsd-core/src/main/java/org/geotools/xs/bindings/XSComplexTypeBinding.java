@@ -18,10 +18,10 @@ package org.geotools.xs.bindings;
 
 import java.util.Map;
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
 import org.geotools.xs.XS;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**

@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * An 'About' dialog which displays information about the host environment, software licenses

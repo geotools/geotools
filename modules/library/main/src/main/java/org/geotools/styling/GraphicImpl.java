@@ -21,9 +21,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.filter.ConstantExpression;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.AnchorPoint;
@@ -41,7 +41,7 @@ import org.opengis.util.Cloneable;
 public class GraphicImpl implements Graphic, Cloneable {
     /** The logger for the default core module. */
     // private static final java.util.logging.Logger LOGGER =
-    // org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    // org.geotools.util.logging.Logging.getLogger(GraphicImpl.class);
 
     private final List<GraphicalSymbol> graphics = new ArrayList<GraphicalSymbol>();
 

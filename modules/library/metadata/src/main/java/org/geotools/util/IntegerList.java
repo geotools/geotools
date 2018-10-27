@@ -20,9 +20,8 @@ import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.RandomAccess;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.util.Cloneable;
 
 /**

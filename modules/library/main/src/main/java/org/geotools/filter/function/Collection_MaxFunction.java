@@ -44,7 +44,7 @@ public class Collection_MaxFunction extends FunctionExpressionImpl {
 
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(Collection_MaxFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
     Object max = null;

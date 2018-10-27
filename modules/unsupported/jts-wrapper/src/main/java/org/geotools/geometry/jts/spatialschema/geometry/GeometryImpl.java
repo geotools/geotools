@@ -12,8 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.geotools.factory.BasicFactories;
-import org.geotools.geometry.jts.JTSGeometry;
-import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.CurveBoundaryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.PointImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceBoundaryImpl;

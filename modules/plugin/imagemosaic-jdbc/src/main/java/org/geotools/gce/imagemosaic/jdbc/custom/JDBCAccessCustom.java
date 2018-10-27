@@ -48,8 +48,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public abstract class JDBCAccessCustom implements JDBCAccess {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(JDBCAccessCustom.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(JDBCAccessCustom.class);
 
     private Config config;
     private DataSource dataSource;

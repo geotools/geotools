@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

@@ -33,7 +33,7 @@ import org.geotools.util.logging.Logging;
  */
 public abstract class AbstractMetadata {
     /** The logger for metadata implementation. */
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.metadata");
+    protected static final Logger LOGGER = Logging.getLogger(AbstractMetadata.class);
 
     /**
      * Hash code value, or 0 if not yet computed. This field is reset to 0 by {@link #invalidate} in

@@ -18,7 +18,7 @@ package org.geotools.referencing.factory.epsg;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 
 /**
  * This factory uses the MS-Access dialect of SQL. Because the primary distribution format for the

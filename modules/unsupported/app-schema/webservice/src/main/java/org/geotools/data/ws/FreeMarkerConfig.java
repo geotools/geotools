@@ -17,37 +17,31 @@
 
 package org.geotools.data.ws;
 
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
 import java.io.File;
 import java.io.IOException;
 
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-
-/**
- * 
- *
-
- */
+/** */
 public class FreeMarkerConfig {
 
     private static Configuration cfg;
-    
+
     public static void createConfiguration(String directoryPath) {
         Configuration cfg = new Configuration();
 
         try {
-           cfg.setDirectoryForTemplateLoading(
-                    new File(directoryPath));
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
+            cfg.setDirectoryForTemplateLoading(new File(directoryPath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
-        cfg.setObjectWrapper(new DefaultObjectWrapper()); 
+        cfg.setObjectWrapper(new DefaultObjectWrapper());
     }
-    
+
     public static Configuration getInstance() {
         return cfg;
     }
-    
+
     private FreeMarkerConfig() {}
 }

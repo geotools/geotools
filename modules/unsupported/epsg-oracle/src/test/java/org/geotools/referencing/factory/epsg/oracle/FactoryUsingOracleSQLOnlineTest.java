@@ -17,8 +17,7 @@
 package org.geotools.referencing.factory.epsg.oracle;
 
 import java.sql.Connection;
-import org.geotools.factory.Hints;
-import org.geotools.referencing.factory.epsg.OracleDialectEpsgFactory;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.GeodeticDatum;
 

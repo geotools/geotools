@@ -21,7 +21,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
-import org.geotools.xml.Node;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;

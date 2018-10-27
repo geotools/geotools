@@ -30,7 +30,7 @@ import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StreamLogging;
 import org.geotools.data.shapefile.shp.ShapefileReader;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 import org.geotools.util.URLs;
 
 /**
@@ -40,7 +40,7 @@ import org.geotools.util.URLs;
  */
 public class IndexedFidReader implements FIDReader, FileReader {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+            org.geotools.util.logging.Logging.getLogger(IndexedFidReader.class);
     private ReadableByteChannel readChannel;
     private ByteBuffer buffer;
     private long count;

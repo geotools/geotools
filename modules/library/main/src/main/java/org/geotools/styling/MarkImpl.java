@@ -17,7 +17,7 @@
 package org.geotools.styling;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicalSymbol;
@@ -35,7 +35,7 @@ public class MarkImpl implements Mark, Cloneable {
 
     /** The logger for the default core module. */
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(MarkImpl.class);
 
     private final FilterFactory filterFactory;
     private FillImpl fill;

@@ -26,8 +26,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Locale;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.geometry.Envelope;
 import org.opengis.metadata.extent.GeographicBoundingBox;
@@ -496,7 +496,8 @@ public class GeographicBoundingBoxImpl extends GeographicExtentImpl
      */
     private static Method getMethod(final String name, final Class<?>[] arguments) {
         try {
-            return Class.forName("org.geotools.resources.BoundingBoxes").getMethod(name, arguments);
+            return Class.forName("org.geotools.referencing.util.BoundingBoxes")
+                    .getMethod(name, arguments);
         } catch (ClassNotFoundException exception) {
             throw new UnsupportedOperationException(
                     Errors.format(ErrorKeys.MISSING_MODULE_$1, "referencing"), exception);

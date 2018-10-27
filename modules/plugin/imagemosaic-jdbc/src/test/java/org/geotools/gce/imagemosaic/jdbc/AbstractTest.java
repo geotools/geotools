@@ -45,11 +45,11 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.jdbc.Import.ImportTyp;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -57,8 +57,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public abstract class AbstractTest extends TestCase {
 
-    protected static final Logger LOGGER =
-            Logging.getLogger(AbstractTest.class.getPackage().getName());
+    protected static final Logger LOGGER = Logging.getLogger(AbstractTest.class);
 
     protected static String CRSNAME = "EPSG:4326";
 

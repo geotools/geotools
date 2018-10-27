@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.Map;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.factory.Hints;
 import org.junit.*;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;

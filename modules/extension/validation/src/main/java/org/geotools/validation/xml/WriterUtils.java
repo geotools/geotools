@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 class WriterUtils {
     /** Used internally to create log information to detect errors. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.vfny.geoserver.global");
+            org.geotools.util.logging.Logging.getLogger(WriterUtils.class);
 
     /** The output writer. */
     protected Writer writer;

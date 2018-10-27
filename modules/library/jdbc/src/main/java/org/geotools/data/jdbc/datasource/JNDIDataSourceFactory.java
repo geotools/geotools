@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Parameter;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 
 /**
  * A datasource factory SPI doing JDNI lookups

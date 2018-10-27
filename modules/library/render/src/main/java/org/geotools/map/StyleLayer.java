@@ -16,7 +16,6 @@
  */
 package org.geotools.map;
 
-import org.geotools.map.event.MapLayerEvent;
 import org.geotools.styling.Style;
 
 /**

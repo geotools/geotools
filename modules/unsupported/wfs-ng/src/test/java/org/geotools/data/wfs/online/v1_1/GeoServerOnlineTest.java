@@ -39,8 +39,8 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.geotools.data.wfs.online.WFSOnlineTestSupport;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -187,7 +187,7 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
                 inStore.close();
             }
 
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wfs")
+            org.geotools.util.logging.Logging.getLogger(GeoServerOnlineTest.class)
                     .setLevel(Level.FINE);
             SimpleFeatureCollection inserts = DataUtilities.collection(new SimpleFeature[] {f, f2});
             Id fp = WFSOnlineTestSupport.doInsert(wfs, ft, inserts);

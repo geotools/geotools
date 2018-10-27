@@ -38,7 +38,7 @@ import org.geotools.data.DataAccessFinder;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.Transaction;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -51,7 +51,7 @@ import org.junit.Test;
  */
 public class ArcSDEJNDIDataStoreFactoryTest {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEJNDIDataStoreFactoryTest.class);
 
     private static ArcSDEJNDIDataStoreFactory factory;
 

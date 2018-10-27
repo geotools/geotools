@@ -17,8 +17,8 @@
 package org.geotools.coverage.grid;
 
 import java.awt.Point;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.coverage.grid.GridCoordinates;
 
 /**

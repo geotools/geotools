@@ -69,7 +69,6 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
@@ -81,6 +80,7 @@ import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Converters;
 import org.geotools.util.SoftValueHashMap;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
@@ -226,7 +226,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     private Throwable disposedBy = null;
 
     /** the dialect of sql */
-    protected SQLDialect dialect;
+    public SQLDialect dialect;
 
     /** The database schema. */
     protected String databaseSchema;
@@ -259,7 +259,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * The fetch size for this datastore, defaulting to 1000. Set to a value less or equal to 0 to
      * disable fetch size limit and grab all the records in one shot.
      */
-    protected int fetchSize;
+    public int fetchSize;
 
     /**
      * The number of features to bufferize while inserting in order to do batch inserts.
@@ -1274,7 +1274,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Returns the primary key object for a particular feature type / table, deriving it from the
      * underlying database metadata.
      */
-    protected PrimaryKey getPrimaryKey(SimpleFeatureType featureType) throws IOException {
+    public PrimaryKey getPrimaryKey(SimpleFeatureType featureType) throws IOException {
         return getPrimaryKey(ensureEntry(featureType.getName()));
     }
 
@@ -3678,7 +3678,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
     }
 
     /** Helper method for setting the values of the WHERE class of a prepared statement. */
-    protected void setPreparedFilterValues(
+    public void setPreparedFilterValues(
             PreparedStatement ps, PreparedFilterToSQL toSQL, int offset, Connection cx)
             throws SQLException {
         PreparedStatementSQLDialect dialect = (PreparedStatementSQLDialect) getSQLDialect();
@@ -4528,12 +4528,12 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * <p>The <tt>featureType</tt> may be null but it is not recommended. Such a case where this may
      * neccessary is when a literal needs to be encoded in isolation.
      */
-    protected FilterToSQL createFilterToSQL(SimpleFeatureType featureType) {
+    public FilterToSQL createFilterToSQL(SimpleFeatureType featureType) {
         return initializeFilterToSQL(((BasicSQLDialect) dialect).createFilterToSQL(), featureType);
     }
 
     /** Creates a new instance of a filter to sql encoder to be used in a prepared statement. */
-    protected PreparedFilterToSQL createPreparedFilterToSQL(SimpleFeatureType featureType) {
+    public PreparedFilterToSQL createPreparedFilterToSQL(SimpleFeatureType featureType) {
         return initializeFilterToSQL(
                 ((PreparedStatementSQLDialect) dialect).createPreparedFilterToSQL(), featureType);
     }
@@ -4625,7 +4625,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Helper method to encode table name which checks if a schema is set and prefixes the table
      * name with it.
      */
-    protected void encodeTableName(String tableName, StringBuffer sql, Hints hints)
+    public void encodeTableName(String tableName, StringBuffer sql, Hints hints)
             throws SQLException {
         encodeAliasedTableName(tableName, sql, hints, null);
     }
@@ -4634,7 +4634,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * Helper method to encode table name which checks if a schema is set and prefixes the table
      * name with it, with the addition of an alias to the name
      */
-    protected void encodeAliasedTableName(
+    public void encodeAliasedTableName(
             String tableName, StringBuffer sql, Hints hints, String alias) throws SQLException {
         VirtualTable vtDefinition = virtualTables.get(tableName);
         if (vtDefinition != null) {
@@ -4776,7 +4776,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @param sql The sql to be modified
      * @param the query that holds the limit and offset parameters
      */
-    void applyLimitOffset(StringBuffer sql, Query query) {
+    public void applyLimitOffset(StringBuffer sql, Query query) {
         applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
     }
 
@@ -4946,7 +4946,7 @@ public final class JDBCDataStore extends ContentDataStore implements GmlObjectSt
      * @param sql
      * @param hints , may be null
      */
-    protected void encodeGeometryColumn(GeometryDescriptor gatt, StringBuffer sql, Hints hints) {
+    public void encodeGeometryColumn(GeometryDescriptor gatt, StringBuffer sql, Hints hints) {
         encodeGeometryColumn(gatt, null, sql, hints);
     }
 

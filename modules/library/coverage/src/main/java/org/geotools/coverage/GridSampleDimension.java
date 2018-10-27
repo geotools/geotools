@@ -28,17 +28,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 import javax.measure.Unit;
-import org.geotools.resources.ClassChanger;
-import org.geotools.resources.Classes;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ColorUtilities;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
+import org.geotools.util.ClassChanger;
+import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.PaletteInterpretation;
@@ -83,7 +83,7 @@ public class GridSampleDimension implements SampleDimension, Serializable {
     private static final double DELTA = 1E-10;
 
     /** The logger for grid sample dimensions. */
-    public static final Logger LOGGER = Logging.getLogger("org.geotools.coverage");
+    public static final Logger LOGGER = Logging.getLogger(GridSampleDimension.class);
 
     /**
      * The category list for this sample dimension, or {@code null} if this sample dimension has no

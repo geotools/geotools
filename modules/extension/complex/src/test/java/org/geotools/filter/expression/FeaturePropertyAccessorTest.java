@@ -16,17 +16,11 @@
  */
 package org.geotools.filter.expression;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.geotools.factory.Hints;
+import java.util.*;
+import org.geotools.data.complex.expression.FeaturePropertyAccessorFactory;
+import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.ComplexAttributeImpl;
 import org.geotools.feature.FeatureImpl;
@@ -35,19 +29,13 @@ import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.geotools.feature.type.ComplexTypeImpl;
 import org.geotools.feature.type.Types;
-import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 import org.opengis.feature.Property;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.AttributeType;
-import org.opengis.feature.type.ComplexType;
-import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.FeatureTypeFactory;
-import org.opengis.feature.type.Name;
-import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.feature.type.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.NamespaceSupport;
 

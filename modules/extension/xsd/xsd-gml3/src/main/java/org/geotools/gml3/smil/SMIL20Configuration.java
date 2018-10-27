@@ -16,7 +16,7 @@
  */
 package org.geotools.gml3.smil;
 
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**

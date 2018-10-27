@@ -17,8 +17,8 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.io.Serializable;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.referencing.operation.Matrix;
 
 /**

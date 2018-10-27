@@ -23,13 +23,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.CQLLiteralTest;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;

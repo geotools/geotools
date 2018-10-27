@@ -54,11 +54,12 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.NamedIdentifier;
@@ -73,8 +74,7 @@ import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.geometry.XRectangle2D;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
@@ -98,7 +98,7 @@ import tec.uom.se.format.SimpleUnitFormat;
 public class Utilities {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(Utilities.class.toString());
+            org.geotools.util.logging.Logging.getLogger(Utilities.class);
 
     /**
      * TODO: Define a contains method which allows to know if the extent of a CoverageSlice contains

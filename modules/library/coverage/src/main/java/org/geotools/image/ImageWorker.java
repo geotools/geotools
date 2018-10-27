@@ -112,17 +112,17 @@ import javax.media.jai.operator.MultiplyConstDescriptor;
 import javax.media.jai.operator.SubtractDescriptor;
 import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.transform.WarpBuilder;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ColorUtilities;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.Arguments;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -174,7 +174,7 @@ public class ImageWorker {
     }
 
     /** The logger to use for this class. */
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.image");
+    private static final Logger LOGGER = Logging.getLogger(ImageWorker.class);
 
     /** CODEC_LIB_AVAILABLE */
     private static final boolean CODEC_LIB_AVAILABLE = PackageUtil.isCodecLibAvailable();

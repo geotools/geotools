@@ -18,7 +18,7 @@ package org.geotools.coverage.grid;
 
 import java.io.Serializable;
 import java.util.Arrays;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.opengis.coverage.grid.GridCoordinates;
 
 /**

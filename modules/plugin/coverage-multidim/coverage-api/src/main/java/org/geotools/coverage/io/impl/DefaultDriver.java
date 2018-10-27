@@ -25,8 +25,8 @@ import java.util.Map;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.Driver;
 import org.geotools.data.Parameter;
-import org.geotools.factory.Hints;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.Hints;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 

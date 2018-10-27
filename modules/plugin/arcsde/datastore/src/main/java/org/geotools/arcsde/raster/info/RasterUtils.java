@@ -46,9 +46,9 @@ import javax.imageio.ImageTypeSpecifier;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.image.ColorUtilities;
-import org.geotools.resources.image.ComponentColorModelJAI;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -66,7 +66,7 @@ import org.opengis.referencing.operation.TransformException;
 @SuppressWarnings({"nls"})
 public class RasterUtils {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(RasterUtils.class);
 
     private RasterUtils() {
         // do nothing

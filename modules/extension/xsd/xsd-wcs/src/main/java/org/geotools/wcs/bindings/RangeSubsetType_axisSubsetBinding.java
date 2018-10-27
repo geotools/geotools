@@ -6,10 +6,10 @@ import net.opengis.wcs10.IntervalType;
 import net.opengis.wcs10.TypedLiteralType;
 import net.opengis.wcs10.Wcs10Factory;
 import org.geotools.wcs.WCS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.AttributeInstance;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.AttributeInstance;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:RangeSubsetType_axisSubset.

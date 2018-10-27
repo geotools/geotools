@@ -37,7 +37,6 @@ import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
 import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
@@ -49,6 +48,7 @@ import org.geotools.jdbc.PrimaryKey;
 import org.geotools.referencing.CRS;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -189,8 +189,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     protected FilterCapabilities capabilities = null;
 
     /** Standard java logger */
-    protected static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+    protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(FilterToSQL.class);
 
     /** Character used to escape database schema, table and column names */
     private String sqlNameEscape = "";
@@ -271,8 +270,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Performs the encoding, sends the encoded sql to the writer passed in.
      *
      * @param filter the Filter to be encoded.
-     * @throws OpenGISFilterToOpenGISFilterToSQLEncoderException If filter type not supported, or if
-     *     there were io problems.
+     * @throws FilterToSQLException If filter type not supported, or if there were io problems.
      */
     public void encode(Filter filter) throws FilterToSQLException {
         if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");
@@ -318,8 +316,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * Performs the encoding, sends the encoded sql to the writer passed in.
      *
      * @param filter the Filter to be encoded.
-     * @throws OpenGISFilterToOpenGISFilterToSQLEncoderException If filter type not supported, or if
-     *     there were io problems.
+     * @throws FilterToSQLException If filter type not supported, or if there were io problems.
      */
     public void encode(Expression expression) throws FilterToSQLException {
         if (out == null) throw new FilterToSQLException("Can't encode to a null writer.");

@@ -49,7 +49,7 @@ import org.geotools.util.Utilities;
 public class StyledLayerDescriptorImpl implements StyledLayerDescriptor {
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
+            org.geotools.util.logging.Logging.getLogger(StyledLayerDescriptorImpl.class);
 
     /** Holds value of property name. */
     private String name;

@@ -88,24 +88,24 @@ import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.MaskInfo;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffIIOMetadataDecoder;
 import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffMetadata2CRSAdapter;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.MapInfoFileReader;
 import org.geotools.data.PrjFileReader;
 import org.geotools.data.WorldFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
@@ -131,8 +131,7 @@ import org.opengis.referencing.operation.TransformException;
 public class GeoTiffReader extends AbstractGridCoverage2DReader implements GridCoverage2DReader {
 
     /** Logger for the {@link GeoTiffReader} class. */
-    private Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class.toString());
+    private Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeoTiffReader.class);
 
     /**
      * With this java switch I can control whether or not an external PRJ files takes precedence

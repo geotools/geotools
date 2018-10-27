@@ -58,16 +58,16 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.image.io.ImageIOExt;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.io.InStream;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
@@ -94,7 +94,7 @@ public final class ArcGridReader extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.arcgrid");
+            org.geotools.util.logging.Logging.getLogger(ArcGridReader.class);
 
     /** Caches and ImageReaderSpi for an AsciiGridsImageReader. */
     private static final ImageReaderSpi readerSPI = new AsciiGridsImageReaderSpi();

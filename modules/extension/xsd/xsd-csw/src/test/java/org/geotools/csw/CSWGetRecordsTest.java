@@ -18,7 +18,7 @@ import net.opengis.cat.csw20.RecordType;
 import net.opengis.cat.csw20.ResultType;
 import org.eclipse.emf.common.util.EList;
 import org.geotools.filter.text.cql2.CQL;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.sort.SortBy;

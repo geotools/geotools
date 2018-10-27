@@ -17,8 +17,8 @@
 package org.geotools.referencing.wkt;
 
 import java.lang.reflect.Modifier;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * Thrown by {@link Formattable#toWKT} when an object can't be formatted as WKT. A formatting may

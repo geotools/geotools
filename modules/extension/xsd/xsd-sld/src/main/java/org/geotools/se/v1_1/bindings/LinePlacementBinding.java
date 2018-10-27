@@ -21,7 +21,8 @@ import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDLinePlacementBinding;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Expression;
 
 /**

@@ -40,7 +40,7 @@ import org.opengis.feature.type.FeatureType;
  */
 public class FeatureListenerManager {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data");
+            org.geotools.util.logging.Logging.getLogger(FeatureListenerManager.class);
     /**
      * Hold on to provided FeatureListener using a weak reference.
      *

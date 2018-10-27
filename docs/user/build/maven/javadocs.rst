@@ -32,7 +32,7 @@ Excluded packages are:
 
 * com.\*
 * org.geotools.maven.\*
-* org.geotools.resources.\*
+* org.geotools.referencing.util.\*
 
 When Maven fails to generate the javadoc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

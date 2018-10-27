@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Function;
@@ -48,7 +48,7 @@ import org.opengis.filter.expression.Literal;
  */
 public class FunctionFinder {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(FunctionFinder.class);
 
     private volatile Map<Name, FunctionFactory> functionFactoryCache;
 

@@ -21,7 +21,7 @@ import javax.xml.namespace.QName;
 import net.opengis.fes20.Fes20Factory;
 import net.opengis.fes20.SpatialOperatorType;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 
 public class SpatialOperatorTypeBinding extends AbstractComplexEMFBinding {
 

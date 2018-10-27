@@ -21,12 +21,12 @@ package org.geotools.referencing.factory;
 
 import java.util.Set;
 import javax.measure.Unit;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.util.NameFactory;
 import org.geotools.util.ObjectCache;
 import org.geotools.util.ObjectCaches;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;

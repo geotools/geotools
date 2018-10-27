@@ -46,8 +46,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class InProcessViewSupportTestData {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    InProcessViewSupportTestData.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(InProcessViewSupportTestData.class);
 
     public static final String MASTER_UNQUALIFIED = "GT_SDE_TEST_MASTER";
 

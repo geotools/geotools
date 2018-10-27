@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *
  *    THIS IS AN AUTOMATICALLY GENERATED FILE. DO NOT EDIT!
- *    Generated with: org.geotools.resources.IndexedResourceCompiler
+ *    Generated with: org.geotools.referencing.util.IndexedResourceCompiler
  */
 package org.geotools.renderer.i18n;
 
@@ -25,8 +25,8 @@ package org.geotools.renderer.i18n;
  * integer values, using long identifiers will not bloat constant pools of classes compiled against
  * the interface, provided that no class implements this interface.
  *
- * @see org.geotools.resources.IndexedResourceBundle
- * @see org.geotools.resources.IndexedResourceCompiler
+ * @see org.geotools.util.IndexedResourceBundle
+ * @see org.geotools.util.IndexedResourceCompiler
  */
 public final class VocabularyKeys {
     private VocabularyKeys() {}

@@ -20,8 +20,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
+import org.geotools.util.NullEntityResolver;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.xml.sax.EntityResolver;
 
 /**
@@ -180,7 +181,7 @@ public class XMLHandlerHints implements Map<String, Object> {
 
     /**
      * Looks up {@link #ENTITY_RESOLVER} instance in provided hints, defaulting to setting provided
-     * by {@link GeoTools#getEntityResolver(org.geotools.factory.Hints)} (usually {@link
+     * by {@link GeoTools#getEntityResolver(org.geotools.util.factory.Hints)} (usually {@link
      * PreventLocalEntityResolver} unless otherwise configured).
      *
      * @param hints

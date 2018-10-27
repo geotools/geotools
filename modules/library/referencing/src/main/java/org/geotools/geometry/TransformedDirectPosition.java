@@ -16,13 +16,13 @@
  */
 package org.geotools.geometry;
 
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;

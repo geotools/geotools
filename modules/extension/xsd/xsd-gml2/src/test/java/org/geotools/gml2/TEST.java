@@ -18,7 +18,7 @@ package org.geotools.gml2;
 
 import java.util.Set;
 import javax.xml.namespace.QName;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 public final class TEST extends XSD {
     private static TEST instance = new TEST();

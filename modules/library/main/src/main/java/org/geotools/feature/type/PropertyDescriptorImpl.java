@@ -18,7 +18,7 @@ package org.geotools.feature.type;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;

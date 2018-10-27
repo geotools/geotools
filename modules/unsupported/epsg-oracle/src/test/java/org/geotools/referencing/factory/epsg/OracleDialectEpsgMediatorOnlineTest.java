@@ -18,8 +18,9 @@ package org.geotools.referencing.factory.epsg;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.factory.Hints;
+import org.geotools.referencing.factory.epsg.oracle.OracleDialectEpsgMediator;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class OracleDialectEpsgMediatorOnlineTest extends OracleOnlineTestCase {

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterTransformer;
 import org.geotools.filter.NotImpl;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.filter.And;

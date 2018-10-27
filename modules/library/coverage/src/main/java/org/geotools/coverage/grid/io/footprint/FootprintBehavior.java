@@ -26,8 +26,8 @@ import javax.media.jai.ROI;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
-import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
+import org.geotools.util.factory.Hints;
 
 /**
  * Handles the way footprints should be treated.

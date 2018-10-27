@@ -17,11 +17,11 @@
 package org.geotools.geometry;
 
 import java.util.Arrays;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryFinder;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryFinder;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.PositionFactory;
 import org.opengis.geometry.Precision;
 import org.opengis.geometry.aggregate.AggregateFactory;

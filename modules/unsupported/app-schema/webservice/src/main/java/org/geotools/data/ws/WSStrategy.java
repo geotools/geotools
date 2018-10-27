@@ -16,33 +16,24 @@
  */
 package org.geotools.data.ws;
 
+import freemarker.template.Template;
 import java.io.IOException;
 import java.util.Map;
-
-import net.opengis.wfs.GetFeatureType;
-
 import org.geotools.data.Query;
-import org.geotools.data.ws.protocol.ws.WSProtocol;
 import org.geotools.filter.Capabilities;
 import org.geotools.wfs.WFSConfiguration;
 import org.geotools.xml.Configuration;
 import org.opengis.filter.Filter;
 
-import freemarker.template.Template;
-
 /**
  * An interface to allow plugging different strategy objects into a {@link XmlDataStore} to take
  * care of specific WS implementations limitations or deviations from the spec.
- * 
+ *
  * @author rpetty
  * @version $Id$
  * @since 2.6
- *
- *
- *
-
- *         http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/data
- *         /wfs/v1_1_0/WSStrategy.java $
+ *     <p>http://gtsvn.refractions.net/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/data
+ *     /wfs/v1_1_0/WSStrategy.java $
  * @see WSDataStoreFactory
  * @see DefaultWSStrategy
  * @see CubeWerxStrategy
@@ -52,11 +43,10 @@ public interface WSStrategy {
     /**
      * Returns an xml configuration suitable to parse/encode wfs documents appropriate for the
      * server.
-     * <p>
-     * Note: most of the time it will just be {@link WFSConfiguration}, but it may be possible, for
-     * example, an strategy needs to override some bindings.
-     * </p>
-     * 
+     *
+     * <p>Note: most of the time it will just be {@link WFSConfiguration}, but it may be possible,
+     * for example, an strategy needs to override some bindings.
+     *
      * @return a WFS xml {@link Configuration}
      */
     public Configuration getWsConfiguration();
@@ -64,6 +54,6 @@ public interface WSStrategy {
     public Filter[] splitFilters(Capabilities filterCaps, Filter filter);
 
     public Template getTemplate();
-    
+
     public Map getRequestData(Query query) throws IOException;
 }

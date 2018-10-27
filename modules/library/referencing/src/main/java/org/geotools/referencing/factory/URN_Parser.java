@@ -17,8 +17,8 @@
 
 package org.geotools.referencing.factory;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 

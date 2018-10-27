@@ -45,9 +45,9 @@ import javax.media.jai.registry.RenderedRegistryMode;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.AbstractGridCoverage;
 import org.geotools.image.TransfertRectIter;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
+import org.geotools.image.util.ImageUtilities;
 
 /**
  * An image that contains transformed samples, specifically this method will transform the NoData
@@ -169,7 +169,7 @@ public final class NoDataReplacerOpImage extends PointOpImage {
     /**
      * Transform a raster. Only the current band in {@code iterator} will be transformed. The
      * transformed value are write back in the {@code iterator}. If a different destination raster
-     * is wanted, a {@link org.geotools.resources.image.DualRectIter} may be used.
+     * is wanted, a {@link org.geotools.referencing.util.image.DualRectIter} may be used.
      *
      * @param iterator An iterator to iterate among the samples to transform.
      */

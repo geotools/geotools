@@ -45,7 +45,7 @@ import org.xml.sax.Attributes;
 public class ExpressionSAXParser {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(ExpressionSAXParser.class);
 
     /** Factory to construct filters. */
     private FilterFactory2 ff;

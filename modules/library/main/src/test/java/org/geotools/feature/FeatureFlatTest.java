@@ -35,7 +35,7 @@ public class FeatureFlatTest extends TestCase {
 
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.defaultcore");
+            org.geotools.util.logging.Logging.getLogger(FeatureFlatTest.class);
 
     /** Feature on which to preform tests */
     private SimpleFeature testFeature = null;

@@ -17,33 +17,29 @@
 package org.geotools.data.ws;
 
 import java.io.IOException;
-
 import org.geotools.data.Query;
 import org.geotools.data.complex.xml.XmlFeatureCollection;
 import org.geotools.data.complex.xml.XmlResponse;
 import org.geotools.data.store.DataFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-
 import org.opengis.feature.simple.SimpleFeatureType;
 
-
 /**
- * A {@link FeatureCollection} whose iterators are based on the FeatureReaders returned by a
- * {@link XmlDataStore}.
- * 
+ * A {@link FeatureCollection} whose iterators are based on the FeatureReaders returned by a {@link
+ * XmlDataStore}.
+ *
  * @author rpetty
  * @since 2.5.x
  */
-
 public class WSFeatureCollection extends DataFeatureCollection implements XmlFeatureCollection {
-    
+
     private Query query;
 
-    private XmlDataStore dataStore;    
+    private XmlDataStore dataStore;
 
     private XmlResponse xmlResponse;
-       
+
     /**
      * Cached size so multiple calls to {@link #getCount()} does not require multiple server calls
      */
@@ -51,8 +47,7 @@ public class WSFeatureCollection extends DataFeatureCollection implements XmlFea
 
     /**
      * @param dataStore
-     * @param query
-     *            properly named query
+     * @param query properly named query
      * @throws IOException
      */
     public WSFeatureCollection(XmlDataStore dataStore, Query query) throws IOException {
@@ -68,10 +63,9 @@ public class WSFeatureCollection extends DataFeatureCollection implements XmlFea
     /**
      * Calculates and returns the aggregated bounds of the collection contents, potentially doing a
      * full scan.
-     * <p>
-     * As a bonuns, if a full scan needs to be done updates the cached collection size so a future
-     * call to {@link #getCount()} does not require an extra server call.
-     * </p>
+     *
+     * <p>As a bonuns, if a full scan needs to be done updates the cached collection size so a
+     * future call to {@link #getCount()} does not require an extra server call.
      */
     @Override
     public ReferencedEnvelope getBounds() {
@@ -80,12 +74,11 @@ public class WSFeatureCollection extends DataFeatureCollection implements XmlFea
 
     /**
      * Calculates the feature collection size, doing a full scan if needed.
-     * <p>
-     * <b>WARN</b>: this method could be very inefficient if the size cannot be efficiently
-     * calculated. That is, it is not cached and {@link XmlDataStore#getCount(Query)} returns
-     * {@code -1}.
-     * </p>
-     * 
+     *
+     * <p><b>WARN</b>: this method could be very inefficient if the size cannot be efficiently
+     * calculated. That is, it is not cached and {@link XmlDataStore#getCount(Query)} returns {@code
+     * -1}.
+     *
      * @return the FeatureCollection<SimpleFeatureType, SimpleFeature> size.
      * @see DataFeatureCollection#getCount()
      */
@@ -99,22 +92,22 @@ public class WSFeatureCollection extends DataFeatureCollection implements XmlFea
             // no luck, cache both bounds and count with a full scan
             getBounds();
         }
-        return  cachedSize;
+        return cachedSize;
     }
-    
+
     public XmlResponse xmlResponse(String xpath, String value) {
         try {
             xmlResponse = dataStore.getXmlReader(query, xpath, value);
-        } catch (IOException e) {           
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return xmlResponse;
     }
-    
+
     public XmlResponse xmlResponse() {
         try {
             xmlResponse = dataStore.getXmlReader(query);
-        } catch (IOException e) {           
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return xmlResponse;

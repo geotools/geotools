@@ -22,12 +22,12 @@ import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import net.opengis.ows11.ExceptionReportType;
 import net.opengis.wps10.WPSCapabilitiesType;
-import org.geotools.data.ows.AbstractWPSGetCapabilitiesResponse;
 import org.geotools.data.ows.HTTPResponse;
+import org.geotools.data.wps.AbstractWPSGetCapabilitiesResponse;
 import org.geotools.ows.ServiceException;
 import org.geotools.wps.WPSConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.geotools.xml.XMLHandlerHints;
 import org.xml.sax.SAXException;
 

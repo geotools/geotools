@@ -25,11 +25,11 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
@@ -73,7 +73,7 @@ public class WorldFileWriter {
 
     /** Logger for this class. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.data");
+            org.geotools.util.logging.Logging.getLogger(WorldFileWriter.class);
 
     /**
      * Constructor.

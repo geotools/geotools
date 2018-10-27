@@ -65,11 +65,6 @@
   <dependencies>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
       <artifactId>gt-referencing</artifactId>
       <version>${project.version}</version>
     </dependency>

@@ -18,9 +18,9 @@ package org.geotools.coverage.processing;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import org.geotools.factory.Hints;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.processing.Operation;
 import org.opengis.filter.identity.Identifier;

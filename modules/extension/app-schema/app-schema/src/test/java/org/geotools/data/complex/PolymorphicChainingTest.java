@@ -21,13 +21,13 @@ import static org.junit.Assert.*;
 
 import java.net.URL;
 import java.util.*;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.Types;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.BeforeClass;
 import org.junit.Test;

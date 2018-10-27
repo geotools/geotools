@@ -19,12 +19,12 @@ package org.geotools.coverage;
 import java.util.Arrays;
 import java.util.Set;
 import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryFinder;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.Hints;
-import org.geotools.resources.LazySet;
+import org.geotools.util.LazySet;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryFinder;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 
 /**
  * Defines static methods used to access the application's default {@linkplain GridCoverageFactory

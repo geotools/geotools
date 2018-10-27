@@ -20,7 +20,7 @@ import it.geosolutions.imageio.plugins.envihdr.ENVIHdrImageReaderSpi;
 import java.util.logging.Logger;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageReader;
 
@@ -34,7 +34,7 @@ public final class EnviHdrReader extends BaseGDALGridCoverage2DReader
     /** Logger. */
     @SuppressWarnings("unused")
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.envihdr");
+            org.geotools.util.logging.Logging.getLogger(EnviHdrReader.class);
 
     /**
      * Creates a new instance of a {@link EnviHdrReader}. I assume nothing about file extension.

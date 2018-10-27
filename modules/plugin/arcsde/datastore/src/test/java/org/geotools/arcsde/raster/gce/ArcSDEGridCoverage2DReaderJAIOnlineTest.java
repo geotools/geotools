@@ -44,8 +44,8 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.util.ColorUtilities;
 import org.geotools.parameter.Parameter;
-import org.geotools.resources.image.ColorUtilities;
 import org.geotools.util.logging.Logging;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -65,7 +65,8 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
     private static final String RASTER_TEST_DEBUG_TO_DISK = "raster.test.debugToDisk";
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER =
+            Logging.getLogger(ArcSDEGridCoverage2DReaderJAIOnlineTest.class);
 
     /** Whether to write the fetched rasters to disk or not */
     private static boolean DEBUG;

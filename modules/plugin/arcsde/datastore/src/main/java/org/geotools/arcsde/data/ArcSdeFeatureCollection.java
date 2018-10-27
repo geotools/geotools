@@ -46,7 +46,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class ArcSdeFeatureCollection extends DataFeatureCollection {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");
+    private static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureCollection.class);
 
     private final ArcSdeFeatureSource featureSource;
 

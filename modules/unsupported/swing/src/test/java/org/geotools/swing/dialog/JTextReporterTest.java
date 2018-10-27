@@ -453,7 +453,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
     }
 
     private void captureLogger() {
-        Logger logger = Logging.getLogger("org.geotools.swing");
+        Logger logger = Logging.getLogger(JTextReporterTest.class);
         Formatter formatter = new SimpleFormatter();
         out = new ByteArrayOutputStream();
         handler = new StreamHandler(out, formatter);
@@ -462,7 +462,7 @@ public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, D
     }
 
     private void releaseLogger() {
-        Logger logger = Logging.getLogger("org.geotools.swing");
+        Logger logger = Logging.getLogger(JTextReporterTest.class);
         logger.removeHandler(handler);
         logger.setUseParentHandlers(true);
     }

@@ -32,13 +32,13 @@ import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.util.XSDParser;
-import org.geotools.xml.Binding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.SimpleBinding;
-import org.geotools.xml.impl.BindingLoader;
-import org.geotools.xml.impl.ElementImpl;
-import org.geotools.xml.impl.PicoMap;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.SimpleBinding;
+import org.geotools.xsd.impl.BindingLoader;
+import org.geotools.xsd.impl.ElementImpl;
+import org.geotools.xsd.impl.PicoMap;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
 public abstract class TestSchema extends TestCase {

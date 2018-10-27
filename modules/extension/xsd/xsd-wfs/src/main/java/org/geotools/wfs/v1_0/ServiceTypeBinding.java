@@ -5,9 +5,9 @@ import net.opengis.ows10.CodeType;
 import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows10.ServiceIdentificationType;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 public class ServiceTypeBinding extends AbstractComplexEMFBinding {
 

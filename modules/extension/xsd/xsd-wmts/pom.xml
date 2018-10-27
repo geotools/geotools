@@ -102,8 +102,8 @@
                     <generateXsd>true</generateXsd>
                     <targetPrefix>wmts</targetPrefix>
                     <generateSchemaLocationResolver>true</generateSchemaLocationResolver>
-                    <complexBindingBaseClass>org.geotools.xml.AbstractComplexBinding</complexBindingBaseClass>
-                    <simpleBindingBaseClass>org.geotools.xml.AbstractSimpleBinding</simpleBindingBaseClass>
+                    <complexBindingBaseClass>org.geotools.xsd.AbstractComplexBinding</complexBindingBaseClass>
+                    <simpleBindingBaseClass>org.geotools.xsd.AbstractSimpleBinding</simpleBindingBaseClass>
                     <bindingConstructorArguments>
                         <bindingConstructorArgument>
                             <name>factory</name>

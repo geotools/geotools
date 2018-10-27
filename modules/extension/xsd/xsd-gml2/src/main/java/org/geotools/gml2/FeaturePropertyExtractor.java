@@ -25,10 +25,10 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.xml.ComplexBinding;
-import org.geotools.xml.PropertyExtractor;
-import org.geotools.xml.SchemaIndex;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.ComplexBinding;
+import org.geotools.xsd.PropertyExtractor;
+import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.Schemas;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

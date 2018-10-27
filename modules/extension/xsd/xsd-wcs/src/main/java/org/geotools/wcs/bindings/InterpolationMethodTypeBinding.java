@@ -3,8 +3,8 @@ package org.geotools.wcs.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.wcs10.InterpolationMethodType;
 import org.geotools.wcs.WCS;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:InterpolationMethodType.

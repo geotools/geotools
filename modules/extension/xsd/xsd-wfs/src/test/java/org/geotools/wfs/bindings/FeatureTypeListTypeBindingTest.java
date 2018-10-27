@@ -30,7 +30,7 @@ import net.opengis.wfs.OutputFormatListType;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.geotools.xsd.ows.OWS;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

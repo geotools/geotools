@@ -2,7 +2,7 @@ package org.geotools.wfs.gtxml;
 
 import java.io.IOException;
 import javax.xml.namespace.QName;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 

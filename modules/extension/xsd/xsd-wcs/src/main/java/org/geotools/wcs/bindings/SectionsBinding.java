@@ -8,9 +8,9 @@ import net.opengis.wcs20.Section;
 import net.opengis.wcs20.Sections;
 import net.opengis.wcs20.Wcs20Factory;
 import org.geotools.wcs.v2_0.WCSEO;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Custom binding for the {@link DescribeEOCoverageSetType} type
@@ -55,7 +55,7 @@ public class SectionsBinding extends AbstractComplexEMFBinding {
     /*
      * (non-Javadoc)
      *
-     * @see org.geotools.xml.AbstractComplexBinding#getExecutionMode()
+     * @see org.geotools.xsd.AbstractComplexBinding#getExecutionMode()
      */
     @Override
     public int getExecutionMode() {

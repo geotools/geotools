@@ -30,7 +30,7 @@ import org.geotools.wmts.bindings.TileMatrixSetLimitsBinding;
 import org.geotools.wmts.bindings.TileMatrixSetLinkBinding;
 import org.geotools.wmts.bindings.URLTemplateTypeBinding;
 import org.geotools.wmts.bindings.VersionTypeBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**

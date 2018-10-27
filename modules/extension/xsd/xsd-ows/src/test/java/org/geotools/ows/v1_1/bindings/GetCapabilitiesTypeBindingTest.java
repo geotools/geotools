@@ -19,7 +19,7 @@ package org.geotools.ows.v1_1.bindings;
 import net.opengis.ows11.GetCapabilitiesType;
 import org.geotools.ows.v1_1.OWS;
 import org.geotools.ows.v1_1.OWSTestSupport_1_1;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.junit.Assert;
 
 public class GetCapabilitiesTypeBindingTest extends OWSTestSupport_1_1 {

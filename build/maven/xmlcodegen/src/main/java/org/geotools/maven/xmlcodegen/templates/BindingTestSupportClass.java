@@ -1,9 +1,7 @@
 package org.geotools.maven.xmlcodegen.templates;
 
-import java.util.*;
-import java.io.*;
 import org.eclipse.xsd.*;
-import org.geotools.xml.*;
+import org.geotools.xsd.Schemas;
 
 public class BindingTestSupportClass
 {
@@ -17,7 +15,7 @@ public class BindingTestSupportClass
   }
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
-  protected final String TEXT_1 = NL + "import org.geotools.xml.Configuration;" + NL + "import org.geotools.xml.test.XMLTestSupport;" + NL + "" + NL + "/**" + NL + " * Base test class for the ";
+  protected final String TEXT_1 = NL + "import org.geotools.xsd.Configuration;" + NL + "import org.geotools.xml.test.XMLTestSupport;" + NL + "" + NL + "/**" + NL + " * Base test class for the ";
   protected final String TEXT_2 = " schema." + NL + " *" + NL + " * @generated" + NL + " */" + NL + "public class ";
   protected final String TEXT_3 = "TestSupport extends XMLTestSupport {" + NL + "" + NL + "    protected Configuration createConfiguration() {" + NL + "       return new ";
   protected final String TEXT_4 = "Configuration();" + NL + "    }" + NL + "  " + NL + "} ";

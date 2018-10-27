@@ -18,7 +18,10 @@ package org.geotools.geopkg.wps.xml;
 
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.xml.*;
+
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/gpkg:gridsettype.

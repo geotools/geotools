@@ -21,9 +21,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SchemaIndex;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SchemaIndex;
+import org.geotools.xsd.Schemas;
 import org.junit.Assert;
 import org.junit.Test;
 

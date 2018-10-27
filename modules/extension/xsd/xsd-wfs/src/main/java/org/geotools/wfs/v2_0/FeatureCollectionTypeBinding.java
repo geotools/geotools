@@ -22,11 +22,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.wfs.bindings.WFSParsingUtils;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs/2.0:FeatureCollectionType.

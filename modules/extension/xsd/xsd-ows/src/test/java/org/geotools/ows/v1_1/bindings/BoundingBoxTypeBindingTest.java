@@ -22,7 +22,7 @@ import net.opengis.ows11.BoundingBoxType;
 import net.opengis.ows11.Ows11Factory;
 import org.geotools.ows.v1_1.OWS;
 import org.geotools.ows.v1_1.OWSTestSupport_1_1;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

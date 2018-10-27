@@ -33,9 +33,9 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.wfs.CompositeFeatureCollection;
 import org.geotools.wfs.v2_0.WFS;
-import org.geotools.xml.EMFUtils;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.EMFUtils;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class WFSParsingUtils {

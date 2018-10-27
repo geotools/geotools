@@ -20,8 +20,8 @@ import org.geotools.sld.bindings.SLDNamedStyleBinding;
 import org.geotools.styling.Description;
 import org.geotools.styling.NamedStyle;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:NamedStyle.

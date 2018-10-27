@@ -16,8 +16,8 @@
  */
 package org.geotools.filter.v1_1;
 
-import org.geotools.xml.Configuration;
-import org.geotools.xml.test.XMLTestSupport;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.test.XMLTestSupport;
 
 public abstract class FilterTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {

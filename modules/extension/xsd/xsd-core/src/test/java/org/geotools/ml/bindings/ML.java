@@ -17,7 +17,7 @@
 package org.geotools.ml.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types in the http://mails/refractions/net

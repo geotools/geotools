@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 
 import org.eclipse.xsd.XSDNamedComponent;
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 
 
 /**

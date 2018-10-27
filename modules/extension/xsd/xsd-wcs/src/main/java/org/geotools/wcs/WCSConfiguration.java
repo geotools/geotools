@@ -36,8 +36,8 @@ import org.geotools.wcs.bindings.ValueEnumBaseTypeBinding;
 import org.geotools.wcs.bindings.ValueEnumTypeBinding;
 import org.geotools.wcs.bindings.ValueRangeTypeBinding;
 import org.geotools.wcs.bindings._axisDescriptionBinding;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**

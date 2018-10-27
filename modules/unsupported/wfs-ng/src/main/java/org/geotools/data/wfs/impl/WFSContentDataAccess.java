@@ -36,7 +36,7 @@ import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.SchemaIndex;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.opengis.feature.Feature;

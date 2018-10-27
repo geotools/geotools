@@ -19,9 +19,9 @@ package org.geotools.sld.bindings;
 import java.util.Map;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.GrowableInternationalString;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
 

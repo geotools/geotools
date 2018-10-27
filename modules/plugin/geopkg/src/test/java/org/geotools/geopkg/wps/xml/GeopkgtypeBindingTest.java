@@ -19,7 +19,7 @@ package org.geotools.geopkg.wps.xml;
 import java.awt.Color;
 import javax.xml.namespace.QName;
 import org.geotools.geopkg.wps.GeoPackageProcessRequest;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;

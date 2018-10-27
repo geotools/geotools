@@ -19,7 +19,9 @@ package org.geotools.se.v1_1.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.styling.ColorMap;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/se:ColorMap.

@@ -54,7 +54,7 @@ import org.geotools.graph.traverse.standard.DirectedDepthFirstTopologicalIterato
 import org.geotools.graph.util.graph.CycleDetector;
 import org.geotools.graph.util.graph.DirectedCycleDetector;
 import org.geotools.util.Utilities;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 import org.geotools.xs.XS;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;

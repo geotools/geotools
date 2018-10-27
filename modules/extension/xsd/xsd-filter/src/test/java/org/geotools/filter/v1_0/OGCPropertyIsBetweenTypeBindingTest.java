@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;

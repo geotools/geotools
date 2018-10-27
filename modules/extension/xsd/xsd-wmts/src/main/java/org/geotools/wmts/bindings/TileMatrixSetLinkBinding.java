@@ -5,8 +5,9 @@ import net.opengis.wmts.v_1.TileMatrixSetLimitsType;
 import net.opengis.wmts.v_1.TileMatrixSetLinkType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:TileMatrixSetLink.

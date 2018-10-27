@@ -7,8 +7,9 @@ import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.TileMatrixSetType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wmts/1.0:ContentsType.

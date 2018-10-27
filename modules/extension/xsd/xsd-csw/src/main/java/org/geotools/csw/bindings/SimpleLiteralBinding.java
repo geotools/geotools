@@ -4,9 +4,9 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.Csw20Factory;
 import net.opengis.cat.csw20.SimpleLiteral;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.SimpleContentComplexEMFBinding;
 
 public class SimpleLiteralBinding extends SimpleContentComplexEMFBinding {
 

@@ -23,7 +23,7 @@ import org.geotools.sld.v1_1.bindings.RemoteOWSBinding;
 import org.geotools.sld.v1_1.bindings.StyledLayerDescriptorBinding;
 import org.geotools.sld.v1_1.bindings.UserLayerBinding;
 import org.geotools.sld.v1_1.bindings.UserStyleBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
 /**

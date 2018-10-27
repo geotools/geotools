@@ -20,7 +20,9 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 import org.geotools.styling.RemoteOWS;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.picocontainer.MutablePicoContainer;
 
 /**

@@ -1,14 +1,13 @@
 package org.geotools.maven.xmlcodegen.templates;
 
-import org.geotools.maven.xmlcodegen.*;
-import java.util.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.sax.*;
 import javax.xml.transform.stream.*;
 import org.eclipse.xsd.*;
 import java.io.*;
-import org.geotools.xml.*;
+
+import org.geotools.xsd.Schemas;
 
 public class BindingTestClass
 {
@@ -22,7 +21,7 @@ public class BindingTestClass
   }
 
   public final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
-  protected final String TEXT_1 = NL + "import org.geotools.xml.Binding;" + NL + "" + NL + "/**" + NL + " * Binding test case for ";
+  protected final String TEXT_1 = NL + "import org.geotools.xsd.Binding;" + NL + "" + NL + "/**" + NL + " * Binding test case for ";
   protected final String TEXT_2 = ":";
   protected final String TEXT_3 = "." + NL + " *" + NL + " * <p>" + NL + " *  <pre>" + NL + " *   <code>";
   protected final String TEXT_4 = NL + " *  ";

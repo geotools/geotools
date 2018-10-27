@@ -19,8 +19,8 @@ package org.geotools.sld.bindings;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.sld.SLDConfiguration;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.test.XMLTestSupport;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.test.XMLTestSupport;
 
 public abstract class SLDTestSupport extends XMLTestSupport {
     StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();

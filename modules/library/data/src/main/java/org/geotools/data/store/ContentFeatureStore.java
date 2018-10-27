@@ -27,7 +27,7 @@ import org.geotools.data.FilteringFeatureWriter;
 import org.geotools.data.InProcessLockingManager;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollection;

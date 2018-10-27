@@ -21,8 +21,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Point2D;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;

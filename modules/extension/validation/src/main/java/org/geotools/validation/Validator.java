@@ -28,7 +28,7 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultRepository;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Repository;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;

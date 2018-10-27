@@ -18,7 +18,7 @@ package org.geotools.process.vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.filter.function.RangedClassifier;

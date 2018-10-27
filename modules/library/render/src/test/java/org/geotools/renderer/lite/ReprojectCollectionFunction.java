@@ -2,7 +2,7 @@ package org.geotools.renderer.lite;
 
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;

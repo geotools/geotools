@@ -23,6 +23,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.geotools.parameter.Parameter;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 

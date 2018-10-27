@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.NoSuchElementException;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.store.ContentState;
 import org.geotools.feature.FeatureIterator;

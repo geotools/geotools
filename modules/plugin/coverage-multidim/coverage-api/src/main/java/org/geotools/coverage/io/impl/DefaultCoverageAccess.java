@@ -29,7 +29,7 @@ import org.geotools.coverage.io.CoverageSource;
 import org.geotools.coverage.io.CoverageStore;
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.metadata.MetadataNode;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.util.factory.Hints;

@@ -30,7 +30,6 @@ import java.util.Set;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.geotools.data.DataTestCase;
-import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
@@ -215,10 +214,10 @@ public class FeatureTypeTest extends DataTestCase {
 
         AttributeDescriptor testType = ab.binding(Object.class).buildDescriptor("test");
 
-        assertSame("String", str, DataUtilities.duplicate(str));
-        assertSame("Integer", i, DataUtilities.duplicate(i));
-        assertSame("Float", f, DataUtilities.duplicate(f));
-        assertSame("Double", d, DataUtilities.duplicate(d));
+        assertSame("String", str, FeatureTypes.duplicate(str));
+        assertSame("Integer", i, FeatureTypes.duplicate(i));
+        assertSame("Float", f, FeatureTypes.duplicate(f));
+        assertSame("Double", d, FeatureTypes.duplicate(d));
 
         // collections
         Object objs[] =
@@ -239,10 +238,10 @@ public class FeatureTypeTest extends DataTestCase {
         map.put("b", i);
         map.put("c", f);
         map.put("d", d);
-        assertDuplicate("objs", objs, DataUtilities.duplicate(objs));
-        assertDuplicate("ints", ints, DataUtilities.duplicate(ints));
-        assertDuplicate("list", list, DataUtilities.duplicate(list));
-        assertDuplicate("map", map, DataUtilities.duplicate(map));
+        assertDuplicate("objs", objs, FeatureTypes.duplicate(objs));
+        assertDuplicate("ints", ints, FeatureTypes.duplicate(ints));
+        assertDuplicate("list", list, FeatureTypes.duplicate(list));
+        assertDuplicate("map", map, FeatureTypes.duplicate(map));
 
         // complex type
         SimpleFeature feature = lakeFeatures[0];
@@ -254,8 +253,8 @@ public class FeatureTypeTest extends DataTestCase {
         Geometry point2 = gf.createPoint(coords2);
 
         assertDuplicate("jts duplicate", point, point2);
-        assertDuplicate("feature", feature, DataUtilities.duplicate(feature));
-        assertDuplicate("point", point, DataUtilities.duplicate(point));
+        assertDuplicate("feature", feature, FeatureTypes.duplicate(feature));
+        assertDuplicate("point", point, FeatureTypes.duplicate(point));
     }
 
     static Set immutable;

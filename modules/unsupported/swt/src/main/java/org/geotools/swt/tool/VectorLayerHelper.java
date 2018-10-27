@@ -19,7 +19,7 @@ package org.geotools.swt.tool;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.Geometries;

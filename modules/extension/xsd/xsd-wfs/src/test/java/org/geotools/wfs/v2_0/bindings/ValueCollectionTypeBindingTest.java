@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.ValueCollectionType;
 import net.opengis.wfs20.Wfs20Factory;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml3.v3_2.GML;

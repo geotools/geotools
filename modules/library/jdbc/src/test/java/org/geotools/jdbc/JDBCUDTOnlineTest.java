@@ -20,8 +20,8 @@ import java.util.HashMap;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 

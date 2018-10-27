@@ -17,7 +17,7 @@
 package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.sld.bindings.SLDUserLayerBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.UserLayer;

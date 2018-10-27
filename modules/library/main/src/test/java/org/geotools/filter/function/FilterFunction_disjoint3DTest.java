@@ -1,7 +1,7 @@
 package org.geotools.filter.function;
 
 import junit.framework.TestCase;
-import org.geotools.data.DataUtilities;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.FilterFactoryImpl;
@@ -24,7 +24,7 @@ public class FilterFunction_disjoint3DTest extends TestCase {
 
         SimpleFeatureType type = null;
         try {
-            type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");
+            type = FeatureTypes.createType("testSchema", "name:String,*geom:Geometry");
         } catch (SchemaException e) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }

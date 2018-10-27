@@ -4,7 +4,7 @@ import java.awt.RenderingHints.Key;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessFactory;

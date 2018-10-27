@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.junit.Before;

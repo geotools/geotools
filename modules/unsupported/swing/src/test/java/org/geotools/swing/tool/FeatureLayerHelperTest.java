@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;

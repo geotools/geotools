@@ -19,7 +19,7 @@ package org.geotools.wfs.v2_0;
 import javax.xml.namespace.QName;
 import net.opengis.wfs20.Wfs20Factory;
 import org.eclipse.emf.ecore.EObject;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.wfs.bindings.WFSParsingUtils;
 import org.geotools.xml.AbstractComplexEMFBinding;

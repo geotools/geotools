@@ -18,9 +18,9 @@ package org.geotools.filter.function;
 
 import static org.junit.Assert.*;
 
-import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.After;
 import org.junit.Before;
@@ -45,7 +45,7 @@ public class FilterFunction_listMultiplyTest {
     @Before
     public void setUp() throws Exception {
         dataType =
-                DataUtilities.createType(
+                FeatureTypes.createType(
                         "listMultiply.test1", "id:0,geom:Point,dynamic_dasharray:String");
 
         dashArrays = new String[] {"5 10", "15 30"};

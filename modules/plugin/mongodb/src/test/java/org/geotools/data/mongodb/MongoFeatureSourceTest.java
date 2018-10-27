@@ -18,8 +18,8 @@
 package org.geotools.data.mongodb;
 
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;

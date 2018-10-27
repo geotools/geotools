@@ -21,8 +21,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.Capabilities;
 import org.geotools.filter.IllegalFilterException;
@@ -91,7 +91,7 @@ public class AbstractCapabilitiesFilterSplitterTests {
             throws SchemaException {
         return new CapabilitiesFilterSplitter(
                 supportedCaps,
-                DataUtilities.createType(
+                FeatureTypes.createType(
                         typeName, geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"),
                 accessor);
     }

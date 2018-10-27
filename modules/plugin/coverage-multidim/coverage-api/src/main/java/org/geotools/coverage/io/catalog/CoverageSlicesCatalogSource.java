@@ -21,7 +21,7 @@ import java.util.List;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;

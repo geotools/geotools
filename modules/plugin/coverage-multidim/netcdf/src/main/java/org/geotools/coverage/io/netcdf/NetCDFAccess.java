@@ -39,7 +39,7 @@ import org.geotools.coverage.io.impl.DefaultFileCoverageAccess;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultServiceInfo;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.data.Repository;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.util.NullProgressListener;

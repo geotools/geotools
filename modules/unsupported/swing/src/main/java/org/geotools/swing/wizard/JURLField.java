@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import org.geotools.data.FileDataStoreFactorySpi;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.swing.data.JFileDataStoreChooser;
 import org.geotools.swing.wizard.JWizard.Controller;
 import org.geotools.util.URLs;

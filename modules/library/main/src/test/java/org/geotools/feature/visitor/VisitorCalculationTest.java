@@ -27,12 +27,12 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import org.geotools.data.DataTestCase;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.collection.TreeSetFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.MaxVisitor.MaxResult;
 import org.geotools.feature.visitor.MedianVisitor.MedianResult;
@@ -74,14 +74,14 @@ public class VisitorCalculationTest extends DataTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         empty = FeatureCollections.newCollection();
-        fc = DataUtilities.collection(roadFeatures);
+        fc = FeatureTypes.collection(roadFeatures);
         invfc = new TreeSetFeatureCollection(fc).sort(SortBy.REVERSE_ORDER);
-        fc2 = DataUtilities.collection(riverFeatures);
+        fc2 = FeatureTypes.collection(riverFeatures);
         ft = roadType;
         ft2 = riverType;
 
         // create our own fc3
-        SimpleFeatureType boringType = DataUtilities.createType("fc3.boring", "id:0");
+        SimpleFeatureType boringType = FeatureTypes.createType("fc3.boring", "id:0");
         SimpleFeature[] boringFeatures = new SimpleFeature[100];
         for (int i = 1; i <= 100; i++) {
             boringFeatures[i - 1] =
@@ -89,16 +89,16 @@ public class VisitorCalculationTest extends DataTestCase {
         }
 
         ft3 = boringType;
-        fc3 = DataUtilities.collection(boringFeatures);
+        fc3 = FeatureTypes.collection(boringFeatures);
 
         ft4 = lakeType;
-        fc4 = DataUtilities.collection(lakeFeatures);
+        fc4 = FeatureTypes.collection(lakeFeatures);
 
         ft5 = buildingType;
-        fc5 = DataUtilities.collection(buildingFeatures);
+        fc5 = FeatureTypes.collection(buildingFeatures);
 
         ft6 = invalidGeomType;
-        fc6 = DataUtilities.collection(invalidGeomFeatures);
+        fc6 = FeatureTypes.collection(invalidGeomFeatures);
     }
 
     // test only the visitor functions themselves, and try the merge operation
@@ -579,7 +579,7 @@ public class VisitorCalculationTest extends DataTestCase {
 
     public void testNearest() throws Exception {
         SimpleFeatureType type =
-                DataUtilities.createType(
+                FeatureTypes.createType(
                         "nearestTest",
                         "name:String,size:int,flow:double,event:java.util.Date,data:java.io.File");
         ListFeatureCollection fc = new ListFeatureCollection(type);

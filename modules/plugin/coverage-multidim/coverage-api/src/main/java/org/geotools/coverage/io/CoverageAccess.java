@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.geotools.coverage.io.metadata.MetadataNode;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.data.ServiceInfo;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;

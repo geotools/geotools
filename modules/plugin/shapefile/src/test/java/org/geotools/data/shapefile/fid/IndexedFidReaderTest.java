@@ -29,7 +29,7 @@ import java.util.TreeSet;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.shp.IndexFile;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.junit.After;
 import org.junit.Before;

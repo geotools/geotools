@@ -229,7 +229,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
      * @return parameter description
      */
     public static <T> Parameter<T> parameter(String name, Class<T> type) {
-        return new org.geotools.data.Parameter<T>(name, type);
+        return new org.geotools.parameter.Parameter<T>(name, type);
     }
     /**
      * Named parameter (argument or result).
@@ -241,7 +241,7 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
      * @return parameter description
      */
     public static <T> Parameter<T> parameter(String name, Class<T> type, int min, int max) {
-        return new org.geotools.data.Parameter<T>(name, type, min, max);
+        return new org.geotools.parameter.Parameter<T>(name, type, min, max);
     }
     /**
      * @param name name of parameter
@@ -252,6 +252,6 @@ public class FunctionNameImpl extends OperatorImpl implements FunctionName {
      */
     public static <T> Parameter<T> parameter(
             String name, Class<T> type, String title, String description) {
-        return new org.geotools.data.Parameter<T>(name, type, title, description);
+        return new org.geotools.parameter.Parameter<T>(name, type, title, description);
     }
 }

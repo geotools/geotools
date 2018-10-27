@@ -19,7 +19,7 @@ package org.geotools.data.transform;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.collection.AbstractFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;

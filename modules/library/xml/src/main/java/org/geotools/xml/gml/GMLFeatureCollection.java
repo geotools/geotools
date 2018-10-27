@@ -16,7 +16,7 @@
  */
 package org.geotools.xml.gml;
 
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Envelope;
 

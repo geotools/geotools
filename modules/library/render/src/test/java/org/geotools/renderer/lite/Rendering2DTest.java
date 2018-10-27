@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;

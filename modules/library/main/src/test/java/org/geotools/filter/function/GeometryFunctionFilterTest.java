@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.function;
 
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Function;
 

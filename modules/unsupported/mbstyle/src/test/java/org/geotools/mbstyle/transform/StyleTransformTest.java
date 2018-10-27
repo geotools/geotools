@@ -28,7 +28,7 @@ import java.util.Map;
 import javax.xml.transform.TransformerException;
 import org.geotools.TestData;
 import org.geotools.data.property.PropertyDataStore;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.CategorizeFunction;

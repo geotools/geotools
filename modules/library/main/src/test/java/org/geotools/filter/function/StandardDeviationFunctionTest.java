@@ -17,8 +17,8 @@
 package org.geotools.filter.function;
 
 import java.util.logging.Logger;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollections;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;

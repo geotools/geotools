@@ -18,7 +18,7 @@ package org.geotools.data.db2;
 
 import java.util.HashMap;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;

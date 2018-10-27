@@ -1,7 +1,7 @@
 package org.geotools.graph;
 
 import java.util.Iterator;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.graph.build.line.BasicLineGraphGenerator;
 import org.geotools.graph.build.line.LineGraphGenerator;

@@ -50,7 +50,7 @@ import org.geotools.coverage.io.range.RangeType;
 import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.gce.imagemosaic.RasterLayerRequest;

@@ -40,7 +40,7 @@ import org.geotools.data.FileGroupProvider;
 import org.geotools.data.FileServiceInfo;
 import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.visitor.Aggregate;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.GroupByVisitor;

@@ -18,8 +18,8 @@
 package org.geotools.data.solr;
 
 import java.util.Date;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.temporal.Period;

@@ -182,19 +182,6 @@ public final class CommonFactoryFinder extends FactoryFinder {
     }
 
     /**
-     * Returns a set of all available implementations for the {@link FileDataStoreFactorySpi}
-     * interface.
-     *
-     * @param hints An optional map of hints, or {@code null} if none.
-     * @return Set of available file data store factory implementations.
-     */
-    public static synchronized Set<FileDataStoreFactorySpi> getFileDataStoreFactories(Hints hints) {
-        hints = mergeSystemHints(hints);
-        return new LazySet<FileDataStoreFactorySpi>(
-                getServiceRegistry().getFactories(FileDataStoreFactorySpi.class, null, hints));
-    }
-
-    /**
      * Return the first implementation of {@link FeatureFactory} matching the specified hints.
      *
      * <p>If no implementation matches, a new one is created if possible or an exception is thrown.

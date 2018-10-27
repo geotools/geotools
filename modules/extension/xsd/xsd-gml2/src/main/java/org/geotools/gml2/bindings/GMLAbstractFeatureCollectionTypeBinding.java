@@ -18,7 +18,7 @@ package org.geotools.gml2.bindings;
 
 import java.util.Collection;
 import javax.xml.namespace.QName;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;

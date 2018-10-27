@@ -22,7 +22,7 @@ import java.util.Map.Entry;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessFactory;
 import org.geotools.swing.JProgressWindow;

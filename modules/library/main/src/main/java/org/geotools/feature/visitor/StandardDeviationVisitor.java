@@ -18,7 +18,7 @@ package org.geotools.feature.visitor;
 
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.expression.Expression;
 

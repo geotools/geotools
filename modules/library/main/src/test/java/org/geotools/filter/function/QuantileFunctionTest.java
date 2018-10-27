@@ -16,9 +16,9 @@
  */
 package org.geotools.filter.function;
 
-import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -97,7 +97,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
 
         // create a feature collection with five features values 1-5
         SimpleFeatureType dataType =
-                DataUtilities.createType("classification.test1", "id:0,value:int");
+                FeatureTypes.createType("classification.test1", "id:0,value:int");
         int iVal[] = new int[] {1, 2, 3, 4, 5};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
@@ -107,7 +107,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
                             new Object[] {new Integer(i + 1), new Integer(iVal[i])},
                             "classification.test1" + (i + 1));
         }
-        SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
+        SimpleFeatureCollection myFeatureCollection = FeatureTypes.collection(myfeatures);
 
         // run the quantile function
         org.opengis.filter.expression.Expression function =
@@ -135,7 +135,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     public void test2() throws Exception {
         // create a feature collection with five features values 1-5
         SimpleFeatureType dataType =
-                DataUtilities.createType("classification.test1", "id:0,value:int");
+                FeatureTypes.createType("classification.test1", "id:0,value:int");
         int iVal[] = new int[] {1, 2, 3, 4, 5, 6};
         SimpleFeature[] myfeatures = new SimpleFeature[iVal.length];
         for (int i = 0; i < iVal.length; i++) {
@@ -145,7 +145,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
                             new Object[] {new Integer(i + 1), new Integer(iVal[i])},
                             "classification.t" + (i + 1));
         }
-        SimpleFeatureCollection myFeatureCollection = DataUtilities.collection(myfeatures);
+        SimpleFeatureCollection myFeatureCollection = FeatureTypes.collection(myfeatures);
 
         // run the quantile function
         org.opengis.filter.expression.Expression function =
@@ -171,7 +171,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
     public void xtestNullNaNHandling() throws Exception {
         // create a feature collection
         SimpleFeatureType ft =
-                DataUtilities.createType("classification.nullnan", "id:0,foo:int,bar:double");
+                FeatureTypes.createType("classification.nullnan", "id:0,foo:int,bar:double");
         Integer iVal[] =
                 new Integer[] {
                     new Integer(0),
@@ -208,7 +208,7 @@ public class QuantileFunctionTest extends FunctionTestSupport {
                             },
                             "nantest.t" + (i + 1));
         }
-        SimpleFeatureCollection thisFC = DataUtilities.collection(testFeatures);
+        SimpleFeatureCollection thisFC = FeatureTypes.collection(testFeatures);
 
         // create the expression
         Divide divide = ff.divide(ff.property("foo"), ff.property("bar"));

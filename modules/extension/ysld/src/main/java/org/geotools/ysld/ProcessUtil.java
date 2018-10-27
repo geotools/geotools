@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;

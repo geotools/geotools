@@ -16,7 +16,7 @@
  */
 package org.geotools.wfs.v2_0;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.gml2.simple.FeatureCollectionEncoderDelegate;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.QualifiedName;

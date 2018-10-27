@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilderFactory;
 import junit.framework.TestCase;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.locationtech.jts.geom.Geometry;

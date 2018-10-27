@@ -25,7 +25,7 @@ import org.geotools.coverage.grid.io.footprint.FootprintLoader;
 import org.geotools.coverage.grid.io.footprint.FootprintLoaderSpi;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.files.ShpFileType;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.util.URLs;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;

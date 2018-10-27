@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
 import org.geotools.jdbc.CompositePrimaryKeyFinder;
 import org.geotools.jdbc.HeuristicPrimaryKeyFinder;

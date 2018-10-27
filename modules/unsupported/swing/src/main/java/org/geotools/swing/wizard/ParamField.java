@@ -19,7 +19,7 @@ package org.geotools.swing.wizard;
 import java.io.File;
 import java.net.URL;
 import javax.swing.JComponent;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.swing.wizard.JWizard.Controller;
 import org.locationtech.jts.geom.Geometry;
 

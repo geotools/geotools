@@ -35,7 +35,7 @@ import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.gce.imagemosaic.SpatialRequestHelper.CoverageProperties;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;

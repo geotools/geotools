@@ -29,7 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.data.Query;
 import org.geotools.process.Process;
 import org.geotools.process.ProcessException;

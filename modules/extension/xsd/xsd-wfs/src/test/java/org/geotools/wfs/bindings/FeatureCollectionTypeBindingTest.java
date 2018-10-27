@@ -19,7 +19,7 @@ package org.geotools.wfs.bindings;
 import java.net.URL;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;

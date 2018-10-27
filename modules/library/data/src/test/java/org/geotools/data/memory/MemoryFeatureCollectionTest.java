@@ -20,9 +20,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import org.geotools.data.DataTestCase;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.feature.collection.FilteredIterator;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
+import org.geotools.data.collection.FilteredIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 

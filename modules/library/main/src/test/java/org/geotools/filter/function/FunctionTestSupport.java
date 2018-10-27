@@ -19,10 +19,10 @@
 package org.geotools.filter.function;
 
 import junit.framework.TestCase;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -48,7 +48,7 @@ public abstract class FunctionTestSupport extends TestCase {
 
     protected void setUp() throws java.lang.Exception {
         dataType =
-                DataUtilities.createType(
+                FeatureTypes.createType(
                         "classification.test1", "id:0,foo:int,bar:double,geom:Point,group:String");
 
         int iVal[] = new int[] {4, 90, 20, 43, 29, 61, 8, 12};
@@ -84,7 +84,7 @@ public abstract class FunctionTestSupport extends TestCase {
             32.14, 31.66, 26.09, 39.84, 24.83, 28.2, 31.19, 37.57, 27.16, 23.42, 18.57, 30.97,
             17.82, 15.57, 15.93, 28.71, 32.22
         };
-        SimpleFeatureType jenksType = DataUtilities.createType("jenks71", "id:0,jenks71:double");
+        SimpleFeatureType jenksType = FeatureTypes.createType("jenks71", "id:0,jenks71:double");
         ListFeatureCollection features = new ListFeatureCollection(jenksType);
         for (int i = 0; i < jenks71.length; i++) {
             features.add(

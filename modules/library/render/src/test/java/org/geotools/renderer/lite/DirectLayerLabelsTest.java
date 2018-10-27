@@ -21,7 +21,7 @@ import java.awt.Graphics2D;
 import java.io.IOException;
 import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;

@@ -3,7 +3,7 @@ package org.geotools.process.vector;
 import static org.junit.Assert.*;
 
 import java.util.Map;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.Processors;

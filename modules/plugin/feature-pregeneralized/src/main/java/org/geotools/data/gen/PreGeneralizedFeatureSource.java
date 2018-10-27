@@ -43,7 +43,7 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.gen.info.Generalization;
 import org.geotools.data.gen.info.GeneralizationInfo;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;

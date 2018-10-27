@@ -17,7 +17,7 @@
 
 package org.geotools.data.complex.xml;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 
 /**
  * @author Russell Petty (GeoScience Victoria)

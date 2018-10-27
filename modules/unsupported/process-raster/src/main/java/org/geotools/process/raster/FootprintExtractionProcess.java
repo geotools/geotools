@@ -19,7 +19,7 @@ package org.geotools.process.raster;
 import java.util.List;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.process.ProcessException;
 import org.geotools.process.factory.DescribeParameter;

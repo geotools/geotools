@@ -31,7 +31,7 @@ import org.geotools.data.Query;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.DelegateFeatureReader;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.util.SoftValueHashMap;

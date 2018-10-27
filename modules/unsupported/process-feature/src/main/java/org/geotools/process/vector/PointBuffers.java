@@ -21,7 +21,7 @@ import java.awt.geom.Point2D;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.LiteCoordinateSequence;

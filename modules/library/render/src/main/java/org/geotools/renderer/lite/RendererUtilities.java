@@ -29,7 +29,7 @@ import javax.measure.quantity.Length;
 import javax.swing.Icon;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;

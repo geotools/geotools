@@ -20,7 +20,7 @@ package org.geotools.process.vector;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.*;

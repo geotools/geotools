@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureBuilder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.type.Types;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.Feature;
@@ -275,7 +275,7 @@ public class SimpleFeatureBuilder extends FeatureBuilder<FeatureType, Feature> {
                 value = descriptor.getDefaultValue();
                 if (value == null) {
                     // no default value, try to generate one
-                    value = DataUtilities.defaultValue(descriptor.getType().getBinding());
+                    value = (Object) FeatureTypes.defaultValue(descriptor.getType().getBinding());
                 }
             }
         } else {

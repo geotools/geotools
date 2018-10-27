@@ -18,7 +18,7 @@
  */
 package org.geotools.feature;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 
 /** @author jamesm */
 public class MockFeatureCollections extends org.geotools.feature.FeatureCollections {

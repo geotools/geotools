@@ -25,7 +25,7 @@ import org.geotools.data.Query;
 import org.geotools.data.store.DataFeatureCollection;
 import org.geotools.data.store.NoContentIterator;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureReaderIterator;
+import org.geotools.data.FeatureReaderIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
 import org.hsqldb.Session;

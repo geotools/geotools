@@ -16,7 +16,7 @@
  */
 package org.geotools.process.factory;
 
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 
 /**
  * Fake process using some metadata in the annotations

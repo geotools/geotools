@@ -30,6 +30,7 @@ import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.DataAccessMap;
 import org.geotools.data.complex.config.XMLConfigDigester;
+import org.geotools.parameter.Parameter;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;

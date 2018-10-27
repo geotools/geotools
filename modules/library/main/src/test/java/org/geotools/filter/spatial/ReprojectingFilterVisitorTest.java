@@ -3,7 +3,6 @@ package org.geotools.filter.spatial;
 import java.util.Collections;
 import java.util.List;
 import junit.framework.TestCase;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -40,7 +39,7 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         GeoTools.fireConfigurationChanged();
         ft =
-                DataUtilities.createType(
+                FeatureTypes.createType(
                         "testType", "geom:Point:srid=4326,line:LineString,name:String,id:int");
         ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         reprojector = new ReprojectingFilterVisitor(ff, ft);

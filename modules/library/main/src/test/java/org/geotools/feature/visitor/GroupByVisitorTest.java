@@ -25,9 +25,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class GroupByVisitorTest {
     public static void setup() throws Exception {
         // the building feature type that will be used during the tests
         buildingType =
-                DataUtilities.createType(
+                FeatureTypes.createType(
                         "buildings",
                         "id:Integer,building_id:String,"
                                 + "building_type:String,energy_type:String,energy_consumption:Double,geo:Geometry");
@@ -169,7 +169,7 @@ public class GroupByVisitorTest {
                             null),
                 };
         // creating the bulding featrue collection
-        featureCollection = DataUtilities.collection(buildingFeatures);
+        featureCollection = FeatureTypes.collection(buildingFeatures);
     }
 
     @Test
@@ -422,7 +422,7 @@ public class GroupByVisitorTest {
         // creating the features collections that will be used to test the merge behavior
         FeatureCollection featureCollectionA = featureCollection;
         FeatureCollection featureCollectionB =
-                DataUtilities.collection(
+                FeatureTypes.collection(
                         new SimpleFeature[] {
                             SimpleFeatureBuilder.build(
                                     buildingType,
@@ -549,7 +549,7 @@ public class GroupByVisitorTest {
         // creating the features collections that will be used to test the merge behavior
         FeatureCollection featureCollectionA = featureCollection;
         FeatureCollection featureCollectionB =
-                DataUtilities.collection(
+                FeatureTypes.collection(
                         new SimpleFeature[] {
                             SimpleFeatureBuilder.build(
                                     buildingType,

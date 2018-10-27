@@ -19,7 +19,7 @@ package org.geotools.validation.relate;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.feature.simple.SimpleFeature;

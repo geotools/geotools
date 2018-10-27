@@ -19,7 +19,7 @@ package org.geotools.validation.attributes;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.validation.DefaultIntegrityValidation;

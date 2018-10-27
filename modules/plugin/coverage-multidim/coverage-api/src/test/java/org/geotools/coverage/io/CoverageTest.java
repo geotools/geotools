@@ -54,7 +54,7 @@ import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.coverage.io.util.DoubleRangeTreeSet;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;

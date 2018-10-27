@@ -27,7 +27,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.xml.transform.TransformerException;
 import net.miginfocom.swing.MigLayout;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.StyleFactory;

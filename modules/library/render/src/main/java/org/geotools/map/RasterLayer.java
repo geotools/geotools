@@ -18,7 +18,7 @@ package org.geotools.map;
 
 import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.styling.Style;
 

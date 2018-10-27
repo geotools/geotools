@@ -23,7 +23,7 @@ import org.geotools.data.DefaultRepository;
 import org.geotools.data.Repository;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.test.TestData;
 import org.geotools.validation.xml.XMLReader;
 

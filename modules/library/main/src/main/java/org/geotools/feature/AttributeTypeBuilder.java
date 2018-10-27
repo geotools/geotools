@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.LengthFunction;
@@ -546,7 +545,7 @@ public class AttributeTypeBuilder {
 
     private Object defaultValue() {
         if (defaultValue == null && !isNillable && binding != null) {
-            defaultValue = DataUtilities.defaultValue(binding);
+            defaultValue = FeatureTypes.defaultValue(binding);
         }
         return defaultValue;
     }

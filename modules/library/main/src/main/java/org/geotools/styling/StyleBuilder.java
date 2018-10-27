@@ -18,9 +18,9 @@ package org.geotools.styling;
 
 import java.awt.Color;
 import java.util.Arrays;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.simple.SimpleFeature;

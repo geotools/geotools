@@ -19,7 +19,7 @@ package org.geotools.process.feature;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.process.ProcessFactory;
 import org.geotools.process.impl.SingleProcessFactory;

@@ -20,7 +20,7 @@ import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.sql.SQLException;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.util.ScreenMap;
 import org.geotools.jdbc.JDBCFeatureStoreOnlineTest;

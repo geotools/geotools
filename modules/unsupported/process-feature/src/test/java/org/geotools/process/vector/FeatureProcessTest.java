@@ -19,7 +19,7 @@ package org.geotools.process.vector;
 
 import static org.junit.Assert.*;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.locationtech.jts.geom.Geometry;

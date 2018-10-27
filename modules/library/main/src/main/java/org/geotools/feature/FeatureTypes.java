@@ -17,9 +17,12 @@
 package org.geotools.feature;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.*;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -27,10 +30,12 @@ import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.Utilities;
 import org.geotools.util.factory.FactoryRegistryException;
-import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.*;
 import org.opengis.coverage.grid.GridCoverage;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -46,6 +51,7 @@ import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -54,7 +60,7 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Utility methods for working against the FeatureType interface.
  *
- * <p>Many methods from DataUtilities should be refractored here.
+ * <p>Many methods from FeatureTypes should be refractored here.
  *
  * <p>Responsibilities:
  *
@@ -1163,6 +1169,118 @@ public class FeatureTypes {
         return value;
     }
 
+    /**
+     * Returns a non-null default value for the class that is passed in. This is a helper class an
+     * can't create a default class for all types but it does support:
+     *
+     * <ul>
+     *   <li>String
+     *   <li>Object - will return empty string
+     *   <li>Integer
+     *   <li>Double
+     *   <li>Long
+     *   <li>Short
+     *   <li>Float
+     *   <li>BigDecimal
+     *   <li>BigInteger
+     *   <li>Character
+     *   <li>Boolean
+     *   <li>UUID
+     *   <li>Timestamp
+     *   <li>java.sql.Date
+     *   <li>java.sql.Time
+     *   <li>java.util.Date
+     *   <li>JTS Geometries
+     *   <li>Arrays - will return an empty array of the appropriate type
+     * </ul>
+     *
+     * @param type
+     * @return
+     */
+    public static Object defaultValue(Class type) {
+        if (type == String.class || type == Object.class) {
+            return "";
+        }
+        if (type == Integer.class) {
+            return new Integer(0);
+        }
+        if (type == Double.class) {
+            return new Double(0);
+        }
+        if (type == Long.class) {
+            return new Long(0);
+        }
+        if (type == Short.class) {
+            return new Short((short) 0);
+        }
+        if (type == Float.class) {
+            return new Float(0.0f);
+        }
+        if (type == BigDecimal.class) {
+            return BigDecimal.valueOf(0);
+        }
+        if (type == BigInteger.class) {
+            return BigInteger.valueOf(0);
+        }
+        if (type == Character.class) {
+            return new Character(' ');
+        }
+        if (type == Boolean.class) {
+            return Boolean.FALSE;
+        }
+        if (type == UUID.class) {
+            return UUID.fromString("00000000-0000-0000-0000-000000000000");
+        }
+        if (type == Timestamp.class) return new Timestamp(0);
+        if (type == java.sql.Date.class) return new java.sql.Date(0);
+        if (type == java.sql.Time.class) return new java.sql.Time(0);
+        if (type == java.util.Date.class) return new java.util.Date(0);
+
+        GeometryFactory fac = new GeometryFactory();
+        Coordinate coordinate = new Coordinate(0, 0);
+        Point point = fac.createPoint(coordinate);
+
+        if (type == Point.class) {
+            return point;
+        }
+        if (type == MultiPoint.class) {
+            return fac.createMultiPoint(new Point[] {point});
+        }
+        LineString lineString =
+                fac.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(0, 1)});
+        if (type == LineString.class) {
+            return lineString;
+        }
+        LinearRing linearRing =
+                fac.createLinearRing(
+                        new Coordinate[] {
+                            new Coordinate(0, 0),
+                            new Coordinate(0, 1),
+                            new Coordinate(1, 1),
+                            new Coordinate(1, 0),
+                            new Coordinate(0, 0)
+                        });
+        if (type == LinearRing.class) {
+            return linearRing;
+        }
+        if (type == MultiLineString.class) {
+            return fac.createMultiLineString(new LineString[] {lineString});
+        }
+        Polygon polygon = fac.createPolygon(linearRing, new LinearRing[0]);
+        if (type == Polygon.class) {
+            return polygon;
+        }
+        if (type == MultiPolygon.class) {
+            return fac.createMultiPolygon(new Polygon[] {polygon});
+        }
+
+        if (type.isArray()) {
+            return Array.newInstance(type.getComponentType(), 0);
+        }
+
+        throw new IllegalArgumentException(type + " is not supported by this method");
+    }
+
     //
     // Attribute Value Utility Methods
     //
@@ -1356,6 +1474,78 @@ public class FeatureTypes {
             String propertyName = geometryDescriptor.getLocalName();
             if (Arrays.asList(properties).contains(propertyName)) {
                 typeBuilder.setDefaultGeometry(propertyName);
+            }
+        }
+    }
+
+    /**
+     * Manually calculate the bounds from the provided FeatureIteator. This implementation is
+     * intended for FeatureCollection implementors and test case verification. Client code should
+     * always call {@link FeatureCollection#getBounds()}.
+     *
+     * @param iterator
+     * @return
+     */
+    public static ReferencedEnvelope bounds(FeatureIterator<?> iterator) {
+        if (iterator == null) {
+            return null;
+        }
+        try {
+            ReferencedEnvelope bounds = null;
+            while (iterator.hasNext()) {
+                Feature feature = iterator.next();
+                ReferencedEnvelope featureEnvelope = null;
+                if (feature != null && feature.getBounds() != null) {
+                    featureEnvelope = ReferencedEnvelope.reference(feature.getBounds());
+                }
+
+                if (featureEnvelope != null) {
+                    if (bounds == null) {
+                        bounds = new ReferencedEnvelope(featureEnvelope);
+                    } else {
+                        bounds.expandToInclude(featureEnvelope);
+                    }
+                }
+            }
+            return bounds;
+        } finally {
+            iterator.close();
+        }
+    }
+    /**
+     * Manually calculates the bounds of a feature collection using {@link
+     * FeatureCollection#features()}.
+     *
+     * <p>This implementation is intended for FeatureCollection implementors and test case
+     * verification. Client code should always call {@link FeatureCollection#getBounds()}.
+     *
+     * @param collection
+     * @return bounds of features in feature collection
+     */
+    public static ReferencedEnvelope bounds(
+            FeatureCollection<? extends FeatureType, ? extends Feature> collection) {
+        FeatureIterator<? extends Feature> i = collection.features();
+        try {
+            // Implementation taken from DefaultFeatureCollection implementation - thanks IanS
+            CoordinateReferenceSystem crs = collection.getSchema().getCoordinateReferenceSystem();
+            ReferencedEnvelope bounds = new ReferencedEnvelope(crs);
+
+            while (i.hasNext()) {
+                Feature feature = i.next();
+                if (feature == null) continue;
+
+                BoundingBox geomBounds = feature.getBounds();
+                // IanS - as of 1.3, JTS expandToInclude ignores "null" Envelope
+                // and simply adds the new bounds...
+                // This check ensures this behavior does not occur.
+                if (geomBounds != null && !geomBounds.isEmpty()) {
+                    bounds.include(geomBounds);
+                }
+            }
+            return bounds;
+        } finally {
+            if (i != null) {
+                i.close();
             }
         }
     }

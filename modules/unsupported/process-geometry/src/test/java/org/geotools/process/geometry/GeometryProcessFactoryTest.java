@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import junit.framework.TestCase;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.ProcessException;
 import org.geotools.process.ProcessFactory;

@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 import org.geotools.data.gen.info.GeneralizationInfos;
 import org.geotools.data.gen.info.GeneralizationInfosProvider;
 import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.junit.Assert;
 
 public class PreGeneralizedFeatureCollectionTest extends TestCase {

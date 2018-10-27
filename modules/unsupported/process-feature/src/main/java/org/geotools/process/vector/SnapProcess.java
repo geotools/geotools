@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;

@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.data.DataStore;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.gml.producer.FeatureTransformer;

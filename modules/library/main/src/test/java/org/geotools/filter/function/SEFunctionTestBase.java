@@ -17,8 +17,8 @@
 package org.geotools.filter.function;
 
 import java.util.List;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.FunctionFinder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
@@ -43,7 +43,7 @@ public class SEFunctionTestBase {
 
     protected SimpleFeature feature(Object value) throws Exception {
         String typeSpec = "geom:Point,value:" + value.getClass().getSimpleName();
-        SimpleFeatureType type = DataUtilities.createType("Feature", typeSpec);
+        SimpleFeatureType type = FeatureTypes.createType("Feature", typeSpec);
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
         Coordinate coord = new Coordinate(0, 0);
         builder.add(gf.createPoint(coord));

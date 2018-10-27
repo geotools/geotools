@@ -19,7 +19,7 @@ package org.geotools.wfs;
 import junit.framework.TestCase;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml2.GMLConfiguration;

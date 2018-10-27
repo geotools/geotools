@@ -20,8 +20,8 @@ package org.geotools.feature;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -38,8 +38,6 @@ public class MockFeatureCollection implements SimpleFeatureCollection {
             org.opengis.feature.FeatureVisitor visitor,
             org.opengis.util.ProgressListener progress) {}
 
-    public void addListener(CollectionListener listener) throws NullPointerException {}
-
     public void close(FeatureIterator<SimpleFeature> close) {}
 
     public void close(Iterator close) {}
@@ -51,8 +49,6 @@ public class MockFeatureCollection implements SimpleFeatureCollection {
     public SimpleFeatureType getSchema() {
         return null;
     }
-
-    public void removeListener(CollectionListener listener) throws NullPointerException {}
 
     public SimpleFeatureCollection sort(SortBy order) {
         return null;

@@ -17,7 +17,7 @@
 package org.geotools.process.factory;
 
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.process.ProcessException;
 import org.geotools.process.gs.GSProcess;
 import org.opengis.coverage.grid.GridGeometry;

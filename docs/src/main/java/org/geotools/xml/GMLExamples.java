@@ -11,7 +11,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml.GMLFilterDocument;

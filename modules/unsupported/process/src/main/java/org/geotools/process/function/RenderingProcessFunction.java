@@ -18,7 +18,7 @@ package org.geotools.process.function;
 
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.data.Query;
 import org.geotools.filter.function.RenderingTransformation;
 import org.geotools.process.Process;

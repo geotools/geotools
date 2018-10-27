@@ -20,8 +20,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import junit.framework.TestCase;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.IllegalFilterException;
@@ -78,7 +78,7 @@ public class AbstractPostPreProcessFilterSplittingVisitorTests extends TestCase 
             throws SchemaException {
         return new PostPreProcessFilterSplittingVisitor(
                 supportedCaps,
-                DataUtilities.createType(
+                FeatureTypes.createType(
                         typeName, geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"),
                 accessor);
     }

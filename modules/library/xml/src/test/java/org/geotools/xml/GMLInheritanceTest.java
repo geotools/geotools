@@ -23,8 +23,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import junit.framework.TestCase;
 import org.geotools.TestData;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class GMLInheritanceTest extends TestCase {

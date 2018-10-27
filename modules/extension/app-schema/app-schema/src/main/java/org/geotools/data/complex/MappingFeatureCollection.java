@@ -24,7 +24,6 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.crs.ReprojectFeatureResults;
-import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -96,16 +95,6 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      * @see org.geotools.feature.FeatureCollection#addAll(org.geotools.feature.FeatureCollection)
      */
     public boolean addAll(FeatureCollection<? extends FeatureType, ? extends Feature> resource) {
-        throw new UnsupportedOperationException();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.geotools.feature.FeatureCollection#addListener(org.geotools.feature.CollectionListener)
-     */
-    public void addListener(CollectionListener listener) throws NullPointerException {
         throw new UnsupportedOperationException();
     }
 
@@ -288,17 +277,6 @@ public class MappingFeatureCollection implements FeatureCollection<FeatureType, 
      * @see org.geotools.feature.FeatureCollection#removeAll(java.util.Collection)
      */
     public boolean removeAll(Collection<?> c) {
-        throw new UnsupportedOperationException();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.geotools.feature.FeatureCollection#removeListener(org.geotools.feature.CollectionListener
-     * )
-     */
-    public void removeListener(CollectionListener listener) throws NullPointerException {
         throw new UnsupportedOperationException();
     }
 

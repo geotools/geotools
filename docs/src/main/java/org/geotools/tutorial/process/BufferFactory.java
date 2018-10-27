@@ -19,7 +19,7 @@ package org.geotools.tutorial.process;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.process.Process;
 import org.geotools.process.impl.SingleProcessFactory;

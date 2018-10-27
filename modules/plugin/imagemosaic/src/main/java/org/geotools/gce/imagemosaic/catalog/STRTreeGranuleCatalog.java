@@ -36,7 +36,7 @@ import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.SchemaException;
@@ -241,11 +241,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.geotools.gce.imagemosaic.FeatureIndex#findFeatures(org.locationtech.jts.geom.Envelope)
-     */
     @SuppressWarnings("unchecked")
     public List<GranuleDescriptor> getGranules(final BoundingBox envelope) throws IOException {
         Utilities.ensureNonNull("envelope", envelope);
@@ -260,11 +255,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.geotools.gce.imagemosaic.FeatureIndex#findFeatures(org.locationtech.jts.geom.Envelope, org.locationtech.jts.index.ItemVisitor)
-     */
     public void getGranules(final BoundingBox envelope, final GranuleCatalogVisitor visitor)
             throws IOException {
         Utilities.ensureNonNull("envelope", envelope);

@@ -19,7 +19,7 @@ package org.geotools.wfs.v1_0;
 import javax.xml.namespace.QName;
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.simple.GML2FeatureCollectionEncoderDelegate;
 import org.geotools.gml3.GML;

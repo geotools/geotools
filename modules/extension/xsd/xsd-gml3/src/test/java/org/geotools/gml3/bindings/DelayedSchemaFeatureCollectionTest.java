@@ -17,7 +17,7 @@
 package org.geotools.gml3.bindings;
 
 import org.geotools.data.DataTestCase;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.junit.Test;
 
 public class DelayedSchemaFeatureCollectionTest extends DataTestCase {

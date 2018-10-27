@@ -26,7 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.JTextComponent;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.swing.wizard.JWizard.Controller;
 import org.geotools.util.Converters;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

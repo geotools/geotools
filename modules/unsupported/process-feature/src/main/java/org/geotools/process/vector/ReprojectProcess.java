@@ -18,7 +18,7 @@
 package org.geotools.process.vector;
 
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;

@@ -21,8 +21,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -41,7 +41,7 @@ public class RangeCombinerTest {
     @Before
     public void setup() throws Exception {
         ft =
-                DataUtilities.createType(
+                FeatureTypes.createType(
                         "test",
                         "theGeom:LineString,b:java.lang.Byte,s:java.lang.Short,i:java.lang.Integer,l:java.lang.Long,d:java.lang.Double,label:String");
         visitor = new ExpressionTypeVisitor(ft);

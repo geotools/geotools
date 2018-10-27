@@ -17,7 +17,7 @@
 package org.geotools.coverage.io;
 
 import java.util.Map;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;
 

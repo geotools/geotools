@@ -19,7 +19,7 @@ package org.geotools.data.teradata;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.jdbc.JDBCViewOnlineTest;

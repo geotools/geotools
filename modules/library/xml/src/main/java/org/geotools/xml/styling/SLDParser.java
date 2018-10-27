@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
-import org.geotools.data.Base64;
+import org.geotools.data.util.Base64;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.metadata.i18n.ErrorKeys;

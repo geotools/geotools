@@ -30,7 +30,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import org.geotools.data.DataAccessFactory.Param;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.swing.wizard.JPage;
 import org.geotools.swing.wizard.ParamField;
 

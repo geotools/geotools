@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.ysld.ProcessUtil;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;

@@ -18,7 +18,7 @@ package org.geotools.data.transform;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.logging.Logging;

@@ -20,7 +20,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.xsd.XSDElementDeclaration;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;

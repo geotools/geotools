@@ -34,10 +34,10 @@ import org.opengis.filter.expression.VolatileFunction;
  * <p>Access to this class is available via:
  *
  * <ul>
- *   <li>DataUtilities.attributeNames( Filter )
- *   <li>DataUtilities.attributeNames( Filter, FeatureType )
- *   <li>DataUtilities.attributeNames( Expression )
- *   <li>DataUtilities.attributeNames( Expression, FeatureType )
+ *   <li>FeatureTypes.attributeNames( Filter )
+ *   <li>FeatureTypes.attributeNames( Filter, FeatureType )
+ *   <li>FeatureTypes.attributeNames( Expression )
+ *   <li>FeatureTypes.attributeNames( Expression, FeatureType )
  * </ul>
  *
  * The class can also be used to determine if an expression is "static", that is, despite a complex

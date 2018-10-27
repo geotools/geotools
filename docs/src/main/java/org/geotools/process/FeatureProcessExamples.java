@@ -9,7 +9,7 @@
  */
 package org.geotools.process;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.process.vector.TransformProcess;
 
 public class FeatureProcessExamples {

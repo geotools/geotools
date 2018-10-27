@@ -19,7 +19,7 @@ package org.geotools.validation.spatial;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Envelope;

@@ -3,8 +3,8 @@ package org.geotools.filter.spatial;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.referencing.CRS;
@@ -41,7 +41,7 @@ public class BBOXImplTest {
         Polygon p = gf.createPolygon(gf.createLinearRing(coords), null);
         SimpleFeatureType type = null;
         try {
-            type = DataUtilities.createType("testSchema", "name:String,*geom:Geometry");
+            type = FeatureTypes.createType("testSchema", "name:String,*geom:Geometry");
         } catch (SchemaException e) {
             // TODO Auto-generated catch block
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);

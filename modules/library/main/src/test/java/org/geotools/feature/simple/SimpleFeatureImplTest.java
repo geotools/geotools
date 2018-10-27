@@ -19,7 +19,7 @@ package org.geotools.feature.simple;
 import static org.junit.Assert.assertNotEquals;
 
 import junit.framework.TestCase;
-import org.geotools.data.DataUtilities;
+import org.geotools.feature.FeatureTypes;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.opengis.feature.GeometryAttribute;
@@ -37,7 +37,7 @@ public class SimpleFeatureImplTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         schema =
-                DataUtilities.createType(
+                FeatureTypes.createType(
                         "buildings", "the_geom:Geometry,name:String,ADDRESS:String");
         feature =
                 SimpleFeatureBuilder.build(

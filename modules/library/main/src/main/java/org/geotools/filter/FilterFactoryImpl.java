@@ -1024,7 +1024,7 @@ public class FilterFactoryImpl implements Factory, org.opengis.filter.FilterFact
             int minOccurs,
             int maxOccurs,
             T defaultValue) {
-        return new org.geotools.data.Parameter<T>(
+        return new org.geotools.parameter.Parameter<T>(
                 name, type, title, description, required, minOccurs, maxOccurs, defaultValue, null);
     };
 

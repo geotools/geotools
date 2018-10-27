@@ -409,7 +409,7 @@ public class FunctionImpl extends ExpressionAbstract implements Function {
             max = !"".equals(grp) ? Integer.parseInt(grp) : -1;
         }
 
-        return new org.geotools.data.Parameter(name, type, min, max);
+        return new org.geotools.parameter.Parameter(name, type, min, max);
     }
 
     @Override

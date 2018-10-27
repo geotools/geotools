@@ -18,7 +18,7 @@ package org.geotools.coverage.grid.io;
 
 import java.io.IOException;
 import org.geotools.data.Transaction;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.util.factory.Hints;
 import org.opengis.filter.Filter;
 

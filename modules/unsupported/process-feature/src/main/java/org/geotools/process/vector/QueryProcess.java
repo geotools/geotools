@@ -18,7 +18,7 @@
 package org.geotools.process.vector;
 
 import java.util.List;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.geotools.feature.collection.FilteringSimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;

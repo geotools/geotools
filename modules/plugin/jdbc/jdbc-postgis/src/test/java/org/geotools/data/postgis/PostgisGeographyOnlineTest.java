@@ -20,7 +20,7 @@ import java.awt.RenderingHints;
 import java.sql.Connection;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;

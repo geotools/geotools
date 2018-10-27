@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.EnumSet;
 import java.util.Map;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.Hints;
 import org.geotools.util.factory.OptionalFactory;

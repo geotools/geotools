@@ -10,7 +10,7 @@ import java.util.PrimitiveIterator;
 import java.util.Random;
 import java.util.logging.Level;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;

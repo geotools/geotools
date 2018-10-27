@@ -18,7 +18,7 @@ package org.geotools.swing.wizard;
 
 import javax.swing.JComponent;
 import javax.swing.JTextField;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.swing.wizard.JWizard.Controller;
 
 /**

@@ -19,9 +19,9 @@ package org.geotools.filter.function;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.util.Arrays;
-import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.parameter.Parameter;
 import org.geotools.text.Text;
 import org.geotools.util.KVP;
 import org.opengis.filter.capability.FunctionName;

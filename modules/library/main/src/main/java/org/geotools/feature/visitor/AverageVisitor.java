@@ -18,8 +18,8 @@ package org.geotools.feature.visitor;
 
 import java.util.Arrays;
 import java.util.List;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.filter.IllegalFilterException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;

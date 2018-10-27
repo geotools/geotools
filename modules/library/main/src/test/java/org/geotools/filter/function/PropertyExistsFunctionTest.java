@@ -18,8 +18,8 @@ package org.geotools.filter.function;
 
 import java.util.Collections;
 import java.util.List;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.junit.After;
@@ -66,7 +66,7 @@ public class PropertyExistsFunctionTest {
 
     @Test
     public void testEvaluateFeature() throws Exception {
-        SimpleFeatureType type = DataUtilities.createType("ns", "name:string,geom:Geometry");
+        SimpleFeatureType type = FeatureTypes.createType("ns", "name:string,geom:Geometry");
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
         build.add("testName");
         build.add(null);

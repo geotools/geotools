@@ -26,7 +26,7 @@ import java.util.SortedSet;
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.io.metadata.MetadataNode;
 import org.geotools.coverage.io.range.RangeType;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.data.ResourceInfo;
 import org.geotools.referencing.CRS;
 import org.geotools.util.DateRange;

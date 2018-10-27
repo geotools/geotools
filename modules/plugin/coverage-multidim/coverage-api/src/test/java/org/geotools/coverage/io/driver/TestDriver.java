@@ -37,7 +37,7 @@ import org.geotools.coverage.io.impl.DefaultCoverageSource;
 import org.geotools.coverage.io.impl.DefaultFileCoverageAccess;
 import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.factory.Hints;
 import org.opengis.feature.type.Name;

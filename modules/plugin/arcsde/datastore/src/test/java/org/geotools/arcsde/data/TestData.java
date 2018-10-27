@@ -52,7 +52,7 @@ import org.geotools.arcsde.session.SessionPoolFactory;
 import org.geotools.arcsde.session.UnavailableConnectionException;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.collection.ListFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.locationtech.jts.geom.Coordinate;

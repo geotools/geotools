@@ -16,7 +16,7 @@
  */
 package org.geotools.feature.visitor;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.visitor.SumVisitor.SumResult;
 import org.opengis.feature.simple.SimpleFeature;
 

@@ -19,8 +19,8 @@ package org.geotools.feature;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.util.factory.Factory;
 import org.geotools.util.factory.GeoTools;
 

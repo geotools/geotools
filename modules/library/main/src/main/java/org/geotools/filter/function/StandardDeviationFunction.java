@@ -20,8 +20,8 @@ import static org.geotools.filter.capability.FunctionNameImpl.*;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.visitor.CalcResult;
 import org.geotools.feature.visitor.StandardDeviationVisitor;
 import org.geotools.filter.capability.FunctionNameImpl;

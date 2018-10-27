@@ -18,8 +18,8 @@ package org.geotools.validation.relate;
 
 import java.util.Map;
 import java.util.logging.Logger;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.collection.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Envelope;

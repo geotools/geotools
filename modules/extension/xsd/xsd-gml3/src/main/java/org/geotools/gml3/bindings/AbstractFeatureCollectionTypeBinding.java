@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;

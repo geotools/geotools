@@ -16,7 +16,7 @@
  */
 package org.geotools.gml;
 
-import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.data.collection.DefaultFeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.xml.sax.helpers.XMLFilterImpl;
 

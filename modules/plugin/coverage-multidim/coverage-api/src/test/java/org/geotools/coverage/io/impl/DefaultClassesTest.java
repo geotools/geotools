@@ -36,7 +36,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
 import org.geotools.coverage.io.Driver.DriverCapabilities;
 import org.geotools.coverage.io.driver.TestDriver;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;

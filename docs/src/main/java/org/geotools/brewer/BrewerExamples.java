@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.geotools.brewer.color.ColorBrewer;
 import org.geotools.brewer.color.StyleGenerator;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.Classifier;
 import org.geotools.filter.function.ExplicitClassifier;

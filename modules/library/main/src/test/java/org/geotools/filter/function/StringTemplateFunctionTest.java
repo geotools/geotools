@@ -3,7 +3,7 @@ package org.geotools.filter.function;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import org.geotools.data.DataUtilities;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Before;
@@ -69,7 +69,7 @@ public class StringTemplateFunctionTest extends SEFunctionTestBase {
         Function fn = finder.findFunction("stringTemplate", parameters, fallback);
 
         SimpleFeatureType type =
-                DataUtilities.createType("test", "input:string,pattern:string,template:string");
+                FeatureTypes.createType("test", "input:string,pattern:string,template:string");
         SimpleFeature f1 =
                 SimpleFeatureBuilder.build(
                         type,

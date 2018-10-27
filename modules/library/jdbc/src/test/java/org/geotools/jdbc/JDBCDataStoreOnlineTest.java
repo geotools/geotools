@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import org.geotools.data.*;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.collection.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;

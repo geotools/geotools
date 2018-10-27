@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.geotools.data.Parameter;
+import org.geotools.parameter.Parameter;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.ysld.ProcessUtil;

@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import junit.framework.TestCase;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureTypes;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.math.FilterFunction_random;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor.FIDValidator;
@@ -422,7 +422,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     }
 
     private <T> void testAndDisjointRanges(Class<T> type, T max, T min) throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimpleFeatureType schema = FeatureTypes.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         visitor.setRangeSimplicationEnabled(true);
 
@@ -448,7 +448,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     }
 
     private <T> void testOrDisjointRanges(Class<T> type, T max, T min) throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimpleFeatureType schema = FeatureTypes.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         visitor.setFeatureType(schema);
 
@@ -470,7 +470,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     }
 
     private <T> void testAndTouchingRanges(Class<T> type, T value) throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimpleFeatureType schema = FeatureTypes.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
@@ -493,7 +493,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     }
 
     private <T> void testOrTouchingRanges(Class<T> type, T value) throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimpleFeatureType schema = FeatureTypes.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
@@ -516,7 +516,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     }
 
     private <T> void testAndOverlappingRanges(Class<T> type, T min, T mid, T max) throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimpleFeatureType schema = FeatureTypes.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
@@ -547,7 +547,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     }
 
     private <T> void testOrOverlappingRanges(Class<T> type, T min, T max) throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimpleFeatureType schema = FeatureTypes.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
@@ -574,7 +574,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
 
     private <T> void testAndOverlappingRangesToBetween(Class<T> type, T min, T mid, T max)
             throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimpleFeatureType schema = FeatureTypes.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
@@ -601,7 +601,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     }
 
     private <T> void testOrPseudoBetween(Class<T> type, T min, T max) throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("test", "a:" + type.getName());
+        SimpleFeatureType schema = FeatureTypes.createType("test", "a:" + type.getName());
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
@@ -620,7 +620,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
     }
 
     public void testRangeExpression() throws Exception {
-        SimpleFeatureType schema = DataUtilities.createType("test", "pop:String");
+        SimpleFeatureType schema = FeatureTypes.createType("test", "pop:String");
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         visitor.setRangeSimplicationEnabled(true);
         visitor.setFeatureType(schema);
@@ -638,7 +638,7 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Not negated = ff.not(propertyIsEqualTo);
 
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
-        SimpleFeatureType schema = DataUtilities.createType("test", "pop:String");
+        SimpleFeatureType schema = FeatureTypes.createType("test", "pop:String");
         visitor.setFeatureType(schema);
         Filter simplified = (Filter) negated.accept(visitor, null);
         assertEquals(Filter.INCLUDE, simplified);

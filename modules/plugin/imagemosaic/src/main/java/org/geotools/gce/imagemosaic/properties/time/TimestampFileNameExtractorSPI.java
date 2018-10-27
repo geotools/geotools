@@ -24,9 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.util.URLs;
 
 public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {

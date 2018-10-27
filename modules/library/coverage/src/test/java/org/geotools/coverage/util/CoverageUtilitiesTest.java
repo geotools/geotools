@@ -123,12 +123,12 @@ public final class CoverageUtilitiesTest {
         assertTrue(isEmpty);
     }
 
-  /**
-   * Tests the {@link
-   * org.geotools.coverage.util.CoverageUtilities#getBackgroundValues(GridCoverage2D)} method.
-   */
-  @Test
-  public void testNodata() {
+    /**
+     * Tests the {@link
+     * org.geotools.coverage.util.CoverageUtilities#getBackgroundValues(GridCoverage2D)} method.
+     */
+    @Test
+    public void testNodata() {
 
         // test coverage no data property
         final HashMap properties = new HashMap();

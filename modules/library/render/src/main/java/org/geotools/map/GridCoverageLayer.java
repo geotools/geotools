@@ -18,11 +18,11 @@ package org.geotools.map;
 
 import java.util.logging.Level;
 import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.styling.Style;
 import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

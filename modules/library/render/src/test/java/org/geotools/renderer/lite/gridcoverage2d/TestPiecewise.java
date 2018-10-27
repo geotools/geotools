@@ -103,14 +103,14 @@ public class TestPiecewise {
         Assert.assertEquals(1, transform.getSourceDimensions());
         Assert.assertEquals(1, transform.getTargetDimensions());
     }
-  /**
-   * Testing {@link org.geotools.renderer.lite.gridcoverage2d.MathTransformationAdapter}.
-   *
-   * @throws IOException
-   * @throws TransformException
-   */
-  @Test
-  public void mathTransform1DAdapter() throws IOException, TransformException {
+    /**
+     * Testing {@link org.geotools.renderer.lite.gridcoverage2d.MathTransformationAdapter}.
+     *
+     * @throws IOException
+     * @throws TransformException
+     */
+    @Test
+    public void mathTransform1DAdapter() throws IOException, TransformException {
         // default adapter
         final MathTransformationAdapter defaultAdapter = new MathTransformationAdapter();
         Assert.assertEquals(defaultAdapter.getSourceDimensions(), 1);

@@ -22,11 +22,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
-import org.geotools.coverage.util.FeatureUtilities;
 import org.opengis.filter.Filter;
 
 /**

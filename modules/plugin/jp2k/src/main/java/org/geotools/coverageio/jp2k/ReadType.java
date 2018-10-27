@@ -32,9 +32,9 @@ import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.i18n.Errors;
-import org.geotools.coverage.util.CoverageUtilities;
 
 /**
  * This enum can be used to distinguish between differet read methods, namely, JAI ImageRead based

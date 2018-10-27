@@ -18,7 +18,7 @@ package org.geotools.ows.bindings;
 
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.geotools.ows.OWS;
+import org.geotools.xsd.ows.OWS;
 import org.geotools.xml.*;
 
 /**

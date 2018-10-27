@@ -19,7 +19,7 @@ package org.geotools.ows.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.ows10.Ows10Factory;
 import org.eclipse.emf.ecore.EFactory;
-import org.geotools.ows.OWS;
+import org.geotools.xsd.ows.OWS;
 
 /**
  * Binding object for the type http://www.opengis.net/ows:WGS84BoundingBoxType.

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.tile.util;
+package org.geotools.tile;
 
 import java.awt.Color;
 import java.io.File;
@@ -29,20 +29,20 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.GridCoverageLayer;
 import org.geotools.map.MapContent;
+import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.SLD;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.swing.JMapFrame;
-import org.geotools.tile.ServiceTest;
-import org.geotools.tile.Tile;
-import org.geotools.tile.TileService;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
 import org.geotools.tile.impl.bing.BingService;
 import org.geotools.tile.impl.osm.OSMService;
 import org.geotools.tile.impl.osm.OSMTile;
 import org.geotools.tile.impl.osm.OSMTileIdentifier;
+import org.geotools.tile.util.AsyncTileLayer;
+import org.geotools.tile.util.TileLayer;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -77,10 +77,8 @@ public class TileViewer {
         env = new ReferencedEnvelope(5, 15, 45, 55, DefaultGeographicCRS.WGS84);
 
         // Will create the CRS
-        ServiceTest.beforeClass();
         try {
-
-            env = env.transform(ServiceTest.MERCATOR_CRS, true);
+            env = env.transform(CRS.decode("EPSG:3857"), true);
         } catch (TransformException | FactoryException e1) {
             java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e1);
         }

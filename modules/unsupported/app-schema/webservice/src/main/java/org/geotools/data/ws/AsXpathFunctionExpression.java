@@ -17,11 +17,11 @@ package org.geotools.data.ws;
  *    Lesser General Public License for more details.
  */
 
+import org.geotools.appschema.util.XmlXpathUtilites;
 import org.geotools.data.complex.XmlMappingFeatureIterator;
 import org.geotools.data.complex.xml.XmlXpathFilterData;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.XmlXpathUtilites;
 import org.jdom2.Document;
 import org.opengis.filter.capability.FunctionName;
 import org.xml.sax.helpers.NamespaceSupport;

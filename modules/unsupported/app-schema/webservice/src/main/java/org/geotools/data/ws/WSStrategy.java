@@ -22,7 +22,7 @@ import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.filter.Capabilities;
 import org.geotools.wfs.WFSConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.filter.Filter;
 
 /**

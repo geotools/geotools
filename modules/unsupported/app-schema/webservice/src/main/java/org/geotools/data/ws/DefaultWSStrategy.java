@@ -50,7 +50,7 @@ public class DefaultWSStrategy implements WSStrategy {
 
     private Template requestTemplate;
 
-    private final org.geotools.xml.Configuration ws_Configuration = new WFSConfiguration();
+    private final org.geotools.xsd.Configuration ws_Configuration = new WFSConfiguration();
 
     public DefaultWSStrategy(URL templateDirectory, String templateName) {
         LOGGER.info("template directory is: " + templateDirectory);
@@ -111,7 +111,7 @@ public class DefaultWSStrategy implements WSStrategy {
     }
 
     /** @see WFSStrategy#getWfsConfiguration() */
-    public org.geotools.xml.Configuration getWsConfiguration() {
+    public org.geotools.xsd.Configuration getWsConfiguration() {
         return ws_Configuration;
     }
 

@@ -34,6 +34,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.util.URLs;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GeoPackageReaderTest {
@@ -69,6 +70,17 @@ public class GeoPackageReaderTest {
         RenderedImage img = gc.getRenderedImage();
         assertEquals(1536, img.getWidth());
         assertEquals(768, img.getHeight());
+    }
+
+    @Test
+    public void testCoverageSRS() throws IOException, FactoryException {
+        GeoPackageReader reader =
+                new GeoPackageReader(
+                        GeoPackageTest.class.getResource("test_tiles_srid.gpkg"), null);
+        CoordinateReferenceSystem crs =
+                reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
+        assertEquals(crs, CRS.decode("EPSG:3857", true));
+        reader.dispose();
     }
 
     @Test

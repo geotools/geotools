@@ -1580,7 +1580,12 @@ public class GeoPackage {
         // and in contrast the gpkg_contents is "informational" only
         psm =
                 cx.prepareStatement(
-                        format("SELECT * FROM %s WHERE table_name = ? LIMIT 1", TILE_MATRIX_SET));
+                        format(
+                                "SELECT * FROM %s a, %s b "
+                                        + "WHERE a.table_name = ? "
+                                        + "AND a.srs_id = b.srs_id "
+                                        + "LIMIT 1",
+                                TILE_MATRIX_SET, SPATIAL_REF_SYS));
         try {
             psm.setString(1, e.getTableName());
 
@@ -1588,7 +1593,7 @@ public class GeoPackage {
             try {
                 if (rsm.next()) {
 
-                    int srid = rsm.getInt("srs_id");
+                    int srid = rsm.getInt("organization_coordsys_id");
                     e.setSrid(srid);
 
                     CoordinateReferenceSystem crs;

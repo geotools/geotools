@@ -36,8 +36,8 @@ import org.geotools.ows.wmts.model.WMTSServiceType;
 import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swing.SingleLayerMapContent;
+import org.geotools.test.OnlineTestCase;
 import org.geotools.tile.util.AsyncTileLayer;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ import org.junit.Test;
  * @author Ludovic Pecquot (E-IS) on 21/12/2017.
  * @link {org.geotools.tile.util.TileLayer}
  */
-public class WMTSTransparentTileTest {
+public class WMTSTransparentTileTest extends OnlineTestCase {
 
     private WMTSTileService service;
 
@@ -55,9 +55,14 @@ public class WMTSTransparentTileTest {
         service = createKVPService();
     }
 
-    @After
-    public void tearDown() {
+    @Override
+    protected void tearDownInternal() throws Exception {
         service = null;
+    }
+
+    @Override
+    protected String getFixtureId() {
+        return "wmts";
     }
 
     private WMTSTileService createKVPService() throws Exception {

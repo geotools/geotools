@@ -61,11 +61,6 @@
   <!-- =========================================================== -->
   <dependencies>
     <dependency>
-  <groupId>org.geotools.ogc</groupId>
-  <artifactId>net.opengis.wcs</artifactId>
-      <version>${project.version}</version>
-    </dependency> 
-    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-imagemosaic</artifactId>
       <version>${project.version}</version>

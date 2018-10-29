@@ -14,9 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
+package org.geotools.renderer.style;
 
 import java.util.List;
+import org.geotools.styling.Font;
+import org.geotools.styling.StyleVisitor;
+import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.VolatileFunction;
 

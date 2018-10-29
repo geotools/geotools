@@ -48,8 +48,8 @@
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="10" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.store.ContentDataStore" project="gt-data" 
-    file="/gt-data/src/main/java/org/geotools/data/store/ContentDataStore.java" binary="false">    
+  <class id="10" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.store.ContentDataStore" project="gt-main"
+    file="/gt-main/src/main/java/org/geotools/data/store/ContentDataStore.java" binary="false">
     <position x="239" y="148" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
@@ -57,7 +57,7 @@
     </display>  
   </class>  
   <class id="11" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.store.ContentFeatureSource" 
-    project="gt-data" file="/gt-data/src/main/java/org/geotools/data/store/ContentFeatureSource.java" binary="false">    
+    project="gt-main" file="/gt-main/src/main/java/org/geotools/data/store/ContentFeatureSource.java" binary="false">
     <position x="240" y="322" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
@@ -65,15 +65,15 @@
     </display>  
   </class>  
   <class id="12" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.store.ContentFeatureStore" 
-    project="gt-data" file="/gt-data/src/main/java/org/geotools/data/store/ContentFeatureStore.java" binary="false">    
+    project="gt-main" file="/gt-main/src/main/java/org/geotools/data/store/ContentFeatureStore.java" binary="false">
     <position x="240" y="444" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      
       <operations public="false" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="13" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.store.ContentState" project="gt-data" 
-    file="/gt-data/src/main/java/org/geotools/data/store/ContentState.java" binary="false">    
+  <class id="13" corner="BOTTOM_RIGHT" language="java" name="org.geotools.data.store.ContentState" project="gt-main"
+    file="/gt-main/src/main/java/org/geotools/data/store/ContentState.java" binary="false">
     <position x="312" y="232" width="-1" height="-1"/>    
     <display autosize="true" package="false" initial-value="false" signature="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false"/>      

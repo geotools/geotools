@@ -66,8 +66,8 @@ The following table shows how maven dependencies have changed, and the resulting
    * - gt-xml
      - gt-xml
      - org.geotools.xml
-   * - gt-data
-     - gt-data
+   * - gt-main
+     - gt-main
      - org.geotools.data
    * - gt-jdbc
      - gt-jdbc

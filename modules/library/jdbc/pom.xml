@@ -79,11 +79,6 @@
       <artifactId>gt-main</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-data</artifactId>
-      <version>${project.version}</version>
-    </dependency>
      <dependency>
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>

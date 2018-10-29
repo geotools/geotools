@@ -1,4 +1,4 @@
-package org.geotools.styling;
+package org.geotools.renderer.style;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Set;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
+import org.geotools.styling.*;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;

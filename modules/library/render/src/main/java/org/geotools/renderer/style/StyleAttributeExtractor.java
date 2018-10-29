@@ -14,13 +14,13 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.styling;
+package org.geotools.renderer.style;
 
 import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Set;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.renderer.style.ExpressionExtractor;
+import org.geotools.styling.*;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;

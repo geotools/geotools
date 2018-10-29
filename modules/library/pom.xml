@@ -51,7 +51,6 @@
     <module>coverage</module>
     <module>main</module>
     <module>xml</module>
-    <module>data</module>
     <module>style</module>
     <module>cql</module>
     <module>render</module>

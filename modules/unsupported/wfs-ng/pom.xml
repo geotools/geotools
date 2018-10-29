@@ -117,7 +117,7 @@
     </dependency>
     <dependency>
       <groupId>org.geotools</groupId>
-      <artifactId>gt-data</artifactId>
+      <artifactId>gt-main</artifactId>
       <version>${project.version}</version>
       <type>jar</type>
     </dependency>

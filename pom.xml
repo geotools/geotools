@@ -1513,7 +1513,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <version>3.8.0</version>
         <configuration>
           <source>1.8</source>  <!-- The -source argument for the Java compiler. -->
           <target>1.8</target>  <!-- The -target argument for the Java compiler. -->
@@ -1533,7 +1533,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.1.0</version>
         <inherited>false</inherited>
         <executions>
           <execution>
@@ -1565,7 +1565,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.19.1</version>
+        <version>2.22.1</version>
         <configuration>
           <runOrder>alphabetical</runOrder>
           <includes>
@@ -1602,7 +1602,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.1.0</version>
         <configuration>
           <archive>
             <manifest>
@@ -1624,7 +1624,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.2.1</version>
+        <version>3.0.1</version>
         <inherited>true</inherited>
         <configuration>
           <attach>true</attach>
@@ -1645,7 +1645,7 @@
       <plugin>
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
-        <version>2.1.15</version>
+        <version>2.2.5</version>
         <executions>
           <execution>
             <goals>

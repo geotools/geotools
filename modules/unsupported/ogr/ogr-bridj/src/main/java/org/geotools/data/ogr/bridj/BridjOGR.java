@@ -687,8 +687,7 @@ public class BridjOGR implements OGR {
     @Override
     public String SpatialRefGetAuthorityCode(Object spatialRef, String authority) {
         Pointer<Byte> b = pointerToCString(authority);
-        return getCString(
-                OSRGetAuthorityCode((Pointer<?>) spatialRef, b));
+        return getCString(OSRGetAuthorityCode((Pointer<?>) spatialRef, b));
     }
 
     @Override

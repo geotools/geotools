@@ -36,7 +36,6 @@ import org.geotools.util.logging.Logging;
  * Implementation of the DataStore service provider interface for OGR.
  *
  * @author Andrea Aime, GeoSolution
-
  * @version $Id$
  */
 @SuppressWarnings("rawtypes")

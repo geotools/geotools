@@ -172,4 +172,41 @@ public class ReferencedEnvelope3DTest {
         ReferencedEnvelope3D b = new ReferencedEnvelope3D(0.0, 1.0, 0.0, 1.0, 0.0, 0.5, crs);
         assertEquals(Math.sqrt(1 * 1 + 1 * 1 + 1.5 * 1.5), a.distance(b), 0.00001);
     }
+
+    @Test
+    public void testIntersectXYZ() {
+        ReferencedEnvelope3D envelope = new ReferencedEnvelope3D();
+
+        // Nothing should intersect with the envelope when isNull() is true.
+        assertTrue(envelope.isNull());
+        assertFalse(envelope.intersects(1.0, 2.0, 3.0));
+
+        double x_min = 10.0;
+        double x_max = 20.0;
+        double x_ave = (x_min + x_max) / 2.0;
+        double y_min = 30.0;
+        double y_max = 40.0;
+        double y_ave = (y_min + y_max) / 2.0;
+        double z_min = 50.0;
+        double z_max = 60.0;
+        double z_ave = (z_min + z_max) / 2.0;
+
+        envelope.init(x_min, x_max, y_min, y_max, z_min, z_max);
+
+        assertTrue(envelope.intersects(x_ave, y_ave, z_ave));
+
+        // Extremes
+        assertTrue(envelope.intersects(x_min, y_min, z_min));
+        assertTrue(envelope.intersects(x_max, y_max, z_max));
+
+        assertFalse(envelope.intersects(-x_ave, -y_ave, -z_ave));
+
+        double delta = 0.1;
+        assertFalse(envelope.intersects(x_min - delta, y_ave, z_ave));
+        assertFalse(envelope.intersects(x_max + delta, y_ave, z_ave));
+        assertFalse(envelope.intersects(x_ave, y_min - delta, z_ave));
+        assertFalse(envelope.intersects(x_ave, y_max + delta, z_ave));
+        assertFalse(envelope.intersects(x_ave, y_ave, z_min - delta));
+        assertFalse(envelope.intersects(x_ave, y_ave, z_max + delta));
+    }
 }

@@ -388,7 +388,7 @@ public class ReferencedEnvelope3D extends ReferencedEnvelope implements Bounding
      */
     public boolean intersects(double x, double y, double z) {
         if (isNull()) return false;
-        return intersects(x, y) && !(z > maxz || z > maxz);
+        return intersects(x, y) && !(z > maxz || z < minz);
     }
 
     /** @deprecated Use #intersects instead. */

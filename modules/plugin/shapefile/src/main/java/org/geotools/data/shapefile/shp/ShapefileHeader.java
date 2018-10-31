@@ -63,7 +63,7 @@ public class ShapefileHeader {
 
     private void checkVersion(boolean strict) throws java.io.IOException {
         if (version != VERSION) {
-            String message = "Wrong version, expected " + MAGIC + ", got " + version;
+            String message = "Wrong version, expected " + VERSION + ", got " + version;
             if (!strict) {
                 LOGGER.info(message);
             } else {

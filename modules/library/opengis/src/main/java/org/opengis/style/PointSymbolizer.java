@@ -15,7 +15,6 @@ import org.opengis.annotation.XmlElement;
 /**
  * Indicates how to draw point geometries on a map.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
  *     Implementation Specification 1.1.0</A>
  * @author Open Geospatial Consortium

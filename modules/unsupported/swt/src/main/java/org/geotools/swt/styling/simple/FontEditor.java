@@ -30,7 +30,6 @@ import org.geotools.swt.utils.Messages;
  *
  * @author aalam
  * @since 0.6.0
- * @source $URL$
  */
 public class FontEditor {
 

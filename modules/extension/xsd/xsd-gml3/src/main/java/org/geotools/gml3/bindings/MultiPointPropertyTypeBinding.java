@@ -46,11 +46,6 @@ import org.locationtech.jts.geom.MultiPoint;
  *
  *          </code>
  * </pre>
- *
- * @generated
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *     /geotools/gml3/bindings/MultiPointPropertyTypeBinding.java $
  */
 public class MultiPointPropertyTypeBinding extends GeometryPropertyTypeBindingBase {
 

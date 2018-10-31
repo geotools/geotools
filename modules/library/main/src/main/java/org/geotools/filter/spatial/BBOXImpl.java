@@ -41,7 +41,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class BBOXImpl extends AbstractPreparedGeometryFilter implements BBOX {
 
     /** Factory for creating geometries */

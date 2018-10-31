@@ -20,7 +20,7 @@ import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.xml.sax.helpers.AttributesImpl;
@@ -48,6 +48,17 @@ class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
     protected MultiPolygonEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder);
         pe = new PolygonEncoder(encoder, gmlPrefix, gmlUri);
+        init(gmlPrefix, gmlUri);
+    }
+
+    protected MultiPolygonEncoder(
+            Encoder encoder, String gmlPrefix, String gmlUri, boolean encodeGmlId) {
+        super(encoder, encodeGmlId);
+        pe = new PolygonEncoder(encoder, gmlPrefix, gmlUri, encodeGmlId);
+        init(gmlPrefix, gmlUri);
+    }
+
+    private void init(String gmlPrefix, String gmlUri) {
         multiSurface = MULTI_SURFACE.derive(gmlPrefix, gmlUri);
         surfaceMember = SURFACE_MEMBER.derive(gmlPrefix, gmlUri);
     }

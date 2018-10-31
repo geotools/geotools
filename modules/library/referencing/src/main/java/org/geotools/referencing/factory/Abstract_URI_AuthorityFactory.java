@@ -21,8 +21,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import org.geotools.factory.Hints;
 import org.geotools.util.Version;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * @author Justin Deoliveira
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public abstract class Abstract_URI_AuthorityFactory extends AuthorityFactoryAdapter
         implements CRSAuthorityFactory,

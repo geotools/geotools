@@ -18,7 +18,6 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-/** @source $URL$ */
 public class OracleAggregateTestSetup extends JDBCAggregateTestSetup {
 
     public OracleAggregateTestSetup() {

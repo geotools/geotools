@@ -28,7 +28,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
-/** @source $URL$ */
 public class SortedReaderTest {
 
     SimpleFeatureReader fr;

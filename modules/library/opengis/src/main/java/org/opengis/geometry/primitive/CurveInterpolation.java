@@ -24,7 +24,6 @@ import org.opengis.util.CodeList;
  * CurveSegment} can be spawned directly through subclassing, or indirectly by specifying an
  * interpolation method and an associated control parameters record to support it.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

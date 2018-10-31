@@ -19,7 +19,6 @@ import org.opengis.util.InternationalString;
 /**
  * Graphic that provides an illustration of the dataset (should include a legend for the graphic).
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

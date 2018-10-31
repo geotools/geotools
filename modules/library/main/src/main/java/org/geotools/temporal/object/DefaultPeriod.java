@@ -26,7 +26,6 @@ import org.opengis.temporal.RelativePosition;
  * A one-dimensional geometric primitive that represent extent in time.
  *
  * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
  */
 public class DefaultPeriod extends DefaultTemporalGeometricPrimitive implements Period {
 

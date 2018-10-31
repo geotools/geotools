@@ -17,9 +17,9 @@
 package org.geotools.data.hana.converter;
 
 import java.sql.Blob;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 
 /**
  * Converter factory for converting all classes implementing java.sql.Blob to byte[].

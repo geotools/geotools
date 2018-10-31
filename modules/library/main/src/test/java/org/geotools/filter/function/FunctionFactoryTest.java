@@ -28,12 +28,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.FactoryIteratorProvider;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.util.factory.FactoryIteratorProvider;
+import org.geotools.util.factory.GeoTools;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,7 +44,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-/** @source $URL$ */
 public class FunctionFactoryTest {
 
     static FactoryIteratorProvider ffIteratorProvider;

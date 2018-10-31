@@ -12,8 +12,6 @@ import org.locationtech.jts.io.WKTReader;
 /**
  * Binary test data have been produced by executing this query in SQL Server, and then removing the
  * prefix '0x': select geometry::STGeomFromText('wktstring',srid);
- *
- * @source $URL$
  */
 public class SQLServerBinaryReaderTest extends TestCase {
 

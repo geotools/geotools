@@ -38,12 +38,11 @@ import org.opengis.filter.expression.Expression;
  * Calculates the minimum value of an attribute for a given FeatureCollection and Expression.
  *
  * @author James
- * @source $URL$
  */
 public class Collection_MinFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(Collection_MinFunction.class);
 
     SimpleFeatureCollection previousFeatureCollection = null;
     Object min = null;

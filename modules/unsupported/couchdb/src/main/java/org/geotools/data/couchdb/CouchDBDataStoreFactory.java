@@ -24,7 +24,7 @@ import org.geotools.data.DataStore;
 
 /**
  * @author Ian Schneider (OpenGeo)
- * @source $URL$
+
  */
 public class CouchDBDataStoreFactory extends AbstractDataStoreFactory {
 

@@ -21,9 +21,8 @@ import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.styling.SLD;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 
-/** @source $URL$ */
 public class LabelStyleTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(TextSymbolizer.class, binding(KML.LabelStyleType).getType());

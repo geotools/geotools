@@ -35,7 +35,6 @@ import org.opengis.referencing.operation.MathTransform;
  * the Czech Republic
  *
  * @author jezekjan
- * @source $URL$
  * @version $Id$
  */
 public class AdvancedAffineBuilder extends MathTransformBuilder {

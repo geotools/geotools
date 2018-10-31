@@ -25,8 +25,6 @@ import org.opengis.geometry.DirectPosition;
 /**
  * Specifies and implements various fundamental Computational Geometric algorithms. The algorithms
  * supplied in this class are robust for double-precision floating point.
- *
- * @source $URL$
  */
 public class CGAlgorithms {
 

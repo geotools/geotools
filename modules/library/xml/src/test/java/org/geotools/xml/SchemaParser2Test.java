@@ -28,7 +28,6 @@ import org.geotools.xml.schema.Schema;
  * DOCUMENT ME! @
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class SchemaParser2Test extends TestCase {
     //	public void testMail(){

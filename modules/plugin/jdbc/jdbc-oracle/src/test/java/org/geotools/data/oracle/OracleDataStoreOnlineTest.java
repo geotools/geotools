@@ -36,7 +36,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class OracleDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     private OracleTestSetup oracleTestSetup;

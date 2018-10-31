@@ -42,10 +42,10 @@ import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -58,14 +58,11 @@ import org.opengis.parameter.GeneralParameterDescriptor;
  * @author jeichar
  * @author Simone Giannecchini (simboss)
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/gce/ArcSDERasterFormat.java $
  */
 @SuppressWarnings({"nls", "deprecation"})
 public final class ArcSDERasterFormat extends AbstractGridFormat implements Format {
 
-    protected static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    protected static final Logger LOGGER = Logging.getLogger(ArcSDERasterFormat.class);
 
     private final Map<String, ArcSDEConnectionConfig> connectionConfigs =
             new WeakHashMap<String, ArcSDEConnectionConfig>();

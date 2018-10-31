@@ -17,7 +17,9 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;
 import org.w3c.dom.Document;
@@ -42,7 +44,6 @@ import org.w3c.dom.Element;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class Function_NameTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

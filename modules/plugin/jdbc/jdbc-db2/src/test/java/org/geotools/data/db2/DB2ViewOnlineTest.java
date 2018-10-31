@@ -3,7 +3,6 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCViewOnlineTest;
 import org.geotools.jdbc.JDBCViewTestSetup;
 
-/** @source $URL$ */
 public class DB2ViewOnlineTest extends JDBCViewOnlineTest {
 
     @Override

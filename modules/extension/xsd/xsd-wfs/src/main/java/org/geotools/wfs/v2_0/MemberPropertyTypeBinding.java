@@ -27,9 +27,9 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.gml3.v3_2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
+import org.geotools.xsd.SchemaIndex;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.type.AttributeType;
 
@@ -54,7 +54,6 @@ import org.opengis.feature.type.AttributeType;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MemberPropertyTypeBinding
         extends org.geotools.gml3.bindings.FeaturePropertyTypeBinding {

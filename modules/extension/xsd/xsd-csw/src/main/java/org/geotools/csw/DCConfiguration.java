@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import net.opengis.cat.csw20.Csw20Factory;
 import org.geotools.csw.bindings.SimpleLiteralBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SimpleContentComplexEMFBinding;
 import org.picocontainer.MutablePicoContainer;
 
 /**

@@ -32,21 +32,21 @@ import net.sf.geographiclib.*;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.TransformedDirectPosition;
-import org.geotools.io.TableWriter;
 import org.geotools.measure.Angle;
 import org.geotools.measure.CoordinateFormat;
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultEllipsoidalCS;
 import org.geotools.referencing.datum.DefaultEllipsoid;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.datum.DefaultPrimeMeridian;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.referencing.util.CRSUtilities;
+import org.geotools.util.TableWriter;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.referencing.crs.CompoundCRS;
@@ -91,7 +91,6 @@ import si.uom.NonSI;
  * environment, create one distinct instance of {@code GeodeticCalculator} for each thread.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Daniele Franzoni
  * @author Martin Desruisseaux

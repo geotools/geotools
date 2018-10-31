@@ -16,13 +16,12 @@
  */
 package org.geotools.filter.v1_1;
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Or;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
     public void testBinaryLogicOpType() {
         assertEquals(BinaryLogicOperator.class, binding(OGC.BinaryLogicOpType).getType());

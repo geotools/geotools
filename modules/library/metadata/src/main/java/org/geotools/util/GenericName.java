@@ -38,7 +38,6 @@ import org.opengis.util.ScopedName; // For javadoc
  * #DEFAULT_SEPARATOR character separator} between name elements.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see NameFactory

@@ -50,7 +50,6 @@ import org.locationtech.jts.geom.LineString;
  * task to sort labels and locate the best label points)
  *
  * @author Andrea Aime
- * @source $URL$
  */
 public class LabelPainter {
 

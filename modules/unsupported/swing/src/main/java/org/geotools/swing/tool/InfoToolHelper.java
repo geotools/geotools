@@ -22,9 +22,9 @@ import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.map.Layer;
+import org.geotools.map.MapBoundsEvent;
+import org.geotools.map.MapBoundsListener;
 import org.geotools.map.MapContent;
-import org.geotools.map.event.MapBoundsEvent;
-import org.geotools.map.event.MapBoundsListener;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.util.logging.Logging;
@@ -37,11 +37,10 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $URL$
  */
 public abstract class InfoToolHelper implements MapBoundsListener {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    private static final Logger LOGGER = Logging.getLogger(InfoToolHelper.class);
 
     /**
      * String key used for the position element in the {@code Map} passed to {@linkplain #getInfo(

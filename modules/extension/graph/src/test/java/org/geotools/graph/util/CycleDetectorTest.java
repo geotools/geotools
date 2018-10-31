@@ -22,7 +22,6 @@ import org.geotools.graph.build.GraphBuilder;
 import org.geotools.graph.build.basic.BasicGraphBuilder;
 import org.geotools.graph.util.graph.CycleDetector;
 
-/** @source $URL$ */
 public class CycleDetectorTest extends TestCase {
     private GraphBuilder m_builder;
 

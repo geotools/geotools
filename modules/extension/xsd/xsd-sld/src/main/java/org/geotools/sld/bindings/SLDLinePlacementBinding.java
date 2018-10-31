@@ -19,7 +19,9 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.styling.LinePlacement;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -46,7 +48,6 @@ import org.opengis.filter.expression.Expression;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDLinePlacementBinding extends AbstractComplexBinding {
 

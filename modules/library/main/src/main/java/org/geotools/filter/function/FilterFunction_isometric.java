@@ -39,7 +39,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
 import org.opengis.filter.capability.FunctionName;
 
-/** @source $URL$ */
 public class FilterFunction_isometric extends FunctionExpressionImpl
         implements GeometryTransformation {
 

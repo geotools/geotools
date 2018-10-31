@@ -23,9 +23,9 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.ml.Envelope;
 import org.geotools.ml.Header;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Strategy object for the type http://mails/refractions/net:envelopeType.
@@ -49,7 +49,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MLEnvelopeTypeBinding extends AbstractComplexBinding {
     /** @generated */

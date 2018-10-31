@@ -29,7 +29,6 @@ import org.opengis.annotation.UML;
  * @param <E> The type of this code list.
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
- * @source $URL$
  */
 public abstract class CodeList<E extends CodeList<E>> implements Comparable<E>, Serializable {
     /** Serial number for compatibility with different versions. */

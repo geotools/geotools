@@ -20,7 +20,6 @@ import org.opengis.annotation.UML;
  * resolution of one day.
  *
  * @author Alexander Petkov
- * @source $URL$
  */
 @UML(identifier = "TM_Calendar", specification = ISO_19108)
 public interface Calendar extends TemporalReferenceSystem {

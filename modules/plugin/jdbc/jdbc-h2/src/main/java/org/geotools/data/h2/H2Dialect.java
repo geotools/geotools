@@ -27,11 +27,11 @@ import java.sql.Types;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -56,7 +56,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * parts of the dialect api.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class H2Dialect extends SQLDialect {
 

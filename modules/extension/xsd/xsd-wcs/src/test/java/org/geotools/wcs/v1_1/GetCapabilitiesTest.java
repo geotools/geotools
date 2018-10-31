@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.List;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Test;
 
 public class GetCapabilitiesTest {

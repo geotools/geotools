@@ -28,12 +28,11 @@ import org.geotools.util.CheckedArrayList;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class TypeMapping implements Serializable {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(TypeMapping.class);
 
     private static final long serialVersionUID = 1444252634598922057L;
 

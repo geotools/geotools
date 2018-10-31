@@ -10,8 +10,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </interface>  
-  <class id="2" language="java" name="org.geotools.data.store.DiffTransactionState" project="gt-data" 
-    file="/gt-data/src/main/java/org/geotools/data/store/DiffTransactionState.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="2" language="java" name="org.geotools.data.store.DiffTransactionState" project="gt-main"
+    file="/gt-main/src/main/java/org/geotools/data/store/DiffTransactionState.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="489" y="327"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      

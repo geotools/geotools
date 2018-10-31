@@ -44,12 +44,11 @@ import org.geotools.util.URLs;
  * SchemaResolver#getSimpleHttpResourcePath(URI))}.
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class SchemaCache {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemaCache.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(SchemaCache.class);
 
     /** The default block read size used when downloading a file. */
     private static final int DEFAULT_DOWNLOAD_BLOCK_SIZE = 4096;

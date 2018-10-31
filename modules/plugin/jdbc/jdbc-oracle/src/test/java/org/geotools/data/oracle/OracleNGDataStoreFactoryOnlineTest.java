@@ -28,7 +28,6 @@ import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.geotools.test.FixtureUtilities;
 
-/** @source $URL$ */
 public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
     @Override

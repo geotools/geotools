@@ -33,7 +33,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Tests for Attribute Expressions
  *
  * @author James Macgill
- * @source $URL$
  */
 public class AttributeTest extends TestCase {
     SimpleFeatureType schema = null;

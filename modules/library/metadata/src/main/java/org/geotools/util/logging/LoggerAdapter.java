@@ -78,7 +78,6 @@ import java.util.regex.Pattern;
  * be invoked. See {@link #isLoggable} for implementation tips taking advantage of this rule.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @see Logging

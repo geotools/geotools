@@ -31,8 +31,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * The indexed version of the shapefile feature reader, will only read the records specified in the
  * constructor
- *
- * @source $URL$
  */
 class IndexedShapefileFeatureReader extends ShapefileFeatureReader {
 

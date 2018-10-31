@@ -27,7 +27,6 @@ import org.opengis.util.InternationalString;
 /**
  * Location of the responsible individual or organization.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

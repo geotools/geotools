@@ -17,12 +17,11 @@
 package org.geotools.renderer.i18n;
 
 import java.io.File;
-import org.geotools.resources.IndexedResourceCompiler;
+import org.geotools.util.IndexedResourceCompiler;
 
 /**
  * Resource compiler.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini
  */

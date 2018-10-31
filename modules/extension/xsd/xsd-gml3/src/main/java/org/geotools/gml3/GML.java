@@ -26,7 +26,7 @@ import org.geotools.gml2.SubstitutionGroupLeakPreventer;
 import org.geotools.gml3.smil.SMIL20;
 import org.geotools.gml3.smil.SMIL20LANG;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.type.Schema;
 
 /**
@@ -34,7 +34,6 @@ import org.opengis.feature.type.Schema;
  * http://www.opengis.net/gml schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GML extends XSD {
 

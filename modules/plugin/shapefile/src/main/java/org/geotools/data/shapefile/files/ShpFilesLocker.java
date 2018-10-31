@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import org.geotools.util.logging.Logging;
 
 class ShpFilesLocker {
-    static final Logger LOGGER = Logging.getLogger("org.geotools.data.shapefile");
+    static final Logger LOGGER = Logging.getLogger(ShpFilesLocker.class);
 
     /**
      * When true, the stack trace that got a lock that wasn't released is recorded and then printed

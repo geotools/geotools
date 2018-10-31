@@ -32,8 +32,6 @@ import org.geotools.data.Parameter;
 import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.FactoryIteratorProvider;
-import org.geotools.factory.GeoTools;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -45,6 +43,8 @@ import org.geotools.process.Processors;
 import org.geotools.process.RenderingProcess;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.factory.FactoryIteratorProvider;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Before;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -62,7 +62,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Andrea Aime - OpenGeo
  * @author Martin Davis - OpenGeo
- * @source $URL$
  */
 public class BeanProcessFactoryTest {
 

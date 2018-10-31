@@ -30,9 +30,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import org.geotools.factory.Hints;
-import org.geotools.io.IndentedLineWriter;
-import org.geotools.io.TableWriter;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -41,13 +44,10 @@ import org.geotools.referencing.factory.DeferredAuthorityFactory;
 import org.geotools.referencing.factory.FactoryNotFoundException;
 import org.geotools.referencing.factory.PropertyAuthorityFactory;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.Arguments;
+import org.geotools.util.IndentedLineWriter;
+import org.geotools.util.TableWriter;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
@@ -72,7 +72,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * it's used as an extension).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Jody Garnett
@@ -95,7 +94,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      *
      * <ul>
      *   <li>In the directory specified by the {@value
-     *       org.geotools.factory.GeoTools#CRS_DIRECTORY_KEY} system property.
+     *       org.geotools.util.factory.GeoTools#CRS_DIRECTORY_KEY} system property.
      *   <li>In every {@code org/geotools/referencing/factory/espg} directories found on the
      *       classpath.
      * </ul>
@@ -140,7 +139,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /** Constructs an authority factory using the specified hints and priority. */
-    protected FactoryUsingWKT(final Hints userHints, final int priority) {
+    public FactoryUsingWKT(final Hints userHints, final int priority) {
         super(userHints, priority);
         factories = ReferencingFactoryContainer.instance(userHints);
         Object hint = null;
@@ -291,7 +290,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      * @throws FactoryException if an error occured.
      * @since 2.4
      */
-    protected Set reportDuplicatedCodes(final PrintWriter out) throws FactoryException {
+    public Set reportDuplicatedCodes(final PrintWriter out) throws FactoryException {
         final AbstractAuthorityFactory sqlFactory = getFactory(ThreadedEpsgFactory.class);
         final Vocabulary resources = Vocabulary.getResources(null);
         out.println(resources.getLabel(VocabularyKeys.COMPARE_WITH));
@@ -343,7 +342,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
      *     authority codes}.
      * @since 2.4
      */
-    protected Set reportInstantiationFailures(final PrintWriter out) throws FactoryException {
+    public Set reportInstantiationFailures(final PrintWriter out) throws FactoryException {
         final Set<String> codes = getAuthorityCodes(CoordinateReferenceSystem.class);
         final Map<String, String> failures = new TreeMap<String, String>();
         for (final String code : codes) {
@@ -397,7 +396,7 @@ public class FactoryUsingWKT extends DeferredAuthorityFactory implements CRSAuth
     }
 
     /** Implementation of the {@link #main} method, shared by subclasses. */
-    static void main(String[] args, final Class<? extends FactoryUsingWKT> type)
+    protected static void main(String[] args, final Class<? extends FactoryUsingWKT> type)
             throws FactoryException {
         final Arguments arguments = new Arguments(args);
         Locale.setDefault(arguments.locale);

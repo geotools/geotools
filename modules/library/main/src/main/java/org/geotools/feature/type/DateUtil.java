@@ -35,7 +35,6 @@ import java.util.*;
  * differs from the Java date handling, which uses a discontinuous Gregorian calendar.
  *
  * @author Dennis M. Sosnoski
- * @source $URL$
  * @version 1.0
  */
 public abstract class DateUtil {

@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public class SeShape {
 
     public static int TYPE_NIL = -1;

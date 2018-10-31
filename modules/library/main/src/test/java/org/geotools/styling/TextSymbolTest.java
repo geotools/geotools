@@ -39,7 +39,6 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author jamesm
  * @task REVISIT: redo the Map stuff - I commented it out since DefaultMap is deprecated - cholmes.
- * @source $URL$
  */
 public class TextSymbolTest extends TestCase {
     private static final FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);

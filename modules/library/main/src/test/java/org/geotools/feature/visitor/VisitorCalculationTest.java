@@ -50,8 +50,6 @@ import org.opengis.filter.sort.SortBy;
 /**
  * Purpose: these tests ensure the proper operation of feature visitation, with CalcResult merging
  * too!
- *
- * @source $URL$
  */
 public class VisitorCalculationTest extends DataTestCase {
     SimpleFeatureCollection empty;

@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import org.geotools.test.TestData;
 
-/** @source $URL$ */
+
 public class EdigeoTestUtils {
 
     /**

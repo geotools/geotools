@@ -43,7 +43,6 @@ package org.geotools.gce.grassraster;
  * @since 3.0
  * @see {@link JGrassRegion}
  * @see {@link JGrassMapEnvironment}
- * @source $URL$
  */
 public class GrassCoverageReadParam {
 

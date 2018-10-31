@@ -27,7 +27,6 @@ import org.opengis.util.InternationalString;
 /**
  * Restrictions on the access and use of a resource or metadata.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

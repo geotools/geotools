@@ -20,9 +20,9 @@ package org.geotools.referencing.factory;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
+import org.geotools.util.Classes;
 import org.geotools.util.Version;
 import org.opengis.referencing.AuthorityFactory;
 
@@ -33,7 +33,6 @@ import org.opengis.referencing.AuthorityFactory;
  *
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 abstract class URI_Parser {
 

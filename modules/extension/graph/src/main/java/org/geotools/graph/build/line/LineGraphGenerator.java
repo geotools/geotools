@@ -21,11 +21,7 @@ import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 import org.locationtech.jts.geom.Coordinate;
 
-/**
- * Builds a graph representing a line network.
- *
- * @source $URL$
- */
+/** Builds a graph representing a line network. */
 public interface LineGraphGenerator extends GraphGenerator {
     /**
      * Look up a Node for the provided coordinate.

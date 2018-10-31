@@ -46,7 +46,6 @@ import org.opengis.filter.temporal.During;
  * should not use this feature.
  *
  * @author Mauricio Pazos
- * @source $URL$
  */
 public final class FilterToTextUtil {
 

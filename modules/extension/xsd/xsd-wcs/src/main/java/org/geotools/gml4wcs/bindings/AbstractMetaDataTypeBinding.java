@@ -2,7 +2,9 @@ package org.geotools.gml4wcs.bindings;
 
 import javax.xml.namespace.QName;
 import org.geotools.gml4wcs.GML;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:AbstractMetaDataType.
@@ -22,7 +24,6 @@ import org.geotools.xml.*;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class AbstractMetaDataTypeBinding extends AbstractComplexBinding {
 

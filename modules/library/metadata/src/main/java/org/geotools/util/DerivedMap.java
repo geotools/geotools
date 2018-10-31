@@ -36,7 +36,6 @@ import java.util.Set;
  * @param <K> The type of keys in this map.
  * @param <V> The type of values in both this map and the underlying map.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

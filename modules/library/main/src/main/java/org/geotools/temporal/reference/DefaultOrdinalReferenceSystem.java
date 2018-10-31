@@ -23,10 +23,7 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.temporal.OrdinalEra;
 import org.opengis.temporal.OrdinalReferenceSystem;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalReferenceSystem extends DefaultTemporalReferenceSystem
         implements OrdinalReferenceSystem {
 

@@ -34,7 +34,6 @@ import org.spatialite.SQLiteJDBCLoader;
  * DataStoreFactory for SpatiaLite database.
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {
 

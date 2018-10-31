@@ -45,12 +45,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * This class is a base class for customzied JDBCAccess Special implentations should subclass
  *
  * @author mcr
- * @source $URL$
  */
 public abstract class JDBCAccessCustom implements JDBCAccess {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(JDBCAccessCustom.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(JDBCAccessCustom.class);
 
     private Config config;
     private DataSource dataSource;

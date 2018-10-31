@@ -23,11 +23,7 @@ import org.geotools.geometry.iso.root.GeometryImpl;
 import org.geotools.geometry.iso.topograph2D.IntersectionMatrix;
 import org.opengis.geometry.Geometry;
 
-/**
- * Implements the relate() operation on {@link Geometry}s.
- *
- * @source $URL$
- */
+/** Implements the relate() operation on {@link Geometry}s. */
 public class RelateOp extends GeometryGraphOperation {
 
     public static IntersectionMatrix relate(GeometryImpl a, GeometryImpl b)

@@ -17,8 +17,8 @@
 package org.geotools.ml.bindings;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Strategy object for the type http://mails/refractions/net:bodyType.
@@ -35,7 +35,6 @@ import org.geotools.xml.InstanceComponent;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MLBodyTypeBinding extends AbstractSimpleBinding {
     /** @generated */

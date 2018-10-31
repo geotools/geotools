@@ -20,12 +20,11 @@ package org.geotools.data.sqlserver.jtds;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.logging.Logger;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 
-/** @source $URL$ */
 public class JTDSDateConverterFactory implements ConverterFactory {
     private static final Logger LOGGER = Logging.getLogger(JTDSDateConverterFactory.class);
     JTDSDateConverter converter = new JTDSDateConverter();

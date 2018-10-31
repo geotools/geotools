@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.xml.namespace.QName;
+import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPath;
@@ -31,7 +32,6 @@ import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.gml3.GML;
-import org.geotools.util.IndexQueryUtils;
 import org.geotools.xlink.XLINK;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -46,7 +46,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class FeatureTypeMapping {

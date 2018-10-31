@@ -22,7 +22,7 @@ import java.util.Map;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 

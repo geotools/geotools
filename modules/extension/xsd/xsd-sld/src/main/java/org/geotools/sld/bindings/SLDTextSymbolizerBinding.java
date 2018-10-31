@@ -27,9 +27,9 @@ import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.picocontainer.MutablePicoContainer;
@@ -70,7 +70,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDTextSymbolizerBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;

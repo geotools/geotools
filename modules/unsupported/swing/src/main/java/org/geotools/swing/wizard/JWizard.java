@@ -53,7 +53,6 @@ import org.geotools.util.logging.Logging;
  * with Java</a>.
  *
  * @author Jody, gdavis
- * @source $URL$
  */
 public class JWizard extends JDialog {
 

@@ -28,11 +28,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.jdbc.custom.JDBCPGRasterConfigurationBuilder;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -55,12 +55,10 @@ import org.opengis.parameter.ParameterDescriptor;
  *
  * @author mcr
  * @since 2.5
- * @source $URL$
  */
 public class ImageMosaicJDBCFormat extends AbstractGridFormat implements Format {
     /** Logger. */
-    private static final Logger LOGGER =
-            Logging.getLogger(ImageMosaicJDBCFormat.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(ImageMosaicJDBCFormat.class);
 
     /** Control the transparency of the output coverage. */
     public static final ParameterDescriptor<Color> OUTPUT_TRANSPARENT_COLOR =

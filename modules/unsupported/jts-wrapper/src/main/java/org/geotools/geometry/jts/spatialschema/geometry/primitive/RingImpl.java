@@ -9,7 +9,7 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
-import org.geotools.geometry.jts.JTSUtils;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.complex.CompositeCurveImpl;
 import org.locationtech.jts.geom.LineString;
 import org.opengis.geometry.complex.CompositeCurve;
@@ -37,7 +37,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author ISO/DIS 19107
  * @author <A HREF="http://www.opengis.org">OpenGIS&reg; consortium</A>
- * @source $URL$
  * @version 2.0
  * @see SurfaceBoundary
  * @see Shell

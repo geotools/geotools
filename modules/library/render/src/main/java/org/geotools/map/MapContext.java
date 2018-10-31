@@ -28,9 +28,6 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.event.MapBoundsEvent;
-import org.geotools.map.event.MapBoundsListener;
-import org.geotools.map.event.MapLayerListListener;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
@@ -54,10 +51,6 @@ import org.opengis.referencing.operation.TransformException;
  * keywords.
  *
  * @author Cameron Shorter
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
- *     /map/MapContext.java $
- * @version $Id$
  * @deprecated This class is being phased out, please use {@link MapContent}.
  */
 public class MapContext extends MapContent {

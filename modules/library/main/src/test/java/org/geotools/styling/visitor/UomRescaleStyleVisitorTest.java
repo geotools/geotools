@@ -63,10 +63,7 @@ import org.opengis.filter.expression.Expression;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 
-/**
- * @author milton
- * @source $URL$
- */
+/** @author milton */
 public class UomRescaleStyleVisitorTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();

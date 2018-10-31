@@ -19,9 +19,9 @@ package org.geotools.wfs.bindings;
 import javax.xml.namespace.QName;
 import net.opengis.wfs.WfsFactory;
 import org.geotools.wfs.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:FeatureTypeType_NoSRS.
@@ -36,7 +36,6 @@ import org.geotools.xml.Node;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class FeatureTypeType_NoSRSBinding extends AbstractComplexEMFBinding {
     public FeatureTypeType_NoSRSBinding(WfsFactory factory) {

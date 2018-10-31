@@ -22,7 +22,6 @@ import java.lang.annotation.Target;
  *
  * @author Johann Sorel (Geomatys)
  * @since GeoAPI 2.2
- * @source $URL$
  */
 @Documented
 @Target(METHOD)

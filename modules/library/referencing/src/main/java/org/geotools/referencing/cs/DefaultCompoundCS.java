@@ -36,7 +36,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

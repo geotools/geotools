@@ -23,11 +23,11 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.OverviewPolicy;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
 import org.geotools.gce.imagemosaic.RasterManager.SpatialDomainManager;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -35,7 +35,6 @@ import org.opengis.referencing.operation.TransformException;
  * OverviewsController}
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public class ReadParamsController {
 

@@ -22,7 +22,6 @@ package org.geotools.filter;
  * Abstract filter implementation provides or and and methods for child filters to use.
  *
  * @author Ian Turton, CCG
- * @source $URL$
  * @version $Id$
  * @deprecated No longer required to implement and, or and not
  */

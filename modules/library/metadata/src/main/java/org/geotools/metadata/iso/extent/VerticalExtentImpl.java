@@ -26,7 +26,6 @@ import org.opengis.referencing.crs.VerticalCRS;
 /**
  * Vertical domain of dataset.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

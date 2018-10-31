@@ -30,8 +30,6 @@ import java.util.List;
  *
  * It uses a {@link SegmentIntersector} to compute the intersections between segments and to record
  * statistics about what kinds of intersections were found.
- *
- * @source $URL$
  */
 public abstract class EdgeSetIntersector {
 

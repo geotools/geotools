@@ -17,11 +17,7 @@
  */
 package org.geotools.geometry.iso.util;
 
-/**
- * Thrown when the application is in an inconsistent state. Indicates a problem with the code.
- *
- * @source $URL$
- */
+/** Thrown when the application is in an inconsistent state. Indicates a problem with the code. */
 public class AssertionFailedException extends RuntimeException {
 
     /** Creates an <code>AssertionFailedException</code>. */

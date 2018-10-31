@@ -34,7 +34,6 @@ import org.geotools.util.logging.Logging;
  * (ISBN 0-12-286166-3, Chapter 4, pages 297-293)
  *
  * @author Simone Giannecchini - GeoSolutions
- * @source $URL$
  */
 public final class CustomPaletteBuilder {
     /**

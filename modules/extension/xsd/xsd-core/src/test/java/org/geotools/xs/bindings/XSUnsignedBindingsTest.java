@@ -25,9 +25,9 @@ import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import junit.framework.TestCase;
 import org.geotools.util.URLs;
-import org.geotools.xml.Parser;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XSConfiguration;
+import org.geotools.xsd.Parser;
 
 public class XSUnsignedBindingsTest extends TestCase {
 

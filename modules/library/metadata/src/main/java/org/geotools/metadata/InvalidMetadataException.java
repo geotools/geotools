@@ -21,7 +21,6 @@ package org.geotools.metadata;
  * invalid state, usually because a mandatory attribute is missing.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  */

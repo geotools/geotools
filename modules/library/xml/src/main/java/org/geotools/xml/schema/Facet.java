@@ -20,7 +20,6 @@ package org.geotools.xml.schema;
  * DOCUMENT ME!
  *
  * @author dzwiers
- * @source $URL$
  */
 public interface Facet {
     /** DOCUMENT ME! */

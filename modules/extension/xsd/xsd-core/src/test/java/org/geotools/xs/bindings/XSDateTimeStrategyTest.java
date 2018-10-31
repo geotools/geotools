@@ -22,13 +22,13 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.SimpleBinding;
-import org.geotools.xml.XSD;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 import org.geotools.xs.XSConfiguration;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.SimpleBinding;
+import org.geotools.xsd.XSD;
 import org.w3c.dom.Document;
 
 public class XSDateTimeStrategyTest extends TestSchema {

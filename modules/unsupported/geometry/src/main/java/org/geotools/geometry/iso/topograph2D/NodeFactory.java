@@ -17,11 +17,7 @@
  */
 package org.geotools.geometry.iso.topograph2D;
 
-/**
- * Factory for creating {@link Node}s
- *
- * @source $URL$
- */
+/** Factory for creating {@link Node}s */
 public class NodeFactory {
 
     /** The basic node constructor does not allow for incident edges */

@@ -29,7 +29,6 @@ import org.opengis.referencing.operation.OperationMethod;
 /**
  * Base class for cylindrical map projections.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1

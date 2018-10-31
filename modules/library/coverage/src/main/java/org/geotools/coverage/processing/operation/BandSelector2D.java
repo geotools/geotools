@@ -29,10 +29,10 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.image.ImageWorker;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.image.ColorUtilities;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.parameter.ParameterValueGroup;
 
 /**
@@ -42,7 +42,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * appropriate in this context.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Andrea Aime, GeoSolutions SAS

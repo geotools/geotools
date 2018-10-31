@@ -10,7 +10,6 @@ import java.io.File;
 import junit.framework.TestCase;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
@@ -21,17 +20,14 @@ import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Test streaming renderer handling of 3D data (that must be transformed via WGS84).
- *
- * @source $URL$
- */
+/** Test streaming renderer handling of 3D data (that must be transformed via WGS84). */
 public class GeographicTransformPointTest extends TestCase {
 
     private static final long TIME = 4000;

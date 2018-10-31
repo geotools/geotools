@@ -23,9 +23,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Map;
-import org.geotools.factory.Hints;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -38,7 +38,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * MySQL database dialect based on prepared statements.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
 

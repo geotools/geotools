@@ -59,7 +59,6 @@ import org.geotools.renderer.GTRenderer;
  *
  * @author Michael Bedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  * @see RenderingExecutorListener
  */

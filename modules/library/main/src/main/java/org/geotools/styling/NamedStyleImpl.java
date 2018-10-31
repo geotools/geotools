@@ -26,7 +26,6 @@ import org.opengis.style.StyleVisitor;
  * <code>UnsupportedOperationException</code>
  *
  * @author jamesm
- * @source $URL$
  */
 public class NamedStyleImpl extends StyleImpl implements NamedStyle {
     /** Style name */

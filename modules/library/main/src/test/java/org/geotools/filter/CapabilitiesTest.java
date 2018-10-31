@@ -39,7 +39,6 @@ import org.opengis.temporal.Period;
  * Unit test for FilterCapabilities.
  *
  * @author Chris Holmes, TOPP
- * @source $URL$
  */
 public class CapabilitiesTest extends TestCase {
     public void testCapablities() {

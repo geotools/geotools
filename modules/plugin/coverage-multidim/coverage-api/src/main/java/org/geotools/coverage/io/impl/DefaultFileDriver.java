@@ -29,9 +29,9 @@ import java.util.logging.Logger;
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.FileDriver;
 import org.geotools.data.Parameter;
-import org.geotools.factory.Hints;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.util.ProgressListener;
 
@@ -39,7 +39,6 @@ import org.opengis.util.ProgressListener;
  * Base class extending {@link DefaultDriver} leveraging on URLs.
  *
  * @author Simone Giannecchini, GeoSolutions
- * @source $URL$
  */
 public class DefaultFileDriver extends DefaultDriver implements FileDriver {
 

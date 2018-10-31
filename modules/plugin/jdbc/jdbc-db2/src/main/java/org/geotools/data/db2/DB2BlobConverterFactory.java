@@ -18,11 +18,10 @@
 package org.geotools.data.db2;
 
 import java.lang.reflect.Method;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
+import org.geotools.util.factory.Hints;
 
-/** @source $URL$ */
 public class DB2BlobConverterFactory implements ConverterFactory {
 
     DB2BlobConverter converter = new DB2BlobConverter();

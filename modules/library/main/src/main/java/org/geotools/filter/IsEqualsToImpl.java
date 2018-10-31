@@ -22,10 +22,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
-/**
- * @author jdeolive TODO: rename this class to IsEqualToImpl
- * @source $URL$
- */
+/** @author jdeolive TODO: rename this class to IsEqualToImpl */
 public class IsEqualsToImpl extends MultiCompareFilterImpl implements PropertyIsEqualTo {
 
     @Deprecated

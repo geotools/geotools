@@ -27,7 +27,6 @@ import org.opengis.metadata.spatial.GridSpatialRepresentation;
 /**
  * Basic information required to uniquely identify a resource or resources.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

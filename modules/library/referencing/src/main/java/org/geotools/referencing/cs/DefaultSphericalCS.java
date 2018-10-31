@@ -20,7 +20,7 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.cs.SphericalCS;
@@ -39,7 +39,6 @@ import org.opengis.referencing.cs.SphericalCS;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

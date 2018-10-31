@@ -18,7 +18,7 @@ import org.opengis.filter.spatial.BBOX;
  * service does not support the vast amount of filters that GeoTools supports.
  *
  * @author Pieter De Graef, Geosparc
- * @source $URL$
+
  */
 public class GeoRestFilterVisitorTest extends TestCase {
 

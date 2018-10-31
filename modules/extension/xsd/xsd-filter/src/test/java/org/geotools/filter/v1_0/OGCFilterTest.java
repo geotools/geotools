@@ -18,16 +18,15 @@ package org.geotools.filter.v1_0;
 
 import java.io.ByteArrayInputStream;
 import junit.framework.TestCase;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
-import org.geotools.xml.Parser.Properties;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
+import org.geotools.xsd.Parser.Properties;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DWithin;
 
-/** @source $URL$ */
 public class OGCFilterTest extends TestCase {
     Parser parser;
 

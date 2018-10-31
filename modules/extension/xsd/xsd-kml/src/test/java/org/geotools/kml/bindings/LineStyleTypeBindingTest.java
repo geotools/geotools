@@ -21,9 +21,8 @@ import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.SLD;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 
-/** @source $URL$ */
 public class LineStyleTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(LineSymbolizer.class, binding(KML.LineStyleType).getType());

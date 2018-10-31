@@ -49,7 +49,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * ${false_northing}   = (${lat0} >= 0.0) ? 0.0 : 10000000.0
  * </pre>
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Rueben Schulz

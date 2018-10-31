@@ -17,11 +17,10 @@
 package org.geotools.filter.v1_0;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.spatial.BBOX;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class OGCBBoxTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(BBOX.class, binding(OGC.BBOXType).getType());

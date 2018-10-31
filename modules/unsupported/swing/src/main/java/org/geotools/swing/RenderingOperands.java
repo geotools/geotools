@@ -8,10 +8,7 @@ import java.awt.Graphics2D;
 import org.geotools.map.Layer;
 import org.geotools.renderer.GTRenderer;
 
-/**
- * @author michael
- * @source $URL$
- */
+/** @author michael */
 public class RenderingOperands {
 
     private final Layer layer;

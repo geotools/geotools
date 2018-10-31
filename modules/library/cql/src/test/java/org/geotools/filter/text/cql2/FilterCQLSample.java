@@ -24,10 +24,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
+import org.geotools.util.factory.Hints;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -56,7 +56,6 @@ import org.opengis.temporal.Period;
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering
  * @since 2.5
- * @source $URL$
  */
 public class FilterCQLSample {
 

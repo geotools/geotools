@@ -20,7 +20,6 @@ package org.geotools.data;
  * Used in conjuction with {@link FeatureLocking} to lock features during a transaction. This class
  * is responsible for supplying a unique Authorization ID and expiry period.
  *
- * @source $URL$
  * @deprecated Please use {@link FeatureLock}
  */
 public class DefaultFeatureLock extends FeatureLock {

@@ -50,7 +50,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Jody Garnett, LISAsoft
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class Types {
 

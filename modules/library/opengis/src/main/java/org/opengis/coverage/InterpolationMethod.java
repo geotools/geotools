@@ -42,7 +42,6 @@ import org.opengis.util.CodeList;
  *   <tr><td>Barycentric</td>      <td>TIN</td>                             <td>2</td></tr>
  * </table>
  *
- * @source $URL$
  * @version ISO 19123:2004
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.1

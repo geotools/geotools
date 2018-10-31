@@ -27,7 +27,6 @@ import org.opengis.feature.type.Schema;
  * http://www.isotc211.org/2005/gss schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GSS extends GML.DelegatingXSD {
 

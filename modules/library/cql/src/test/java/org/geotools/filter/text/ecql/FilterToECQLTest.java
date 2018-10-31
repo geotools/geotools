@@ -27,7 +27,6 @@ import org.opengis.filter.Filter;
  * the {@link FilterToECQL} class.
  *
  * @author Mauricio Pazos
- * @source $URL$
  */
 public class FilterToECQLTest extends FilterToCQLTest {
 

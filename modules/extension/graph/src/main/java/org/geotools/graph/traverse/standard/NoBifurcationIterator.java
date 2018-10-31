@@ -37,7 +37,6 @@ import org.geotools.graph.traverse.basic.SourceGraphIterator;
  * <br>
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class NoBifurcationIterator extends SourceGraphIterator {
 

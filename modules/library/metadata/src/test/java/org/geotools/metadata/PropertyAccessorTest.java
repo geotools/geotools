@@ -32,7 +32,6 @@ import org.opengis.util.InternationalString;
 /**
  * Tests the {@link PropertyAccessor} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

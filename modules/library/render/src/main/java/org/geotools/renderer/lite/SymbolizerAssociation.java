@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -25,8 +25,6 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * <p>Examples of context information include the transformations employed at different stages of
  * the rendering pileline.
- *
- * @source $URL$
  */
 class SymbolizerAssociation {
     /**

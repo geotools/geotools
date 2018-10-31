@@ -42,8 +42,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * being in the result Area.
  *
  * <p>
- *
- * @source $URL$
  */
 public class PolygonBuilder {
     static final int X = 0;

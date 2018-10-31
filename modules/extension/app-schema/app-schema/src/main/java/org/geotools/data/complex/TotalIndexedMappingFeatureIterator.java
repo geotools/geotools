@@ -17,9 +17,9 @@
 package org.geotools.data.complex;
 
 import java.io.IOException;
+import org.geotools.appschema.util.IndexQueryUtils;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.util.IndexQueryUtils;
 import org.opengis.feature.Feature;
 import org.opengis.filter.Filter;
 

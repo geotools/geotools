@@ -35,11 +35,11 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.map.DefaultMapContext;
 import org.geotools.map.MapContext;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryFinder;
 import org.geotools.test.TestData;
+import org.geotools.xml.styling.SLDParser;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
@@ -56,7 +56,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author jeichar
  * @since 0.9.0
- * @source $URL$
  */
 public class LabelingTest extends TestCase {
 

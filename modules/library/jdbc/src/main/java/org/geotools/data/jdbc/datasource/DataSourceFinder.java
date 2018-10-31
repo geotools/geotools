@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.sql.DataSource;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
+import org.geotools.util.factory.FactoryCreator;
+import org.geotools.util.factory.FactoryRegistry;
 
 /**
  * Enable programs to find all available {@link DataSourceFactorySpi} implementations.
@@ -42,13 +42,11 @@ import org.geotools.factory.FactoryRegistry;
  *
  * <p>Example:<br>
  * <code>org.geotools.data.jdbc.DBCPDataSourceFactory</code>
- *
- * @source $URL$
  */
 public final class DataSourceFinder {
     /** The logger for the filter module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
+            org.geotools.util.logging.Logging.getLogger(DataSourceFinder.class);
 
     /** The service registry for this manager. Will be initialized only when first needed. */
     private static FactoryRegistry registry;

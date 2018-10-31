@@ -32,13 +32,13 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class PolygonNotOverlappingPolygonValidation extends PolygonPolygonAbstractValidation {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(
+                    PolygonNotOverlappingPolygonValidation.class);
 
     /**
      * PolygonBoundaryCoveredByPolygonValidation constructor.

@@ -31,7 +31,6 @@ import org.geotools.graph.structure.Node;
  * G = {N,E} W = { n(i) in N | (n(i-1),n(i)) in E }
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class Walk extends ArrayList implements NodeSequence {
 

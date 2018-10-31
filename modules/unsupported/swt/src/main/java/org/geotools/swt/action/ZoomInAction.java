@@ -25,7 +25,6 @@ import org.geotools.swt.utils.ImageCache;
  * Action that activates the Zoom in tool for the current {@link SwtMapPane map pane}.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class ZoomInAction extends MapAction {
 

@@ -28,9 +28,9 @@ import java.util.Collections;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.data.ComplexTestData;
+import org.geotools.data.complex.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.UniqueNameFeatureTypeFactoryImpl;
 import org.geotools.xlink.XLINK;
 import org.junit.Test;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -41,7 +41,6 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class XPathUtilTest {

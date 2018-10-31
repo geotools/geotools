@@ -1,5 +1,8 @@
 package org.geotools.javafx;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,7 +13,6 @@ import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.wms.WebMapServer;
 import org.geotools.geometry.GeneralEnvelope;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
@@ -63,8 +65,8 @@ public class FXMapTest extends ApplicationTest {
             displayLayer.setBoundingBoxes(new CRSEnvelope(initialBounds));
             map = new FXMap(wms, displayLayer, sceneHeight, sceneWidth, initialBounds);
         } catch (Exception e) {
-            Assert.fail("Map creation failed: " + e.getMessage());
+            fail("Map creation failed: " + e.getMessage());
         }
-        Assert.assertTrue(map.isInitialized());
+        assertTrue(map.isInitialized());
     }
 }

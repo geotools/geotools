@@ -27,12 +27,11 @@ import org.opengis.filter.FilterFactory2;
  * Unit test for FilterCapabilities.
  *
  * @author Chris Holmes, TOPP
- * @source $URL$
  */
 public class FilterCapabilitiesTest extends TestCase {
     /** Standard logging instance */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.defaultcore");
+            org.geotools.util.logging.Logging.getLogger(FilterCapabilitiesTest.class);
 
     /** Feature on which to preform tests */
     private org.opengis.filter.Filter gFilter;

@@ -19,7 +19,6 @@ package org.geotools.sld.bindings;
 import org.geotools.filter.Filters;
 import org.geotools.styling.Halo;
 
-/** @source $URL$ */
 public class SLDHaloBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Halo.class, new SLDHaloBinding(null, null).getType());

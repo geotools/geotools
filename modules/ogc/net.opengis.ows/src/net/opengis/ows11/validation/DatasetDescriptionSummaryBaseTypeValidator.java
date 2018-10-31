@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -19,12 +17,12 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface DatasetDescriptionSummaryBaseTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateWGS84BoundingBox(EList value);
-    boolean validateIdentifier(CodeType value);
-    boolean validateBoundingBoxGroup(FeatureMap value);
-    boolean validateBoundingBox(EList value);
-    boolean validateMetadata(EList value);
-    boolean validateDatasetDescriptionSummary(EList value);
+  boolean validateWGS84BoundingBox(EList value);
+  boolean validateIdentifier(CodeType value);
+  boolean validateBoundingBoxGroup(FeatureMap value);
+  boolean validateBoundingBox(EList value);
+  boolean validateMetadata(EList value);
+  boolean validateDatasetDescriptionSummary(EList value);
 }

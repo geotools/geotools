@@ -68,7 +68,6 @@ import org.opengis.filter.temporal.TOverlaps;
  * looking for.
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public abstract class AbstractSearchFilterVisitor implements FilterVisitor, ExpressionVisitor {
     /**

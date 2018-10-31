@@ -42,12 +42,11 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Cory Horner
  * @since 2.2M2
- * @source $URL$
  */
 public class Collection_BoundsFunction extends FunctionExpressionImpl {
     /** The logger for the filter module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter.function");
+            org.geotools.util.logging.Logging.getLogger(Collection_BoundsFunction.class);
 
     FeatureCollection<FeatureType, Feature> previousFeatureCollection = null;
     Object bounds = null;

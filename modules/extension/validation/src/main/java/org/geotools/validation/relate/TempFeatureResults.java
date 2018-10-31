@@ -22,7 +22,6 @@ import org.geotools.validation.Validation;
 import org.geotools.validation.ValidationResults;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 final class TempFeatureResults implements ValidationResults {
     Validation trial;
     List error = new ArrayList();

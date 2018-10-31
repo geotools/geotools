@@ -35,7 +35,6 @@ import org.opengis.geometry.complex.Composite;
  * contain its boundary (except in the trivial case of {@linkplain Point point} where the boundary
  * is empty), while a {@linkplain Complex complex} shall contain its boundary in all cases.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

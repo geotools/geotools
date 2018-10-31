@@ -50,7 +50,7 @@ import org.opengis.filter.spatial.BBOX;
 
 /**
  * @author Ian Schneider (OpenGeo)
- * @source $URL$
+
  */
 public class CouchDBDataStoreTest extends CouchDBTestSupport {
     static CouchDBConnection db;

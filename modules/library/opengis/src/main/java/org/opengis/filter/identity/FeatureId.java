@@ -16,7 +16,6 @@ import org.opengis.annotation.XmlElement;
  *
  * <p>Features are identified as strings.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @author Justin Deoliveira (The Open Planning Project)

@@ -10,10 +10,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import org.eclipse.xsd.XSDSchema;
-import org.geotools.xml.Schemas;
+import org.geotools.xsd.Schemas;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class SchemasTest {
 
     @Test

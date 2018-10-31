@@ -45,7 +45,6 @@ import org.opengis.util.InternationalString;
  * EPSG codes look like {@code "EPSG:4326"}.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett

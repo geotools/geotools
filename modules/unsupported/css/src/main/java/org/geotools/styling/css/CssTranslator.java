@@ -37,36 +37,35 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.xml.transform.TransformerException;
 import org.apache.commons.io.FileUtils;
+import org.geotools.brewer.styling.builder.ChannelSelectionBuilder;
+import org.geotools.brewer.styling.builder.ColorMapBuilder;
+import org.geotools.brewer.styling.builder.ColorMapEntryBuilder;
+import org.geotools.brewer.styling.builder.ContrastEnhancementBuilder;
+import org.geotools.brewer.styling.builder.FeatureTypeStyleBuilder;
+import org.geotools.brewer.styling.builder.FillBuilder;
+import org.geotools.brewer.styling.builder.FontBuilder;
+import org.geotools.brewer.styling.builder.GraphicBuilder;
+import org.geotools.brewer.styling.builder.HaloBuilder;
+import org.geotools.brewer.styling.builder.LineSymbolizerBuilder;
+import org.geotools.brewer.styling.builder.MarkBuilder;
+import org.geotools.brewer.styling.builder.PointPlacementBuilder;
+import org.geotools.brewer.styling.builder.PointSymbolizerBuilder;
+import org.geotools.brewer.styling.builder.PolygonSymbolizerBuilder;
+import org.geotools.brewer.styling.builder.RasterSymbolizerBuilder;
+import org.geotools.brewer.styling.builder.RuleBuilder;
+import org.geotools.brewer.styling.builder.StrokeBuilder;
+import org.geotools.brewer.styling.builder.StyleBuilder;
+import org.geotools.brewer.styling.builder.SymbolizerBuilder;
+import org.geotools.brewer.styling.builder.TextSymbolizerBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.Rule;
-import org.geotools.styling.SLDTransformer;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.styling.builder.ChannelSelectionBuilder;
-import org.geotools.styling.builder.ColorMapBuilder;
-import org.geotools.styling.builder.ColorMapEntryBuilder;
-import org.geotools.styling.builder.ContrastEnhancementBuilder;
-import org.geotools.styling.builder.FeatureTypeStyleBuilder;
-import org.geotools.styling.builder.FillBuilder;
-import org.geotools.styling.builder.FontBuilder;
-import org.geotools.styling.builder.GraphicBuilder;
-import org.geotools.styling.builder.HaloBuilder;
-import org.geotools.styling.builder.LineSymbolizerBuilder;
-import org.geotools.styling.builder.MarkBuilder;
-import org.geotools.styling.builder.PointPlacementBuilder;
-import org.geotools.styling.builder.PointSymbolizerBuilder;
-import org.geotools.styling.builder.PolygonSymbolizerBuilder;
-import org.geotools.styling.builder.RasterSymbolizerBuilder;
-import org.geotools.styling.builder.RuleBuilder;
-import org.geotools.styling.builder.StrokeBuilder;
-import org.geotools.styling.builder.StyleBuilder;
-import org.geotools.styling.builder.SymbolizerBuilder;
-import org.geotools.styling.builder.TextSymbolizerBuilder;
 import org.geotools.styling.css.Value.Function;
 import org.geotools.styling.css.Value.Literal;
 import org.geotools.styling.css.Value.MultiValue;
@@ -86,13 +85,13 @@ import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.geotools.util.Converters;
 import org.geotools.util.Range;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.styling.SLDTransformer;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Style;
-import org.w3c.dom.css.CSSRule;
 
 /**
  * Transforms a GeoCSS into an equivalent GeoTools {@link Style} object
@@ -892,7 +891,7 @@ public class CssTranslator {
     }
 
     /**
-     * Turns an SLD compatible {@link CSSRule} into a {@link Rule}, appending it to the {@link
+     * Turns an SLD compatible {@link CssRule} into a {@link Rule}, appending it to the {@link
      * FeatureTypeStyleBuilder}
      *
      * @param cssRule
@@ -1374,7 +1373,6 @@ public class CssTranslator {
      *
      * @param ceb
      * @param constrastEnhancements
-     * @param constrastAlgorithms
      * @param constrastParameters
      * @param gammas
      * @param i
@@ -1669,7 +1667,7 @@ public class CssTranslator {
      * Returns true if the value is a {@link Literal}, or a {@link MultiValue} made of {@link
      * Literal}
      *
-     * @param dasharrayValue
+     * @param value
      * @return
      */
     private boolean isLiterals(Value value) {
@@ -2092,9 +2090,9 @@ public class CssTranslator {
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css")
+        org.geotools.util.logging.Logging.getLogger(CssTranslator.class)
                 .setLevel(java.util.logging.Level.FINE);
-        org.geotools.util.logging.Logging.getLogger("org.geotools.styling.css").addHandler(handler);
+        org.geotools.util.logging.Logging.getLogger(CssTranslator.class).addHandler(handler);
 
         CssTranslator translator = new CssTranslator();
         Style style = translator.translate(styleSheet);

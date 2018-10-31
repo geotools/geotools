@@ -20,8 +20,8 @@
 package org.geotools.util;
 
 import java.util.Locale;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.util.InternationalString;
 
 /**
@@ -36,7 +36,6 @@ import org.opengis.util.InternationalString;
  * the {@linkplain CharSequence character sequence}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

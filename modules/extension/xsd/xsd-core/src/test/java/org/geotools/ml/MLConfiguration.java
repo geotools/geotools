@@ -23,10 +23,9 @@ import org.geotools.ml.bindings.MLEnvelopeTypeBinding;
 import org.geotools.ml.bindings.MLMailTypeBinding;
 import org.geotools.ml.bindings.MLMailsTypeBinding;
 import org.geotools.ml.bindings.MLMimeTopLevelTypeBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
-/** @source $URL$ */
 public class MLConfiguration extends Configuration {
     public MLConfiguration() {
         super(ML.getInstance());

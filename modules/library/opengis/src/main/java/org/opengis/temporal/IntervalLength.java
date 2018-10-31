@@ -22,7 +22,6 @@ import org.opengis.annotation.UML;
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
  * @author Martin Desruisseaux (IRD)
- * @source $URL$
  */
 @UML(identifier = "TM_IntervalLength", specification = ISO_19108)
 public interface IntervalLength extends Duration {

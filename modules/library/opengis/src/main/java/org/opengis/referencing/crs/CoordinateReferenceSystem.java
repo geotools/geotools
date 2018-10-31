@@ -37,7 +37,6 @@ import org.opengis.referencing.cs.CoordinateSystem;
  * common in seismic imaging. A second time-coordinate indicates the time of observation, usually
  * expressed in whole years.
  *
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

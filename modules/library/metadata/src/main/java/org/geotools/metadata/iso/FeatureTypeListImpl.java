@@ -24,7 +24,6 @@ import org.opengis.metadata.FeatureTypeList;
 /**
  * List of names of feature types with the same spatial representation (same as spatial attributes).
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

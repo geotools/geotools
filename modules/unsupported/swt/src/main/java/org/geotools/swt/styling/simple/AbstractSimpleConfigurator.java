@@ -41,7 +41,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author mleslie
  * @since 0.6.0
- * @source $URL$
  */
 public class AbstractSimpleConfigurator extends Dialog {
     /** <code>build</code> field */

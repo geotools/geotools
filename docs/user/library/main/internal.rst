@@ -2,7 +2,7 @@ Internals
 ---------
 
 The gt-main class holds a number of internal and abstract classes useful to those implementing support for additional DataStore formats.
-These classes should be moved to gt-data when time permits.
+These classes should be moved to gt-main when time permits.
 
 The gt-main module provides many well known classes covered in the public documentation:
 
@@ -32,7 +32,7 @@ The **AbstractDataStore** is an old base class for DataStore implementations, cu
 
 .. image:: /images/AbstractDataStore.PNG
 
-This class is helpful starting point, however we have taken the lessons learned and wrapped them up in ContentDataStore covered in the :doc:`gt-data <../data/internal>` documentation.
+This class is helpful starting point, however we have taken the lessons learned and wrapped them up in ContentDataStore covered in the :doc:`gt-main <../data/internal>` documentation.
 
 The following classes are related:
 

@@ -25,7 +25,6 @@ import org.geotools.jdbc.JDBCTestSupport;
  * MySQLDataStoreFactory.ENHANCED_SPATIAL_SUPPORT is set.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class MySQLDataStoreManualEnhandedSpatialSupportTest extends JDBCTestSupport {
     protected JDBCTestSetup createTestSetup() {

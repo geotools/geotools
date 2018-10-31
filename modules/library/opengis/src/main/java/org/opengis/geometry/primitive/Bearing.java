@@ -20,7 +20,6 @@ import org.opengis.annotation.UML;
  * direction. In a 3D coordinate reference system, two angles or any 3D vector is possible. If both
  * a set of angles and a vector are given, then they shall be consistent with one another.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

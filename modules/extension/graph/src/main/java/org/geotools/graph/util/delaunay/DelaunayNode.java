@@ -19,10 +19,7 @@ package org.geotools.graph.util.delaunay;
 import org.geotools.graph.structure.line.BasicXYNode;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class DelaunayNode extends BasicXYNode {
 
     private SimpleFeature feature;

@@ -24,10 +24,10 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.geotools.validation.ValidationResults;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -44,7 +44,6 @@ import org.opengis.filter.spatial.Disjoint;
  *
  * @author bowens, ptozer<br>
  *     Created Apr 27, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p>Tests to see if a Geometry overlaps, partially or entirely, with another Geometry.
@@ -62,7 +61,7 @@ import org.opengis.filter.spatial.Disjoint;
  */
 public class OverlapsIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(OverlapsIntegrity.class);
     private static HashSet usedIDs;
     private boolean showPrintLines = true;
 

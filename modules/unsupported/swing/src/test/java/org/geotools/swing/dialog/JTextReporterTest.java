@@ -17,7 +17,11 @@
 
 package org.geotools.swing.dialog;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.awt.AWTEvent;
 import java.awt.Dialog;
@@ -39,8 +43,9 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 import javax.swing.JTextArea;
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.fixture.JTextComponentFixture;
+import org.assertj.swing.driver.DialogDriver;
+import org.assertj.swing.fixture.DialogFixture;
+import org.assertj.swing.fixture.JTextComponentFixture;
 import org.geotools.swing.dialog.JTextReporter.Connection;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
@@ -61,11 +66,10 @@ import org.junit.runner.RunWith;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JTextReporterTest extends GraphicsTestBase<Dialog> {
+public class JTextReporterTest extends GraphicsTestBase<DialogFixture, Dialog, DialogDriver> {
 
     private static final Class<? extends Dialog> DIALOG_CLASS = JTextReporter.TextDialog.class;
 
@@ -102,12 +106,12 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     @Test
     public void showDefaultDialog() throws Exception {
         showDialog(TITLE);
-        assertEquals(TITLE, windowFixture.component().getTitle());
+        assertEquals(TITLE, windowFixture.target().getTitle());
 
         // check text area is present and correct size
         JTextComponentFixture textBox = windowFixture.textBox();
-        assertTrue(textBox.component() instanceof JTextArea);
-        JTextArea textArea = (JTextArea) textBox.component();
+        assertTrue(textBox.target() instanceof JTextArea);
+        JTextArea textArea = (JTextArea) textBox.target();
         assertEquals(JTextReporter.DEFAULT_TEXTAREA_ROWS, textArea.getRows());
         assertEquals(JTextReporter.DEFAULT_TEXTAREA_COLS, textArea.getColumns());
 
@@ -121,14 +125,14 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         DialogFixture df = (DialogFixture) windowFixture;
 
         boolean expectModal = (JTextReporter.DEFAULT_FLAGS & JTextReporter.FLAG_MODAL) > 0;
-        assertEquals(expectModal, df.component().isModal());
+        assertEquals(expectModal, df.target().isModal());
 
         boolean expectResizable = (JTextReporter.DEFAULT_FLAGS & JTextReporter.FLAG_RESIZABLE) > 0;
-        assertEquals(expectResizable, df.component().isResizable());
+        assertEquals(expectResizable, df.target().isResizable());
 
         boolean expectAlwaysOnTop =
                 (JTextReporter.DEFAULT_FLAGS & JTextReporter.FLAG_ALWAYS_ON_TOP) > 0;
-        assertEquals(expectAlwaysOnTop, df.component().isAlwaysOnTop());
+        assertEquals(expectAlwaysOnTop, df.target().isAlwaysOnTop());
     }
 
     @Test
@@ -164,7 +168,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         Connection conn = showDialog(TITLE).get();
 
         conn.append(TEXT[0]);
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         windowFixture.textBox().requireText(TEXT[0]);
     }
@@ -176,7 +180,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         Connection conn = showDialog(TITLE).get();
         conn.append(text);
 
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         String displayedText = windowFixture.textBox().text();
 
         assertEquals(text, displayedText);
@@ -189,7 +193,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         Connection conn = showDialog(TITLE).get();
         conn.append(text);
 
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         String displayedText = windowFixture.textBox().text();
 
         String regex = "(\\n|\\r)+";
@@ -205,7 +209,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         conn.append(TEXT[1]);
         conn.appendNewline();
 
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         String displayedText = windowFixture.textBox().text();
         String expectedText = String.format("%s%n%n%s%n", TEXT[0], TEXT[1]);
         assertEquals(expectedText, displayedText);
@@ -247,7 +251,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         Connection conn = showDialog(TITLE).get();
 
         conn.append(TEXT[0]).appendNewline().append(TEXT[1]);
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         String actual = windowFixture.textBox().text();
         String expected = String.format("%s%n%s", TEXT[0], TEXT[1]);
@@ -258,7 +262,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     public void appendAfterDialogDismissedCausesLoggerMessage() throws Exception {
         Connection conn = showDialog(TITLE).get();
         windowFixture.close();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         captureLogger();
         conn.append("This should not work");
@@ -357,9 +361,9 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         showDialog(TITLE, TEXT[0]).get();
 
         getButton("Clear").click();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
-        assertEquals(0, windowFixture.textBox().component().getDocument().getLength());
+        assertEquals(0, windowFixture.textBox().target().getDocument().getLength());
     }
 
     @Test
@@ -368,7 +372,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         showDialog(TITLE, text).get();
 
         getButton("Copy to clipboard").click();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
         String clipText = (String) clip.getData(DataFlavor.stringFlavor);
@@ -380,7 +384,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
         Connection conn = showDialog(TITLE).get();
         conn.closeDialog();
 
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         windowFixture.requireNotVisible();
         assertFalse(conn.isOpen());
     }
@@ -389,7 +393,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     public void callingCloseDialogTwiceRaisesLogMessage() throws Exception {
         Connection conn = showDialog(TITLE).get();
         conn.closeDialog();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         captureLogger();
 
         conn.closeDialog();
@@ -403,7 +407,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     public void callingCloseDialogAfterGUICloseRaisesLogMessage() throws Exception {
         Connection conn = showDialog(TITLE).get();
         getButton("Close").click();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         captureLogger();
 
         conn.closeDialog();
@@ -449,7 +453,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     }
 
     private void captureLogger() {
-        Logger logger = Logging.getLogger("org.geotools.swing");
+        Logger logger = Logging.getLogger(JTextReporterTest.class);
         Formatter formatter = new SimpleFormatter();
         out = new ByteArrayOutputStream();
         handler = new StreamHandler(out, formatter);
@@ -458,7 +462,7 @@ public class JTextReporterTest extends GraphicsTestBase<Dialog> {
     }
 
     private void releaseLogger() {
-        Logger logger = Logging.getLogger("org.geotools.swing");
+        Logger logger = Logging.getLogger(JTextReporterTest.class);
         logger.removeHandler(handler);
         logger.setUseParentHandlers(true);
     }

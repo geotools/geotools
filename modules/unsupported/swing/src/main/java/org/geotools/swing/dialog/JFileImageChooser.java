@@ -52,12 +52,11 @@ import org.geotools.util.logging.Logging;
  *
  * @author Michael Bedward
  * @since 2.6.1
- * @source $URL$
  * @version $Id$
  */
 public class JFileImageChooser extends JFileChooser {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    private static final Logger LOGGER = Logging.getLogger(JFileImageChooser.class);
 
     /** Constants for (possibly) supported image file formats. */
     private static enum FormatSpecifier {

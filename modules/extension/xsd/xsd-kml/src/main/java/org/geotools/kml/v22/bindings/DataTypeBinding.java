@@ -3,9 +3,9 @@ package org.geotools.kml.v22.bindings;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.kml.v22.KML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.feature.type.Name;
 
 /**

@@ -48,7 +48,6 @@ import org.opengis.filter.sort.SortBy;
  * provides support for IOException.
  *
  * @author Jody
- * @source $URL$
  */
 public class CollectionFeatureSource implements SimpleFeatureSource {
     protected SimpleFeatureCollection collection;

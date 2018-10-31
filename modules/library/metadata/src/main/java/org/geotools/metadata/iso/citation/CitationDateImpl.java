@@ -27,7 +27,6 @@ import org.opengis.metadata.citation.DateType;
 /**
  * Reference date and event used to describe it.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1

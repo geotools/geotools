@@ -24,17 +24,17 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
-import org.geotools.factory.Hints;
-import org.geotools.io.TableWriter;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.FactoryDependencies;
+import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.referencing.wkt.Parser;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.Arguments;
+import org.geotools.util.TableWriter;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
@@ -53,7 +53,6 @@ import org.opengis.util.InternationalString;
  * Implementation of the {@link CRS#main} method. Exists as a separated class in order to reduce the
  * class loading for applications that don't want to run this main method.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

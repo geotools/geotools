@@ -38,7 +38,6 @@ import org.opengis.temporal.Position;
  *
  * @author Mauricio Pazos - Axios Engineering
  * @author Gabriel Roldan - Axios Engineering
- * @source $URL$
  * @version $Id$
  * @since 2.4
  */

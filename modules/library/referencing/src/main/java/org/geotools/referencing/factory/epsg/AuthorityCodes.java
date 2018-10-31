@@ -31,8 +31,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.operation.Projection;
 
@@ -45,11 +45,10 @@ import org.opengis.referencing.operation.Projection;
  * preserve any connection to the database.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class AuthorityCodes extends AbstractSet<String> implements Serializable {
+public final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     /** For compatibility with different versions. */
     private static final long serialVersionUID = 7105664579449680562L;
 

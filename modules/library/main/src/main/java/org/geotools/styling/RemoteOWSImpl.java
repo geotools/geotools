@@ -16,7 +16,6 @@
  */
 package org.geotools.styling;
 
-/** @source $URL$ */
 public class RemoteOWSImpl implements RemoteOWS {
 
     private String service;

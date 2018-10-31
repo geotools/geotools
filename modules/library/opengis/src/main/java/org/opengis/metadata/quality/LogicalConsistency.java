@@ -17,7 +17,6 @@ import org.opengis.annotation.UML;
  * Degree of adherence to logical rules of data structure, attribution and relationships (data
  * structure can be conceptual, logical or physical).
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

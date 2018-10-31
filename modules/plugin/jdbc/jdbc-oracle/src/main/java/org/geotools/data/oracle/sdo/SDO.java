@@ -64,13 +64,11 @@ import org.locationtech.jts.geom.Polygon;
  *     href="http://otn.oracle.com/pls/db10g/db10g.to_toc?pathname=appdev.101%2Fb10826%2Ftoc.htm&remark=portal+%28Unstructured+data%29">Spatial
  *     User's Guide (10.1)</a>
  * @author Jody Garnett, Refractions Reasearch Inc.
- * @source $URL$
  * @version CVS Version
  * @see net.refractions.jspatial.jts
  */
 public final class SDO {
-    private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.oracle.sdo");
+    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(SDO.class);
     public static final int SRID_NULL = -1;
 
     //
@@ -2499,7 +2497,7 @@ public final class SDO {
             } else if (etype == ETYPE.COMPOUND_POLYGON_INTERIOR) {
                 int subelements = INTERPRETATION(elemInfo, i);
                 rings.add(createLinearRing(gf, GTYPE, SRID, elemInfo, i, coords));
-                i += subelements;
+                i = i + subelements + 1;
             } else if (etype
                     == ETYPE.POLYGON) { // nead to test Orientationwiseness of Ring to see if it
                 // is

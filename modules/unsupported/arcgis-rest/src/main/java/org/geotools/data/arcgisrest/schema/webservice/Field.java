@@ -1,185 +1,215 @@
+
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Field {
 
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("name")
     @Expose
     private String name;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("type")
     @Expose
     private String type;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("alias")
     @Expose
     private String alias;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("sqlType")
     @Expose
     private String sqlType;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("nullable")
     @Expose
     private Boolean nullable;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("editable")
     @Expose
     private Boolean editable;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("domain")
     @Expose
     private Object domain;
-    /** (Required) */
+    /**
+     * 
+     * (Required)
+     * 
+     */
     @SerializedName("defaultValue")
     @Expose
     private Object defaultValue;
 
     /**
+     * 
      * (Required)
-     *
-     * @return The name
+     * 
      */
     public String getName() {
         return name;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param name The name
+     * 
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The type
+     * 
      */
     public String getType() {
         return type;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param type The type
+     * 
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The alias
+     * 
      */
     public String getAlias() {
         return alias;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param alias The alias
+     * 
      */
     public void setAlias(String alias) {
         this.alias = alias;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The sqlType
+     * 
      */
     public String getSqlType() {
         return sqlType;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param sqlType The sqlType
+     * 
      */
     public void setSqlType(String sqlType) {
         this.sqlType = sqlType;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The nullable
+     * 
      */
     public Boolean getNullable() {
         return nullable;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param nullable The nullable
+     * 
      */
     public void setNullable(Boolean nullable) {
         this.nullable = nullable;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The editable
+     * 
      */
     public Boolean getEditable() {
         return editable;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param editable The editable
+     * 
      */
     public void setEditable(Boolean editable) {
         this.editable = editable;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The domain
+     * 
      */
     public Object getDomain() {
         return domain;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param domain The domain
+     * 
      */
     public void setDomain(Object domain) {
         this.domain = domain;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @return The defaultValue
+     * 
      */
     public Object getDefaultValue() {
         return defaultValue;
     }
 
     /**
+     * 
      * (Required)
-     *
-     * @param defaultValue The defaultValue
+     * 
      */
     public void setDefaultValue(Object defaultValue) {
         this.defaultValue = defaultValue;
@@ -187,21 +217,60 @@ public class Field {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        StringBuilder sb = new StringBuilder();
+        sb.append(Field.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append("name");
+        sb.append('=');
+        sb.append(((this.name == null)?"<null>":this.name));
+        sb.append(',');
+        sb.append("type");
+        sb.append('=');
+        sb.append(((this.type == null)?"<null>":this.type));
+        sb.append(',');
+        sb.append("alias");
+        sb.append('=');
+        sb.append(((this.alias == null)?"<null>":this.alias));
+        sb.append(',');
+        sb.append("sqlType");
+        sb.append('=');
+        sb.append(((this.sqlType == null)?"<null>":this.sqlType));
+        sb.append(',');
+        sb.append("nullable");
+        sb.append('=');
+        sb.append(((this.nullable == null)?"<null>":this.nullable));
+        sb.append(',');
+        sb.append("editable");
+        sb.append('=');
+        sb.append(((this.editable == null)?"<null>":this.editable));
+        sb.append(',');
+        sb.append("domain");
+        sb.append('=');
+        sb.append(((this.domain == null)?"<null>":this.domain));
+        sb.append(',');
+        sb.append("defaultValue");
+        sb.append('=');
+        sb.append(((this.defaultValue == null)?"<null>":this.defaultValue));
+        sb.append(',');
+        if (sb.charAt((sb.length()- 1)) == ',') {
+            sb.setCharAt((sb.length()- 1), ']');
+        } else {
+            sb.append(']');
+        }
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(name)
-                .append(type)
-                .append(alias)
-                .append(sqlType)
-                .append(nullable)
-                .append(editable)
-                .append(domain)
-                .append(defaultValue)
-                .toHashCode();
+        int result = 1;
+        result = ((result* 31)+((this.sqlType == null)? 0 :this.sqlType.hashCode()));
+        result = ((result* 31)+((this.nullable == null)? 0 :this.nullable.hashCode()));
+        result = ((result* 31)+((this.editable == null)? 0 :this.editable.hashCode()));
+        result = ((result* 31)+((this.defaultValue == null)? 0 :this.defaultValue.hashCode()));
+        result = ((result* 31)+((this.domain == null)? 0 :this.domain.hashCode()));
+        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.alias == null)? 0 :this.alias.hashCode()));
+        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+        return result;
     }
 
     @Override
@@ -213,15 +282,7 @@ public class Field {
             return false;
         }
         Field rhs = ((Field) other);
-        return new EqualsBuilder()
-                .append(name, rhs.name)
-                .append(type, rhs.type)
-                .append(alias, rhs.alias)
-                .append(sqlType, rhs.sqlType)
-                .append(nullable, rhs.nullable)
-                .append(editable, rhs.editable)
-                .append(domain, rhs.domain)
-                .append(defaultValue, rhs.defaultValue)
-                .isEquals();
+        return (((((((((this.sqlType == rhs.sqlType)||((this.sqlType!= null)&&this.sqlType.equals(rhs.sqlType)))&&((this.nullable == rhs.nullable)||((this.nullable!= null)&&this.nullable.equals(rhs.nullable))))&&((this.editable == rhs.editable)||((this.editable!= null)&&this.editable.equals(rhs.editable))))&&((this.defaultValue == rhs.defaultValue)||((this.defaultValue!= null)&&this.defaultValue.equals(rhs.defaultValue))))&&((this.domain == rhs.domain)||((this.domain!= null)&&this.domain.equals(rhs.domain))))&&((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name))))&&((this.alias == rhs.alias)||((this.alias!= null)&&this.alias.equals(rhs.alias))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))));
     }
+
 }

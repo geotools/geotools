@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
  * A class that provides functionality for performing basic requests
  *
  * @author Richard Gould
- * @source $URL$
  */
 public abstract class AbstractRequest implements Request {
     /** Represents OGC Exception MIME types */

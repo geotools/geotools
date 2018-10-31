@@ -17,7 +17,6 @@
 package org.geotools.data.hana.converter;
 
 import java.sql.Clob;
-import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 
@@ -29,7 +28,8 @@ import org.geotools.util.ConverterFactory;
 public class ClobConverterFactory implements ConverterFactory {
 
     @Override
-    public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
+    public Converter createConverter(
+            Class<?> source, Class<?> target, org.geotools.util.factory.Hints hints) {
         if (String.class.equals(target) && Clob.class.isAssignableFrom(source)) {
             return new Converter() {
                 @Override

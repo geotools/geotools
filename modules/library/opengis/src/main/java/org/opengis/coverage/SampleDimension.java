@@ -22,7 +22,6 @@ import org.opengis.util.InternationalString;
  * org.opengis.coverage.grid.GridCoverage grid coverages}, the sample dimension refers to an
  * individual band.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/01-004.pdf">Grid Coverage specification 1.0</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

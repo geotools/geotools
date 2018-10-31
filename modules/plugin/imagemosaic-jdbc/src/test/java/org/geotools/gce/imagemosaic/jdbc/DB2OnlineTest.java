@@ -25,7 +25,6 @@ import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/** @source $URL$ */
 public class DB2OnlineTest extends AbstractTest {
     static DBDialect dialect = null;
 

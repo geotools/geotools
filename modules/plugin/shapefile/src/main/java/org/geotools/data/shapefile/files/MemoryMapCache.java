@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.SoftValueHashMap.ValueCleaner;
 import org.geotools.util.URLs;
@@ -160,7 +160,6 @@ class MemoryMapCache {
      * Cleans up the buffers before the soft reference gets deallocated
      *
      * @author Andrea Aime
-     * @source $URL$
      */
     public class BufferCleaner implements ValueCleaner {
 

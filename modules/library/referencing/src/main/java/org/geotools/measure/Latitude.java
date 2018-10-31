@@ -21,7 +21,6 @@ package org.geotools.measure;
  * has no direct OpenGIS equivalent.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
  * @see Longitude

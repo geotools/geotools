@@ -3,14 +3,13 @@ package org.geotools.gml4wcs;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the
  * http://www.opengis.net/gml schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GML extends XSD {
 

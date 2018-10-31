@@ -25,8 +25,8 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.wps.WPS;
 import org.geotools.wps.WPSConfiguration;
 import org.geotools.wps.WPSTestSupport;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.EncoderDelegate;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.EncoderDelegate;
 import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -35,7 +35,6 @@ import org.w3c.dom.Text;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-/** @source $URL$ */
 public class ComplexDataTypeBindingTest extends WPSTestSupport {
 
     public void testParsePolygon() throws Exception {

@@ -18,7 +18,6 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class SQLServerPrimaryKeyTestSetup extends JDBCPrimaryKeyTestSetup {
 
     public SQLServerPrimaryKeyTestSetup() {

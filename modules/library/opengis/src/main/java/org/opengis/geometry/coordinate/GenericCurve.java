@@ -21,7 +21,6 @@ import org.opengis.geometry.DirectPosition;
  * CurveSegment} both represent sections of curvilinear geometry, and therefore share a number of
  * operation signatures.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

@@ -40,7 +40,7 @@ import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.referencing.CRS;
 import org.geotools.wfs.v1_1.WFSConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.junit.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
@@ -69,8 +69,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Gabriel Roldan
  * @version $Id$
- * @since 2.5.x
- * @source $URL$ java/org/geotools/wfs/v_1_1_0/data/StreamingParserFeatureReaderTest .java $
+ * @since 2.5.x java/org/geotools/wfs/v_1_1_0/data/StreamingParserFeatureReaderTest .java $
  * @see XmlSimpleFeatureParserTest
  * @see StreamingParserFeatureReaderTest
  */
@@ -95,10 +94,7 @@ public abstract class AbstractGetFeatureParserTest {
      * A feature visitor used to assert the parsed features
      *
      * @author Gabriel Roldan (TOPP)
-     * @version $Id$
      * @since 2.5.x
-     * @source $URL: http://svn.geotools.org/geotools/trunk/gt/modules/plugin/wfs /src/test
-     *     /java/org/geotools/wfs/v_1_1_0/data/AbstractGetFeatureParserTest .java $
      */
     private static class FeatureAssertor implements FeatureVisitor {
 

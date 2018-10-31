@@ -29,13 +29,12 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class UniquityValidation extends DefaultIntegrityValidation {
     /** The logger for the validation module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(UniquityValidation.class);
 
     /** Attribute name to check for uniquity */
     private String attributeName;

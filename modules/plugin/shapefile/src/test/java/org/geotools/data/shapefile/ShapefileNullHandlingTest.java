@@ -18,7 +18,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class ShapefileNullHandlingTest extends TestCaseSupport {
 
     SimpleFeatureType schema;

@@ -31,10 +31,7 @@ import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 
-/**
- * @author James Macgill
- * @source $URL$
- */
+/** @author James Macgill */
 public class PaletteFunction extends FunctionExpressionImpl {
     ClassificationFunction classifier;
     String paletteName;

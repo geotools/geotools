@@ -73,15 +73,14 @@ import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.picocontainer.MutablePicoContainer;
 
 /**
  * Parser configuration for the Styled Layer Descriptor schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class SLDConfiguration extends Configuration {
     /** Adds a dependency on {@link OGCConfiguration} */

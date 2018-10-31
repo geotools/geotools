@@ -27,7 +27,6 @@ import javax.measure.quantity.Length;
  * A ellipsoid which is spherical. This ellipsoid implements a faster {@link #orthodromicDistance}
  * method.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.0

@@ -21,7 +21,7 @@ package org.geotools.styling;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.OverlapBehavior;
@@ -32,7 +32,6 @@ import org.opengis.style.StyleVisitor;
  *
  * @author iant
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  */
 public class RasterSymbolizerImpl extends AbstractSymbolizer implements RasterSymbolizer {
 

@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.Envelope;
  * DOCUMENT ME!
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class Node {
     protected int numShapesId;

@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 
 import java.util.Collections;
 import java.util.Map;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.factory.Hints;
 import org.junit.*;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -38,7 +38,6 @@ import si.uom.SI;
  * one test, and using a 2D + vertical CRS compound for the second test. This test constructs most
  * objects using GeoAPI only (except for a few helper classes).
  *
- * @source $URL$
  * @version $Id$
  * @author Justin Couch
  * @author Martin Desruisseaux

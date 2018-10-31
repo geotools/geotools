@@ -20,7 +20,6 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.xlink.XLINK;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class SLDExternalGraphicBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(ExternalGraphic.class, new SLDExternalGraphicBinding(null).getType());

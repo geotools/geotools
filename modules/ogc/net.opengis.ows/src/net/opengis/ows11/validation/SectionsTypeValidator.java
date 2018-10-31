@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -15,7 +13,9 @@ import org.eclipse.emf.common.util.EList;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface SectionsTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateSection(EList value);
+  boolean validateSection(EList value);
+
+  boolean validateSection(String value);
 }

@@ -24,17 +24,17 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CannotReprojectException;
 import org.geotools.coverage.processing.Operation2D;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ImageUtilities;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridCoverage;
@@ -75,8 +75,8 @@ import org.opengis.referencing.operation.TransformException;
  * org.opengis.referencing.operation.CoordinateOperationFactory} for creating a transformation from
  * the source to the destination coordinate reference systems. If a custom factory is desired, it
  * may be supplied as a rendering hint with the {@link
- * org.geotools.factory.Hints#COORDINATE_OPERATION_FACTORY} key. Rendering hints can be supplied to
- * {@link org.geotools.coverage.processing.DefaultProcessor} at construction time.
+ * org.geotools.util.factory.Hints#COORDINATE_OPERATION_FACTORY} key. Rendering hints can be
+ * supplied to {@link org.geotools.coverage.processing.DefaultProcessor} at construction time.
  *
  * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"Resample"</CODE><br>
  * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain AffineDescriptor Affine}"</CODE> or <CODE>
@@ -129,7 +129,6 @@ import org.opengis.referencing.operation.TransformException;
  * </table>
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Giannecchini Simone, GeoSolutions SAS

@@ -28,7 +28,6 @@ import org.opengis.util.Cloneable;
  *
  * @author James Macgill, CCG
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class PolygonSymbolizerImpl extends AbstractSymbolizer

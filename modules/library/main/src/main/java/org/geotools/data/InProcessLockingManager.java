@@ -43,12 +43,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *     collection, and the iterator just removed them from that set instead of from the storage.
  *     This is now fixed, but the loop to do it is really damn complex. I'm not sure of the
  *     solution, but there should be something that is less confusing.
- * @source $URL$
  */
 public class InProcessLockingManager implements LockingManager {
     /** The logger for the postgis module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.data");
+            org.geotools.util.logging.Logging.getLogger(InProcessLockingManager.class);
 
     /** lockTable access by typeName stores Transactions or MemoryLocks */
     protected Map lockTables = new HashMap();

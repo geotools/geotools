@@ -25,7 +25,6 @@ import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class PullParserTest extends AbstractGetFeatureParserTest {
 
     public PullParserTest() {

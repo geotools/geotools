@@ -73,25 +73,25 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.SpiHelper;
 import org.geotools.coverage.grid.io.imageio.ReadType;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.Repository;
-import org.geotools.factory.Hints;
-import org.geotools.factory.Hints.Key;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.image.jai.Registry;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.geometry.XRectangle2D;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
+import org.geotools.util.factory.Hints.Key;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.geometry.BoundingBox;
@@ -115,7 +115,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5.5
- * @source $URL$
  */
 public class GranuleDescriptor {
 
@@ -145,6 +144,8 @@ public class GranuleDescriptor {
     OverviewsController overviewsController;
 
     private GeneralEnvelope granuleEnvelope;
+    private AbstractGridFormat format;
+    private Hints hints;
 
     public GeneralEnvelope getGranuleEnvelope() {
         return granuleEnvelope;
@@ -366,11 +367,12 @@ public class GranuleDescriptor {
         this.granuleUrl = granuleUrl;
         this.roiProvider = roiProvider;
         this.handleArtifactsFiltering = handleArtifactsFiltering;
+        this.hints = new Hints(hints);
         filterMe = handleArtifactsFiltering && roiProvider != null;
 
         // When looking for formats which may parse this file, make sure to exclude the
         // ImageMosaicFormat as return
-        AbstractGridFormat format =
+        this.format =
                 suggestedFormat == null
                         ? GridFormatFinder.findFormat(granuleUrl, EXCLUDE_MOSAIC)
                         : suggestedFormat;
@@ -1772,5 +1774,18 @@ public class GranuleDescriptor {
         } else {
             return roiProvider.getFootprint();
         }
+    }
+
+    /**
+     * Returns a new instance of the AbstractGridCoverage2DReader associated with this descriptor.
+     * It's the responsibility of the caller to dispose of it.
+     */
+    public AbstractGridCoverage2DReader getReader() {
+        return this.format.getReader(granuleUrl, hints);
+    }
+
+    /** @return */
+    public MultiLevelROI getRoiProvider() {
+        return this.roiProvider;
     }
 }

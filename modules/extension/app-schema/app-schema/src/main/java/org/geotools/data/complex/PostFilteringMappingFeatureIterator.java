@@ -28,7 +28,6 @@ import org.opengis.filter.Filter;
  * complex feature
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public class PostFilteringMappingFeatureIterator implements IMappingFeatureIterator {
 

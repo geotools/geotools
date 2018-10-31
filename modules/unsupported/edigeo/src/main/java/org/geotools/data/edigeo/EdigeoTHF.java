@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-/** @source $URL$ */
+
 public class EdigeoTHF {
 
     private Logger logger = Logger.getLogger("org.geotools.data.edigeo");

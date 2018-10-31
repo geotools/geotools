@@ -17,7 +17,6 @@ package org.opengis.parameter;
  * @since GeoAPI 1.0
  * @see ParameterDescriptorGroup#descriptor
  * @see ParameterValueGroup#parameter
- * @source $URL$
  */
 public class ParameterNotFoundException extends IllegalArgumentException {
     /** Serial number for interoperability with different versions. */

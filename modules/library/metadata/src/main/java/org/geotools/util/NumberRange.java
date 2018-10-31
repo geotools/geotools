@@ -16,20 +16,17 @@
  */
 package org.geotools.util;
 
-import static org.geotools.resources.ClassChanger.getFinestClass;
-import static org.geotools.resources.ClassChanger.getWidestClass;
+import static org.geotools.util.ClassChanger.getFinestClass;
+import static org.geotools.util.ClassChanger.getWidestClass;
 
-import org.geotools.resources.ClassChanger;
-import org.geotools.resources.XMath;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 
 /**
  * A range of numbers. {@linkplain #union Union} and {@linkplain #intersect intersection} are
  * computed as usual, except that widening conversions will be applied as needed.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

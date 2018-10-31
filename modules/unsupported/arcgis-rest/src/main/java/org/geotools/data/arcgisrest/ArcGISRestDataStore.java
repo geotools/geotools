@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -44,10 +45,11 @@ import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.io.IOUtils;
 import org.geotools.data.Query;
 import org.geotools.data.arcgisrest.schema.catalog.Catalog;
 import org.geotools.data.arcgisrest.schema.catalog.Dataset;
-import org.geotools.data.arcgisrest.schema.catalog.Error_;
+import org.geotools.data.arcgisrest.schema.catalog.Error__1;
 import org.geotools.data.arcgisrest.schema.services.feature.Featureserver;
 import org.geotools.data.arcgisrest.schema.webservice.Webservice;
 import org.geotools.data.store.ContentDataStore;
@@ -56,7 +58,6 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.UnsupportedImplementationException;
 import org.opengis.feature.type.Name;
-import sun.misc.IOUtils;
 
 /**
  * Main class of the data store
@@ -142,10 +143,10 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
         // Retrieves the catalog JSON document
         String response = null;
-        Error_ err;
+        Error__1 err;
         try {
             response =
-                    ArcGISRestDataStore.InputStreamToString(
+                    ArcGISRestDataStore.inputStreamToString(
                             this.retrieveJSON("GET", apiUrl, DEFAULT_PARAMS));
         } catch (IOException e) {
             LOGGER.log(
@@ -179,7 +180,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                 }
             } catch (JsonSyntaxException e) {
                 // Checks whether we have an ArcGIS error message
-                Error_ errWS = (new Gson()).fromJson(response, Error_.class);
+                Error__1 errWS = (new Gson()).fromJson(response, Error__1.class);
                 LOGGER.log(
                         Level.SEVERE,
                         "Error during retrieval of feature server "
@@ -219,7 +220,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                                 });
             } catch (JsonSyntaxException e) {
                 // Checks whether we have an AercGIS error message
-                err = (new Gson()).fromJson(response, Error_.class);
+                err = (new Gson()).fromJson(response, Error__1.class);
                 LOGGER.log(
                         Level.SEVERE,
                         "JSON syntax error " + err.getCode() + " " + err.getMessage(),
@@ -290,7 +291,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
 
                 try {
                     responseWSString =
-                            ArcGISRestDataStore.InputStreamToString(
+                            ArcGISRestDataStore.inputStreamToString(
                                     retrieveJSON(
                                             "GET",
                                             new URL(this.dataset.getWebService().toString()),
@@ -313,7 +314,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                     }
                 } catch (JsonSyntaxException e) {
                     // Checks whether we have an ArcGIS error message
-                    Error_ errWS = (new Gson()).fromJson(responseWSString, Error_.class);
+                    Error__1 errWS = (new Gson()).fromJson(responseWSString, Error__1.class);
                     LOGGER.log(
                             Level.SEVERE,
                             "Error during retrieval of dataset "
@@ -391,7 +392,7 @@ public class ArcGISRestDataStore extends ContentDataStore {
                 }
             }
         } catch (Exception e) {
-           java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
+            java.util.logging.Logger.getGlobal().log(java.util.logging.Level.INFO, "", e);
         }
 
         // Shutdowsn the executor thread pool
@@ -522,15 +523,17 @@ public class ArcGISRestDataStore extends ContentDataStore {
     }
 
     /**
-     * Helper method to convert an entire InputStream to a String and close the steeam
+     * Helper method to convert an entire InputStream to a String and close the stream
      *
      * @param response input stream to convert to a String
      * @throws IOException
      * @returns the converted String
      */
-    public static String InputStreamToString(InputStream istream) throws IOException {
-        String s = new String(IOUtils.readFully(istream, -1, true));
-        istream.close();
-        return s;
+    public static String inputStreamToString(InputStream istream) throws IOException {
+        try {
+            return IOUtils.toString(istream, Charset.defaultCharset());
+        } finally {
+            istream.close();
+        }
     }
 }

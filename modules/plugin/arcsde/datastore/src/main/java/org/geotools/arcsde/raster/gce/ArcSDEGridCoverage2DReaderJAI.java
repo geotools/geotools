@@ -60,11 +60,11 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.ServiceInfo;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.grid.Format;
@@ -83,16 +83,12 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/gce/ArcSDEGridCoverage2DReaderJAI.java $
  */
 @SuppressWarnings("nls")
 public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DReader
         implements GridCoverage2DReader {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEGridCoverage2DReaderJAI.class);
 
     /** @see LoggingHelper#log(RenderedImage, Long, String) */
     private static final boolean DEBUG_TO_DISK =

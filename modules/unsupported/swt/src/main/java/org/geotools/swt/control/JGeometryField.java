@@ -30,11 +30,7 @@ import org.locationtech.jts.io.WKTReader;
 import org.locationtech.jts.io.WKTWriter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Text field for filling in a Geometry parameter using WKT.
- *
- * @source $URL$
- */
+/** Text field for filling in a Geometry parameter using WKT. */
 public class JGeometryField extends ParamField {
     private Text text;
 

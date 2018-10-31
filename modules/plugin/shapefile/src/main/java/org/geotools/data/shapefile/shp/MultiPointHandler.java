@@ -31,7 +31,6 @@ import org.locationtech.jts.geom.Point;
 /**
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  */
 public class MultiPointHandler implements ShapeHandler {
     final ShapeType shapeType;

@@ -75,11 +75,6 @@
             <artifactId>gt-main</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-data</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <!--   Third-party dependencies   -->
         <!--   version number defined here as this is a community module -->
         <dependency>

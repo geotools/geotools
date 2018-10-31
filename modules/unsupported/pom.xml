@@ -232,7 +232,6 @@
 	<!-- Modules included in a normal build -->
 	<modules>
 		<module>swing</module>
-		<module>swt</module>
 		<module>process</module>
 		<module>process-geometry</module>
 		<module>process-raster</module>

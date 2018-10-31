@@ -88,7 +88,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * used by the GMLSchema
  *
  * @author $author$
- * @source $URL$
  * @version $Revision: 1.9 $
  * @see GMLSchema
  * @see ComplexType
@@ -107,7 +106,7 @@ public class GMLComplexTypes {
      * @todo The logger package should probably be {@code "org.geotools.xml.gml"}.
      */
     private static final Logger getLogger() {
-        Logger l = org.geotools.util.logging.Logging.getLogger("net.refractions.gml.static");
+        Logger l = org.geotools.util.logging.Logging.getLogger(GMLComplexTypes.class);
         l.setLevel(Level.WARNING);
         return l;
     }

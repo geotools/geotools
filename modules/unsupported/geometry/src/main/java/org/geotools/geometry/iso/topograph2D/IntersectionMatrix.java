@@ -33,8 +33,6 @@ package org.geotools.geometry.iso.topograph2D;
  * <p>For a description of the DE-9IM, see the <A
  * HREF="http://www.opengis.org/techno/specs.htm">OpenGIS Simple Features Specification for SQL</A>
  * .
- *
- * @source $URL$
  */
 public class IntersectionMatrix implements Cloneable {
     /** Internal representation of this <code>IntersectionMatrix</code>. */

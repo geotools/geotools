@@ -25,7 +25,6 @@ import org.locationtech.jts.geom.Coordinate;
  *
  * @see org.geotools.graph.structure.basic.BasicNode
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public class BasicXYNode extends BasicNode implements XYNode {
 

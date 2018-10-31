@@ -33,7 +33,6 @@ import org.geotools.sld.bindings.SLDLegendGraphicBinding;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class LegendGraphicBinding extends SLDLegendGraphicBinding {
 

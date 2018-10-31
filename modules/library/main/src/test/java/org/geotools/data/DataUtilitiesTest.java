@@ -16,6 +16,8 @@
  */
 package org.geotools.data;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -30,7 +32,6 @@ import java.util.Set;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.IllegalAttributeException;
@@ -45,6 +46,7 @@ import org.geotools.geometry.jts.GeometryBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
@@ -71,9 +73,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Tests cases for DataUtilities.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
- *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/main/src/test/java/org/
- *     geotools/data/DataUtilitiesTest.java $
  */
 public class DataUtilitiesTest extends DataTestCase {
     /**
@@ -503,6 +502,11 @@ public class DataUtilitiesTest extends DataTestCase {
         assertNull(DataUtilities.defaultValue(roadType.getDescriptor("name")));
         assertNull(DataUtilities.defaultValue(roadType.getDescriptor("id")));
         assertNull(DataUtilities.defaultValue(roadType.getDescriptor("geom")));
+    }
+
+    public void testDefaultValueArray() throws Exception {
+        assertArrayEquals(new byte[] {}, (byte[]) DataUtilities.defaultValue(byte[].class));
+        assertArrayEquals(new String[] {}, (String[]) DataUtilities.defaultValue(String[].class));
     }
 
     public void testCollection() {

@@ -18,14 +18,13 @@ package org.geotools.kml;
 
 import java.util.Set;
 import javax.xml.namespace.QName;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the
  * http://earth.google.com/kml/2.1 schema.
  *
  * @generated
- * @source $URL$
  */
 public final class KML extends XSD {
     /** singleton instance */

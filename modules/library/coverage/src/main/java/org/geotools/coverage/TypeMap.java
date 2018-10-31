@@ -26,11 +26,11 @@ import java.awt.image.SampleModel;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ColorUtilities;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.util.AbstractInternationalString;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
@@ -45,7 +45,6 @@ import org.opengis.util.InternationalString;
  * {@link SampleDimensionType} to {@link DataBuffer} types.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

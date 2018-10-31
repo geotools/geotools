@@ -42,6 +42,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.grid.io.FileSystemFileSetManager;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.Utils;
@@ -61,7 +62,6 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.imageio.netcdf.Slice2DIndex.Slice2DIndexManager;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -171,7 +171,7 @@ public class AncillaryFileManager implements FileSetManager {
 
     private FileSetManager fileSetManager;
 
-    private static final Logger LOGGER = Logging.getLogger(AncillaryFileManager.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(AncillaryFileManager.class);
 
     private static ObjectFactory OBJECT_FACTORY = new ObjectFactory();
 

@@ -22,9 +22,9 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import javax.xml.transform.TransformerException;
-import org.geotools.filter.FilterTransformer;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.ExpressionToText;
+import org.geotools.xml.filter.FilterTransformer;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -85,7 +85,6 @@ import org.opengis.filter.expression.Expression;
  * @author Mauricio Pazos (Axios Engineering)
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL$
  */
 public class CQL {
     private CQL() {

@@ -28,8 +28,8 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.ParameterWriter;
 import org.geotools.parameter.Parameters;
@@ -40,14 +40,14 @@ import org.geotools.referencing.operation.matrix.MatrixFactory;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.PassThroughTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.referencing.util.CRSUtilities;
 import org.geotools.referencing.wkt.MathTransformParser;
 import org.geotools.referencing.wkt.Symbols;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.LazySet;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Arguments;
 import org.geotools.util.CanonicalSet;
+import org.geotools.util.LazySet;
+import org.geotools.util.factory.FactoryRegistry;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
@@ -93,10 +93,7 @@ import org.opengis.referencing.operation.Projection;
  * information on its source and target coordinate systems.
  *
  * @since 2.1
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
- * @tutorial http://docs.codehaus.org/display/GEOTOOLS/Coordinate+Transformation+Parameters
  */
 public class DefaultMathTransformFactory extends ReferencingFactory
         implements MathTransformFactory {

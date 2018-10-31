@@ -55,7 +55,6 @@ import org.locationtech.jts.util.AssertionFailedException;
 /**
  * Create a geometry from SQL Multi-Media Extension Well-Known Text which allows curves.
  *
- * @source $URL$
  * @version 1.7
  * @see WKTWriter2
  */

@@ -17,8 +17,8 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.awt.geom.AffineTransform;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.referencing.operation.Matrix;
 
@@ -38,7 +38,6 @@ import org.opengis.referencing.operation.Matrix;
  * transpose()} would fails in most cases, and {@code isAffine()} would be useless.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

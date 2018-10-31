@@ -29,7 +29,6 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
-/** @source $URL$ */
 public final class BursaWolfTransformBuilderTest {
     /** Test {@link BursaWolfTransformBuilder}. */
     @Test

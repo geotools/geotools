@@ -3,7 +3,6 @@ package com.esri.sde.sdk.client;
 import java.util.Calendar;
 import java.util.Date;
 
-/** @source $URL$ */
 public class SeDate {
 
     @Deprecated

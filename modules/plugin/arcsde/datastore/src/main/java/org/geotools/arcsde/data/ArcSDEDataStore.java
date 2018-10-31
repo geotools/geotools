@@ -58,11 +58,11 @@ import org.geotools.data.ReTypeFeatureReader;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.hsqldb.Session;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
@@ -83,14 +83,10 @@ import org.opengis.filter.Filter;
  * in order to release resources (ArcSDE connections).
  *
  * @author Gabriel Roldan (TOPP)
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/unsupported/arcsde/datastore/src/main
- *     /java/org/geotools/arcsde/data/ArcSDEDataStore.java $
- * @version $Id$
  */
 public class ArcSDEDataStore implements DataStore {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEDataStore.class);
 
     /**
      * Default value for how often, in seconds, to update the feature type name cache.

@@ -25,7 +25,6 @@ import org.opengis.filter.expression.Expression;
  * styling model object if one becomes available.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class CssParameter {
     String name;

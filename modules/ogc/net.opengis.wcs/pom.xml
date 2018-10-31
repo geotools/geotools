@@ -13,10 +13,10 @@
   <packaging>jar</packaging>
 
   <name>Web Coverage Service Model</name>
-  
-
-
-  <description>Web Coverage Service Schema EMF Model</description>
+  <description>Web Coverage Service Schema EMF ModelL</description>
+  <properties>
+    <moduleIdentifier>net.opengis.wcs</moduleIdentifier>
+  </properties>
 
   <dependencies>
     <dependency>

@@ -12,7 +12,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests {@link SimilarityTransformProvider}.
  *
- * @source $URL$
  * @version $Id$
  * @author Oscar Fonts
  */

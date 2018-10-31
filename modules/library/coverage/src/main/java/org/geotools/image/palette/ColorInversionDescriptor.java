@@ -25,7 +25,6 @@ import java.awt.image.renderable.ParameterBlock;
 import javax.media.jai.OperationDescriptorImpl;
 import javax.media.jai.registry.RenderedRegistryMode;
 
-/** @source $URL$ */
 public class ColorInversionDescriptor extends OperationDescriptorImpl {
     /** */
     private static final long serialVersionUID = -8859576263333814317L;

@@ -48,7 +48,6 @@ import org.geotools.data.FileDataStoreFinder;
  *
  * @author Jody Garnett
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class JFileDataStoreChooser {
     private static final long serialVersionUID = -7482109609487216939L;

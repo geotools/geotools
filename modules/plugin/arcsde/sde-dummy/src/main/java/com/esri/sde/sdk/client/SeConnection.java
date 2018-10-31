@@ -2,7 +2,6 @@ package com.esri.sde.sdk.client;
 
 import java.util.Vector;
 
-/** @source $URL$ */
 public class SeConnection {
 
     public static int SE_TRYLOCK_POLICY = 0;

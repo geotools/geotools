@@ -84,11 +84,11 @@ import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.GridProcessingTestBase;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.WarpBuilder;
-import org.geotools.resources.image.ComponentColorModelJAI;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -100,7 +100,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the {@link ImageWorker} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)

@@ -31,10 +31,7 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.xml.sax.helpers.NamespaceSupport;
 
-/**
- * @author jamesm
- * @source $URL$
- */
+/** @author jamesm */
 public class QueryTest extends TestCase {
 
     public QueryTest(java.lang.String testName) {

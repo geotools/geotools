@@ -51,7 +51,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @author Andrea Antonello - www.hydrologis.com
  * @since 3.0
  * @see {@link JGrassMapEnvironment}
- * @source $URL$
  */
 public class JGrassRegion {
 

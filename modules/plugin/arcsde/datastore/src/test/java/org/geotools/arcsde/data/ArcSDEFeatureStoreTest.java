@@ -94,16 +94,11 @@ import org.opengis.filter.identity.FeatureId;
  * Unit tests for transaction support
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/da/src/test/java/org
- *     /geotools/arcsde/data/ArcSDEFeatureStoreTest.java $
- * @version $Id$
  */
 public class ArcSDEFeatureStoreTest {
     /** package logger */
     private static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    ArcSDEFeatureStoreTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(ArcSDEFeatureStoreTest.class);
 
     private TestData testData;
 

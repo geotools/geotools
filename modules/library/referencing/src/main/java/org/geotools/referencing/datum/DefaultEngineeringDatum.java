@@ -21,9 +21,9 @@ package org.geotools.referencing.datum;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.referencing.datum.EngineeringDatum;
 
 /**
@@ -33,7 +33,6 @@ import org.opengis.referencing.datum.EngineeringDatum;
  * ship or satellite).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

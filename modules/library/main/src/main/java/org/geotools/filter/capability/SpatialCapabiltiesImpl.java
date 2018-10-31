@@ -31,7 +31,6 @@ import org.opengis.filter.capability.SpatialOperators;
  * not provided during construction.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class SpatialCapabiltiesImpl implements SpatialCapabilities {
 

@@ -26,7 +26,6 @@ import org.geotools.geometry.DirectPosition2D;
 import org.junit.*;
 import org.opengis.geometry.DirectPosition;
 
-/** @source $URL$ */
 public final class TriangulationFactoryTest {
     /** Test (@link TringulationFactory). */
     @Test

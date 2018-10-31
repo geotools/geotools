@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public class SeVersion {
 
     public static String SE_QUALIFIED_DEFAULT_VERSION_NAME = null;

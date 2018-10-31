@@ -22,13 +22,13 @@ import static org.junit.Assert.assertSame;
 import java.awt.*;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
 import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.function.PropertyExistsFunction;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
@@ -67,7 +67,6 @@ import org.opengis.filter.temporal.Before;
  *
  * @author Jody Garnett
  * @author Mauricio Pazos (Axios Engineering)
- * @source $URL$
  * @version Revision: 1.9
  * @since 2.6
  */

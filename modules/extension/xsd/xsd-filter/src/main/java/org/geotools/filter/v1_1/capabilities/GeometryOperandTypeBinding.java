@@ -19,8 +19,9 @@ package org.geotools.filter.v1_1.capabilities;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
-import org.geotools.xml.*;
 import org.geotools.xs.bindings.XSQNameBinding;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 import org.opengis.filter.capability.GeometryOperand;
 
 /**
@@ -58,7 +59,6 @@ import org.opengis.filter.capability.GeometryOperand;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GeometryOperandTypeBinding extends AbstractSimpleBinding {
     NamespaceContext namespaceContext;

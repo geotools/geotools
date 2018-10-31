@@ -36,7 +36,7 @@ import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StreamLogging;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 
 /**
  * A DbaseFileReader is used to read a dbase III format file. <br>
@@ -63,7 +63,6 @@ import org.geotools.resources.NIOUtilities;
  * </PRE></CODE>
  *
  * @author Ian Schneider, Andrea Aaime
- * @source $URL$
  */
 public class DbaseFileReader implements FileReader {
 

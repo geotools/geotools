@@ -118,11 +118,10 @@ import org.geotools.util.logging.Logging;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $URL$
  */
 public class JTextReporter {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.swing");
+    private static final Logger LOGGER = Logging.getLogger(JTextReporter.class);
 
     /** Maximum permissable time for dialog creation. */
     private static final long DIALOG_CREATION_TIMEOUT = 1000;

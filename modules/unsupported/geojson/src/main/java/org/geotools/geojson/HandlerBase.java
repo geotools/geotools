@@ -20,7 +20,6 @@ import java.io.IOException;
 import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.ParseException;
 
-/** @source $URL$ */
 public class HandlerBase implements ContentHandler {
 
     public void startJSON() throws ParseException, IOException {}

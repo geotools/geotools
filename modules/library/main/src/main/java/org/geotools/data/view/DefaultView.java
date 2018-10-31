@@ -61,13 +61,12 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * FeatureSource.
  *
  * @author Gabriel Roldï¿½n
- * @source $URL$
  */
 public class DefaultView implements SimpleFeatureSource {
 
     /** Shared package logger */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.view");
+            org.geotools.util.logging.Logging.getLogger(DefaultView.class);
 
     /** SimpleFeatureSource being served up */
     protected SimpleFeatureSource source;

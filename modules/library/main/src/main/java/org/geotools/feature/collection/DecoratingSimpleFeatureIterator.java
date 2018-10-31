@@ -27,7 +27,6 @@ import org.opengis.feature.simple.SimpleFeature;
  * resources. As an alterantive please see ResourceFetaureIterator.
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  */
 public class DecoratingSimpleFeatureIterator extends DecoratingFeatureIterator<SimpleFeature>
         implements SimpleFeatureIterator {

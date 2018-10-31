@@ -30,7 +30,6 @@ import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Schema;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class SimpleTypeBuilderTest extends TestCase {
 
     static final String URI = "gopher://localhost/test";

@@ -18,7 +18,6 @@ import org.opengis.annotation.UML;
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
- * @source $URL$
  */
 @UML(identifier = "TM_GeometricPrimitive", specification = ISO_19108)
 public interface TemporalGeometricPrimitive extends TemporalPrimitive, Separation {}

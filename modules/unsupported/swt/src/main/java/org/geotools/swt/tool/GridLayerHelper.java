@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see VectorLayerHelper
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  */
 public class GridLayerHelper extends InfoToolHelper<List<Number>> {
     protected final WeakReference<GridCoverage2D> covRef;

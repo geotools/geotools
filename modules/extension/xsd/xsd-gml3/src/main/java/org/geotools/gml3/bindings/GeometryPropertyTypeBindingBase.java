@@ -4,14 +4,13 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.gml3.XSDIdRegistry;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Geometry;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBinding {
 
     private XSDIdRegistry idSet;
@@ -46,7 +45,7 @@ public abstract class GeometryPropertyTypeBindingBase extends AbstractComplexBin
     }
 
     /**
-     * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
+     * @see AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
      *     org.w3c.dom.Element)
      */
     @Override

@@ -19,8 +19,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="org.geotools.data.store.ContentState" project="gt-data" 
-    file="/gt-data/src/main/java/org/geotools/data/store/ContentState.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="3" language="java" name="org.geotools.data.store.ContentState" project="gt-main"
+    file="/gt-main/src/main/java/org/geotools/data/store/ContentState.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="449" y="523"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -28,8 +28,8 @@
       <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="org.geotools.data.store.ContentEntry" project="gt-data" 
-    file="/gt-data/src/main/java/org/geotools/data/store/ContentEntry.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="org.geotools.data.store.ContentEntry" project="gt-main"
+    file="/gt-main/src/main/java/org/geotools/data/store/ContentEntry.java" binary="false" corner="BOTTOM_RIGHT">
     <position height="-1" width="-1" x="448" y="423"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" accessors="true" 
       visibility="true">      

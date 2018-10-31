@@ -10,6 +10,8 @@
 package org.geotools.feature.wrapper;
 
 import java.util.ArrayList;
+import org.geotools.data.complex.feature.wrapper.FeatureWrapper;
+import org.geotools.data.complex.feature.wrapper.XSDMapping;
 
 // This is just like MineType but it's modified to cater for some tests. See
 // FeatureWrapperTest.java.

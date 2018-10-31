@@ -31,7 +31,6 @@ import org.geotools.validation.spatial.IsValidGeometryValidation;
  *
  * @author jgarnett, Refractions Research, Inc.
  * @author $Author: sploreg $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class FeatureValidationTest extends DataTestCase {

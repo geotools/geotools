@@ -32,7 +32,6 @@ package org.geotools.filter.function;
  * 9 <= x <= 30<br>
  *
  * @author Cory Horner, Refractions Research
- * @source $URL$
  */
 public final class RangedClassifier extends Classifier {
 

@@ -20,7 +20,6 @@ import org.opengis.annotation.UML;
  * Julian date is a decimal value that allows greater resolution.
  *
  * @author Stephane Fellah (Image Matters)
- * @source $URL$
  */
 @UML(identifier = "JulianDate", specification = ISO_19108)
 public interface JulianDate extends TemporalCoordinate {}

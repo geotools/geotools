@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import org.geotools.resources.XArray;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -42,7 +41,6 @@ import org.geotools.util.logging.Logging;
  *
  * @param <E> The type of elements in the set.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see java.util.WeakHashMap
@@ -226,7 +224,7 @@ public class WeakHashSet<E> extends AbstractSet<E> implements CheckedCollection<
                 }
             }
         }
-        final Logger logger = Logging.getLogger("org.geotools.util");
+        final Logger logger = Logging.getLogger(WeakHashSet.class);
         final Level level = Level.FINEST;
         if (logger.isLoggable(level)) {
             final LogRecord record =

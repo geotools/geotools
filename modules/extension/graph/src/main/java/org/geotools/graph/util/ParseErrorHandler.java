@@ -25,7 +25,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-/** @source $URL$ */
 public class ParseErrorHandler extends DefaultHandler implements Serializable {
 
     static final Logger LOGGER = Logging.getLogger(ParseErrorHandler.class);

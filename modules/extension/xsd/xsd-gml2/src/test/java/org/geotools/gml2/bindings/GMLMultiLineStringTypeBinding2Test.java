@@ -17,11 +17,10 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.locationtech.jts.geom.MultiLineString;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GMLMultiLineStringTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(MultiLineString.class, binding(GML.MultiLineStringType).getType());

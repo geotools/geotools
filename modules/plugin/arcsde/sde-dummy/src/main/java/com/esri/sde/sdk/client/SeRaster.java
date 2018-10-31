@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public class SeRaster {
 
     public static int SE_RASTER_INTERLEAVE_NONE = 0;

@@ -29,7 +29,6 @@ import org.opengis.geometry.primitive.SurfacePatch;
  *     <p>GM_SurfacePatch (Figure 20) defines a homogeneous portion of a GM_Surface. The
  *     multiplicity of the association "Segmentation" (Figure 12) specifies that each
  *     GM_SurfacePatch shall be in at most one GM_Surface.
- * @source $URL$
  */
 public abstract class SurfacePatchImpl implements SurfacePatch, Serializable {
 

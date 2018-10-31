@@ -32,7 +32,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.spatial.Intersects;
 
-/** @source $URL$ */
 public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
     @Override

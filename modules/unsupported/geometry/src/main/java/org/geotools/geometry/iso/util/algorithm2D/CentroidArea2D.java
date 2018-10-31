@@ -39,8 +39,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * decomposition of the area into (possibly overlapping) triangles. The algorithm has been extended
  * to handle holes and multi-polygons. See <code>http://www.faqs.org/faqs/graphics/algorithms-faq/
  * </code> for further details of the basic approach.
- *
- * @source $URL$
  */
 public class CentroidArea2D {
 

@@ -28,8 +28,6 @@ import org.opengis.style.StyleVisitor;
  *       if required. These are used to ensure that any set methods can handle a org.opengis.styling
  *       instances.
  * </ul>
- *
- * @source $URL$
  */
 public class StyleTest {
     static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

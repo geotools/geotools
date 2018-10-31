@@ -34,7 +34,6 @@ import org.opengis.geometry.Geometry;
 /**
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
- * @source $URL$
  */
 @SuppressWarnings({"nls", "unchecked"})
 public class CapabilitiesFilterSplitterSpatialTest extends AbstractCapabilitiesFilterSplitterTests {

@@ -36,7 +36,6 @@ import org.opengis.feature.type.Name;
  * Schema for XML simple types.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class XSSchema extends SchemaImpl {
     /**

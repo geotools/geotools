@@ -28,7 +28,6 @@ import org.opengis.util.InternationalString;
 /**
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 class AttributeTypeProxy implements AttributeType {

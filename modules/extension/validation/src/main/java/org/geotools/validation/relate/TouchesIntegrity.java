@@ -37,11 +37,10 @@ import org.opengis.filter.FilterFactory;
  *     <p>If only one Geometry is given, then this test checks to see if it touches to itself.
  *     <b>Usage:</b><br>
  *     <p>
- * @source $URL$
  */
 public class TouchesIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(TouchesIntegrity.class);
 
     /** OverlapsIntegrity Constructor */
     public TouchesIntegrity() {

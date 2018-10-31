@@ -40,7 +40,6 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class JIntegerField extends JValueField implements ModifyListener {
 

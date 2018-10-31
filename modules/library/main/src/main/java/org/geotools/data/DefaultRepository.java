@@ -44,8 +44,7 @@ import org.opengis.feature.type.Name;
  *   <li>This also serves as a reminder that we need CrossDataStore functionality - at least for
  *       Locks. And possibly for "Query".
  *
- * @author Jody Garnett
- * @source $URL$ DefaultRepository.java $
+ * @author Jody Garnett DefaultRepository.java $
  */
 public class DefaultRepository implements Repository {
 

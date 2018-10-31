@@ -49,7 +49,6 @@ import org.opengis.filter.spatial.Within;
  * Excercises spatial filters
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 public abstract class JDBCSpatialFiltersOnlineTest extends JDBCTestSupport {
 

@@ -20,7 +20,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.Arrays;
 import javax.measure.Unit;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Utilities;
 import org.opengis.referencing.operation.MathTransform1D;
@@ -37,7 +37,6 @@ import org.opengis.util.Cloneable;
  * OperationJAI operation} to replace {@code null} values by a default one.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @todo Move into the {@code org.geotools.coverage.grid} package as a {@code ImageLayout} subclass.

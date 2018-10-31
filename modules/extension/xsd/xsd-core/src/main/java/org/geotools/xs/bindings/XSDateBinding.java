@@ -20,11 +20,11 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.TimeZone;
 import javax.xml.namespace.QName;
-import org.geotools.factory.Hints;
-import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.SimpleBinding;
+import org.geotools.util.factory.Hints;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xs.XS;
+import org.geotools.xsd.InstanceComponent;
+import org.geotools.xsd.SimpleBinding;
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:date.
@@ -59,7 +59,6 @@ import org.geotools.xs.XS;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class XSDateBinding implements SimpleBinding {
     /** @generated */

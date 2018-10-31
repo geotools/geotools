@@ -35,7 +35,6 @@ import org.opengis.filter.capability.FunctionName;
  * Area of provided geometry.
  *
  * @author James
- * @source $URL$
  */
 public class AreaFunction extends FunctionExpressionImpl {
 

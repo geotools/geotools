@@ -26,7 +26,6 @@ import org.opengis.annotation.XmlElement;
  * feature type that may occur in the dataset. each feature object has assigned a set of portrayal
  * rules. This class is a merged between ISO 19117 Portrayal and OGC SLD 1.1.0
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/sld">Implementation specification
  *     1.1.0</A>
  * @author Open Geospatial Consortium

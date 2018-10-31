@@ -22,10 +22,10 @@ import java.text.ParsePosition;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.geotools.util.logging.LoggedFormat;
 
 /**
@@ -45,7 +45,6 @@ import org.geotools.util.logging.LoggedFormat;
  * out</cite> order.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)

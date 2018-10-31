@@ -44,7 +44,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * <p>Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
  *
- * @source $URL$
+
  * @version $Id$
  * @author Ian Schneider
  * @author Martin Desruisseaux

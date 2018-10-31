@@ -27,7 +27,7 @@ import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_4BIT;
 import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_64BIT_REAL;
 import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_8BIT_U;
 
-import com.sun.imageio.plugins.common.BogusColorSpace;
+import com.sun.media.imageioimpl.common.BogusColorSpace;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Transparency;
@@ -46,9 +46,9 @@ import javax.imageio.ImageTypeSpecifier;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.image.ColorUtilities;
-import org.geotools.resources.image.ComponentColorModelJAI;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridEnvelope;
@@ -62,15 +62,11 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
- * @version $Id$
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/raster/info/RasterUtils.java $
  */
 @SuppressWarnings({"nls"})
 public class RasterUtils {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(RasterUtils.class);
 
     private RasterUtils() {
         // do nothing

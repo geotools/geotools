@@ -33,17 +33,17 @@ import javax.media.jai.ParameterListDescriptor;
 import javax.media.jai.RegistryElementDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 import javax.media.jai.util.Range;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.citation.ContactImpl;
 import org.geotools.metadata.iso.citation.OnLineResourceImpl;
 import org.geotools.metadata.iso.citation.ResponsiblePartyImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.NameFactory;
 import org.geotools.util.Utilities;
+import org.geotools.util.XArray;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
@@ -65,7 +65,6 @@ import org.opengis.util.InternationalString;
  * framework.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

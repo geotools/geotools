@@ -29,7 +29,6 @@ import javax.swing.JPopupMenu;
  * @see JMapStatusBar
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class JMenuStatusBarItem extends StatusBarItem {

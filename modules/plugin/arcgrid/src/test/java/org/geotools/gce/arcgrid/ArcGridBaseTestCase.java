@@ -24,14 +24,11 @@ import java.util.logging.Logger;
 import junit.framework.TestCase;
 import org.geotools.TestData;
 
-/**
- * @author Giannecchini
- * @source $URL$
- */
+/** @author Giannecchini */
 public abstract class ArcGridBaseTestCase extends TestCase {
 
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ArcGridBaseTestCase.class.toString());
+            org.geotools.util.logging.Logging.getLogger(ArcGridBaseTestCase.class);
 
     protected File[] testFiles;
 

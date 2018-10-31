@@ -48,7 +48,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class IntersectionFeatureCollectionTest {
     private static final Logger logger =
             Logger.getLogger("org.geotools.process.feature.gs.VectoralZonalStatisticalProcessTest");

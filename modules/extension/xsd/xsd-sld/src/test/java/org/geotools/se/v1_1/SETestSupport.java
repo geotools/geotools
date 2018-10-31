@@ -23,11 +23,10 @@ import java.net.URL;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
-import org.geotools.xml.test.XMLTestSupport;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
+import org.geotools.xsd.test.XMLTestSupport;
 
-/** @source $URL$ */
 public abstract class SETestSupport extends XMLTestSupport {
 
     @Override

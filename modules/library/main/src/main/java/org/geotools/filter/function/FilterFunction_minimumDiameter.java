@@ -28,9 +28,6 @@ import org.opengis.filter.capability.FunctionName;
  * A FilterFunction that expects a Geometry and returns it's minimum diameter.
  *
  * @author Jared Erickson
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/filter/function/FilterFunction_minimumDiameter.java
- *     $
  */
 public class FilterFunction_minimumDiameter extends FunctionExpressionImpl {
 

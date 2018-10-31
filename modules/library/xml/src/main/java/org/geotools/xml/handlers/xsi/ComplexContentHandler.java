@@ -25,7 +25,6 @@ import org.xml.sax.SAXNotRecognizedException;
  * represents a complex content element
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class ComplexContentHandler extends XSIElementHandler {
     /** 'complexContent' */

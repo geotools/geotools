@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -17,11 +15,11 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface IdentificationTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateBoundingBoxGroup(FeatureMap value);
-    boolean validateBoundingBox(EList value);
-    boolean validateOutputFormat(EList value);
-    boolean validateAvailableCRSGroup(FeatureMap value);
-    boolean validateAvailableCRS(EList value);
+  boolean validateBoundingBoxGroup(FeatureMap value);
+  boolean validateBoundingBox(EList value);
+  boolean validateOutputFormat(String value);
+  boolean validateAvailableCRSGroup(FeatureMap value);
+  boolean validateAvailableCRS(String value);
 }

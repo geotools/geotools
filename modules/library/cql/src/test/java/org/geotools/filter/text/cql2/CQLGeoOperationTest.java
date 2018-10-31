@@ -67,7 +67,6 @@ import org.opengis.filter.spatial.Within;
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- * @source $URL$
  */
 public class CQLGeoOperationTest {
 

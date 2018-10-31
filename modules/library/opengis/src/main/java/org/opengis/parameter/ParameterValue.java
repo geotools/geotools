@@ -24,7 +24,6 @@ import org.opengis.annotation.UML;
  * setters are parameter-type dependents.
  *
  * @param <T> The type of parameter values.
- * @source $URL$
  * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
  *     specification 2.0</A>
  * @author Martin Desruisseaux (IRD)

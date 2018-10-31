@@ -43,7 +43,6 @@ package org.opengis.filter.capability;
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider </a>
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface IdCapabilities {
 

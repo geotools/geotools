@@ -38,7 +38,6 @@ import org.opengis.feature.type.Name;
  *
  * @author bowens<br>
  *     Created Jun 25, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p>Provides access to feature validation and integrity validation.<br>
@@ -52,7 +51,7 @@ import org.opengis.feature.type.Name;
 public class Validator {
     /** Standard logging instance for class */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.vfny.geoserver.responses");
+            org.geotools.util.logging.Logging.getLogger(Validator.class);
 
     private ValidationProcessor validationProcessor;
 

@@ -29,7 +29,6 @@ import org.geotools.geometry.iso.topograph2D.PlanarGraph;
 /**
  * Creates nodes for use in the {@link PlanarGraph}s constructed during overlay operations.
  *
- * @source $URL$
  * @version 1.7.2
  */
 public class OverlayNodeFactory extends NodeFactory {

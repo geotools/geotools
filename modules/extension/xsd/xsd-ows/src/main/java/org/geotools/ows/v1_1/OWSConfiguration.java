@@ -27,17 +27,16 @@ import org.geotools.ows.bindings.RangeClosureBinding;
 import org.geotools.ows.bindings.UnitBinding;
 import org.geotools.ows.bindings.WGS84BoundingBoxTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
-import org.geotools.xml.XMLConfiguration;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.SimpleContentComplexEMFBinding;
+import org.geotools.xsd.XMLConfiguration;
 import org.picocontainer.MutablePicoContainer;
 
 /**
  * Parser configuration for the http://www.opengis.net/ows/1.1 schema.
  *
  * @generated
- * @source $URL$
  */
 public class OWSConfiguration extends Configuration {
 

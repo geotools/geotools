@@ -31,7 +31,6 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Cory Horner, Refractions
  * @since 2.2.M2
- * @source $URL$
  */
 public class MinVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;

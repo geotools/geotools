@@ -29,7 +29,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.geometry.DirectPosition;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class DirectPositionTypeBindingTest extends GML3TestSupport {
     public void test1D() throws Exception {
         GML3MockData.element(GML.pos, document, document);

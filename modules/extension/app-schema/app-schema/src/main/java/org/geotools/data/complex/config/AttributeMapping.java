@@ -29,7 +29,6 @@ import java.util.Map;
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class AttributeMapping implements Serializable {

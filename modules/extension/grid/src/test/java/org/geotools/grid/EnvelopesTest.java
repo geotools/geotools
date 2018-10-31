@@ -27,7 +27,6 @@ import org.junit.Test;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class EnvelopesTest {

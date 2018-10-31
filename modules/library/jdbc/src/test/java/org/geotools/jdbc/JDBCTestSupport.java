@@ -50,7 +50,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * with.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- * @source $URL$
  */
 public abstract class JDBCTestSupport extends OnlineTestCase {
 
@@ -63,14 +62,14 @@ public abstract class JDBCTestSupport extends OnlineTestCase {
         //        handler.setLevel(java.util.logging.Level.FINE);
         //
         //
-        // org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").setLevel(java.util.logging.Level.FINE);
+        // org.geotools.util.logging.Logging.getLogger(JDBCTestSupport.class).setLevel(java.util.logging.Level.FINE);
         //
-        // org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
+        // org.geotools.util.logging.Logging.getLogger(JDBCTestSupport.class).addHandler(handler);
         //
         //
-        // org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(java.util.logging.Level.FINE);
+        // org.geotools.util.logging.Logging.getLogger(JDBCTestSupport.class).setLevel(java.util.logging.Level.FINE);
         //
-        // org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").addHandler(handler);
+        // org.geotools.util.logging.Logging.getLogger(JDBCTestSupport.class).addHandler(handler);
     }
 
     protected JDBCTestSetup setup;

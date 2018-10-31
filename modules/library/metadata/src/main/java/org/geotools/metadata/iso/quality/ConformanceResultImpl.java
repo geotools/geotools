@@ -27,7 +27,6 @@ import org.opengis.util.InternationalString;
  * Information about the outcome of evaluating the obtained value (or set of values) against a
  * specified acceptable conformance quality level.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

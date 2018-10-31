@@ -35,7 +35,6 @@ import org.junit.Test;
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Andrea Aime, GeoSolutions
- * @source $URL$
  */
 public class ColorIndexerTest {
 

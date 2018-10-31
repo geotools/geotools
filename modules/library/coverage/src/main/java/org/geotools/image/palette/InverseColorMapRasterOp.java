@@ -26,7 +26,6 @@ import java.awt.image.Raster;
 import java.awt.image.RasterOp;
 import java.awt.image.WritableRaster;
 
-/** @source $URL$ */
 public final class InverseColorMapRasterOp implements RasterOp {
 
     /** Default number of quantization colors used to build the index for the inverse color map. */

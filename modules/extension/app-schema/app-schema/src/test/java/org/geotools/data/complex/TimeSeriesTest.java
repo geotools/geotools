@@ -37,6 +37,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -49,11 +50,10 @@ import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.NameImpl;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.gml3.GML;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.SchemaIndex;
+import org.geotools.xsd.SchemaIndex;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.Attribute;
@@ -74,13 +74,11 @@ import org.xml.sax.helpers.NamespaceSupport;
  *
  * @author Rob Atkinson
  * @version $Id$
- * @source $URL$
  * @since 2.4
  */
 public class TimeSeriesTest extends AppSchemaTestSupport {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    TimeSeriesTest.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(TimeSeriesTest.class);
 
     private static final String AWNS = "http://www.water.gov.au/awdip";
 

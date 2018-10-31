@@ -23,7 +23,6 @@ import org.locationtech.jts.geom.Coordinate;
  * Represents a {@code GridElement} that is a polygon.
  *
  * @author michael
- * @source $URL$
  */
 public interface PolygonElement extends GridElement {
 

@@ -20,7 +20,6 @@ import java.util.Iterator;
 import org.geotools.graph.structure.DirectedGraphable;
 import org.geotools.graph.structure.Graphable;
 
-/** @source $URL$ */
 public class DirectedDijkstraIterator extends DijkstraIterator {
 
     public DirectedDijkstraIterator(EdgeWeighter weighter) {

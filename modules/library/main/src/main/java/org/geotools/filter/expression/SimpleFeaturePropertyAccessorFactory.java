@@ -17,8 +17,8 @@
 package org.geotools.filter.expression;
 
 import java.util.regex.Pattern;
-import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -36,7 +36,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  * feature property type is returned.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class SimpleFeaturePropertyAccessorFactory implements PropertyAccessorFactory {
 

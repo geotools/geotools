@@ -56,11 +56,6 @@ import systems.uom.common.USCustomary;
     description =
             "Computes the measure of a point along a feature (as feature with attribute lrs_measure). The point is measured along the nearest feature."
 )
-/**
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java
- *     $
- */
 public class LRSMeasureProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSMeasureProcess.class);
 

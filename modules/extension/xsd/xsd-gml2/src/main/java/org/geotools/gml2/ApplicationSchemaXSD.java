@@ -22,8 +22,8 @@ import java.net.URL;
 import java.util.Set;
 import org.eclipse.xsd.XSDSchema;
 import org.geotools.util.URLs;
-import org.geotools.xml.SchemaLocationResolver;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.SchemaLocationResolver;
+import org.geotools.xsd.XSD;
 
 /**
  * XSD instance for an application schema.
@@ -31,7 +31,6 @@ import org.geotools.xml.XSD;
  * <p>Copied from org.geotools.gml3 making use of addDependencies with our gml2.GML instance.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class ApplicationSchemaXSD extends XSD {
     /** application schema namespace */

@@ -28,7 +28,6 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
 /**
  * Tests the {@link ProjectiveTransform2D} classes.
  *
- * @source $URL$
  * @version $Id$
  * @author Alexey Valikov
  */

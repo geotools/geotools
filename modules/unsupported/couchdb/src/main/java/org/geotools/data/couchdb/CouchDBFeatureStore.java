@@ -38,7 +38,7 @@ import org.opengis.feature.type.Name;
 
 /**
  * @author Ian Schneider (OpenGeo)
- * @source $URL$
+
  */
 public class CouchDBFeatureStore extends ContentFeatureStore {
     private final String viewName;

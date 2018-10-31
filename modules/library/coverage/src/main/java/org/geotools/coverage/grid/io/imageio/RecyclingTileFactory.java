@@ -80,7 +80,6 @@ import javax.media.jai.TileRecycler;
  * arrays should only be created in the first iteration.
  *
  * @since JAI 1.1.2
- * @source $URL$
  */
 public class RecyclingTileFactory extends Observable
         implements TileFactory, TileRecycler, Observer {

@@ -33,8 +33,6 @@ import org.opengis.geometry.primitive.Ring;
  * Computes whether a point lies in the interior of an area {@link Geometry}. The algorithm used is
  * only guaranteed to return correct results for points which are <b>not</b> on the boundary of the
  * Geometry.
- *
- * @source $URL$
  */
 public class SimplePointInAreaLocator {
 

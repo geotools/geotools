@@ -36,7 +36,7 @@ import org.geotools.arcsde.session.ISessionPool;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.geotools.util.logging.Logging;
 
 /**
@@ -61,15 +61,11 @@ import org.geotools.util.logging.Logging;
  * not, and the required jar files are on a J2EE container shared libraries folder or not.
  *
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *     /geotools/arcsde/ArcSDEJNDIDataStoreFactory.java $
- * @version $Id$
  * @since 2.5.7
  */
 public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde");
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEJNDIDataStoreFactory.class);
 
     private final ArcSDEDataStoreFactory delegateFactory;
 
@@ -293,7 +289,7 @@ public class ArcSDEJNDIDataStoreFactory implements DataStoreFactorySpi {
         return delegateFactory.isAvailable();
     }
 
-    /** @see org.geotools.factory.Factory#getImplementationHints() */
+    /** @see org.geotools.util.factory.Factory#getImplementationHints() */
     public Map<Key, ?> getImplementationHints() {
         return delegateFactory.getImplementationHints();
     }

@@ -10,7 +10,6 @@ import java.util.List;
  * <p>Example: <code>KVP map = new KVP("foo",1,"bar,2);</code>
  *
  * @author jody
- * @source $URL$
  */
 public class KVP extends LinkedHashMap<String, Object> {
     /** */

@@ -19,15 +19,15 @@ package org.geotools.referencing.factory.epsg;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.epsg.OracleDialectEpsgMediatorOnlineStressTest.ClientThread;
+import org.geotools.referencing.factory.epsg.oracle.OracleDialectEpsgMediator;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
+import org.geotools.util.factory.Hints;
 
 /**
  * Multi-threaded test to check that no connections are leaked by the EPSG mediator/factory code.
  *
  * @author Cory Horner (Refractions Research)
- * @source $URL$
  */
 public class OracleDialectEpsgMediatorConnectionLeakOnlineTest extends OracleOnlineTestCase {
 

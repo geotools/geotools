@@ -93,12 +93,11 @@ import org.geotools.arcsde.session.ISessionPool;
 import org.geotools.util.logging.Logging;
 
 @SuppressWarnings({"nls", "deprecation"})
-/** @source $URL$ */
 public class RasterTestData {
 
     private TestData testData;
 
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
+    private static final Logger LOGGER = Logging.getLogger(RasterTestData.class);
 
     public void setUp() throws IOException {
         // load a raster dataset into SDE

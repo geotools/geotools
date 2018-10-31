@@ -31,166 +31,166 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.ValueListTypeImpl#getGroup <em>Group</em>}</li>
  *   <li>{@link net.opengis.wfs20.impl.ValueListTypeImpl#getValue <em>Value</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ValueListTypeImpl extends EObjectImpl implements ValueListType {
     /**
-     * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getGroup() <em>Group</em>}' attribute list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getGroup()
-     * @generated
-     * @ordered
-     */
+   * @see #getGroup()
+   * @generated
+   * @ordered
+   */
     protected FeatureMap group;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ValueListTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.VALUE_LIST_TYPE;
-    }
+    return Wfs20Package.Literals.VALUE_LIST_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public FeatureMap getGroup() {
-        if (group == null) {
-            group = new BasicFeatureMap(this, Wfs20Package.VALUE_LIST_TYPE__GROUP);
-        }
-        return group;
+    if (group == null) {
+      group = new BasicFeatureMap(this, Wfs20Package.VALUE_LIST_TYPE__GROUP);
     }
+    return group;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<EObject> getValue() {
-        return getGroup().list(Wfs20Package.Literals.VALUE_LIST_TYPE__VALUE);
-    }
+    return getGroup().list(Wfs20Package.Literals.VALUE_LIST_TYPE__VALUE);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wfs20Package.VALUE_LIST_TYPE__GROUP:
-                return ((InternalEList<?>)getGroup()).basicRemove(otherEnd, msgs);
-            case Wfs20Package.VALUE_LIST_TYPE__VALUE:
-                return ((InternalEList<?>)getValue()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wfs20Package.VALUE_LIST_TYPE__GROUP:
+        return ((InternalEList<?>)getGroup()).basicRemove(otherEnd, msgs);
+      case Wfs20Package.VALUE_LIST_TYPE__VALUE:
+        return ((InternalEList<?>)getValue()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.VALUE_LIST_TYPE__GROUP:
-                if (coreType) return getGroup();
-                return ((FeatureMap.Internal)getGroup()).getWrapper();
-            case Wfs20Package.VALUE_LIST_TYPE__VALUE:
-                return getValue();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.VALUE_LIST_TYPE__GROUP:
+        if (coreType) return getGroup();
+        return ((FeatureMap.Internal)getGroup()).getWrapper();
+      case Wfs20Package.VALUE_LIST_TYPE__VALUE:
+        return getValue();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.VALUE_LIST_TYPE__GROUP:
-                ((FeatureMap.Internal)getGroup()).set(newValue);
-                return;
-            case Wfs20Package.VALUE_LIST_TYPE__VALUE:
-                getValue().clear();
-                getValue().addAll((Collection<? extends EObject>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.VALUE_LIST_TYPE__GROUP:
+        ((FeatureMap.Internal)getGroup()).set(newValue);
+        return;
+      case Wfs20Package.VALUE_LIST_TYPE__VALUE:
+        getValue().clear();
+        getValue().addAll((Collection<? extends EObject>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.VALUE_LIST_TYPE__GROUP:
-                getGroup().clear();
-                return;
-            case Wfs20Package.VALUE_LIST_TYPE__VALUE:
-                getValue().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.VALUE_LIST_TYPE__GROUP:
+        getGroup().clear();
+        return;
+      case Wfs20Package.VALUE_LIST_TYPE__VALUE:
+        getValue().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.VALUE_LIST_TYPE__GROUP:
-                return group != null && !group.isEmpty();
-            case Wfs20Package.VALUE_LIST_TYPE__VALUE:
-                return !getValue().isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.VALUE_LIST_TYPE__GROUP:
+        return group != null && !group.isEmpty();
+      case Wfs20Package.VALUE_LIST_TYPE__VALUE:
+        return !getValue().isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (group: ");
-        result.append(group);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (group: ");
+    result.append(group);
+    result.append(')');
+    return result.toString();
+  }
 
 } //ValueListTypeImpl

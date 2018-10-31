@@ -28,7 +28,6 @@ import org.opengis.style.ContrastMethod;
  * The ContrastEnhancementImpl UnitTest
  *
  * @author Jared Erickson
- * @source $URL$
  */
 public class ContrastEnhancementImplTest extends TestCase {
 

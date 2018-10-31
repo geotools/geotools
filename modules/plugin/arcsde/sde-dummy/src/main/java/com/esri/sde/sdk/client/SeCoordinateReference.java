@@ -2,7 +2,6 @@ package com.esri.sde.sdk.client;
 
 import com.esri.sde.sdk.pe.PeCoordinateSystem;
 
-/** @source $URL$ */
 public class SeCoordinateReference {
 
     public void setCoordSysByDescription(String s) {}

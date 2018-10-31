@@ -17,9 +17,9 @@
 package org.geotools.filter.v1_1;
 
 import javax.xml.namespace.QName;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.GmlObjectId;
 
@@ -42,7 +42,6 @@ import org.opengis.filter.identity.GmlObjectId;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GmlObjectIdTypeBinding extends AbstractComplexBinding {
     FilterFactory filterfactory;

@@ -758,7 +758,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         // the actual geometries are compared and the result will be 4
         // If GDAL is NOT compiled with GEOS,
         // only the bounding boxes are compared the result will be 5
-        assertTrue(numberOfFeatures == 4 || numberOfFeatures == 5);
+        assertEquals(s.ogr.IsGEOSEnabled() ? 4 : 5, numberOfFeatures);
 
         // mix in an attribute filter
         f = ff.and(f, ff.greater(ff.property("PERSONS"), ff.literal("10000000")));

@@ -42,6 +42,8 @@ public interface OGR {
 
     Object Open(String dataSourceName, int mode);
 
+    boolean IsGEOSEnabled();
+
     /**
      * Checks the ogr error status code and throws java exceptions accordingly.
      *

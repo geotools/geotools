@@ -33,6 +33,24 @@ public class JniOGR implements OGR {
     }
 
     @Override
+    public boolean IsGEOSEnabled() {
+        boolean isGEOSEnabled = false;
+        Geometry g1 = Geometry.CreateFromWkt("POINT (1 1)");
+        Geometry g2 = Geometry.CreateFromWkt("POINT (2 2)");
+        try {
+            g1.Touches(g2);
+            if (!GetLastErrorMsg()
+                    .toLowerCase()
+                    .contains("GEOS support not enabled".toLowerCase())) {
+                isGEOSEnabled = true;
+            }
+        } catch (Exception ex) {
+            // Do nothing
+        }
+        return isGEOSEnabled;
+    }
+
+    @Override
     public int GetDriverCount() {
         return ogr.GetDriverCount();
     }

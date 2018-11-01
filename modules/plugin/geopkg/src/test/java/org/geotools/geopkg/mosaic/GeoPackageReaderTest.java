@@ -72,13 +72,14 @@ public class GeoPackageReaderTest {
         assertEquals(768, img.getHeight());
         reader.dispose();
     }
-    
+
     @Test
     public void testCoverageSRS() throws IOException, FactoryException {
         GeoPackageReader reader =
-                new GeoPackageReader(GeoPackageTest.class.getResource("test_tiles_srid.gpkg"), null);
-        CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem(
-                reader.getGridCoverageNames()[0]);
+                new GeoPackageReader(
+                        GeoPackageTest.class.getResource("test_tiles_srid.gpkg"), null);
+        CoordinateReferenceSystem crs =
+                reader.getCoordinateReferenceSystem(reader.getGridCoverageNames()[0]);
         assertEquals(crs, CRS.decode("EPSG:3857", true));
         reader.dispose();
     }

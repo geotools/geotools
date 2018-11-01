@@ -17,9 +17,7 @@
 package org.geotools.geopkg.mosaic;
 
 import it.geosolutions.jaiext.mosaic.MosaicRIF;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
@@ -36,8 +34,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
-import javax.media.jai.PlanarImage;
 import javax.media.jai.operator.MosaicDescriptor;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -369,10 +367,9 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                 pb.setParameter("backgroundValues", new double[] {0});
                 pb.setParameter("nodata", null);
 
-                image =
-                        PlanarImage.wrapRenderedImage(
-                                // explicit reference here too
-                                new MosaicRIF().create(pb, GeoTools.getDefaultHints()));
+                RenderingHints hints = new Hints(JAI.getDefaultInstance().getRenderingHints());
+                hints.putAll(GeoTools.getDefaultHints());
+                image = new MosaicRIF().create(pb, hints);
             }
         }
         return coverageFactory.create(entry.getTableName(), image, resultEnvelope);

@@ -129,6 +129,8 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
 
     protected Transaction transaction;
 
+    protected Query query;
+
     public Transaction getTransaction() {
         return transaction;
     }
@@ -260,6 +262,7 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
         xpathAttributeBuilder.setFeatureFactory(attf);
         initialiseSourceFeatures(mapping, unrolledQuery, query.getCoordinateSystemReproject());
         xpathAttributeBuilder.setFilterFactory(namespaceAwareFilterFactory);
+        this.query = unrolledQuery;
     }
 
     // properties can only be set by constructor, before initialising source features

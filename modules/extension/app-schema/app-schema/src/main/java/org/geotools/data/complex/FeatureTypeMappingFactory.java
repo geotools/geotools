@@ -18,6 +18,7 @@ package org.geotools.data.complex;
 
 import java.util.List;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.complex.config.MultipleValue;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.xml.sax.helpers.NamespaceSupport;
 
@@ -30,6 +31,7 @@ public class FeatureTypeMappingFactory {
 
     public static FeatureTypeMapping getInstance(
             FeatureSource source,
+            FeatureSource indexSource,
             AttributeDescriptor target,
             String defaultGeometryXPath,
             List<AttributeMapping> mappings,
@@ -37,12 +39,31 @@ public class FeatureTypeMappingFactory {
             String itemXpath,
             boolean isXmlDataStore,
             boolean isDenormalised) {
-
+        FeatureTypeMapping featureTypeMapping;
         if (isXmlDataStore) {
-            return new XmlFeatureTypeMapping(source, target, mappings, namespaces, itemXpath);
+            featureTypeMapping =
+                    new XmlFeatureTypeMapping(source, target, mappings, namespaces, itemXpath);
         } else {
-            return new FeatureTypeMapping(
-                    source, target, defaultGeometryXPath, mappings, namespaces, isDenormalised);
+            featureTypeMapping =
+                    new FeatureTypeMapping(
+                            source,
+                            indexSource,
+                            target,
+                            defaultGeometryXPath,
+                            mappings,
+                            namespaces,
+                            isDenormalised);
         }
+        featureTypeMapping
+                .getAttributeMappings()
+                .forEach(
+                        attributeMapping -> {
+                            MultipleValue multipleValue = attributeMapping.getMultipleValue();
+                            if (multipleValue != null) {
+                                multipleValue.setFeatureTypeMapping(featureTypeMapping);
+                                multipleValue.setAttributeMapping(attributeMapping);
+                            }
+                        });
+        return featureTypeMapping;
     }
 }

@@ -1,0 +1,101 @@
+
+./bin/solr delete -c stations
+
+./bin/solr create -c stations
+
+curl -X POST -H 'Content-type:application/json' --data-binary '{
+  "add-field-type" : {
+ 	"name":"geometry",
+ 	"class":"solr.SpatialRecursivePrefixTreeFieldType",
+ 	"geo":"true",
+ 	"maxDistErr":"0.001",
+ 	"distErrPct":"0.025",
+ 	"distanceUnits":"kilometers",
+ 	"spatialContextFactory": "JTS" }
+}' http://localhost:8983/solr/stations/schema
+
+
+curl -X POST -H 'Content-type:application/json' --data-binary '{
+  "add-field":[
+ 	{ "name":"name",
+   	"type":"strings",
+   	"multiValued":false },
+    { "name":"location_name",
+   	"type":"strings",
+   	"multiValued":false },
+ 	{ "name":"position",
+   	"type":"geometry",
+   	"multiValued":false }
+  ]
+}' http://localhost:8983/solr/stations/schema
+
+
+curl -X POST -H 'Content-Type: application/json' 'http://localhost:8983/solr/stations/update/json/docs?commit=true' --data-binary '
+[
+	{
+    	"id": 1,
+        "name": "station1",
+        "location_name": "Europe",
+    	"position": "POINT(-1 1)"
+	},
+    {
+    	"id": 2,
+        "name": "station2",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)"
+	},
+    {
+    	"id": 3,
+        "name": "station3",
+        "location_name": "Australia",
+    	"position": "POINT(-3 1)"
+	},
+    {
+    	"id": 4,
+        "name": "station4",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)"
+	},
+    {
+    	"id": 5,
+        "name": "station5",
+        "location_name": "Latin America",
+    	"position": "POINT(0 1)"
+	},
+    {
+    	"id": 6,
+        "name": "station6",
+        "location_name": "Latin America",
+    	"position": "POINT(0 1)"
+	},
+    {
+    	"id": 7,
+        "name": "station7",
+        "location_name": "Europe",
+    	"position": "POINT(1 1)"
+	},
+    {
+    	"id": 8,
+        "name": "station8",
+        "location_name": "Antartida",
+    	"position": "POINT(1 4)"
+	},
+    {
+    	"id": 9,
+        "name": "station9",
+        "location_name": "Antartida",
+    	"position": "POINT(0 4)"
+	},
+    {
+    	"id": 10,
+        "name": "station10",
+        "location_name": "Asia",
+    	"position": "POINT(-2 1)"
+	},
+    {
+    	"id": 11,
+        "name": "station11",
+        "location_name": "Antartida",
+    	"position": "POINT(0 1)"
+	}
+]'

@@ -24,6 +24,7 @@ import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.XPathUtil;
 import org.geotools.data.complex.spi.CustomAttributeExpressionFactory;
+import org.geotools.data.mongodb.MongoFeatureStore;
 import org.geotools.filter.ConstantExpression;
 import org.opengis.filter.expression.Expression;
 
@@ -42,6 +43,10 @@ public class MongoNestedAttributeExpressionFactory implements CustomAttributeExp
             FeatureTypeMapping mappings,
             XPathUtil.StepList xpath,
             NestedAttributeMapping nestedMapping) {
+        if (!(mappings.getSource() instanceof MongoFeatureStore)) {
+            // nothing to do here
+            return null;
+        }
         if (!nestedMapping
                 .getTargetXPath()
                 .equalsIgnoreIndex(xpath.subList(0, nestedMapping.getTargetXPath().size()))) {

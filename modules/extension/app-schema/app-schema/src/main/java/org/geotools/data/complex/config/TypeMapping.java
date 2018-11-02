@@ -41,6 +41,9 @@ public class TypeMapping implements Serializable {
 
     private String sourceTypeName;
 
+    private String indexDataStore;
+    private String indexTypeName;
+
     private String itemXpath;
 
     /**
@@ -153,6 +156,22 @@ public class TypeMapping implements Serializable {
 
     public String getMappingName() {
         return mappingName;
+    }
+
+    public String getIndexDataStore() {
+        return indexDataStore;
+    }
+
+    public void setIndexDataStore(String indexDataStore) {
+        this.indexDataStore = indexDataStore;
+    }
+
+    public String getIndexTypeName() {
+        return indexTypeName;
+    }
+
+    public void setIndexTypeName(String indexTypeName) {
+        this.indexTypeName = indexTypeName;
     }
 
     public String toString() {

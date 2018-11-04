@@ -92,7 +92,7 @@ import org.geotools.util.factory.Hints;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -1581,9 +1581,8 @@ public class NetCDFMosaicReaderTest extends Assert {
         TestRunner.run(NetCDFMosaicReaderTest.suite());
     }
 
-    @Before
-    public void init() {
-
+    @BeforeClass
+    public static void init() {
         // make sure CRS ordering is correct
         System.setProperty("org.geotools.referencing.forceXY", "true");
         System.setProperty("user.timezone", "GMT");

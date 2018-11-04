@@ -65,7 +65,6 @@ public class ThreadedHsqlEpsgFactoryTest {
         // force in the standard timeout
         factory.setTimeout(30 * 60 * 1000);
         finder = factory.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
-        corruptConnection();
     }
 
     @Test
@@ -323,12 +322,12 @@ public class ThreadedHsqlEpsgFactoryTest {
         factory.getAuthorityCodes(CoordinateReferenceSystem.class);
 
         // sleep and force gc to allow the backing store to be released
-        Thread.currentThread().sleep(2000);
-        for (int i = 0; i < 6; i++) {
+        long start = System.currentTimeMillis();
+        while ((System.currentTimeMillis() - start) < 4000 && factory.isConnected()) {
+            Thread.currentThread().sleep(200);
             System.gc();
             System.runFinalization();
         }
-        Thread.currentThread().sleep(2000);
 
         // check it has been disposed of
         assertFalse(factory.isConnected());

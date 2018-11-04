@@ -24,8 +24,8 @@ import org.geotools.referencing.factory.epsg.CoordinateOperationFactoryUsingWKT;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.factory.AbstractFactory;
 import org.geotools.util.factory.Hints;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.ConcatenatedOperation;
@@ -49,8 +49,8 @@ public class LongitudeFirstFactoryOverrideTest {
     private static final double[] DST_TEST_POINT = {39.594235744481225, 3.0844689951999427};
 
     /** @throws java.lang.Exception */
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         // force longitude first mode
         System.setProperty("org.geotools.referencing.forceXY", "true");
 
@@ -63,8 +63,8 @@ public class LongitudeFirstFactoryOverrideTest {
                 new CoordinateOperationFactoryUsingWKT(null, AbstractFactory.MAXIMUM_PRIORITY));
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void tearDown() {
         // unset axis ordering hint
         System.clearProperty("org.geotools.referencing.forceXY");
         Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);

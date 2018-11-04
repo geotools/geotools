@@ -29,7 +29,7 @@ import org.geotools.ows.wms.WebMapServer;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.CRS;
 import org.geotools.util.factory.Hints;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
@@ -55,8 +55,8 @@ public class WMSCoverageReaderTest {
         CRS.reset("all");
     }
 
-    @After
-    public void teardown() {
+    @AfterClass
+    public static void teardown() {
         System.clearProperty("org.geotools.referencing.forceXY");
         Hints.putSystemDefault(Hints.FORCE_AXIS_ORDER_HONORING, "");
         CRS.reset("all");

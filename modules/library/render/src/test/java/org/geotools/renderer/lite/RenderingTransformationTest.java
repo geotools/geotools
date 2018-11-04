@@ -48,8 +48,8 @@ import org.geotools.renderer.RenderListener;
 import org.geotools.styling.Style;
 import org.geotools.util.factory.GeoTools;
 import org.geotools.util.factory.Hints;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.coverage.grid.Format;
 import org.opengis.feature.simple.SimpleFeature;
@@ -63,15 +63,15 @@ public class RenderingTransformationTest {
 
     private static final long TIME = 4000;
 
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() {
         // System.setProperty("org.geotools.test.interactive", "true");
         System.setProperty(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "false");
         CRS.reset("all");
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void tearDown() {
         Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER);
     }
 

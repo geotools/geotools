@@ -240,6 +240,7 @@ public class ThreadedHsqlEpsgFactory extends ThreadedEpsgFactory {
      * @throws SQLException if connection to the database failed.
      */
     protected AbstractAuthorityFactory createBackingStore(final Hints hints) throws SQLException {
+        System.out.println("Building backing store!" + System.currentTimeMillis());
         final Logger logger = Logging.getLogger(ThreadedHsqlEpsgFactory.class);
         logger.log(Level.FINE, "Building backing store for " + getClass().getName());
 

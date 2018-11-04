@@ -36,7 +36,7 @@ import org.geotools.referencing.CRS;
 import org.geotools.test.TestData;
 import org.geotools.util.factory.Hints;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
@@ -49,8 +49,8 @@ import org.opengis.parameter.ParameterValue;
  */
 public final class NetCDFStationsTest extends Assert {
 
-    @Before
-    public void init() {
+    @BeforeClass
+    public static void init() {
         // make sure CRS ordering is correct
         System.setProperty("org.geotools.referencing.forceXY", "true");
         CRS.reset("all");

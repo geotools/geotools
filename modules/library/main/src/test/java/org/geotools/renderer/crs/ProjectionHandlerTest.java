@@ -1048,4 +1048,69 @@ public class ProjectionHandlerTest {
         // the original width is 109km, at this latitude one degree of longitude is only 65km
         assertEquals(1.7, ppEnvelope.getWidth(), 0.1);
     }
+
+    @Test
+    public void testWGS84BackToWebMercator() throws Exception {
+        ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(135, 180, -90, -45, WGS84);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(renderingEnvelope, OSM, true);
+        assertNotNull(handler);
+
+        List<ReferencedEnvelope> queryEnvelopes = handler.getQueryEnvelopes();
+        assertEquals(1, queryEnvelopes.size());
+
+        ReferencedEnvelope expected =
+                new ReferencedEnvelope(
+                        1.5028131257091932E7,
+                        2.0037508342789244E7,
+                        -1.9971868880408555E7,
+                        -5621521.486192067,
+                        OSM);
+        assertEnvelopesEqual(expected, queryEnvelopes.get(0), EPS);
+    }
+
+    @Test
+    public void testE50LatLonBackToWebMercator() throws Exception {
+        ReferencedEnvelope renderingEnvelope =
+                new ReferencedEnvelope(-80, -45, 135, 180, ED50_LATLON);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(renderingEnvelope, OSM, true);
+        assertNotNull(handler);
+
+        List<ReferencedEnvelope> queryEnvelopes = handler.getQueryEnvelopes();
+        assertEquals(1, queryEnvelopes.size());
+
+        // the ED50 to WGS84 switch causes dateline switch, making it read a larger area...
+        // to be fixed in another commit (a different Jira)
+        ReferencedEnvelope expected =
+                new ReferencedEnvelope(
+                        -2.003748375258002E7,
+                        1.9582312033733368E7,
+                        -1.5538175797794182E7,
+                        -5621345.809658899,
+                        OSM);
+        assertEnvelopesEqual(expected, queryEnvelopes.get(0), EPS);
+    }
+
+    @Test
+    public void testE50BackToWebMercator() throws Exception {
+        ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(135, 180, -80, -45, ED50);
+        ProjectionHandler handler =
+                ProjectionHandlerFinder.getHandler(renderingEnvelope, OSM, true);
+        assertNotNull(handler);
+
+        List<ReferencedEnvelope> queryEnvelopes = handler.getQueryEnvelopes();
+        assertEquals(1, queryEnvelopes.size());
+
+        // the ED50 to WGS84 switch causes dateline switch, making it read a larger area...
+        // to be fixed in another commit (a different Jira)
+        ReferencedEnvelope expected =
+                new ReferencedEnvelope(
+                        -2.003748375258002E7,
+                        1.9582312033733368E7,
+                        -1.5538175797794182E7,
+                        -5621345.809658899,
+                        OSM);
+        assertEnvelopesEqual(expected, queryEnvelopes.get(0), EPS);
+    }
 }

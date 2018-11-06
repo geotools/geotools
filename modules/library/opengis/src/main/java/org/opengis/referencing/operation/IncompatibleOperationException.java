@@ -15,7 +15,6 @@ package org.opengis.referencing.operation;
  *
  * @author Jesse Crossley (SYS Technologies)
  * @since GeoAPI 1.0
- * @source $URL$
  */
 public class IncompatibleOperationException extends Exception {
     /** Serial number for interoperability with different versions. */

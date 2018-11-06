@@ -8,7 +8,7 @@ A binding is what transforms XML into a Java object and vice versa. Bindings can
 * simple types
 * complex types
 
-More specifically, a binding is an instanceof of **org.geotools.xml.Binding**::
+More specifically, a binding is an instanceof of **org.geotools.xsd.Binding**::
   
   interface Binding {
     /**
@@ -186,7 +186,7 @@ Simple bindings are used to parse and encode elements and attributes which have 
   
   The parse method for simple bindings takes two parameters:
   
-  * instance: The instance component ( element or attribute ) that is being parsed as an instance of org.geotools.xml.InstanceComponent
+  * instance: The instance component ( element or attribute ) that is being parsed as an instance of org.geotools.xsd.InstanceComponent
   * value: The parsed value of the element / attribute created by the previous binding in the execution chain ( explained in greater detail above ). If the binding is the first in the chain, this value is the raw text of the element / attribute as a String.
   
   The return value of the method is the transformed object. Continuing with the "xs:integer" example, an implementation could be::
@@ -216,7 +216,7 @@ Simple bindings are used to parse and encode elements and attributes which have 
 
 * AbstractSimpleBinding
   
-  The class org.geotools.xml.AbstractSimpleBinding is available for subclassing
+  The class org.geotools.xsd.AbstractSimpleBinding is available for subclassing
   by binding writers.
 
 Complex Bindings
@@ -252,7 +252,7 @@ The interface for complex bindings looks like::
   
   The parse method for a complex binding takes three parameters:
 
-  * instance: The element instance being parsed, an instance of **org.geotools.xml.ElementInstance**
+  * instance: The element instance being parsed, an instance of **org.geotools.xsd.ElementInstance**
   * nocde:: A node in the current "parse tree" ( explained below ) at the time the binding is being executed, an instance of Node
   * value: The parsed value as produced by the previous binding in the execution chain. This value is null for the first binding in the chain.
 
@@ -409,7 +409,7 @@ The Binding Context is described further in the Configuration section.
 Binding Testing
 ''''''''''''''''
 
-The **org.geotools.xml.test.XMLTestSupport** class is used as a base class for binding unit tests.
+The **XMLTestSupport** class is used as a base class for binding unit tests.
 
 Subclasses of XMLTestSupport need to provide the configuration the binding under test is part of. For instance::
   

@@ -23,7 +23,6 @@ import org.opengis.geometry.complex.CompositeSurface;
  * Surface surface} with an upNormal that reverses the direction for this {@code OrientableSurface},
  * the sense of "the top of the surface".
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0

@@ -2,7 +2,6 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCDataStore;
 
-/** @source $URL$ */
 public class SqlServerNativeSerializationTestSetup extends SQLServerTestSetup {
 
     protected void setUpDataStore(JDBCDataStore dataStore) {

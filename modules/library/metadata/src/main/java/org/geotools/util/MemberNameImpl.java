@@ -38,7 +38,6 @@ import org.opengis.util.TypeName;
  * the member during creation time.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

@@ -19,7 +19,6 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/** @source $URL$ */
 public class DB2PrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override

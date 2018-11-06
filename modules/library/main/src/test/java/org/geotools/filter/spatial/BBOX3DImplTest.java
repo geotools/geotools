@@ -20,7 +20,6 @@ import org.opengis.geometry.BoundingBox3D;
 /**
  * A test for the 3D BBOX Filter.
  *
- * @source $URL$
  * @author Niels Charlier
  */
 public class BBOX3DImplTest extends TestCase {

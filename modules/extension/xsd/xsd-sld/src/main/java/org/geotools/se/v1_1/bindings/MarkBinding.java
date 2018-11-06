@@ -26,7 +26,8 @@ import org.geotools.styling.ExternalMark;
 import org.geotools.styling.Mark;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.*;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 
 /**
@@ -71,7 +72,6 @@ import org.opengis.filter.FilterFactory;
  *       </pre>
  *
  * @generated
- * @source $URL$
  */
 public class MarkBinding extends SLDMarkBinding {
 

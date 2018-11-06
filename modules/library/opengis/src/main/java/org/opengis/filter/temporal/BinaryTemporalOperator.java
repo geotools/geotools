@@ -18,7 +18,6 @@ import org.opengis.filter.expression.Expression;
  *
  * @author Justin Deoliveira, OpenGeo
  * @since 8.0
- * @source $URL$
  */
 @XmlElement("BinaryTemporalOpType")
 public interface BinaryTemporalOperator extends MultiValuedFilter {

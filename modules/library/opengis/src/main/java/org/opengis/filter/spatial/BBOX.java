@@ -20,7 +20,6 @@ import org.opengis.geometry.BoundingBox;
  * implementation may choose to throw an exception if one attempts to test features that are in a
  * different SRS than the SRS contained here.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
  * @author Chris Dillard (SYS Technologies)
  * @since GeoAPI 2.0

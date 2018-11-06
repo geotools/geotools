@@ -29,7 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * Private FeatureReader inner class for reading Features from the MIF file
  *
- * @source $URL$
+
  */
 public class EdigeoFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 

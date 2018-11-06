@@ -23,7 +23,7 @@ package org.geotools.referencing.operation.projection;
 import static java.lang.Math.*;
 
 import java.awt.geom.Point2D;
-import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.ErrorKeys;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
 
@@ -34,7 +34,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * @todo this code is identical to the oblique except for 6 lines. It could be moved to the oblique
  *     with an isEquatorial flag.
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  */

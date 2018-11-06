@@ -33,9 +33,9 @@ import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverageio.gdal.BaseGDALGridCoverage2DReader;
 import org.geotools.coverageio.gdal.GDALTestCase;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
@@ -47,7 +47,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  *     <p>Testing {@link DTEDReader}
- * @source $URL$
  */
 public final class DTEDTest extends GDALTestCase {
 

@@ -23,8 +23,8 @@ import org.geotools.gml4wcs.bindings.TemporalPositionTypeBinding;
 import org.geotools.gml4wcs.bindings.TimeDurationTypeBinding;
 import org.geotools.gml4wcs.bindings.TimePositionTypeBinding;
 import org.geotools.xlink.XLINKConfiguration;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
@@ -34,7 +34,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/gml schema.
  *
  * @generated
- * @source $URL$
  */
 public class GMLConfiguration extends Configuration {
 

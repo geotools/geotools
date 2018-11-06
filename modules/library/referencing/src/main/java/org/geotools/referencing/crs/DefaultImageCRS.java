@@ -40,7 +40,6 @@ import org.opengis.referencing.datum.ImageDatum;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

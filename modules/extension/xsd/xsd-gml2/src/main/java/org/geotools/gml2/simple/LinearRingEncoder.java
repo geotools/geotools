@@ -17,7 +17,7 @@
 package org.geotools.gml2.simple;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 
 /**
  * Encodes a GML2 linear ring

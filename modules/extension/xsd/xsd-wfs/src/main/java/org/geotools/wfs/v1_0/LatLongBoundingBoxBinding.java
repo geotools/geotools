@@ -5,9 +5,9 @@ import java.util.Arrays;
 import javax.xml.namespace.QName;
 import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows10.WGS84BoundingBoxType;
-import org.geotools.xml.AbstractComplexEMFBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexEMFBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 public class LatLongBoundingBoxBinding extends AbstractComplexEMFBinding {
 

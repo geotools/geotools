@@ -21,7 +21,6 @@ package org.geotools.data.shapefile.files;
  * ShpFiles}
  *
  * @author jesse
- * @source $URL$
  */
 public interface FileWriter extends FileReader {
     /**

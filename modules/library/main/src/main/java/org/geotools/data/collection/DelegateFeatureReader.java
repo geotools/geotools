@@ -33,7 +33,6 @@ import org.opengis.feature.type.FeatureType;
  * content will be duplicated.
  *
  * @author Jody Garnett, Refractions Research, Inc.
- * @source $URL$
  */
 public class DelegateFeatureReader<T extends FeatureType, F extends Feature>
         implements FeatureReader<T, F> {

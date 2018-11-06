@@ -32,14 +32,13 @@ import org.opengis.util.Cloneable;
  * Provides a Java representation of the Font element of an SLD.
  *
  * @author Ian Turton, CCG
- * @source $URL$
  * @version $Id$
  */
 public class FontImpl implements Font, Cloneable {
     /** The logger for the default core module. */
 
     // private static final Logger LOGGER =
-    // org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    // org.geotools.util.logging.Logging.getLogger(FontImpl.class);
     private final List<Expression> fontFamily = new ArrayList<Expression>();
 
     private Expression fontSize = null;

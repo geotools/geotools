@@ -23,11 +23,7 @@ import java.util.Map;
 import javax.swing.Icon;
 import org.opengis.filter.expression.Expression;
 
-/**
- * Abstract base class for implementing style factories.
- *
- * @source $URL$
- */
+/** Abstract base class for implementing style factories. */
 public abstract class AbstractStyleFactory implements StyleFactory {
     public abstract TextSymbolizer createTextSymbolizer(
             Fill fill,

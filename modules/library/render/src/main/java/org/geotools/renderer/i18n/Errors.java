@@ -20,14 +20,13 @@ package org.geotools.renderer.i18n;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
-import org.geotools.resources.IndexedResourceBundle;
+import org.geotools.util.IndexedResourceBundle;
 
 /**
  * Base class for locale-dependent resources. Instances of this class should never been created
  * directly. Use the factory method {@link #getResources} or use static convenience methods instead.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Simone Giannecchini (GeoSolutions)

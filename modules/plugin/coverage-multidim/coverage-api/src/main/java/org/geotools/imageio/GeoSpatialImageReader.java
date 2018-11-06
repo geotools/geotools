@@ -37,7 +37,6 @@ import org.opengis.feature.type.Name;
 /**
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public abstract class GeoSpatialImageReader extends ImageReader implements FileSetManager {
 

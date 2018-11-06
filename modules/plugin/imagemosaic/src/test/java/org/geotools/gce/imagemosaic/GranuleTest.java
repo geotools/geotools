@@ -33,7 +33,6 @@ import javax.media.jai.JAI;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleOverviewLevelDescriptor;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -44,6 +43,7 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.wkt.Parser;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.geometry.BoundingBox;
@@ -60,7 +60,6 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties URLs
- * @source $URL$
  */
 public class GranuleTest extends Assert {
 

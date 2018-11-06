@@ -40,13 +40,12 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
- * @source $URL$
  */
 public class AreaFunctionTest extends TestCase {
 
     /** Standard logging instance */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+            org.geotools.util.logging.Logging.getLogger(AreaFunctionTest.class);
     /** Feature on which to preform tests */
     private static SimpleFeature testFeature = null;
 

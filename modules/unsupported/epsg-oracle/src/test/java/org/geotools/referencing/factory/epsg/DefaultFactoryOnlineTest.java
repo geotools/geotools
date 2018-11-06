@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.util.*;
 import javax.measure.Unit;
 import org.geotools.TestData;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.extent.GeographicBoundingBoxImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.CRS;
@@ -34,6 +33,7 @@ import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.Envelope;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.parameter.ParameterValueGroup;
@@ -47,7 +47,6 @@ import org.opengis.referencing.operation.*;
  * Tests transformations from CRS and/or operations created from the EPSG factory, using the default
  * plugin.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Vadim Semenov

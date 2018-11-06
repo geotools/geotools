@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-/** @source $URL$ */
 public class MultiPolygonTypeBindingTest extends GML3TestSupport {
 
     public void test() throws Exception {

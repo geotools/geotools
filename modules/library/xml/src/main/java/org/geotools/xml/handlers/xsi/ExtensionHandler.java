@@ -27,7 +27,6 @@ import org.xml.sax.SAXNotRecognizedException;
  * Represents an Extension element
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public class ExtensionHandler extends XSIElementHandler {
     /** 'extension' */

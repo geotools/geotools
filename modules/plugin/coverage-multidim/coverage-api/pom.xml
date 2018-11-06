@@ -61,11 +61,6 @@
   <!-- =========================================================== -->
   <dependencies>
     <dependency>
-  <groupId>org.geotools.ogc</groupId>
-  <artifactId>net.opengis.wcs</artifactId>
-      <version>${project.version}</version>
-    </dependency> 
-    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-imagemosaic</artifactId>
       <version>${project.version}</version>
@@ -92,6 +87,16 @@
       <!-- for FilenameUtils -->
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+	  <groupId>javax.xml.bind</groupId>
+	  <artifactId>jaxb-api</artifactId>
+    <!-- version is provided by parent pom -->
+	  <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.locationtech.jts</groupId>

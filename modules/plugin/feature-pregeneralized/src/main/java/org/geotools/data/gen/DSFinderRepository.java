@@ -45,7 +45,6 @@ import org.opengis.feature.type.Name;
  * <p>For shape files ending with .shp or SHP, the shape file could be passed as name
  *
  * @author Christian Mueller
- * @source $URL$
  */
 public class DSFinderRepository implements Repository {
 

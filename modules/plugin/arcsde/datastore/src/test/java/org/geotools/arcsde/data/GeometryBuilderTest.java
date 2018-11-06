@@ -56,16 +56,10 @@ import org.locationtech.jts.io.WKTReader;
  * Unit test suite for {@link ArcSDEGeometryBuilder}
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/GeometryBuilderTest.java $
- * @version $Id$
  */
 public class GeometryBuilderTest {
 
-    static Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    GeometryBuilderTest.class.getPackage().getName());
+    static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(GeometryBuilderTest.class);
 
     private WKTReader wktReader;
 

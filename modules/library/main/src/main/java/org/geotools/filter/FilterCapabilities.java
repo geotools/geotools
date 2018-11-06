@@ -60,7 +60,6 @@ import org.opengis.filter.spatial.Within;
  * <p>This class is used as one big mask to detect filters that cannot be performed
  *
  * @author Chris Holmes, TOPP
- * @source $URL$
  * @deprecated use {@link org.opengis.filter.capability.FilterCapabilities}.
  */
 public class FilterCapabilities {

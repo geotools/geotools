@@ -16,7 +16,7 @@
  */
 package org.geotools.gce.imagemosaic.remote;
 
-import com.sun.imageio.spi.FileImageInputStreamSpi;
+import it.geosolutions.imageio.stream.input.spi.FileImageInputStreamExtImplSpi;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import org.geotools.gce.imagemosaic.RemoteTest;
 
 public class RemoteImageInputStreamSPI extends ImageInputStreamSpi {
 
-    private FileImageInputStreamSpi delegate = new FileImageInputStreamSpi();
+    private FileImageInputStreamExtImplSpi delegate = new FileImageInputStreamExtImplSpi();
 
     public RemoteImageInputStreamSPI() {
         super("geotools", "0.0.1", URL.class);

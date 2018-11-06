@@ -36,13 +36,13 @@ import org.geotools.util.logging.Logging;
  * Implementation of the DataStore service provider interface for OGR.
  *
  * @author Andrea Aime, GeoSolution
- * @source $URL$
+
  * @version $Id$
  */
 @SuppressWarnings("rawtypes")
 public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
 
-    protected static Logger LOGGER = Logging.getLogger("org.geotools.data.ogr");
+    protected static Logger LOGGER = Logging.getLogger(OGRDataStoreFactory.class);
 
     public static final Param OGR_NAME =
             new Param(

@@ -26,8 +26,8 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import org.geotools.resources.Classes;
-import org.geotools.resources.OptionalDependencies;
+import org.geotools.util.Classes;
+import org.geotools.util.OptionalDependencies;
 import org.geotools.util.Utilities;
 import org.opengis.util.CodeList;
 import org.opengis.util.InternationalString;
@@ -40,7 +40,6 @@ import org.opengis.util.InternationalString;
  * <p>Note: this method is called {@code PropertyTree} because it may implements {@link
  * javax.swing.tree.TreeModel} in some future Geotools implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (Geomatys)
  */

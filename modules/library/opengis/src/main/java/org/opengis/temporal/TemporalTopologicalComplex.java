@@ -20,7 +20,6 @@ import org.opengis.annotation.UML;
  * primitives}. This is the only subclass of {@linkplain TemporalComplex temporal complex}.
  *
  * @author Alexander Petkov
- * @source $URL$
  */
 @UML(identifier = "TM_TopologicalComplex", specification = ISO_19108)
 public interface TemporalTopologicalComplex extends TemporalComplex {

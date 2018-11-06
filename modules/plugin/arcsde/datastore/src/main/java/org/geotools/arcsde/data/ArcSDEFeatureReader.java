@@ -29,11 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * FeatureReader<SimpleFeatureType, SimpleFeature> optimized for ArcSDE access.
  *
  * @author Gabriel Roldan (TOPP)
- * @version $Id$
  * @since 2.5
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcSDEFeatureReader.java $
  */
 public class ArcSDEFeatureReader extends DefaultFeatureReader {
 

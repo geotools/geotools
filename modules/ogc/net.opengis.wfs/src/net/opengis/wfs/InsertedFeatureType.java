@@ -17,11 +17,11 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs.InsertedFeatureType#getFeatureId <em>Feature Id</em>}</li>
  *   <li>{@link net.opengis.wfs.InsertedFeatureType#getHandle <em>Handle</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wfs.WfsPackage#getInsertedFeatureType()
  * @model extendedMetaData="name='InsertedFeatureType' kind='elementOnly'"
@@ -49,33 +49,33 @@ public interface InsertedFeatureType extends EObject {
 	EList getFeatureId();
 
 	/**
-     * Returns the value of the '<em><b>Handle</b></em>' attribute.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Handle</b></em>' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * 
-     *                If the insert element that generated this feature
-     *                had a value for the "handle" attribute then a WFS
-     *                may report it using this attribute to correlate
-     *                the feature created with the action that created it.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Handle</em>' attribute.
-     * @see #setHandle(String)
-     * @see net.opengis.wfs.WfsPackage#getInsertedFeatureType_Handle()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
-     *        extendedMetaData="kind='attribute' name='handle'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * 
+   *                If the insert element that generated this feature
+   *                had a value for the "handle" attribute then a WFS
+   *                may report it using this attribute to correlate
+   *                the feature created with the action that created it.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Handle</em>' attribute.
+   * @see #setHandle(String)
+   * @see net.opengis.wfs.WfsPackage#getInsertedFeatureType_Handle()
+   * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
+   *        extendedMetaData="kind='attribute' name='handle'"
+   * @generated
+   */
 	String getHandle();
 
 	/**
-     * Sets the value of the '{@link net.opengis.wfs.InsertedFeatureType#getHandle <em>Handle</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * Sets the value of the '{@link net.opengis.wfs.InsertedFeatureType#getHandle <em>Handle</em>}' attribute.
+   * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Handle</em>' attribute.
-     * @see #getHandle()
-     * @generated
-     */
+   * @param value the new value of the '<em>Handle</em>' attribute.
+   * @see #getHandle()
+   * @generated
+   */
 	void setHandle(String value);
 
 } // InsertedFeatureType

@@ -21,10 +21,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.Or;
 
-/**
- * @author jdeolive
- * @source $URL$
- */
+/** @author jdeolive */
 public class OrImpl extends LogicFilterImpl implements Or {
 
     protected OrImpl(List<Filter> children) {

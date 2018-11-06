@@ -22,7 +22,6 @@
 package org.geotools.geometry.jts.spatialschema.geometry;
 
 import java.io.Serializable;
-import org.geotools.geometry.jts.GeometryUtils;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -30,7 +29,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * Holds the coordinates for a one-dimensional position within some coordinate reference system.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

@@ -16,7 +16,7 @@
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <class id="3" corner="BOTTOM_RIGHT" language="java" name="org.geotools.map.WMSLayer" project="gt-wms" 
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="WMSLayer" project="gt-wms"
     file="/gt-wms/src/main/java/org/geotools/map/WMSLayer.java" binary="false">    
     <position x="269" y="507" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      

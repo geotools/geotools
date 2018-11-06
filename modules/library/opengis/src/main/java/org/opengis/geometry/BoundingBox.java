@@ -29,7 +29,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (Geomatys)
  * @since GeoAPI 2.1
- * @source $URL$
  */
 @Extension
 public interface BoundingBox extends Envelope {

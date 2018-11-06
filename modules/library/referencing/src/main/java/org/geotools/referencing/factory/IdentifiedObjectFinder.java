@@ -45,13 +45,11 @@ import org.opengis.util.GenericName;
  * or "{@code AUTHORITY[...]}" element in <cite>Well Known Text</cite> terminology.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public class IdentifiedObjectFinder {
-    public static final Logger LOGGER =
-            Logging.getLogger("org.geotools.referencing.factory.finder");
+    public static final Logger LOGGER = Logging.getLogger(IdentifiedObjectFinder.class);
 
     /** The proxy for object creation. */
     private AuthorityFactoryProxy proxy;

@@ -25,7 +25,6 @@ import org.geotools.xml.schema.Group;
  * DOCUMENT ME!
  *
  * @author dzwiers
- * @source $URL$
  */
 public class GroupGT implements Group {
     private ElementGrouping child;

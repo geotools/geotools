@@ -21,10 +21,10 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.io.Serializable;
 import java.util.Arrays;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.geometry.PixelTranslation;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.Classes;
 import org.opengis.coverage.grid.GridCoordinates;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
@@ -40,7 +40,6 @@ import org.opengis.referencing.datum.PixelInCell;
  * required.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see GridEnvelope2D

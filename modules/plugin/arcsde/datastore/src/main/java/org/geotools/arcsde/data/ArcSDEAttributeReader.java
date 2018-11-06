@@ -45,14 +45,10 @@ import org.opengis.feature.type.GeometryDescriptor;
  * logging to the log named "org.geotools.data".
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcSDEAttributeReader.java $
- * @version $Id$
  */
 final class ArcSDEAttributeReader implements AttributeReader {
     /** Shared package's logger */
-    private static final Logger LOGGER = Logging.getLogger(ArcSDEAttributeReader.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEAttributeReader.class);
 
     /** query passed to the constructor */
     private ArcSDEQuery query;

@@ -26,8 +26,6 @@ import org.geotools.geometry.iso.util.algorithm2D.CGAlgorithms;
  * direction of the ray from the initial point to the next point. EdgeEnds are comparable under the
  * ordering "a has a greater angle with the x-axis than b". This ordering is used to sort EdgeEnds
  * around a node.
- *
- * @source $URL$
  */
 public class EdgeEnd implements Comparable {
     protected Edge edge; // the parent edge of this edge end

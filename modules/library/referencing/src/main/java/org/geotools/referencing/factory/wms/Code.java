@@ -18,15 +18,14 @@ package org.geotools.referencing.factory.wms;
 
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * A code parsed by the {@link AutoCRSFactory} methods. The expected format is {@code
  * AUTO:code,unit,lon0,lat0} where {@code AUTO} is optional.
  *
- * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux

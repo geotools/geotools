@@ -69,7 +69,6 @@ import org.w3c.dom.Node;
  * Mock data class used for filter binding tests.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class FilterMockData {
     static FilterFactory2 f = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);

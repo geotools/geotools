@@ -23,7 +23,6 @@ package org.geotools.xml.schema;
  * overall memory.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface ElementValue {
     /**

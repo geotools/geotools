@@ -19,9 +19,9 @@ package org.geotools.filter.v1_1.capabilities;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.filter.v1_1.OGC;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.SpatialOperator;
 import org.opengis.filter.capability.SpatialOperators;
@@ -43,7 +43,6 @@ import org.opengis.filter.capability.SpatialOperators;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SpatialOperatorsTypeBinding extends AbstractComplexBinding {
     FilterFactory factory;

@@ -46,7 +46,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Saul Farber
  * @author Gabriel Roldan
- * @source $URL$
  */
 public final class RasterInfo {
 

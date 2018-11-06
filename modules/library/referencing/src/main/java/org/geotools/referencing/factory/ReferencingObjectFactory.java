@@ -26,9 +26,6 @@ import java.util.Map;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.factory.Factory;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.*;
 import org.geotools.referencing.cs.*;
@@ -38,6 +35,9 @@ import org.geotools.referencing.operation.MathTransformProvider;
 import org.geotools.referencing.wkt.Parser;
 import org.geotools.referencing.wkt.Symbols;
 import org.geotools.util.CanonicalSet;
+import org.geotools.util.factory.BufferedFactory;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.Hints;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.*;
 import org.opengis.referencing.crs.*;
@@ -52,7 +52,6 @@ import org.opengis.referencing.operation.*;
  * ObjectFactory} interface.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

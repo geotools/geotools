@@ -27,7 +27,6 @@ import org.geotools.graph.traverse.basic.AbstractGraphIterator;
 import org.geotools.graph.util.FIFOQueue;
 import org.geotools.graph.util.Queue;
 
-/** @source $URL$ */
 public class DirectedBreadthFirstTopologicalIterator extends AbstractGraphIterator {
 
     private Queue m_queue;

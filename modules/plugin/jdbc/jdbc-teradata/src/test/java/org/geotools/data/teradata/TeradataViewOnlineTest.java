@@ -29,7 +29,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.spatial.BBOX;
 
-/** @source $URL$ */
 public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 
     @Override
@@ -44,10 +43,11 @@ public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 
     public void testViewWithTesselationAndIndex() throws Exception {
 
-        Handler handler = Logging.getLogger("").getHandlers()[0];
+        Handler handler = Logging.getLogger(TeradataViewOnlineTest.class).getHandlers()[0];
         handler.setLevel(Level.FINEST);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(Level.FINEST);
+        org.geotools.util.logging.Logging.getLogger(TeradataViewOnlineTest.class)
+                .setLevel(Level.FINEST);
 
         SimpleFeatureType schema = dataStore.getSchema("lakesview2");
         TessellationInfo tesselation =

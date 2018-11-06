@@ -18,7 +18,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author SYS Technologies
  * @author crossley
- * @source $URL$
  * @version $Revision $
  * @deprecated Use GeometryFactoryFinder
  */

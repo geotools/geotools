@@ -26,7 +26,7 @@ import java.util.Set;
 import javax.measure.Unit;
 import javax.swing.Icon;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -56,7 +56,6 @@ import org.opengis.util.InternationalString;
  * </ul>
  *
  * @author iant
- * @source $URL$
  * @version $Id$
  */
 public class StyleFactoryImpl extends AbstractStyleFactory

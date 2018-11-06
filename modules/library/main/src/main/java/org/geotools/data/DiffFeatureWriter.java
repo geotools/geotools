@@ -19,10 +19,10 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -38,7 +38,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jody Garnett, Refractions Research
  * @see TransactionStateDiff
- * @source $URL$
  */
 public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> reader;

@@ -1,6 +1,6 @@
 <class-diagram version="1.0.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.GML" project="gt-xml" 
+  <class id="1" corner="BOTTOM_RIGHT" language="java" name="org.geotools.wfs.GML" project="gt-xml" 
     file="/gt-xml/src/main/java/org/geotools/GML.java" binary="false">    
     <position x="220" y="203" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      
@@ -8,7 +8,7 @@
       <operations public="true" package="false" protected="false" private="false"/>    
     </display>  
   </class>  
-  <enumeration id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.GML.Version" project="gt-xml" 
+  <enumeration id="2" corner="BOTTOM_RIGHT" language="java" name="org.geotools.wfs.GML.Version" project="gt-xml" 
     file="/gt-xml/src/main/java/org/geotools/GML.java" binary="false">    
     <position x="548" y="211" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="true" visibility="true">      

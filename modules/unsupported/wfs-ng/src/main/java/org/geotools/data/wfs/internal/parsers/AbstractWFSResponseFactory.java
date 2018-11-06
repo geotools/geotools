@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PushbackInputStream;
 import java.nio.charset.Charset;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +33,7 @@ import org.geotools.data.wfs.internal.WFSException;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSResponseFactory;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.xml.sax.EntityResolver;
 
 /**
@@ -210,9 +209,8 @@ public abstract class AbstractWFSResponseFactory implements WFSResponseFactory {
             }
             WFSException result = new WFSException(msg.toString());
             for (net.opengis.ows20.ExceptionType ex : exceptions) {
-                String text = ex.getExceptionText();
-                result.addExceptionDetails(
-                        ex.getExceptionCode(), ex.getLocator(), Collections.singletonList(text));
+                List<String> text = ex.getExceptionText();
+                result.addExceptionDetails(ex.getExceptionCode(), ex.getLocator(), text);
             }
             return result;
         }

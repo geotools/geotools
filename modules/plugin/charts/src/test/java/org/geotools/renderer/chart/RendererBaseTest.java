@@ -32,16 +32,15 @@ import java.io.IOException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.GTRenderer;
-import org.geotools.styling.SLDParser;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.test.TestData;
+import org.geotools.xml.styling.SLDParser;
 
 /**
  * DOCUMENT ME!
  *
  * @author Simone Giannecchini
- * @source $URL$
  */
 public abstract class RendererBaseTest {
 

@@ -72,7 +72,7 @@ import org.geotools.filter.v1_1.capabilities.SpatialOperatorsTypeBinding;
 import org.geotools.filter.v1_1.capabilities.Spatial_CapabilitiesTypeBinding;
 import org.geotools.filter.v1_1.capabilities._Filter_CapabilitiesBinding;
 import org.geotools.gml3.GMLConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.opengis.filter.FilterFactory;
 import org.picocontainer.MutablePicoContainer;
 
@@ -80,7 +80,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the filter 1.1 schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class OGCConfiguration extends Configuration {
     /** Adds a dependency on {@link GMLConfiguration} */

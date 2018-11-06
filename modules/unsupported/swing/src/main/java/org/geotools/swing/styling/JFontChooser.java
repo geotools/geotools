@@ -44,7 +44,6 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Michael Bedward
  * @since 2.6
- * @source $URL$
  * @version $Id$
  */
 public class JFontChooser extends JDialog {

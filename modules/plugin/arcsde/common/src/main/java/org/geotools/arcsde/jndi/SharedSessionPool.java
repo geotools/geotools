@@ -35,7 +35,6 @@ import org.geotools.arcsde.session.UnavailableConnectionException;
  * different applications/datastores when referenced by a JNDI context.
  *
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
  * @version $Id$
  * @since 2.5.7
  */

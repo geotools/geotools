@@ -34,12 +34,10 @@ import org.locationtech.jts.geom.Polygon;
 /**
  * Converts a JTS geometry into the equivalent MDSYS.SDO_GEOMETRY SQL syntax. Useful for non
  * prepared statement based dialects and for debugging purposes
- *
- * @source $URL$
  */
 public class SDOSqlDumper {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.oracle.sdo");
+            org.geotools.util.logging.Logging.getLogger(SDOSqlDumper.class);
 
     /**
      * Converts JTS Geometry to a String version of a SDO Geometry. This should move to a utility

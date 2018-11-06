@@ -17,17 +17,16 @@
 package org.geotools.gml2.bindings;
 
 import org.geotools.gml2.GML;
-import org.geotools.xml.AttributeInstance;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
 import org.geotools.xs.XS;
+import org.geotools.xsd.AttributeInstance;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-/** @source $URL$ */
 public class GMLCoordinatesTypeBindingTest extends AbstractGMLBindingTest {
     AttributeInstance decimal;
     AttributeInstance ts;

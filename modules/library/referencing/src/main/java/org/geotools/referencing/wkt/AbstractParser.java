@@ -26,8 +26,8 @@ import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.GeneralParameterValue;
@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.MathTransform;
  * Base class for <cite>Well Know Text</cite> (WKT) parser.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)

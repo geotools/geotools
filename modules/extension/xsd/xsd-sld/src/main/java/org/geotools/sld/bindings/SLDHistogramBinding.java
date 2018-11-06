@@ -20,9 +20,9 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.styling.AbstractContrastMethodStrategy;
 import org.geotools.styling.HistogramContrastMethodStrategy;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
@@ -41,7 +41,6 @@ import org.picocontainer.MutablePicoContainer;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class SLDHistogramBinding extends AbstractComplexBinding {
     /** @generated */

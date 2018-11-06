@@ -24,13 +24,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.filter.LengthFunction;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -64,7 +64,6 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Jody Garnett, Refractions Research
  * @since 2.1.M3
- * @source $URL$
  */
 public class FeatureTypes {
 

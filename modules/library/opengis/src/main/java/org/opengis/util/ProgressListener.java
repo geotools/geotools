@@ -45,7 +45,6 @@ import org.opengis.annotation.Extension;
  * @since GeoAPI 2.1
  * @author Martin Desruisseaux
  * @author Jody Garnet
- * @source $URL$
  */
 @Extension
 public interface ProgressListener {

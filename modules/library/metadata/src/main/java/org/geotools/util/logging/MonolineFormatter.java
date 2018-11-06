@@ -30,7 +30,7 @@ import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-import org.geotools.io.LineWriter;
+import org.geotools.util.LineWriter;
 import org.geotools.util.Utilities;
 
 /**
@@ -89,7 +89,6 @@ import org.geotools.util.Utilities;
  * </blockquote>
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

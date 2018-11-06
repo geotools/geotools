@@ -17,7 +17,7 @@
 package org.geotools.coverage;
 
 import java.awt.color.ColorSpace;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 
 /**
  * Color space for raster backed by floating point numbers ranging between two arbitrary values.
@@ -27,7 +27,6 @@ import org.geotools.resources.Classes;
  * a color table instead of computing grayscales).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @todo Consider extending {@link javax.media.jai.ColorSpaceJAI}.

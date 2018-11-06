@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.geotools.factory.Hints;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 import org.geotools.filter.expression.PropertyAccessors;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.ExpressionVisitor;
@@ -37,14 +37,13 @@ import org.xml.sax.helpers.NamespaceSupport;
  * filters together and relates them logically in an internally defined manner.
  *
  * @author Rob Hranac, TOPP
- * @source $URL$
  * @version $Id$
  */
 public class AttributeExpressionImpl extends DefaultExpression implements PropertyName {
 
     /** The logger for the default core module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+            org.geotools.util.logging.Logging.getLogger(AttributeExpressionImpl.class);
 
     /** Holds all sub filters of this filter. */
     protected String attPath;
@@ -53,7 +52,7 @@ public class AttributeExpressionImpl extends DefaultExpression implements Proper
     protected SimpleFeatureType schema = null;
 
     /** NamespaceSupport used to defining the prefix information for the xpath expression */
-    NamespaceSupport namespaceSupport;
+    public NamespaceSupport namespaceSupport;
 
     /**
      * Configures whether evaluate should return null if it cannot find a working property accessor,

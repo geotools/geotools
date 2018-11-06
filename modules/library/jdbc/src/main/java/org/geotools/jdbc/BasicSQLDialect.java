@@ -26,7 +26,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.expression.Literal;
 
-/** @source $URL$ */
 public abstract class BasicSQLDialect extends SQLDialect {
 
     protected BasicSQLDialect(JDBCDataStore dataStore) {

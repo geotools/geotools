@@ -25,7 +25,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
+
 public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
 
     protected OGRDataStoreFactoryTest(Class<? extends OGRDataStoreFactory> dataStoreFactoryClass) {

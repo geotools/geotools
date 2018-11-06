@@ -20,7 +20,6 @@ package org.geotools.jdbc;
  * Represents a column in a primary key.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public abstract class PrimaryKeyColumn {
 

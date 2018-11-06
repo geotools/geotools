@@ -42,7 +42,6 @@ import org.geotools.xml.*;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class PointSymbolizerBinding extends SLDPointSymbolizerBinding {
 

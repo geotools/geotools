@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.v1_1;
 
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -26,7 +26,6 @@ import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class BinaryComparisonOpTypeBindingTest
         extends org.geotools.filter.v1_0.BinaryComparisonOpTypeBindingTest {
     public void testBinaryComparisonOpType() {

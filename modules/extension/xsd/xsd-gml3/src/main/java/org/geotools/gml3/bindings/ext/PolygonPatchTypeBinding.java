@@ -20,7 +20,6 @@ import javax.xml.namespace.QName;
 import org.geotools.gml3.bindings.PolygonTypeBinding;
 import org.locationtech.jts.geom.GeometryFactory;
 
-/** @source $URL$ */
 public class PolygonPatchTypeBinding extends org.geotools.gml3.bindings.PolygonPatchTypeBinding
         implements Comparable {
 

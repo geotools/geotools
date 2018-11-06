@@ -18,13 +18,13 @@ package org.geotools.map;
 
 import java.util.logging.Level;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.FactoryRegistryException;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.styling.Style;
+import org.geotools.util.factory.FactoryRegistryException;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Jody Garnett
  * @version 8.0
  * @since 2.7
- * @source $URL$
  */
 public class GridReaderLayer extends RasterLayer {
     /** Grid coverage reader allowing direct access to raster content. */

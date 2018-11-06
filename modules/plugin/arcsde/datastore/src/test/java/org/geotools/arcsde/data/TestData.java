@@ -76,16 +76,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Provides access to the ArcSDEDataStore test data configuration.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *     /org/geotools/arcsde/data/TestData.java $
- * @version $Id$
  */
 @SuppressWarnings({"nls", "unchecked"})
 public class TestData {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(TestData.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(TestData.class);
 
     public static final String[] TEST_TABLE_COLS = {
         "INT32_COL",

@@ -89,7 +89,7 @@
         </dependency>
         <dependency>
             <groupId>org.geotools</groupId>
-            <artifactId>gt-data</artifactId>
+            <artifactId>gt-main</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -191,7 +191,7 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>9.2.13.v20150730</version>
+            <version>9.4.12.v20180830</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

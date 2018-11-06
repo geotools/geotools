@@ -35,14 +35,13 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ExternalGraphic;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
 
-/** @source $URL$ */
 public class SLDExampleTest extends TestCase {
 
     public void testParseSLD() throws Exception {

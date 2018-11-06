@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import java.net.URL;
 import net.opengis.wfs20.WFSCapabilitiesType;
 import org.geotools.wfs.v2_0.WFSConfiguration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Parser;
 import org.junit.Before;
 import org.junit.Test;
 

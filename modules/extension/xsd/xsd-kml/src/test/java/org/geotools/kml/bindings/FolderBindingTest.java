@@ -5,7 +5,7 @@ import java.util.Map;
 import org.geotools.kml.Folder;
 import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.feature.simple.SimpleFeature;
 
 public class FolderBindingTest extends KMLTestSupport {

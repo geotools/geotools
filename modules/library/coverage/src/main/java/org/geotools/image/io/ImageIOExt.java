@@ -41,7 +41,7 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.PlanarImage;
 import org.geotools.image.ImageWorker;
-import org.geotools.resources.Classes;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -59,7 +59,6 @@ import org.w3c.dom.NodeList;
  *
  * @author Andrea Aime - GeoSolutions
  * @since 2.7.2
- * @source $URL$
  */
 public class ImageIOExt {
 

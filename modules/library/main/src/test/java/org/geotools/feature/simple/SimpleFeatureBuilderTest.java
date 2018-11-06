@@ -27,7 +27,6 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class SimpleFeatureBuilderTest extends TestCase {
 
     SimpleFeatureBuilder builder;

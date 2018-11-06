@@ -19,7 +19,6 @@ package org.geotools.data.ws;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureListener;
@@ -36,30 +35,20 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Simple implementation of XmlFeatureSource
- * <p>
- * This implementation is really simple in the sense that it delegates all the hard work to the
+ *
+ * <p>This implementation is really simple in the sense that it delegates all the hard work to the
  * {@link XmlDataStore} provided.
- * </p>
- * 
+ *
  * @author rpetty
- * @version $Id$
- *
- *
- *
- * @source $URL$
- *         http://svn.geotools.org/trunk/modules/unsupported/app-schema/webservice/src/main/java/org/geotools/wfs/v_1_1_0
- *         /data/XmlSimpleFeatureParser.java $
  */
-
 public class WSFeatureSource implements XmlFeatureSource {
 
     private String typeName;
-    
+
     private XmlDataStore dataStore;
 
     private QueryCapabilities queryCapabilities;
 
-    
     public WSFeatureSource(final WS_DataStore dataStore, final String typeName, final Name name)
             throws IOException {
         this.typeName = typeName;
@@ -71,16 +60,12 @@ public class WSFeatureSource implements XmlFeatureSource {
         return dataStore.getName();
     }
 
-    /**
-     * @see FeatureSource#getDataStore()
-     */
+    /** @see FeatureSource#getDataStore() */
     public DataStore getDataStore() {
         return dataStore;
     }
 
-    /**
-     * @see FeatureSource#getSchema()
-     */
+    /** @see FeatureSource#getSchema() */
     public SimpleFeatureType getSchema() {
         throw new UnsupportedOperationException("getSchema not supported");
     }
@@ -88,79 +73,59 @@ public class WSFeatureSource implements XmlFeatureSource {
     public void setNamespaces(NamespaceSupport namespaces) {
         dataStore.setNamespaces(namespaces);
     }
-    
+
     public void setItemXpath(String itemXpath) {
         dataStore.setItemXpath(itemXpath);
-    } 
+    }
     /**
      * Returns available metadata for this resource
-     * 
+     *
      * @return
      */
     public ResourceInfo getInfo() {
         throw new UnsupportedOperationException("getInfo not supported");
     }
 
-    /**
-     * @see FeatureSource#addFeatureListener(FeatureListener)
-     */
-    public void addFeatureListener(FeatureListener listener) {
-    }
+    /** @see FeatureSource#addFeatureListener(FeatureListener) */
+    public void addFeatureListener(FeatureListener listener) {}
 
-    /**
-     * @see FeatureSource#removeFeatureListener(FeatureListener)
-     */
-    public void removeFeatureListener(FeatureListener listener) {
-    }
+    /** @see FeatureSource#removeFeatureListener(FeatureListener) */
+    public void removeFeatureListener(FeatureListener listener) {}
 
-    /**
-     * @see FeatureSource#getBounds()
-     */
+    /** @see FeatureSource#getBounds() */
     public ReferencedEnvelope getBounds() throws IOException {
         throw new UnsupportedOperationException("getBounds not supported");
     }
 
-    /**
-     * @see FeatureSource#getBounds(Query)
-     */
-    public ReferencedEnvelope getBounds(Query query) throws IOException {        
+    /** @see FeatureSource#getBounds(Query) */
+    public ReferencedEnvelope getBounds(Query query) throws IOException {
         throw new UnsupportedOperationException("getBounds not supported");
     }
 
-    /**
-     * @see FeatureSource#getCount(Query)
-     */
+    /** @see FeatureSource#getCount(Query) */
     public int getCount(Query query) throws IOException {
         Query namedQuery = namedQuery(typeName, query);
         int count = dataStore.getCount(namedQuery);
         return count;
     }
 
-    /**
-     * @see FeatureSource#getFeatures(Filter)
-     */
+    /** @see FeatureSource#getFeatures(Filter) */
     public WSFeatureCollection getFeatures(Filter filter) throws IOException {
         return getFeatures(new DefaultQuery(typeName, filter));
     }
 
-    /**
-     * @see FeatureSource#getFeatures()
-     */
+    /** @see FeatureSource#getFeatures() */
     public WSFeatureCollection getFeatures() throws IOException {
         return getFeatures(new DefaultQuery(typeName));
     }
 
-    /**
-     * @see FeatureSource#getFeatures(Query)
-     */
+    /** @see FeatureSource#getFeatures(Query) */
     public WSFeatureCollection getFeatures(final Query query) throws IOException {
         Query namedQuery = namedQuery(typeName, query);
         return new WSFeatureCollection(dataStore, namedQuery);
     }
 
-    /**
-     * @see FeatureSource#getSupportedHints()
-     */
+    /** @see FeatureSource#getSupportedHints() */
     @SuppressWarnings("unchecked")
     public Set getSupportedHints() {
         return Collections.EMPTY_SET;
@@ -168,9 +133,9 @@ public class WSFeatureSource implements XmlFeatureSource {
 
     private Query namedQuery(final String typeName, final Query query) {
         String quertyTypeName = query.getTypeName();
-        if (quertyTypeName != null && !quertyTypeName.equals(typeName)) {           
-            throw new IllegalArgumentException("Wrong query type name: " + quertyTypeName
-                    + ". Name should be " + typeName);            
+        if (quertyTypeName != null && !quertyTypeName.equals(typeName)) {
+            throw new IllegalArgumentException(
+                    "Wrong query type name: " + quertyTypeName + ". Name should be " + typeName);
         }
         DefaultQuery named = new DefaultQuery(query);
         named.setTypeName(typeName);

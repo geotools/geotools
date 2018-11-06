@@ -26,12 +26,12 @@ import java.util.logging.LogRecord;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
 import org.geotools.util.LocalName;
 import org.geotools.util.NameFactory;
+import org.geotools.util.XArray;
 import org.opengis.metadata.Identifier;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
@@ -64,7 +64,6 @@ import org.opengis.util.ScopedName;
  * will takes advantage of the aliases table.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  * @author Martin Desruisseaux

@@ -16,11 +16,7 @@
  */
 package org.geotools.jdbc;
 
-/**
- * Metadata about a table column used to carry information through the type mapping process.
- *
- * @source $URL$
- */
+/** Metadata about a table column used to carry information through the type mapping process. */
 public class ColumnMetadata {
 
     /** The column java type, if known */

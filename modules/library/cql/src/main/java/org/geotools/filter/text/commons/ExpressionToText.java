@@ -30,9 +30,9 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import org.geotools.factory.Hints;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTWriter;
@@ -57,7 +57,6 @@ import org.opengis.temporal.Period;
  * should not use this feature.
  *
  * @author Mauricio Pazos
- * @source $URL$
  */
 public class ExpressionToText implements ExpressionVisitor {
 

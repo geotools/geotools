@@ -127,7 +127,7 @@ class WrappingCoordinateFilter implements GeometryComponentFilter {
                                 !(dest[ordinateIdx] > Math.min(lastOrdinate, ordinate)
                                         && dest[ordinateIdx] < Math.max(lastOrdinate, ordinate));
                     } catch (TransformException ex) {
-                        Logging.getLogger("org.geotools.rendering")
+                        Logging.getLogger(WrappingCoordinateFilter.class)
                                 .log(
                                         Level.WARNING,
                                         "Unable to perform transform to detect dateline wrapping",

@@ -23,7 +23,6 @@ import java.util.Iterator;
  * An iterator backed by some resource that needs closing when done using
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  * @deprecated use {@link org.geotools.data.CloseableIterator}
  */
 public interface CloseableIterator<E> extends Iterator<E> {

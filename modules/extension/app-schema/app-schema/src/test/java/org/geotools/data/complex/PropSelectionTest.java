@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -35,7 +36,6 @@ import org.geotools.data.Query;
 import org.geotools.data.complex.config.Types;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.test.AppSchemaTestSupport;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * This tests property selection using nested x-paths, combined with feature selection
  *
  * @author Niels Charlier (Curtin University of Technology)
- * @source $URL$
  */
 public class PropSelectionTest extends AppSchemaTestSupport {
 

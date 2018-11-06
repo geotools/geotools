@@ -37,6 +37,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.ParameterExpressionTypeImpl#getTitle <em>Title</em>}</li>
  *   <li>{@link net.opengis.wfs20.impl.ParameterExpressionTypeImpl#getAbstract <em>Abstract</em>}</li>
@@ -44,314 +45,313 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link net.opengis.wfs20.impl.ParameterExpressionTypeImpl#getName <em>Name</em>}</li>
  *   <li>{@link net.opengis.wfs20.impl.ParameterExpressionTypeImpl#getType <em>Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class ParameterExpressionTypeImpl extends EObjectImpl implements ParameterExpressionType {
     /**
-     * The cached value of the '{@link #getTitle() <em>Title</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getTitle() <em>Title</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getTitle()
-     * @generated
-     * @ordered
-     */
+   * @see #getTitle()
+   * @generated
+   * @ordered
+   */
     protected EList<TitleType> title;
 
     /**
-     * The cached value of the '{@link #getAbstract() <em>Abstract</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getAbstract() <em>Abstract</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getAbstract()
-     * @generated
-     * @ordered
-     */
+   * @see #getAbstract()
+   * @generated
+   * @ordered
+   */
     protected EList<AbstractType> abstract_;
 
     /**
-     * The cached value of the '{@link #getMetadata() <em>Metadata</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getMetadata() <em>Metadata</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getMetadata()
-     * @generated
-     * @ordered
-     */
+   * @see #getMetadata()
+   * @generated
+   * @ordered
+   */
     protected EList<MetadataType> metadata;
 
     /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
     protected static final String NAME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getName()
-     * @generated
-     * @ordered
-     */
+   * @see #getName()
+   * @generated
+   * @ordered
+   */
     protected String name = NAME_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The default value of the '{@link #getType() <em>Type</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
+   * @see #getType()
+   * @generated
+   * @ordered
+   */
     protected static final QName TYPE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getType()
-     * @generated
-     * @ordered
-     */
+   * @see #getType()
+   * @generated
+   * @ordered
+   */
     protected QName type = TYPE_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected ParameterExpressionTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.PARAMETER_EXPRESSION_TYPE;
-    }
+    return Wfs20Package.Literals.PARAMETER_EXPRESSION_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<TitleType> getTitle() {
-        if (title == null) {
-            title = new EObjectContainmentEList<TitleType>(TitleType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE);
-        }
-        return title;
+    if (title == null) {
+      title = new EObjectContainmentEList<TitleType>(TitleType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE);
     }
+    return title;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<AbstractType> getAbstract() {
-        if (abstract_ == null) {
-            abstract_ = new EObjectContainmentEList<AbstractType>(AbstractType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT);
-        }
-        return abstract_;
+    if (abstract_ == null) {
+      abstract_ = new EObjectContainmentEList<AbstractType>(AbstractType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT);
     }
+    return abstract_;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<MetadataType> getMetadata() {
-        if (metadata == null) {
-            metadata = new EObjectContainmentEList<MetadataType>(MetadataType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA);
-        }
-        return metadata;
+    if (metadata == null) {
+      metadata = new EObjectContainmentEList<MetadataType>(MetadataType.class, this, Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA);
     }
+    return metadata;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public String getName() {
-        return name;
-    }
+    return name;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setName(String newName) {
-        String oldName = name;
-        name = newName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME, oldName, name));
-    }
+    String oldName = name;
+    name = newName;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME, oldName, name));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public QName getType() {
-        return type;
-    }
+    return type;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public void setType(QName newType) {
-        QName oldType = type;
-        type = newType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE, oldType, type));
-    }
+    QName oldType = type;
+    type = newType;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE, oldType, type));
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
-                return ((InternalEList<?>)getTitle()).basicRemove(otherEnd, msgs);
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
-                return ((InternalEList<?>)getAbstract()).basicRemove(otherEnd, msgs);
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
-                return ((InternalEList<?>)getMetadata()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
+        return ((InternalEList<?>)getTitle()).basicRemove(otherEnd, msgs);
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
+        return ((InternalEList<?>)getAbstract()).basicRemove(otherEnd, msgs);
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
+        return ((InternalEList<?>)getMetadata()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
-                return getTitle();
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
-                return getAbstract();
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
-                return getMetadata();
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME:
-                return getName();
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE:
-                return getType();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
+        return getTitle();
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
+        return getAbstract();
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
+        return getMetadata();
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME:
+        return getName();
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE:
+        return getType();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
-                getTitle().clear();
-                getTitle().addAll((Collection<? extends TitleType>)newValue);
-                return;
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
-                getAbstract().clear();
-                getAbstract().addAll((Collection<? extends AbstractType>)newValue);
-                return;
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
-                getMetadata().clear();
-                getMetadata().addAll((Collection<? extends MetadataType>)newValue);
-                return;
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME:
-                setName((String)newValue);
-                return;
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE:
-                setType((QName)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
+        getTitle().clear();
+        getTitle().addAll((Collection<? extends TitleType>)newValue);
+        return;
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
+        getAbstract().clear();
+        getAbstract().addAll((Collection<? extends AbstractType>)newValue);
+        return;
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
+        getMetadata().clear();
+        getMetadata().addAll((Collection<? extends MetadataType>)newValue);
+        return;
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME:
+        setName((String)newValue);
+        return;
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE:
+        setType((QName)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
-                getTitle().clear();
-                return;
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
-                getAbstract().clear();
-                return;
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
-                getMetadata().clear();
-                return;
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME:
-                setName(NAME_EDEFAULT);
-                return;
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE:
-                setType(TYPE_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
+        getTitle().clear();
+        return;
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
+        getAbstract().clear();
+        return;
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
+        getMetadata().clear();
+        return;
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME:
+        setName(NAME_EDEFAULT);
+        return;
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE:
+        setType(TYPE_EDEFAULT);
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
-                return title != null && !title.isEmpty();
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
-                return abstract_ != null && !abstract_.isEmpty();
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
-                return metadata != null && !metadata.isEmpty();
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME:
-                return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-            case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE:
-                return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TITLE:
+        return title != null && !title.isEmpty();
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__ABSTRACT:
+        return abstract_ != null && !abstract_.isEmpty();
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__METADATA:
+        return metadata != null && !metadata.isEmpty();
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__NAME:
+        return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+      case Wfs20Package.PARAMETER_EXPRESSION_TYPE__TYPE:
+        return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
     }
+    return super.eIsSet(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+    if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (name: ");
-        result.append(name);
-        result.append(", type: ");
-        result.append(type);
-        result.append(')');
-        return result.toString();
-    }
+    StringBuilder result = new StringBuilder(super.toString());
+    result.append(" (name: ");
+    result.append(name);
+    result.append(", type: ");
+    result.append(type);
+    result.append(')');
+    return result.toString();
+  }
 
 } //ParameterExpressionTypeImpl

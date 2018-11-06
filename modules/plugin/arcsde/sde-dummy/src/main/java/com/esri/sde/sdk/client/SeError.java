@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public class SeError {
 
     public static int SE_NO_PERMISSIONS = 0;

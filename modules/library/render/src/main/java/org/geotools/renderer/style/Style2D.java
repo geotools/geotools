@@ -21,7 +21,6 @@ import java.awt.Graphics2D;
 /**
  * Base class for all style targeting {@link Graphics2D}.
  *
- * @source $URL$
  * @version $Id$
  */
 public abstract class Style2D extends Style {}

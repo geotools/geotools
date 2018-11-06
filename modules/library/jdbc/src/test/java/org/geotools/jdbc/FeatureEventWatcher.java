@@ -25,11 +25,7 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.Filter;
 
-/**
- * Records FeatureEvents and provides a record that we can check.
- *
- * @source $URL$
- */
+/** Records FeatureEvents and provides a record that we can check. */
 public class FeatureEventWatcher implements FeatureListener {
     /** Last known type */
     public Type type = null;

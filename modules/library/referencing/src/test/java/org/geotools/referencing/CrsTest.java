@@ -27,11 +27,11 @@ import java.awt.geom.Rectangle2D;
 import java.util.Set;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
-import org.geotools.resources.geometry.XRectangle2D;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.Envelope;
@@ -46,7 +46,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the {@link CRS} utilities methods.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

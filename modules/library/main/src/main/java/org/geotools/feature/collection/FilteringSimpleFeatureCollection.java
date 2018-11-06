@@ -41,7 +41,6 @@ import org.opengis.util.ProgressListener;
  * Decorates a feature collection with one that filters content.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCollection {
 

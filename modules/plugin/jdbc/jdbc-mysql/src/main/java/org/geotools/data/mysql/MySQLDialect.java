@@ -25,11 +25,11 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.Map;
 import java.util.logging.Level;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.geotools.referencing.CRS;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -53,7 +53,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * common part of the api.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class MySQLDialect extends SQLDialect {
     /** mysql spatial types */

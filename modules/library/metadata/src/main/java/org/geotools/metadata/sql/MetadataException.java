@@ -21,7 +21,6 @@ package org.geotools.metadata.sql;
  * java.sql.SQLException}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Touraïvane
  * @author Martin Desruisseaux (IRD)

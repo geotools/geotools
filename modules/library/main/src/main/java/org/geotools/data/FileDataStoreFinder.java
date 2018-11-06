@@ -33,12 +33,11 @@ import org.geotools.factory.CommonFactoryFinder;
  *
  * @author dzwiers
  * @see DataStoreFinder
- * @source $URL$
  */
 public class FileDataStoreFinder {
     /** The logger for the filter module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data");
+            org.geotools.util.logging.Logging.getLogger(FileDataStoreFinder.class);
 
     private FileDataStoreFinder() {}
 

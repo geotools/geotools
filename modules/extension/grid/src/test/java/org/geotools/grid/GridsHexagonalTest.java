@@ -34,7 +34,6 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  * @author mbedward
  * @since 2.7
- * @source $URL$
  * @version $Id$
  */
 public class GridsHexagonalTest {

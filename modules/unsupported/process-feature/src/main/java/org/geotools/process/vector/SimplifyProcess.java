@@ -37,7 +37,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * distance, and using either a topology preserving or a Douglas-Peuker algorithm
  *
  * @author Andrea Aime - OpenGeo
- * @source $URL$
  */
 @DescribeProcess(
     title = "Simplify",

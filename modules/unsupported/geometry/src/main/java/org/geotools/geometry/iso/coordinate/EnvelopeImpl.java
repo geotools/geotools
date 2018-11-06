@@ -29,8 +29,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * An envlope represents the bounding box of a geometric object. Regardless to the dimension, the
  * envelope can be encoded by two <code>DirectPosition</code>s.
- *
- * @source $URL$
  */
 public class EnvelopeImpl implements Envelope, Serializable {
     private static final long serialVersionUID = -6397319034308589090L;

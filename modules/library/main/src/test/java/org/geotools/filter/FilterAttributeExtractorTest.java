@@ -47,7 +47,6 @@ import org.opengis.filter.spatial.Equals;
  * the filters themselves. There is a seperate unit test for expressions.
  *
  * @author Andrea Aime, SATA
- * @source $URL$
  */
 public class FilterAttributeExtractorTest extends TestCase {
     boolean set = false;

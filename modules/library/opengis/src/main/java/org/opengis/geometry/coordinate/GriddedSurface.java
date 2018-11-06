@@ -46,7 +46,6 @@ import org.opengis.annotation.UML;
  * The sub-interfaces provided in this package define some of the most commonly encountered surfaces
  * that can be represented in this manner.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

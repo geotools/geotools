@@ -24,7 +24,6 @@ package org.geotools.graph.structure;
  * @see Node
  * @see Graph
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- * @source $URL$
  */
 public interface Edge extends Graphable {
 

@@ -20,14 +20,11 @@ import java.util.logging.Logger;
 import org.geotools.graph.structure.basic.BasicEdge;
 import org.geotools.graph.structure.line.XYNode;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class DelaunayEdge extends BasicEdge {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.graph");
+            org.geotools.util.logging.Logging.getLogger(DelaunayEdge.class);
     Triangle faceA, faceB;
 
     /** Creates a new instance of DelaunayEdge */

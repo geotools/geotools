@@ -27,10 +27,7 @@ import org.opengis.geometry.primitive.CurveSegment;
 import org.opengis.geometry.primitive.OrientableCurve;
 import org.opengis.geometry.primitive.Ring;
 
-/**
- * @author sanjay
- * @source $URL$
- */
+/** @author sanjay */
 public class RingTest extends TestCase {
 
     public void testMain() {

@@ -32,7 +32,6 @@ import org.locationtech.jts.geom.Point;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/** @source $URL$ */
 public class LabelWrapTest extends TestCase {
 
     private static final long TIME = 10000;

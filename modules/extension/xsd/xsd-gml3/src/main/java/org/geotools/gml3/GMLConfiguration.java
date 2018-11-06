@@ -85,9 +85,9 @@ import org.geotools.gml3.bindings.ext.CompositeCurveTypeBinding;
 import org.geotools.gml3.smil.SMIL20Configuration;
 import org.geotools.gml3.smil.SMIL20LANGConfiguration;
 import org.geotools.xlink.XLINKConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
 import org.geotools.xs.XS;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.impl.CoordinateArraySequenceFactory;
@@ -97,7 +97,6 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the gml3 schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class GMLConfiguration extends Configuration {
 

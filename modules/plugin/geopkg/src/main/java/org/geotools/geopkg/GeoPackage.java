@@ -17,7 +17,7 @@
 package org.geotools.geopkg;
 
 import static java.lang.String.format;
-import static org.geotools.sql.SqlUtil.prepare;
+import static org.geotools.jdbc.util.SqlUtil.prepare;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,8 +63,8 @@ import org.geotools.geopkg.geom.GeometryFunction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.util.SqlUtil;
 import org.geotools.referencing.CRS;
-import org.geotools.sql.SqlUtil;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -86,7 +86,7 @@ import org.sqlite.Function;
  */
 public class GeoPackage {
 
-    static final Logger LOGGER = Logging.getLogger("org.geotools.geopkg");
+    static final Logger LOGGER = Logging.getLogger(GeoPackage.class);
 
     public static final String GEOPACKAGE_CONTENTS = "gpkg_contents";
 
@@ -1586,7 +1586,12 @@ public class GeoPackage {
         // and in contrast the gpkg_contents is "informational" only
         psm =
                 cx.prepareStatement(
-                        format("SELECT * FROM %s WHERE table_name = ? LIMIT 1", TILE_MATRIX_SET));
+                        format(
+                                "SELECT * FROM %s a, %s b "
+                                        + "WHERE a.table_name = ? "
+                                        + "AND a.srs_id = b.srs_id "
+                                        + "LIMIT 1",
+                                TILE_MATRIX_SET, SPATIAL_REF_SYS));
         try {
             psm.setString(1, e.getTableName());
 
@@ -1594,7 +1599,7 @@ public class GeoPackage {
             try {
                 if (rsm.next()) {
 
-                    int srid = rsm.getInt("srs_id");
+                    int srid = rsm.getInt("organization_coordsys_id");
                     e.setSrid(srid);
 
                     CoordinateReferenceSystem crs;

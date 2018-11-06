@@ -28,7 +28,6 @@ import org.opengis.geometry.DirectPosition;
  * org.geotools.referencing.operation.builder.RubberSheetBuilder RubberSheeting} transformation.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */

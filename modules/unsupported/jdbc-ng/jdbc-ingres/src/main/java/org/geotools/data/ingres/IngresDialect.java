@@ -41,7 +41,7 @@ import org.locationtech.jts.io.WKBReader;
 /**
  * 
  *
- * @source $URL$
+
  */
 public class IngresDialect extends PreparedStatementSQLDialect {
 

@@ -29,11 +29,7 @@ import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * Useful utility functions for handling Coordinate arrays
- *
- * @source $URL$
- */
+/** Useful utility functions for handling Coordinate arrays */
 public class CoordinateArrays {
 
     private static final Coordinate[] coordArrayType = new Coordinate[0];

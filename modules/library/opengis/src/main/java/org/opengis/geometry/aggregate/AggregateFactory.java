@@ -21,7 +21,6 @@ import org.opengis.geometry.primitive.Primitive;
  * reference system}. Creating aggregates in a different CRS may requires a different instance of
  * {@code AggregateFactory}.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Sanjay Jena
  * @author Prof. Dr. Jackson Roehrig

@@ -25,10 +25,7 @@ import org.opengis.temporal.JulianDate;
 import org.opengis.temporal.Period;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendarEra implements CalendarEra {
 
     /** identify the calendar era within this calendar. */

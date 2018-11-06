@@ -27,7 +27,6 @@ import org.geotools.util.Utilities;
  * Default implementation of named layer.
  *
  * @author jamesm
- * @source $URL$
  */
 public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {
     List<Style> styles = new ArrayList<Style>();

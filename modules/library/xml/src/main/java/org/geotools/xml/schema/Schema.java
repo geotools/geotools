@@ -17,7 +17,7 @@
 package org.geotools.xml.schema;
 
 import java.net.URI;
-import org.geotools.factory.Factory;
+import org.geotools.util.factory.Factory;
 
 /**
  * This Interface is intended to represent the public portion of an XML Schema. By public portion, I
@@ -37,7 +37,6 @@ import org.geotools.factory.Factory;
  * will be used by the Schema factory to load the required extensions into memory.
  *
  * @author dzwiers www.refractions.net
- * @source $URL$
  */
 public interface Schema extends Factory {
     /**

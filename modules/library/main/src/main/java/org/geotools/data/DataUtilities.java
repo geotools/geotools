@@ -59,9 +59,9 @@ import org.geotools.data.simple.SimpleFeatureLocking;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.data.view.DefaultView;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -87,9 +87,9 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.geotools.styling.UserLayer;
 import org.geotools.util.Converters;
-import org.geotools.util.NullProgressListener;
 import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
@@ -190,9 +190,6 @@ import org.opengis.util.ProgressListener;
  * </ul>
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *     data/DataUtilities.java $
  */
 public class DataUtilities {
     /** Typemap used by {@link #createType(String, String)} methods */
@@ -818,7 +815,7 @@ public class DataUtilities {
 
     /**
      * Returns a non-null default value for the class that is passed in. This is a helper class an
-     * can't create a default class for any type but it does support:
+     * can't create a default class for all types but it does support:
      *
      * <ul>
      *   <li>String
@@ -838,6 +835,7 @@ public class DataUtilities {
      *   <li>java.sql.Time
      *   <li>java.util.Date
      *   <li>JTS Geometries
+     *   <li>Arrays - will return an empty array of the appropriate type
      * </ul>
      *
      * @param type
@@ -918,6 +916,10 @@ public class DataUtilities {
         }
         if (type == MultiPolygon.class) {
             return fac.createMultiPolygon(new Polygon[] {polygon});
+        }
+
+        if (type.isArray()) {
+            return Array.newInstance(type.getComponentType(), 0);
         }
 
         throw new IllegalArgumentException(type + " is not supported by this method");

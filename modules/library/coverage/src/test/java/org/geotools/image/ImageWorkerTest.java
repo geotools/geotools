@@ -16,7 +16,9 @@
  */
 package org.geotools.image;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -40,6 +42,7 @@ import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -84,11 +87,11 @@ import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.GridProcessingTestBase;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.util.ComponentColorModelJAI;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.WarpBuilder;
-import org.geotools.resources.image.ComponentColorModelJAI;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -100,7 +103,6 @@ import org.opengis.referencing.operation.TransformException;
 /**
  * Tests the {@link ImageWorker} implementation.
  *
- * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)
@@ -2229,5 +2231,26 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         ImageWorker warpedROIWorker = new ImageWorker(warpedROIImage);
         assertEquals(1, warpedROIWorker.getMaximums()[0], 0d);
         assertEquals(0, warpedROIWorker.getMinimums()[0], 0d);
+    }
+
+    @Test
+    public void testRemoveColorModel() {
+        // cheap way to get a binary image, a ROI is always represented as one
+        Area area = new Area(new Rectangle(0, 0, 32, 16));
+        area.add(new Area(new Rectangle(128, 0, 16, 32)));
+        ROI roi = new ROIShape(area);
+        PlanarImage image = roi.getAsImage();
+        assertThat(image.getColorModel(), instanceOf(IndexColorModel.class));
+        ImageWorker worker = new ImageWorker(image);
+        double[] maximumBefore = worker.getMaximums();
+        assertTrue(worker.isBinary());
+        // remove
+        worker.removeIndexColorModel();
+        RenderedImage result = worker.getRenderedImage();
+        assertThat(result, not(is(image)));
+        assertThat(result.getColorModel(), instanceOf(ComponentColorModel.class));
+        // subtract the original
+        double[] maximums = worker.getMaximums();
+        assertThat(maximums, equalTo(maximumBefore));
     }
 }

@@ -74,7 +74,6 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Michael Bedward
  * @author Johann Sorel (Geomatys)
- * @source $URL$
  * @version $Id$
  */
 public class InterpolateFunction implements Function {

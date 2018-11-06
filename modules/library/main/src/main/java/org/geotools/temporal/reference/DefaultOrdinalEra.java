@@ -22,10 +22,7 @@ import org.geotools.util.Utilities;
 import org.opengis.temporal.OrdinalEra;
 import org.opengis.util.InternationalString;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultOrdinalEra implements OrdinalEra {
 
     /** This is a string that identifies the ordinal era within the TM_OrdinalReferenceSystem. */

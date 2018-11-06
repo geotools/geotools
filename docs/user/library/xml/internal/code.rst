@@ -63,7 +63,7 @@ The output of the command will look something like the following::
 By default, the code generator will generate the following classes:
 
 * A binding for each type in the schema
-* A subclass of org.geotools.xml.Configuration for the schema
+* A subclass of org.geotools.xsd.Configuration for the schema
 * A subclass of org.geotools.xml.BindingConfiguration
 * An interface containing the qualified names of all elements, attributes, and types defined in the schema
 

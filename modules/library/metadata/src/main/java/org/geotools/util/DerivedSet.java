@@ -34,7 +34,6 @@ import java.util.Set;
  * @param <B> The type of elements in the backing set.
  * @param <E> The type of elements in this set.
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

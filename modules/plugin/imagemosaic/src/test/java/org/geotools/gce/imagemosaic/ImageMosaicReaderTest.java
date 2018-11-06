@@ -102,6 +102,8 @@ import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.grid.io.UnknownFormat;
+import org.geotools.coverage.util.CoverageUtilities;
+import org.geotools.coverage.util.FeatureUtilities;
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
@@ -113,7 +115,6 @@ import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.text.ecql.ECQL;
@@ -132,12 +133,11 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -175,7 +175,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini, GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de
  * @since 2.3
- * @source $URL$
  */
 public class ImageMosaicReaderTest extends Assert {
 

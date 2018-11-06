@@ -20,7 +20,6 @@ import org.opengis.util.InternationalString;
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
- * @source $URL$
  */
 @UML(identifier = "TM_CalendarEra", specification = ISO_19108)
 public interface CalendarEra {

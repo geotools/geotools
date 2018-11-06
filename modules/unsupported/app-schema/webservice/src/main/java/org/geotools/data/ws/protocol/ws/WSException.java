@@ -19,16 +19,12 @@ package org.geotools.data.ws.protocol.ws;
 import java.io.IOException;
 
 /**
- * A Java Exception that mirrors a WFS {@code ExceptionReport} and is meant to be produced by
- * {@link ExceptionReportParser}.
- * 
+ * A Java Exception that mirrors a WFS {@code ExceptionReport} and is meant to be produced by {@link
+ * ExceptionReportParser}.
+ *
  * @author rpetty
  * @version $Id$
  * @since 2.6
- *
- *
- *
- * @source $URL$
  */
 public class WSException extends IOException {
 

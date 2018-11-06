@@ -19,7 +19,6 @@ package org.geotools.graph.structure.basic;
 import java.util.Iterator;
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class BasicGraphableTest extends TestCase {
 
     private BasicGraphable m_graphable;

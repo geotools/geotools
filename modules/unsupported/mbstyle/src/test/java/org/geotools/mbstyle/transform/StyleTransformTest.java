@@ -39,6 +39,7 @@ import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.layer.*;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.styling.*;
+import org.geotools.xml.styling.SLDTransformer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;

@@ -31,12 +31,11 @@ import java.util.logging.Logger;
  * <p>Please see Transaction interface for an outline of what this class is all about.
  *
  * @author Jody Garnett, Refractions Research
- * @source $URL$
  */
 public class DefaultTransaction implements Transaction {
     /** The logger for the data module. */
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data");
+            org.geotools.util.logging.Logging.getLogger(DefaultTransaction.class);
 
     /** Records State by key */
     Map stateLookup = new HashMap();

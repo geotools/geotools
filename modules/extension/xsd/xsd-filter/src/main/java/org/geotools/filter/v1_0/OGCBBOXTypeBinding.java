@@ -22,9 +22,9 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
 import org.geotools.referencing.CRS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.locationtech.jts.geom.Envelope;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
@@ -53,7 +53,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class OGCBBOXTypeBinding extends AbstractComplexBinding {
     private FilterFactory2 factory;

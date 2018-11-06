@@ -25,13 +25,12 @@ import java.util.logging.Logger;
  * safe.
  *
  * @author Andrea Aime
- * @source $URL$
  */
 public abstract class AbstractLiteIterator implements PathIterator {
 
     /** The logger for the rendering module. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+            org.geotools.util.logging.Logging.getLogger(AbstractLiteIterator.class);
 
     protected double[] dcoords = new double[2];
 

@@ -26,7 +26,6 @@ import javax.media.jai.CRIFImpl;
  * CRIF for the color inversion operation
  *
  * @author Simone Giannecchini, GeoSolutions SAS
- * @source $URL$
  */
 public class ColorInversionCRIF extends CRIFImpl {
 

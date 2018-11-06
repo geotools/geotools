@@ -27,7 +27,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Verify TreeSetFeatureCollection is conforming to the FeatureCollection api contract.
  *
  * @author Jody
- * @source $URL$
  */
 public class TreeSetFeatureCollectionTest
         extends org.geotools.data.collection.FeatureCollectionTest {

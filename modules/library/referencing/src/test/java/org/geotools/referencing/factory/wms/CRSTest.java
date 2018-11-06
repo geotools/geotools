@@ -36,7 +36,6 @@ import org.opengis.referencing.crs.GeographicCRS;
 /**
  * Tests {@link WebCRSFactory}.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

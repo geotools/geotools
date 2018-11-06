@@ -44,13 +44,13 @@ import javax.swing.event.MouseInputAdapter;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
+import org.geotools.map.MapBoundsEvent;
+import org.geotools.map.MapBoundsListener;
 import org.geotools.map.MapContent;
+import org.geotools.map.MapLayerEvent;
+import org.geotools.map.MapLayerListEvent;
+import org.geotools.map.MapLayerListListener;
 import org.geotools.map.MapViewport;
-import org.geotools.map.event.MapBoundsEvent;
-import org.geotools.map.event.MapBoundsListener;
-import org.geotools.map.event.MapLayerEvent;
-import org.geotools.map.event.MapLayerListEvent;
-import org.geotools.map.event.MapLayerListListener;
 import org.geotools.renderer.lite.LabelCache;
 import org.geotools.swing.event.DefaultMapMouseEventDispatcher;
 import org.geotools.swing.event.MapMouseEventDispatcher;
@@ -70,7 +70,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public abstract class AbstractMapPane extends JPanel

@@ -51,7 +51,6 @@ import org.opengis.parameter.Parameter;
  * Test that all functions in the DefaultFunctionFactory have the toString() method implemented.
  *
  * @author Rob Ward
- * @source $URL$
  */
 public class FunctionToStringTest {
     static org.opengis.filter.FilterFactory ff;

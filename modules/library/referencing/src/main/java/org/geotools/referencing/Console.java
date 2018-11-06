@@ -27,17 +27,17 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import org.geotools.geometry.GeneralDirectPosition;
-import org.geotools.io.TableWriter;
 import org.geotools.measure.Measure;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.crs.AbstractCRS;
 import org.geotools.referencing.wkt.AbstractConsole;
 import org.geotools.referencing.wkt.Parser;
 import org.geotools.referencing.wkt.Preprocessor;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.Arguments;
+import org.geotools.util.TableWriter;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
@@ -104,7 +104,6 @@ import org.opengis.referencing.operation.TransformException;
  * </table>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

@@ -21,7 +21,6 @@ import org.opengis.annotation.UML;
  * @author Alexander Petkov
  * @todo The javadoc doesn't seem accurate.
  * @todo Missing UML annotations.
- * @source $URL$
  */
 public interface OrdinalReferenceSystem extends TemporalReferenceSystem {
     /**

@@ -23,7 +23,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Equals;
 
-/** @source $URL$ */
 public class EqualsImpl extends GeometryFilterImpl implements Equals {
 
     public EqualsImpl(Expression e1, Expression e2) {

@@ -20,7 +20,6 @@ import org.geotools.geometry.iso.primitive.BoundaryImpl;
 import org.opengis.geometry.complex.ComplexBoundary;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class ComplexBoundaryImpl extends BoundaryImpl implements ComplexBoundary {
 
     /** @param crs */

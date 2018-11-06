@@ -72,7 +72,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * </pre>
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class FeatureJSON {
 

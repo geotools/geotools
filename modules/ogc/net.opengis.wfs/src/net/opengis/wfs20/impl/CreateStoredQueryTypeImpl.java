@@ -28,127 +28,127 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wfs20.impl.CreateStoredQueryTypeImpl#getStoredQueryDefinition <em>Stored Query Definition</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
 public class CreateStoredQueryTypeImpl extends BaseRequestTypeImpl implements CreateStoredQueryType {
     /**
-     * The cached value of the '{@link #getStoredQueryDefinition() <em>Stored Query Definition</em>}' containment reference list.
-     * <!-- begin-user-doc -->
+   * The cached value of the '{@link #getStoredQueryDefinition() <em>Stored Query Definition</em>}' containment reference list.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see #getStoredQueryDefinition()
-     * @generated
-     * @ordered
-     */
+   * @see #getStoredQueryDefinition()
+   * @generated
+   * @ordered
+   */
     protected EList<StoredQueryDescriptionType> storedQueryDefinition;
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     protected CreateStoredQueryTypeImpl() {
-        super();
-    }
+    super();
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     protected EClass eStaticClass() {
-        return Wfs20Package.Literals.CREATE_STORED_QUERY_TYPE;
-    }
+    return Wfs20Package.Literals.CREATE_STORED_QUERY_TYPE;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     public EList<StoredQueryDescriptionType> getStoredQueryDefinition() {
-        if (storedQueryDefinition == null) {
-            storedQueryDefinition = new EObjectContainmentEList<StoredQueryDescriptionType>(StoredQueryDescriptionType.class, this, Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION);
-        }
-        return storedQueryDefinition;
+    if (storedQueryDefinition == null) {
+      storedQueryDefinition = new EObjectContainmentEList<StoredQueryDescriptionType>(StoredQueryDescriptionType.class, this, Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION);
     }
+    return storedQueryDefinition;
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
-                return ((InternalEList<?>)getStoredQueryDefinition()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
+    switch (featureID) {
+      case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
+        return ((InternalEList<?>)getStoredQueryDefinition()).basicRemove(otherEnd, msgs);
     }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
-                return getStoredQueryDefinition();
-        }
-        return super.eGet(featureID, resolve, coreType);
+    switch (featureID) {
+      case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
+        return getStoredQueryDefinition();
     }
+    return super.eGet(featureID, resolve, coreType);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
-                getStoredQueryDefinition().clear();
-                getStoredQueryDefinition().addAll((Collection<? extends StoredQueryDescriptionType>)newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
+    switch (featureID) {
+      case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
+        getStoredQueryDefinition().clear();
+        getStoredQueryDefinition().addAll((Collection<? extends StoredQueryDescriptionType>)newValue);
+        return;
     }
+    super.eSet(featureID, newValue);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
-                getStoredQueryDefinition().clear();
-                return;
-        }
-        super.eUnset(featureID);
+    switch (featureID) {
+      case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
+        getStoredQueryDefinition().clear();
+        return;
     }
+    super.eUnset(featureID);
+  }
 
     /**
-     * <!-- begin-user-doc -->
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
+   * @generated
+   */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
-                return storedQueryDefinition != null && !storedQueryDefinition.isEmpty();
-        }
-        return super.eIsSet(featureID);
+    switch (featureID) {
+      case Wfs20Package.CREATE_STORED_QUERY_TYPE__STORED_QUERY_DEFINITION:
+        return storedQueryDefinition != null && !storedQueryDefinition.isEmpty();
     }
+    return super.eIsSet(featureID);
+  }
 
 } //CreateStoredQueryTypeImpl

@@ -49,10 +49,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * Functional tests for {@link ArcSdeFeatureStore} when working with versioned tables
  *
  * @author Gabriel Roldan
- * @source $URL$
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/da/src/test/java/org
- *     /geotools/arcsde/data/ArcSDEFeatureStoreTest.java $
- * @version $Id$
  */
 public class ArcSDEFeatureStoreVersionedTest {
 

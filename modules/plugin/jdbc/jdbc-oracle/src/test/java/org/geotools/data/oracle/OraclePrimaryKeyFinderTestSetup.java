@@ -18,7 +18,6 @@ package org.geotools.data.oracle;
 
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-/** @source $URL$ */
 public class OraclePrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     protected OraclePrimaryKeyFinderTestSetup() {

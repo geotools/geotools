@@ -31,12 +31,11 @@ import org.apache.xml.resolver.CatalogManager;
  *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @see
- * @source $URL$
  */
 public class SchemaCatalog {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(SchemaCatalog.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(SchemaCatalog.class);
 
     private final Catalog catalog;
 

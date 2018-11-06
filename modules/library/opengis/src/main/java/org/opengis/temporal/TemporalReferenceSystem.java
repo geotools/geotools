@@ -26,7 +26,6 @@ import org.opengis.referencing.ReferenceSystem;
  *
  * @author Stephane Fellah (Image Matters)
  * @author Alexander Petkov
- * @source $URL$
  */
 @UML(identifier = "TM_ReferenceSystem", specification = ISO_19108)
 public interface TemporalReferenceSystem extends ReferenceSystem {

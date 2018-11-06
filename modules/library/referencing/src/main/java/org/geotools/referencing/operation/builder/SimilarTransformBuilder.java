@@ -52,7 +52,6 @@ import org.opengis.geometry.MismatchedReferenceSystemException;
  *  m = (A<sup>T</sup>A)<sup>-1</sup> A<sup>T</sup>x'  </blockquote> </pre>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  */

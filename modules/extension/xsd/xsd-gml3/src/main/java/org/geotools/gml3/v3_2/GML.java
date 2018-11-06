@@ -32,8 +32,8 @@ import org.geotools.gml2.ReferencingDirectiveLeakPreventer;
 import org.geotools.gml2.SubstitutionGroupLeakPreventer;
 import org.geotools.gml3.v3_2.gmd.GMD;
 import org.geotools.xlink.XLINK;
-import org.geotools.xml.Schemas;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.Schemas;
+import org.geotools.xsd.XSD;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
 
@@ -42,7 +42,6 @@ import org.opengis.feature.type.Schema;
  * http://www.opengis.net/gml/3.2 schema.
  *
  * @generated
- * @source $URL$
  */
 public final class GML extends XSD {
 
@@ -2573,7 +2572,7 @@ public final class GML extends XSD {
      * by loading all the schemas in the GML 3.2 suite at once by forcing use of a resolver. This
      * all-in-one XSDSchema is later shared by the other XSD implementations in the suite.
      *
-     * @see org.geotools.xml.XSD#buildSchema()
+     * @see XSD#buildSchema()
      */
     @Override
     protected XSDSchema buildSchema() throws IOException {
@@ -2626,7 +2625,7 @@ public final class GML extends XSD {
      */
     public abstract static class DelegatingXSD extends XSD {
 
-        /** @see org.geotools.xml.XSD#buildSchema() */
+        /** @see XSD#buildSchema() */
         @Override
         protected XSDSchema buildSchema() throws IOException {
             return GML.getInstance().getSchema();

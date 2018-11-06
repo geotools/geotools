@@ -47,7 +47,6 @@ import org.opengis.feature.type.FeatureType;
  *
  * @author en
  * @author jgarnett
- * @source $URL$
  */
 public class FeatureTypeTest extends DataTestCase {
 

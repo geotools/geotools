@@ -42,9 +42,6 @@ import org.opengis.feature.type.PropertyType;
  *
  * @author Jody Garnett (Refractions Research)
  * @author Justin Deoliveira (The Open Planning Project)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/feature/Types.java $
  */
 public class Types extends org.geotools.feature.type.Types {
 

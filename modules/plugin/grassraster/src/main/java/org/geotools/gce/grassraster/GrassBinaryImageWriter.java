@@ -28,10 +28,7 @@ import org.geotools.gce.grassraster.core.GrassBinaryRasterWriteHandler;
 import org.geotools.gce.grassraster.spi.GrassBinaryImageWriterSpi;
 import org.opengis.util.ProgressListener;
 
-/**
- * @author Andrea Antonello - www.hydrologis.com
- * @source $URL$
- */
+/** @author Andrea Antonello - www.hydrologis.com */
 public class GrassBinaryImageWriter extends ImageWriter {
     /** <code>true</code> if there are some listeners attached to this writer */
     private boolean hasListeners = false;

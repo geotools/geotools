@@ -64,7 +64,6 @@ import org.geotools.swing.MapPane;
  * @see AbstractMapPane#setKeyHandler(java.awt.event.KeyListener)
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 public class MapPaneKeyHandler extends KeyAdapter {

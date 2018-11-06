@@ -60,18 +60,18 @@ import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Resample;
 import org.geotools.coverage.processing.operation.SelectSampleDimension;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
 import org.geotools.image.io.ImageIOExt;
+import org.geotools.image.util.ColorUtilities;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.parameter.Parameter;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.transform.LinearTransform1D;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.image.ColorUtilities;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageWriter;
@@ -86,13 +86,12 @@ import org.opengis.referencing.operation.TransformException;
  * @author Simone Giannecchini
  * @author jeichar
  * @author mkraemer
- * @source $URL$
  */
 public final class GTopo30Writer extends AbstractGridCoverageWriter implements GridCoverageWriter {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.gtopo30");
+            org.geotools.util.logging.Logging.getLogger(GTopo30Writer.class);
 
     static {
         // register new JAI operation

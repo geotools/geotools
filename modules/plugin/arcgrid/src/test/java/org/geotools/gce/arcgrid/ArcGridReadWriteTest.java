@@ -26,9 +26,9 @@ import javax.media.jai.ImageLayout;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterValue;
@@ -39,7 +39,6 @@ import org.opengis.parameter.ParameterValueGroup;
  *
  * @author Daniele Romagnoli
  * @author Simone Giannecchini (simboss)
- * @source $URL$
  */
 public class ArcGridReadWriteTest extends ArcGridBaseTestCase {
     private final Random generator = new Random();

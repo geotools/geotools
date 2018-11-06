@@ -18,15 +18,14 @@ package org.geotools.gml3.smil;
 
 import java.util.Set;
 import javax.xml.namespace.QName;
-import org.geotools.xml.SchemaLocator;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.SchemaLocator;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the
  * http://www.w3.org/2001/SMIL20/Language schema.
  *
  * @generated
- * @source $URL$
  */
 public final class SMIL20LANG extends XSD {
     /** singleton instance */

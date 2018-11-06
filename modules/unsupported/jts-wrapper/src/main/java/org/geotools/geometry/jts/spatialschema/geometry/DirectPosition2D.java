@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import org.geotools.geometry.jts.GeometryUtils;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -40,7 +39,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * anyway such a restriction is hard to generalize (what to do with {@linkplain
  * AxisDirection#NORTH_EAST North-East} direction?).
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

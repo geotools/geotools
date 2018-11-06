@@ -21,8 +21,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import javax.measure.Unit;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.opengis.referencing.cs.AffineCS;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.cs.CoordinateSystem;
@@ -45,7 +45,6 @@ import tec.uom.se.AbstractUnit;
  * <var>latitude</var>). What "standard" order means is sometime an arbitrary choice, which explain
  * why this class is not public at this time.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

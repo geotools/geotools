@@ -18,7 +18,6 @@ package org.geotools.styling;
 
 import java.util.Arrays;
 
-/** @source $URL$ */
 public class LayerFeatureConstraintsImpl implements LayerFeatureConstraints {
 
     private FeatureTypeConstraint[] constraints;

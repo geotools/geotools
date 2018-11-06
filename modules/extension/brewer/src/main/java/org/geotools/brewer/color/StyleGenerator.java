@@ -65,11 +65,10 @@ import org.opengis.filter.expression.PropertyName;
  * WARNING: this is unstable and subject to radical change.
  *
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class StyleGenerator {
     private static final java.util.logging.Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.brewer.color");
+            org.geotools.util.logging.Logging.getLogger(StyleGenerator.class);
     public static final int ELSEMODE_IGNORE = 0;
     public static final int ELSEMODE_INCLUDEASMIN = 1;
     public static final int ELSEMODE_INCLUDEASMAX = 2;

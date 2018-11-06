@@ -38,7 +38,6 @@ import org.opengis.filter.identity.Identifier;
  *
  * @author Chris Dillard (SYS Technologies)
  * @author Justin Deoliveira (The Open Planning Project)
- * @source $URL$
  */
 public interface Id extends Filter {
     /** Set of IDs representing the Identifiers used by this filter. */

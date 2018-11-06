@@ -15,7 +15,6 @@ import org.opengis.annotation.XmlElement;
  * Defines a filter that supports filtering on multi-valued attributes.
  *
  * @author Niels Charlier, Curtin University of Technology
- * @source $URL$
  */
 public interface MultiValuedFilter extends Filter {
 

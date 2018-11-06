@@ -37,7 +37,6 @@ import org.opengis.referencing.operation.TransformException;
  * Tests the {@link GeometryCoordinateSequenceTransformer} implementation.
  *
  * @since 2.2
- * @source $URL$
  * @version $Id$
  * @author Martin Davis
  */

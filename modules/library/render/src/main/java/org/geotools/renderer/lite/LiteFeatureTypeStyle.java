@@ -19,8 +19,8 @@ package org.geotools.renderer.lite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.util.List;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.map.Layer;
-import org.geotools.renderer.ScreenMap;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.styling.Rule;
 import org.opengis.filter.expression.Expression;
@@ -48,7 +48,6 @@ import org.opengis.filter.sort.SortBy;
  * <p>NOTE: a) this also sets up the image -- clears it et al.
  *
  * @author dblasby
- * @source $URL$
  */
 final class LiteFeatureTypeStyle {
 

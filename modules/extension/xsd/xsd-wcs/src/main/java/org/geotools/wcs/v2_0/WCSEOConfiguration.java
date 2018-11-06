@@ -19,7 +19,7 @@ package org.geotools.wcs.v2_0;
 import java.util.Map;
 import org.geotools.wcs.bindings.DescribeEOCoverageSetBinding;
 import org.geotools.wcs.bindings.SectionsBinding;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 
 /**
  * Parser configuration for the http://www.opengis.net/wcs/range-subsetting/1.0 schema.

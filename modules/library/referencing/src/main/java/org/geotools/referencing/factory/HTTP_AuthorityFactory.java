@@ -17,11 +17,11 @@
 
 package org.geotools.referencing.factory;
 
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.GenericName;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * org.geotools.util.GenericName#DEFAULT_SEPARATOR} character.
  *
  * @author Martin Desruisseaux
- * @source $URL$
  */
 public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
         implements CRSAuthorityFactory,

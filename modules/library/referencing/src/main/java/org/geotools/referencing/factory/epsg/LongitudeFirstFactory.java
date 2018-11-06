@@ -16,15 +16,15 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import org.geotools.factory.FactoryNotFoundException;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.DeferredAuthorityFactory;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
+import org.geotools.util.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
@@ -50,12 +50,9 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
  * </blockquote>
  *
  * @since 2.3
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux
  * @see OrderedAxisAuthorityFactory
  * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
- * @tutorial http://docs.codehaus.org/display/GEOTOOLS/The+axis+order+issue
  */
 public class LongitudeFirstFactory extends DeferredAuthorityFactory
         implements CRSAuthorityFactory,

@@ -27,7 +27,6 @@ import org.opengis.feature.Attribute;
  *
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface AttributeType extends PropertyType {
 

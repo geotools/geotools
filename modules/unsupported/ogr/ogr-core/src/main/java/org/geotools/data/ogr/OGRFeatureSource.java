@@ -51,7 +51,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * FeatureSource for the OGR store, based on the {@link ContentFeatureStore} framework
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
+
  */
 @SuppressWarnings("rawtypes")
 class OGRFeatureSource extends ContentFeatureSource {

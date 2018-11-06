@@ -82,12 +82,11 @@ import org.opengis.feature.type.Name;
  *
  * @author bowens, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- * @source $URL$
  * @version $Id$
  */
 public class ValidationProcessor {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(ValidationProcessor.class);
 
     /** Magic key used to hold the place of any featureType */
     final Object ANYTYPENAME = new Object();

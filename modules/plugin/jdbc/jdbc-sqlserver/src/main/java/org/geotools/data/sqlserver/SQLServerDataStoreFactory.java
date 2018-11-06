@@ -28,7 +28,6 @@ import org.geotools.jdbc.SQLDialect;
  * DataStore factory for Microsoft SQL Server.
  *
  * @author Justin Deoliveira, OpenGEO
- * @source $URL$
  */
 public class SQLServerDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */

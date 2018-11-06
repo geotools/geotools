@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
 import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.factory.FactoryNotFoundException;
+import org.geotools.util.factory.FactoryNotFoundException;
 
 /**
  * Utility class to look up for a parser that can deal with a given WFS response and process it.
@@ -34,11 +34,7 @@ import org.geotools.factory.FactoryNotFoundException;
  * /META-INF/services/org.geotools.data.wfs.protocol.wfs.WFSResponseParserFactory} text file.
  *
  * @author Gabriel Roldan (OpenGeo)
- * @version $Id$
  * @since 2.6
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/wfs/src/main/java/org/geotools
- *     /data/wfs/protocol/wfs/WFSExtensions.java $
  */
 @SuppressWarnings("nls")
 public class WFSExtensions {

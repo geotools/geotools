@@ -11,7 +11,6 @@ import org.geotools.TestData;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.junit.After;
 
-/** @source $URL$ */
 public class DirectoryTestSupport {
 
     static final URI NSURI;

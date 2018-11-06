@@ -24,7 +24,6 @@ package org.opengis.referencing;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 1.0
  * @see org.opengis.referencing.operation.CoordinateOperationFactory
- * @source $URL$
  */
 public class FactoryException extends Exception {
     /** Serial number for interoperability with different versions. */

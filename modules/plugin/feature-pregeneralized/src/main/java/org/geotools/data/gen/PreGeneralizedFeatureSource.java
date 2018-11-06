@@ -45,10 +45,10 @@ import org.geotools.data.gen.info.Generalization;
 import org.geotools.data.gen.info.GeneralizationInfo;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -63,7 +63,6 @@ import org.opengis.filter.sort.SortBy;
  *     <p>Feature source for a feature type with pregeneralized geometries
  *     <p>This featue store does business as usual with the exception described here {@link
  *     PreGeneralizedDataStore}
- * @source $URL$
  */
 public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
 

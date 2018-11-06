@@ -21,10 +21,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
-/**
- * @author jfc173
- * @source $URL$
- */
+/** @author jfc173 */
 public class GlyphPropertiesList {
 
     private Vector list = new Vector();

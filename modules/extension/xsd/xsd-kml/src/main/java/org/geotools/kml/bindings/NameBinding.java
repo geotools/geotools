@@ -4,10 +4,10 @@ import javax.xml.namespace.QName;
 import org.geotools.kml.Folder;
 import org.geotools.kml.FolderStack;
 import org.geotools.kml.v22.KML;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.Binding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.Binding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

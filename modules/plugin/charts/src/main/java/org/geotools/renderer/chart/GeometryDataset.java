@@ -40,7 +40,6 @@ import org.locationtech.jts.geom.Point;
  * </pre>
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class GeometryDataset extends AbstractXYDataset {
 

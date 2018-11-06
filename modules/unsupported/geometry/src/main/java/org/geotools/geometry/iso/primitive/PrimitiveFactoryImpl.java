@@ -23,9 +23,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import org.geotools.factory.Factory;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.GeometryFactoryFinder;
 import org.geotools.geometry.iso.coordinate.DirectPositionImpl;
 import org.geotools.geometry.iso.coordinate.LineSegmentImpl;
@@ -35,6 +32,9 @@ import org.geotools.geometry.iso.coordinate.PositionImpl;
 import org.geotools.geometry.iso.coordinate.SurfacePatchImpl;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.Factory;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
@@ -55,10 +55,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
-/**
- * @author Jackson Roehrig & Sanjay Jena
- * @source $URL$
- */
+/** @author Jackson Roehrig & Sanjay Jena */
 public class PrimitiveFactoryImpl implements Serializable, Factory, PrimitiveFactory {
 
     /** */

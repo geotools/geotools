@@ -49,7 +49,6 @@ import org.locationtech.jts.geom.Envelope;
  *
  * @author David Blasby
  * @author Simone Giannecchini
- * @source $URL$
  */
 public interface GTRenderer {
 

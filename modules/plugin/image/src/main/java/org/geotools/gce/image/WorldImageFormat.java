@@ -34,11 +34,11 @@ import javax.imageio.stream.ImageInputStream;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
 import org.geotools.data.DataSourceException;
-import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -50,7 +50,6 @@ import org.opengis.parameter.ParameterDescriptor;
  * wld may be used in place of the format specific extension (jpg+wld, etc) Designed to be used with
  * GridCoverageExchange.
  *
- * @source $URL$
  * @author Simone Giannecchini
  */
 public final class WorldImageFormat extends AbstractGridFormat implements Format {
@@ -106,7 +105,7 @@ public final class WorldImageFormat extends AbstractGridFormat implements Format
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.image");
+            org.geotools.util.logging.Logging.getLogger(WorldImageFormat.class);
 
     /**
      * Format writing parameter. When writing a world image we need to provide an output format in

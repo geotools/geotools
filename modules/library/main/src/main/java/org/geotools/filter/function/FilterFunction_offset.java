@@ -30,7 +30,6 @@ import org.locationtech.jts.geom.CoordinateSequenceFilter;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.filter.capability.FunctionName;
 
-/** @source $URL$ */
 public class FilterFunction_offset extends FunctionExpressionImpl
         implements GeometryTransformation {
 

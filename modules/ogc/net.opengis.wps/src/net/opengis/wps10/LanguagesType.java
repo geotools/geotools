@@ -20,10 +20,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.wps10.LanguagesType#getLanguage <em>Language</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.wps10.Wps10Package#getLanguagesType()
  * @model extendedMetaData="name='LanguagesType' kind='elementOnly'"

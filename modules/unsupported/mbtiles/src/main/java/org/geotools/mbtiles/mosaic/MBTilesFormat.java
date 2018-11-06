@@ -9,18 +9,17 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.parameter.GeneralParameterDescriptor;
 
 public class MBTilesFormat extends AbstractGridFormat {
 
-    private static final Logger LOGGER =
-            Logging.getLogger(MBTilesFormat.class.getPackage().getName());
+    private static final Logger LOGGER = Logging.getLogger(MBTilesFormat.class);
 
     public static File getFileFromSource(Object source) {
         if (source == null) {

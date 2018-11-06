@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.datum.BursaWolfParameters;
@@ -15,6 +13,8 @@ import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.referencing.wkt.Formattable;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Coordinate;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.ParameterValueGroup;
@@ -134,10 +134,9 @@ public class ReferencingExamples {
     }
 
     /**
-     * An example of creating a CRS from a WKT string. Additional examples of WKT strings can be
-     * found in
-     * http://svn.geotools.org/geotools/trunk/gt/module/referencing/test/org/geotools/referencing
-     * /test-data/
+     * An example of creating a CRS from a WKT string.
+     *
+     * <p>Additional examples of WKT strings can be found in the test data.
      *
      * @throws Exception
      */
@@ -276,10 +275,8 @@ public class ReferencingExamples {
     /**
      * Creates a NAD 27 geographic CRS. Notice that the datum factory automatically adds aliase
      * names to the datum (because "North American Datum 1927" has an entry in
-     * http://svn.geotools.org
-     * /geotools/trunk/gt/module/referencing/src/org/geotools/referencing/factory
-     * /DatumAliasesTable.txt ). Also notice that toWGS84 information (used in a datum transform)
-     * was also added to the datum.
+     * module/referencing/src/org/geotools/referencing/factory/DatumAliasesTable.txt ). Also notice
+     * that toWGS84 information (used in a datum transform) was also added to the datum.
      */
     void createCRSByHand2() throws Exception {
         System.out.println("------------------------------------------");

@@ -37,7 +37,6 @@ import org.opengis.referencing.operation.OperationMethod;
  * includes coordinate reference systems derived from a projected coordinate reference system.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

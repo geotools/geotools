@@ -21,13 +21,13 @@ package org.geotools.referencing.crs;
 
 import java.util.Collections;
 import java.util.Map;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.AbstractReferenceSystem;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.datum.DefaultEngineeringDatum;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.referencing.crs.EngineeringCRS;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.datum.EngineeringDatum;
@@ -55,7 +55,6 @@ import si.uom.SI;
  * </TD></TR></TABLE>
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

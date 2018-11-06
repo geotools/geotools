@@ -25,7 +25,6 @@ import javax.imageio.ImageReader;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.opengis.feature.simple.SimpleFeature;
 
-/** @source $URL$ */
 public abstract class PropertiesCollector {
 
     private List<String> propertyNames;

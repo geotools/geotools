@@ -10,10 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapViewport;
 
-/**
- * @author michael
- * @source $URL$
- */
+/** @author michael */
 public class WaitingViewport extends MapViewport {
 
     private CountDownLatch boundsLatch;

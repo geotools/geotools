@@ -20,7 +20,7 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs.GMLObjectTypeType;
 import net.opengis.wfs.WfsFactory;
 import org.geotools.wfs.WFS;
-import org.geotools.xml.AbstractComplexEMFBinding;
+import org.geotools.xsd.AbstractComplexEMFBinding;
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:GMLObjectTypeType.
@@ -70,7 +70,6 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *         </pre>
  *
  * @generated
- * @source $URL$
  */
 public class GMLObjectTypeTypeBinding extends AbstractComplexEMFBinding {
     public GMLObjectTypeTypeBinding(WfsFactory factory) {

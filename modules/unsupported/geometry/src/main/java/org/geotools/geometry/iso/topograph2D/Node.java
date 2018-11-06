@@ -23,8 +23,6 @@ import java.util.Iterator;
 /**
  * A node in a {@link PlanarGraph}is a location where 0 or more {@link Edge}s meet. A node is
  * connected to each of its incident Edges via an outgoing DirectedEdge.
- *
- * @source $URL$
  */
 public class Node extends GraphComponent {
 

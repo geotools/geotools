@@ -23,7 +23,7 @@ package org.geotools.referencing.operation.projection;
 import static java.lang.Math.*;
 
 import java.awt.geom.Point2D;
-import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.ErrorKeys;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
@@ -34,7 +34,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * origin} == 0.0.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author André Gosselin
  * @author Martin Desruisseaux (PMO, IRD)

@@ -36,7 +36,6 @@ import org.opengis.util.InternationalString;
  * and an element called {@linkplain #getDescription description}. At least one of the four shall be
  * used.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

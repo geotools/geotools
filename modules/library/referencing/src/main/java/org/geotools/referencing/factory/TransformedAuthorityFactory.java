@@ -24,16 +24,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
 import org.geotools.referencing.operation.DefiningConversion;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.CanonicalSet;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
@@ -59,7 +59,6 @@ import org.opengis.referencing.operation.*;
  * CRSAuthorityFactory} interfaces to implement.
  *
  * @since 2.3
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @todo Use generic types for all {@code replace(...)} methods when we will be allowed to compile

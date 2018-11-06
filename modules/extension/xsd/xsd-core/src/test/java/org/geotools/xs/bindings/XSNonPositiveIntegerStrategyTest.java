@@ -21,7 +21,6 @@ import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
-/** @source $URL$ */
 public class XSNonPositiveIntegerStrategyTest extends TestSchema {
     /**
      * nonPositiveInteger has a lexical representation consisting of an optional preceding sign

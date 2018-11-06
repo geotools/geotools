@@ -19,9 +19,9 @@ package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.geotools.geometry.jts.JTSGeometry;
-import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSGeometry;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.PolygonImpl;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.complex.CompositeSurface;
@@ -36,7 +36,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author SYS Technologies
  * @author dillard
- * @source $URL$
  * @version $Revision $
  */
 public class PolyhedralSurfaceImpl extends GeometryImpl implements PolyhedralSurface {

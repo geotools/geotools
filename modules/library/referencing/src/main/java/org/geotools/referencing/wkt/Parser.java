@@ -32,6 +32,8 @@ import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 import org.geotools.measure.Units;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -45,9 +47,7 @@ import org.geotools.referencing.datum.DefaultVerticalDatum;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.factory.epsg.CartesianAuthorityFactory;
 import org.geotools.referencing.operation.DefiningConversion;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Arguments;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValue;
@@ -93,7 +93,6 @@ import tec.uom.se.AbstractUnit;
  * objects as well, which is part of the WKT's {@code FITTED_CS} element.
  *
  * @since 2.0
- * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)

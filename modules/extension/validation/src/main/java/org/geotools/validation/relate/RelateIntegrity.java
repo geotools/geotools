@@ -32,7 +32,6 @@ import org.opengis.filter.Filter;
  *
  * @author bowens<br>
  *     Created Apr 27, 2004<br>
- * @source $URL$
  * @version <br>
  *     <b>Puropse:</b><br>
  *     <p>Tests to see if a Geometry intersects with another Geometry. <b>Description:</b><br>
@@ -42,7 +41,7 @@ import org.opengis.filter.Filter;
  */
 public class RelateIntegrity extends RelationIntegrity {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+            org.geotools.util.logging.Logging.getLogger(RelateIntegrity.class);
     private String de9im;
 
     /** RelateIntegrity Constructor */

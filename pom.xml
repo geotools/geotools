@@ -95,11 +95,14 @@
     <test.forkMode>once</test.forkMode>
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.27</imageio.ext.version>
+    <imageio.ext.version>1.2.0</imageio.ext.version>
     <jts.version>1.16.0</jts.version>
     <jaiext.version>1.1.2</jaiext.version>
     <netcdf.version>4.6.11</netcdf.version>
     <jt.version>1.5.0</jt.version>
+    <jaxb.api.version>2.4.0-b180830.0359</jaxb.api.version>
+    <jaxb.runtime.version>2.4.0-b180830.0438</jaxb.runtime.version>
+    <mockito.core.version>2.23.0</mockito.core.version>
     <java.awt.headless>true</java.awt.headless>
     <sun.java2d.d3d>true</sun.java2d.d3d>
     <jvm.opts></jvm.opts>
@@ -110,7 +113,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <postgresql.jdbc.version>42.2.5</postgresql.jdbc.version>
     <solrj.version>7.2.1</solrj.version>
-    <maven.javadoc.plugin.version>2.10.3</maven.javadoc.plugin.version>
+    <maven.javadoc.plugin.version>3.0.1</maven.javadoc.plugin.version>
+    <maven.jacoco.plugin.version>0.8.2</maven.jacoco.plugin.version>
     <git.commit.useNative>false</git.commit.useNative>
     <git.commit.runOnlyOnce>true</git.commit.runOnlyOnce>
     <fmt.action>format</fmt.action>
@@ -809,8 +813,12 @@
         <artifactId>jt-zonalstats</artifactId>
         <version>${jt.version}</version>
       </dependency>
-
-       
+			<!-- JAXB -->
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>${jaxb.api.version}</version>
+      </dependency> 
       <!-- Mathematic, geometries, SVG... -->
       <dependency>
         <groupId>org.ejml</groupId>
@@ -941,7 +949,7 @@
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
-        <version>3.7</version>
+        <version>3.8.1</version>
       </dependency>
       <dependency>
         <groupId>commons-collections</groupId>
@@ -1086,17 +1094,17 @@
       <dependency>
 	    <groupId>org.eclipse.emf</groupId>
 	    <artifactId>org.eclipse.emf.common</artifactId>
-	    <version>2.12.0</version>
+	    <version>2.15.0</version>
     </dependency>
 	<dependency>
 		<groupId>org.eclipse.emf</groupId>
 		<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
-		<version>2.12.0</version>
+		<version>2.15.0</version>
 	</dependency>
 	<dependency>
 		<groupId>org.eclipse.emf</groupId>
 		<artifactId>org.eclipse.emf.ecore</artifactId>
-		<version>2.12.0</version>
+		<version>2.15.0</version>
 	</dependency>
 	<dependency>
 		<groupId>org.eclipse.xsd</groupId>
@@ -1166,7 +1174,8 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>2.21.0</version>
+        <version>${mockito.core.version}</version>
+        <scope>test</scope>
       </dependency>
 
      <!-- ArcSDE -->
@@ -1379,9 +1388,9 @@
     <!-- ========================================================= -->
     <!--   Maven plugins dependencies management.                  -->
     <!--   It should not be needed since Maven select by default   -->
-    <!--   the latest plugins. Unfortunatly, experience shows that -->
+    <!--   the latest plugins. Unfortunatdly, experience shows that -->
     <!--   new plugin releases sometime introduce new bugs that    -->
-    <!--   break our build. So it is saferto specify plugin        -->
+    <!--   break our build. So it is safer to specify plugin       -->
     <!--   versions that are known to work.  This list is in       -->
     <!--   alphabetical order for easier comparaison with latest   -->
     <!--   plugins at                                              -->
@@ -1395,9 +1404,9 @@
           <version>2.10</version>
         </plugin>
         <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>cobertura-maven-plugin</artifactId>
-          <version>2.7</version>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${maven.jacoco.plugin.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -1429,9 +1438,44 @@
         <version>1.0-beta-2</version>
       </extension>
     </extensions>
-
-
+    
+   
     <plugins>
+    
+     <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>remove_gt_from_modulename</id>
+            <goals>
+              <goal>regex-property</goal>
+            </goals>
+            <configuration>
+              <name>moduleIdentifierStep1</name>
+              <value>${project.groupId}.${project.artifactId}</value>
+              <regex>gt-</regex>
+              <replacement></replacement>
+              <failIfNoMatch>false</failIfNoMatch>
+            </configuration>
+          </execution>
+          <execution>
+            <id>remove_dashes_from_modulename</id>
+            <goals>
+              <goal>regex-property</goal>
+            </goals>
+            <configuration>
+              <name>moduleIdentifier</name>
+              <value>${moduleIdentifierStep1}</value>
+              <regex>-</regex>
+              <replacement>_</replacement>
+              <failIfNoMatch>false</failIfNoMatch>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    
       <plugin>
         <groupId>org.commonjava.maven.plugins</groupId>
         <artifactId>directory-maven-plugin</artifactId>
@@ -1469,7 +1513,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <version>3.8.0</version>
         <configuration>
           <source>1.8</source>  <!-- The -source argument for the Java compiler. -->
           <target>1.8</target>  <!-- The -target argument for the Java compiler. -->
@@ -1477,6 +1521,9 @@
           <encoding>UTF-8</encoding> <!-- The -encoding argument for the Java compiler. -->
           <fork>${fork.javac}</fork> 
           <maxmem>${javac.maxHeapSize}</maxmem>
+          <!--<compilerArgs>
+            <arg>-Werror</arg>
+          </compilerArgs> -->
         </configuration>
       </plugin>
 
@@ -1486,7 +1533,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.1.0</version>
         <inherited>false</inherited>
         <executions>
           <execution>
@@ -1529,7 +1576,7 @@
             <exclude>${stress.skip.pattern}</exclude>
             <exclude>${test.exclude.pattern}</exclude>
           </excludes>
-          <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions --add-modules=java.xml.bind --add-modules=java.activation -Djava.util.logging.config.file=${geotoolsBaseDir}/${logging-profile}.properties</argLine>
+	  <argLine>-Xmx${test.maxHeapSize} ${jvm.opts} -Dorg.geotools.test.extensive=${extensive.tests} -Dorg.geotools.test.interactive=${interactive.tests} -Dorg.geotools.image.test.skip=${skip.image.tests} -Dorg.geotools.image.test.interactive=${interactive.image} -Djava.awt.headless=${java.awt.headless} -Dsun.java2d.d3d=${sun.java2d.d3d} -Djava.io.tmpdir="${java.io.tmpdir}" -Djava.library.path="${java.library.path}" ${test.args}  -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+IgnoreUnrecognizedVMOptions -Djava.util.logging.config.file=${geotoolsBaseDir}/${logging-profile}.properties --illegal-access=debug</argLine>
           <!-- Ignores test failure only if we are generating a       -->
           <!-- report for publication on the web site. See the        -->
           <!-- profiles section at the begining of this pom.xml file. -->
@@ -1555,7 +1602,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
+        <version>3.1.0</version>
         <configuration>
           <archive>
             <manifest>
@@ -1565,6 +1612,7 @@
               <Project-Version>${project.version}</Project-Version>
               <Git-Revision>${build.commit.id}</Git-Revision>
               <Build-Timestamp>${build.timestamp}</Build-Timestamp>
+              <Automatic-Module-Name>${moduleIdentifier}</Automatic-Module-Name>
             </manifestEntries>
           </archive>
         </configuration>
@@ -1576,7 +1624,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.2.1</version>
+        <version>3.0.1</version>
         <inherited>true</inherited>
         <configuration>
           <attach>true</attach>
@@ -1597,7 +1645,7 @@
       <plugin>
         <groupId>pl.project13.maven</groupId>
         <artifactId>git-commit-id-plugin</artifactId>
-        <version>2.1.15</version>
+        <version>2.2.5</version>
         <executions>
           <execution>
             <goals>
@@ -1664,30 +1712,12 @@
           <encoding>UTF-8</encoding>
             <!-- Set an additional parameter for the command line. -->
           <additionalparam>-keywords -Xdoclint:none</additionalparam>
+          <additionalJOption>-Xdoclint:none</additionalJOption>
+
           <breakiterator>true</breakiterator>
           <excludePackageNames>
             org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions
           </excludePackageNames>
-
-          <!-- Custom taglets implemented in Java. -->
-          <taglets>
-            <taglet>
-              <tagletClass>org.geotools.maven.taglet.Tutorial</tagletClass>
-              <tagletArtifact>
-                <groupId>org.geotools.maven</groupId>
-                <artifactId>javadoc</artifactId>
-                <version>${project.version}</version>
-              </tagletArtifact>
-            </taglet>
-            <taglet>
-              <tagletClass>org.geotools.maven.taglet.Source</tagletClass>
-              <tagletArtifact>
-                <groupId>org.geotools.maven</groupId>
-                <artifactId>javadoc</artifactId>
-                <version>${project.version}</version>
-              </tagletArtifact>
-            </taglet>
-          </taglets>
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
@@ -1742,10 +1772,9 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>http://docs.oracle.com/javase/7/docs/api/</link>
-            <link>http://docs.oracle.com/javaee/7/api/</link>
-            <link>http://jscience.org/api/</link>
-            <link>http://tsusiatsoftware.net/jts/javadoc</link>
+            <link>http://docs.oracle.com/javase/8/docs/api/</link>
+            <link>https://javaee.github.io/javaee-spec/javadocs/</link>
+            <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
 
           <!-- Separates packages on the overview page into the    -->
@@ -1883,26 +1912,6 @@
             org.geotools.resources:org.geotools.maven:com:net.opengis:org.w3:javax:it.geosolutions
           </excludePackageNames>
 
-          <!-- Custom taglets implemented in Java. -->
-          <taglets>
-            <taglet>
-              <tagletClass>org.geotools.maven.taglet.Tutorial</tagletClass>
-              <tagletArtifact>
-                <groupId>org.geotools.maven</groupId>
-                <artifactId>javadoc</artifactId>
-                <version>${project.version}</version>
-              </tagletArtifact>
-            </taglet>
-            <taglet>
-              <tagletClass>org.geotools.maven.taglet.Source</tagletClass>
-              <tagletArtifact>
-                <groupId>org.geotools.maven</groupId>
-                <artifactId>javadoc</artifactId>
-                <version>${project.version}</version>
-              </tagletArtifact>
-            </taglet>
-          </taglets>
-
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
           <!-- should be a combination of the letters Xaoptcmf.             -->
@@ -1956,10 +1965,9 @@
           <!-- Creates links to existing javadoc-generated         -->
           <!-- documentation of external referenced classes.       -->
           <links>
-            <link>http://docs.oracle.com/javase/7/docs/api/</link>
-            <link>http://docs.oracle.com/javaee/7/api/</link>
-            <link>http://jscience.org/api/</link>
-            <link>http://tsusiatsoftware.net/jts/javadoc</link>
+            <link>http://docs.oracle.com/javase/8/docs/api/</link>
+            <link>https://javaee.github.io/javaee-spec/javadocs/</link>
+            <link>https://locationtech.github.io/jts/javadoc/</link>
           </links>
         </configuration>
       </plugin>
@@ -2011,9 +2019,9 @@
       <!-- Code coverage report                                    -->
       <!-- ======================================================= -->
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.6</version>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${maven.jacoco.plugin.version}</version>
       </plugin>
 
       <!-- ======================================================= -->
@@ -2022,7 +2030,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>2.1</version>
+        <version>3.0.5</version>
       </plugin>
     </plugins>
   </reporting>

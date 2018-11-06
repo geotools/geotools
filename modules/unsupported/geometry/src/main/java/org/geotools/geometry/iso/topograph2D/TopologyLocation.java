@@ -37,8 +37,6 @@ package org.geotools.geometry.iso.topograph2D;
  * Location.BOUNDARY, Location.INTERIOR}
  *
  * <p>The labelling is stored in an array location[j] where where j has the values ON, LEFT, RIGHT
- *
- * @source $URL$
  */
 public class TopologyLocation {
 

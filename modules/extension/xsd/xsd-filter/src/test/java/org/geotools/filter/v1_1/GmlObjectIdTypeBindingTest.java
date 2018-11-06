@@ -17,11 +17,10 @@
 package org.geotools.filter.v1_1;
 
 import org.geotools.gml3.GML;
-import org.geotools.xml.Binding;
+import org.geotools.xsd.Binding;
 import org.opengis.filter.identity.GmlObjectId;
 import org.w3c.dom.Document;
 
-/** @source $URL$ */
 public class GmlObjectIdTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(GmlObjectId.class, binding(OGC.GmlObjectIdType).getType());

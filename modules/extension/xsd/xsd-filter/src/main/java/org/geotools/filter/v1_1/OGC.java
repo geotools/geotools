@@ -19,14 +19,13 @@ package org.geotools.filter.v1_1;
 import java.util.Set;
 import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
-import org.geotools.xml.XSD;
+import org.geotools.xsd.XSD;
 
 /**
  * This interface contains the qualified names of all the types,elements, and attributes in the
  * http://www.opengis.net/ogc schema.
  *
  * @generated
- * @source $URL$
  */
 public final class OGC extends XSD {
     /** singleton instance. */

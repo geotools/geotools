@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.factory.Hints;
+import org.geotools.data.util.ScreenMap;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -45,8 +45,8 @@ import org.geotools.feature.type.Types;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.renderer.ScreenMap;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.locationtech.jts.geom.CoordinateSequenceFactory;
 import org.locationtech.jts.geom.Geometry;
@@ -67,7 +67,6 @@ import org.opengis.referencing.operation.TransformException;
  * Reader for jdbc datastore
  *
  * @author Justin Deoliveira, The Open Plannign Project.
- * @source $URL$
  */
 public class JDBCFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     protected static final Logger LOGGER = Logging.getLogger(JDBCFeatureReader.class);

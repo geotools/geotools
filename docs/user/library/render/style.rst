@@ -194,10 +194,10 @@ How to write a SLD File:
 
 XML:
 
-* The file :download:`markTest.sld </../../modules/library/main/src/test/resources/org/geotools/styling/test-data/markTest.sld>`
+* The file :download:`markTest.sld </../../modules/library/xml/src/test/resources/org/geotools/xml/styling/test-data/markTest.sld>`
   contains the following XML:
   
-  .. literalinclude:: /../../modules/library/main/src/test/resources/org/geotools/styling/test-data/markTest.sld
+  .. literalinclude:: /../../modules/library/xml/src/test/resources/org/geotools/xml/styling/test-data/markTest.sld
   
 * The same style can be created using the StyleBuilder:
   

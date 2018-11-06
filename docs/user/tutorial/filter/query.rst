@@ -286,7 +286,7 @@ Things to Try
   .. code-block:: java
      
      Configuration = new org.geotools.filter.v1_0.OGCConfiguration();
-     Encoder encoder = new org.geotools.xml.Encoder( configuration );
+     Encoder encoder = new org.geotools.xsd.Encoder( configuration );
      
      encoder.encode( filter, org.geotools.filter.v1_0.OGC.FILTER, outputstream );
   

@@ -19,12 +19,12 @@ package org.geotools.referencing.factory;
 import java.util.Arrays;
 import java.util.Comparator;
 import javax.measure.Unit;
-import org.geotools.factory.FactoryRegistryException;
-import org.geotools.factory.Hints;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.util.factory.FactoryRegistryException;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CSAuthorityFactory;
@@ -92,12 +92,9 @@ import systems.uom.common.USCustomary;
  * (<var>longitude</var>, <var>latitude</var>) order just appears to be the default one.
  *
  * @since 2.2
- * @source $URL$
- * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER
  * @see Hints#FORCE_STANDARD_AXIS_UNITS
- * @tutorial http://docs.codehaus.org/display/GEOTOOLS/The+axis+order+issue
  */
 public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
         implements CSAuthorityFactory, CRSAuthorityFactory, Comparator /*<CoordinateSystemAxis>*/ {

@@ -35,7 +35,6 @@ import org.xml.sax.helpers.AttributesImpl;
  * @author dzwiers www.refractions.net
  * @see SimpleType
  * @see XMLElementHandler
- * @source $URL$
  */
 public class SimpleElementHandler extends XMLElementHandler {
 

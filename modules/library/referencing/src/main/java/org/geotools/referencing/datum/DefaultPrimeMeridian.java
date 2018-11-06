@@ -34,7 +34,6 @@ import si.uom.NonSI;
  * #getName name} initial value is "Greenwich", and that value shall be used when the {@linkplain
  * #getGreenwichLongitude greenwich longitude} value is zero.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @since 2.1

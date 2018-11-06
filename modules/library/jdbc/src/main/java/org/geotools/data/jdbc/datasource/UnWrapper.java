@@ -25,7 +25,6 @@ import java.sql.Statement;
  * connection
  *
  * @author Andrea Aime - TOPP
- * @source $URL$
  */
 public interface UnWrapper {
     /**

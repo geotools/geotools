@@ -20,7 +20,6 @@ import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.expression.Expression;
 
-/** @source $URL$ */
 public class IsNotEqualToImpl extends MultiCompareFilterImpl implements PropertyIsNotEqualTo {
 
     IsEqualsToImpl delegate;

@@ -21,7 +21,6 @@ package org.geotools.data.shapefile.index;
  * literal (or anything else we can guess a bounds for).
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class UnsupportedFilterException extends Exception {
     private static final long serialVersionUID = 3292904738782996000L;

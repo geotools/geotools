@@ -24,14 +24,13 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import org.geotools.data.shapefile.index.quadtree.Node;
 import org.geotools.data.shapefile.index.quadtree.StoreException;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
 import org.locationtech.jts.geom.Envelope;
 
 /**
  * DOCUMENT ME!
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class FileSystemNode extends Node {
     static final int[] ZERO = new int[0];

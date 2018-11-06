@@ -24,13 +24,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.util.NullProgressListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.capability.FunctionNameImpl;
-import org.geotools.util.NullProgressListener;
 import org.opengis.filter.capability.FunctionName;
 
 /**
@@ -38,7 +38,6 @@ import org.opengis.filter.capability.FunctionName;
  *
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
  */
 public class EqualIntervalFunction extends ClassificationFunction {
 

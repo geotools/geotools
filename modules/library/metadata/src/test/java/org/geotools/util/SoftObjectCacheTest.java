@@ -11,7 +11,6 @@ import org.junit.Test;
  * Tests the SoftObjectCache with simple tests.
  *
  * @author Emily Gouge (Refractions Research)
- * @source $URL$
  */
 public class SoftObjectCacheTest {
 

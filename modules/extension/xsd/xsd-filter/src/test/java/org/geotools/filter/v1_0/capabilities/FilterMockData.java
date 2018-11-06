@@ -35,7 +35,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-/** @source $URL$ */
 public class FilterMockData {
     static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 

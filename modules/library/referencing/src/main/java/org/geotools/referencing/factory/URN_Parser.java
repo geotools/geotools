@@ -17,8 +17,8 @@
 
 package org.geotools.referencing.factory;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.util.Version;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
@@ -29,7 +29,6 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  *
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 final class URN_Parser extends URI_Parser {
 

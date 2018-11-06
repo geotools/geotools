@@ -32,7 +32,6 @@ import org.opengis.util.InternationalString;
 /**
  * Information about the source data used in creating the data specified by the scope.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane

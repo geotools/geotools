@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.sql.DataSource;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 
 /**
@@ -39,7 +39,6 @@ import org.opengis.referencing.FactoryException;
  * </ul>
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Rueben Schulz
  * @author Martin Desruisseaux

@@ -24,10 +24,10 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.util.XRectangle2D;
 import org.geotools.map.GridReaderLayer;
 import org.geotools.map.Layer;
 import org.geotools.parameter.Parameter;
-import org.geotools.resources.geometry.XRectangle2D;
 import org.opengis.coverage.PointOutsideCoverageException;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.DirectPosition;
@@ -41,7 +41,6 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $URL$
  */
 public class GridReaderLayerHelper extends InfoToolHelper {

@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.util.NullProgressListener;
+import org.geotools.data.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -18,8 +18,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * and cache them for a {@code JTable}
  *
  * <p>
- *
- * @source $URL$
  */
 public class FeatureCollectionTableModel extends AbstractTableModel {
     private static final long serialVersionUID = -7119885084300393935L;

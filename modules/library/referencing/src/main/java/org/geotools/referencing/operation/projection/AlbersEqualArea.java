@@ -25,12 +25,12 @@ import static java.lang.Math.*;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import org.geotools.measure.Latitude;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -71,7 +71,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://srmwww.gov.bc.ca/gis/bceprojection.html">British Columbia Albers Standard
  *     Projection</A>
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Gerald I. Evenden (for original code in Proj4)
  * @author Rueben Schulz

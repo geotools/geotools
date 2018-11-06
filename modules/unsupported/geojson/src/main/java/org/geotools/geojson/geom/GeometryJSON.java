@@ -61,7 +61,6 @@ import org.opengis.geometry.BoundingBox;
  * </pre>
  *
  * @author Justin Deoliveira, OpenGeo
- * @source $URL$
  */
 public class GeometryJSON {
 

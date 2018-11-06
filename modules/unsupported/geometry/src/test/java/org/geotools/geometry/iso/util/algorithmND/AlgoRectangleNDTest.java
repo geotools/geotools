@@ -18,7 +18,6 @@ package org.geotools.geometry.iso.util.algorithmND;
 
 import junit.framework.TestCase;
 
-/** @source $URL$ */
 public class AlgoRectangleNDTest extends TestCase {
 
     public void testWorkingAlgos() {

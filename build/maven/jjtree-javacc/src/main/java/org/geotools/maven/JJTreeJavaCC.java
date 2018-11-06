@@ -69,7 +69,6 @@ import org.javacc.parser.Main;
  * @goal generate
  * @phase generate-sources
  * @description Parses a JJT file and transform it to Java Files.
- * @source $URL$
  * @version $Id$
  * @author jruiz
  * @author Jesse McConnell

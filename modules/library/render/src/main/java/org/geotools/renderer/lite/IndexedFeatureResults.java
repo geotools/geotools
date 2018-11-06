@@ -37,7 +37,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * IndexedFeatureReader
  *
  * @author wolf
- * @source $URL$
  */
 public final class IndexedFeatureResults extends DataFeatureCollection {
     STRtree index = new STRtree();

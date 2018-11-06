@@ -33,8 +33,6 @@ import org.opengis.filter.spatial.Contains;
 
 /**
  * Same as {@link SQLServerSpatialFiltersOnlineTest}, but forcing the sql hints for spatial filters
- *
- * @source $URL$
  */
 public class SQLServerTableHintsOnlineTest extends SQLServerSpatialFiltersOnlineTest {
 

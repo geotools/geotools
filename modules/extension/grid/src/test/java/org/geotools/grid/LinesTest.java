@@ -23,10 +23,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * @author michael
- * @source $URL$
- */
+/** @author michael */
 public class LinesTest {
 
     private static final ReferencedEnvelope BOUNDS =

@@ -76,7 +76,6 @@ import org.geotools.arcsde.session.SessionPoolFactory;
  * ArcSDE on GeoTools.
  *
  * @author Gabriel Roldan (OpenGeo)
- * @source $URL$
  * @version $Id$
  * @since 2.5.7
  */

@@ -4,9 +4,9 @@ import javax.xml.namespace.QName;
 import org.geotools.gml4wcs.GML;
 import org.geotools.temporal.object.DefaultPosition;
 import org.geotools.util.SimpleInternationalString;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 import org.opengis.temporal.Position;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,7 +42,6 @@ import org.w3c.dom.Element;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class TimePositionTypeBinding extends AbstractComplexBinding {
 

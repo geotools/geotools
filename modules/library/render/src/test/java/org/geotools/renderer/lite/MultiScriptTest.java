@@ -51,11 +51,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * Tests labeling in multiple scripts on point and line labels
- *
- * @source $URL$
- */
+/** Tests labeling in multiple scripts on point and line labels */
 public class MultiScriptTest extends TestCase {
 
     private static final long TIME = 10000;

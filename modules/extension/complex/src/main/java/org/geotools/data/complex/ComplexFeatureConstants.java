@@ -17,10 +17,10 @@
 
 package org.geotools.data.complex;
 
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.AttributeDescriptorImpl;
 import org.geotools.feature.type.Types;
+import org.geotools.util.factory.Hints;
 import org.geotools.xlink.XLINK;
 import org.geotools.xs.XSSchema;
 import org.opengis.feature.Property;
@@ -31,7 +31,6 @@ import org.opengis.feature.type.PropertyDescriptor;
  * This is just a compilation of constants and static methods used in app-schema module.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
  */
 public class ComplexFeatureConstants {
     /** Static attribute name used to link different feature types. */

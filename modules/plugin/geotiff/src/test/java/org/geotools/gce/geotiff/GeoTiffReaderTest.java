@@ -56,9 +56,9 @@ import org.geotools.coverage.grid.io.imageio.IIOMetadataDumper;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.operation.Scale;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.PrjFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
@@ -66,8 +66,8 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.referencing.operation.projection.Sinusoidal;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.test.TestData;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -88,11 +88,10 @@ import org.opengis.referencing.operation.Projection;
  * Testing {@link GeoTiffReader} as well as {@link IIOMetadataDumper}.
  *
  * @author Simone Giannecchini
- * @source $URL$
  */
 public class GeoTiffReaderTest extends org.junit.Assert {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class.toString());
+            org.geotools.util.logging.Logging.getLogger(GeoTiffReaderTest.class);
 
     static boolean oldOverrideInnerCRS;
 

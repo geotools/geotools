@@ -5,7 +5,6 @@ import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-/** @source $URL$ */
 public class H2PrimaryKeyFinderTest extends JDBCPrimaryKeyFinderOnlineTest {
 
     @Override

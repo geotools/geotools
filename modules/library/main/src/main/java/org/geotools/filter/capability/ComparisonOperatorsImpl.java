@@ -28,7 +28,6 @@ import org.opengis.filter.capability.Operator;
  * Implementation of the ComparisonOperators interface.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class ComparisonOperatorsImpl implements ComparisonOperators {
 

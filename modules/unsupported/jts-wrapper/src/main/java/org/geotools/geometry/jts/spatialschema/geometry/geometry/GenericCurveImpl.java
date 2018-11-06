@@ -11,7 +11,7 @@ package org.geotools.geometry.jts.spatialschema.geometry.geometry;
 
 // OpenGIS direct dependencies
 
-import org.geotools.geometry.jts.JTSGeometry;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSGeometry;
 import org.opengis.geometry.coordinate.GenericCurve;
 
 /**
@@ -19,7 +19,6 @@ import org.opengis.geometry.coordinate.GenericCurve;
  *
  * @author SYS Technologies
  * @author crossley
- * @source $URL$
  * @version $Revision $
  */
 public abstract class GenericCurveImpl implements GenericCurve, JTSGeometry {

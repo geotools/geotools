@@ -22,15 +22,14 @@ import org.geotools.styling.DefaultResourceLocator;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.StyleFactoryImpl;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.Parser;
 import org.picocontainer.MutablePicoContainer;
 
 /**
  * Parser configuration for the http://www.opengis.net/se schema.
  *
  * @generated
- * @source $URL$
  */
 public class SEConfiguration extends Configuration {
 

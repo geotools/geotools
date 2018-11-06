@@ -25,15 +25,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import net.opengis.wfs20.ResolveValueType;
+import org.geotools.appschema.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.config.Types;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
-import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.util.Converters;
+import org.geotools.util.factory.Hints;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
@@ -54,13 +54,10 @@ import org.xml.sax.helpers.NamespaceSupport;
  * features are also stored for caching if a filter involving these nested features is run.
  *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/NestedAttributeMapping.java $
  */
 public class NestedAttributeMapping extends AttributeMapping {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(NestedAttributeMapping.class);
 
     /** Input feature source of the nested features */
     private FeatureSource<FeatureType, Feature> source;

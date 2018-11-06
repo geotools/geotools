@@ -48,7 +48,6 @@ import org.opengis.filter.expression.Literal;
  *
  * @author Johann Sorel (Geomatys)
  * @author Michael Bedward
- * @source $URL$
  * @version $Id$
  */
 public class RecodeFunction implements Function {

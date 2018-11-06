@@ -34,7 +34,6 @@ import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public abstract class AbstractGeometryTest extends TestCase {
 
     private org.opengis.geometry.coordinate.GeometryFactory gFact;

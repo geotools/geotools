@@ -30,10 +30,10 @@ import static java.lang.Math.tan;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.Collection;
+import org.geotools.metadata.i18n.ErrorKeys;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.resources.i18n.ErrorKeys;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -105,7 +105,6 @@ import tec.uom.se.AbstractUnit;
  *     on POSC</A>
  * @since 2.4
  * @version $Id$
- * @source $URL$
  * @author Jan Jezek
  * @author Martin Desruisseaux
  */

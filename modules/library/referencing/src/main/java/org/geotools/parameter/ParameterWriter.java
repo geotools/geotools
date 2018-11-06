@@ -30,14 +30,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import org.geotools.io.TableWriter;
 import org.geotools.measure.Angle;
 import org.geotools.measure.AngleFormat;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.Classes;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
+import org.geotools.util.Arguments;
+import org.geotools.util.Classes;
+import org.geotools.util.TableWriter;
+import org.geotools.util.XArray;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
@@ -56,7 +56,6 @@ import org.opengis.util.InternationalString;
  * and an encoding capable to provide drawing box characters (e.g. unicode).
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

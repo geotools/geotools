@@ -48,7 +48,6 @@ import java.util.Arrays;
  * returned ranks are not used.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

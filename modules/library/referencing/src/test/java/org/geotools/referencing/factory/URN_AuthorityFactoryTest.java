@@ -18,11 +18,11 @@ package org.geotools.referencing.factory;
 
 import static org.junit.Assert.*;
 
-import org.geotools.factory.FactoryNotFoundException;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.util.factory.FactoryNotFoundException;
+import org.geotools.util.factory.Hints;
 import org.junit.*;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
@@ -34,7 +34,6 @@ import org.opengis.referencing.crs.GeographicCRS;
 /**
  * Tests the {@link URN_AuthorityFactory} class backed by WMS or AUTO factories.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

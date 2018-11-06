@@ -3,8 +3,8 @@ package org.geotools.gml4wcs.bindings;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.geotools.gml4wcs.GML;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
+import org.geotools.xsd.AbstractSimpleBinding;
+import org.geotools.xsd.InstanceComponent;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:doubleList.
@@ -24,7 +24,6 @@ import org.geotools.xml.InstanceComponent;
  *  </pre>
  *
  * @generated
- * @source $URL$
  */
 public class DoubleListBinding extends AbstractSimpleBinding {
 

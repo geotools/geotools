@@ -25,11 +25,11 @@ import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
-import org.geotools.factory.Hints;
 import org.geotools.parameter.DefaultParameterDescriptor;
 import org.geotools.parameter.DefaultParameterDescriptorGroup;
 import org.geotools.parameter.ParameterGroup;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.filter.Filter;
@@ -41,8 +41,7 @@ public class NetCDFFormat extends AbstractGridFormat {
     public static final ParameterDescriptor<Filter> FILTER =
             new DefaultParameterDescriptor<Filter>("Filter", Filter.class, null, null);
 
-    private static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.io.netcdf.NetCDFFormat");
+    private static final Logger LOGGER = Logging.getLogger(NetCDFFormat.class);
 
     /** Creates an instance and sets the metadata. */
     public NetCDFFormat() {

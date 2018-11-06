@@ -20,7 +20,6 @@ import org.opengis.geometry.Geometry;
 /**
  * Geometry that is an aggregate of other geometries.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @since GeoAPI 1.0
  */

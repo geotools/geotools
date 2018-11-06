@@ -16,7 +16,6 @@ package org.opengis.util;
  * @author Jesse Crossley (SYS Technologies)
  * @since GeoAPI 1.0
  * @deprecated Not used.
- * @source $URL$
  */
 @Deprecated
 public class NoSuchEnumerationException extends Exception {

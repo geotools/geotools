@@ -32,8 +32,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * <h2>Algorithm</h2>
  *
  * Compute the average of all points.
- *
- * @source $URL$
  */
 public class CentroidPoint {
 

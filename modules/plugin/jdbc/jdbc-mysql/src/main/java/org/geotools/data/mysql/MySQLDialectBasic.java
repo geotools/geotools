@@ -22,9 +22,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.factory.Hints;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.util.factory.Hints;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -40,7 +40,6 @@ import org.opengis.feature.type.GeometryDescriptor;
  *
  * @author Justin Deoliveira, OpenGEO
  * @author Nikolaos Pringouris <nprigour@gmail.com> added support for MySQL versions 5.6 (and above)
- * @source $URL$
  */
 public class MySQLDialectBasic extends BasicSQLDialect {
 

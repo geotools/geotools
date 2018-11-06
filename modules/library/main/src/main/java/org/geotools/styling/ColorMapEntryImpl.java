@@ -22,11 +22,10 @@ import org.opengis.filter.expression.Expression;
  * Default color map entry implementation
  *
  * @author aaime
- * @source $URL$
  */
 public class ColorMapEntryImpl implements ColorMapEntry {
     // private static final java.util.logging.Logger LOGGER =
-    // org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    // org.geotools.util.logging.Logging.getLogger(ColorMapEntryImpl.class);
     // private static final FilterFactory filterFactory =
     // CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints());
     private Expression quantity;

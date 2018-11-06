@@ -23,14 +23,13 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml2.GMLConfiguration;
-import org.geotools.xml.Encoder;
+import org.geotools.xsd.Encoder;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/** @source $URL$ */
 public class WFSFeatureCollectionEncodingTest extends TestCase {
 
     FeatureCollectionType fc;
@@ -59,7 +58,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     }
 
     public void testEncodeFeatureCollection10() throws Exception {
-        Encoder e = new Encoder(new org.geotools.wfs.v1_0.WFSConfiguration());
+        Encoder e = new Encoder(new org.geotools.wfs.v1_0.WFSConfiguration_1_0());
         e.getNamespaces().declarePrefix("geotools", "http://geotools.org");
         e.setIndenting(true);
 
@@ -76,8 +75,8 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     }
 
     public void testEncodeFeatureCollectionCoordinatesFormatting10() throws Exception {
-        org.geotools.wfs.v1_0.WFSConfiguration configuration =
-                new org.geotools.wfs.v1_0.WFSConfiguration();
+        org.geotools.wfs.v1_0.WFSConfiguration_1_0 configuration =
+                new org.geotools.wfs.v1_0.WFSConfiguration_1_0();
         configuration.getProperties().add(GMLConfiguration.OPTIMIZED_ENCODING);
         ((GMLConfiguration) configuration.getDependency(GMLConfiguration.class))
                 .setForceDecimalEncoding(true);

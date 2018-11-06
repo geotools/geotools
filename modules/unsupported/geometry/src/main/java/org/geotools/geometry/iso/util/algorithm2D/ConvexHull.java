@@ -63,8 +63,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * that contains all the points in the input Geometry.
  *
  * <p>Uses the Graham Scan algorithm. Asymptotic running time: O(n*log(n))
- *
- * @source $URL$
  */
 public class ConvexHull {
     // private FeatGeomFactoryImpl geomFactory;

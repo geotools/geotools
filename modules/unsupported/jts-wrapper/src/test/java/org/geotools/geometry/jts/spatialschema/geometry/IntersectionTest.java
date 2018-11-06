@@ -25,7 +25,6 @@ import org.opengis.referencing.FactoryException;
 /**
  * @author Jody Garnett
  * @author Joel Skelton
- * @source $URL$
  */
 public class IntersectionTest extends AbstractGeometryTest {
 

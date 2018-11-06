@@ -15,12 +15,12 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link net.opengis.ows20.HTTPType#getGroup <em>Group</em>}</li>
  *   <li>{@link net.opengis.ows20.HTTPType#getGet <em>Get</em>}</li>
  *   <li>{@link net.opengis.ows20.HTTPType#getPost <em>Post</em>}</li>
  * </ul>
- * </p>
  *
  * @see net.opengis.ows20.Ows20Package#getHTTPType()
  * @model extendedMetaData="name='HTTP_._type' kind='elementOnly'"
@@ -28,55 +28,55 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  */
 public interface HTTPType extends EObject {
     /**
-     * Returns the value of the '<em><b>Group</b></em>' attribute list.
-     * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Group</b></em>' attribute list.
+   * The list contents are of type {@link org.eclipse.emf.ecore.util.FeatureMap.Entry}.
+   * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Group</em>' attribute list isn't clear,
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * @return the value of the '<em>Group</em>' attribute list.
-     * @see net.opengis.ows20.Ows20Package#getHTTPType_Group()
-     * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="true"
-     *        extendedMetaData="kind='group' name='group:0'"
-     * @generated
-     */
+   * @return the value of the '<em>Group</em>' attribute list.
+   * @see net.opengis.ows20.Ows20Package#getHTTPType_Group()
+   * @model unique="false" dataType="org.eclipse.emf.ecore.EFeatureMapEntry" many="true"
+   *        extendedMetaData="kind='group' name='group:0'"
+   * @generated
+   */
     FeatureMap getGroup();
 
     /**
-     * Returns the value of the '<em><b>Get</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.ows20.RequestMethodType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Get</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.ows20.RequestMethodType}.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * Connect point URL prefix and any constraints for
-     *             the HTTP "Get" request method for this operation
-     *             request.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Get</em>' containment reference list.
-     * @see net.opengis.ows20.Ows20Package#getHTTPType_Get()
-     * @model containment="true" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='Get' namespace='##targetNamespace' group='#group:0'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * Connect point URL prefix and any constraints for
+   *             the HTTP "Get" request method for this operation
+   *             request.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Get</em>' containment reference list.
+   * @see net.opengis.ows20.Ows20Package#getHTTPType_Get()
+   * @model containment="true" transient="true" volatile="true" derived="true"
+   *        extendedMetaData="kind='element' name='Get' namespace='##targetNamespace' group='#group:0'"
+   * @generated
+   */
     EList<RequestMethodType> getGet();
 
     /**
-     * Returns the value of the '<em><b>Post</b></em>' containment reference list.
-     * The list contents are of type {@link net.opengis.ows20.RequestMethodType}.
-     * <!-- begin-user-doc -->
+   * Returns the value of the '<em><b>Post</b></em>' containment reference list.
+   * The list contents are of type {@link net.opengis.ows20.RequestMethodType}.
+   * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * <!-- begin-model-doc -->
-     * Connect point URL and any constraints for the HTTP
-     *             "Post" request method for this operation request.
-     * <!-- end-model-doc -->
-     * @return the value of the '<em>Post</em>' containment reference list.
-     * @see net.opengis.ows20.Ows20Package#getHTTPType_Post()
-     * @model containment="true" transient="true" volatile="true" derived="true"
-     *        extendedMetaData="kind='element' name='Post' namespace='##targetNamespace' group='#group:0'"
-     * @generated
-     */
+   * <!-- begin-model-doc -->
+   * Connect point URL and any constraints for the HTTP
+   *             "Post" request method for this operation request.
+   * <!-- end-model-doc -->
+   * @return the value of the '<em>Post</em>' containment reference list.
+   * @see net.opengis.ows20.Ows20Package#getHTTPType_Post()
+   * @model containment="true" transient="true" volatile="true" derived="true"
+   *        extendedMetaData="kind='element' name='Post' namespace='##targetNamespace' group='#group:0'"
+   * @generated
+   */
     EList<RequestMethodType> getPost();
 
 } // HTTPType

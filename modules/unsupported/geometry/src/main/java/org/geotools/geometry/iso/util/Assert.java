@@ -20,11 +20,7 @@ package org.geotools.geometry.iso.util;
 // TODO SJ: It has to be discussed whether the Implementation uses Asserts or Throwable Exceptions;
 // probably the Exceptions are the better solutions.
 
-/**
- * A utility for making programming assertions.
- *
- * @source $URL$
- */
+/** A utility for making programming assertions. */
 public class Assert {
 
     /**

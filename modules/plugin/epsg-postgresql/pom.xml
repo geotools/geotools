@@ -39,12 +39,12 @@
     <license>
       <name>Lesser General Public License (LGPL)</name>
       <!--url>http://www.gnu.org/copyleft/lesser.txt</url-->
-      <url>http://svn.osgeo.org/geotools/trunk/modules/plugin/epsg-postgresql/LICENSE.html</url>
+      <url>https://github.com/geotools/geotools/blob/master/modules/plugin/epsg-postgresql/LICENSE.txt</url>
       <distribution>repo</distribution>
     </license>
     <license>
       <name>BSD License for PostgreSQL JDBC driver</name>
-      <url>http://svn.osgeo.org/geotools/trunk/licenses/PostgreSQL.html</url>
+      <url>https://github.com/geotools/geotools/blob/master/licenses/PostgreSQL.html</url>
       <distribution>repo</distribution>
       <comments>
         This Geotools module requires the PostgreSQL JDBC driver, which is

@@ -24,8 +24,6 @@ import java.io.PrintStream;
  *
  * <p>The intersection may either be a single point, or a line segment (in which case this point is
  * the start of the line segment) The intersection point must be precise.
- *
- * @source $URL$
  */
 public class EdgeIntersection implements Comparable {
 

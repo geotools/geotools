@@ -41,9 +41,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/eckert_iv.html">"Robinson" on
  *     RemoteSensing.org</A>
  * @since 2.7.0
- * @source $URL$
- *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/main/java
- *     /org/geotools/referencing/operation/projection/Mercator.java $
  * @author Andrea Aime
  */
 public class EckertIV extends MapProjection {

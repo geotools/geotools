@@ -39,7 +39,6 @@ import org.opengis.referencing.operation.MathTransform;
  * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/robinson.html">"Robinson" on
  *     RemoteSensing.org</A>
  * @since 2.6.3
- * @source $URL$
  * @author Andrea Aime
  */
 public class Robinson extends MapProjection {

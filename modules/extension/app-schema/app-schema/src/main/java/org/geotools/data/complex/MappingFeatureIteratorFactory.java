@@ -45,15 +45,10 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * @author Russell Petty (GeoScience Victoria)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * @source $URL:
- *     http://svn.osgeo.org/geotools/trunk/modules/extension/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/MappingFeatureIteratorFactory.java $
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *     /java/org/geotools/data/complex/MappingFeatureIteratorFactory.java $
  */
 public class MappingFeatureIteratorFactory {
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.complex");
+            org.geotools.util.logging.Logging.getLogger(MappingFeatureIteratorFactory.class);
 
     /**
      * Temporary filter visitor to determine whether the filter concerns any attribute mapping that

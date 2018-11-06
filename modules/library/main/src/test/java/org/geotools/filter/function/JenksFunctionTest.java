@@ -28,12 +28,7 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-/**
- * @author Cory Horner, Refractions Research Inc.
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/
- *     filter/function/QuantileFunctionTest.java $
- */
+/** @author Cory Horner, Refractions Research Inc. */
 public class JenksFunctionTest extends FunctionTestSupport {
 
     public JenksFunctionTest(String testName) {

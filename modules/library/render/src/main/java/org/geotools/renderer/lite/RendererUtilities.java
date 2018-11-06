@@ -35,6 +35,8 @@ import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.GeodeticCalculator;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -45,8 +47,6 @@ import org.geotools.renderer.style.IconStyle2D;
 import org.geotools.renderer.style.LineStyle2D;
 import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.Style2D;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -76,12 +76,11 @@ import si.uom.SI;
  *
  * @author dblasby
  * @author Simone Giannecchini
- * @source $URL$
  */
 public final class RendererUtilities {
 
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(RendererUtilities.class.getName());
+            org.geotools.util.logging.Logging.getLogger(RendererUtilities.class);
 
     /**
      * Enable unit correction in {@link #toMeters(double, CoordinateReferenceSystem)} calculation.

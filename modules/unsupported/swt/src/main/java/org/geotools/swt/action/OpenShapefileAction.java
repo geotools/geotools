@@ -37,7 +37,6 @@ import org.geotools.swt.utils.Utils;
  * Action to open shapefile.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class OpenShapefileAction extends MapAction implements ISelectionChangedListener {
 

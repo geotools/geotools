@@ -36,7 +36,6 @@ import org.xml.sax.InputSource;
  * Class for holding the config info read from the xml config file
  *
  * @author mcr
- * @source $URL$
  */
 public class Config {
     private static Map<String, Config> ConfigMap = new Hashtable<String, Config>(); // Hashtable

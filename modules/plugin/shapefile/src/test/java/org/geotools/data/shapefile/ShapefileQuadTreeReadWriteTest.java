@@ -34,8 +34,8 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Test;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -46,7 +46,6 @@ import org.opengis.filter.Id;
 import org.opengis.filter.identity.FeatureId;
 
 /**
- * @source $URL$
  * @version $Id$
  * @author Ian Schneider
  */

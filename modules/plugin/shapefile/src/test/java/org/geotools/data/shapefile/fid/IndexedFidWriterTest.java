@@ -25,7 +25,6 @@ import org.geotools.data.shapefile.shp.IndexFile;
 import org.junit.After;
 import org.junit.Test;
 
-/** @source $URL$ */
 public class IndexedFidWriterTest extends FIDTestCase {
     private IndexFile indexFile;
     private IndexedFidWriter writer;

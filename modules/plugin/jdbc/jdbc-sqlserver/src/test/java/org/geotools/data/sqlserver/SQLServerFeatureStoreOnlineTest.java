@@ -25,7 +25,6 @@ import org.geotools.data.Transaction;
 import org.geotools.jdbc.JDBCFeatureStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/** @source $URL$ */
 public class SQLServerFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
 
     @Override

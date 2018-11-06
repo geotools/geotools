@@ -18,7 +18,6 @@ import org.opengis.filter.expression.PropertyName;
  *
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (Geomatys)
- * @source $URL$
  */
 final class NullSortBy implements SortBy, Serializable {
     /** For cross-version compatibility. */

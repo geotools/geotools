@@ -22,16 +22,16 @@ import java.io.FileWriter;
 import java.util.Random;
 import net.sourceforge.groboutils.junit.v1.MultiThreadedTestRunner;
 import net.sourceforge.groboutils.junit.v1.TestRunnable;
-import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.factory.epsg.oracle.OracleDialectEpsgMediator;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
+import org.geotools.util.factory.Hints;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-/** @source $URL$ */
 public class OracleDialectEpsgMediatorOnlineStressTest extends OracleOnlineTestCase {
 
     static final int RUNNER_COUNT = 10;

@@ -40,7 +40,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * Reader tests for different active region cases.
  *
  * @author Andrea Antonello (www.hydrologis.com)
- * @source $URL$
  */
 public class AdvancedReaderTest extends TestCase {
 

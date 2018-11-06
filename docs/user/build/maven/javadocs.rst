@@ -22,26 +22,17 @@ is already fixed.
 
 Waiting for the next maven-javadoc-plugin release in the hope that it will be fixed there.
 
-Custom javadoc tags
-^^^^^^^^^^^^^^^^^^^
-Geotools code contains a few custom javadoc tags, including:
-
-* Tag: @Tutorial
-  
-  Link a tutorial page on this server.	 
-
-These custom tags are processed by taglets provided in the GeoTools maven/javadoc module. These taglets are automatically used by the javadoc tools when using the javadoc:javadoc goal.
 
 Modifying the javadoc configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The **trunk/pom.xml** file contains the javadoc:javadoc goal configuration. This configuration includes custom taglets, hyperlink to external libraries like JTS, list of package to exclude, etc.
+The **trunk/pom.xml** file contains the javadoc:javadoc goal configuration. This configuration includes hyperlink to external libraries like JTS, list of package to exclude, etc.
 
 Excluded packages are:
 
 * com.\*
 * org.geotools.maven.\*
-* org.geotools.resources.\*
+* org.geotools.referencing.util.\*
 
 When Maven fails to generate the javadoc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

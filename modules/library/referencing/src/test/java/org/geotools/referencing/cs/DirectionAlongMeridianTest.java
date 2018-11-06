@@ -24,7 +24,6 @@ import org.opengis.referencing.cs.AxisDirection;
 /**
  * Tests the {@link DirectionAlongMeridian} class.
  *
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

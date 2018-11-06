@@ -37,7 +37,6 @@ import org.opengis.filter.sort.SortBy;
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @since 2.5
- * @source $URL$
  */
 public class DecoratingSimpleFeatureCollection implements SimpleFeatureCollection {
 

@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 import org.geotools.data.wfs.WFSTestData;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.wfs.v1_1.WFSConfiguration;
-import org.geotools.xml.Configuration;
+import org.geotools.xsd.Configuration;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -41,7 +41,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.x
- * @source $URL$
  */
 public class EmfAppSchemaParserTest {
 

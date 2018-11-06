@@ -26,7 +26,6 @@ import org.opengis.util.ProgressListener;
  * @author Simone Giannecchini, GeoSolutions
  * @author Jody Garnett
  * @todo revisit and improve when feedback starts to flow in
- * @source $URL$
  */
 public interface CoverageStore extends CoverageSource {
 

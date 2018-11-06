@@ -61,15 +61,14 @@ import org.geotools.util.logging.Logging;
 /**
  * Factory to create DataStores over a live ArcSDE instance.
  *
- * @author Gabriel Roldan, Axios Engineering
- * @source $URL$ datastore/src/main/java /org/geotools/arcsde/ArcSDEDataStoreFactory.java $
+ * @author Gabriel Roldan, Axios Engineering datastore/src/main/java
+ *     /org/geotools/arcsde/ArcSDEDataStoreFactory.java $
  * @version $Id$
  */
 @SuppressWarnings("unchecked")
 public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
     /** package's logger */
-    protected static final Logger LOGGER =
-            Logging.getLogger(ArcSDEDataStoreFactory.class.getName());
+    protected static final Logger LOGGER = Logging.getLogger(ArcSDEDataStoreFactory.class);
 
     /** friendly factory description */
     public static final String FACTORY_DESCRIPTION = "ESRI(tm) ArcSDE 9.2+ vector data store";

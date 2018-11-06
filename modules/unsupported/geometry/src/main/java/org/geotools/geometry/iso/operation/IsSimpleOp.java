@@ -50,8 +50,6 @@ import org.opengis.geometry.Geometry;
  *   <li>Zero-dimensional geometries (points) are simple iff they have no repeated points.
  *   <li>Empty <code>Geometry</code>s are always simple
  *       <ul>
- *
- * @source $URL$
  */
 public class IsSimpleOp {
 

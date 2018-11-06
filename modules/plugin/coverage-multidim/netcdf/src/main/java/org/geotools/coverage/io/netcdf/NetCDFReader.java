@@ -70,9 +70,9 @@ import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalogSource;
 import org.geotools.coverage.io.util.DateRangeTreeSet;
 import org.geotools.coverage.io.util.DoubleRangeTreeSet;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.ResourceInfo;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.geometry.GeneralEnvelope;
@@ -81,12 +81,12 @@ import org.geotools.imageio.netcdf.VariableAdapter;
 import org.geotools.imageio.netcdf.VariableAdapter.UnidataSpatialDomain;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.Range;
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.Format;
@@ -125,8 +125,7 @@ public class NetCDFReader extends AbstractGridCoverage2DReader
 
     private static final String DATATYPE_SUFFIX = "_DATATYPE";
 
-    private static final Logger LOGGER =
-            Logging.getLogger("org.geotools.coverage.io.netcdf.NetCDFReader");
+    private static final Logger LOGGER = Logging.getLogger(NetCDFReader.class);
 
     static FileDriver DRIVER = new NetCDFDriver();
 

@@ -34,12 +34,12 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.metadata.i18n.LoggingKeys;
+import org.geotools.metadata.i18n.Loggings;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.wkt.Formattable;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.resources.i18n.Loggings;
 import org.geotools.util.GrowableInternationalString;
 import org.geotools.util.NameFactory;
 import org.geotools.util.Utilities;
@@ -73,7 +73,6 @@ import tec.uom.se.AbstractUnit;
  * situation, a plain {@link org.geotools.referencing.cs.AbstractCS} object may be instantiated.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

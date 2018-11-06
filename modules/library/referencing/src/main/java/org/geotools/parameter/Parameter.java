@@ -27,9 +27,9 @@ import java.util.Set;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import org.geotools.measure.Units;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.Classes;
 import org.geotools.util.Utilities;
 import org.opengis.parameter.InvalidParameterTypeException;
 import org.opengis.parameter.InvalidParameterValueException;
@@ -49,7 +49,6 @@ import tec.uom.se.AbstractUnit;
  *
  * @param <T> The value type.
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett (Refractions Research)

@@ -23,17 +23,16 @@ import javax.media.jai.EnumeratedParameter;
 import javax.media.jai.Interpolation;
 import javax.media.jai.KernelJAI;
 import org.geotools.coverage.AbstractCoverage;
+import org.geotools.image.util.ImageUtilities;
+import org.geotools.metadata.i18n.Vocabulary;
+import org.geotools.metadata.i18n.VocabularyKeys;
 import org.geotools.parameter.ParameterWriter;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.image.ImageUtilities;
 import org.opengis.util.InternationalString;
 
 /**
  * Format grid coverage operation parameters in a tabular format.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

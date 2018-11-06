@@ -46,7 +46,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/** @source $URL$ */
 public class FeatureJSONTest extends GeoJSONTestSupport {
 
     FeatureJSON fjson = new FeatureJSON();

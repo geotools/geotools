@@ -27,10 +27,10 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.RenderedOp;
-import org.geotools.factory.Hints;
-import org.geotools.resources.coverage.CoverageUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.coverage.util.CoverageUtilities;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
+import org.geotools.util.factory.Hints;
 
 /**
  * This enum can be used to distinguish between differet read methods, namely, JAI ImageRead based

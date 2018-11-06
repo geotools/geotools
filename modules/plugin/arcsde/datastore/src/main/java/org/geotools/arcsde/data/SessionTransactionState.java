@@ -38,15 +38,10 @@ import org.geotools.data.Transaction.State;
  *
  * @author Jake Fear
  * @author Gabriel Roldan
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcTransactionState.java $
- * @version $Id$
  */
 final class SessionTransactionState implements Transaction.State {
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(
-                    SessionTransactionState.class.getPackage().getName());
+            org.geotools.util.logging.Logging.getLogger(SessionTransactionState.class);
 
     /**
      * The session being managed, it will be held open until commit(), rollback() or close() is
@@ -286,11 +281,7 @@ final class SessionTransactionState implements Transaction.State {
      * being in progress or not.
      *
      * @author Gabriel Roldan (TOPP)
-     * @version $Id$
      * @since 2.5.x
-     * @source $URL:
-     *     http://svn.geotools.org/trunk/modules/plugin/arcsde/datastore/src/main/java/org/
-     *     geotools/arcsde/pool/SessionTransactionState.java $
      */
     private static final class TransactionSession extends SessionWrapper {
 

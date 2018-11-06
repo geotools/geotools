@@ -28,7 +28,6 @@ import tec.uom.se.unit.MetricPrefix;
  * Tests the {@link MeasurementRange}.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */

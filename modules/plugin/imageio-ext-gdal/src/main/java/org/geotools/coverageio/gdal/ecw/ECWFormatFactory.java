@@ -29,13 +29,12 @@ import org.opengis.coverage.grid.Format;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- * @source $URL$
  */
 public final class ECWFormatFactory extends BaseGridFormatFactorySPI
         implements GridFormatFactorySpi {
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.ecw");
+            org.geotools.util.logging.Logging.getLogger(ECWFormatFactory.class);
 
     /**
      * Tells me if the coverage plugin to access ECW is available or not.

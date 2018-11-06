@@ -31,7 +31,6 @@ import org.opengis.referencing.operation.TransformException;
  * factory is used internally by {@link GridCoverageViews#create}.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */

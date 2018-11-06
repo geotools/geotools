@@ -12,9 +12,9 @@ package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 import java.util.Collections;
 import java.util.Set;
 import org.geotools.factory.BasicFactories;
-import org.geotools.geometry.jts.JTSUtils;
 import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
+import org.geotools.geometry.jts.spatialschema.geometry.JTSUtils;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.UnmodifiableGeometryException;
@@ -41,7 +41,6 @@ import org.opengis.referencing.operation.TransformException;
  * @author SYS Technologies
  * @author crossley
  * @author cdillard
- * @source $URL$
  * @version $Revision $
  */
 public class PointImpl extends GeometryImpl implements Point {

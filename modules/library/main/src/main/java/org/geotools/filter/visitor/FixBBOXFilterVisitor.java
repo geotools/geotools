@@ -33,11 +33,10 @@ import org.opengis.filter.spatial.BBOX;
  * <p>
  *
  * @author Jody
- * @source $URL$
  */
 public class FixBBOXFilterVisitor extends DuplicatingFilterVisitor {
 
-    // private static final Logger logger = Logging.getLogger("org.geotools.filter");
+    // private static final Logger logger = Logging.getLogger(FixBBOXFilterVisitor.class);
 
     /**
      * Represents a hard limit; requests outside of this bound are assumed to be invalid for the WFS

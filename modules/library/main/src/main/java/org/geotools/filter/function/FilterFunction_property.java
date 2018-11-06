@@ -32,7 +32,6 @@ import org.opengis.filter.expression.VolatileFunction;
  * Extracts a property from a feature, taking the property name as a parameter
  *
  * @author Andrea Aime - GeoSolutions
- * @source $URL$
  */
 public class FilterFunction_property extends FunctionExpressionImpl implements VolatileFunction {
 

@@ -22,7 +22,6 @@ import java.util.ArrayList;
  * Holds values (with associated DataDefinition)
  *
  * @author Tommaso Nolli
- * @source $URL$
  */
 public class Data {
     private DataDefinition def;

@@ -67,7 +67,6 @@ import org.opengis.referencing.operation.MathTransform;
  *     href="http://www.eumetsat.int/website/home/Data/DataDelivery/SupportSoftwareandTools/index.html">
  *     Navigation Software for Meteosat-9 (MSG) - Level 1.5 VIS/IR/HRV data</a>
  * @since 14.0
- * @source $URL$
  * @version $Id$
  * @author Maciej Filocha (ICM)
  */

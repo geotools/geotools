@@ -25,7 +25,6 @@ import org.opengis.annotation.Extension;
  * @since GeoAPI 2.0
  * @see javax.xml.registry.infomodel.InternationalString
  * @see NameFactory#createInternationalString
- * @source $URL$
  */
 @Extension
 public interface InternationalString extends CharSequence, Comparable<InternationalString> {

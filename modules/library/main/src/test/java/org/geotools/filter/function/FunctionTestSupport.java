@@ -30,12 +30,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
-/**
- * @author James
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/test/java/org/geotools/
- *     filter/function/FunctionTestSupport.java $
- */
+/** @author James */
 public abstract class FunctionTestSupport extends TestCase {
 
     protected SimpleFeatureCollection featureCollection, jenksCollection;

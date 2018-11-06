@@ -43,10 +43,7 @@ import org.opengis.temporal.DateAndTime;
 import org.opengis.temporal.IndeterminateValue;
 import org.opengis.temporal.JulianDate;
 
-/**
- * @author Mehdi Sidhoum (Geomatys)
- * @source $URL$
- */
+/** @author Mehdi Sidhoum (Geomatys) */
 public class DefaultCalendarTest {
 
     private Calendar calendar1;

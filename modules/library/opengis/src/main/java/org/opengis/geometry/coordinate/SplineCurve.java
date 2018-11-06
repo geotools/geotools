@@ -20,7 +20,6 @@ import org.opengis.geometry.primitive.CurveSegment;
  * Root for subtypes of {@linkplain CurveSegment curve segment} using some version of spline, either
  * polynomial or rational functions.
  *
- * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as">ISO 19107</A>
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0

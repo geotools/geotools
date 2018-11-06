@@ -1,2 +1,2 @@
-org.geotools.filter.IDFunctionExpression
-org.geotools.filter.AsMultiGeometryFunctionExpression
+org.geotools.appschema.filter.IDFunctionExpression
+org.geotools.appschema.filter.AsMultiGeometryFunctionExpression

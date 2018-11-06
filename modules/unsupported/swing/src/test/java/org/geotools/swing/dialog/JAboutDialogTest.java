@@ -27,15 +27,16 @@ import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
-import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.fixture.JButtonFixture;
-import org.fest.swing.fixture.JTextComponentFixture;
-import org.geotools.factory.GeoTools;
+import org.assertj.swing.core.GenericTypeMatcher;
+import org.assertj.swing.driver.DialogDriver;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+import org.assertj.swing.fixture.DialogFixture;
+import org.assertj.swing.fixture.JButtonFixture;
+import org.assertj.swing.fixture.JTextComponentFixture;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
+import org.geotools.util.factory.GeoTools;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,11 +46,10 @@ import org.junit.runner.RunWith;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JAboutDialogTest extends GraphicsTestBase<Dialog> {
+public class JAboutDialogTest extends GraphicsTestBase<DialogFixture, Dialog, DialogDriver> {
 
     private static final String DIALOG_TITLE = "About dialog test";
     private static final String APP_INFO = "GeoFoo: mapping Foos in real time";
@@ -60,7 +60,7 @@ public class JAboutDialogTest extends GraphicsTestBase<Dialog> {
     public void dialogWithoutApplicationInfo() throws Exception {
         createAndShow(false);
 
-        assertEquals(DIALOG_TITLE, windowFixture.component().getTitle());
+        assertEquals(DIALOG_TITLE, windowFixture.target().getTitle());
         assertCategories();
 
         // should be showing 'Environment' category
@@ -73,7 +73,7 @@ public class JAboutDialogTest extends GraphicsTestBase<Dialog> {
     public void dialogWithApplicationInfo() throws Exception {
         createAndShow(true);
 
-        assertEquals(DIALOG_TITLE, windowFixture.component().getTitle());
+        assertEquals(DIALOG_TITLE, windowFixture.target().getTitle());
         assertCategories();
 
         // should be showing 'Application' category
@@ -140,9 +140,9 @@ public class JAboutDialogTest extends GraphicsTestBase<Dialog> {
         assertNotNull(button);
 
         windowFixture.list().clickItem(JAboutDialog.Category.ALL.toString());
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         button.click();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
         String clipText = (String) clip.getData(DataFlavor.stringFlavor);
@@ -199,7 +199,7 @@ public class JAboutDialogTest extends GraphicsTestBase<Dialog> {
 
     private void assertTextDisplayExact(JAboutDialog.Category cat, String expected) {
         windowFixture.list().clickItem(cat.toString());
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         JTextComponentFixture textArea = getDialogTextArea();
         textArea.requireText(expected);
@@ -207,7 +207,7 @@ public class JAboutDialogTest extends GraphicsTestBase<Dialog> {
 
     private void assertTextDisplayContains(JAboutDialog.Category cat, String[] expected) {
         windowFixture.list().clickItem(cat.toString());
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         JTextComponentFixture textArea = getDialogTextArea();
         final String TEXT = textArea.text();

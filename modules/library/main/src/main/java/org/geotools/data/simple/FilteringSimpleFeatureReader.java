@@ -5,11 +5,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-/**
- * Filter simple reader content as it is being read.
- *
- * @source $URL$
- */
+/** Filter simple reader content as it is being read. */
 public class FilteringSimpleFeatureReader
         extends FilteringFeatureReader<SimpleFeatureType, SimpleFeature>
         implements SimpleFeatureReader {

@@ -31,7 +31,6 @@ import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.logging.Loggers;
 import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
 
-/** @source $URL$ */
 public class Commands {
 
     private static final Logger LOGGER = Loggers.getLogger("org.geotools.arcsde.session");

@@ -19,8 +19,8 @@ package org.geotools.styling;
 import java.util.ArrayList;
 import java.util.List;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -33,7 +33,6 @@ import org.opengis.util.Cloneable;
  * line is rendered.
  *
  * @author James Macgill, CCG
- * @source $URL$
  * @version $Id$
  */
 public class StrokeImpl implements Stroke, Cloneable {

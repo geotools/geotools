@@ -40,7 +40,6 @@ import java.util.List;
  * @see <a href="http://www.w3.org/TR/xmlschema-2/#rf-whiteSpace">This web page</a>
  * @author jgarnett
  * @since 1.0.0
- * @source $URL$
  */
 public abstract class Whitespace implements Comparable {
     /**

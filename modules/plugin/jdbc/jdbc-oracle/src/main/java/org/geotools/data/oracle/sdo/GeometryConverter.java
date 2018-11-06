@@ -47,7 +47,6 @@ import org.locationtech.jts.geom.Polygon;
  * ordinates beyond xyz.
  *
  * @author jgarnett
- * @source $URL$
  */
 public class GeometryConverter {
     protected OracleConnection connection;

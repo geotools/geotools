@@ -79,7 +79,6 @@ import org.opengis.feature.type.Name;
  *
  * @author Jody Garnett, Refractions Research
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public interface SimpleFeatureType extends FeatureType {
 

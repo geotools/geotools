@@ -74,15 +74,11 @@ import org.opengis.filter.sort.SortOrder;
  * methods.
  *
  * @author Gabriel Roldan, Axios Engineering
- * @source $URL:
- *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *     /org/geotools/arcsde/data/ArcSDEQuery.java $
- * @version $Id$
  */
 @SuppressWarnings("deprecation")
 class ArcSDEQuery {
     /** Shared package's logger */
-    private static final Logger LOGGER = Logging.getLogger(ArcSDEQuery.class.getName());
+    private static final Logger LOGGER = Logging.getLogger(ArcSDEQuery.class);
 
     /**
      * The connection to the ArcSDE server obtained when first created the SeQuery in <code>
@@ -933,12 +929,6 @@ class ArcSDEQuery {
     /**
      * Helper class to split out the geotools request filter into the supported non spatial one,
      * supported spatial one and unsupported filters.
-     *
-     * @author $author$
-     * @source $URL$
-     *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java
-     *     /org/geotools/arcsde/data/ArcSDEQuery.java $
-     * @version $Revision: 1.9 $
      */
     public static class FilterSet {
 

@@ -1,6 +1,4 @@
 /**
- * <copyright>
- * </copyright>
  *
  * $Id$
  */
@@ -17,9 +15,9 @@ import org.eclipse.emf.ecore.util.FeatureMap;
  * This can be disabled with -vmargs -Dorg.eclipse.emf.examples.generator.validator=false.
  */
 public interface AllowedValuesTypeValidator {
-    boolean validate();
+  boolean validate();
 
-    boolean validateGroup(FeatureMap value);
-    boolean validateValue(EList value);
-    boolean validateRange(EList value);
+  boolean validateGroup(FeatureMap value);
+  boolean validateValue(EList value);
+  boolean validateRange(EList value);
 }

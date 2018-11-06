@@ -33,7 +33,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
  * TODO: this is just a copy of other tests, it is not yet populated with Math tests!
  *
  * @author James
- * @source $URL$
  */
 public class MathTest extends TestCase {
     SimpleFeatureType schema = null;

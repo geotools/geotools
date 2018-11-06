@@ -30,16 +30,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.fixture.JButtonFixture;
-import org.fest.swing.fixture.JListFixture;
-import org.fest.swing.fixture.JTextComponentFixture;
-import org.geotools.factory.Hints;
+import org.assertj.swing.driver.DialogDriver;
+import org.assertj.swing.fixture.DialogFixture;
+import org.assertj.swing.fixture.JButtonFixture;
+import org.assertj.swing.fixture.JListFixture;
+import org.assertj.swing.fixture.JTextComponentFixture;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
 import org.geotools.swing.testutils.WindowActivatedListener;
+import org.geotools.util.factory.Hints;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -57,11 +58,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Michael Bedward
  * @since 8.0
- * @source $URL$
  * @version $Id$
  */
 @RunWith(GraphicsTestRunner.class)
-public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
+public class JCRSChooserTest extends GraphicsTestBase<DialogFixture, Dialog, DialogDriver> {
 
     // Max waiting time for return value
     private static final long RETURN_TIMEOUT = 1000;
@@ -99,7 +99,7 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
     public void checkDefaultDialogIsSetupCorrectly() throws Exception {
         showDialog();
         ((DialogFixture) windowFixture).requireModal();
-        assertEquals(JCRSChooser.DEFAULT_TITLE, windowFixture.component().getTitle());
+        assertEquals(JCRSChooser.DEFAULT_TITLE, windowFixture.target().getTitle());
 
         // The text box should be editable and initially empty
         JTextComponentFixture textBox = windowFixture.textBox();
@@ -117,7 +117,7 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
     public void customTitle() throws Exception {
         final String TITLE = "Custom title";
         showDialog(TITLE);
-        assertEquals(TITLE, windowFixture.component().getTitle());
+        assertEquals(TITLE, windowFixture.target().getTitle());
     }
 
     @Test
@@ -142,7 +142,7 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
     public void okButtonEnabledWhenListHasSelection() throws Exception {
         showDialog();
         windowFixture.list().clickItem(0);
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         getButton("OK").requireEnabled();
     }
 
@@ -154,12 +154,12 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
         // Filter to a single item - button should be enabled
         JTextComponentFixture textBox = windowFixture.textBox();
         textBox.enterText(UNIQUE_FILTER_STRING);
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         button.requireEnabled();
 
         // Remove filter (no list selection) - button should be disabled
         textBox.deleteText();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
         windowFixture.list().requireNoSelection();
         button.requireDisabled();
     }
@@ -171,10 +171,10 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
         // Make a list selection, then clear it
         JListFixture list = windowFixture.list();
         list.clickItem(0);
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         list.clearSelection();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         getButton("OK").requireDisabled();
     }
@@ -185,7 +185,7 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
 
         // Some filter text that will not match any CRS
         windowFixture.textBox().enterText("FooBar");
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         windowFixture.list().requireItemCount(0);
         getButton("OK").requireDisabled();
@@ -198,7 +198,7 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
 
         final String code = getRandomCode().toLowerCase();
         windowFixture.textBox().enterText(code);
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         // Note: there may be more than one list item if the code
         // we just typed is also the start of longer codes or if the
@@ -231,7 +231,7 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
 
         // Filter on the first few characters
         windowFixture.textBox().enterText(filterStr);
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         // Check list contents
         for (String item : list.contents()) {
@@ -245,10 +245,10 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
 
         final int index = rand.nextInt(CODES.size());
         windowFixture.list().clickItem(index);
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         getButton("OK").click();
-        windowFixture.robot.waitForIdle();
+        windowFixture.robot().waitForIdle();
 
         CoordinateReferenceSystem crs = retrieveCRS(future);
         assertNotNull(crs);

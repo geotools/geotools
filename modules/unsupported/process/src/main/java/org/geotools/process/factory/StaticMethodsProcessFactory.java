@@ -28,7 +28,6 @@ import org.opengis.util.InternationalString;
  * ProcessFactory for classes exposing simple processes as static methods
  *
  * @since 2.7
- * @source $URL$
  */
 public class StaticMethodsProcessFactory<T> extends AnnotationDrivenProcessFactory {
     Class<T> targetClass;

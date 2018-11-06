@@ -30,7 +30,9 @@ import org.geotools.data.Base64;
 import org.geotools.image.io.ImageIOExt;
 import org.geotools.se.v1_1.SE;
 import org.geotools.util.logging.Logging;
-import org.geotools.xml.*;
+import org.geotools.xsd.AbstractComplexBinding;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/se:InlineContent.
@@ -71,10 +73,9 @@ import org.geotools.xml.*;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class InlineContentBinding extends AbstractComplexBinding {
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.sld");
+    private static final Logger LOGGER = Logging.getLogger(InlineContentBinding.class);
 
     /** @generated */
     public QName getTarget() {

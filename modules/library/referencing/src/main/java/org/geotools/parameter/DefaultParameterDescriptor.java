@@ -25,10 +25,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.measure.Unit;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.ParameterDescriptor;
@@ -52,7 +52,6 @@ import org.opengis.util.InternationalString;
  *
  * @param <T> The type of elements to be returned by {@link ParameterValue#getValue}.
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @see Parameter

@@ -19,7 +19,7 @@ package org.geotools.coverage.grid;
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import org.geotools.geometry.Envelope2D;
-import org.geotools.metadata.iso.spatial.PixelTranslation;
+import org.geotools.geometry.PixelTranslation;
 import org.opengis.coverage.grid.GridEnvelope;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.datum.PixelInCell;
@@ -36,7 +36,6 @@ import org.opengis.util.Cloneable;
  * exclusive.
  *
  * @since 2.5
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @see GeneralGridEnvelope

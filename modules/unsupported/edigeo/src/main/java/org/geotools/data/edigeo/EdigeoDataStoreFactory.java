@@ -26,7 +26,7 @@ import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 
-/** @source $URL$ */
+
 public class EdigeoDataStoreFactory implements DataStoreFactorySpi {
 
     // DataStore - specific parameters

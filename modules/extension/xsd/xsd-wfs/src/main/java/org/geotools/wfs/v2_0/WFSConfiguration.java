@@ -30,19 +30,18 @@ import org.geotools.wfs.v2_0.bindings.TupleTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ValueCollectionTypeBinding;
 import org.geotools.wfs.v2_0.bindings.ValueReferenceTypeBinding;
 import org.geotools.wfs.v2_0.bindings.WFS_CapabilitiesTypeBinding;
-import org.geotools.xml.ComplexEMFBinding;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.EnumSimpleBinding;
-import org.geotools.xml.Parser;
-import org.geotools.xml.SimpleContentComplexEMFBinding;
 import org.geotools.xs.bindings.XSQNameBinding;
+import org.geotools.xsd.ComplexEMFBinding;
+import org.geotools.xsd.Configuration;
+import org.geotools.xsd.EnumSimpleBinding;
+import org.geotools.xsd.Parser;
+import org.geotools.xsd.SimpleContentComplexEMFBinding;
 import org.picocontainer.MutablePicoContainer;
 
 /**
  * Parser configuration for the http://www.opengis.net/wfs/2.0 schema.
  *
  * @generated
- * @source $URL$
  */
 public class WFSConfiguration extends Configuration {
 

@@ -26,9 +26,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.geotools.metadata.i18n.ErrorKeys;
+import org.geotools.metadata.i18n.Errors;
 import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.util.Utilities;
 import org.opengis.metadata.Identifier; // For javadoc
 import org.opengis.parameter.GeneralParameterDescriptor;
@@ -48,7 +48,6 @@ import org.opengis.parameter.ParameterValueGroup;
  * ParameterValue}s which suitably distinquish among those groups.
  *
  * @since 2.1
- * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Jody Garnett (Refractions Research)

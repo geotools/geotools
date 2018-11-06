@@ -23,7 +23,6 @@ import org.geotools.jdbc.JDBCTestSetup;
  * Data store test for mysql.
  *
  * @author Justin Deoliveira, The Open Planning Project
- * @source $URL$
  */
 public class MySQLDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     protected JDBCTestSetup createTestSetup() {

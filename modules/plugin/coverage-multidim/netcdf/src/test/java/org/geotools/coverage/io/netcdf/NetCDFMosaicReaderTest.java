@@ -73,26 +73,26 @@ import org.geotools.data.shapefile.ShapefileDataStoreFactory.ShpFileStoreFactory
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.geometry.GeneralEnvelope;
+import org.geotools.image.util.ImageUtilities;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
+import org.geotools.util.factory.Hints;
 import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -118,7 +118,6 @@ import ucar.nc2.Variable;
  * @author Simone Giannecchini, GeoSolutions
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de
  * @since 2.3
- * @source $URL$
  */
 public class NetCDFMosaicReaderTest extends Assert {
 
@@ -1582,9 +1581,8 @@ public class NetCDFMosaicReaderTest extends Assert {
         TestRunner.run(NetCDFMosaicReaderTest.suite());
     }
 
-    @Before
-    public void init() {
-
+    @BeforeClass
+    public static void init() {
         // make sure CRS ordering is correct
         System.setProperty("org.geotools.referencing.forceXY", "true");
         System.setProperty("user.timezone", "GMT");

@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.stream.ImageOutputStream;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.opengis.coverage.grid.GridCoverageWriter;
 
@@ -34,13 +34,11 @@ import org.opengis.coverage.grid.GridCoverageWriter;
  *
  * @author Simone Giannecchini
  * @since 2.3.x
- * @source $URL$
  */
 public abstract class AbstractGridCoverageWriter implements GridCoverageWriter {
 
     /** The {@link Logger} for this {@link AbstractGridCoverageWriter}. */
-    private static final Logger LOGGER =
-            Logging.getLogger(AbstractGridCoverageWriter.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(AbstractGridCoverageWriter.class);
 
     /** the destination object where we will do the writing */
     protected Object destination;

@@ -24,16 +24,15 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.resources.NIOUtilities;
+import org.geotools.util.NIOUtilities;
+import org.geotools.util.factory.Hints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author Simone Giannecchini
  * @since 2.3
- * @source $URL$
  */
 public class PrjFileReader {
 

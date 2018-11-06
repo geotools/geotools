@@ -24,8 +24,6 @@ import org.junit.Test;
  *
  * <p>This is a separate test from the DbaseFileTest#testEmptyFields method since it seems to be
  * checking for something else.
- *
- * @source $URL$
  */
 public class DbaseNullSupportTest {
     /** declare a specific charset for test portability */

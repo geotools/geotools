@@ -65,8 +65,8 @@ import org.geotools.ows.ServiceException;
 import org.geotools.test.OnlineTestCase;
 import org.geotools.wps.WPS;
 import org.geotools.wps.WPSConfiguration;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.EncoderDelegate;
+import org.geotools.xsd.Encoder;
+import org.geotools.xsd.EncoderDelegate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.io.ParseException;
@@ -78,9 +78,6 @@ import org.xml.sax.ext.LexicalHandler;
  * Test making requests by manually building up requests using the utility methods.
  *
  * @author GDavis
- * @source $URL$
- *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools
- *     /data/wps/OnlineWPSManualRequestTest.java $
  */
 public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
@@ -996,8 +993,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         ExceptionReportType report = response.getExceptionResponse();
         assertNotNull(report);
         ExceptionType exception = (ExceptionType) report.getException().get(0);
-        String errorMessage = exception.getExceptionText().get(0).toString();
-        assertTrue(errorMessage.contains(processIdenLocal));
+        EList<String> errorMessage = exception.getExceptionText();
+        assertTrue(errorMessage.get(0).contains(processIdenLocal));
     }
 
     /**

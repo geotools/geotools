@@ -52,7 +52,6 @@ import org.eclipse.xsd.XSDTypeDefinition;
  * </code></pre>
  *
  * @author Jody Garnett
- * @source $URL$
  */
 public abstract class Length {
     /** string and anyURI measured length is measured in units of characters */

@@ -28,7 +28,7 @@ package org.geotools.filter.text.generated.parsers;
  * @since
  *
  *
- * @source $URL$
+
  */
 public class SimpleNode implements  Node {
   protected Node parent;

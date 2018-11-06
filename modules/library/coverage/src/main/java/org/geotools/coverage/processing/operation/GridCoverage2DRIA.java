@@ -51,11 +51,11 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
+import org.geotools.coverage.util.CoverageUtilities;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.Utilities;
+import org.geotools.util.factory.GeoTools;
+import org.geotools.util.factory.Hints;
 import org.opengis.metadata.spatial.PixelOrientation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -71,7 +71,6 @@ import org.opengis.referencing.operation.TransformException;
  * used in the resulting RenderedImage,
  *
  * @author ETj <etj at geo-solutions.it>
- * @source $URL$
  */
 public class GridCoverage2DRIA extends GeometricOpImage {
 

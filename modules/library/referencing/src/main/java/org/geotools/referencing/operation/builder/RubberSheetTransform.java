@@ -36,7 +36,6 @@ import org.opengis.referencing.operation.TransformException;
  * "http://planner.t.u-tokyo.ac.jp/member/fuse/rubber_sheeting.pdf">here</a>.
  *
  * @since 2.4
- * @source $URL$
  * @version $Id$
  * @author Jan Jezek
  * @todo Consider moving this class to the {@linkplain org.geotools.referencing.operation.transform}

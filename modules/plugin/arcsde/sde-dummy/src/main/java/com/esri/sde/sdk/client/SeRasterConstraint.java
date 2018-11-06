@@ -1,6 +1,5 @@
 package com.esri.sde.sdk.client;
 
-/** @source $URL$ */
 public class SeRasterConstraint {
 
     public void setBands(int[] bands) throws SeException {}

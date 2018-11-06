@@ -45,10 +45,10 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.PrjFileReader;
-import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
+import org.geotools.util.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridCoverageReader;
@@ -112,14 +112,13 @@ import org.opengis.referencing.operation.TransformException;
  * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
  *     jar:file:foo.jar/bar.properties like URLs
  * @since 2.3
- * @source $URL$
  */
 public final class ImagePyramidReader extends AbstractGridCoverage2DReader
         implements GridCoverageReader {
 
     /** Logger. */
     private static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger(ImagePyramidReader.class.toString());
+            org.geotools.util.logging.Logging.getLogger(ImagePyramidReader.class);
 
     /** The input properties file to read the pyramid information from. */
     private URL sourceURL;

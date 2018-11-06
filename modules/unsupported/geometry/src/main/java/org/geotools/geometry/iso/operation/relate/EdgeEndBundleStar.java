@@ -27,7 +27,6 @@ import org.geotools.geometry.iso.topograph2D.IntersectionMatrix;
  * order (starting with the positive x-axis) around the node for efficient lookup and topology
  * building.
  *
- * @source $URL$
  * @version 1.7.2
  */
 public class EdgeEndBundleStar extends EdgeEndStar {

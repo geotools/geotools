@@ -38,12 +38,11 @@ import org.locationtech.jts.geom.Polygon;
  *
  * @author aaime
  * @author Ian Schneider
- * @source $URL$
  * @version $Id$
  */
 public class PolygonHandler implements ShapeHandler {
     protected static final Logger LOGGER =
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
+            org.geotools.util.logging.Logging.getLogger(PolygonHandler.class);
 
     GeometryFactory geometryFactory;
 

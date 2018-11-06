@@ -22,8 +22,8 @@ import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDExternalGraphicBinding;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.StyleFactory;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
+import org.geotools.xsd.ElementInstance;
+import org.geotools.xsd.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/se:ExternalGraphic.
@@ -62,7 +62,6 @@ import org.geotools.xml.Node;
  * </pre>
  *
  * @generated
- * @source $URL$
  */
 public class ExternalGraphicBinding extends SLDExternalGraphicBinding {
 

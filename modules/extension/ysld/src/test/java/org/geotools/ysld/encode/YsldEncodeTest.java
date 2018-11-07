@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
+import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LineSymbolizer;
@@ -1713,6 +1714,36 @@ public class YsldEncodeTest {
 
         exception.expect(IllegalArgumentException.class);
         Ysld.encode(sld(fts), out);
+    }
+
+    @Test
+    public void testLegend() throws Exception {
+        StyleFactory sf = CommonFactoryFinder.getStyleFactory();
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        PointSymbolizer p = sf.createPointSymbolizer();
+        Mark mark = sf.mark(ff.literal("circle"), sf.fill(null, ff.literal("#FF0000"), null), null);
+        p.setGraphic(sf.createGraphic(null, new Mark[] {mark}, null, null, null, null));
+        Rule rule = sf.createRule();
+        rule.symbolizers().add(p);
+        ExternalGraphic eg = sf.createExternalGraphic("smileyface.png", "image/png");
+        rule.setLegend(sf.createGraphic(new ExternalGraphic[] {eg}, null, null, null, null, null));
+
+        StringWriter out = new StringWriter();
+        Ysld.encode(sld(sf.createFeatureTypeStyle(new Rule[] {rule})), out);
+        // System.out.append(out.toString());
+
+        YamlMap obj = new YamlMap(YamlUtil.getSafeYaml().load(out.toString()));
+        YamlMap result =
+                obj.seq("feature-styles")
+                        .map(0)
+                        .seq("rules")
+                        .map(0)
+                        .map("legend")
+                        .seq("symbols")
+                        .map(0)
+                        .map("external");
+        assertEquals("smileyface.png", result.str("url"));
+        assertEquals("image/png", result.str("format"));
     }
 
     @Test

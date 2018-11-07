@@ -50,6 +50,12 @@ public class RuleParser extends YsldParseHandler {
             featureStyle.rules().add(rule);
 
             rule.setName(r.str("name"));
+            if (r.has("title")) {
+                rule.setTitle(r.str("title"));
+            }
+            if (r.has("abstract")) {
+                rule.setAbstract(r.str("abstract"));
+            }
             rule.setTitle(r.str("title"));
             rule.setAbstract(r.str("abstract"));
             context.push(

@@ -2264,6 +2264,33 @@ public class YsldParseTest {
     }
 
     @Test
+    public void testLegend() throws Exception {
+        String yaml =
+                "feature-styles:\n"
+                        + "- rules:\n"
+                        + "  - legend:\n"
+                        + "      symbols:\n"
+                        + "      - external:\n"
+                        + "          url: smileyface.png\n"
+                        + "          format: image/png\n"
+                        + "    symbolizers:\n"
+                        + "    - point:\n"
+                        + "        symbols:\n"
+                        + "        - mark:\n"
+                        + "            shape: circle\n"
+                        + "            fill-color: '#FF0000'";
+        StyledLayerDescriptor sld = Ysld.parse(yaml);
+        Rule rule = SLD.rules(SLD.defaultStyle(sld))[0];
+        assertThat(rule.getLegend().graphicalSymbols().get(0), instanceOf(ExternalGraphic.class));
+        ExternalGraphic legend = (ExternalGraphic) rule.getLegend().graphicalSymbols().get(0);
+        assertEquals(new URL("file:smileyface.png"), legend.getLocation());
+        assertEquals("image/png", legend.getFormat());
+        PointSymbolizer p = SLD.pointSymbolizer(SLD.defaultStyle(sld));
+        assertEquals("circle", SLD.wellKnownName(SLD.mark(p)));
+        assertEquals(Color.RED, SLD.color(SLD.fill(p)));
+    }
+
+    @Test
     public void testDeserializationAttempt() throws Exception {
         try {
             String yaml = "!!java.util.Date\n" + "date: 25\n" + "month: 12\n" + "year: 2016";
